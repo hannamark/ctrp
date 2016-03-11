@@ -1,5 +1,5 @@
 class UtilController < ApplicationController
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
 
   def get_countries
     @countries = Country.all.sort
@@ -28,6 +28,13 @@ class UtilController < ApplicationController
 
   def get_nih
     @nih = AppSetting.find_by_code('NIH').big_value.split(';')
+  end
+
+  def get_sampling_methods
+    @methods = AppSetting.find_by_code('SAMPLING_METHOD_PA').value.split(',')
+    respond_to do |format|
+      format.json { render :json => @methods }
+    end
   end
 
   def get_nih_nci_div_pa

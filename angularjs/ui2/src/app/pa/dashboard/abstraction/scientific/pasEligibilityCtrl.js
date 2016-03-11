@@ -7,15 +7,18 @@
         .controller('pasEligibilityCtrl', pasEligibilityCtrl);
 
     pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits'];
+        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods'];
 
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, genderList, ageUnits) {
+        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods) {
         var vm = this;
         vm.trialDetailObj = {};
         vm.genderList = genderList;
         vm.ageUnits = ageUnits;
-        console.info(genderList, ageUnits);
+        delete samplingMethods.server_response;
+        vm.samplingMethods = samplingMethods; // array
+        
+        console.info('samplingMethods: ', vm.samplingMethods);
 
         vm.updateCriteria = updateCriteria;
         vm.resetForm = resetForm;
@@ -27,6 +30,7 @@
 
         function _getTrialDetailCopy() {
             vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+            vm.trialDetailObj.isObservational = true;
             console.info('research cat name: ', vm.trialDetailObj.isInterventional);
         }
 

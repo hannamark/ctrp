@@ -220,6 +220,7 @@ Rails.application.routes.draw do
       get 'nih' => 'util#get_nih'
       get 'accepted_file_types_for_registry' => 'util#get_accepted_file_types_for_registry'
       get 'accepted_file_types' => 'util#get_accepted_file_types'
+      get 'sampling_methods' => 'util#get_sampling_methods'
     end
   end
   # Devise related routes
