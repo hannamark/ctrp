@@ -20,17 +20,16 @@
                                           rows="5"
                                           class="form-control"
                                           ng-model="sgView.currentSubGroup.label"
-                                          ng-maxlength="255"
+                                          ng-maxlength="200"
                                           ng-required="true">
                                 </textarea>
                                 <span ng-show="sg_form.label.$dirty">
                                     {{200 - sg_form.label.$viewValue.length}} characters left
                                 </span>
-
                             </div>
 
                             <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.label) && sg_form.label.$error">
-                              <span class="help-block" ng-message="required">Please enter the Label</span>
+                              <span class="help-block" ng-message="required">Label is required</span>
                             </span>
                         </div>
 
@@ -43,7 +42,7 @@
                                           rows="5"
                                           class="form-control"
                                           ng-model="sgView.currentSubGroup.description"
-                                          ng-maxlength="255"
+                                          ng-maxlength="200"
                                           ng-required="true">
                                 </textarea>
                                 <span ng-show="sg_form.description.$dirty">
@@ -52,7 +51,7 @@
                             </div>
 
                             <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.description) && sg_form.description.$error">
-                              <span class="help-block" ng-message="required">Please enter Description</span>
+                              <span class="help-block" ng-message="required">Description is required</span>
                             </span>
                         </div>
 
