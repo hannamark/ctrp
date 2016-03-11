@@ -19,18 +19,20 @@
         vm.samplingMethods = samplingMethods; // array
         vm.otherCriterion = {};
         vm.otherCriteriaPerPage = 10; // pagination
+        vm.addOtherCriterionFormShown = false;
 
         vm.prepareOtherCriterion = prepareOtherCriterion;
         vm.upsertOtherCriterion = upsertOtherCriterion;
         vm.deleteOtherCriterion = deleteOtherCriterion;
         vm.updateCriteria = updateCriteria;
+        vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
-        vm.addOtherCriterionFormShown = false;
+        vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
 
         activate();
         function activate() {
             _getTrialDetailCopy();
-            mockupData();
+            // mockupData();
         }
 
         function _getTrialDetailCopy() {
@@ -42,6 +44,7 @@
         }
 
         function updateCriteria() {
+            vm.trialDetailObj.other_criteria_attributes = vm.trialDetailObj.other_criteria;
             var outerTrial = {};
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
@@ -91,7 +94,7 @@
         }
 
         function deleteOtherCriterion(idx) {
-            vm.trialDetailObj.other_criteria(idx)._destroy = !vm.trialDetailObj.other_criteria(idx)._destroy;
+            vm.trialDetailObj.other_criteria[idx]._destroy = !vm.trialDetailObj.other_criteria[idx]._destroy;
         }
 
         /**
@@ -100,12 +103,13 @@
          * @return {[type]}                   [description]
          */
         function upsertOtherCriterion(otherCriterionObj) {
-            if (otherCriterionObj.id !== undefined) {
+            console.info('adding: ', otherCriterionObj);
+            if (otherCriterionObj.id === undefined) {
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
             } else {
                 vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
             }
-            vm.otherCriterion = newOtherCriterion();
+            cancelEditOtherCriterion();
         }
 
         /**
@@ -120,12 +124,18 @@
             vm.otherCriterion = obj;
         }
 
-        function mockupData() {
-            for (var i = 0; i < 20; i++) {
-                var obj = i % 2 === 0 ? newOtherCriterion('Inclusion') : newOtherCriterion('Exclusion');
-                obj.criteria_desc = 'Test blah blah ' + i;
-                vm.trialDetailObj.other_criteria.unshift(obj);
-            }
+        // function mockupData() {
+        //     for (var i = 0; i < 20; i++) {
+        //         var obj = i % 2 === 0 ? newOtherCriterion('Inclusion') : newOtherCriterion('Exclusion');
+        //         obj.criteria_desc = 'Test blah blah ' + i;
+        //         vm.trialDetailObj.other_criteria.unshift(obj);
+        //     }
+        // }
+
+        function cancelEditOtherCriterion() {
+            console.info('cancelling');
+            vm.addOtherCriterionFormShown = false;
+            vm.otherCriterion = newOtherCriterion('');
         }
 
     } // pasEligibilityCtrl
