@@ -16,7 +16,6 @@
 
         $scope.userDetail_form = {};
         vm.userDetails = userDetailObj;
-        vm.userDetails.receive_email_notifications = vm.userDetails.receive_email_notifications ? vm.userDetails.receive_email_notifications : false;
 
         vm.selectedOrgsArray = [];
         vm.savedSelection = []; //save selected organizations
@@ -59,7 +58,7 @@
                 vm.userDetails.middle_name = response.middle_name;
                 vm.userDetails.street_address = response.street_address;
                 vm.userDetails.city = response.city;
-                vm.userDetails.state_province = response.state;
+                vm.userDetails.state = response.state;
                 vm.userDetails.zipcode = response.zipcode
                 vm.userDetails.country = response.country;
                 vm.userDetails.receive_email_notifications = response.receive_email_notifications;
@@ -130,12 +129,10 @@
 
             $scope.$on(MESSAGES.STATES_AVAIL, function () {
                 vm.states = OrgService.getStatesOrProvinces();
-                vm.userDetails.state_province = '';
             });
 
             $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
                 vm.states = [];
-                vm.userDetails.state_province = '';
             })
 
 
