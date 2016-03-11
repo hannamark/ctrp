@@ -39,8 +39,8 @@ class UtilController < ApplicationController
   end
 
   def get_accepted_file_types_for_registry
-    @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').value
-    @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').big_value
+#    @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').value
+ #   @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').big_value
   end
 
   def get_accepted_file_types

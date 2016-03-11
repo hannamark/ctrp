@@ -38,17 +38,25 @@
    boolean_node :exempt, "exempt",:optional=>true
  end
 
+ class OtherIdsXml
+   include XML::Mapping
+   text_node :id, "otherTrialID", :optional=>true
+ end
+
   class ApiTrialXmlMapper
     include XML::Mapping
 
     ###Trial Identifiers
-    text_node :category, "category",:optional=>true,:default_value=>nil
+    text_node :study_source, "category",:optional=>true,:default_value=>nil
+    text_node :lead_protocol_id, "leadOrgTrialID",:optional=>true,:default_value=>nil
+    array_node  :otherIDs, "otherTrialID",:optional=>true, :class => String,:default_value=>[]
+    array_node  :clinicalIDs, "clinicalTrialsDotGovTrialID",:optional=>true, :class => String,:default_value=>[]
+
 
     ### Trial Details
     text_node :official_title, "title",:optional=>true,:default_value=>nil
     text_node :phase, "phase",:optional=>true, :default_valuse=>nil
     boolean_node :pilot, "pilot",:optional=>true,:default_value=>nil
-    text_node :lead_protocol_id, "leadOrgTrialID",:optional=>true,:default_value=>nil
 
     ### Lead Org, PI, Sponsor
     object_node :leadOrganization, "leadOrganization", :class => ExistingOrganization,:optional=>true
@@ -73,6 +81,8 @@
     ###Trial Dates
     hash_node :start_date_qual, "trialStartDate", "@type", :class=>TrialDate,:optional=>true
     text_node :start_date, "trialStartDate",:default_value=>nil,:optional=>true
+
+
     hash_node :primary_comp_date_qual, "primaryCompletionDate", "@type", :class=>TrialDate,:optional=>true
     text_node :primary_comp_date, "primaryCompletionDate",:default_value=>nil,:optional=>true
     hash_node :comp_date_qual, "completionDate", "@type", :class=>TrialDate,:optional=>true

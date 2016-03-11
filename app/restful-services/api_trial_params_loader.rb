@@ -4,6 +4,7 @@ class ApiTrialParamsLoader
   @@errors       = Hash.new()
   @@xmlMapperObject
 
+
   def load_params(xmlMapperObject,type,trial_id)
     @@rest_params = {}
     @@xmlMapperObject =xmlMapperObject
@@ -22,17 +23,36 @@ class ApiTrialParamsLoader
     @@rest_params[:coming_from] = "rest"
 
     ###Trial Identifiers
-    @@rest_params[:phase_id] = self.phase_id if @@xmlMapperObject.phase
-    @@rest_params[:official_title]   =   @@xmlMapperObject.official_title if @@xmlMapperObject.official_title
+    @@rest_params[:study_source_id] = self.study_source_id if @@xmlMapperObject.study_source
     @@rest_params[:lead_protocol_id] = @@xmlMapperObject.lead_protocol_id if @@xmlMapperObject.lead_protocol_id
+
+    @@rest_params[:other_ids_attributes]=[]
+    otherProtocolId    = ProtocolIdOrigin.find_by_name("Other Identifier").id
+    clinicalProtocolId = ProtocolIdOrigin.find_by_name("ClinicalTrials.gov Identifier").id
+
+    @@xmlMapperObject.otherIDs.each do |oid|
+      @@rest_params[:other_ids_attributes].push({protocol_id:oid,protocol_id_origin_id:otherProtocolId})
+    end
+
+    @@xmlMapperObject.clinicalIDs.each do |cid|
+      @@rest_params[:other_ids_attributes].push({protocol_id:cid,protocol_id_origin_id:clinicalProtocolId})
+    end
+
+
+    ###Trial Details
+    @@rest_params[:official_title]   =   @@xmlMapperObject.official_title if @@xmlMapperObject.official_title
+    @@rest_params[:phase_id] = self.phase_id if @@xmlMapperObject.phase
+    #@@xmlMapperObject.pilot ? @@rest_params[:pilot] = "Yes" : @@rest_params[:pilot] = "No"
+
+
 
     ###Lead Org, PI, Sponsor
     lead_org_id=@@xmlMapperObject.leadOrganization.existingOrganization.id if @@xmlMapperObject.leadOrganization
     sponsor_id=@@xmlMapperObject.sponsor.existingOrganization.id           if @@xmlMapperObject.sponsor
     pi_id = @@xmlMapperObject.pi.existingPerson.id                         if @@xmlMapperObject.pi
-    @@rest_params[:lead_org_id] = lead_org_id  if lead_org_id && valid_org("leadOrganization",lead_org_id)
+    @@rest_params[:lead_org_id] = lead_org_id   if lead_org_id && valid_org("leadOrganization",lead_org_id)
     @@rest_params[:sponsor_id]  = sponsor_id    if sponsor_id && valid_org("Sponsor",sponsor_id)
-    @@rest_params[:pi_id]       = pi_id              if pi_id && valid_person("pi",pi_id)
+    @@rest_params[:pi_id]       = pi_id         if pi_id && valid_person("pi",pi_id)
 
     ###Funding Sources
     @@rest_params[:trial_funding_sources_attributes] = []
@@ -145,7 +165,7 @@ class ApiTrialParamsLoader
    end
 
   def study_source_id
-    StudySource.find_by_name(@@xmlMapperObject.category) ? study_source_id=StudySource.find_by_name(@@xmlMapperObject.category).id : self.pluck_and_save_error(StudySource,"category")
+    StudySource.find_by_name(@@xmlMapperObject.study_source) ? study_source_id=StudySource.find_by_name(@@xmlMapperObject.study_source).id : self.pluck_and_save_error(StudySource,"category")
   end
 
   def pluck_and_save_error(x,xattr)
@@ -262,6 +282,8 @@ class ApiTrialParamsLoader
     clinical_id_map["protocol_id"]=trialkeys["clinicalTrialsDotGovTrialID"]
     @other_ids.push(clinical_id_map);
   end
+
+
 
   def process_regulatory_section(trialkeys)
 
