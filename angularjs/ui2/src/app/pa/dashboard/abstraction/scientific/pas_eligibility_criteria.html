@@ -35,7 +35,7 @@
                         </label>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol) &&
                                             criteria_form.accept_vol.$error">
-                            <span class="help-block" ng-message="required"><br /><strong>A choice for Accepts Healthy Volunteers is required</strong></span>
+                            <span class="help-block" ng-message="required"><br />A choice for Accepts Healthy Volunteers is required</span>
                        </span>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         </label>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.gender) &&
                                             criteria_form.gender.$error">
-                            <span class="help-block" ng-message="required"><strong>Gender is required</strong></span>
+                            <span class="help-block" ng-message="required">Gender is required</span>
                        </span>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <input type="number" min="0" name="min_age" id="min_age" ng-model="criteriaView.trialDetailObj.min_age" class="form-control input-sm" placeholder="" required>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.min_age) &&
                                             criteria_form.min_age.$error">
-                            <span class="help-block" ng-message="required"><strong>Minimum Age is required</strong></span>
+                            <span class="help-block" ng-message="required">Minimum Age is required</span>
                        </span>
                     </div>
                     <label for="min_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
@@ -77,7 +77,7 @@
                         </select>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.min_age_unit) &&
                                             criteria_form.min_age_unit.$error">
-                            <span class="help-block" ng-message="required"><strong>Minimum Age Unit is required</strong></span>
+                            <span class="help-block" ng-message="required">Minimum Age Unit is required</span>
                        </span>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                         <input type="number" min="0" name="max_age" id="max_age" ng-model="criteriaView.trialDetailObj.max_age" class="form-control input-sm" placeholder="" required>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.max_age) &&
                                             criteria_form.max_age.$error">
-                            <span class="help-block" ng-message="required"><strong>Maximum Age is required</strong></span>
+                            <span class="help-block" ng-message="required">Maximum Age is required</span>
                        </span>
                     </div>
                     <label for="max_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
@@ -103,9 +103,48 @@
                         </select>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.max_age_unit) &&
                                             criteria_form.max_age_unit.$error">
-                            <span class="help-block" ng-message="required"><strong>Maximum Age Unit is required</strong></span>
+                            <span class="help-block" ng-message="required">Maximum Age Unit is required</span>
                        </span>
                     </div>
+                </div>
+
+                <div class="form-group" ng-show="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"
+                    ng-class="{'has-feedback required': criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.sampling_method)}">
+                        <label for="sampling_method" class="control-label col-xs-12 col-sm-3">Sampling Method</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <select name="sampling_method" id="sampling_method"
+                                class="form-control input-sm"
+                                ng-model="criteriaView.trialDetailObj.sampling_method"
+                                ng-options="v for (k, v) in criteriaView.samplingMethods"
+                                ng-required="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary">
+                                <option value="">- Please select a method...</option>
+                            </select>
+                            <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.sampling_method) &&
+                                                criteria_form.sampling_method.$error">
+                                <span class="help-block" ng-message="required">Sampling Method is required</span>
+                           </span>
+                        </div>
+                </div>
+
+                <div class="form-group" ng-show="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"
+                    ng-class="{'has-feedback required': criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.study_pop_desc)}">
+                    <label for="study_pop_desc" class="control-label col-xs-12 col-sm-3">Study Population Description</label>
+                    <div class="col-xs-12 col-sm-5">
+                        <textarea class="form-control"
+                            name="study_pop_desc" id="study_pop_desc"
+                            maxlength="800" ng-maxlength="800"
+                            ng-required="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"
+                            ng-model="criteriaView.trialDetailObj.study_pop_desc" rows="3">
+                        </textarea>
+                        <span ng-show="criteria_form.study_pop_desc.$viewValue.length > 0">
+                            {{800 - criteria_form.study_pop_desc.$viewValue.length}} characters left
+                        </span>
+                        <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.study_pop_desc) &&
+                                            criteria_form.study_pop_desc.$error">
+                            <span class="help-block" ng-message="required">Study Population Description is required</span>
+                        </span>
+                    </div>
+
                 </div>
             </fieldset>
         <!-- end of fieldset for eligibility criteria -->

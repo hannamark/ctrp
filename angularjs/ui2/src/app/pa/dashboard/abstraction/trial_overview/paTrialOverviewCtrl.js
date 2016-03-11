@@ -113,7 +113,7 @@
             var internalSourceObj = vm.trialDetailObj.internal_source; // if null, then it is imported
             vm.trialDetailObj.isImported = !!internalSourceObj ? (internalSourceObj.code !== 'REG') : true;
 
-            // get research category name and determine its research category 
+            // get research category name and determine its research category
             vm.trialDetailObj.researchCategoryName = _getResearchCategory(researchCats, vm.trialDetailObj.research_category_id);
             vm.trialDetailObj.isExpandedAccess = vm.trialDetailObj.researchCategoryName.indexOf('expand') > -1;
             vm.trialDetailObj.isInterventional = vm.trialDetailObj.researchCategoryName.indexOf('intervention') > -1;
@@ -200,6 +200,7 @@
                 console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 _checkEditableStatus();
+                updateTrialDetailObj(vm.trialDetailObj);
             });
         }
 
@@ -207,12 +208,12 @@
             vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
             vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
         }
-
-        function _getUpdatedTrialDetailObj() {
-            TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
-                console.log('updated trialDetail obj: ', res);
-            });
-        }
+        //
+        // function _getUpdatedTrialDetailObj() {
+        //     TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
+        //         console.log('updated trialDetail obj: ', res);
+        //     });
+        // }
 
         /**
          * Find the research category name in the provided research category array

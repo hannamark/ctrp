@@ -502,7 +502,7 @@ class TrialsController < ApplicationController
                                   :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
                                   :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
-                                  :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
+                                  :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :study_pop_desc, :sampling_method,
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :study_model_id, :study_model_other,
                                   :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :time_perspective_id, :time_perspective_other,
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,

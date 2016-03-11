@@ -105,7 +105,8 @@
                 'TIME_PERSPECTIVES': '/ctrp/registry/trials/time_perspectives.json',
                 'BIOSPECIMEN_RETENTIONS': '/ctrp/registry/trials/biospecimen_rententions.json',
                 'GENDERS': '/ctrp/registry/trials/genders.json',
-                'AGE_UNITS': '/ctrp/registry/trials/age_units.json'
+                'AGE_UNITS': '/ctrp/registry/trials/age_units.json',
+                'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json'
             }
         })
         .constant('MESSAGES', {
