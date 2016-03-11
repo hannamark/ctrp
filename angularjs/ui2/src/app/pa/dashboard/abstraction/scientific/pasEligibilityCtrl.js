@@ -103,7 +103,9 @@
          * @return {[type]}                   [description]
          */
         function upsertOtherCriterion(otherCriterionObj) {
-            console.info('adding: ', otherCriterionObj);
+            if (otherCriterionObj.criteria_desc === '') {
+                return;
+            }
             if (otherCriterionObj.id === undefined) {
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
             } else {
