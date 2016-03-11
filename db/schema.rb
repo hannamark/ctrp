@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302210745) do
+ActiveRecord::Schema.define(version: 20160310195839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -431,6 +431,22 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   end
 
   add_index "links", ["trial_id"], name: "index_links_on_trial_id", using: :btree
+
+  create_table "mail_templates", force: :cascade do |t|
+    t.text     "from"
+    t.text     "to"
+    t.text     "cc"
+    t.text     "bcc"
+    t.text     "subject"
+    t.text     "body_text"
+    t.text     "body_html"
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
 
   create_table "markers", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -1073,7 +1089,7 @@ ActiveRecord::Schema.define(version: 20160302210745) do
     t.text     "official_title"
     t.string   "pilot",                         limit: 255
     t.string   "primary_purpose_other",         limit: 255
-    t.string   "secondary_purpose_other",       limit: 255
+    t.text     "secondary_purpose_other"
     t.string   "program_code",                  limit: 255
     t.string   "grant_question",                limit: 255
     t.date     "start_date"
@@ -1188,6 +1204,15 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   add_index "trials", ["study_source_id"], name: "index_trials_on_study_source_id", using: :btree
   add_index "trials", ["time_perspective_id"], name: "index_trials_on_time_perspective_id", using: :btree
 
+  create_table "user_statuses", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                       limit: 255, default: "",    null: false
     t.string   "username",                    limit: 255, default: "",    null: false
@@ -1222,6 +1247,7 @@ ActiveRecord::Schema.define(version: 20160302210745) do
     t.boolean  "approved",                                default: false, null: false
     t.integer  "organization_id"
     t.string   "source"
+    t.integer  "user_status_id"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
@@ -1229,6 +1255,7 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   add_index "users", ["organization_id"], name: "index_users_on_organization_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
+  add_index "users", ["user_status_id"], name: "index_users_on_user_status_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "version_associations", force: :cascade do |t|
@@ -1361,6 +1388,7 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   add_foreign_key "trials", "time_perspectives"
   add_foreign_key "trials", "users", column: "assigned_to_id"
   add_foreign_key "trials", "users", column: "owner_id"
+  add_foreign_key "users", "user_statuses"
   create_sequence "accrual_disease_terms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "age_units_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "allocations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1398,6 +1426,7 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   create_sequence "intervention_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "maskings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1453,6 +1482,7 @@ ActiveRecord::Schema.define(version: 20160302210745) do
   create_sequence "trial_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_versions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trials_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "user_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "users_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "version_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "versions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

@@ -54,6 +54,7 @@
             'NCI': '/ctrp/registry/nci.json',
             'TRIAL_STATUSES': '/ctrp/registry/trial_statuses.json',
             'SITE_RECRUITMENT_STATUSES': '/ctrp/registry/site_recruitment_statuses.json',
+            'ANATOMIC_SITES': '/ctrp/registry/anatomic_sites.json',
             'ACCEPTED_FILE_TYPES_REG': '/ctrp/registry/accepted_file_types_for_registry.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
@@ -66,6 +67,11 @@
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
             'AUDIT_HISTORY': '/ctrp/trial_versions/history',
+            'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
+            'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
+            'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
+            'SUB_GROUP_LIST' : '/ctrp/registry/sub_groups.json',
+            'A_SUB_GROUP' : '/ctrp/registry/sub_groups/',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
                 'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
@@ -92,7 +98,15 @@
                 'BOARD_APPROVAL_STATUSES': '/ctrp/registry/trials/get_board_approval_statuses.json',
                 'TRIAL_DOCUMENT_TYPES': '/ctrp/pa/trial_document_types.json',
                 'INTERVENTION_MODELS': '/ctrp/registry/trials/get_intervention_models.json',
-                'MASKINGS': '/ctrp/registry/trials/get_maskings.json'
+                'MASKINGS': '/ctrp/registry/trials/get_maskings.json',
+                'ALLOCATIONS': '/ctrp/registry/trials/get_allocations.json',
+                'STUDY_CLASSIFICATIONS': '/ctrp/registry/trials/study_classifications.json',
+                'STUDY_MODELS': '/ctrp/registry/trials/study_models.json',
+                'TIME_PERSPECTIVES': '/ctrp/registry/trials/time_perspectives.json',
+                'BIOSPECIMEN_RETENTIONS': '/ctrp/registry/trials/biospecimen_rententions.json',
+                'GENDERS': '/ctrp/registry/trials/genders.json',
+                'AGE_UNITS': '/ctrp/registry/trials/age_units.json',
+                'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json'
             }
         })
         .constant('MESSAGES', {

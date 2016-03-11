@@ -24,7 +24,9 @@
         vm.selectedIaArray = [];
         vm.selectedFsArray = [];
         vm.addedAuthorities = [];
+        //vm.selectedAuthority = false;
         vm.indIdeNum = 0;
+        vm.toaNum = 0;
         vm.sponsor_id = null;
         vm.showSponsor = false;
         vm.sponsorName = "";
@@ -49,6 +51,11 @@
         vm.updateTrial = function() {
             // Prevent multiple submissions
             vm.disableBtn = true;
+            //Required values
+            console.log("vm.toaNum="+ vm.toaNum);
+            if ((!vm.curTrial.responsible_party_id) || (!vm.toaNum || vm.toaNum <= 0)) {
+                return;
+            }
 
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
@@ -70,9 +77,13 @@
 
             if (vm.addedAuthorities.length > 0) {
                 vm.curTrial.oversight_authorities_attributes = [];
+                //console.log("HIIIII added authorities =" + JSON.stringify(vm.addedAuthorities));
                 _.each(vm.addedAuthorities, function (authority) {
                     vm.curTrial.oversight_authorities_attributes.push(authority);
                 });
+                vm.selectedAuthority = true;
+            } else {
+                vm.selectedAuthority = false;
             }
 
             // An outer param wrapper is needed for nested attributes to work
@@ -85,10 +96,11 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.responsible_party_id = response["responsible_party_id"];
-                vm.curTrial.responsible_party = response["responsible_party"];
-                vm.curTrial.investigator_aff_id = response["investigator_aff_id"];
+                if (response.server_response.status === 200) {
+                    vm.curTrial = response;
+                    vm.addedAuthorities = vm.curTrial.oversight_authorities;
+                    //console.log("2HIIIII oversight_authorities =" + JSON.stringify(vm.curTrial.oversight_authorities));
+                }
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
@@ -115,6 +127,9 @@
                         vm.toaNum++;
                     }
                 }
+                 if(vm.toaNum <= 0){
+                     vm.selectedAuthority = false;
+                 }
             }
         };// toggleSelection
 
@@ -135,9 +150,11 @@
                 vm.authorityOrgArr = [];
                 vm.addAuthorityError = '';
                 vm.showAddAuthorityError = false;
+                //vm.selectedAuthority = true;
             } else {
                 vm.addAuthorityError = errorMsg;
                 vm.showAddAuthorityError = true;
+                //vm.selectedAuthority = false;
             }
         };
 
@@ -196,6 +213,12 @@
                 }
             }  else if (type == 'authority_country') {
                 vm.authority_org = '';
+                /*
+                if(vm.addedAuthorities.length > 0){
+                    vm.selectedAuthority = true;
+                } else {
+                    vm.selectedAuthority = false;
+                }*/
                 vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
             }
         };

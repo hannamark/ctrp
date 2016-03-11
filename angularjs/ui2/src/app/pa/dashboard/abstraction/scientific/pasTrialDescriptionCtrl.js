@@ -7,15 +7,20 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasTrialDescriptionCtrl', pasTrialDescriptionCtrl);
 
-    pasTrialDescriptionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
+    pasTrialDescriptionCtrl.$inject = ['$scope', '$state', 'TrialService', 'PATrialService', 'toastr',
         'MESSAGES', '_', '$timeout', 'trialDetailObj'];
 
-    function pasTrialDescriptionCtrl($scope, TrialService, PATrialService, toastr,
+    function pasTrialDescriptionCtrl($scope, $state, TrialService, PATrialService, toastr,
                                      MESSAGES, _, $timeout, trialDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
 
-        vm.saveTrial = function(){
+        vm.reload = function() {
+            console.log("RELOAD");
+            $state.go($state.$current, null, { reload: true });
+        };
+
+        vm.saveTrialDescription = function(){
             vm.disableBtn = true;
 
             // An outer param wrapper is needed for nested attributes to work

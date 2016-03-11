@@ -8,7 +8,7 @@
 #  official_title                :text
 #  pilot                         :string(255)
 #  primary_purpose_other         :string(255)
-#  secondary_purpose_other       :string(255)
+#  secondary_purpose_other       :text
 #  program_code                  :string(255)
 #  grant_question                :string(255)
 #  start_date                    :date
@@ -210,7 +210,9 @@ class Trial < TrialBase
   accepts_nested_attributes_for :participating_sites, allow_destroy: true
   accepts_nested_attributes_for :collaborators, allow_destroy: true
   accepts_nested_attributes_for :outcome_measures, allow_destroy: true
+  accepts_nested_attributes_for :anatomic_site_wrappers, allow_destroy: true
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
+  accepts_nested_attributes_for :sub_groups, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
@@ -236,6 +238,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -247,6 +250,7 @@ class Trial < TrialBase
       elsif self.internal_source && self.internal_source.code == 'CTRP'
         actions.append('update')
         actions.append('amend')
+        actions.append('verify-data')
       end
     end
 
@@ -402,9 +406,10 @@ class Trial < TrialBase
         if self.coming_from == 'rest'
           sub_method = SubmissionMethod.find_by_code('RSV')
         else
+          sub_source = SubmissionSource.find_by_code('CCT')
           sub_method = SubmissionMethod.find_by_code('REG')
-          end
-        new_submission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: sub_method)
+        end
+        new_submission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_source: sub_source, submission_method: sub_method)
       end
 
       # New Milestone
@@ -428,9 +433,10 @@ class Trial < TrialBase
       if self.coming_from == 'rest'
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
+        sub_source = SubmissionSource.find_by_code('CCT')
         sub_method = SubmissionMethod.find_by_code('REG')
       end
-      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd, submission_method: sub_method)
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd, submission_source: sub_source, submission_method: sub_method)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
@@ -438,12 +444,14 @@ class Trial < TrialBase
       if self.coming_from == 'rest'
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
+        sub_source = SubmissionSource.find_by_code('CCT')
         sub_method = SubmissionMethod.find_by_code('REG')
       end
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
       latest_submission.user = self.current_user
       latest_submission.submission_type = amd
+      latest_submission.submission_source = sub_source
       latest_submission.submission_method = sub_method
 
       srd = Milestone.find_by_code('SRD')
@@ -463,10 +471,44 @@ class Trial < TrialBase
   def create_ownership
     # New Trial Ownership
     if self.coming_from == 'rest'
-     TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
+      TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
     else
-    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
+      TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
+    end
+  end
 
+  def send_email
+    last_submission = self.submissions.last
+    last_sub_type = last_submission.submission_type if last_submission.present?
+    last_sub_method = last_submission.submission_method if last_submission.present?
+
+    if last_sub_type.present? && last_sub_type.code == 'ORI' && last_sub_method.present? && last_sub_method.code == 'REG' && self.edit_type != 'verify'
+      mail_template = MailTemplate.find_by_code('TRIAL_REG')
+      if mail_template.present?
+        mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present?
+
+        # Populate the trial data in the email body
+        mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
+        mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
+
+        table = '<table border="0">'
+        table += "<tr><td><b>Lead Organization Trial ID:</b></td><td>#{self.lead_protocol_id}</td></tr>" if self.lead_protocol_id.present?
+        table += "<tr><td><b>Lead Organization:</b></td><td>#{self.lead_org.name}</td></tr>" if self.lead_org.present?
+        table += "<tr><td><b>NCI Trial ID:</b></td><td>#{self.nci_id}</td></tr>" if self.nci_id.present?
+        self.other_ids.each do |other_id|
+          table += "<tr><td><b>#{other_id.protocol_id_origin.name}:</b></td><td>#{other_id.protocol_id}</td></tr>"
+        end
+        table += '</table>'
+        mail_template.body_html.sub!('${trialIdentifiers}', table)
+
+        mail_template.body_html.sub!('${submissionDate}', last_submission.submission_date.strftime('%d-%b-%Y')) if last_submission.submission_date.present?
+        mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+        mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
+        mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
+
+        CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+      end
     end
   end
 

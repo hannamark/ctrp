@@ -839,7 +839,7 @@ module.exports = function() {
 
     this.When(/^I select save$/, function (callback) {
         trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+        browser.sleep(300).then(callback);
     });
 
     this.Then(/^a warning message will appear �Please enter the Protocol Identifier�$/, function (callback) {
@@ -867,7 +867,7 @@ module.exports = function() {
 
     this.Then(/^a warning message will appear �Please enter the Official Title�$/, function (callback) {
         trialDetails.generalTrailCentralContactNameReq.getText().then(function(valueReq){
-            console.log('Central Contact Name Required:['+valueReq+']');
+            console.log('Central Contact Name required message:['+valueReq+']');
             expect(valueReq.toString()).to.eql(officialTitleReq.toString());
         });
         browser.sleep(25).then(callback);

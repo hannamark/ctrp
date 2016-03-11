@@ -21,6 +21,9 @@
                             var trialId = $stateParams.trialId;
                             console.log('trialId: ' + trialId);
                             return TrialService.getTrialById(trialId);
+                        },
+                        researchCategories: function(TrialService) {
+                            return TrialService.getResearchCategories();
                         }
                     },
                     ncyBreadcrumb: {
@@ -69,6 +72,8 @@
                 .state('main.pa.trialOverview.viewTSR', {
                     url: '/view-tsr',
                     templateUrl: 'app/pa/dashboard/abstraction/trial_overview/view_TSR.html',
+                    controller: 'trialReportSummaryCtrl as tsrCtrl',
+                    /*
                     controller: function($scope, $state) {
                         console.log('trialId from trialOverview controller: ', $scope.$parent.paTrialOverview.trialId);
                         var curTrialId = $scope.$parent.paTrialOverview.trialId;
@@ -77,6 +82,7 @@
                         window.open(url, '_blank');
                         // $state.go('main.trialDetail', {trialId: curTrialId, editType: 'update'}, {inherit: false});
                     },
+                    */
                     section: 'pa',
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',

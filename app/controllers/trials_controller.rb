@@ -74,6 +74,55 @@ class TrialsController < ApplicationController
     end
   end
 
+  def genders
+    @genders = Gender.all
+    respond_to do |format|
+      format.json { render :json => @genders }
+    end
+  end
+
+  def age_units
+    @age_units = AgeUnit.all
+    respond_to do |format|
+      format.json { render :json => @age_units }
+    end
+  end
+
+  def biospecimen_rententions
+    @retention = BiospecimenRetention.all
+    respond_to do |format|
+      format.json { render :json => {:data => @retention} }
+    end
+  end
+
+  def time_perspectives
+    @perspectives = TimePerspective.all
+    respond_to do |format|
+      format.json { render :json => {:data => @perspectives} }
+    end
+  end
+
+  def study_models
+    @study_models = StudyModel.all
+    respond_to do |format|
+      format.json { render :json => {:data => @study_models} }
+    end
+  end
+
+  def study_classifications
+    @classifications = StudyClassification.all
+    respond_to do |format|
+      format.json { render :json => {:data => @classifications } }
+    end
+  end
+
+  def get_allocations
+    @allocations = Allocation.all
+    respond_to do |format|
+      format.json { render :json => {:allocations => @allocations } }
+    end
+  end
+
   def get_maskings
     @maskings = Masking.all
     respond_to do |format|
@@ -448,17 +497,18 @@ class TrialsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def trial_params
-    params.require(:trial).permit(:nci_id, :lead_protocol_id, :official_title, :acronym, :pilot, :research_category_id,
-                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
-                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms,
-                                  :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id,
-                                  :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
-                                  :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id,
-                                  :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id,
+    params.require(:trial).permit(:nci_id, :lead_protocol_id, :allocation_id, :official_title, :acronym, :pilot, :research_category_id,
+                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id, :accept_vol, :min_age, :max_age, :min_age_unit_id, :max_age_unit_id, :gender_id,
+                                  :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
+                                  :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
+                                  :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
+                                  :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :study_pop_desc, :sampling_method,
+                                  :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :study_model_id, :study_model_other,
+                                  :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :time_perspective_id, :time_perspective_other,
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
-                                  :brief_title, :brief_summary,
+                                  :brief_title, :brief_summary, :objective, :detailed_description, :study_classification_id, :target_enrollment, :final_enrollment,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
-                                  :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag,
+                                  :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
                                   arms_groups_attributes: [:id, :label, :type, :description, :intervention_id, :trial_id, :_destroy],
@@ -472,7 +522,10 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
-                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy])
+                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
+                                  sub_groups_attributes:[:id,:label,:description,:_destroy],
+                                  anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
+                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy])
   end
 
   # Convert status code to name in validation messages
