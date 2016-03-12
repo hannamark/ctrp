@@ -44,7 +44,11 @@ class ApiTrialParamsLoader
     @@rest_params[:phase_id] = self.phase_id if @@xmlMapperObject.phase
     #@@xmlMapperObject.pilot ? @@rest_params[:pilot] = "Yes" : @@rest_params[:pilot] = "No"
 
-
+  if @@xmlMapperObject.pilot
+    p @@xmlMapperObject.pilot
+  else
+    p "####################false "
+  end
 
     ###Lead Org, PI, Sponsor
     lead_org_id=@@xmlMapperObject.leadOrganization.existingOrganization.id if @@xmlMapperObject.leadOrganization
