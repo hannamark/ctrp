@@ -74,6 +74,9 @@
                     controller: 'userListCtrl as userView',
                     resolve: {
                         UserService: 'UserService'
+                    },
+                    ncyBreadcrumb: {
+                        label: 'User Portal'
                     }
                 })
                 .state('main.changePassword', {
