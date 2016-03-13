@@ -21,7 +21,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   before_action :validate_rest_request
 
   before_filter only: [:create] do
-    @xmlMapperObject = ApiTrialXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
+    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"create","")
 
@@ -45,7 +45,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     render nothing: true, status: :not_found unless @trial.present?
 
-    @xmlMapperObject = ApiTrialXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
+    @xmlMapperObject = ApiTrialUpdateXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"update","")
 

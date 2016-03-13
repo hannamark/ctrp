@@ -3,6 +3,7 @@ class ApiTrialParamsLoader
   @@rest_params = {}
   @@errors       = Hash.new()
   @@xmlMapperObject
+  @@booleanMap = {"false":"No","true":"Yes"}
 
 
   def load_params(xmlMapperObject,type,trial_id)
@@ -42,13 +43,23 @@ class ApiTrialParamsLoader
     ###Trial Details
     @@rest_params[:official_title]   =   @@xmlMapperObject.official_title if @@xmlMapperObject.official_title
     @@rest_params[:phase_id] = self.phase_id if @@xmlMapperObject.phase
-    #@@xmlMapperObject.pilot ? @@rest_params[:pilot] = "Yes" : @@rest_params[:pilot] = "No"
+    ##TODO If they donot provide pilot set to NO and give a thought about update and amend case::
+    @@rest_params[:pilot] = @@xmlMapperObject.pilot
 
-  if @@xmlMapperObject.pilot
-    p @@xmlMapperObject.pilot
-  else
-    p "####################false "
-  end
+    if type=="create" && @@xmlMapperObject.interventionalTrial
+      @@rest_params[:research_category_id]=@@xmlMapperObject.interventionalTrial.research_category_id
+      @@rest_params[:secondary_purpose_id] = @@xmlMapperObject.interventionalTrial.secondary_purpose_id
+    elsif type=="create" && @@xmlMapperObject.nonInterventionalTrial
+      @@rest_params[:research_category_id]=@@xmlMapperObject.nonInterventionalTrial.research_category_id
+    end
+
+    @@rest_params[:primary_purpose_id]      =      @@xmlMapperObject.primary_purpose_id
+    @@rest_params[:accrual_disease_term_id] =      @@xmlMapperObject.accrual_disease_term_id
+
+
+
+
+
 
     ###Lead Org, PI, Sponsor
     lead_org_id=@@xmlMapperObject.leadOrganization.existingOrganization.id if @@xmlMapperObject.leadOrganization
@@ -88,11 +99,11 @@ class ApiTrialParamsLoader
 
     ### Trial Dates
     @@rest_params[:start_date]             =  @@xmlMapperObject.start_date                     if @@xmlMapperObject.start_date
-    @@rest_params[:start_date_qual]        =  @@xmlMapperObject.start_date_qual.keys[0]        if @@xmlMapperObject.start_date_qual.keys[0]
+    @@rest_params[:start_date_qual]        =  @@xmlMapperObject.start_date_qual                if @@xmlMapperObject.start_date_qual
     @@rest_params[:primary_comp_date]      =  @@xmlMapperObject.primary_comp_date              if @@xmlMapperObject.primary_comp_date
-    @@rest_params[:primary_comp_date_qual] =  @@xmlMapperObject.primary_comp_date_qual.keys[0] if @@xmlMapperObject.primary_comp_date_qual.keys[0]
+    @@rest_params[:primary_comp_date_qual] =  @@xmlMapperObject.primary_comp_date_qual         if @@xmlMapperObject.primary_comp_date_qual
     @@rest_params[:comp_date]              =  @@xmlMapperObject.comp_date                      if @@xmlMapperObject.comp_date
-    @@rest_params[:comp_date_qual]         =  @@xmlMapperObject.comp_date_qual.keys[0]         if @@xmlMapperObject.comp_date_qual.keys[0]
+    @@rest_params[:comp_date_qual]         =  @@xmlMapperObject.comp_date_qual                 if @@xmlMapperObject.comp_date_qual
 
     ###IND,IDE
     @@rest_params[:ind_ides_attributes] = []
@@ -109,11 +120,31 @@ class ApiTrialParamsLoader
 
     ###Trial Docs
 
-    content = @@xmlMapperObject.protocol_content
-    p @@xmlMapperObject.protocol_file_name.keys[0]
+#    content = @@xmlMapperObject.protocol_content
+#    p @@xmlMapperObject.protocol_file_name.keys[0]
 
-    p decode_base64_content = Base64.decode64(content)
+#    p decode_base64_content = Base64.decode64(content)
 
+    @@rest_params[:trial_documents_attributes] = []
+
+
+    content = "cHJvdG9jb2xEb2N1bWVudA=="
+    decode_base64_content = Base64.decode64(content)
+
+    temp_file = Tempfile.new("Sample2")
+    temp_file << decode_base64_content
+    temp_file.rewind
+
+    img_params = {:filename => "Sample2.pdf", :type => "pdf", :tempfile => temp_file}
+    uploaded_file = ActionDispatch::Http::UploadedFile.new(img_params)
+
+
+
+    @trialprotocolDocMap = Hash.new
+    @trialprotocolDocMap.store("file",uploaded_file)
+    @trialprotocolDocMap.store("file_name","Sample2.pdf")
+    @trialprotocolDocMap.store("document_type","Protocol Document")
+    @@rest_params[:trial_documents_attributes].push(@trialprotocolDocMap)
 
 
   end
@@ -240,6 +271,35 @@ class ApiTrialParamsLoader
 
 
 
+
+
+
+
+
+
+  ################################  Deleting #########################
+
+
+
+
+
+  def process_regulatory_section(trialkeys)
+
+    if trialkeys["regulatoryInformation"].has_key?("country") && trialkeys["regulatoryInformation"].has_key?("authorityName")
+
+      country=trialkeys["regulatoryInformation"]["country"]
+      authorityName= trialkeys["regulatoryInformation"]["authorityName"]
+      oversight_authorities=Array.new()
+      oversight_map =Hash.new();
+
+      oversight_map["country"]=country
+      oversight_map["organization"]=authorityName
+      oversight_authorities.push(oversight_map) if @trialService.getAuthorityOrgArr(country).include?(authorityName)
+      @trialMasterMap.store("oversight_authorities_attributes",oversight_authorities)
+
+    end
+
+  end
   def process_docs(dochash,document_type)
 
     p dochash["filename"]
@@ -262,158 +322,6 @@ class ApiTrialParamsLoader
     @trialprotocolDocMap.store("document_type",document_type)
     @trialDocs.push(@trialprotocolDocMap)
 
-  end
-
-
-
-
-
-  ################################  Deleting #########################
-
-
-  def process_other_trial_id(trialkeys)
-
-    other_id_map =Hash.new()
-    other_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("Other Identifier").id
-    other_id_map["protocol_id"]=trialkeys["otherTrialID"]
-    @other_ids.push(other_id_map);
-  end
-
-  def process_clinical_trials_dot_gov_trial_ID(trialkeys)
-
-    clinical_id_map=Hash.new()
-    clinical_id_map["protocol_id_origin_id"]=ProtocolIdOrigin.find_by_name("ClinicalTrials.gov Identifier").id
-    clinical_id_map["protocol_id"]=trialkeys["clinicalTrialsDotGovTrialID"]
-    @other_ids.push(clinical_id_map);
-  end
-
-
-
-  def process_regulatory_section(trialkeys)
-
-    if trialkeys["regulatoryInformation"].has_key?("country") && trialkeys["regulatoryInformation"].has_key?("authorityName")
-
-      country=trialkeys["regulatoryInformation"]["country"]
-      authorityName= trialkeys["regulatoryInformation"]["authorityName"]
-      oversight_authorities=Array.new()
-      oversight_map =Hash.new();
-
-      oversight_map["country"]=country
-      oversight_map["organization"]=authorityName
-      oversight_authorities.push(oversight_map) if @trialService.getAuthorityOrgArr(country).include?(authorityName)
-      @trialMasterMap.store("oversight_authorities_attributes",oversight_authorities)
-
-    end
-
-    if trialkeys["regulatoryInformation"].has_key?("section801")
-      sec=trialkeys["regulatoryInformation"]["section801"]
-      if sec.to_s.downcase == "true".to_s.downcase
-
-        @trialMasterMap.store("sec801_indicator","Yes");
-
-      elsif sec.to_s.downcase == "false".to_s.downcase
-
-        @trialMasterMap.store("sec801_indicator","No");
-
-      else
-
-        @trialMasterMap.store("sec801_indicator","N/A");
-
-      end
-    end
-
-    if trialkeys["regulatoryInformation"].has_key?("dataMonitoringCommitteeAppointed")
-      sec=trialkeys["regulatoryInformation"]["dataMonitoringCommitteeAppointed"]
-      if sec.to_s.downcase == "true".to_s.downcase
-
-        @trialMasterMap.store("data_monitor_indicator","Yes");
-
-      elsif sec.to_s.downcase == "false".to_s.downcase
-
-        @trialMasterMap.store("data_monitor_indicator","No");
-
-      else
-
-        @trialMasterMap.store("data_monitor_indicator","N/A");
-
-      end
-
-    end
-
-
-    if trialkeys["regulatoryInformation"].has_key?("fdaRegulated")
-      sec=trialkeys["regulatoryInformation"]["fdaRegulated"]
-
-      if sec.to_s.downcase == "true".to_s.downcase
-
-        @trialMasterMap.store("intervention_indicator","Yes");
-
-      elsif sec.to_s.downcase == "false".to_s.downcase
-
-        @trialMasterMap.store("intervention_indicator","No");
-      else
-        @trialMasterMap.store("intervention_indicator","N/A");
-
-      end
-
-    end
-  end
-
-
-  def process_responsible_party(trialkeys)
-    if ResponsibleParty.find_by_name(trialkeys["responsibleParty"]["type"])
-      @trialMasterMap["responsible_party_id"]=ResponsibleParty.find_by_name(trialkeys["responsibleParty"]["type"]).id
-    else
-      pluck_and_save_error(ResponsibleParty,"responsibleParty")
-    end
-  end
-
-  def process_primary_purpose(trialkeys)
-
-    if PrimaryPurpose.find_by_name(trialkeys["primaryPurpose"])
-      @trialMasterMap["primary_purpose_id"]=PrimaryPurpose.find_by_name(trialkeys["primaryPurpose"]).id
-      #trialkeys.delete("primaryPurpose")
-      if trialkeys["primaryPurpose"].to_s.downcase=="Other".downcase
-        if trialkeys.has_key?("primaryPurposeOtherDescription")
-          @trialMasterMap["primary_purpose_other"]= trialkeys["primaryPurposeOtherDescription"]
-        else
-          @validate_errors.store("tns:primaryPurposeOtherDescription","When primaryPurpose is other; primaryPurposeOtherDescription expected with minimum length of 1");
-        end
-      end
-      trialkeys.delete("primaryPurpose")
-    else
-      pluck_and_save_error(PrimaryPurpose,"primaryPurpose")
-
-    end
-
-  end
-
-  def process_secondary_purpose(trialkeys)
-
-    if PrimaryPurpose.find_by_name(trialkeys["primaryPurpose"])
-      @trialMasterMap["primary_purpose_id"]=PrimaryPurpose.find_by_name(trialkeys["primaryPurpose"]).id
-      #trialkeys.delete("primaryPurpose")
-      if trialkeys["primaryPurpose"].to_s.downcase=="Other".downcase
-        if trialkeys.has_key?("primaryPurposeOtherDescription")
-          @trialMasterMap["primary_purpose_other"]= trialkeys["primaryPurposeOtherDescription"]
-        else
-          @validate_errors.store("tns:primaryPurposeOtherDescription","When primaryPurpose is other; primaryPurposeOtherDescription expected with minimum length of 1");
-        end
-      end
-      trialkeys.delete("primaryPurpose")
-    else
-      pluck_and_save_error(PrimaryPurpose,"primaryPurpose")
-    end
-
-  end
-
-
-  def  process_interventional_design(trialkeys)
-    @trialMasterMap.store("research_category_id",ResearchCategory.find_by_name("Interventional").id);
-  end
-
-  def process_non_interventional_design(trialkeys)
-    @trialMasterMap.store("research_category_id",ResearchCategory.find_by_name(trialkeys["nonInterventionalDesign"]["trialType"]).id);
   end
 
 
