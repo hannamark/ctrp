@@ -10,7 +10,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And Same day Transition rule <Sameday> will be validated
     Then trial status transition is valid
 
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |STATUSZERO	                                    |STATUSZERO	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
       |STATUSZERO	                                    |In Review	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
       |STATUSZERO	                                    |Approved	                                    |		            |WARNING: Interim status [In Review] is missing	                                                                                                                                                                                                                                |yes|
@@ -31,7 +31,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And Same day Transition rule <Sameday> will be validated
     Then trial status transition is valid
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |In Review	                                    |STATUSZERO	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
       |In Review	                                    |In Review	                                    |			        |ERROR: Duplicate [In Review] status is not allowed	                                                                                                                                                                                                                            |yes|
       |In Review	                                    |Approved	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
@@ -52,7 +52,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And Same day Transition rule <Sameday> will be validated 
     Then trial status transition is valid
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Approved	                                        |STATUSZERO                                   	|			        |                                                                                                                                                                                                                                                                               |yes|
       |Approved	                                        |In Review	                                    |			        |ERROR: Invalid status transition from [Approved] to [In Review] 	                                                                                                                                                                                                            |yes|
       |Approved	                                        |Approved	                                    |			        |ERROR: Duplicate [Approved] status is not allowed	                                                                                                                                                                                                                            |yes|
@@ -73,7 +73,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And Same day Transition rule <Sameday> will be validated
     Then trial status transition is valid
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Withdrawn	                                    |STATUSZERO	                                    |Add Stopped Reason	|                                                                                                                                                                                                                                                                               |yes|
       |Withdrawn	                                    |In Review	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Withdrawn] to [In Review] 	                                                                                                                                                                                                            |yes|
       |Withdrawn	                                    |Approved                                     	|Add Stopped Reason	|ERROR: Invalid status transition from [Withdrawn] to [Approved] 	                                                                                                                                                                                                            |yes|
@@ -95,7 +95,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And Same day Transition rule <Sameday> will be validated
     Then trial status transition is valid
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Active	                                        |STATUSZERO	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
       |Active	                                        |In Review	                                    |			        |ERROR: Invalid status transition from [Active] to [In Review]	                                                                                                                                                                                                                |yes|
       |Active	                                        |Approved	                                    |			        |ERROR: Invalid status transition from [Active] to [Approved]	                                                                                                                                                                                                                |yes|
@@ -119,12 +119,12 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       
       
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Enrolling by Invitation	                        |STATUSZERO	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
-      |Enrolling by Invitation	                        |In Review	                                    |			        |ERROR: Invalid status transition from [Enrolling by Invitation] to [In Review]	                                                                                                                                                                                                |yes |            |
-      |Enrolling by Invitation	                        |Approved	                                    |			        |ERROR: Invalid status transition from [Enrolling by Invitation] to [Approved]	                                                                                                                                                                                                |yes  |           |
+      |Enrolling by Invitation	                        |In Review	                                    |			        |ERROR: Invalid status transition from [Enrolling by Invitation] to [In Review]	                                                                                                                                                                                                |yes |           
+      |Enrolling by Invitation	                        |Approved	                                    |			        |ERROR: Invalid status transition from [Enrolling by Invitation] to [Approved]	                                                                                                                                                                                                |yes  |           
       |Enrolling by Invitation	                        |Withdrawn	                                    |Add Stopped Reason	|                                                                                                                                                                                                                                                                               |yes|
-      |Enrolling by Invitation	                        |Active	                                        |			        |ERROR: Invalid status transition from [Enrolling by Invitation] to [Active]                                                                                                                                                                                                    |yes |                   |
+      |Enrolling by Invitation	                        |Active	                                        |			        |ERROR: Invalid status transition from [Enrolling by Invitation] to [Active]                                                                                                                                                                                                    |yes |                   
       |Enrolling by Invitation	                        |Enrolling by Invitation	                    |			        |ERROR: Duplicate [Enrolling by Invitation] status is not allowed	                                                                                                                                                                                                            |yes|
       |Enrolling by Invitation	                        |Closed to Accrual	                            |			        |                                                                                                                                                                                                                                                                               |yes|
       |Enrolling by Invitation	                        |Closed to Accrual and Intervention             |			        |WARNING: Interim status [Closed to Accrual] is missing	                                                                                                                                                                                                                        |yes|
@@ -142,7 +142,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Then trial status transition is valid
       
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Closed to Accrual	                            |STATUSZERO	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
       |Closed to Accrual	                            |In Review	                                    |			        |ERROR: Invalid status transition from [Closed to Accrual] to [In Review]	                                                                                                                                                                                                    |yes|
       |Closed to Accrual                                |Approved	                                    |			        |ERROR: Invalid status transition from [Closed to Accrual] to [Approved]	                                                                                                                                                                                                    |yes|
@@ -166,7 +166,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
      
      
      
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Closed to Accrual and Intervention	            |STATUSZERO	                                    |			        |                                                                                                                                                                                                                                                                               |yes|
       |Closed to Accrual and Intervention	            |In Review	                                    |			        |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [In Review]	                                                                                                                                                                                    |yes|
       |Closed to Accrual and Intervention	            |Approved	                                    |			        |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Approved]	                                                                                                                                                                                    |yes|
@@ -191,7 +191,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
      
      
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Temporarily Closed to Accrual                  	|STATUSZERO	                                    |Add Stopped Reason	|                                                                                                                                                                                                                                                                               |yes|
       |Temporarily Closed to Accrual                  	|In Review	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [In Review]	                                                                                                                                                                                        |yes|
       |Temporarily Closed to Accrual                  	|Approved	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [Approved]	                                                                                                                                                                                        |yes|
@@ -214,7 +214,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Then trial status transition is valid
       
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Temporarily Closed to Accrual and Intervention	|STATUSZERO	                                    |Add Stopped Reason	|                                                                                                                                                                                                                                                                               |yes|
       |Temporarily Closed to Accrual and Intervention	|In Review	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [In Review]	                                                                                                                                                                        |yes|
       |Temporarily Closed to Accrual and Intervention	|Approved	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [Approved]	                                                                                                                                                                        |yes|
@@ -235,7 +235,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And Same day Transition rule <Sameday> will be validated
     Then trial status transition is valid
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Complete	                                        |STATUSZERO	                                    |			        |                                                                                                                                                                                                                                                                               |yes| 
       |Complete	                                        |In Review	                                    |			        |ERROR: Invalid status transition from [Complete] to [In Review]	                                                                                                                                                                                                            |yes|
       |Complete                                    	    |Approved	                                    |			        |ERROR: Invalid status transition from [Complete] to [Approved]	                                                                                                                                                                                                                |yes|
@@ -258,7 +258,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Then trial status transition is valid
       
       
-      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |<Sameday>|
+      |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |errorsWarnings	                                                                                                                                                                                                                                                                |Sameday|
       |Administratively Complete	                    |STATUSZERO	                                    |Add Stopped Reason	|                                                                                                                                                                                                                                                                               |yes|
       |Administratively Complete	                    |In Review	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Administratively Complete] to [In Review]	                                                                                                                                                                                            |yes|
       |Administratively Complete	                    |Approved	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Administratively Complete] to [Approved]	                                                                                                                                                                                            |yes|
@@ -390,12 +390,12 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And I am on the Register Trial Status screen
     When I select a Status Date in Past
     Then It should not give any error message for status date
-    And the added date format should be DD-MMM-YYYY
+    And the added date format should be DD-MMM-YYYY format
     When I select a Status Date in Today
     Then It should not give any error message for status date
-    And the added date format should be DD-MMM-YYYY
+    And the added date format should be DD-MMM-YYYY format
     When I select a Status Date in Future
-    Then It should not give any error message for status date
+    Then It should give an error message for future status date
 
     Examples:
       |trialType  |
@@ -431,6 +431,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Trial Start Date  |
       |Primary Completion Date  |
       |Completion Date  |
+      
+   And the added date format should be DD-MMM-YYYY format
 
     And I must Select Trial Date type for every Trial Date value
       |Actual  |
@@ -452,6 +454,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Trial Start Date  |
       |Primary Completion date |
       |Completion Date|
+    And the added date format should be DD-MMM-YYYY format
     Then an error message type will be displayed
     
       |Trial Start Date is required  |
@@ -497,7 +500,86 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Externally Peer-Reviewed |
       |Institutional            |
   
-  Scenario Outline: #8 Rules for Study Date types
+  Scenario Outline: #7a Rules for Status/Dates relationships for "Trial Start Date"
+  Given I have selected the option to register a trial <trialType>
+  And I am on the Trial Dates Section
+  When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Actual" <DateTypeActual> along with warning <DateTypeActualWarning> should be there
+    |TrialStatusType                                  |DateTypeActual                       | DateTypeActualWarning     |
+    |In Review                                        |allowed                              |                           |
+    |Approved                                         |allowed                              |                           |
+    |Active                                           |allowed                              |                           |
+    |Enrolling by Invitation                          |allowed                              |                           |
+    |Closed to Accrual                                |allowed                              |                           |
+    |Closed to Accrual and Intervention               |allowed                              |                           |
+    |Temporarily Closed to Accrual                    |allowed                              |                           |
+    |Temporarily Closed to Accrual and Intervention   |allowed                              |                           |
+    |Withdrawn                                        |allowed                              |                           |
+    |Administratively Complete                        |allowed                              |                           |
+    |Complete                                         |allowed                              |                           |
+  When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
+    |TrialStatusType                                  |DateTypeAnticipated                | DateTypeAnticipatedWarning|
+    |In Review                                        |allowed                            |                           |
+    |Approved                                         |allowed                            |                           |
+    |Active                                           |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                           |
+    |Enrolling by Invitation                          |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
+    |Closed to Accrual                                |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
+    |Closed to Accrual and Intervention               |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
+    |Temporarily Closed to Accrual                    |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
+    |Temporarily Closed to Accrual and Intervention   |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
+    |Withdrawn                                        |allowed ?????                      |                             |
+    |Administratively Complete                        |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
+    |Complete                                         |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                            |
+
+  Examples:
+    |trialType  |
+    |National                 |
+    |Externally Peer-Reviewed |
+    |Institutional            |
+
+
+Scenario Outline: #7b Rules for Status/Dates relationships for "Primary Completion Date"
+  Given I have selected the option to register a trial <trialType>
+  And I am on the Trial Dates Section
+  When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Actual" <DateTypeActual> along with warning <DateTypeActualWarning> should be there
+    |TrialStatusType                                |DateTypeActual                       | DateTypeActualWarning     |
+    |In Review                                      |allowed                              |                           |
+    |Approved                                       |allowed                              |                           |
+    |Active                                         |allowed                              |                           |
+    |Enrolling by Invitation                        |allowed                              |                           |
+    |Closed to Accrual                              |allowed                              |                           |
+    |Closed to Accrual and Intervention             |allowed                              |                           |
+    |Temporarily Closed to Accrual                  |allowed                              |                           |
+    |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
+    |Withdrawn                                      |allowed                              |                           |
+    |Administratively Complete                      |allowed                              |                           |
+    |Complete                                       |allowed                              |                           |
+  When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
+    |TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedWarning|
+    |In Review                                      |allowed                                  |                           |
+    |Approved                                       |allowed                                  |                           |
+    |Active                                         |allowed                                  |                           |
+    |Enrolling by Invitation                        |allowed                                  |                           |
+    |Closed to Accrual                              |allowed                                  |                           |
+    |Closed to Accrual and Intervention             |allowed                                  |                           |
+    |Temporarily Closed to Accrual                  |allowed                                  |                           |
+    |Temporarily Closed to Accrual and Intervention |allowed                                  |                           |
+    |Withdrawn                                      |allowed                                  |                           |
+    |Administratively Complete                      |not allowed                              |                           |
+    |Complete                                       |not allowed                              |                           |
+
+  Examples:
+    |trialType  |
+    |National                 |
+    |Externally Peer-Reviewed |
+    |Institutional            |
+
+
+
+
+
+
+  
+ Scenario Outline: #8 Rules for Study Date types
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Screen
     When the Trial date is in the past
