@@ -70,6 +70,8 @@
             'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
+            'SUB_GROUP_LIST' : '/ctrp/registry/sub_groups.json',
+            'A_SUB_GROUP' : '/ctrp/registry/sub_groups/',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
                 'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
@@ -103,7 +105,8 @@
                 'TIME_PERSPECTIVES': '/ctrp/registry/trials/time_perspectives.json',
                 'BIOSPECIMEN_RETENTIONS': '/ctrp/registry/trials/biospecimen_rententions.json',
                 'GENDERS': '/ctrp/registry/trials/genders.json',
-                'AGE_UNITS': '/ctrp/registry/trials/age_units.json'
+                'AGE_UNITS': '/ctrp/registry/trials/age_units.json',
+                'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json'
             }
         })
         .constant('MESSAGES', {

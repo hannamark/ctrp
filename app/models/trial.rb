@@ -212,6 +212,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :outcome_measures, allow_destroy: true
   accepts_nested_attributes_for :anatomic_site_wrappers, allow_destroy: true
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
+  accepts_nested_attributes_for :sub_groups, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'

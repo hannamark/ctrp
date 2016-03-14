@@ -163,7 +163,7 @@
                                                     <th width="15%" class="text-center">Delete/Edit</th>
                                                 </thead>
                                                 <tbody>
-                                                <tr ng-repeat="site_rec in psView.siteRecruitmentGrid track by $index" class="animated-item text-center" ng-class="{'deleted-text': site_rec._destroy, 'edit-selected': site_rec.uiEdit}">
+                                                <tr ng-repeat="site_rec in psView.siteRecruitmentGrid track by $index" class="animated-item text-center" ng-class="{'deleted-text' : site_rec._destroy, 'edit-selected': site_rec.uiEdit}">
                                                     <td>{{site_rec.status_date}}</td>
                                                     <td>{{site_rec.site_recruitment_status.name}}</td>
                                                     <td>{{site_rec.comments}}</td>
@@ -182,11 +182,10 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-default" restriction-field ng-disabled="psView.current_site_recruitment.edit" ng-click="psView.deleteSiteRecruitment($index)">
+                                                        <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteSiteRecruitment($index)">
                                                             <i class="glyphicon" ng-class="site_rec._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                         </button>
-
-                                                        <button type="button" class="btn btn-default" restriction-field ng-disabled="site_rec._destroy || psView.current_site_recruitment.edit" ng-click="psView.editSiteRecruitment($index)">
+                                                        <button type="button" class="btn btn-default" restriction-field ng-disabled="site_rec._destroy" ng-click="psView.editSiteRecruitment($index)">
                                                             <i class="glyphicon glyphicon-edit"></i>
                                                         </button>
                                                     </td>
@@ -270,13 +269,13 @@
                                                             class="form-control input-sm"
                                                             restriction-field
                                                             ng-model="psView.current_investigator.investigator_type">
-                                                        <option value="">Select a Role</option>
+                                                        <option value="">Select a status</option>
                                                         <option value="Principal Investigator">Principal Investigator</option>
                                                         <option value="Sub Investigator">Sub Investigator</option>
                                                     </select>
                                                 </td>
 
-                                                <td>
+                                                <td class="text-center">
                                                     <label>
                                                         <input type="checkbox" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact" ng-value="{{psView.current_investigator.set_as_contact}}">
                                                     </label>
@@ -312,7 +311,7 @@
                                                 <th width="10%" class="text-center"> Delete/Edit </th>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
+                                            <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item text-center" ng-class="{'deleted-text': inv._destroy, 'edit-selected': psView.current_investigator.id === inv.id}">
                                                 <td>{{inv.person.id}}  <span ng-bind="inv.id"></span></td>
                                                 <td>{{inv.person.lname}}</td>
                                                 <td>{{inv.person.fname}}</td>
@@ -320,10 +319,10 @@
                                                 <td>{{inv.status_code}}</td>
                                                 <td ng-bind="inv.set_as_contact ? 'Yes' : 'No'"></td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.uiEdit">
+                                                    <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit">
                                                         <i class="glyphicon" ng-class="inv._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-default" restriction-field ng-disabled="inv._destroy || psView.current_investigator.uiEdit " ng-click="psView.editInvestigator($index)">
+                                                    <button type="button" class="btn btn-default" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit" ng-click="psView.editInvestigator($index)">
                                                         <i class="glyphicon glyphicon-edit"></i>
                                                     </button>
                                                 </td>
@@ -386,7 +385,9 @@
                                 </div>
 
                                 <div class="form-group" ng-show="psView.selectedContactTypePI && psView.investigatorArray.length <= 0">
-                                    <label for="investigator" class="control-label col-xs-12">There are no Investigators available for selection. </label>
+                                    <div class="col-xs-12">
+                                        <span class="help-block">There are no Investigators available for selection.</span>
+                                    </div>
                                 </div>
 
                                 <div ng-hide="psView.currentParticipatingSite.contact_type == 'None' || psView.currentParticipatingSite.contact_type == ''">

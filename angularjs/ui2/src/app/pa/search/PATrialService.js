@@ -148,7 +148,9 @@
             getTimePerspectives: getTimePerspectives,
             getBiospecimenRetentions: getBiospecimenRetentions,
             getAgeUnits: getAgeUnits,
-            getGenderList: getGenderList
+            getGenderList: getGenderList,
+            getSamplingMethods: getSamplingMethods,
+            getAnatomicSites: getAnatomicSites
         };
 
         return services;
@@ -256,6 +258,10 @@
 
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
+        }
+
+        function getAnatomicSites() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ANATOMIC_SITES);
         }
 
         function getProcessingStatuses() {
@@ -439,6 +445,10 @@
 
         function getAgeUnits() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.AGE_UNITS);
+        }
+
+        function getSamplingMethods() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SAMPLING_METHODS);
         }
 
         /**

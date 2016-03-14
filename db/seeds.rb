@@ -322,6 +322,8 @@ AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Departm
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering_Commitee_Reviewed')
 
+AppSetting.find_or_create_by(code: 'SAMPLING_METHOD_PA', name: 'Sampling Method', value: 'Probability Sample,Non-Probability Sample', big_value: 'see value')
+
 trial_status_transition = '{
                              "STATUSZERO": {
                                "INR": {"valid": "Yes"},

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+
   resources :trial_versions
 
   resources :accrual_disease_terms
@@ -18,14 +19,10 @@ Rails.application.routes.draw do
         scope '/v1' do
           scope '/trials' do
             scope '/complete' do
-              get '/' => 'api_trials#index'
-              get '/:id' =>  'api_trials#show'
               post '/' => 'api_trials#create'
               post '/:idType/:id' => 'api_trials#update'
-              post '/:id' => 'api_trials#update'
               put '/:idType/:id' => 'api_trials#amend'
-              put  '/:id' =>  'api_trials#update'
-              put  '/:id/status' =>  'api_trials#change_status'
+              #put  '/:id/status' =>  'api_trials#change_status'
             end
           end
         end
@@ -213,13 +210,14 @@ Rails.application.routes.draw do
         end
       end
 
-
+      resources :sub_groups
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'
       get 'nih' => 'util#get_nih'
       get 'accepted_file_types_for_registry' => 'util#get_accepted_file_types_for_registry'
       get 'accepted_file_types' => 'util#get_accepted_file_types'
+      get 'sampling_methods' => 'util#get_sampling_methods'
     end
   end
   # Devise related routes
