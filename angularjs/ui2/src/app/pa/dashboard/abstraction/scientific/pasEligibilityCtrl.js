@@ -28,6 +28,7 @@
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
+        vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
 
         activate();
         function activate() {
@@ -138,6 +139,13 @@
             console.info('cancelling');
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion = newOtherCriterion('');
+        }
+
+        function updateOtherCriteriaDesc(otherCriterionDesc, index) {
+            if (otherCriterionDesc.length === 0) {
+                return;
+            }
+            vm.trialDetailObj.other_criteria[index].criteria_desc = otherCriterionDesc;
         }
 
     } // pasEligibilityCtrl

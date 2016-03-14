@@ -322,6 +322,3 @@ DEPENDENCIES
   web-console (~> 2.0)
   wicked
   xml-mapping
-
-BUNDLED WITH
-   1.10.5
