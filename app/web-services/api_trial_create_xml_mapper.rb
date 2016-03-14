@@ -24,7 +24,7 @@ class ApiTrialCreateXmlMapper
     text_node :primary_purpose_id,"primaryPurpose",:optional=>true,:default_value=>nil,
               :reader=>proc{|obj,xml,default_reader|
                 default_reader.call(obj,xml)
-                obj.primary_purpose_id= PrimaryPurpose.find_by_name(obj.primary_purpose_id).id
+                obj.primary_purpose_id= PrimaryPurpose.find_by_name(obj.primary_purpose_id).id if !obj.primary_purpose_id.nil?
               }
     text_node :primary_purpose_other, "primaryPurposeOtherDescription", :optional=>true, :default_value=>nil
 

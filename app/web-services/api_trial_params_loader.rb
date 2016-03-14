@@ -59,7 +59,7 @@ class ApiTrialParamsLoader
 
     @@rest_params[:primary_purpose_id]      =      @@xmlMapperObject.primary_purpose_id
 
-    if PrimaryPurpose.find_by_id(@@xmlMapperObject.primary_purpose_id).name == "Other" && @@xmlMapperObject.primary_purpose_other.nil?
+    if !@@xmlMapperObject.primary_purpose_id.nil? && PrimaryPurpose.find_by_id(@@xmlMapperObject.primary_purpose_id).name == "Other" && @@xmlMapperObject.primary_purpose_other.nil?
       @@errors.store("PrimaryPurpose","When Primary Purpose is Other,Other Description expected")
     else
       @@rest_params[:primary_purpose_other]      =      @@xmlMapperObject.primary_purpose_other
@@ -128,10 +128,11 @@ class ApiTrialParamsLoader
 
     save_responsible_party()
 
-    @@rest_params[:sec801_indicator]= @@xmlMapperObject.regulatoryInformation.sec801_indicator
-    @@rest_params[:intervention_indicator]= @@xmlMapperObject.regulatoryInformation.intervention_indicator
-    @@rest_params[:data_monitor_indicator]= @@xmlMapperObject.regulatoryInformation.data_monitor_indicator
-
+    if !@@xmlMapperObject.regulatoryInformation.nil?
+      @@rest_params[:sec801_indicator]= @@xmlMapperObject.regulatoryInformation.sec801_indicator
+      @@rest_params[:intervention_indicator]= @@xmlMapperObject.regulatoryInformation.intervention_indicator
+      @@rest_params[:data_monitor_indicator]= @@xmlMapperObject.regulatoryInformation.data_monitor_indicator
+    end
 
 
     ###Trial Docs

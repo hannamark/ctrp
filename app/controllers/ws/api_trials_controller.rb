@@ -50,7 +50,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     render nothing: true, status: :not_found unless @trial.present?
 
-    @xmlMapperObject = ApiTrialUpdateXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
+    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"update","")
 
