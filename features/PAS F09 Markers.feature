@@ -9,6 +9,7 @@ And I am on the Markers screen
 And I select Add
 And the Add Marker screen displays
 And I have entered a Name
+And I have entered 'Protocol Marker Name'
 And I have checked <Evaluation Type>
 And have checked more than one Evaluation Type
 |Evaluation Type|
@@ -247,7 +248,7 @@ And I have selected one marker
 And I have selected more than one marker
 When I have selected Edit Selected button 
 Then Edit Marker screen displays
-And Name includes Multiple Marker names
+And Name is 'Multiple Record Edit'
 And boxes are checked for attributes that are the same for selected markers for the field type
      
       |Evaluation Type  |
