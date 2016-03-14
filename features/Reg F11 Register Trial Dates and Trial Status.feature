@@ -3,7 +3,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
 
   As a CTRP User, I can register a trial's key dates and trial status
 
-  Scenario Outline: #1 Trial Status Transition Rules
+  Scenario Outline: #1 Trial Status Transition Rules for Status Zero
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -24,7 +24,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |STATUSZERO	                                    |Complete	                                    |			        |WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	|yes|
       |STATUSZERO	                                    |Administratively Complete	                    |Add Stopped Reason	|WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	|yes|
       
-      Scenario Outline: #1a Trial Status Transition Rules
+      Scenario Outline: #1a Trial Status Transition Rules for In Review Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -45,7 +45,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |In Review	                                    |Complete	                                    |			        |WARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                   	|yes|
       |In Review	                                    |Administratively Complete	                    |Add Stopped Reason	|WARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                |yes|
       
-     Scenario: #1b Trial Status Transition Rules
+     Scenario: #1b Trial Status Transition Rules for Approved status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -66,7 +66,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Approved	                                        |Complete	                                    |			        |ERROR: Interim status [Active] is missing\nERROR: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                    |yes|
       |Approved	                                        |Administratively Complete	                    |Add Stopped Reason	|ERROR: Interim status [Active] is missing\nERROR: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                       |yes|
       
-       Scenario Outline: #1c Trial Status Transition Rules
+       Scenario Outline: #1c Trial Status Transition Rules for Withdrawn status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -88,7 +88,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Withdrawn	                                    |Administratively Complete	                    |Add Stopped Reason	|ERROR: Invalid status transition from [Withdrawn] to [Administratively Complete]	                                                                                                                                                                                            |yes|
       
       
-       Scenario Outline: #1d Trial Status Transition Rules
+       Scenario Outline: #1d Trial Status Transition Rules for Active status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -110,7 +110,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Active	                                        |Administratively Complete	                    |Add Stopped Reason	|WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |yes|
      
      
-       Scenario: #1e Trial Status Transition Rules
+       Scenario: #1e Trial Status Transition Rules for Enrolling by Invitation Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -134,7 +134,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Enrolling by Invitation	                        |Administratively Complete	                    |Add Stopped Reason	|WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |yes|
       
       
- Scenario Outline: #1f Trial Status Transition Rules
+ Scenario Outline: #1f Trial Status Transition Rules for Closed to Accrual Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -156,7 +156,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Closed to Accrual	                            |Complete	                                    |			        |WARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                                                                                    |yes|
       |Closed to Accrual	                            |Administratively Complete	                    |Add Stopped Reason	|WARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                                                                                    |yes|
      
-      Scenario Outline: #1g Trial Status Transition Rules
+      Scenario Outline: #1g Trial Status Transition Rules for Closed to Accrual and Intervention Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -181,7 +181,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Closed to Accrual and Intervention	            |Administratively Complete	                    |Add Stopped Reason	|                                                                                                                                                                                                                                                                               |yes|
       
      
-      Scenario Outline: #1h Trial Status Transition Rules
+      Scenario Outline: #1h Trial Status Transition Rules for Temporarily Closed to Accrual status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -206,7 +206,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual  	                |Administratively Complete	                    |Add Stopped Reason	|WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                                                                |yes|
       
       
-       Scenario Outline: #1i Trial Status Transition Rules
+       Scenario Outline: #1i Trial Status Transition Rules for Temporarily Closed to Accrual and Intervention status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -228,7 +228,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual and Intervention	|Complete	                                    |Add Stopped Reason	|ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [Complete]	                                                                                                                                                                        |yes|
       |Temporarily Closed to Accrual and Intervention	|Administratively Complete	                    |Add Stopped Reason	|WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |yes|
       
-       Scenario Outline: #1j Trial Status Transition Rules
+       Scenario Outline: #1j Trial Status Transition Rules for Complete status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -250,7 +250,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Complete	                                        |Administratively Complete	                    |Add Stopped Reason	|ERROR: Invalid status transition from [Complete] to [Administratively Complete]	                                                                                                                                                                                            |yes|
       
       
-       Scenario Outline: #1k Trial Status Transition Rules
+       Scenario Outline: #1k Trial Status Transition Rules Administratively Complete
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there 
@@ -574,7 +574,41 @@ Scenario Outline: #7b Rules for Status/Dates relationships for "Primary Completi
     |Institutional            |
 
 
+Scenario Outline: #7c Rules for Status/Dates relationships for "Completion Date"
+  Given I have selected the option to register a trial <trialType>
+  And I am on the Trial Dates Section
+  When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual> along with warning <DateTypeActualWarning> should be there
+    |TrialStatusType                                |DateTypeActual                       | DateTypeActualWarning     |
+    |In Review                                      |                                     |                           |
+    |Approved                                       |                                     |                           |
+    |Active                                         |                                     |                           |
+    |Enrolling by Invitation                        |                                     |                           |
+    |Closed to Accrual                              |                                     |                           |
+    |Closed to Accrual and Intervention             |                                     |                           |
+    |Temporarily Closed to Accrual                  |                                     |                           |
+    |Temporarily Closed to Accrual and Intervention |                                     |                           |
+    |Withdrawn                                      |                                     |                           |
+    |Administratively Complete                      |                                     |                           |
+    |Complete                                       |                                     |                           |
+  When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
+    |TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedWarning|
+    |In Review                                      |                                  |                           |
+    |Approved                                       |                                  |                           |
+    |Active                                         |                                  |                           |
+    |Enrolling by Invitation                        |                                  |                           |
+    |Closed to Accrual                              |                                  |                           |
+    |Closed to Accrual and Intervention             |                                  |                           |
+    |Temporarily Closed to Accrual                  |                                  |                           |
+    |Temporarily Closed to Accrual and Intervention |                                  |                           |
+    |Withdrawn                                      |                                  |                           |
+    |Administratively Complete                      |                                  |                           |
+    |Complete                                       |                                  |                           |
 
+  Examples:
+    |trialType  |
+    |National                 |
+    |Externally Peer-Reviewed |
+    |Institutional            |
 
 
 
