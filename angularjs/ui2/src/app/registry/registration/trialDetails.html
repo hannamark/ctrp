@@ -102,9 +102,7 @@
                                             <div>
                                                 <select restriction-field class="form-control input-sm" id="protocol_id_origin" ng-model="trialDetailView.protocol_id_origin_id">
                                                     <option value="">-Select a Protocol ID Type-</option>
-                                                    <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" ng-if="['NCT', 'ONCT', 'OTH'].indexOf(origin.code) > -1" value="{{origin.id}}">
-                                                        {{origin.name}}
-                                                    </option>
+                                                    <option ng-repeat="origin in trialDetailView.protocolIdOriginArr" ng-if="['NCT', 'ONCT', 'OTH'].indexOf(origin.code) > -1" value="{{origin.id}}">{{origin.name}}</option>
                                                 </select>
                                             </div>
                                         </td>
@@ -403,9 +401,7 @@
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="funding_mechanism" ng-model="trialDetailView.funding_mechanism">
                                                         <option value="">-Select-</option>
-                                                        <option ng-repeat="mechanism in trialDetailView.fundingMechanismArr" value="{{mechanism.code}}">
-                                                            {{mechanism.code}}
-                                                        </option>
+                                                        <option ng-repeat="mechanism in trialDetailView.fundingMechanismArr" value="{{mechanism.code}}">{{mechanism.code}}</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -413,9 +409,7 @@
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="institute_code" ng-model="trialDetailView.institute_code">
                                                         <option value="">-Select-</option>
-                                                        <option ng-repeat="institute in trialDetailView.instituteCodeArr" value="{{institute.code}}">
-                                                            {{institute.code}}
-                                                        </option>
+                                                        <option ng-repeat="institute in trialDetailView.instituteCodeArr" value="{{institute.code}}">{{institute.code}}</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -452,9 +446,7 @@
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="nci" ng-model="trialDetailView.nci">
                                                         <option value="">-Select-</option>
-                                                        <option ng-repeat="nci in trialDetailView.nciArr" value="{{nci.code}}">
-                                                            {{nci.code}}
-                                                        </option>
+                                                        <option ng-repeat="nci in trialDetailView.nciArr" value="{{nci.code}}">{{nci.code}}</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -536,9 +528,7 @@
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="trial_status" ng-model="trialDetailView.trial_status_id"  ng-change="trialDetailView.watchOption('trial_status')">
                                                         <option value="">-Select a Trial Status-</option>
-                                                        <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">
-                                                            {{trialStatus.name}}
-                                                        </option>
+                                                        <option ng-repeat="trialStatus in trialDetailView.trialStatusArr" value="{{trialStatus.id}}">{{trialStatus.name}}</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -775,9 +765,7 @@
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="grantor" ng-model="trialDetailView.grantor">
                                                         <option value="">-Select-</option>
-                                                        <option ng-repeat="grantor in trialDetailView.grantorArr" value="{{grantor}}">
-                                                            {{grantor}}
-                                                        </option>
+                                                        <option ng-repeat="grantor in trialDetailView.grantorArr" value="{{grantor}}">{{grantor}}</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -785,9 +773,7 @@
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
                                                         <option value="">-Select-</option>
-                                                        <option ng-repeat="holderType in trialDetailView.holderTypeArr" value="{{holderType.id}}">
-                                                            {{holderType.name}}
-                                                        </option>
+                                                        <option ng-repeat="holderType in trialDetailView.holderTypeArr" value="{{holderType.id}}">{{holderType.name}}</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -795,9 +781,7 @@
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="nih_nci" ng-model="trialDetailView.nih_nci">
                                                         <option value="">-Select-</option>
-                                                        <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">
-                                                            {{nihNci.code}}
-                                                        </option>
+                                                        <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">{{nihNci.code}}</option>
                                                     </select>
                                                 </div>
                                             </td>
