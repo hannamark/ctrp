@@ -139,15 +139,16 @@ class ApiTrialParamsLoader
 
     @@rest_params[:trial_documents_attributes] = []
 
-    add_file(@@xmlMapperObject.protocol_document_name,@@xmlMapperObject.protocol_document_content,"Protocol Document")
-    add_file(@@xmlMapperObject.irb_approval_document_name,@@xmlMapperObject.irb_approval_document_content,"IRB Approval")
-    add_file(@@xmlMapperObject.participating_sites_document_name,@@xmlMapperObject.participating_sites_document_content,"List of Participating Sites")
-    add_file(@@xmlMapperObject.informed_consent_document_name,@@xmlMapperObject.informed_consent_document_content,"Informed Consent")
-    add_file(@@xmlMapperObject.change_memo_document_name,@@xmlMapperObject.change_memo_document_content,"Change Memo Document")
-    add_file(@@xmlMapperObject.protocol_highlight_document_name,@@xmlMapperObject.protocol_highlight_document_content,"Protocol Highlighted Document")
-
+    add_file(@@xmlMapperObject.protocol_document_name,@@xmlMapperObject.protocol_document_content,"Protocol Document","tmp_PD")
+    add_file(@@xmlMapperObject.irb_approval_document_name,@@xmlMapperObject.irb_approval_document_content,"IRB Approval","tmp_IA")
+    add_file(@@xmlMapperObject.participating_sites_document_name,@@xmlMapperObject.participating_sites_document_content,"List of Participating Sites","tmp_PS")
+    add_file(@@xmlMapperObject.informed_consent_document_name,@@xmlMapperObject.informed_consent_document_content,"Informed Consent","tmp_IS")
+    add_file(@@xmlMapperObject.change_memo_document_name,@@xmlMapperObject.change_memo_document_content,"Change Memo Document","tmp_CMD")
+    add_file(@@xmlMapperObject.protocol_highlight_document_name,@@xmlMapperObject.protocol_highlight_document_content,"Protocol Highlighted Document","tmp_PHD")
+    i=0;
     @@xmlMapperObject.otherDocs.each do |other_file_name, other_file_content|
-      add_file(other_file_name,other_file_content,"Other Document")
+      i+=1;
+      add_file(other_file_name,other_file_content,"Other Document","tmp_OD_"+i.to_s)
     end
 
 
@@ -312,7 +313,7 @@ end
 
 
 
-  def add_file(file_name, file_content,document_type)
+  def add_file(file_name, file_content,document_type,tmp_file_name)
 
      if file_content.nil?
        return
@@ -330,8 +331,8 @@ end
     if file_extension == "pdf"
       pdf = Prawn::Document.new
       pdf.text(decode_base64_content)
-      pdf.render_file(Rails.root.to_s + "/../../storage/tmp/" + file_name)
-      pdf_file = File.open(Rails.root.to_s + "/../../storage/tmp/"+ file_name)
+      pdf.render_file(Rails.root.to_s + "/../../storage/trial/" + tmp_file_name)
+      pdf_file = File.open(Rails.root.to_s + "/../../storage/trial/"+ tmp_file_name)
       file_params = {:filename => file_name, :type => "application/pdf", :tempfile => pdf_file}
     else
       temp_file = Tempfile.new(['Sample2',file_format])
