@@ -9,6 +9,7 @@ And I am on the Markers screen
 And I select Add
 And the Add Marker screen displays
 And I have entered a Name
+And I have entered 'Protocol Marker Name'
 And I have checked <Evaluation Type>
 And have checked more than one Evaluation Type
 |Evaluation Type|
@@ -154,15 +155,13 @@ Scenario:  #8 Select Name from caDSR
 And I am on the Marker Search in caDSR screen 
 And Case-Sensitive Search is defaulted to No
 And Highlight Query Text is defaulted to Yes
-And Search Scope is defaulted to Both
 When I have entered a Search Term 
 And I can enter a Public ID
 And have selected the Search button
 Then a results table type will be displayed
 
-      |Permissible Value  |
+      |Permissible Value (with synonyms) |
       |Meaning  |
-      |Marker Synonym  |
       |Description  |
       |Public ID  |
       |Select  |
@@ -183,19 +182,7 @@ Then the selected marker displays on Add Marker screen
     And I click on the search button
     Then the Case-Sensitive Searched term will be highlighted
 
-
-Scenario: #11 Select Search Scope in caDSR Marker Search screen       
-Given I am on the Add Marker screen
- And I have selected the caDSR button
-And I am on the Marker Search in caDSR screen 
-When I have selected Primary Term for Search Scope
-And I select the Search button
-Then a results table displays with markers with the Search Term in the Permissable Value field
-When I have selected Synonym for Search Scope
-And I select the Search button
-Then a results table displays with markers with the Search Term in the Marker Synonym field
-
-Scenario:  #12 Highlight Query Text in caDSR Marker Search screen
+Scenario:  #11 Highlight Query Text in caDSR Marker Search screen
 Given I am on the Add Marker screen
  And I have selected the caDSR button
 And I am on the Marker Search in caDSR screen 
@@ -203,7 +190,7 @@ When I select Highlight Query Text = No
 And I select the search button
 Then the Search Term in the Permissable Value field is not highlighted 
 
-Scenario:  #13 Enter Public ID in caDSR Marker Search screen
+Scenario:  #12 Enter Public ID in caDSR Marker Search screen
 Given I am on the Add Marker screen
  And I have selected the caDSR button
 And I am on the Marker Search in caDSR screen 
@@ -214,7 +201,7 @@ When I enter an invalid Public ID
 And there is no match in caDSR
 Then a 'Nothing found to display' message is displayed
 
-Scenario:  #14  Create new marker with attributes of existing marker
+Scenario:  #13  Create new marker with attributes of existing marker
 Given I am on the Markers screen 
 When I have selected Edit for a specific marker
 Then the Edit Marker screen displays
@@ -226,7 +213,7 @@ Then the new marker will be associated to the trial
 And the Markers screen displays
 And a 'Record Created' message is displayed
 
-Scenario:  #15 Edit Marker Attributes  
+Scenario:  #14 Edit Marker Attributes  
 Given I am on the Markers Screen   (Markers Screen)
 When I have selected Edit for a specific marker
 Then the Edit Marker Displays
@@ -239,7 +226,7 @@ And I have selected the Save button
 Then the updated marker will be associated to the trial
 And the Markers screen displays
   
-Scenario:  #16 Edit Attributes for Multiple Markers 
+Scenario:  #15 Edit Attributes for Multiple Markers 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Marker screen
@@ -247,7 +234,7 @@ And I have selected one marker
 And I have selected more than one marker
 When I have selected Edit Selected button 
 Then Edit Marker screen displays
-And Name includes Multiple Marker names
+And Name is 'Multiple Record Edit'
 And boxes are checked for attributes that are the same for selected markers for the field type
      
       |Evaluation Type  |
@@ -279,7 +266,7 @@ And the updated markers are associated to the trial
 And the Markers screen displays
 And a 'Record(s) Updated' message is displayed
 
-Scenario:  #17 I can Delete Markers for a Trial
+Scenario:  #16 I can Delete Markers for a Trial
 Given I am on the Markers screen
 When I have selected the Delete check box for an individual Marker
 And I can select the delete check box for more than one Marker
@@ -294,7 +281,7 @@ And 'Record(s) deleted' message is not displayed
 When I have deleted a Marker where Marker Status is pending
 Then the marker is removed from the "New Marker Requests" screen
 
- Scenario:  #18 I can Reset Add Markers screen for a Trial                    
+ Scenario:  #17 I can Reset Add Markers screen for a Trial                    
  Given I am logged into the CTRP Protocol Abstraction application  
  And I have selected a trial
 And I am on the Add/edit Markers screen

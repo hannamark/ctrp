@@ -92,7 +92,9 @@ gem 'roo-xls'
 gem 'rufus-scheduler'
 gem 'dbi'
 
+#gems used for xml parsing and mapping to ruby object
 gem 'nokogiri'
+gem 'xml-mapping'
+gem 'prawn'
 
-gem 'cobravsmongoose'
 
