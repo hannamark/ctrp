@@ -170,10 +170,10 @@
 
         function resetOutcomeMeasure() {
             if(vm.currentOutcomeMeasure.id > 0){
-                for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
-                    if(vm.curTrial.outcome_measures[i].id == vm.currentOutcomeMeasure.id){
-                        vm.currentOutcomeMeasure = vm.curTrial.outcome_measures[i];
-                        vm.setEditMode(i);
+                var cachedTrial = PATrialService.getCurrentTrialFromCache();
+                for (var i = 0; i < cachedTrial.outcome_measures.length; i++) {
+                    if(cachedTrial.outcome_measures[i].id == vm.currentOutcomeMeasure.id){
+                        vm.currentOutcomeMeasure = cachedTrial.outcome_measures[i];
                     }
                 }
             } else {

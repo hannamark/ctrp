@@ -250,6 +250,7 @@ class Trial < TrialBase
       elsif self.internal_source && self.internal_source.code == 'CTRP'
         actions.append('update')
         actions.append('amend')
+        actions.append('verify-data')
       end
     end
 
@@ -481,7 +482,7 @@ class Trial < TrialBase
     last_sub_type = last_submission.submission_type if last_submission.present?
     last_sub_method = last_submission.submission_method if last_submission.present?
 
-    if last_sub_type.present? && last_sub_type.code == 'ORI' && last_sub_method.present? && last_sub_method.code == 'REG'
+    if last_sub_type.present? && last_sub_type.code == 'ORI' && last_sub_method.present? && last_sub_method.code == 'REG' && self.edit_type != 'verify'
       mail_template = MailTemplate.find_by_code('TRIAL_REG')
       if mail_template.present?
         mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present?

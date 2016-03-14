@@ -136,12 +136,14 @@
 
         function resetSubGroup() {
             if(vm.currentSubGroup.id > 0){
-                for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
-                    if(vm.curTrial.sub_groups[i].id == vm.currentSubGroup.id){
-                        vm.currentSubGroup = vm.curTrial.sub_groups[i];
-                        vm.setEditMode(i);
+                var cachedTrial = PATrialService.getCurrentTrialFromCache();
+              for (var i = 0; i < cachedTrial.sub_groups.length; i++) {
+                    if(cachedTrial.sub_groups[i].id == vm.currentSubGroup.id){
+                        vm.currentSubGroup = cachedTrial.sub_groups[i];
                     }
                 }
+
+
             } else {
                 vm.setAddMode();
             }

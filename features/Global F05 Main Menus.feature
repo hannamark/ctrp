@@ -105,14 +105,5 @@ Then the Register Trials menu is expanded and includes:
 |National|
 |Externally Peer-Reviewed|
 |Institutional|
-
-Scenario: #11 View Trials Import sub menu
-Given I am logged into the CTRP application
-And I am on the home screen
-And I am on Trials menu item
-When I select the Import Trials sub menu
-Then the Import Trials menu is expanded and includes:
-|Industrial|
-|Other|
-|Expanded Access|
+|Industrial/Other|
 

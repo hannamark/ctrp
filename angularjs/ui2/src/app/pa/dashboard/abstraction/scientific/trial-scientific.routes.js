@@ -119,6 +119,9 @@
                     },
                     ageUnits: function(PATrialService) {
                         return PATrialService.getAgeUnits();
+                    },
+                    samplingMethods: function(PATrialService) {
+                        return PATrialService.getSamplingMethods();
                     }
                 },
                 ncyBreadcrumb: {
