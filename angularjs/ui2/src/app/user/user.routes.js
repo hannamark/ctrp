@@ -92,7 +92,7 @@
                 })
 
                 .state('main.userDetail', {
-                    url: '/userDetail/username',
+                    url: '/userDetail/:username',
                     templateUrl: 'app/user/userDetails.html',
                     controller: 'userDetailCtrl as userDetailView',
                     section: 'user',
@@ -102,8 +102,9 @@
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
                         },
-                        userDetailObj : function(UserService) {
-                            return UserService.getUserDetailsByUsername();
+                        userDetailObj : function(UserService, $stateParams) {
+                            console.log($stateParams);
+                            return UserService.getUserDetailsByUsername($stateParams.username);
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {

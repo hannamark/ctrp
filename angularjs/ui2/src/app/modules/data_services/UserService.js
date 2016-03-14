@@ -251,8 +251,8 @@
         };
 
         this.getUserDetailsByUsername = function (username) {
-            var username2 = LocalCacheService.getCacheWithKey('username');
-            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username2 + '.json');
+            //var username2 = LocalCacheService.getCacheWithKey('username');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         }; //getUserByName
 
 
