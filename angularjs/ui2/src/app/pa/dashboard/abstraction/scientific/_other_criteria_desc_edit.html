@@ -6,6 +6,9 @@
             ng-required="true"
             ng-model="model">
         </textarea>
+        <span ng-show="model.length > 0">
+            {{5000 - model.length}} characters left
+        </span>
         <!-- <input type="text" id="other_id_edit" class="form-control input-sm" ng-model="model" auto-focus ng-required="true"> -->
     </div>
     <div class="col-xs-6 col-sm-2"><button type="button" id="cancel_edit_btn" class="btn btn-warning" ng-click="cancelEdit()">Cancel</button></div>
