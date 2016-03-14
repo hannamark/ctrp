@@ -153,7 +153,7 @@ And have clicked the Save button
 Then  the message displays ‘Click OK to add a duplicate Arm/Group  Click Cancel to abort’ 
 When I select OK button
 Then the duplicate arm/group is saved to the trial record
-And the message Record Updated displays
+And the message 'Record Updated' displays
 When I select Cancel button
 Then the duplicate arm/group is not saved to the trial record 
 
