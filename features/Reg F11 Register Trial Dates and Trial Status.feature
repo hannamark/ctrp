@@ -526,7 +526,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     |Closed to Accrual and Intervention               |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
     |Temporarily Closed to Accrual                    |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
     |Temporarily Closed to Accrual and Intervention   |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
-    |Withdrawn                                        |allowed ?????                      |                             |
+    |Withdrawn                                        |allowed                            |                             |
     |Administratively Complete                        |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
     |Complete                                         |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                            |
 
@@ -555,17 +555,17 @@ Scenario Outline: #7b Rules for Status/Dates relationships for "Primary Completi
     |Complete                                       |allowed                              |                           |
   When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
     |TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedWarning|
-    |In Review                                      |allowed                                  |                           |
-    |Approved                                       |allowed                                  |                           |
-    |Active                                         |allowed                                  |                           |
-    |Enrolling by Invitation                        |allowed                                  |                           |
-    |Closed to Accrual                              |allowed                                  |                           |
-    |Closed to Accrual and Intervention             |allowed                                  |                           |
-    |Temporarily Closed to Accrual                  |allowed                                  |                           |
-    |Temporarily Closed to Accrual and Intervention |allowed                                  |                           |
-    |Withdrawn                                      |allowed                                  |                           |
-    |Administratively Complete                      |not allowed                              |                           |
-    |Complete                                       |not allowed                              |                           |
+    |In Review                                      |allowed                           |                           |
+    |Approved                                       |allowed                           |                           |
+    |Active                                         |allowed                           |                           |
+    |Enrolling by Invitation                        |allowed                           |                           |
+    |Closed to Accrual                              |allowed                           |                           |
+    |Closed to Accrual and Intervention             |allowed                           |                           |
+    |Temporarily Closed to Accrual                  |allowed                           |                           |
+    |Temporarily Closed to Accrual and Intervention |allowed                           |                           |
+    |Withdrawn                                      |allowed                           |                           |
+    |Administratively Complete                      |not allowed                       |if current Trial Status is Administratively Complete, Primary Completion Date must be Actual                           |
+    |Complete                                       |not allowed                       |if current Trial Status is Complete, Primary Completion Date must be Actual                           |
 
   Examples:
     |trialType  |
@@ -579,30 +579,30 @@ Scenario Outline: #7c Rules for Status/Dates relationships for "Completion Date"
   And I am on the Trial Dates Section
   When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual> along with warning <DateTypeActualWarning> should be there
     |TrialStatusType                                |DateTypeActual                       | DateTypeActualWarning     |
-    |In Review                                      |                                     |                           |
-    |Approved                                       |                                     |                           |
-    |Active                                         |                                     |                           |
-    |Enrolling by Invitation                        |                                     |                           |
-    |Closed to Accrual                              |                                     |                           |
-    |Closed to Accrual and Intervention             |                                     |                           |
-    |Temporarily Closed to Accrual                  |                                     |                           |
-    |Temporarily Closed to Accrual and Intervention |                                     |                           |
-    |Withdrawn                                      |                                     |                           |
-    |Administratively Complete                      |                                     |                           |
-    |Complete                                       |                                     |                           |
+    |In Review                                      |not allowed                          |if current Trial Status is In Review, Primary Completion Date must be Actual                           |
+    |Approved                                       |not allowed                          |if current Trial Status is Approved , Primary Completion Date must be Anticipated                           |
+    |Active                                         |not allowed                          |if current Trial Status is Active , Primary Completion Date must be Anticipated                          |
+    |Enrolling by Invitation                        |not allowed                          |if current Trial Status is Enrolling by Invitation , Primary Completion Date must be Anticipated                      |
+    |Closed to Accrual                              |not allowed                          |if current Trial Status is Closed to Accrual , Primary Completion Date must be Anticipated                          |
+    |Closed to Accrual and Intervention             |not allowed                          |if current Trial Status is Closed to Accrual and Intervention, Primary Completion Date must be Anticipated                          |
+    |Temporarily Closed to Accrual                  |not allowed                          |if current Trial Status is Temporarily Closed to Accrual , Primary Completion Date must be Anticipated                           |
+    |Temporarily Closed to Accrual and Intervention |not allowed                          |if current Trial Status is Temporarily Closed to Accrual and Intervention , Primary Completion Date must be Anticipated                      |
+    |Withdrawn                                      |not allowed                          |if current Trial Status is Withdrawn , Primary Completion Date must be Anticipated                           |
+    |Administratively Complete                      |allowed                              |                           |
+    |Complete                                       |allowed                              |                           |
   When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
-    |TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedWarning|
-    |In Review                                      |                                  |                           |
-    |Approved                                       |                                  |                           |
-    |Active                                         |                                  |                           |
-    |Enrolling by Invitation                        |                                  |                           |
-    |Closed to Accrual                              |                                  |                           |
-    |Closed to Accrual and Intervention             |                                  |                           |
-    |Temporarily Closed to Accrual                  |                                  |                           |
-    |Temporarily Closed to Accrual and Intervention |                                  |                           |
-    |Withdrawn                                      |                                  |                           |
-    |Administratively Complete                      |                                  |                           |
-    |Complete                                       |                                  |                           |
+    |TrialStatusType                                |DateTypeAnticipated                  | DateTypeAnticipatedWarning|
+    |In Review                                      |allowed                              |                           |
+    |Approved                                       |allowed                              |                           |
+    |Active                                         |allowed                              |                           |
+    |Enrolling by Invitation                        |allowed                              |                           |
+    |Closed to Accrual                              |allowed                              |                           |
+    |Closed to Accrual and Intervention             |allowed                              |                           |
+    |Temporarily Closed to Accrual                  |allowed                              |                           |
+    |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
+    |Withdrawn                                      |allowed                              |                           |
+    |Administratively Complete                      |not allowed                          |if current Trial Status is Administratively Complete, Completion Date must be Actual                           |
+    |Complete                                       |not allowed                          |if current Trial Status is Complete, Completion Date must be Actual                           |
 
   Examples:
     |trialType  |
