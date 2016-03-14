@@ -28,6 +28,8 @@
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
+        vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
+        vm.updateOtherCriteriaType = updateOtherCriteriaType;
 
         activate();
         function activate() {
@@ -138,6 +140,17 @@
             console.info('cancelling');
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion = newOtherCriterion('');
+        }
+
+        function updateOtherCriteriaDesc(otherCriterionDesc, index) {
+            if (otherCriterionDesc.length === 0) {
+                return;
+            }
+            vm.trialDetailObj.other_criteria[index].criteria_desc = otherCriterionDesc;
+        }
+
+        function updateOtherCriteriaType(otherCriterionType, index) {
+            vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
 
     } // pasEligibilityCtrl
