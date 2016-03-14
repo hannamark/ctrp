@@ -1,7 +1,9 @@
 class Ws::BaseApiController < ApplicationController
+  #force_ssl
 
-  before_filter :check_auth
+  CONTENT_TYPE        =   "application/xml"
 
+  before_filter :check_auth, :is_valid_mime
 
   def indicate_source
     @api = true
@@ -41,7 +43,15 @@ class Ws::BaseApiController < ApplicationController
       render(xml: error, status: error.status)
     end
 
-end
+  end
+
+  def is_valid_mime
+    ##check content_type
+    if  request.content_type != CONTENT_TYPE
+      render nothing:true, status: '415'
+    end
+
+  end
 
 
 end

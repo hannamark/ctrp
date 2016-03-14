@@ -161,9 +161,13 @@ GEM
       activerecord (>= 3.0, < 6.0)
       activesupport (>= 3.0, < 6.0)
       request_store (~> 1.1)
+    pdf-core (0.6.1)
     pg (0.18.2)
     pg_sequencer (0.0.2)
       activerecord (>= 3.0.0)
+    prawn (2.1.0)
+      pdf-core (~> 0.6.1)
+      ttfunk (~> 1.4.0)
     rack (1.6.4)
     rack-cors (0.4.0)
     rack-pjax (0.8.0)
@@ -252,6 +256,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    ttfunk (1.4.0)
     turbolinks (2.5.3)
       coffee-rails
     tzinfo (1.2.2)
@@ -300,6 +305,7 @@ DEPENDENCIES
   paper_trail
   pg
   pg_sequencer
+  prawn
   rack-cors
   rails (= 4.2.0)
   rails_admin

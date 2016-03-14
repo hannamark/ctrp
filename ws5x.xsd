@@ -1058,33 +1058,7 @@
     </sequence>
   </complexType>
 
-  <complexType name="CompleteTrialRegistration1" final="#all"
-               block="#all">
-    <annotation>
-      <documentation>A request to register a new Complete trial in CTRP.
-      </documentation>
-    </annotation>
-    <sequence>
-    <element name="category" type="tns:TrialCategory" />
-      <element name="trialOwner" minOccurs="0" maxOccurs="unbounded">
-        <annotation>
-          <documentation>
-            Identifies an owner of this trial by an email
-            address. Email address must be known to CTRP in order for the
-            ownership
-            to be established.
-          </documentation>
-        </annotation>
-        <simpleType>
-          <restriction base="string">
-            <maxLength value="254" />
-            <pattern
-                    value="[_\-a-zA-Z0-9\.\+]+@[a-zA-Z0-9](\.?[\-a-zA-Z0-9]*[a-zA-Z0-9])*" />
-          </restriction>
-        </simpleType>
-      </element>
-    </sequence>
-  </complexType>
+
 
 
   <complexType name="CompleteTrialRegistration" final="#all"

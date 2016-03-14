@@ -1,8 +1,6 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
-
   ##CONSTANTS FOR REQUEST VALIDATIONS
   ##
-  CONTENT_TYPE        =   "application/xml"
   XSD_PATH            =   Rails.root.to_s + "/ws5x.xsd"
   REGISTER_ACTION     =   "create"
   UPDATE_ACTION       =   "update"
@@ -24,6 +22,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"create","")
+
+     ## TODO Responsible Party should not be specified if clinicalTrialsDotGovXmlRequired is false.
+     ## TODO Regulatory Information is required if clinicalTrialsDotGovXmlRequired is true and should not be specified otherwise.
+     ## TODO Sponsor should not be specified if clinicalTrialsDotGovXmlRequired is false.
+     ## TODO validate_clinicalTrialsDotGovXmlRequired_dependencies
+
+
 
     if !@paramsLoader.errors.empty?
       render xml: @paramsLoader.errors, status: :bad_request
@@ -94,10 +99,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   def validate_rest_request
 
-    ##check content_type
-    if  request.content_type != CONTENT_TYPE
-      #render nothing:true, status: '404'
-    end
+
 
     ##Get action from request header
     action = request.path_parameters[:action]

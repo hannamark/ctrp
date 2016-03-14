@@ -3,7 +3,6 @@ class ApiTrialParamsLoader
   @@rest_params = {}
   @@errors       = Hash.new()
   @@xmlMapperObject
-  @@booleanMap = {"false":"No","true":"Yes"}
 
 
   def load_params(xmlMapperObject,type,trial_id)
@@ -49,19 +48,27 @@ class ApiTrialParamsLoader
     if type=="create" && @@xmlMapperObject.interventionalTrial
       @@rest_params[:research_category_id]=@@xmlMapperObject.interventionalTrial.research_category_id
       @@rest_params[:secondary_purpose_id] = @@xmlMapperObject.interventionalTrial.secondary_purpose_id
+      if SecondaryPurpose.find_by_id(@@xmlMapperObject.interventionalTrial.secondary_purpose_id).name == "Other" && @@xmlMapperObject.interventionalTrial.secondary_purpose_other.nil?
+        @@errors.store("SecondaryPurpose","When Secondary Purpose is Other,Other Description expected")
+      else
+        @@rest_params[:secondary_purpose_other]      =   @@xmlMapperObject.interventionalTrial.secondary_purpose_other
+      end
     elsif type=="create" && @@xmlMapperObject.nonInterventionalTrial
       @@rest_params[:research_category_id]=@@xmlMapperObject.nonInterventionalTrial.research_category_id
     end
 
     @@rest_params[:primary_purpose_id]      =      @@xmlMapperObject.primary_purpose_id
+
+    if PrimaryPurpose.find_by_id(@@xmlMapperObject.primary_purpose_id).name == "Other" && @@xmlMapperObject.primary_purpose_other.nil?
+      @@errors.store("PrimaryPurpose","When Primary Purpose is Other,Other Description expected")
+    else
+      @@rest_params[:primary_purpose_other]      =      @@xmlMapperObject.primary_purpose_other
+    end
+
     @@rest_params[:accrual_disease_term_id] =      @@xmlMapperObject.accrual_disease_term_id
 
-
-
-
-
-
     ###Lead Org, PI, Sponsor
+    ###
     lead_org_id=@@xmlMapperObject.leadOrganization.existingOrganization.id if @@xmlMapperObject.leadOrganization
     sponsor_id=@@xmlMapperObject.sponsor.existingOrganization.id           if @@xmlMapperObject.sponsor
     pi_id = @@xmlMapperObject.pi.existingPerson.id                         if @@xmlMapperObject.pi
@@ -79,6 +86,8 @@ class ApiTrialParamsLoader
 
 
     ###Grants
+    ###
+    @@rest_params[:grant_question]    = @@xmlMapperObject.grant_question
     @@rest_params[:grants_attributes] = []
     @@xmlMapperObject.grants.each do |grant|
       if validate_grants(grant.funding_mechanism,grant.institute_code,grant.serial_number,grant.nci)
@@ -117,34 +126,30 @@ class ApiTrialParamsLoader
 
     ###Regulatory Information
 
+    save_responsible_party()
+
+    @@rest_params[:sec801_indicator]= @@xmlMapperObject.regulatoryInformation.sec801_indicator
+    @@rest_params[:intervention_indicator]= @@xmlMapperObject.regulatoryInformation.intervention_indicator
+    @@rest_params[:data_monitor_indicator]= @@xmlMapperObject.regulatoryInformation.data_monitor_indicator
+
+
 
     ###Trial Docs
 
-#    content = @@xmlMapperObject.protocol_content
-#    p @@xmlMapperObject.protocol_file_name.keys[0]
-
-#    p decode_base64_content = Base64.decode64(content)
-
     @@rest_params[:trial_documents_attributes] = []
 
+    add_file(@@xmlMapperObject.protocol_document_name,@@xmlMapperObject.protocol_document_content,"Protocol Document")
+    add_file(@@xmlMapperObject.irb_approval_document_name,@@xmlMapperObject.irb_approval_document_content,"IRB Approval")
+    add_file(@@xmlMapperObject.participating_sites_document_name,@@xmlMapperObject.participating_sites_document_content,"List of Participating Sites")
+    add_file(@@xmlMapperObject.informed_consent_document_name,@@xmlMapperObject.informed_consent_document_content,"Informed Consent")
+    add_file(@@xmlMapperObject.change_memo_document_name,@@xmlMapperObject.change_memo_document_content,"Change Memo Document")
+    add_file(@@xmlMapperObject.protocol_highlight_document_name,@@xmlMapperObject.protocol_highlight_document_content,"Protocol Highlighted Document")
 
-    content = "cHJvdG9jb2xEb2N1bWVudA=="
-    decode_base64_content = Base64.decode64(content)
-
-    temp_file = Tempfile.new("Sample2")
-    temp_file << decode_base64_content
-    temp_file.rewind
-
-    img_params = {:filename => "Sample2.pdf", :type => "pdf", :tempfile => temp_file}
-    uploaded_file = ActionDispatch::Http::UploadedFile.new(img_params)
+    @@xmlMapperObject.otherDocs.each do |other_file_name, other_file_content|
+      add_file(other_file_name,other_file_content,"Other Document")
+    end
 
 
-
-    @trialprotocolDocMap = Hash.new
-    @trialprotocolDocMap.store("file",uploaded_file)
-    @trialprotocolDocMap.store("file_name","Sample2.pdf")
-    @trialprotocolDocMap.store("document_type","Protocol Document")
-    @@rest_params[:trial_documents_attributes].push(@trialprotocolDocMap)
 
 
   end
@@ -253,6 +258,12 @@ class ApiTrialParamsLoader
    return hash
  end
 
+  def isValidFileFormat(file_name)
+    file_extension=File.extname(file_name).delete('.')
+    return AppSetting.find_by_code("ACCEPTED_FILE_TYPES_REG").value.split(',').include?(file_extension)
+  end
+
+
   def delete_x(trialkeys,x,xarray,xname)
     existing_x = Array.new()
     existing_x = x.where(trial_id: @trial.id).pluck(:id)
@@ -271,56 +282,66 @@ class ApiTrialParamsLoader
 
 
 
+def save_responsible_party
 
-
-
-
-
-
-  ################################  Deleting #########################
-
-
-
-
-
-  def process_regulatory_section(trialkeys)
-
-    if trialkeys["regulatoryInformation"].has_key?("country") && trialkeys["regulatoryInformation"].has_key?("authorityName")
-
-      country=trialkeys["regulatoryInformation"]["country"]
-      authorityName= trialkeys["regulatoryInformation"]["authorityName"]
-      oversight_authorities=Array.new()
-      oversight_map =Hash.new();
-
-      oversight_map["country"]=country
-      oversight_map["organization"]=authorityName
-      oversight_authorities.push(oversight_map) if @trialService.getAuthorityOrgArr(country).include?(authorityName)
-      @trialMasterMap.store("oversight_authorities_attributes",oversight_authorities)
-
-    end
-
+  if @@xmlMapperObject.responsible_party.nil?
+    return
   end
-  def process_docs(dochash,document_type)
 
-    p dochash["filename"]
-    p dochash["__content__"]
+  responsible_party  =  @@xmlMapperObject.responsible_party.type
+  investigator_title = @@xmlMapperObject.responsible_party.investigator_title
 
-    filename = dochash["filename"]
-    content = dochash["__content__"]
-    content.gsub!('\\r', "\r")
-    content.gsub!('\\n', "\n")
-    decode_base64_content = Base64.decode64(content)
+  @@rest_params[:responsible_party_id] = ResponsibleParty.find_by_name(responsible_party).id
+
+  if responsible_party != "Sponsor"
+   investigator_title.nil? ? @@rest_params[:investigator_title] ="Principal Investigator" : @@rest_params[:investigator_title] =investigator_title
+  end
+
+  case responsible_party
+    when "Principal Investigator"
+        investigator_aff_id = @@xmlMapperObject.responsible_party.investigatorAffiliation.existingOrganization.id
+        @@rest_params[:investigator_aff_id] = investigator_aff_id  if investigator_aff_id && valid_org("investigatorAffiliation",investigator_aff_id)
+    when "Sponsor-Investigator"
+          investigator_id = @@xmlMapperObject.responsible_party.investigator.existingPerson.id
+          @@rest_params[:investigator_id] = investigator_id  if investigator_id && valid_person("investigator",investigator_id)
+  end
+
+end
 
 
-    @trialprotocolDocMap = Hash.new
-    out_file = File.new(filename, "w")
-    out_file.puts(decode_base64_content)
-    @docs.push(filename)
 
-    @trialprotocolDocMap.store("file",out_file)
-    @trialprotocolDocMap.store("file_name",filename)
-    @trialprotocolDocMap.store("document_type",document_type)
-    @trialDocs.push(@trialprotocolDocMap)
+
+  def add_file(file_name, file_content,document_type)
+
+     if file_content.nil?
+       return
+     end
+
+     decode_base64_content = Base64.decode64(file_content)
+    file_extension = File.extname(file_name).delete('.') ##sample.pdf will give pdf
+    file_format    = File.extname(file_name)             ##sample.pdf will give .pdf
+
+    if !isValidFileFormat(file_name)
+       @@errors.store(file_name,"Given file format is not valid, refer XSD for acceptable file formats");
+       return
+     end
+
+    if file_extension == "pdf"
+      pdf = Prawn::Document.new
+      pdf.text(decode_base64_content)
+      pdf.render_file(Rails.root.to_s + "/../../storage/tmp/" + file_name)
+      pdf_file = File.open(Rails.root.to_s + "/../../storage/tmp/"+ file_name)
+      file_params = {:filename => file_name, :type => "application/pdf", :tempfile => pdf_file}
+    else
+      temp_file = Tempfile.new(['Sample2',file_format])
+      temp_file.binmode
+      temp_file <<  decode_base64_content
+      #temp_file.rewind
+      file_params = {:filename => file_name, :tempfile => temp_file}
+    end
+    uploaded_file = ActionDispatch::Http::UploadedFile.new(file_params)
+    trial_document_params = {:file => uploaded_file, :document_type =>document_type, :file_name => file_name}
+    @@rest_params[:trial_documents_attributes].push(trial_document_params)
 
   end
 

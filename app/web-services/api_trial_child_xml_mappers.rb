@@ -8,6 +8,7 @@ class ExistingOrganization
   include XML::Mapping
   object_node :existingOrganization, "existingOrganization", :class => LeadObj,:optional=>true
 end
+
 class ExistingPerson
   include XML::Mapping
   object_node :existingPerson, "existingPerson", :class => LeadObj,:optional=>true
@@ -40,19 +41,7 @@ class NonInterventionalTrial
             }
 end
 
-class BooleanMapper
 
-  def self.map(_val)
-
-    if _val == "true"
-      return "Yes"
-    elsif _val == "false"
-      return "No"
-    end
-
-  end
-
-end
 
 class RegulatoryInformationXml
   include XML::Mapping
@@ -100,5 +89,27 @@ class OtherIdsXml
   include XML::Mapping
   text_node :id, "otherTrialID", :optional=>true
 end
+
+class ResponsiblePartyXml
+  include XML::Mapping
+  text_node   :type, "type", :optional=>true , :default_value=>nil
+  text_node   :investigator_title, "investigatorTitle", :optional=>true, :default_value=>nil
+  object_node :investigator, "investigator", :class =>ExistingPerson,:optional=>true,:default_value=>nil
+  object_node :investigatorAffiliation, "investigatorAffiliation", :class =>ExistingOrganization,:optional=>true,:default_value=>nil
+end
+
+
+class BooleanMapper
+  def self.map(_val)
+    if _val == "true"
+      return "Yes"
+    elsif _val == "false"
+      return "No"
+    end
+  end
+end
+
+
+
 class ApiTrialChildXmlMappers
 end
