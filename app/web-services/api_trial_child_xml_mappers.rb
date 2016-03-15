@@ -1,17 +1,17 @@
 
 class LeadObj
   include XML::Mapping
-  text_node :id , "poID",:optional=>true
+  text_node :id , "poID"
 end
 
 class ExistingOrganization
   include XML::Mapping
-  object_node :existingOrganization, "existingOrganization", :class => LeadObj,:optional=>true
+  object_node :existingOrganization, "existingOrganization", :class => LeadObj
 end
 
 class ExistingPerson
   include XML::Mapping
-  object_node :existingPerson, "existingPerson", :class => LeadObj,:optional=>true
+  object_node :existingPerson, "existingPerson", :class => LeadObj
 end
 
 class InterventionalTrial
@@ -20,7 +20,7 @@ class InterventionalTrial
   text_node :secondary_purpose_id,"secondaryPurpose",:optional=>true,:default_value=>nil,
             :reader=>proc{|obj,xml,default_reader|
               default_reader.call(obj,xml)
-              obj.secondary_purpose_id= SecondaryPurpose.find_by_name(obj.secondary_purpose_id).id
+              obj.secondary_purpose_id= SecondaryPurpose.find_by_name(obj.secondary_purpose_id).id if !obj.secondary_purpose_id.nil?
             }
   text_node :secondary_purpose_other, "secondaryPurposeOtherDescription", :optional=>true, :default_value=>nil
 
@@ -33,14 +33,12 @@ end
 
 class NonInterventionalTrial
   include XML::Mapping
-
   text_node :research_category_id, "trialType", :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
               default_reader.call(obj,xml)
-              obj.research_category_id= ResearchCategory.find_by_name(obj.research_category_id).id
+              obj.research_category_id= ResearchCategory.find_by_name(obj.research_category_id).id if !obj.research_category_id.nil?
             }
 end
-
 
 
 class RegulatoryInformationXml
@@ -85,10 +83,6 @@ class IndIdeXml
   boolean_node :exempt, "exempt",:optional=>true
 end
 
-class OtherIdsXml
-  include XML::Mapping
-  text_node :id, "otherTrialID", :optional=>true
-end
 
 class ResponsiblePartyXml
   include XML::Mapping
