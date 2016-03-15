@@ -203,19 +203,19 @@
                 		</thead>
                 		<tbody>
                 		<tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="row._destroy ? 'deleted-text' : ''">
-                			<td>
+                			<td class="col-sm-3">
                                 <span in-place-edit="row.criteria_type" on-save="criteriaView.updateOtherCriteriaType(row.criteria_type, $index)"
                                       template="app/pa/dashboard/abstraction/scientific/_other_criteria_type_edit.html" id="other_criteria_type_edit">
                                       {{row.criteria_type}}
                                 </span>
                             </td>
-                			<td>
+                			<td class="col-sm-9">
                                 <span in-place-edit="row.criteria_desc" on-save="criteriaView.updateOtherCriteriaDesc(row.criteria_desc, $index)"
                                       template="app/pa/dashboard/abstraction/scientific/_other_criteria_desc_edit.html" id="other_criteria_desc_edit">
                                       {{row.criteria_desc}}
                                 </span>
                             </td>
-                			<td class="text-center">
+                			<td class="text-center col-sm-1">
                                 <label class="btn btn-default" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)">
                                     <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                 </label>
