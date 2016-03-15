@@ -718,9 +718,33 @@
             }
         };
 
+        // Scenario #8 in Reg F11
+        vm.validateStartDateQual2 = function() {
+            var startDate = new Date(vm.curTrial.start_date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if ((vm.curTrial.start_date_qual === 'Actual' && startDate.getTime() > today.getTime()) || (vm.curTrial.start_date_qual === 'Anticipated' && startDate.getTime() < today.getTime())) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
         // Scenario #7b in Reg F11
         vm.validatePrimaryCompDateQual = function() {
             if (vm.currentStatusCode && ['ACO', 'COM'].indexOf(vm.currentStatusCode) > -1 && vm.curTrial.primary_comp_date_qual === 'Anticipated') {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #8 in Reg F11
+        vm.validatePrimaryCompDateQual2 = function() {
+            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if ((vm.curTrial.primary_comp_date_qual === 'Actual' && primaryCompDate.getTime() > today.getTime()) || (vm.curTrial.primary_comp_date_qual === 'Anticipated' && primaryCompDate.getTime() < today.getTime())) {
                 return true;
             } else {
                 return false;
@@ -731,6 +755,18 @@
         vm.validateCompDateQual = function() {
             if (vm.currentStatusCode && (['ACO', 'COM'].indexOf(vm.currentStatusCode) < 0 && vm.curTrial.comp_date_qual === 'Actual')
                 || (['ACO', 'COM'].indexOf(vm.currentStatusCode) > -1 && vm.curTrial.comp_date_qual === 'Anticipated')) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #8 in Reg F11
+        vm.validateCompDateQual2 = function() {
+            var compDate = new Date(vm.curTrial.comp_date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if ((vm.curTrial.comp_date_qual === 'Actual' && compDate.getTime() > today.getTime()) || (vm.curTrial.comp_date_qual === 'Anticipated' && compDate.getTime() < today.getTime())) {
                 return true;
             } else {
                 return false;
