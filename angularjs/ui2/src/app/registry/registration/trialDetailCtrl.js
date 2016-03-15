@@ -88,6 +88,8 @@
         vm.docUploadedCount = 0;
         vm.disableBtn = false;
         vm.grantsInputs = {grantResults: [], disabled: true};
+        vm.currentStatusCode = null;
+        vm.currentStatusName = null;
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
@@ -313,6 +315,7 @@
                         vm.tsNum++;
                     }
                     vm.validateStatus();
+                    updateCurrentStatus();
                 }
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
@@ -475,6 +478,7 @@
                 vm.showAddStatusError = false;
                 vm.why_stopped_disabled = true;
                 vm.validateStatus();
+                updateCurrentStatus();
             } else {
                 vm.showAddStatusError = true;
             }
@@ -703,6 +707,15 @@
             }).catch(function(err) {
                 console.log("Error in validating trial status: " + err);
             });
+        };
+
+        // Scenario #7a in Reg F11
+        vm.validateStartDateQual = function() {
+            if (vm.currentStatusCode && ['INR', 'APP', 'WIT'].indexOf(vm.currentStatusCode) < 0 && vm.curTrial.start_date_qual === 'Anticipated') {
+                return true;
+            } else {
+                return false;
+            }
         };
 
         activate();
@@ -938,6 +951,7 @@
                 vm.tsNum++;
             }
             vm.validateStatus();
+            updateCurrentStatus();
         }
 
         function appendIndIdes() {
@@ -1114,6 +1128,20 @@
             }
 
             return latestDocId;
+        }
+
+        function updateCurrentStatus() {
+            for (var i = vm.addedStatuses.length - 1; i >= 0; i--) {
+                if (!vm.addedStatuses[i]._destroy) {
+                    vm.currentStatusCode = vm.addedStatuses[i].trial_status_code;
+                    vm.currentStatusName = vm.addedStatuses[i].trial_status_name;
+                    return;
+                }
+            }
+
+            vm.currentStatusCode = null;
+            vm.currentStatusName = null;
+            return;
         }
     }
 })();
