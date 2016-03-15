@@ -15,7 +15,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
    Then the list of Trials to which I have been granted access will be displayed automatically 
    
 
-  Scenario: #1 I can search and select Abstracted CTRP clinical trials   
+  Scenario: #1 I can search and select CTRP clinical trials   
     Given I am logged into the CTRP Accrual Application 
     And A list of Trials I have been granted access is displayed automatically with information type
       |NCI Trial Identifier  |
@@ -23,6 +23,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |Current Trial Status  |
       |Research Category  |
       |Accrual Disease Terminology  |
+    And Displayed trials are sorted with most recent NCI Trial Identifier by default 
     And I can search specific Trial
      When I have entered an NCI Trial Identifier
      And I have entered a ClinicalTrials.gov ID

@@ -32,9 +32,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
-      
+   
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped   |Sameday |errorsWarnings	                                                                                                                                                                                                                       |
       |In Review	                                    |STATUSZERO	                                    |			       |yes     |                                                                                                                                                                                                                                      |
       |In Review	                                    |In Review	                                    |			       |yes     |ERROR: Duplicate [In Review] status is not allowed	                                                                                                                                                                                   |
@@ -60,8 +58,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated 
-    Then trial status transition is valid
+    
+    
       
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                        |
       |Approved	                                        |STATUSZERO                                   	|			        |yes    |                                                                                                                                                                                                                                                                           |
@@ -88,8 +86,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
+    
+    
       
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday   |errorsWarnings	                                                                                                                                               |
       |Withdrawn	                                    |STATUSZERO	                                    |Add Stopped Reason |yes       |                                                                                                                                                               |
@@ -117,8 +115,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
+    
+    
       
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
       |Active	                                        |STATUSZERO	                                    |			        |yes    |                                                                                                                                                                                                                                                                           |
@@ -144,8 +142,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
+    
+    
       
       
       
@@ -173,8 +171,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
+    
+    
       
       
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
@@ -200,8 +198,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
+    
+    
      
      
      
@@ -230,9 +228,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
-     
+    
+    
      
      
       
@@ -242,7 +239,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual                  	|Approved	                                    |Add Stopped Reason	|yes    |  ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [Approved]	                                                                                                                                                                                        |
       |Temporarily Closed to Accrual                  	|Withdrawn	                                    |Add Stopped Reason	|yes    |  ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [Withdrawn]	                                                                                                                                                                                        |
       |Temporarily Closed to Accrual                  	|Active	                                        |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                                 |
-      |Temporarily Closed to Accrual                  	|Enrolling by Invitation	                    |Add Stopped Reason	|yes    | 
+      |Temporarily Closed to Accrual                  	|Enrolling by Invitation	                    |Add Stopped Reason	|yes    || 
       |Temporarily Closed to Accrual                  	|Closed to Accrual	                            |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
       |Temporarily Closed to Accrual  	                |Closed to Accrual and Intervention             |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
       |Temporarily Closed to Accrual                  	|Temporarily Closed to Accrual                  |Add Stopped Reason	|yes    |   ERROR: Duplicate [Temporarily Closed to Accrual] status is not allowed	                                                                                                                                                                                                        |
@@ -260,8 +257,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
+    
+    
       
       
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday  |errorsWarnings	                                                                                                                                                                                                                                                                |
@@ -291,8 +288,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
+    
+    
       
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday |errorsWarnings	                                                                                                                                                                                                                                                                |
       |Complete	                                        |STATUSZERO	                                    |			        |yes     |                                                                                                                                                                                                                                                                           | 
@@ -320,9 +317,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial status from <statusFrom> to trial status <statusTo> along with why study stopped reason <whyStudyStopped> and same day rule <Sameday>  the respective checks <errorsWarnings> will be there 
-    And Same day Transition rule <Sameday> will be validated
-    Then trial status transition is valid
-      
+    
+    
       
       |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
       |Administratively Complete	                    |STATUSZERO	                                    |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
