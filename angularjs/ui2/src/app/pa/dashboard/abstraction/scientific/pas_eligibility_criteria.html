@@ -196,26 +196,26 @@
                 			</th>
                 		</tr> -->
                 		<tr>
-                			<th st-sort="criteria_type">Eligibility Criterion Type</th>
-                			<th>Eligibility Criterion Description</th>
-                			<th class="text-center">Delete</th>
+                			<th st-sort="criteria_type" class="col-sm-3">Eligibility Criterion Type</th>
+                			<th class="col-sm-9">Eligibility Criterion Description</th>
+                			<th class="text-center col-sm-1">Delete</th>
                 		</tr>
                 		</thead>
                 		<tbody>
                 		<tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="row._destroy ? 'deleted-text' : ''">
-                			<td class="col-sm-3">
+                			<td>
                                 <span in-place-edit="row.criteria_type" on-save="criteriaView.updateOtherCriteriaType(row.criteria_type, $index)"
                                       template="app/pa/dashboard/abstraction/scientific/_other_criteria_type_edit.html" id="other_criteria_type_edit">
                                       {{row.criteria_type}}
                                 </span>
                             </td>
-                			<td class="col-sm-9">
+                			<td>
                                 <span in-place-edit="row.criteria_desc" on-save="criteriaView.updateOtherCriteriaDesc(row.criteria_desc, $index)"
                                       template="app/pa/dashboard/abstraction/scientific/_other_criteria_desc_edit.html" id="other_criteria_desc_edit">
                                       {{row.criteria_desc}}
                                 </span>
                             </td>
-                			<td class="text-center col-sm-1">
+                			<td class="text-center">
                                 <label class="btn btn-default" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)">
                                     <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                 </label>
