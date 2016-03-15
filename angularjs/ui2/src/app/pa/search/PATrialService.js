@@ -506,7 +506,7 @@
         /**
          * Group the promise calls to return the data/list required
          * in the PA Trial Search form
-         * @return {[type]} [description]
+         * @return {Array of promises} [description]
          */
         function groupPATrialSearchFieldsData() {
             var promises = [];

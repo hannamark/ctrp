@@ -38,43 +38,58 @@
         function paTrialSearchCtrl($scope, $element, $attrs) {
             var vm = this;
             vm.searchParams = PATrialService.getInitialTrialSearchParams();
-        //   vm.searchParams = {
-        //       sort: '',
-        //       order: '',
-        //       rows: 10,
-        //       start: 1,
-          //
-        //       protocol_id: '',
-        //       protocol_origin_type: '',
-        //
-        //
-        //   }
-        PATrialService.groupPATrialSearchFieldsData().then(function(res) {
-            $log.info('res is: ', res);
-            vm.studySourceArr = res[0];
-            vm.phaseArr = res[1];
-            vm.primaryPurposeArr = res[2];
-            vm.trialStatusArr = res[3];
-            vm.milestoneArr = res[5];
-            vm.processingStatusArr = res[11];
-            //console.log("processing status = " + JSON.stringify(processingStatusObj));
-            vm.protocolIdOriginArr = res[4];
-            vm.researchCategoriesArr = res[6];
-            vm.nciDivArr = res[7];
-            vm.nciProgArr = res[8];
-            //console.log("nciProgObj = " + JSON.stringify(nciProgObj));
-            vm.submissionTypesArr = res[9];
-            vm.submissionMethodsArr = res[10];
-        })
-        .catch(function(err) {
-            console.error('failed to resolve: ', err);
-        });
+
+            // actions
+            vm.resetSearch = resetSearch;
+            vm.searchTrials = searchTrials;
+
+            activate();
+            function activate() {
+                _resolveFormFieldsData();
+            }
+
+            function _resolveFormFieldsData() {
+                PATrialService.groupPATrialSearchFieldsData().then(function(res) {
+                    $log.info('res is: ', res);
+                    vm.studySourceArr = res[0];
+                    vm.phaseArr = res[1];
+                    vm.primaryPurposeArr = res[2];
+                    vm.trialStatusArr = res[3];
+                    vm.milestoneArr = res[5];
+                    vm.processingStatusArr = res[11];
+                    //console.log("processing status = " + JSON.stringify(processingStatusObj));
+                    vm.protocolIdOriginArr = res[4];
+                    vm.researchCategoriesArr = res[6];
+                    vm.nciDivArr = res[7];
+                    vm.nciProgArr = res[8];
+                    //console.log("nciProgObj = " + JSON.stringify(nciProgObj));
+                    vm.submissionTypesArr = res[9];
+                    vm.submissionMethodsArr = res[10];
+                })
+                .catch(function(err) {
+                    console.error('failed to resolve: ', err);
+                });
+            }
+
+            function searchTrials() {
+                vm.searching = true;
+                PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
+                    $log.info('received research results: ', data.trials);
+                }).catch(function (err) {
+                    console.log('search trial failed');
+                }).finally(function() {
+                    console.log('finished search');
+                    vm.searching = false;
+                });
+            };
 
 
-
-          $log.info('vm.searchParams: ', vm.searchParams);
-          $log.info('in the pa trial search directive!!');
-          $log.info('showGrid: ', $scope.showGrid, $scope.maxRowSelectable, $scope.curationMode);
+            function resetSearch() {
+                vm.searchParams = PATrialService.getInitialTrialSearchParams();
+                Object.keys(vm.searchParams).forEach(function(key, index) {
+                    vm.searchParams[key] = '';
+                });
+            };
 
         } //ctrpPATrialSearch
     }
