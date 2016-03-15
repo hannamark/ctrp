@@ -306,8 +306,8 @@ end
     if file_extension == "pdf"
       pdf = Prawn::Document.new
       pdf.text(decode_base64_content)
-      pdf.render_file(Rails.root.to_s + "/../../storage/trial/" + tmp_file_name)
-      pdf_file = File.open(Rails.root.to_s + "/../../storage/trial/"+ tmp_file_name)
+      pdf.render_file(Rails.root.to_s + "/../../storage/" + tmp_file_name)
+      pdf_file = File.open(Rails.root.to_s + "/../../storage/"+ tmp_file_name)
       file_params = {:filename => file_name, :type => "application/pdf", :tempfile => pdf_file}
     else
       temp_file = Tempfile.new(['Sample2',file_format])
