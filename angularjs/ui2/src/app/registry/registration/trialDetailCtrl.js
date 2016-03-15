@@ -727,6 +727,16 @@
             }
         };
 
+        // Scenario #7c in Reg F11
+        vm.validateCompDateQual = function() {
+            if (vm.currentStatusCode && (['ACO', 'COM'].indexOf(vm.currentStatusCode) < 0 && vm.curTrial.comp_date_qual === 'Actual')
+                || (['ACO', 'COM'].indexOf(vm.currentStatusCode) > -1 && vm.curTrial.comp_date_qual === 'Anticipated')) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
         activate();
 
         /*
