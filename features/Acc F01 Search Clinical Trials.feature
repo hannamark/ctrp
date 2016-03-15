@@ -21,7 +21,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |NCI Trial Identifier  |
       |Official Title  |
       |Current Trial Status  |
-      |Trial Type  |
+      |Research Category  |
       |Accrual Disease Terminology  |
     And I can search specific Trial
      When I have entered an NCI Trial Identifier
