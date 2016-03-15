@@ -13,13 +13,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   ## Class Variables
   ##
-  @@requestString
-  @@rootElement
+  $requestString
+  $rootElement
 
   before_action :validate_rest_request
 
   before_filter only: [:create] do
-    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
+    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"create","")
 
@@ -52,7 +52,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     render nothing: true, status: :not_found unless @trial.present?
 
-    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new(@@requestString).root)
+    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"update","")
 
@@ -108,20 +108,20 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     ##feed rootElement based on request method and URL
     if action == REGISTER_ACTION && request.request_method.casecmp(POST)
-      @@rootElement =REGISTER_ROOT_NODE
+      $rootElement =REGISTER_ROOT_NODE
     elsif action== UPDATE_ACTION  && request.request_method.casecmp(POST)
-      @@rootElement = UPDATE_ROOT_NODE
+      $rootElement = UPDATE_ROOT_NODE
     elsif action == AMEND_ACTION && request.request_method.casecmp(PUT)
-      @@rootElement = AMEND_ROOT_NODE
+      $rootElement = AMEND_ROOT_NODE
     end
 
-    @@requestString = request.body.read
+    $requestString = request.body.read
     xsd = Nokogiri::XML::Schema(File.open(XSD_PATH))
-    doc = Nokogiri::XML(@@requestString)
+    doc = Nokogiri::XML($requestString)
     xsd_errors =Array.new()
 
     ## validate wheather root node is correct or not
-    if  doc.root.name == @@rootElement
+    if  doc.root.name == $rootElement
       xsd.validate(doc).each do |error|
         #p error.code()
         #p error.column()
