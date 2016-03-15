@@ -27,6 +27,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
      ## TODO Regulatory Information is required if clinicalTrialsDotGovXmlRequired is true and should not be specified otherwise.
      ## TODO Sponsor should not be specified if clinicalTrialsDotGovXmlRequired is false.
      ## TODO validate_clinicalTrialsDotGovXmlRequired_dependencies
+     ## TODO Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
+
 
 
 
