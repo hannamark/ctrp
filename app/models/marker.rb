@@ -18,6 +18,7 @@
 #  evaluation_type_other :string(255)
 #  assay_type_other      :string(255)
 #  specimen_type_other   :string(255)
+#  protocol_marker_name  :string(255)
 #
 # Indexes
 #

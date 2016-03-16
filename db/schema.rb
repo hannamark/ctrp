@@ -496,6 +496,7 @@ ActiveRecord::Schema.define(version: 20160316174748) do
     t.string   "evaluation_type_other", limit: 255
     t.string   "assay_type_other",      limit: 255
     t.string   "specimen_type_other",   limit: 255
+    t.string   "protocol_marker_name",  limit: 255
   end
 
   add_index "markers", ["assay_type_id"], name: "index_markers_on_assay_type_id", using: :btree

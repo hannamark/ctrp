@@ -37,6 +37,8 @@
 #  organization_id             :integer
 #  source                      :string
 #  user_status_id              :integer
+#  phone                       :string
+#  city                        :string
 #
 # Indexes
 #
