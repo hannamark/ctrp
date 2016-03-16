@@ -1,0 +1,45 @@
+<%= form_for(@marker_cadsr) do |f| %>
+  <% if @marker_cadsr.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@marker_cadsr.errors.count, "error") %> prohibited this marker_cadsr from being saved:</h2>
+
+      <ul>
+      <% @marker_cadsr.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :meaning %><br>
+    <%= f.text_field :meaning %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :cadsr_id %><br>
+    <%= f.number_field :cadsr_id %>
+  </div>
+  <div class="field">
+    <%= f.label :source_status_id %><br>
+    <%= f.number_field :source_status_id %>
+  </div>
+  <div class="field">
+    <%= f.label :nv_term_identifier %><br>
+    <%= f.text_field :nv_term_identifier %>
+  </div>
+  <div class="field">
+    <%= f.label :pv_name %><br>
+    <%= f.text_field :pv_name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
