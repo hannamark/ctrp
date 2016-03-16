@@ -759,6 +759,17 @@
             }
         };
 
+        // Scenario #9 in Reg F11
+        vm.validatePrimaryCompDate = function() {
+            var startDate = new Date(vm.curTrial.start_date);
+            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            if (startDate.getTime() > primaryCompDate.getTime()) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
         // Scenario #7c in Reg F11
         vm.validateCompDateQual = function() {
             if (vm.currentStatusCode && (['ACO', 'COM'].indexOf(vm.currentStatusCode) < 0 && vm.curTrial.comp_date_qual === 'Actual')
@@ -775,6 +786,17 @@
             var today = new Date();
             today.setHours(0,0,0,0);
             if ((vm.curTrial.comp_date_qual === 'Actual' && compDate.getTime() > today.getTime()) || (vm.curTrial.comp_date_qual === 'Anticipated' && compDate.getTime() < today.getTime())) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #9 in Reg F11
+        vm.validateCompDate = function() {
+            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            var compDate = new Date(vm.curTrial.comp_date);
+            if (primaryCompDate.getTime() > compDate.getTime()) {
                 return true;
             } else {
                 return false;
