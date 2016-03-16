@@ -30,6 +30,13 @@ class UtilController < ApplicationController
     @nih = AppSetting.find_by_code('NIH').big_value.split(';')
   end
 
+  def get_sampling_methods
+    @methods = AppSetting.find_by_code('SAMPLING_METHOD_PA').value.split(',')
+    respond_to do |format|
+      format.json { render :json => @methods }
+    end
+  end
+
   def get_nih_nci_div_pa
     @nih_nci_div_pa = AppSetting.find_by_code('NIH_NCI_DIV_PA').big_value.split(',')
   end

@@ -198,15 +198,14 @@ Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
-StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
-StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
-StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
-StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
+StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'SAEF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'BAV', name: 'Bioavailability')
+StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bioequivalence')
 StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
-StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
-StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
-StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
 
 StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
 StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
@@ -221,7 +220,7 @@ OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
-Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
 Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
 
 InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
@@ -296,6 +295,78 @@ AnatomicSite.find_or_create_by(code:'TH', name: "Thyroid")
 AnatomicSite.find_or_create_by(code:'UM', name: "Unknown Sites")
 AnatomicSite.find_or_create_by(code:'UR', name: "Urinary Bladder")
 
+UserStatus.find_or_create_by(code: 'INR', name: 'In Review')
+UserStatus.find_or_create_by(code: 'ACT', name: 'Active')
+UserStatus.find_or_create_by(code: 'INA', name: 'Inactive')
+UserStatus.find_or_create_by(code: 'DEL', name: 'Deleted')
+
+
+### MARKER STATIC DATA
+AssayType.find_or_create_by(code:  'Other' , name:'Other')
+AssayType.find_or_create_by(code:  'HPLC' , name:'High Performance Liquid Chromatography')
+AssayType.find_or_create_by(code:  'Immunohistochemistry (IHC)' , name:'Immunohistochemistry Staining Method')
+AssayType.find_or_create_by(code:  'Western Blot (Immunoblot)' , name:'Western Blotting')
+AssayType.find_or_create_by(code:  'ELISPOT' , name:'Enzyme-linked Immunosorbent Spot Assay')
+AssayType.find_or_create_by(code:  'RT-PCR' , name:'RT-PCR')
+AssayType.find_or_create_by(code:  'Cytotoxicity Assay' , name:'Cytotoxicity Assay')
+AssayType.find_or_create_by(code:  'Sequencing' , name:'Nucleic Acid Sequencing')
+AssayType.find_or_create_by(code:  'Multiplex Immunoassay' , name:'Multiple Immunologic Technique')
+AssayType.find_or_create_by(code:  'Proliferation Assay' , name:'Proliferation Assay')
+AssayType.find_or_create_by(code:  'Unspecified' , name:'Unspecified')
+AssayType.find_or_create_by(code:  'Mass Spectrometry' , name:'Mass Spectrometry')
+AssayType.find_or_create_by(code:  'Real-Time PCR (quantitative PCR)' , name:'Real Time PCR')
+AssayType.find_or_create_by(code:  'Microarray' , name:'Microarray')
+AssayType.find_or_create_by(code:  'ELISA' , name:'ELISA')
+AssayType.find_or_create_by(code:  'Flow Cytometry' , name:'Flow Cytometry')
+AssayType.find_or_create_by(code:  'in situ Hybridization' , name:'in situ Hybridization')
+AssayType.find_or_create_by(code:  'TUNEL assay' , name:'TdT-Mediated dUTP Nick End Labeling Assay')
+AssayType.find_or_create_by(code:  'PCR' , name:'Polymerase Chain Reaction')
+AssayType.find_or_create_by(code:  'Microscopy/Imaging' , name:'Microscopy Imaging Technique')
+AssayType.find_or_create_by(code:  'Real-Time RT-PCR (qRT-PCR)' , name:'Quantitative Reverse Transcriptase PCR')
+
+EvaluationType.find_or_create_by(code:  'Other', name:  'Other')
+EvaluationType.find_or_create_by(code: 'Acetylation', name:  'Acetylation')
+EvaluationType.find_or_create_by(code: 'Loss of Heterozygosity (LOH)', name:  'Loss of Heterozygosity')
+EvaluationType.find_or_create_by(code: 'Phosphorylation', name:  'Phosphorylation Process')
+EvaluationType.find_or_create_by(code: 'Proteolytic Cleavage', name:  'Protein Cleavage')
+EvaluationType.find_or_create_by(code: 'Protein Activity', name:  'Protein or Enzyme Activity')
+EvaluationType.find_or_create_by(code: 'Subtyping', name:  'Subtype')
+EvaluationType.find_or_create_by(code: 'Cell Functionality', name:  'Cell Function')
+EvaluationType.find_or_create_by(code: 'Genetic Analysis', name:  'Genetic Testing')
+EvaluationType.find_or_create_by(code: 'Level/Quantity', name:  'Level Quantity Value')
+EvaluationType.find_or_create_by(code: 'Germline Variant', name:  'Germline Mutation')
+EvaluationType.find_or_create_by(code: 'Somatic Variant', name:  'Somatic Mutation')
+EvaluationType.find_or_create_by(code: 'Chromosomal Amplification', name:  'Chromosomal Duplication')
+EvaluationType.find_or_create_by(code: 'Chromosomal Deletion', name:  'Chromosomal Deletion')
+EvaluationType.find_or_create_by(code: 'Activation Status', name:  'Protein Activation Status')
+EvaluationType.find_or_create_by(code: 'Methylation', name:  'Methylation')
+
+SpecimenType.find_or_create_by(code: 'Other', name:'Other')
+SpecimenType.find_or_create_by(code: 'Saliva', name:'Saliva')
+SpecimenType.find_or_create_by(code: 'Feces', name:'Feces')
+SpecimenType.find_or_create_by(code: 'Serum', name:'Serum')
+SpecimenType.find_or_create_by(code: 'Buccal Mucosa', name:'Buccal Mucosa')
+SpecimenType.find_or_create_by(code: 'Tissue', name:'Tissue')
+SpecimenType.find_or_create_by(code: 'Unspecified', name:'Unspecified')
+SpecimenType.find_or_create_by(code: 'CSF', name:'Cerebrospinal Fluid')
+SpecimenType.find_or_create_by(code: 'Plasma', name:'Plasma')
+SpecimenType.find_or_create_by(code: 'Blood', name:'Blood')
+SpecimenType.find_or_create_by(code: 'Urine', name:'Urine')
+SpecimenType.find_or_create_by(code: 'PBMCs', name:'Peripheral Blood Mononuclear Cell')
+SpecimenType.find_or_create_by(code: 'Cryopreserved Cells', name:'Cryopreserved Cell')
+SpecimenType.find_or_create_by(code: 'Bone Marrow', name:'Bone Marrow (biopsy/aspirate)')
+
+BiomarkerUse.find_or_create_by(code:'Integrated', name:'Integrated')
+BiomarkerUse.find_or_create_by(code:'Integral', name:'Integral')
+
+BiomarkerPurpose.find_or_create_by(code: 'Stratification Factor', name:'Stratification Factor')
+BiomarkerPurpose.find_or_create_by(code: 'Treatment Assignment', name:'Therapy Assignment')
+BiomarkerPurpose.find_or_create_by(code: 'Eligibility Criterion', name:'Eligibility Determination')
+BiomarkerPurpose.find_or_create_by(code: 'Research', name:'Research')
+BiomarkerPurpose.find_or_create_by(code: 'Response Assessment', name:'Response Assessment')
+
+
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
@@ -317,6 +388,8 @@ AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering_Commitee_Reviewed')
+
+AppSetting.find_or_create_by(code: 'SAMPLING_METHOD_PA', name: 'Sampling Method', value: 'Probability Sample,Non-Probability Sample', big_value: 'see value')
 
 trial_status_transition = '{
                              "STATUSZERO": {
@@ -377,10 +450,10 @@ trial_status_transition = '{
                                "WIT": {"valid": "Yes", "sameDay": "Yes"},
                                "ACT": {"errors": [{"message": "Duplicate"}]},
                                "EBI": {"errors": [{"message": "Invalid Transition"}]},
-                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
-                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
-                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
                                "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
                              },
@@ -390,10 +463,10 @@ trial_status_transition = '{
                                "WIT": {"valid": "Yes", "sameDay": "Yes"},
                                "ACT": {"errors": [{"message": "Invalid Transition"}]},
                                "EBI": {"errors": [{"message": "Duplicate"}]},
-                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
-                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
-                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
                                "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
                              },
@@ -538,10 +611,10 @@ sr_status_transition = '{
                                "WIT": {"valid": "Yes", "sameDay": "Yes"},
                                "ACT": {"errors": [{"message": "Duplicate"}]},
                                "EBI": {"errors": [{"message": "Invalid Transition"}]},
-                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
-                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
-                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
                                "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
                              },
@@ -551,10 +624,10 @@ sr_status_transition = '{
                                "WIT": {"valid": "Yes", "sameDay": "Yes"},
                                "ACT": {"errors": [{"message": "Invalid Transition"}]},
                                "EBI": {"errors": [{"message": "Duplicate"}]},
-                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
-                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
-                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
                                "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
                              },
@@ -643,6 +716,20 @@ AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitme
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 
 ########## SEEDING APP SETTINGS ENDS ##########
+
+########## SEEDING MAIL TEMPLATES STARTS ##########
+
+MailTemplate.find_or_create_by(
+                code: 'TRIAL_REG',
+                name: 'Trial Registration',
+                from: 'noreply@ctrp.nci.nih.gov',
+                to: 'noreply@ctrp.nci.nih.gov',
+                subject: 'NCI CTRP: Trial RECORD CREATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+                body_text: 'Text version.',
+                body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br><br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
+)
+
+########## SEEDING MAIL TEMPLATES ENDS ############
 
 puts "Seeding ldap and local users"
 #Add LDAP and local test users

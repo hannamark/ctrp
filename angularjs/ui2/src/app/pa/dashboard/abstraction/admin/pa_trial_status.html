@@ -61,7 +61,7 @@
                                             <div>
                                                 <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm"
                                                     ng-model="trialStatusView.statusObj.why_stopped"
-                                                    ng-maxlength="160" maxlength="160" 
+                                                    ng-maxlength="160" maxlength="160"
                                                     ng-disabled="!trialStatusView.showWhyStoppedField">
                                                 </textarea>
                                                 <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">
@@ -85,7 +85,9 @@
                                                     ng-disabled="trialStatusView.statusObj.status_date == '' ||
                                                     trialStatusView.statusObj.trial_status_id == '' ||
                                                     trial_status_form.why_stopped.$viewValue.length > 160 ||
-                                                    trial_status_form.status_comment.$viewValue.length > 160">Commit</button>
+                                                    trial_status_form.status_comment.$viewValue.length > 160">
+                                                    Commit
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

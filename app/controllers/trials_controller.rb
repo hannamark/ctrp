@@ -74,6 +74,20 @@ class TrialsController < ApplicationController
     end
   end
 
+  def genders
+    @genders = Gender.all
+    respond_to do |format|
+      format.json { render :json => @genders }
+    end
+  end
+
+  def age_units
+    @age_units = AgeUnit.all
+    respond_to do |format|
+      format.json { render :json => @age_units }
+    end
+  end
+
   def biospecimen_rententions
     @retention = BiospecimenRetention.all
     respond_to do |format|
@@ -415,7 +429,15 @@ class TrialsController < ApplicationController
           from_status_code = statuses[i - 1]['trial_status_code']
         end
         to_status_code = statuses[i]['trial_status_code']
-        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code)
+
+        # Flag that indicates if the two status dates are the same
+        if from_status_code == 'STATUSZERO'
+          same_date = false
+        else
+          same_date = statuses[i - 1]['status_date'] == statuses[i]['status_date']
+        end
+
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code, same_date)
         @validation_msgs.append(validation_msg)
       end
     end
@@ -484,17 +506,17 @@ class TrialsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def trial_params
     params.require(:trial).permit(:nci_id, :lead_protocol_id, :allocation_id, :official_title, :acronym, :pilot, :research_category_id,
-                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id,
+                                  :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id, :accept_vol, :min_age, :max_age, :min_age_unit_id, :max_age_unit_id, :gender_id,
                                   :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
                                   :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
                                   :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
-                                  :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history,
+                                  :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :study_pop_desc, :sampling_method,
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :study_model_id, :study_model_other,
                                   :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :time_perspective_id, :time_perspective_other,
                                   :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
                                   :brief_title, :brief_summary, :objective, :detailed_description, :study_classification_id, :target_enrollment, :final_enrollment,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
-                                  :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag,
+                                  :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
                                   arms_groups_attributes: [:id, :label, :type, :description, :intervention_id, :trial_id, :_destroy],
@@ -508,13 +530,15 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
+                                  other_criteria_attributes: [:id, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
+                                  sub_groups_attributes:[:id,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
                                   outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy])
   end
 
   # Convert status code to name in validation messages
-  def convert_validation_msg (msg, from_status_code, to_status_code)
+  def convert_validation_msg (msg, from_status_code, to_status_code, same_date)
     if msg.has_key?('warnings')
       msg['warnings'].each do |warning|
         statusObj = TrialStatus.find_by_code(warning['status']) if warning.has_key?('status')
@@ -529,6 +553,12 @@ class TrialsController < ApplicationController
           elsif warning['message'] == 'Duplicate'
             dupStatusObj = TrialStatus.find_by_code(from_status_code)
             warning['dupStatus'] = dupStatusObj.name if dupStatusObj.present?
+          elsif warning['message'] == 'Same Day'
+            fromStatusObj = TrialStatus.find_by_code(from_status_code)
+            warning['from'] = fromStatusObj.name if fromStatusObj.present?
+            toStatusObj = TrialStatus.find_by_code(to_status_code)
+            warning['to'] = toStatusObj.name if toStatusObj.present?
+            warning['sameDate'] = same_date
           end
         end
       end

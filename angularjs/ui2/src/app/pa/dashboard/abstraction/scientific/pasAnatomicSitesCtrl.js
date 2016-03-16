@@ -14,18 +14,33 @@
                                      MESSAGES, _, $timeout, trialDetailObj, anatomicSitesObj) {
         var vm = this;
 
-        vm.deleteListHandler = deleteListHandler;
-        vm.deleteSelected = deleteSelected;
-
         vm.selectedDeleteAnatomicSiteList = [];
+        vm.anatomic_sites_selected = [];
+        vm.selected_anatomic_site = {};
 
-        console.log('IN pasAnatomicSitesCtrl='+ JSON.stringify(anatomicSitesObj));
         // injected objects
         vm.curTrial = trialDetailObj;
+        vm.anatomicSitesArr = anatomicSitesObj;
 
-        console.log('IN pasAnatomicSitesCtrl anatomicView.curTrial.anatomic_sites='+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
+        // actions
+        vm.setAddMode = setAddMode;
+        vm.deleteListHandler = deleteListHandler;
+        vm.deleteSelected = deleteSelected;
+        vm.saveSelection = saveSelection;
+        vm.reset = reset();
 
-        console.log("vm.curTrial.anatomic_sites="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
+        //console.log('IN pasAnatomicSitesCtrl anatomicView.curTrial.anatomic_sites='+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
+
+       // console.log("vm.curTrial.anatomic_sites="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
+
+        /**
+         *  Set Add Mode. This causes the dropdown of Anatomic Sites to appear for selection
+         **/
+        function setAddMode() {
+            //console.log("SETTING TO ADDMODE");
+            vm.addMode = true;
+        }
+
 
         vm.saveTrial = function(){
             vm.disableBtn = true;
@@ -58,7 +73,7 @@
 
 
         function deleteListHandler(anatomicSitesSelectedInCheckboxes){
-            console.log("In deleteListHandler anatomicSitesSelectedInCheckboxes" + JSON.stringify(anatomicSitesSelectedInCheckboxes));
+            //console.log("In deleteListHandler anatomicSitesSelectedInCheckboxes" + JSON.stringify(anatomicSitesSelectedInCheckboxes));
             var deleteList = [];
             angular.forEach(anatomicSitesSelectedInCheckboxes, function(item) {
                 if ( angular.isDefined(item.selected) && item.selected === true ) {
@@ -66,7 +81,7 @@
                 }
             });
             vm.selectedDeleteAnatomicSiteList = deleteList ;
-            console.log("In vm.selectedDeleteAnatomicSiteList=" + JSON.stringify(vm.selectedDeleteAnatomicSiteList));
+            //console.log("In vm.selectedDeleteAnatomicSiteList=" + JSON.stringify(vm.selectedDeleteAnatomicSiteList));
 
         };
 
@@ -80,16 +95,37 @@
                 vm.curTrial.anatomic_site_wrappers_attributes.push(anatomicSiteToBeDeletedFromDb);
             }
             vm.saveTrial();
-            /*
-            for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
-                for (var j = 0; j < vm.curTrial.collaborators.length; j++) {
-                    if (vm.curTrial.collaborators[j].organization_id == vm.selectedDeleteCollaboratorsList[i].organization_id) {
-                        var collaboratorToBeDeletedFromView = vm.curTrial.anatomic_site_wrappers[j];
-                        console.log("coll to be delview =" + JSON.stringify(collaboratorToBeDeletedFromView));
-                        vm.curTrial.collaborators.splice(j, 1);
+        }
+
+        function saveSelection() {
+            console.log("Selected anatomic sites = " + JSON.stringify(vm.anatomic_sites_selected));
+            if (vm.anatomic_sites_selected.length > 0) {
+                vm.curTrial.anatomic_site_wrappers_attributes = [];
+                _.each(vm.anatomic_sites_selected, function (selected_anatomic_site) {
+                    var exists = false
+                    for (var i = 0; i < vm.curTrial.anatomic_site_wrappers.length; i++) {
+                        if (vm.curTrial.anatomic_site_wrappers[i].anatomic_site_id == selected_anatomic_site.id){
+                            exists = true;
+                        }
                     }
-                }
-            }*/
+                    console.log("update Trial exists ="+exists);
+                    if (!exists){
+                        var anatomicSiteToBeAddedToDb = {};
+                        anatomicSiteToBeAddedToDb.new = true;
+                        anatomicSiteToBeAddedToDb.anatomic_site_id = selected_anatomic_site.id;
+                        anatomicSiteToBeAddedToDb.trial_id = vm.curTrial.id;
+                        anatomicSiteToBeAddedToDb._destroy = false;
+                        vm.curTrial.anatomic_site_wrappers_attributes.push(anatomicSiteToBeAddedToDb);
+                    }
+                });
+            }
+            //console.log(" vm.curTrial.anatomic_site_wrappers_attributes="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers_attributes));
+            vm.anatomic_sites_selected = [];
+            vm.saveTrial();
+        }
+        function reset() {
+            //console.log("IN RESET");
+            $scope.anatomic_sites_selected = [];
         }
 
     } //pasAnatomicSitesCtrl

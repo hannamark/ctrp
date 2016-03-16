@@ -87,6 +87,9 @@
         <script src="bower_components/file-saver.js/FileSaver.js"></script>
         <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
         <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
+        <script src="bower_components/api-check/dist/api-check.js"></script>
+        <script src="bower_components/angular-formly/dist/formly.js"></script>
+        <script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -108,6 +111,7 @@
         <script src="app/user/gsaModalCtrl.js"></script>
         <script src="app/registry/ctrp.app.registry.js"></script>
         <script src="app/registry/registration/viewTrialCtrl.js"></script>
+        <script src="app/registry/registration/verifyTrialDataCtrl.js"></script>
         <script src="app/registry/registration/trialDetailCtrl.js"></script>
         <script src="app/registry/registration/trialCtrl.js"></script>
         <script src="app/registry/registration/trial-registration.routes.js"></script>
@@ -119,6 +123,7 @@
         <script src="app/po/person/personCtrl.js"></script>
         <script src="app/po/person/person.routes.js"></script>
         <script src="app/po/person/ModalInstancePersonCtrl.js"></script>
+        <script src="app/po/person/directives/personSearch2.js"></script>
         <script src="app/po/person/directives/personAdvSearchModalButton.js"></script>
         <script src="app/po/person/directives/advancedPersonSearchForm.js"></script>
         <script src="app/po/organization/phoneValidator.js"></script>
@@ -150,10 +155,12 @@
         <script src="app/pa/dashboard/abstraction/trial_overview/trial-abstraction.routes.js"></script>
         <script src="app/pa/dashboard/abstraction/trial_overview/paTrialOverviewCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/scientific/trial-scientific.routes.js"></script>
+        <script src="app/pa/dashboard/abstraction/scientific/pasTrialSubGroupsCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/scientific/pasTrialOutcomeMeasuresCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/scientific/pasTrialDesignCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/scientific/pasTrialDescriptionCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/scientific/pasEligibilityCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/scientific/pasAnatomicSitesCtrl.js"></script>
-        <script src="app/pa/dashboard/abstraction/scientific/pasTrialOutcomeMeasuresCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trialRegIndCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trialRegFdaCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/trialParticipatingSitesCtrl.js"></script>
@@ -166,6 +173,7 @@
         <script src="app/pa/dashboard/abstraction/admin/paTrialRelatedDocsCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/admin/generalTrialDetailsCtrl.js"></script>
         <script src="app/modules/widgets/ctrp.module.widgets.js"></script>
+        <script src="app/modules/widgets/trial/ctrp.widgets.trial-search.directive.js"></script>
         <script src="app/modules/widgets/help/HelpService.js"></script>
         <script src="app/modules/widgets/help/helpModalCtrl.js"></script>
         <script src="app/modules/widgets/help/ctrp.widgets.ctrpHelp.directive.js"></script>
@@ -189,12 +197,12 @@
         <script src="app/modules/data_services/UserService.js"></script>
         <script src="app/modules/data_services/TrialService.js"></script>
         <script src="app/modules/data_services/PersonService.js"></script>
+        <script src="app/modules/data_services/OutcomeMeasureService.js"></script>
         <script src="app/modules/data_services/OrganizationService.js"></script>
         <script src="app/modules/data_services/GeoLocationService.js"></script>
         <script src="app/modules/data_services/FamilyService.js"></script>
         <script src="app/modules/data_services/DateService.js"></script>
         <script src="app/modules/data_services/AuditTrialService.js"></script>
-        <script src="app/modules/data_services/OutcomeMeasureService.js"></script>
         <script src="app/modules/ctrp.module.underscoreWrapper.js"></script>
         <script src="app/modules/ctrp.module.timeout.js"></script>
         <script src="app/modules/ctrp.module.promisewithtimeoutservice.js"></script>

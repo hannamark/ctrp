@@ -4,10 +4,10 @@
         .controller('pasTrialDesignCtrl', pasTrialDesignCtrl);
 
     pasTrialDesignCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common', 'maskings'];
+        'MESSAGES', '_', '$timeout', 'groupedTrialDesignData', 'Common', 'maskings', 'timePerspectivesObj'];
 
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings) {
+        MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings, timePerspectivesObj) {
         var vm = this;
         console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
@@ -17,10 +17,10 @@
         vm.secondaryPurposes = [];
         vm.interventionModels = [];
         vm.studyModels = [];
-        vm.maskings = maskings.maskings.sort(Common.a2zComparator());
+        vm.maskings = maskings.maskings;
         vm.allocations = [];
         vm.studyClassifications = [];
-        vm.timePerspectives = [];
+        vm.timePerspectives = timePerspectivesObj.data;
         vm.biospecimenRetentions = [];
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
@@ -50,10 +50,10 @@
         // break down the grouped promised data as arrays
         function _unpackPromisedData() {
             if (groupedTrialDesignData.length === 4) {
-                vm.trialPhases = groupedTrialDesignData[0].sort(Common.a2zComparator());
-                vm.researchCategories = groupedTrialDesignData[1].sort(Common.a2zComparator());
-                vm.primaryPurposes = groupedTrialDesignData[2].sort(Common.a2zComparator());
-                vm.secondaryPurposes = groupedTrialDesignData[3].sort(Common.a2zComparator());
+                vm.trialPhases = groupedTrialDesignData[0];
+                vm.researchCategories = groupedTrialDesignData[1];
+                vm.primaryPurposes = groupedTrialDesignData[2];
+                vm.secondaryPurposes = groupedTrialDesignData[3];
             }
         }
 
@@ -62,7 +62,7 @@
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
                 vm.isInfoSourceProtocol = infoSourceName.indexOf('protocol') > -1;
-                vm.isInfoSourceImport = vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
+                vm.isInfoSourceImport = !vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
             }, 0);
         } // _getTrialDetailCopy
 
@@ -91,10 +91,6 @@
 
                     if ((vm.isObservational || vm.isAncillary) && vm.studyModels.length === 0) {
                         _fetchStudyModels();
-                    }
-
-                    if ((vm.isObservational || vm.isAncillary) && vm.timePerspectives.length === 0) {
-                        _getTimePerspectives();
                     }
 
                     if ((vm.isObservational || vm.isAncillary) && vm.biospecimenRetentions.length === 0) {
@@ -149,7 +145,7 @@
                         var curTimePerspective = _.findWhere(vm.timePerspectives, {id: newVal});
                         vm.isOtherTimePerspective = curTimePerspective.name.toLowerCase().indexOf('other') > -1;
                         // reset to original data or empty
-                        vm.trialDetailObj.time_perspective_other = _resetValueForField('time_perspective_other');
+                        vm.trialDetailObj.time_perspective_other = ''; // _resetValueForField('time_perspective_other');
                     }
                 });
         }
@@ -161,7 +157,7 @@
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
                 if (res.server_response.status === 200) {
-                    vm.interventionModels = res.models.sort(Common.a2zComparator()) || [];
+                    vm.interventionModels = res.models || [];
                 }
             });
         }
@@ -170,7 +166,7 @@
             PATrialService.getAllocations().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.allocations = res.allocations || [];
-                    vm.allocations.sort(Common.a2zComparator());
+                    vm.allocations;
                 }
             });
         }
@@ -179,7 +175,7 @@
             PATrialService.getStudyClassifications().then(function(res) {
                 if (res.server_response.status === 200) {
                     vm.studyClassifications = res.data || [];
-                    vm.studyClassifications.sort(Common.a2zComparator());
+                    vm.studyClassifications;
                 }
             });
         }
@@ -187,13 +183,13 @@
         function _fetchStudyModels() {
             PATrialService.getStudyModels().then(function(res) {
                 vm.studyModels = res.data || [];
-                vm.studyModels.sort(Common.a2zComparator());
+                vm.studyModels;
             });
         }
 
         function _fetchBiospecimenRetention() {
             PATrialService.getBiospecimenRetentions().then(function(res) {
-                vm.biospecimenRetentions = res.data.sort(Common.a2zComparator()) || [];
+                vm.biospecimenRetentions = res.data || [];
             });
         }
 
@@ -216,14 +212,6 @@
             var cachedTrial = PATrialService.getCurrentTrialFromCache();
             var val = cachedTrial[fieldName] || '';
             return val;
-        }
-
-        function _getTimePerspectives() {
-            PATrialService.getTimePerspectives().then(function(res) {
-                vm.timePerspectives = res.data || [];
-                vm.timePerspectives.sort(Common.a2zComparator());
-                console.info('time perspectives: ', res);
-            });
         }
 
         function updateTrialDesign() {

@@ -425,6 +425,11 @@ And The Completion Date is always the same as, or later than, the Primary Comple
 
      
 
+Scenario: #23 Delete Trial Status Comment not null
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Trial Status screen
+When I select Delete a Trial Status
+And I have not entered a Comment
+Then the will display the error "A comment must be entered"
 
-
-
+ 

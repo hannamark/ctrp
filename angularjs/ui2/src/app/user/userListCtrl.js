@@ -20,8 +20,8 @@
 
         //ui-grid plugin options
         vm.gridOptions = UserService.getGridOptions();
-        vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-        vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+        vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+        vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);

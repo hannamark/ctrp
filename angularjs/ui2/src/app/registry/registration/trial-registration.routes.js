@@ -280,6 +280,23 @@
                     parent: 'main.trials',
                     label: 'Update Participating Site'
                 }
+            })
+
+            .state('main.verifyTrialData', {
+                url: '/verify-trial-data/:trialId',
+                templateUrl: 'app/registry/registration/verifyTrialData.html',
+                controller: 'verifyTrialDataCtrl as verifyTrialDataView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'Verify Trial Data'
+                }
             });
     } //trialRegistrationRoutes
 })();
