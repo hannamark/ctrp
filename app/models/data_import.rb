@@ -169,6 +169,22 @@ class DataImport
         a2.anatomic_site = AnatomicSite.all[rand(0..AnatomicSite.all.size-1)]
         a2.trial = trial
         trial.anatomic_site_wrappers << a2
+
+        # Assign Interventions and Arm Groups
+        arm1 = ArmsGroup.new
+        i1 = Intervention.new
+        i1.name = "i1"
+        i1.description = "i1d"
+        arm1.intervention = i1
+        i2 = Intervention.new
+        arm2 = ArmsGroup.new
+        i2.name = "i2"
+        i2.description = "i2d"
+        arm2.intervention = i2
+        trial.interventions << i1
+        trial.interventions << i2
+        trial.arms_groups << arm1
+        trial.arms_groups << arm2
         #save Trial
         trial.save!
       end
