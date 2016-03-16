@@ -181,8 +181,6 @@ class DataImport
         i2.name = "i2"
         i2.description = "i2d"
         arm2.intervention = i2
-        trial.interventions << i1
-        trial.interventions << i2
         trial.arms_groups << arm1
         trial.arms_groups << arm2
         #save Trial
