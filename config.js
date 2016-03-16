@@ -41,24 +41,6 @@ exports.config = {
     getPageTimeout: 50000,
 
     specs: [
-        //PO F2-F15
-        'features/PO\ F2\ Search\ for\ Organizations.feature',
-        'features/PO\ F3\ Create\ an\ Organization.feature',
-        'features/PO\ F4\ Edit\ Organization\ Information.feature',
-        'features/PO\ F5\ Delete\ Organization.feature',
-        'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature',
-        'features/PO\ F7\ Create\ Organization\ Family\ Name.feature',
-        'features/PO\ F7\ Edit\ Organization\ Family\ Name.feature',
-        'features/PO\ F7\ Search\ Organization\ Family\ Name.feature',
-        'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature',
-        'features/PO\ F9\ Search\ for\ Persons.feature',
-        'features/PO\ F10\ Create\ a\ Person\ Record.feature',
-        'features/PO\ F11\ Edit\ Person\ Information.feature',
-        'features/PO\ F12\ Delete\ Person\ record.feature',
-        'features/PO\ F13 Curator\ review\ of\ a\ Pending\ Person\ Record.feature',
-        'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
-        'features/PO\ F15\ Add\ Organization\ Alias.feature',
-
         /************* PA Features ************/
         'features/PAA\ F01\ Add\ and\ Edit\ General\ Trial\ Details.Feature',
         'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
@@ -79,7 +61,23 @@ exports.config = {
         'features/Reg\ F11\ Register\ Trial\ Dates\ and\ Trial\ Status.feature',
         'features/Reg\ F12\ Register\ Trial\ IND\ IDE.feature',
 
-
+        /************* PO F2-F15 ************/
+        'features/PO\ F2\ Search\ for\ Organizations.feature',
+        'features/PO\ F3\ Create\ an\ Organization.feature',
+        'features/PO\ F4\ Edit\ Organization\ Information.feature',
+        'features/PO\ F5\ Delete\ Organization.feature',
+        'features/PO\ F6\ Curator\ review\ of\ a\ Pending\ Organization.feature',
+        'features/PO\ F7\ Create\ Organization\ Family\ Name.feature',
+        'features/PO\ F7\ Edit\ Organization\ Family\ Name.feature',
+        'features/PO\ F7\ Search\ Organization\ Family\ Name.feature',
+        'features/PO\ F8\ Associate\ an\ Organization\ with\ a\ Family.feature',
+        'features/PO\ F9\ Search\ for\ Persons.feature',
+        'features/PO\ F10\ Create\ a\ Person\ Record.feature',
+        'features/PO\ F11\ Edit\ Person\ Information.feature',
+        'features/PO\ F12\ Delete\ Person\ record.feature',
+        'features/PO\ F13 Curator\ review\ of\ a\ Pending\ Person\ Record.feature',
+        'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
+        'features/PO\ F15\ Add\ Organization\ Alias.feature',
 
     ],
 

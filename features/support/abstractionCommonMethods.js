@@ -325,6 +325,41 @@ var abstractionCommonMethods = function(){
         browser.sleep(250);
     };
 
+    this.elementIsPresent = function (element){
+        var cnt = 1000;
+        var getLoopState = false;
+        loopBr1:
+        for (var i = 0;i<cnt;i++){
+            element.isPresent().then(function (getState){
+                var pasVal = ''+getState+'';
+                function retVal(){
+                    return pasVal;
+                }
+                getLoopState = retVal();
+                console.log('Element is Present Status:['+i+'] - ['+getLoopState+']');
+            });
+            if (getLoopState === true){
+                break loopBr1;
+            }
+        }
+    };
+
+    this.elementIsPresentA = function (element){
+        var i =0;
+        var getLoopState = false;
+        do{
+            element.isPresent().then(function (getState){
+                var pasVal = ''+getState+'';
+                function retVal(){
+                    return pasVal;
+                }
+                getLoopState = retVal();
+                console.log('Element is Present Status ['+getLoopState+']');
+            });
+            if (getLoopState === true){break;}
+            i++
+        } while (i <= 1000);
+    };
 
     /*****************************************
      * Verify expected value : Text Box
