@@ -1,9 +1,12 @@
 class ApiTrialParamsLoader
 
   $rest_params = {}
-  $errors       = Hash.new()
   $mapperObject
 
+  def initialize
+    $errors = {}
+    $rest_params = {}
+  end
 
   def load_params(xmlMapperObject,type,trial_id)
 
@@ -29,10 +32,7 @@ class ApiTrialParamsLoader
          p $mapperObject.send(attr)
          $rest_params[attr] = $mapperObject.send(attr)
        end
-        # if !$mapperObject.send(attr).nil?
     end
-
-p $rest_params
 
 
     ###Trial Identifiers
