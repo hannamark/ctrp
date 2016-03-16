@@ -67,6 +67,7 @@
         vm.addOtherIdError = '';
         vm.showAddGrantError = false;
         vm.showAddStatusError = false;
+        vm.showAddStatusDateError = false;
         vm.showAddIndIdeError = false;
         vm.showAddAnthorityError = false;
         vm.addAuthorityError = '';
@@ -456,31 +457,38 @@
         // Add trial status to a temp array
         vm.addStatus = function () {
             if (vm.status_date && vm.trial_status_id && (vm.why_stopped_disabled || (!vm.why_stopped_disabled && vm.why_stopped))) {
-                var newStatus = {};
-                newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
-                newStatus.trial_status_id = vm.trial_status_id;
-                // For displaying status name in the table
-                _.each(vm.trialStatusArr, function (status) {
-                    if (status.id == vm.trial_status_id) {
-                        newStatus.trial_status_name = status.name;
-                        newStatus.trial_status_code = status.code;
-                    }
-                });
-                newStatus.comment = vm.status_comment;
-                newStatus.why_stopped = vm.why_stopped;
-                newStatus._destroy = false;
-                TrialService.addStatus(vm.addedStatuses, newStatus);
-                vm.tsNum++;
-                vm.status_date = null;
-                vm.trial_status_id = null;
-                vm.status_comment = null;
-                vm.why_stopped = null;
-                vm.showAddStatusError = false;
-                vm.why_stopped_disabled = true;
-                vm.validateStatus();
-                updateCurrentStatus();
+                if (notFutureDate(vm.status_date)) {
+                    var newStatus = {};
+                    newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
+                    newStatus.trial_status_id = vm.trial_status_id;
+                    // For displaying status name in the table
+                    _.each(vm.trialStatusArr, function (status) {
+                        if (status.id == vm.trial_status_id) {
+                            newStatus.trial_status_name = status.name;
+                            newStatus.trial_status_code = status.code;
+                        }
+                    });
+                    newStatus.comment = vm.status_comment;
+                    newStatus.why_stopped = vm.why_stopped;
+                    newStatus._destroy = false;
+                    TrialService.addStatus(vm.addedStatuses, newStatus);
+                    vm.tsNum++;
+                    vm.status_date = null;
+                    vm.trial_status_id = null;
+                    vm.status_comment = null;
+                    vm.why_stopped = null;
+                    vm.showAddStatusError = false;
+                    vm.showAddStatusDateError = false;
+                    vm.why_stopped_disabled = true;
+                    vm.validateStatus();
+                    updateCurrentStatus();
+                } else {
+                    vm.showAddStatusError = false;
+                    vm.showAddStatusDateError = true;
+                }
             } else {
                 vm.showAddStatusError = true;
+                vm.showAddStatusDateError = false;
             }
         };
 
@@ -1197,6 +1205,18 @@
             vm.currentStatusCode = null;
             vm.currentStatusName = null;
             return;
+        }
+
+        // Return true if the date is today or in the past
+        function notFutureDate(date) {
+            var dateObj = new Date(date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if (dateObj.getTime() <= today.getTime()) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 })();
