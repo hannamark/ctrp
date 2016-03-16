@@ -105,7 +105,9 @@
                          {'ctrp_id': 1232, 'ctep_id': 321},
                          {'ctrp_id': 12322, 'ctep_id': 3212},
                      ],
-                     rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
+                     rowSelection: vm.maxRowSelectable > 1 ? 'multiple' : 'single',
+                     onSelectionChanged: onRowSelectionChanged, // for all rows
+                     onRowSelected: rowSelectedCallback, // current selected row (single row)
                      enableColResize: true,
                      enableSorting: true,
                      enableFilter: true,
@@ -118,9 +120,21 @@
                  return options;
             }
 
+            function onRowSelectionChanged() {
+                var selectedRows = vm.gridOptions.api.getSelectedRows();
+                var selectedNodes = vm.gridOptions.api.getSelectedNodes()
+                console.info('selectedRows: ', selectedRows);
+                console.info('selectedNodes: ', selectedNodes); // row object is nested in the 'data' field of node
+            } // onRowSelectionChanged
+
+            function rowSelectedCallback(event) {
+                var curSelectedRowObj = event.node.data;
+                console.info('event.node.data: ', event.node.data); // object of the current row
+            }
+
             function onModelUpdated() {
                 console.info('on model updated triggered!');
-            }
+            } // onModelUpdated
 
             function getColumnDefs() {
                 // {headerCellTemplate: '<strong>Head</strong>'}
