@@ -53,21 +53,19 @@
 
             function _resolveFormFieldsData() {
                 PATrialService.groupPATrialSearchFieldsData().then(function(res) {
-                    $log.info('res is: ', res);
+                    // $log.info('res is: ', res);
                     vm.studySourceArr = res[0];
                     vm.phaseArr = res[1];
                     vm.primaryPurposeArr = res[2];
                     vm.trialStatusArr = res[3];
-                    vm.milestoneArr = res[5];
-                    vm.processingStatusArr = res[11];
-                    //console.log("processing status = " + JSON.stringify(processingStatusObj));
                     vm.protocolIdOriginArr = res[4];
+                    vm.milestoneArr = res[5];
                     vm.researchCategoriesArr = res[6];
                     vm.nciDivArr = res[7];
                     vm.nciProgArr = res[8];
-                    //console.log("nciProgObj = " + JSON.stringify(nciProgObj));
                     vm.submissionTypesArr = res[9];
                     vm.submissionMethodsArr = res[10];
+                    vm.processingStatusArr = res[11];
                 })
                 .catch(function(err) {
                     console.error('failed to resolve: ', err);
@@ -107,12 +105,12 @@
                          {'ctrp_id': 1232, 'ctep_id': 321},
                          {'ctrp_id': 12322, 'ctep_id': 3212},
                      ],
-                     rowSelection: 'multiple',
+                     rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
                      enableColResize: true,
                      enableSorting: true,
                      enableFilter: true,
                      groupHeaders: true,
-                     rowHeight: 22,
+                     rowHeight: 25,
                      onModelUpdated: onModelUpdated,
                      suppressRowClickSelection: true
                  };
@@ -129,27 +127,26 @@
                 var colDefs = [
                     {headerName: '', width: 30, checkboxSelection: true,
                          suppressSorting: true, suppressMenu: true, pinned: true},
-                    {headerName: 'NCI ID', field: 'nci_id', width: 100, cellHeight: 20, unSortIcon: true, editable: true},
-                    {headerName: 'Lead Protocol ID', field: 'lead_protocol_id', width: 100, cellHeight: 20},
-                    {headerName: 'Official Title', field: 'official_title', width: 100, cellHeight: 20},
-                    {headerName: 'Last', field: 'lname', width: 100, cellHeight: 20},
-                    {headerName: 'Phase', field: 'phase', width: 100, cellHeight: 20},
-                    {headerName: 'Purpose', field: 'purpose', width: 100, cellHeight: 20},
-                    {headerName: 'Pilot?', field: 'pilot', width: 100, cellHeight: 20},
-                    {headerName: 'Principal Investigator', field: 'pi', width: 140, cellHeight: 20},
-                    {headerName: 'Lead Organization', field: 'lead_org', width: 120, cellHeight: 20},
-                    {headerName: 'Sponsor', field: 'sponsor', width: 150, cellHeight: 20},
-                    {headerName: 'Current Trial Status', field: 'current_trial_status', width: 150, cellHeight: 20},
-                    {headerName: 'Current Milestone', field: 'current_milestone', width: 150, cellHeight: 20},
-                    {headerName: 'Scientific Milestone', field: 'scientific_milestone', width: 150, cellHeight: 20},
-                    {headerName: 'Admin Milestone', field: 'admin_milestone', width: 150, cellHeight: 20},
-
-                    // {headerName: 'Study Source', field: 'study_source', width: 130, cellHeight: 20,
-                    //  cellRenderer: function(params) {
-                    //      return !!params ? moment(params).format("DD-MMM-YYYY HH:mm") : '';
-                    //  }},
-                    // {headerName: 'Prefix', field: 'prefix', width: 70, cellHeight: 20},
-                    // {headerName: 'Suffix', field: 'suffix', width: 70, cellHeight: 20},
+                    {headerName: 'NCI ID', field: 'nci_id', width: 150, unSortIcon: false, editable: false},
+                    {headerName: 'Lead Protocol ID', field: 'lead_protocol_id', width: 160},
+                    {headerName: 'Official Title', field: 'official_title', width: 240},
+                    {headerName: 'Phase', field: 'phase', width: 70},
+                    {headerName: 'Purpose', field: 'purpose', width: 100},
+                    {headerName: 'Pilot?', field: 'pilot', width: 70},
+                    {headerName: 'Principal Investigator', field: 'pi', width: 170},
+                    {headerName: 'Lead Organization', field: 'lead_org', width: 180},
+                    {headerName: 'Sponsor', field: 'sponsor', width: 150},
+                    {headerName: 'Current Trial Status', field: 'current_trial_status', width: 150},
+                    {headerName: 'Current Milestone', field: 'current_milestone', width: 170},
+                    {headerName: 'Scientific Milestone', field: 'scientific_milestone', width: 190},
+                    {headerName: 'Admin Milestone', field: 'admin_milestone', width: 180},
+                    {headerName: 'Other IDs', field: 'other_ids', width: 120},
+                    {headerName: 'Current Processing Status', field: 'current_processing_status', width: 160},
+                    {headerName: 'Submission Type', field: 'submission_type', width: 150},
+                    {headerName: 'Submission Method', field: 'submission_method', width: 160},
+                    {headerName: 'Submission Source', field: 'submission_source', width: 160},
+                    {headerName: 'NIH NCI Div', field: 'nih_nci_div', width: 130},
+                    {headerName: 'NIH NCI Prog', field: 'nih_nci_prog', width: 130}
                  ];
 
                 return colDefs;
