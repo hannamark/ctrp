@@ -3,14 +3,22 @@ class ApiTrialCreateXmlMapper
     include XML::Mapping
 
     ###Trial Identifiers
-    text_node :study_source, "category",:optional=>true,:default_value=>nil
+    text_node :study_source_id,"category",:optional=>true,:default_value=>nil,
+              :reader=>proc{|obj,xml,default_reader|
+                default_reader.call(obj,xml)
+                obj.study_source_id= StudySource.find_by_name(obj.study_source_id).id if !obj.study_source_id.nil?
+              }
     text_node :lead_protocol_id, "leadOrgTrialID",:optional=>true,:default_value=>nil
     array_node  :otherIDs, "otherTrialID",:optional=>true, :class => String,:default_value=>[]
     array_node  :clinicalIDs, "clinicalTrialsDotGovTrialID",:optional=>true, :class => String,:default_value=>[]
 
     ### Trial Details
     text_node :official_title, "title",:optional=>true,:default_value=>nil
-    text_node :phase, "phase",:optional=>true, :default_valuse=>nil
+    text_node :phase_id,"phase",:optional=>true,:default_value=>nil,
+              :reader=>proc{|obj,xml,default_reader|
+                default_reader.call(obj,xml)
+                obj.phase_id= Phase.find_by_name(obj.phase_id).id if !obj.phase_id.nil?
+              }
     text_node :pilot, "pilot", :default_value=>nil, :optional=>true,
                         :reader=>proc{|obj,xml,default_reader|
                            default_reader.call(obj,xml)
@@ -31,19 +39,19 @@ class ApiTrialCreateXmlMapper
     text_node :accrual_disease_term_id,"accrualDiseaseTerminology",:optional=>true,:default_value=>nil,
               :reader=>proc{|obj,xml,default_reader|
                 default_reader.call(obj,xml)
-                obj.accrual_disease_term_id= AccrualDiseaseTerm.find_by_name(obj.accrual_disease_term_id).id
+                obj.accrual_disease_term_id= AccrualDiseaseTerm.find_by_name(obj.accrual_disease_term_id).id if !obj.accrual_disease_term_id.nil?
               }
 
 
     ### Lead Org, PI, Sponsor
     ###
-    object_node :leadOrganization, "leadOrganization", :class => ExistingOrganization,:optional=>true
-    object_node :pi, "pi", :class =>ExistingPerson,:optional=>true
-    object_node :sponsor, "sponsor", :class =>ExistingOrganization,:optional=>true
+    object_node :leadOrganization, "leadOrganization", :class => ExistingOrganization,:optional=>true,:default_value=>nil
+    object_node :pi, "pi", :class =>ExistingPerson,:optional=>true,:default_value=>nil
+    object_node :sponsor, "sponsor", :class =>ExistingOrganization,:optional=>true,:default_value=>nil
 
     ###Funding Source
     ###
-    array_node  :fundingSources, "summary4FundingSponsor", :class =>ExistingOrganization,:optional=>true
+    array_node  :fundingSources, "summary4FundingSponsor", :class =>ExistingOrganization,:optional=>true,:default_value=>nil
     text_node :program_code, "programCode",:optional=>true, :default_valuse=>nil
 
 
@@ -58,7 +66,11 @@ class ApiTrialCreateXmlMapper
 
     ###Trial Status
     ###
-    text_node :trial_status, "trialStatus",:default_value=>nil,:optional=>true
+    text_node :trial_status_id,"trialStatus",:optional=>true,:default_value=>nil,
+              :reader=>proc{|obj,xml,default_reader|
+                default_reader.call(obj,xml)
+                obj.trial_status_id= TrialStatus.find_by_name(obj.trial_status_id).id if !obj.trial_status_id.nil?
+              }
     text_node :why_stopped, "whyStopped",:default_value=>nil,:optional=>true
     text_node :status_date, "trialStatusDate",:default_value=>nil,:optional=>true
 

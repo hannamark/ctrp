@@ -150,7 +150,8 @@
             getAgeUnits: getAgeUnits,
             getGenderList: getGenderList,
             getSamplingMethods: getSamplingMethods,
-            getAnatomicSites: getAnatomicSites
+            getAnatomicSites: getAnatomicSites,
+            groupPATrialSearchFieldsData: groupPATrialSearchFieldsData
         };
 
         return services;
@@ -499,6 +500,29 @@
                 TrialService.getPrimaryPurposes(),
                 TrialService.getSecondaryPurposes()
             ];
+            return PromiseTimeoutService.groupPromises(promises);
+        }
+
+        /**
+         * Group the promise calls to return the data/list required
+         * in the PA Trial Search form
+         * @return {Array of promises} [description]
+         */
+        function groupPATrialSearchFieldsData() {
+            var promises = [];
+            promises.push(TrialService.getStudySources());
+            promises.push(TrialService.getPhases());
+            promises.push(TrialService.getPrimaryPurposes());
+            promises.push(TrialService.getTrialStatuses());
+            promises.push(TrialService.getProtocolIdOrigins());
+            promises.push(getMilestones());
+            promises.push(getResearchCategories());
+            promises.push(getNciDiv());
+            promises.push(getNciProg());
+            promises.push(getSubmissionTypes());
+            promises.push(getSubmissionMethods());
+            promises.push(getProcessingStatuses());
+
             return PromiseTimeoutService.groupPromises(promises);
         }
 

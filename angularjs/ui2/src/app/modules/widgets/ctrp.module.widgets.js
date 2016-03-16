@@ -12,6 +12,9 @@
     //third-party modules
     'angularMoment',
     'angularUtils.directives.dirPagination',
+    'agGrid',
+    'formly',
+    'formlyBootstrap',
 
     //ctrp modules
     //'ctrpApp',
