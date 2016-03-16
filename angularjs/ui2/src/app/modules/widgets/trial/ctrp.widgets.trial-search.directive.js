@@ -97,21 +97,21 @@
                 vm.searchWarningMessage = '';
             };
 
+            var pageSize = 10; // 10 items per page
             function getGridOptions() {
 
                 var options = {
+                     enableServerSideSorting: true,
+                     enableServerSideFilter: true,
+                     rowModelType: 'pagination',
                      columnDefs: getColumnDefs(),
-                     rowData: [
-                         {'ctrp_id': 1232, 'ctep_id': 321},
-                         {'ctrp_id': 12322, 'ctep_id': 3212},
-                     ],
-                     rowSelection: vm.maxRowSelectable > 1 ? 'multiple' : 'single',
+                     rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
                      onSelectionChanged: onRowSelectionChanged, // for all rows
                      onRowSelected: rowSelectedCallback, // current selected row (single row)
                      enableColResize: true,
                      enableSorting: true,
                      enableFilter: true,
-                     groupHeaders: true,
+                     // groupHeaders: true,
                      rowHeight: 25,
                      onModelUpdated: onModelUpdated,
                      suppressRowClickSelection: true
@@ -128,8 +128,17 @@
             } // onRowSelectionChanged
 
             function rowSelectedCallback(event) {
-                var curSelectedRowObj = event.node.data;
-                console.info('event.node.data: ', event.node.data); // object of the current row
+                var curSelectedNode = event.node;
+                var curSelectedRowObj = curSelectedNode.data;
+                var selectionCounts = vm.gridOptions.api.getSelectedNodes().length;
+                if (selectionCounts > $scope.maxRowSelectable) {
+                    // console.info(vm.gridOptions.api.getSelectedNodes());
+                    var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
+                    oldestNode.setSelected(false);
+                    // curSelectedNode.setSelected(false);
+                    // vm.gridOptions.api.getSelectedNodes()[0].setSelected(false); // deselect the oldest selection
+                }
+                // console.info('event.node.data: ', event.node.data); // object of the current row
             }
 
             function onModelUpdated() {
