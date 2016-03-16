@@ -103,7 +103,6 @@ And I have entered values
 When I have selected Reset
 Then the information entered on the Outcome Measures screen will not be saved to the trial record
 And the screen will be refreshed with the data since the last save 
-When I select Edit
 
 Scenario:  #7 I can delete Outcome Measure for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
