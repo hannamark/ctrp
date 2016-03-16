@@ -1,10 +1,10 @@
-class MarkerCadsrsController < ApplicationController
+class CadsrMarkersController < ApplicationController
   before_action :set_marker_cadsr, only: [:show, :edit, :update, :destroy]
 
   # GET /marker_cadsrs
   # GET /marker_cadsrs.json
   def index
-    @marker_cadsrs = MarkerCadsr.all
+    @cadsr_markers = CadsrMarker.all
   end
 
   # GET /marker_cadsrs/1
@@ -14,7 +14,7 @@ class MarkerCadsrsController < ApplicationController
 
   # GET /marker_cadsrs/new
   def new
-    @marker_cadsr = MarkerCadsr.new
+    @cadsr_marker = CadsrMarker.new
   end
 
   # GET /marker_cadsrs/1/edit
@@ -24,15 +24,15 @@ class MarkerCadsrsController < ApplicationController
   # POST /marker_cadsrs
   # POST /marker_cadsrs.json
   def create
-    @marker_cadsr = MarkerCadsr.new(marker_cadsr_params)
+    @cadsr_marker = CadsrMarker.new(marker_cadsr_params)
 
     respond_to do |format|
-      if @marker_cadsr.save
-        format.html { redirect_to @marker_cadsr, notice: 'Marker cadsr was successfully created.' }
-        format.json { render :show, status: :created, location: @marker_cadsr }
+      if @cadsr_marker.save
+        format.html { redirect_to @cadsr_marker, notice: 'Marker cadsr was successfully created.' }
+        format.json { render :show, status: :created, location: @cadsr_marker }
       else
         format.html { render :new }
-        format.json { render json: @marker_cadsr.errors, status: :unprocessable_entity }
+        format.json { render json: @cadsr_marker.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -41,12 +41,12 @@ class MarkerCadsrsController < ApplicationController
   # PATCH/PUT /marker_cadsrs/1.json
   def update
     respond_to do |format|
-      if @marker_cadsr.update(marker_cadsr_params)
-        format.html { redirect_to @marker_cadsr, notice: 'Marker cadsr was successfully updated.' }
-        format.json { render :show, status: :ok, location: @marker_cadsr }
+      if @cadsr_marker.update(marker_cadsr_params)
+        format.html { redirect_to @cadsr_marker, notice: 'Marker cadsr was successfully updated.' }
+        format.json { render :show, status: :ok, location: @cadsr_marker }
       else
         format.html { render :edit }
-        format.json { render json: @marker_cadsr.errors, status: :unprocessable_entity }
+        format.json { render json: @cadsr_marker.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -54,7 +54,7 @@ class MarkerCadsrsController < ApplicationController
   # DELETE /marker_cadsrs/1
   # DELETE /marker_cadsrs/1.json
   def destroy
-    @marker_cadsr.destroy
+    @cadsr_marker.destroy
     respond_to do |format|
       format.html { redirect_to marker_cadsrs_url, notice: 'Marker cadsr was successfully destroyed.' }
       format.json { head :no_content }
@@ -64,7 +64,7 @@ class MarkerCadsrsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_marker_cadsr
-      @marker_cadsr = MarkerCadsr.find(params[:id])
+      @cadsr_marker = CadsrMarker.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

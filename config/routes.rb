@@ -2,9 +2,9 @@ Rails.application.routes.draw do
 
 
 
-  resources :marker_synonyms
 
-  resources :marker_cadsrs
+
+  resources :cadsr_marker_statuses
 
   resources :trial_versions
 

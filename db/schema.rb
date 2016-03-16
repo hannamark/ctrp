@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316024932) do
+ActiveRecord::Schema.define(version: 20160316174748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,38 @@ ActiveRecord::Schema.define(version: 20160316024932) do
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
   end
+
+  create_table "cadsr_marker_statuses", force: :cascade do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cadsr_marker_synonyms", force: :cascade do |t|
+    t.string   "alternate_name"
+    t.integer  "cadsr_marker_id"
+    t.integer  "cadsr_marker_status_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "cadsr_marker_synonyms", ["cadsr_marker_id"], name: "index_cadsr_marker_synonyms_on_cadsr_marker_id", using: :btree
+  add_index "cadsr_marker_synonyms", ["cadsr_marker_status_id"], name: "index_cadsr_marker_synonyms_on_cadsr_marker_status_id", using: :btree
+
+  create_table "cadsr_markers", force: :cascade do |t|
+    t.string   "name",                   limit: 2000
+    t.string   "meaning",                limit: 2000
+    t.text     "description"
+    t.integer  "cadsr_id"
+    t.string   "nv_term_identifier",     limit: 200
+    t.string   "pv_name",                limit: 2000
+    t.integer  "cadsr_marker_status_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "cadsr_markers", ["cadsr_marker_status_id"], name: "index_cadsr_markers_on_cadsr_marker_status_id", using: :btree
 
   create_table "central_contact_types", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -447,31 +479,6 @@ ActiveRecord::Schema.define(version: 20160316024932) do
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
   end
-
-  create_table "marker_cadsrs", force: :cascade do |t|
-    t.string   "name",               limit: 2000
-    t.string   "meaning",            limit: 2000
-    t.text     "description"
-    t.integer  "cadsr_id"
-    t.string   "nv_term_identifier", limit: 200
-    t.string   "pv_name",            limit: 2000
-    t.integer  "source_status_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
-
-  add_index "marker_cadsrs", ["source_status_id"], name: "index_marker_cadsrs_on_source_status_id", using: :btree
-
-  create_table "marker_synonyms", force: :cascade do |t|
-    t.string   "alternate_name"
-    t.integer  "marker_cadsr_id"
-    t.integer  "source_status_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "marker_synonyms", ["marker_cadsr_id"], name: "index_marker_synonyms_on_marker_cadsr_id", using: :btree
-  add_index "marker_synonyms", ["source_status_id"], name: "index_marker_synonyms_on_source_status_id", using: :btree
 
   create_table "markers", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -1315,6 +1322,9 @@ ActiveRecord::Schema.define(version: 20160316024932) do
   add_foreign_key "arms_groups", "trials"
   add_foreign_key "associated_trials", "identifier_types"
   add_foreign_key "associated_trials", "trials"
+  add_foreign_key "cadsr_marker_synonyms", "cadsr_marker_statuses"
+  add_foreign_key "cadsr_marker_synonyms", "cadsr_markers"
+  add_foreign_key "cadsr_markers", "cadsr_marker_statuses"
   add_foreign_key "central_contacts", "central_contact_types"
   add_foreign_key "central_contacts", "people"
   add_foreign_key "central_contacts", "trials"
@@ -1333,9 +1343,6 @@ ActiveRecord::Schema.define(version: 20160316024932) do
   add_foreign_key "interventions", "intervention_types"
   add_foreign_key "interventions", "trials"
   add_foreign_key "links", "trials"
-  add_foreign_key "marker_cadsrs", "source_statuses"
-  add_foreign_key "marker_cadsrs", "source_statuses"
-  add_foreign_key "marker_synonyms", "marker_cadsrs"
   add_foreign_key "markers", "assay_types"
   add_foreign_key "markers", "biomarker_purposes"
   add_foreign_key "markers", "biomarker_uses"
@@ -1434,6 +1441,9 @@ ActiveRecord::Schema.define(version: 20160316024932) do
   create_sequence "biomarker_uses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "biospecimen_retentions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "board_approval_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "cadsr_marker_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "cadsr_marker_synonyms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "cadsr_markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "central_contact_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "central_contacts_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "citations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1457,8 +1467,6 @@ ActiveRecord::Schema.define(version: 20160316024932) do
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
-  create_sequence "marker_cadsrs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
-  create_sequence "marker_synonyms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "maskings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
