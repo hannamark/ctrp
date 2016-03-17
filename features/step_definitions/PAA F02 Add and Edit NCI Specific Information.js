@@ -27,6 +27,16 @@ var abstractionTrialSearchPage = require('../support/abstractionSearchTrialPage'
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 //Abstraction NCI Specific Information
 var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
+//Regulatory Information - IND/IDE
+var abstractionRegulatoryINDIDE = require('../support/abstractionRegulatoryIND');
+//Regulatory Information - Human Subject Safety
+var abstractionRegulatoryHuman = require('../support/abstractionRegulatoryHuman');
+//Collaborators
+var abstractionCollaborators = require('../support/abstractionTrialCollaborators');
+//General Trial Details
+var abstractionTrialDetails = require('../support/abstractionTrialDetails');
+//Regulatory Information - FDAAA
+var abstractionRegulatoryInfoFDAA = require('../support/abstractionRegulatoryInfo');
 //List of Organization
 var OrgPage = require('../support/ListOfOrganizationsPage');
 //Organization Search
@@ -43,6 +53,11 @@ module.exports = function() {
     var nciSpecific = new abstractionNCISpecific();
     var searchOrg = new OrgPage();
     var organizationSearch = new orgSearch();
+    var indIDE = new abstractionRegulatoryINDIDE();
+    var humanSafety = new abstractionRegulatoryHuman();
+    var trialCollaborators = new abstractionCollaborators();
+    var trialDetails = new abstractionTrialDetails();
+    var fdaaa = new abstractionRegulatoryInfoFDAA();
     var searchTableHeader = '';
     var nciID = 'NCI-2014-00894';
     var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
@@ -63,7 +78,8 @@ module.exports = function() {
     var orgSearchCntryList = 'All Countries';
     var orgSearchNameA = 'Boston Medical Center';
     var orgSearchNameB = 'Boston University School Of Public Health';
-    var orgSearchNameC = 'Memorial Hospital Colorado Springs';
+    var orgSearchNameC = 'National Cancer Institute';
+    var orgSearchNameD = 'Wake Forest University at Clemmons';
     var nciSpecificFundingSourceValA = '';
     var programCode = '7771234';
     var programCdeEdit = '8881234';
@@ -91,6 +107,10 @@ module.exports = function() {
     var verfiSpecificStudySourceRequired = '';
     var msgStduySourceReq = 'Study Source is required';
     var msgFundingSourceReq = 'Funding Source is required';
+    var sendCTDotGovQueVal = '';
+    var glblArg = '';
+    var getOptionA = '';
+    var getOptionB = '';
 
     /*
      Scenario: #1 I can view and edit the value for Study Source
@@ -266,6 +286,7 @@ module.exports = function() {
             };
         });
         nciSpecific.clickFundingSourceOrganizationDel();
+        helper.wait_for(3000);
         organizationSearch.clickSearchOrganization();
         searchOrg.setOrgName(orgSearchNameA);
         searchOrg.clickSearchButton();
@@ -276,16 +297,17 @@ module.exports = function() {
 
     this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(sponsor, Lead, IRB\) are displayed$/, function (callback) {
         nciSpecific.clickSave();
-        browser.sleep(250).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the selected organization will be associated to the trial as Specific Funding Source$/, function (callback) {
         nciSpecific.clickAdminDataGeneralTrial();
         nciSpecific.clickAdminDataNCISpecificInformation();
+        helper.wait_for(3000);
         nciSpecific.verifyFundingSourceOrg(orgSearchNameA);
         nciSpecific.clickFundingSourceOrganizationDel();
         nciSpecific.clickSave();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     /*
@@ -352,9 +374,10 @@ module.exports = function() {
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
         nciSpecific.clickSave();
+        helper.wait_for(3000);
         nciSpecific.clickAdminDataGeneralTrial();
         nciSpecific.clickAdminDataNCISpecificInformation();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the selected organization will not be associated to the trial as Specific Funding Source$/, function (callback) {
@@ -363,10 +386,11 @@ module.exports = function() {
         nciSpecific.clickAdminDataNCISpecificInformation();
         nciSpecific.clickFundingSourceOrganizationDel();
         nciSpecific.clickSave();
+        helper.wait_for(3000);
         nciSpecific.clickAdminDataGeneralTrial();
         nciSpecific.clickAdminDataNCISpecificInformation();
         //nciSpecific.verifyFundingSourceOrg('');
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     /*
@@ -813,46 +837,195 @@ module.exports = function() {
      And I am on the NCI Specific Information screen
      And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
      And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-     And the Trial processing status is �Verification Pending�, "Abstracted", "No Response�, or �Abstracted, Response�
-     And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�
+     And the Trial processing status is "Verification Pending", "Abstracted", "Abstraction Verified No Response", or "Abstraction Verified Response"
+     And the Trial Overall Status is not "Complete", "Administratively Complete" or "Terminated"
      And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
      When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?�
      Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
      */
 
     this.Given(/^the Trial Sponsor is "([^"]*)" \(Trial\/Sponsor_ID where organizations\/name = "([^"]*)"\)$/, function (arg1, arg2, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var getArg1National = arg1;
+        var getArg2National = arg2;
+        console.log('Arg1 Value:'+getArg1National);
+        console.log('Arg2 Value:'+getArg2National);
+        trialDetails.clickAdminDataGeneralTrial();
+        trialDetails.clickSearchOrgButtonByIndex('1');
+        searchOrg.setOrgName(getArg1National);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialDetails.clickSave();
+        trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, arg1, "Verifying the Sponsor Organization Name");
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the Trial Lead Organization is not "([^"]*)" \(Trial\/Lead_Org_ID where Organizations\/Name = "([^"]*)"\)$/, function (arg1, arg2, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var getArg1NCI = arg1;
+        var getArg2NCI = arg2;
+        console.log('Arg1 Value:'+getArg1NCI);
+        console.log('Arg2 Value:'+getArg2NCI);
+        trialDetails.clickAdminDataGeneralTrial();
+        trialDetails.clickSearchOrgButtonByIndex('0');
+        searchOrg.setOrgName(getArg1NCI);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialDetails.clickSave();
+        trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, getArg1NCI, "Verifying the Lead Organization Name");
+        browser.sleep(250).then(callback);
     });
 
-    this.Given(/^the Trial processing status is �Verification Pending�, "([^"]*)", "No Response�, or �Abstracted, Response�$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^the Trial processing status is "([^"]*)", "([^"]*)", "([^"]*)", or "([^"]*)"$/, function (arg1, arg2, arg3, arg4, callback) {
+        var matchArg = '';
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        //commonFunctions.waitForElement(nciSpecific.nciSpecificProgramCode, "Program Code");
+        var getArg1ProcessingStatus = 'Processing Status: '+arg1;
+        var getArg2ProcessingStatus = 'Processing Status: '+arg2;
+        var getArg3ProcessingStatus = 'Processing Status: '+arg3;
+        var getArg4ProcessingStatus = 'Processing Status: '+arg4;
+        console.log('Arg1 Value: '+getArg1ProcessingStatus);
+        console.log('Arg2 Value: '+getArg2ProcessingStatus);
+        console.log('Arg3 Value: '+getArg3ProcessingStatus);
+        console.log('Arg4 Value: '+getArg4ProcessingStatus);
+        nciSpecific.trialOverviewProcessingStatus.getText().then(function(value){
+                if(value === getArg1ProcessingStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyProcessingStatus(getArg1ProcessingStatus);
+                }else if(value === getArg2ProcessingStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyProcessingStatus(getArg2ProcessingStatus);
+                }else if(value === getArg3ProcessingStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyProcessingStatus(getArg3ProcessingStatus);
+                }else if(value === getArg4ProcessingStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyProcessingStatus(getArg4ProcessingStatus);
+                };
+        });
+        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^the Trial Overall Status is not "([^"]*)", "([^"]*)" or "([^"]*)"$/, function (arg1, arg2, arg3, callback) {
+
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the trial Research Category is "([^"]*)" \(Trial\/Research_Category_id where Research_Categories\/Name = "([^"]*)"\)$/, function (arg1, arg2, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var getArg1ResearchCategory = 'Clinical Research Category: '+arg1;
+        var getArg2ResearchCategory = 'Clinical Research Category: '+arg2;
+        nciSpecific.verifyResearchCategory(getArg1ResearchCategory);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials\.gov\?�$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        nciSpecific.nciSpecificStudySource.$('option:checked').getText().then(function(value){
+            var pasNCISpecStudySource = ''+value+'';
+            function retNciSpecificStudySourceVal(){
+                return pasNCISpecStudySource;
+            }
+            nciSpecificStudySourceVal = retNciSpecificStudySourceVal();
+            console.log('System Identified ['+nciSpecificStudySourceVal+'] as the current Study Source selected value');
+            if (nciSpecificStudySourceVal === 'National'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                nciSpecificStudySourceResltVal = retNCISpecNewVal();
+            };
+            if (nciSpecificStudySourceVal === 'Externally Peer-Reviewed'){
+                nciSpecific.selectStudySource('Institutional');
+                var pasNCISpecNewVal = 'Institutional';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                nciSpecificStudySourceResltVal = retNCISpecNewVal();
+            };
+            if (nciSpecificStudySourceVal === 'Institutional'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                nciSpecificStudySourceResltVal = retNCISpecNewVal();
+            };
+            if (nciSpecificStudySourceVal === 'Industrial'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                nciSpecificStudySourceResltVal = retNCISpecNewVal();
+            };
+            if (nciSpecificStudySourceVal === 'Other'){
+                nciSpecific.selectStudySource('National');
+                var pasNCISpecNewVal = 'National';
+                function retNCISpecNewVal(){
+                    return pasNCISpecNewVal;
+                }
+                nciSpecificStudySourceResltVal = retNCISpecNewVal();
+            };
+        });
+        nciSpecific.clickFundingSourceOrganizationDel();
+        helper.wait_for(3000);
+        organizationSearch.clickSearchOrganization();
+        searchOrg.setOrgName(orgSearchNameC);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        var arg1 = 'No';
+        var arg2 = 'Yes';
+        var arg3 = 'Send Trial Information to ClinicalTrials.gov?';
+        //nciSpecific.nciSpecificSendCTDotGovLbl.getText().then(function(value){
+        //    var pasVal = ''+value+'';
+        //    function retVal(){
+        //        return pasVal;
+        //    };
+        //    sendCTDotGovQueVal = retVal();
+        //    console.log('Send to CTDotGov Element Value ['+sendCTDotGovQueVal+']');
+        //});
+        //expect(sendCTDotGovQueVal.toString()).to.eql(arg3.toString());
+        //Verifying Yes or No Condition
+        nciSpecific.nciSpecificSendTrialRadio.get(1).isSelected().then(function(condition2){
+            if (condition2===true){
+                glblArg = 'Yes';
+            }
+        });
+        nciSpecific.nciSpecificSendTrialRadio.get(0).isSelected().then(function(condition1){
+            if (condition1===true){
+                glblArg = 'No';
+            }
+        });
+        nciSpecific.clickSave();
+        helper.wait_for(3400);
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the selected value for �Send Trial Information to ClinicalTrials\.gov\?� will be Yes or No$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var arg3 = 'Send Trial Information to ClinicalTrials.gov?';
+        //Select send to trial CTDotGov
+        if (glblArg === 'No'){
+            nciSpecific.selectSendTrial('1');
+        } else if(glblArg === 'Yes'){
+            nciSpecific.selectSendTrial('0');
+        };
+        //Save
+        nciSpecific.clickSave();
+        helper.wait_for(3400);
+        nciSpecific.clickAdminDataGeneralTrial();
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        helper.wait_for(3000);
+        console.log('Current Selection: ['+glblArg+']');
+        //expect(sendCTDotGovQueVal).to.eql(arg3);
+        if (glblArg === 'Yes'){
+            nciSpecific.verifySendToTrialCTDotGov('0', true);
+        } else if(glblArg === 'No'){
+            nciSpecific.verifySendToTrialCTDotGov('1', true);
+        };
+        browser.sleep(25).then(callback);
     });
 
     /*
@@ -1397,9 +1570,9 @@ module.exports = function() {
         //console.log('Expected Funding Source Organization: '+verfiStudySourceVal);
         //nciSpecific.verifyFundingSourceOrg(verfiStudySourceVal);
         if (nciSpecificProgramCodeVal === ''){
-            convPrgCde === 'null';
+            convPrgCde = 'null';
         } else{
-            convPrgCde === nciSpecificProgramCodeVal;
+            convPrgCde = nciSpecificProgramCodeVal;
         }
         console.log('Expected Program Code: '+convPrgCde);
         nciSpecific.verifyProgramCode(convPrgCde);
@@ -1408,9 +1581,9 @@ module.exports = function() {
         console.log('Expected NIH/NCI Program Id: '+nciSpecificProgramIdVal);
         helper.getVerifyListValue(nciSpecific.nciSpecificProgramID,nciSpecificProgramIdVal,"NIH/NCI Program Id");
         if (nciSpecificCurrentCommentVal === ''){
-            convComment === 'null';
+            convComment = 'null';
         } else{
-            convComment === nciSpecificCurrentCommentVal;
+            convComment = nciSpecificCurrentCommentVal;
         }
         console.log('Expected Comments: '+convComment);
         nciSpecific.verifyComment(convComment);
@@ -1443,7 +1616,7 @@ module.exports = function() {
      |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
      */
 
-    this.When(/^the following (.*) exist$/, function (conditions, callback) {
+    this.When(/^the following (.*) and (.*) exist$/, function (Conditions, Field, callback) {
         // Write code here that turns the phrase above into concrete actions
         callback.pending();
     });
@@ -1453,31 +1626,65 @@ module.exports = function() {
         callback.pending();
     });
 
+
     /*
      Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
      Given I am logged into the CTRP PA application
-     And I am on the NCI Specific Information screen
-     When the following <conditions> exist to send the trail to the ClinicalTrials.gov
-     |<Conditions>|<Field>|
-     |Trial is not sponsored by "National Cancer Institute" |
+     And I am at the NCI Specific Information screen
+     When the following condition exist to send the trail to the ClinicalTrials.gov
+     |Trial is not sponsored by|National Cancer Institute|
      Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not be visible
-
-     |<Conditions>|<Field>|
-     |Trial is not sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name not = "National Cancer Institute"|
      */
 
-    this.When(/^the following (.*) exist to send the trail to the ClinicalTrials\.gov$/, function (conditions, callback) {
-        getConditions = conditions;
-        console.log('Conditions: '+getConditions);
+    this.Given(/^I am at the NCI Specific Information screen$/, function (callback) {
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDE);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickGridFirstLink(1,1);
+        commonFunctions.clickLinkText(leadProtocolIDE);
+        //nciSpecific.clickAdminCheckOut();
+        commonFunctions.adminCheckOut();
+        trialDetails.clickAdminDataGeneralTrial();
+        //nciSpecific.clickAdminDataNCISpecificInformation();
+        browser.sleep(2500).then(callback);
+    });
+
+    this.When(/^the following condition exist to send the trail to the ClinicalTrials\.gov$/, function (table, callback) {
+        trialSponsorCondtions = table.raw();
+        console.log('value of table' + trialSponsorCondtions);
+        strVal = trialSponsorCondtions.toString().replace(/,/g, "\n", -1);
+        console.log('List of Table Values:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        getOptionA = tableDataSplt[0];
+        getOptionB = tableDataSplt[1];
+        console.log('Condition:[' + getOptionB +']');
+        trialDetails.clickSearchOrgButtonByIndex('1');
+        searchOrg.setOrgName(orgSearchNameA);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialDetails.clickSave();
+        trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameA, "Verifying the Sponsor Organization Name");
+        trialDetails.clickAdminDataGeneralTrial();
+        trialDetails.clickSearchOrgButtonByIndex('0');
+        searchOrg.setOrgName(orgSearchNameB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        trialDetails.clickSave();
+        trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameB, "Verifying the Lead Organization Name");
+        helper.wait_for(2500);
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Then(/^the label and element for �Send Trial Information to ClinicalTrials\.gov\?� will not be visible$/, function (callback) {
+        helper.verifyElementPresents(nciSpecific.nciSpecificSendCTDotGovLbl, false);
         browser.sleep(25).then(callback);
     });
-
-    this.Then(/^the label and element for �Send Trial Information to ClinicalTrials\.gov\?� will not be visible$/, function (table, callback) {
-        sendTrialCondtions = table.raw();
-        console.log('value of table' + sendTrialCondtions);
-        callback.pending();
-    });
-
 
     /*
      Scenario: #12 Study Source is not null

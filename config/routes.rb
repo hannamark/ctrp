@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
 
 
+
+
+  resources :cadsr_marker_statuses
+
   resources :trial_versions
 
   resources :accrual_disease_terms

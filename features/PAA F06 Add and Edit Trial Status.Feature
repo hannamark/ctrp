@@ -20,16 +20,16 @@ And I have selected a trial status from the list of:
 |Administratively Complete|
 |Withdrawn|
 |Available - Only when Clinical Research Category is expanded access and is currently available for this treatment|
-|No longer available – Only when Clinical Research Category is expanded access and was available for this treatment previously but is not currently available and will not be available in the future|
-|Temporarily not available – Only when Clinical Research Category is expanded access and is not currently available for this treatment, but is expected to be available in the future|
-|Approved for marketing – Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
+|No longer available ï¿½ Only when Clinical Research Category is expanded access and was available for this treatment previously but is not currently available and will not be available in the future|
+|Temporarily not available ï¿½ Only when Clinical Research Category is expanded access and is not currently available for this treatment, but is expected to be available in the future|
+|Approved for marketing ï¿½ Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
-And I have selected the Trial Start Date Type of “Actual” , “Anticipated”
+And I have selected the Trial Start Date Type of ï¿½Actualï¿½ , ï¿½Anticipatedï¿½
 And I have entered or selected a Primary Completion Date
-And I have selected the Primary Completion Date Type of “Actual” , “Anticipated”, "NA"
+And I have selected the Primary Completion Date Type of ï¿½Actualï¿½ , ï¿½Anticipatedï¿½, "NA"
 And I have entered or selected a Completion Date
-And I have selected the Completion Date Type of “Actual” , “Anticipated”
+And I have selected the Completion Date Type of ï¿½Actualï¿½ , ï¿½Anticipatedï¿½
 And have entered or edited the Trial On Hold Reason Comments when the trial status is:
 |Administratively Complete|
 |Withdrawn|
@@ -48,18 +48,17 @@ Given I have selected trail
 And I have selected a trial status 
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
-And I have selected the Trial Start Date Type of “Actual” , “Anticipated”
+And I have selected the Trial Start Date Type of ï¿½Actualï¿½ , ï¿½Anticipatedï¿½
 And I have entered or selected a Primary Completion Date
-And I have selected the Primary Completion Date Type of “Actual” , “Anticipated” , "NA"
+And I have selected the Primary Completion Date Type of ï¿½Actualï¿½ , ï¿½Anticipatedï¿½ , "NA"
 And I have entered or selected a Completion Date
-And I have selected the Completion Date Type of “Actual” , “Anticipated”
+And I have selected the Completion Date Type of ï¿½Actualï¿½ , ï¿½Anticipatedï¿½
 And have entered or edited the Trial Status Comments
 And have entered or edited the Trial On Hold Reason Comments with the trial status is:
 |Administratively Complete|
 |Withdrawn|
 |Temporarily Closed to Accrual|
 | Temporarily Closed to Accrual and Intervention|
-
 And have entered or edited the any Additional Trial Status Comments
 When I select Save
 Then the trial status and dates will be checked against validation rules and associated with the trial
@@ -96,7 +95,7 @@ And I am on the Trial Status Screen
 Then the information text appears below for each Trial Status when it is selected:
 | In Review - The trial is in development and waiting for final approval.|
 |Approved - Trial has been approved.|
-|Active – The trial is open for Accrual.| 
+|Active ï¿½ The trial is open for Accrual.| 
 |Temporarily Closed to Accrual - Trial is temporarily not accruing.|
 |Temporarily Closed to Accrual and Intervention - Trial has been closed to participant accrual. No participants are receiving treatment/intervention, but participants are still being followed according to the primary objectives of the study.|
 |Closed to Accrual - Trial has been closed to participant accrual. Participants are still receiving treatment/intervention.|
@@ -105,9 +104,9 @@ Then the information text appears below for each Trial Status when it is selecte
 |Administratively Complete - Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)|
 |Withdrawn - Trial has been withdrawn from development and review.|
 |Available - Currently available for this treatment|
-|No longer available – Was available for this treatment previously but is not currently available and will not be available in the future|
-|Temporarily not available – Not currently available for this treatment, but is expected to be available in the future|
-|Approved for marketing – Treatment has been approved for sale to the public.|
+|No longer available ï¿½ Was available for this treatment previously but is not currently available and will not be available in the future|
+|Temporarily not available ï¿½ Not currently available for this treatment, but is expected to be available in the future|
+|Approved for marketing ï¿½ Treatment has been approved for sale to the public.|
 
 Scenario: #8 PA Trial Status Why Study Stopped? field character count
 Given I am logged into the CTRP Protocol Abstraction application
@@ -126,7 +125,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Given I have selected trail
 And the Clinical Research Category is not Expanded Access
-Then the trial status’ will not be selectable: 
+Then the trial statusï¿½ will not be selectable: 
 |Available |
 |No longer available|
 |Temporarily not available|
@@ -339,8 +338,6 @@ When I add a trial status from <statusFrom> to trial status <statusTo> along wit
       |Administratively Complete	                    |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|ERROR: Invalid status Transition from [ADMINISTRATIVELY COMPLETE] to [TEMPORARILY  CLOSED TO ACCRUAL AND INTERVENTIONS]	                                                                                                                                                    |
       |Administratively Complete	                    |Complete	                                    |Add Stopped Reason	|ERROR: Invalid status Transition from [ADMINISTRATIVELY COMPLETE] to [COMPLETE]	                                                                                                                                                                                            |
       |Administratively Complete	                    |Administratively Complete	                    |Add Stopped Reason	|ERROR: Duplicate [ADMINISTRATIVELY COMPLETE] status is not allowed	                                                                                                                                                                                                            |
-
-             |
 
 Scenario Outline: #18 I can enter a trial status and trial status date for a trial
 Given I am logged into the CTRP Protocol Abstraction application

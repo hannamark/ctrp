@@ -169,6 +169,26 @@ class DataImport
         a2.anatomic_site = AnatomicSite.all[rand(0..AnatomicSite.all.size-1)]
         a2.trial = trial
         trial.anatomic_site_wrappers << a2
+
+        # Assign Interventions and Arm Groups
+        arm1 = ArmsGroup.new
+        i1 = Intervention.new
+        i1.name = "CBP/beta-catenin Antagonist PRI-724"
+        i1.description = "Given IV"
+        arm1.intervention = i1
+        arm1.label = "Arm I (PRI-724, mFOLFOX6/bevacizumab)"
+        arm1.trial = trial
+        arm1.description = "Patients receive CBP/beta-catenin antagonist PRI-724 IV continuously on days 1-7, bevacizumab IV over 30 minutes"
+        i2 = Intervention.new
+        arm2 = ArmsGroup.new
+        i2.name = "Bevacizumab"
+        i2.description = "Correlative studies"
+        arm2.intervention = i2
+        arm2.label = "Arm II (mFOLFOX6/bevacizumab)"
+        arm2.description = "Patients receive bevacizumab, leucovorin calcium, oxaliplatin, and fluorouracil as in Arm I. Courses repeat every 14 days in the absence of disease progression or unacceptable toxicity."
+        arm2.trial = trial
+        trial.arms_groups << arm1
+        trial.arms_groups << arm2
         #save Trial
         trial.save!
       end

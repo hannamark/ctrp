@@ -35,6 +35,8 @@ var abstractionNCISpecificInfo = function(){
     this.nciSpecificDepartmentIdentifier = element(by.model('trialNciView.curTrial.nih_nci_div'));
     this.nciSpecificProgramID = element(by.model('trialNciView.curTrial.nih_nci_prog'));
     this.nciSpecificSendTrial = element(by.model('trialNciView.curTrial.send_trial_flag')); //by.model('trialNciView.curTrial.send_trial_flag')
+    this.nciSpecificSendTrialRadio = element.all(by.model('trialNciView.curTrial.send_trial_flag'));
+    this.nciSpecificSendCTDotGovLbl = element(by.css('.control-label.col-xs-12.col-sm-6'));
     this.nciSpecificComments = element(by.id('trial_nci_specific_comment'));
 
     this.nciSpecificAdminCheckOut = element(by.id('admin_checkout')); //by.id('admin_checkout') by.css('#admin_checkout') by.buttonText('Admin Check Out')
@@ -72,13 +74,36 @@ var abstractionNCISpecificInfo = function(){
     this.orgAddFundingSourceBostonUni = element(by.xpath('*//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[3]/div[2]/input')); //element(by.css('input[value="Boston University School Of Public Health"]'));
     this.orgAddFundingSourceMemorialHos = element(by.xpath('*//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[4]/div[2]/input'));
 
-    this.orgAddFundingSourceBostonMedDel = element(by.css('.glyphicon.glyphicon-remove-circle'));
+    this.orgAddFundingSourceBostonMedDel = element(by.css('.glyphicon.glyphicon-remove-circle')); // .col-xs-12.col-sm-1.btn.btn-default // by.css('.glyphicon.glyphicon-remove-circle')
     this.orgAddFundingSourceBostonUniDel = element(by.xpath('//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[3]/label/i'));
     this.orgAddFundingSourceMemorialHosDel = element(by.xpath('//form/uib-accordion/div/div/div[2]/div/div[1]/fieldset[2]/div[4]/label/i'));
 
+    //status
+    this.trialOverviewProcessingStatus = element(by.css('.col-sm-4.col-xs-12:nth-child(3) p:nth-child(4)'));
+    this.trialOverviewResearchCategory = element(by.css('.col-sm-4.col-xs-12:nth-child(2) p:nth-child(2)'));
 
 
     var helper = new helperFunctions();
+
+    //Verify send to trial CTDotGov
+    this.verifySendToTrialCTDotGov = function(getYesOrNoOption, result)  {
+        if (getYesOrNoOption === '0') {
+            expect(this.nciSpecificSendTrialRadio.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (getYesOrNoOption === '1') {
+            expect(this.nciSpecificSendTrialRadio.get(1).isSelected()).to.eventually.equal(result);
+        }
+    };
+
+    //Verify Processing Status
+    this.verifyProcessingStatus = function(expProcessingStatus){
+        helper.getVerifyLabel(this.trialOverviewProcessingStatus,expProcessingStatus,"Verify Processing Status");
+    };
+
+    //Verify Research Category
+    this.verifyResearchCategory = function(expResearchCategory){
+        helper.getVerifyLabel(this.trialOverviewResearchCategory,expResearchCategory,"Verify Research Category");
+    };
 
     //Verify Study Source Required
     this.verifyStudySourceReq = function(expStudySrcReqMsg){
@@ -108,9 +133,12 @@ var abstractionNCISpecificInfo = function(){
     //Delete Funding Source Organization
     this.clickFundingSourceOrganizationDel = function(){
         this.orgAddFundingSourceBostonMedDel.isPresent().then(function (state) {
+            console.log('Element isPresent Status: ['+state+']');
             if (state === true) {
-                    helper.clickButton(this.orgAddFundingSourceBostonMedDel, "Funding Source Organization Delete button");
-
+                helper.wait_for(200);
+                element(by.css('.glyphicon.glyphicon-remove-circle')).click();
+                helper.wait_for(200);
+                //helper.clickButton(this.orgAddFundingSourceBostonMedDel, "Funding Source Organization Delete button");
             };
         });
     };
@@ -194,7 +222,7 @@ var abstractionNCISpecificInfo = function(){
 
     //Send Trial : Radio Button
     this.selectSendTrial = function(sendTrialYesOrNo)  {
-        helper.clickRadioButton(this.nciSpecificSendTrial,sendTrialYesOrNo,"Send Trial Information to ClinicalTrials.gov? - radio button field selected as:["+sendTrialYesOrNo+"]");
+        helper.clickRadioButton(this.nciSpecificSendTrialRadio,sendTrialYesOrNo,"Send Trial Information to ClinicalTrials.gov? - radio button field selected as:["+sendTrialYesOrNo+"]");
     };
 
     //Comment : Text Box

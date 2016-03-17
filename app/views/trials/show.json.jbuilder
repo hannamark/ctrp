@@ -58,6 +58,19 @@ json.sub_groups do
   end
 end
 
+json.interventions do
+  json.array!(@trial.interventions) do |intervention|
+    json.extract! intervention, :id, :name, :description
+  end
+end
+
+json.arms_groups do
+  json.array!(@trial.arms_groups) do |arms_group|
+    json.extract! arms_group, :id, :label, :type, :description, :intervention_id
+  end
+end
+
+
 json.collaborators do
   json.array!(@trial.collaborators) do |collaborator|
     json.extract! collaborator, :id, :organization_id, :org_name
