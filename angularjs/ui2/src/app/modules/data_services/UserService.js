@@ -25,6 +25,7 @@
             email: '',
             phone: '',
             approved: '',
+            user_status: '',
             // affiliated_org_name: '',
 
             //for pagination and sorting
@@ -112,13 +113,30 @@
                 },
                 {
                     name: 'approved',
-                    displayName: 'Approval',
+                    displayName: 'Approve',
+                    enableSorting: true,
+                    minWidth: '25',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved"></label></div>'
+                },
+                {
+                    name: 'user_status',
+                    displayName: 'Status',
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'delete',
+                    displayName: 'Delete',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.user_status" ng-true-value="Deleted" ng-false-value="Inactive"><label></div>'
                 }
+
             ]
         };
 

@@ -15,6 +15,8 @@
         UserService, uiGridConstants, $location, $anchorScroll) {
 
         var vm = this;
+
+        vm.statusArr = ['In Review', 'Active', 'Inactive', 'Deleted'];
         //toastr.success('Success', 'In userListCtrl');
         vm.searchParams = UserService.getInitialUserSearchParams();
 
@@ -43,7 +45,7 @@
 
                 //console.log('vm grid: ' + JSON.stringify(vm.gridOptions.data));
                 //console.log('received search results: ' + JSON.stringify(data.data));
-                vm.gridOptions.totalItems =  data['users'].total;
+                vm.gridOptions.totalItems =  data.total;
 
                 $location.hash('users_search_results');
                 //$anchorScroll();

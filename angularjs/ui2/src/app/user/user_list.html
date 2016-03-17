@@ -52,11 +52,9 @@
                         <div class="form-group">
                             <label for="first_name" class="control-label col-sm-3">Status:</label>
                             <div class="col-sm-9">
-                                <select class="form-control input-sm" id="source_context" ng-model="userView.searchParams.status">
-                                    <option value="" ng-selected="searchParams.status==''">All Statuses</option>
-                                    <option value="true">Approved</option>
-                                    <option value="true">Rejected</option>
-                                    <option value="false">Pending</option>
+                                <select class="form-control input-sm" id="user_status" ng-model="userView.searchParams.user_status">
+                                    <option value="">Select a status</option>
+                                    <option ng-repeat="status in userView.statusArr" value="{{status}}">{{status}}</option>
                                 </select>
                             </div>
                         </div>
@@ -96,15 +94,13 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-sm-12 text-center">
-
-                        </div>
-                    </div>
-                </div>
             </form>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <span us-spinner="{radius: 20, length: 15}" spinner-on="searching"></span>
+            </div>
         </div>
 
         <!-- list of Users -->
@@ -119,5 +115,19 @@
                 </div>
             </div>
         </div>
+        <div class="row top-offset-xs" ng-if="userView.gridOptions.totalItems != null"></div>
+        <div class="row" ng-if="userView.gridOptions.totalItems != null">
+            <div class="col-xs-12">
+                <div class="btn-toolbar">
+                    <button type="submit" class="btn btn-primary pull-right" id="save_btn">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-warning pull-right" ng-click="userView.reset()">
+                        <i class="glyphicon glyphicon-remove"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row top-offset-xs"></div>
     </div>
 </div>
