@@ -66,9 +66,12 @@ var registerTrial = function(){
     /** Trial Status **/
     this.addTrialStatusDate = element(by.model('trialDetailView.status_date'));
     this.addTrialStatus = element(by.model('trialDetailView.trial_status_id'));
+    this.addTrialStatusList = element.all(by.css('option[ng-repeat="trialStatus in trialDetailView.trialStatusArr"]'));
+    this.addTrialStatusComment = element(by.model('trialDetailView.status_comment'));
     this.addTrialWhyStudyStopped = element(by.model('trialDetailView.why_stopped'));
     this.addTrialAddStatusButton = element(by.css('button[ng-click="trialDetailView.addStatus()"]'));
     this.addTrialAddStatusTable = element.all(by.css('tr[ng-repeat="status in trialDetailView.addedStatuses track by $index"]'));
+    this.addTrialStatusDateTableVerifyDateExist = element(by.binding('status.status_date'));
     this.addTrialStatusDateTable = element.all(by.binding('status.status_date'));
     this.addTrialStatusNameTable = element.all(by.binding('status.trial_status_name'));
     this.addTriaCommentTable = element.all(by.binding('status.comment'));
@@ -78,11 +81,17 @@ var registerTrial = function(){
 
     /** Trial Dates **/
     this.addTrialStartDate = element(by.model('trialDetailView.curTrial.start_date'));
-    this.addTrialStartDateOption = element(by.model('trialDetailView.curTrial.start_date_qual'));
+    this.addTrialStartDateOption = element.all(by.model('trialDetailView.curTrial.start_date_qual'));
+    this.addTrialStartDateErrorMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)"]'));
+    this.addTrialStartDateErrorMessageActualAnticipated = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.sdq_dummy2)"]'));
     this.addTrialPrimaryCompletionDate = element(by.model('trialDetailView.curTrial.primary_comp_date'));
-    this.addTrialPrimaryCompletionDateOption = element(by.model('trialDetailView.curTrial.primary_comp_date_qual'));
+    this.addTrialPrimaryCompletionDateOption = element.all(by.model('trialDetailView.curTrial.primary_comp_date_qual'));
+    this.addTrialPrimaryCompletionDateErrorMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual)"]'));
+    this.addTrialPrimaryCompletionDateErrorMessageActualAnticipated = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy2)"]'));
     this.addTrialCompletionDate = element(by.model('trialDetailView.curTrial.comp_date'));
-    this.addTrialCompletionDateOption = element(by.model('trialDetailView.curTrial.comp_date_qual'));
+    this.addTrialCompletionDateOption = element.all(by.model('trialDetailView.curTrial.comp_date_qual'));
+    this.addTrialCompletionDateErrorMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual)"]'));
+    this.addTrialCompletionDateErrorMessageActualAnticipated = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy2)"]'));
 
     /** FDA IND/IDE Information **/
     this.addTrialFDAIND_IDETypesQuestion = element(by.css('div[is-open="trialDetailView.accordions[9]"]')).all(by.css('.control-label.col-xs-12.col-sm-3'));
@@ -133,6 +142,7 @@ var registerTrial = function(){
     /**Date fields**/
     this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
     this.addTrialDateClickToday = element(by.buttonText('Today'));
+    this.addTrialDateClickClear = element(by.buttonText('Clear'));
     this.addTrialDateClickPreviousMonth = element(by.css('.glyphicon.glyphicon-chevron-left'));
     this.addTrialDateClickNextMonth = element(by.css('.glyphicon.glyphicon-chevron-right'));
 
@@ -321,7 +331,17 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialStatus = function(trialStatus)  {
-        helper.selectValueFromList(this.addTrialStatus,trialStatus,"Add Trial by trial Status field");
+        var  selectTrialStatus =  element(by.xpath('//*[@id="trial_status"]/option[.="' + trialStatus + '"]'));
+        var  selectTrialStatusDefault =  element(by.xpath('//*[@id="trial_status"]/option[.="-Select a Trial Status-"]'));
+        if(trialStatus === '') {
+            helper.selectValue(selectTrialStatusDefault,'-Select a Trial Status-',"Add Trial by trial Status field");
+        } else{
+            helper.selectValue(selectTrialStatus,trialStatus,"Add Trial by trial Status field");
+        }
+    };
+
+    this.setAddTrialStatusComment = function(trialStatusComment)  {
+        helper.setValue(this.addTrialStatusComment ,trialStatusComment,"Add Trial Status Comment field");
     };
 
     this.setAddTrialWhyStudyStopped = function(trialWhyStudyStopped)  {
@@ -338,24 +358,63 @@ var registerTrial = function(){
         helper.setValue(this.addTrialStartDate ,trialStartDate,"Add Trial by Trial Start Date field");
     };
 
+    this.getVerifyAddTrialStartDate= function(trialStartDate)  {
+        helper.getVerifyValue(this.addTrialStartDate,trialStartDate,"Add Trial by Trial Start Date field");
+    };
+
     this.selectAddTrialStartDateOption = function(trialStartDateOption)  {
         helper.clickRadioButton(this.addTrialStartDateOption,trialStartDateOption,"Add Trial by Start Date option field");
+    };
+
+    this.verifyAddTrialStartDateOption = function(trialStartDateOption, result)  {
+        if (trialStartDateOption === '0') {
+            expect(this.addTrialStartDateOption.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialStartDateOption === '1') {
+            expect(this.addTrialStartDateOption.get(1).isSelected()).to.eventually.equal(result);
+        }
     };
 
     this.setAddTrialPrimaryCompletionDate= function(trialPrimaryCompletionDate)  {
         helper.setValue(this.addTrialPrimaryCompletionDate ,trialPrimaryCompletionDate,"Add Trial by Primary Completion Date field");
     };
 
+    this.getVerifyAddTrialPrimaryCompletionDate = function(trialPrimaryCompletionDate)  {
+        helper.getVerifyValue(this.addTrialPrimaryCompletionDate,trialPrimaryCompletionDate,"Add Trial by Primary Completion Date field");
+    };
+
     this.selectAddTrialPrimaryCompletionDateOption = function(trialPrimaryCompletionDateOption)  {
         helper.clickRadioButton(this.addTrialPrimaryCompletionDateOption,trialPrimaryCompletionDateOption,"Add Trial by Primary Completion Date option field");
+    };
+
+    this.verifyAddTrialPrimaryCompletionDateOption = function(trialPrimaryCompletionDateOption, result)  {
+        if (trialPrimaryCompletionDateOption === '0') {
+            expect(this.addTrialPrimaryCompletionDateOption.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialPrimaryCompletionDateOption === '1') {
+            expect(this.addTrialPrimaryCompletionDateOption.get(1).isSelected()).to.eventually.equal(result);
+        }
     };
 
     this.setAddTrialCompletionDate = function(trialCompletionDate)  {
         helper.setValue(this.addTrialCompletionDate ,trialCompletionDate,"Add Trial by Completion Date field");
     };
 
+    this.getVerifyAddTrialCompletionDate = function(trialCompletionDate)  {
+        helper.getVerifyValue(this.addTrialCompletionDate,trialCompletionDate,"Add Trial by Completion Date field");
+    };
+
     this.selectAddTrialCompletionDateOption = function(trialCompletionDateOption)  {
         helper.clickRadioButton(this.addTrialCompletionDateOption,trialCompletionDateOption,"Add Trial by Completion Date Option field");
+    };
+
+    this.verifyAddTrialCompletionDateOption = function(trialCompletionDateOption, result)  {
+        if (trialCompletionDateOption === '0') {
+            expect(this.addTrialCompletionDateOption.get(0).isSelected()).to.eventually.equal(result);
+        }
+        else if (trialCompletionDateOption === '1') {
+            expect(this.addTrialCompletionDateOption.get(1).isSelected()).to.eventually.equal(result);
+        }
     };
 
     /********** FDA IND/IDE Information **********/
@@ -526,6 +585,10 @@ var registerTrial = function(){
 
     this.clickAddTrialDateToday = function(){
         helper.clickButtonNoHeader(this.addTrialDateClickToday, "Today button on Add Date field");
+    };
+
+    this.clickAddTrialDateClear = function(){
+        helper.clickButtonNoHeader(this.addTrialDateClickClear, "Clear button on Add Date field");
     };
 
     this.clickAddTrialDateFieldPreviousMonth = function(dateofPreviousMonth){
