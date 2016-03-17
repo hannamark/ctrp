@@ -14,6 +14,7 @@
                                      MESSAGES, _, $timeout, trialDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        vm.setAddMode = setAddMode;
         console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
 
         vm.saveTrial = function(){
@@ -45,6 +46,9 @@
 
         }//saveTrial
 
+        function setAddMode() {
+            vm.addMode = true;
+        }
 
 
     } //pasArmsGroupsCtrl
