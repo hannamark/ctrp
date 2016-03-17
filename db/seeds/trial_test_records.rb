@@ -62,8 +62,9 @@ if Trial.all.size == 0
   ## Reading and importing Trial related spreadsheets
   puts "...Parsing trial spreadsheet"
   DataImport.import_trials
-  puts "...Parsing milestone spreadsheet"
-  DataImport.import_milestones
+  # Temporarily commenting out import of Milestons
+  #puts "...Parsing milestone spreadsheet"
+  #DataImport.import_milestones
   puts "...Parsing participating sites spreadsheet"
   DataImport.import_participating_sites
 end

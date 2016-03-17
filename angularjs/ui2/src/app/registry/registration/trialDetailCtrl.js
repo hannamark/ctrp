@@ -67,6 +67,7 @@
         vm.addOtherIdError = '';
         vm.showAddGrantError = false;
         vm.showAddStatusError = false;
+        vm.showAddStatusDateError = false;
         vm.showAddIndIdeError = false;
         vm.showAddAnthorityError = false;
         vm.addAuthorityError = '';
@@ -88,6 +89,8 @@
         vm.docUploadedCount = 0;
         vm.disableBtn = false;
         vm.grantsInputs = {grantResults: [], disabled: true};
+        vm.currentStatusCode = null;
+        vm.currentStatusName = null;
 
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
@@ -313,6 +316,7 @@
                         vm.tsNum++;
                     }
                     vm.validateStatus();
+                    updateCurrentStatus();
                 }
             } else if (type == 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
@@ -453,30 +457,38 @@
         // Add trial status to a temp array
         vm.addStatus = function () {
             if (vm.status_date && vm.trial_status_id && (vm.why_stopped_disabled || (!vm.why_stopped_disabled && vm.why_stopped))) {
-                var newStatus = {};
-                newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
-                newStatus.trial_status_id = vm.trial_status_id;
-                // For displaying status name in the table
-                _.each(vm.trialStatusArr, function (status) {
-                    if (status.id == vm.trial_status_id) {
-                        newStatus.trial_status_name = status.name;
-                        newStatus.trial_status_code = status.code;
-                    }
-                });
-                newStatus.comment = vm.status_comment;
-                newStatus.why_stopped = vm.why_stopped;
-                newStatus._destroy = false;
-                TrialService.addStatus(vm.addedStatuses, newStatus);
-                vm.tsNum++;
-                vm.status_date = null;
-                vm.trial_status_id = null;
-                vm.status_comment = null;
-                vm.why_stopped = null;
-                vm.showAddStatusError = false;
-                vm.why_stopped_disabled = true;
-                vm.validateStatus();
+                if (notFutureDate(vm.status_date)) {
+                    var newStatus = {};
+                    newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
+                    newStatus.trial_status_id = vm.trial_status_id;
+                    // For displaying status name in the table
+                    _.each(vm.trialStatusArr, function (status) {
+                        if (status.id == vm.trial_status_id) {
+                            newStatus.trial_status_name = status.name;
+                            newStatus.trial_status_code = status.code;
+                        }
+                    });
+                    newStatus.comment = vm.status_comment;
+                    newStatus.why_stopped = vm.why_stopped;
+                    newStatus._destroy = false;
+                    TrialService.addStatus(vm.addedStatuses, newStatus);
+                    vm.tsNum++;
+                    vm.status_date = null;
+                    vm.trial_status_id = null;
+                    vm.status_comment = null;
+                    vm.why_stopped = null;
+                    vm.showAddStatusError = false;
+                    vm.showAddStatusDateError = false;
+                    vm.why_stopped_disabled = true;
+                    vm.validateStatus();
+                    updateCurrentStatus();
+                } else {
+                    vm.showAddStatusError = false;
+                    vm.showAddStatusDateError = true;
+                }
             } else {
                 vm.showAddStatusError = true;
+                vm.showAddStatusDateError = false;
             }
         };
 
@@ -703,6 +715,92 @@
             }).catch(function(err) {
                 console.log("Error in validating trial status: " + err);
             });
+        };
+
+        // Scenario #7a in Reg F11
+        vm.validateStartDateQual = function() {
+            if (vm.currentStatusCode && ['INR', 'APP', 'WIT'].indexOf(vm.currentStatusCode) < 0 && vm.curTrial.start_date_qual === 'Anticipated') {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #8 in Reg F11
+        vm.validateStartDateQual2 = function() {
+            var startDate = new Date(vm.curTrial.start_date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if ((vm.curTrial.start_date_qual === 'Actual' && startDate.getTime() > today.getTime()) || (vm.curTrial.start_date_qual === 'Anticipated' && startDate.getTime() < today.getTime())) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #7b in Reg F11
+        vm.validatePrimaryCompDateQual = function() {
+            if (vm.currentStatusCode && ['ACO', 'COM'].indexOf(vm.currentStatusCode) > -1 && vm.curTrial.primary_comp_date_qual === 'Anticipated') {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #8 in Reg F11
+        vm.validatePrimaryCompDateQual2 = function() {
+            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if ((vm.curTrial.primary_comp_date_qual === 'Actual' && primaryCompDate.getTime() > today.getTime()) || (vm.curTrial.primary_comp_date_qual === 'Anticipated' && primaryCompDate.getTime() < today.getTime())) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #9 in Reg F11
+        vm.validatePrimaryCompDate = function() {
+            var startDate = new Date(vm.curTrial.start_date);
+            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            if (startDate.getTime() > primaryCompDate.getTime()) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #7c in Reg F11
+        vm.validateCompDateQual = function() {
+            if (vm.currentStatusCode && (['ACO', 'COM'].indexOf(vm.currentStatusCode) < 0 && vm.curTrial.comp_date_qual === 'Actual')
+                || (['ACO', 'COM'].indexOf(vm.currentStatusCode) > -1 && vm.curTrial.comp_date_qual === 'Anticipated')) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #8 in Reg F11
+        vm.validateCompDateQual2 = function() {
+            var compDate = new Date(vm.curTrial.comp_date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if ((vm.curTrial.comp_date_qual === 'Actual' && compDate.getTime() > today.getTime()) || (vm.curTrial.comp_date_qual === 'Anticipated' && compDate.getTime() < today.getTime())) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        // Scenario #9 in Reg F11
+        vm.validateCompDate = function() {
+            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            var compDate = new Date(vm.curTrial.comp_date);
+            if (primaryCompDate.getTime() > compDate.getTime()) {
+                return true;
+            } else {
+                return false;
+            }
         };
 
         activate();
@@ -938,6 +1036,7 @@
                 vm.tsNum++;
             }
             vm.validateStatus();
+            updateCurrentStatus();
         }
 
         function appendIndIdes() {
@@ -1114,6 +1213,33 @@
             }
 
             return latestDocId;
+        }
+
+        // Update the current status code and name
+        function updateCurrentStatus() {
+            for (var i = vm.addedStatuses.length - 1; i >= 0; i--) {
+                if (!vm.addedStatuses[i]._destroy) {
+                    vm.currentStatusCode = vm.addedStatuses[i].trial_status_code;
+                    vm.currentStatusName = vm.addedStatuses[i].trial_status_name;
+                    return;
+                }
+            }
+
+            vm.currentStatusCode = null;
+            vm.currentStatusName = null;
+            return;
+        }
+
+        // Return true if the date is today or in the past
+        function notFutureDate(date) {
+            var dateObj = new Date(date);
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            if (dateObj.getTime() <= today.getTime()) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 })();

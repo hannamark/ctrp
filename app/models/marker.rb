@@ -18,6 +18,7 @@
 #  evaluation_type_other :string(255)
 #  assay_type_other      :string(255)
 #  specimen_type_other   :string(255)
+#  protocol_marker_name  :string(255)
 #
 # Indexes
 #
@@ -32,10 +33,11 @@
 class Marker < ActiveRecord::Base
   include BasicConcerns
 
-  belongs_to :evaluation_type
-  belongs_to :assay_type
   belongs_to :biomarker_use
   belongs_to :biomarker_purpose
-  belongs_to :specimen_type
   belongs_to :trial
+  has_many   :marker_assay_type_associations
+  has_many   :marker_eval_type_associations
+  has_many   :marker_spec_type_associations
+
 end

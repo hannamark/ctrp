@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @marker_cadsr.name %>
+</p>
+
+<p>
+  <strong>Meaning:</strong>
+  <%= @marker_cadsr.meaning %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @marker_cadsr.description %>
+</p>
+
+<p>
+  <strong>Cadsr:</strong>
+  <%= @marker_cadsr.cadsr_id %>
+</p>
+
+<p>
+  <strong>Source status:</strong>
+  <%= @marker_cadsr.source_status_id %>
+</p>
+
+<p>
+  <strong>Nv term identifier:</strong>
+  <%= @marker_cadsr.nv_term_identifier %>
+</p>
+
+<p>
+  <strong>Pv name:</strong>
+  <%= @marker_cadsr.pv_name %>
+</p>
+
+<%= link_to 'Edit', edit_marker_cadsr_path(@marker_cadsr) %> |
+<%= link_to 'Back', marker_cadsrs_path %>
