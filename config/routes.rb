@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :marker_spec_type_associations
+
+  resources :marker_eval_type_associations
+
+  resources :marker_assay_type_associations
+
   resources :trial_versions
 
   resources :accrual_disease_terms
