@@ -165,12 +165,12 @@
                         <div class="col-sm-10">
                             <textarea class="form-control input-sm" rows="1"
                                 name="other_criteria_desc" id="other_criteria_desc"
-                                maxlength="5000" ng-maxlength="5000"
+                                maxlength="criteriaView.descCharsRemaining" ng-maxlength="criteriaView.descCharsRemaining"
                                 ng-model="criteriaView.otherCriterion.criteria_desc" placeholder="Criteria Description">
                             </textarea>
                         </div>
                         <span ng-show="criteria_form.other_criteria_desc.$viewValue.length > 0">
-                            {{5000 - criteria_form.other_criteria_desc.$viewValue.length}} characters left. Total characters for all Other Criteria is 5,000.
+                            {{criteriaView.descCharsRemaining - criteria_form.other_criteria_desc.$viewValue.length}} characters left. Total characters for all Other Criteria is {{5000 - criteriaView.descCharsRemaining}}.
                         </span>
                     </div>
                     <div class="col-xs-12 col-sm-2">
