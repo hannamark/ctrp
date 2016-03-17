@@ -122,7 +122,7 @@
 
             function onRowSelectionChanged() {
                 var selectedRows = vm.gridOptions.api.getSelectedRows();
-                var selectedNodes = vm.gridOptions.api.getSelectedNodes()
+                var selectedNodes = vm.gridOptions.api.getSelectedNodes();
                 console.info('selectedRows: ', selectedRows);
                 console.info('selectedNodes: ', selectedNodes); // row object is nested in the 'data' field of node
             } // onRowSelectionChanged
@@ -131,12 +131,10 @@
                 var curSelectedNode = event.node;
                 var curSelectedRowObj = curSelectedNode.data;
                 var selectionCounts = vm.gridOptions.api.getSelectedNodes().length;
+                var selectedRows = vm.gridOptions.api.getSelectedRows();
                 if (selectionCounts > $scope.maxRowSelectable) {
-                    // console.info(vm.gridOptions.api.getSelectedNodes());
                     var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
-                    oldestNode.setSelected(false);
-                    // curSelectedNode.setSelected(false);
-                    // vm.gridOptions.api.getSelectedNodes()[0].setSelected(false); // deselect the oldest selection
+                    vm.gridOptions.api.deselectNode(oldestNode, true); // deselect
                 }
                 // console.info('event.node.data: ', event.node.data); // object of the current row
             }
