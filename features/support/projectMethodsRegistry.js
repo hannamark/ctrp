@@ -236,6 +236,31 @@ var projectMethodsRegistry = function() {
         expect(addTrial.addTrialErrorWarningTable.get(1).getText()).to.eventually.equal(errorsWarnings);
     };
 
+    /*****************************************************************
+     * Method: Delete Trial Status information value
+     * @param status
+     *****************************************************************/
+    this.clickDeleteTrialStatusInformation = function (status) {
+        return addTrial.addTrialAddStatusTable.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(1).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                //console.log('print row name');
+                //console.log(rowName);
+                //console.log('print Status');
+                //console.log(status);
+                return rowName === status;
+            });
+        }).then(function (rows) {
+                //console.log('value of row' + rows);
+                rows[0].element(by.css('.glyphicon.glyphicon-remove-circle')).click();
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
