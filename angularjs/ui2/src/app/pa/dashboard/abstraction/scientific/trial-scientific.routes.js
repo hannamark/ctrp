@@ -99,7 +99,10 @@
                 PATrialService: 'PATrialService',
                 trialDetailObj: function($stateParams, TrialService) {
                     return TrialService.getTrialById($stateParams.trialId);
-                }
+                },
+                assayTypes: function($stateParams, TrialService) {
+                    return TrialService.getAssayTypes();
+                },
             },
                 section: 'pa',
                 ncyBreadcrumb: {

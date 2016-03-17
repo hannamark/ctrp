@@ -1,20 +1,9 @@
 Rails.application.routes.draw do
-
-
-
-
-
-  resources :cadsr_marker_statuses
-
   resources :trial_versions
 
   resources :accrual_disease_terms
 
   resources :trial_documents
-
-
-
-
 
   scope "/ctrp" do
 
@@ -124,6 +113,13 @@ Rails.application.routes.draw do
     resources :outcome_measure_types
     resources :po_affiliations
     resources :po_affiliation_statuses
+
+    resources :assay_types
+    resources :evaluation_types
+    resources :specimen_types
+    resources :biomarker_uses
+    resources :biomarker_purposes
+
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'

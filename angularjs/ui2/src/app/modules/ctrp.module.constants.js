@@ -70,6 +70,11 @@
             'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
+            'ASSAY_TYPES': '/ctrp/assay_types.json',
+            'EVALUATION_TYPES': '/ctrp/evaluation_types.json',
+            'SPECIMEN_TYPES': '/ctrp/specimen_types.json',
+            'BIOMARKER_USES': '/ctrp/biomarker_uses.json',
+            'BIOMARKER_PURPOSES': '/ctrp/biomarker_purposes',
             'SUB_GROUP_LIST' : '/ctrp/registry/sub_groups.json',
             'A_SUB_GROUP' : '/ctrp/registry/sub_groups/',
             'TRIALS': {
