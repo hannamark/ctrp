@@ -35,6 +35,7 @@
         'angular-json-tree',
         'smart-table',
         'ngFileSaver',
-
+        'angularSpinner',
+        'ui.select'
     ]);
 })();
