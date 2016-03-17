@@ -35,7 +35,7 @@
                         </label>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol) &&
                                             criteria_form.accept_vol.$error">
-                            <span class="help-block" ng-message="required"><br />A choice for Accepts Healthy Volunteers is required</span>
+                            <span class="help-block" ng-message="required"><br />Accepts Healthy Volunteers is required</span>
                        </span>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <input type="number" min="0" name="min_age" id="min_age" ng-model="criteriaView.trialDetailObj.min_age" class="form-control input-sm" placeholder="" required>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.min_age) &&
                                             criteria_form.min_age.$error">
-                            <span class="help-block" ng-message="required">Minimum Age is required</span>
+                            <span class="help-block" ng-message="required">Enter 0 if no min age is indicated and select 'Years' as Unit</span>
                        </span>
                     </div>
                     <label for="min_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
@@ -89,7 +89,7 @@
                         <input type="number" min="0" name="max_age" id="max_age" ng-model="criteriaView.trialDetailObj.max_age" class="form-control input-sm" placeholder="" required>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.max_age) &&
                                             criteria_form.max_age.$error">
-                            <span class="help-block" ng-message="required">Maximum Age is required</span>
+                            <span class="help-block" ng-message="required">Enter 999 if no max age is indicated and select 'Years' as Unit</span>
                        </span>
                     </div>
                     <label for="max_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
@@ -170,7 +170,7 @@
                             </textarea>
                         </div>
                         <span ng-show="criteria_form.other_criteria_desc.$viewValue.length > 0">
-                            {{5000 - criteria_form.other_criteria_desc.$viewValue.length}} characters left
+                            {{5000 - criteria_form.other_criteria_desc.$viewValue.length}} characters left. Total characters for all Other Criteria is 5,000.
                         </span>
                     </div>
                     <div class="col-xs-12 col-sm-2">
