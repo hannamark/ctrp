@@ -75,8 +75,9 @@
             }
             // if 'id' attribute is specified, use it to focus on the field
             // e.g. id="#edit_field"
-            if (attrs.id) {
-                $document[0].querySelector(attrs.id).focus();
+            var curField = !!attrs.id ? $document[0].querySelector(attrs.id) : null;
+            if (!!curField) {
+                curField.focus();
             }
             // element.find('input')[0].focus();
           }, 0, false);

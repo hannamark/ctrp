@@ -20,6 +20,7 @@
         vm.otherCriterion = {};
         vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
+        vm.descCharsRemaining = 5000; // number of characters for other criterion description
 
         vm.prepareOtherCriterion = prepareOtherCriterion;
         vm.upsertOtherCriterion = upsertOtherCriterion;
@@ -34,6 +35,7 @@
         activate();
         function activate() {
             _getTrialDetailCopy();
+            watchOtherCriteriaDesc();
             // mockupData();
         }
 
@@ -152,6 +154,20 @@
         function updateOtherCriteriaType(otherCriterionType, index) {
             vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
+
+        function watchOtherCriteriaDesc() {
+            $scope.$watchCollection(function() {return vm.trialDetailObj.other_criteria;}, function(
+                newVal, oldVal) {
+                    vm.descCharsRemaining = 5000;
+                    console.info('newVal for other_criteria', newVal);
+                    if (angular.isArray(newVal) && newVal.length > 0) {
+                        _.each(newVal, function(oc, idx) {
+                            vm.descCharsRemaining -= oc.criteria_desc.length;
+                        });
+                        console.error('vm.descCharsRemaining: ', vm.descCharsRemaining);
+                    }
+                });
+        } // watchOtherCriteriaDesc
 
     } // pasEligibilityCtrl
 
