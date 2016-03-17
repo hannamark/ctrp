@@ -20,7 +20,6 @@
         vm.otherCriterion = {};
         vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
-        vm.descCharsRemaining = 5000; // number of characters for other criterion description
 
         vm.prepareOtherCriterion = prepareOtherCriterion;
         vm.upsertOtherCriterion = upsertOtherCriterion;
@@ -107,9 +106,16 @@
          * @return {[type]}                   [description]
          */
         function upsertOtherCriterion(otherCriterionObj) {
-            if (otherCriterionObj.criteria_desc === '') {
+            if (otherCriterionObj.criteria_desc.trim() === '') {
                 return;
             }
+            var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
+            if (isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
+                    !confirm(confirmMsg)) {
+                    // if duplicate other criterion description and user cancels, return;
+                    return;
+            }
+
             if (otherCriterionObj.id === undefined) {
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
             } else {
@@ -155,16 +161,30 @@
             vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
 
+        /**
+         * Check whether the Other Criterion description is duplicate
+         * @param  {String}  otherCriterionDesc
+         * @param  {Array of object}  otherCriteriaArr: an array of other criteria
+         * @return {Boolean}
+         */
+        function isOCDescDuplicate(otherCriterionDesc, otherCriteriaArr) {
+            return _.findIndex(otherCriteriaArr, {criteria_desc: otherCriterionDesc.trim()}) > -1;
+        }
+
+        /**
+         * Watch the other_criteria array in the vm.trialDetailObj
+         * @return {Void}
+         */
         function watchOtherCriteriaDesc() {
             $scope.$watchCollection(function() {return vm.trialDetailObj.other_criteria;}, function(
                 newVal, oldVal) {
+                    // number of characters for other criterion description (cumulative)
                     vm.descCharsRemaining = 5000;
                     console.info('newVal for other_criteria', newVal);
                     if (angular.isArray(newVal) && newVal.length > 0) {
                         _.each(newVal, function(oc, idx) {
                             vm.descCharsRemaining -= oc.criteria_desc.length;
                         });
-                        console.error('vm.descCharsRemaining: ', vm.descCharsRemaining);
                     }
                 });
         } // watchOtherCriteriaDesc
