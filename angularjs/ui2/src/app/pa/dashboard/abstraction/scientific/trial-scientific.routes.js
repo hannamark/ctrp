@@ -132,7 +132,7 @@
             .state('main.pa.trialOverview.armsGroups', {
                 url: '/arms-groups',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_arms_groups.html',
-                controller: 'pasArmsGroupsCtrl as armsView',
+                controller: 'pasArmsGroupsCtrl as armView',
                 section: 'pa',
                 resolve: {
                     TrialService: 'TrialService',
