@@ -33,7 +33,6 @@
 class Marker < ActiveRecord::Base
   include BasicConcerns
 
-
   belongs_to :biomarker_use
   belongs_to :biomarker_purpose
   belongs_to :trial

@@ -175,16 +175,20 @@ ActiveRecord::Schema.define(version: 20160317205702) do
   create_table "cadsr_marker_statuses", force: :cascade do |t|
     t.string   "code"
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "cadsr_marker_synonyms", force: :cascade do |t|
     t.string   "alternate_name"
     t.integer  "cadsr_marker_id"
     t.integer  "cadsr_marker_status_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
   end
 
   add_index "cadsr_marker_synonyms", ["cadsr_marker_id"], name: "index_cadsr_marker_synonyms_on_cadsr_marker_id", using: :btree
@@ -198,8 +202,10 @@ ActiveRecord::Schema.define(version: 20160317205702) do
     t.string   "nv_term_identifier",     limit: 200
     t.string   "pv_name",                limit: 2000
     t.integer  "cadsr_marker_status_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                        default: 0
   end
 
   add_index "cadsr_markers", ["cadsr_marker_status_id"], name: "index_cadsr_markers_on_cadsr_marker_status_id", using: :btree

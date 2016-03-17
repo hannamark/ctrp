@@ -4,8 +4,8 @@ class CreateCadsrMarkerSynonyms < ActiveRecord::Migration
       t.string     :alternate_name
       t.references :cadsr_marker, index: true
       t.references :cadsr_marker_status, index: true
-
       t.timestamps null: false
+      t.ctrp_base_columns
     end
     add_foreign_key :cadsr_marker_synonyms, :cadsr_markers
     add_foreign_key :cadsr_marker_synonyms, :cadsr_marker_statuses

@@ -5,6 +5,7 @@ class CreateCadsrMarkerStatuses < ActiveRecord::Migration
       t.string :name
 
       t.timestamps null: false
+      t.ctrp_base_columns
     end
   end
 end
