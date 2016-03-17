@@ -134,7 +134,10 @@
                 var selectedRows = vm.gridOptions.api.getSelectedRows();
                 if (selectionCounts > $scope.maxRowSelectable) {
                     var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
-                    vm.gridOptions.api.deselectNode(oldestNode, true); // deselect
+                    // vm.gridOptions.api.deselectNode(oldestNode, false); // deselect
+                    vm.gridOptions.api.deselectIndex(0, true);
+                    oldestNode.setSelectedInitialValue(true);
+
                 }
                 // console.info('event.node.data: ', event.node.data); // object of the current row
             }
