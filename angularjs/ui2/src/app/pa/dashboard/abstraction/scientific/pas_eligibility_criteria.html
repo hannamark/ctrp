@@ -197,8 +197,9 @@
                 		</tr> -->
                 		<tr>
                 			<th st-sort="criteria_type" class="col-sm-3">Eligibility Criterion Type</th>
-                			<th class="col-sm-9">Eligibility Criterion Description</th>
-                			<th class="text-center col-sm-1">Delete</th>
+                			<th class="col-sm-7">Eligibility Criterion Description</th>
+                			<th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
+                            <th class="text-center col-sm-1">Edit</th>
                 		</tr>
                 		</thead>
                 		<tbody>
@@ -210,16 +211,22 @@
                                 </span>
                             </td>
                 			<td>
-                                <span in-place-edit="row.criteria_desc" on-save="criteriaView.updateOtherCriteriaDesc(row.criteria_desc, $index)"
+                                <!-- <span in-place-edit="row.criteria_desc" on-save="criteriaView.updateOtherCriteriaDesc(row.criteria_desc, $index)"
                                       template="app/pa/dashboard/abstraction/scientific/_other_criteria_desc_edit.html" id="other_criteria_desc_edit">
                                       {{row.criteria_desc}}
-                                </span>
+                                </span> -->
+                                {{row.criteria_desc}}
                             </td>
                 			<td class="text-center">
                                 <label class="btn btn-default" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)">
                                     <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                 </label>
                 			</td>
+                            <td >
+                                <label class="btn btn-default" restriction-field ng-disabled="row._destroy" ng-click="criteriaView.editOtherCriterion($index)">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </label>
+                            </td>
                 		</tr>
                 		</tbody>
                 		<tfoot>

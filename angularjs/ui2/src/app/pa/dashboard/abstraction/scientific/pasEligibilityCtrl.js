@@ -20,11 +20,13 @@
         vm.otherCriterion = {};
         vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
+        vm.deleteAllOCCheckbox = false;
 
         vm.prepareOtherCriterion = prepareOtherCriterion;
         vm.upsertOtherCriterion = upsertOtherCriterion;
         vm.deleteOtherCriterion = deleteOtherCriterion;
         vm.updateCriteria = updateCriteria;
+        vm.deleteAllOC = deleteAllOC;
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
@@ -58,6 +60,7 @@
                 if (res.server_response.status === 200) {
                     vm.trialDetailObj = res;
                     vm.trialDetailObj.lock_version = res.lock_version;
+                    vm.deleteAllOCCheckbox = false;
 
                     PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                     $scope.$emit('updatedInChildScope', {});
@@ -101,6 +104,17 @@
         }
 
         /**
+         * Delete/Undelete all other criteria
+         * @param booleanFlag {Boolean}
+         * @return {Void}
+         */
+        function deleteAllOC(booleanFlag) {
+            _.each(vm.trialDetailObj.other_criteria, function(oc, idx) {
+                vm.trialDetailObj.other_criteria[idx]._destroy = booleanFlag;
+            });
+        }
+
+        /**
          * update or insert the otherCriterionObj
          * @param  {[type]} otherCriterionObj [description]
          * @return {[type]}                   [description]
@@ -115,7 +129,7 @@
                     // if duplicate other criterion description and user cancels, return;
                     return;
             }
-
+            otherCriterionObj._destroy = vm.deleteAllOCCheckbox; //
             if (otherCriterionObj.id === undefined) {
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
             } else {
@@ -134,18 +148,10 @@
             obj.edit = true;
             obj.index = index;
             vm.otherCriterion = obj;
+            vm.addOtherCriterionFormShown = true;
         }
 
-        // function mockupData() {
-        //     for (var i = 0; i < 20; i++) {
-        //         var obj = i % 2 === 0 ? newOtherCriterion('Inclusion') : newOtherCriterion('Exclusion');
-        //         obj.criteria_desc = 'Test blah blah ' + i;
-        //         vm.trialDetailObj.other_criteria.unshift(obj);
-        //     }
-        // }
-
         function cancelEditOtherCriterion() {
-            console.info('cancelling');
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion = newOtherCriterion('');
         }
