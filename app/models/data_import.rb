@@ -189,6 +189,12 @@ class DataImport
         arm2.trial = trial
         trial.arms_groups << arm1
         trial.arms_groups << arm2
+
+        # Randomely Assign User statuses
+        User.all.each do |u|
+          u.user_status = UserStatus.all[rand(0..UserStatus.all.size-1)]
+          u.save!
+        end
         #save Trial
         trial.save!
       end
