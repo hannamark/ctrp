@@ -179,7 +179,8 @@
                             <button type="button" class="btn btn-warning" ng-click="criteriaView.cancelEditOtherCriterion()">Cancel</button>
                             <button type="button" class="btn btn-danger" ng-click="criteriaView.upsertOtherCriterion(criteriaView.otherCriterion)"
                                 ng-disabled="criteriaView.otherCriterion.criteria_desc==''">
-                                Add
+                                    <span ng-show="criteriaView.otherCriterion.edit">Update</span>
+                                    <span ng-show="!criteriaView.otherCriterion.edit">Add</span>
                             </button>
                         </div>
                     </div>
@@ -187,14 +188,6 @@
                 <div class="row top-buffer" ng-hide="criteriaView.trialDetailObj.other_criteria.length == 0">
                     <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover">
                 		<thead>
-                        <!-- <tr>
-                			<th>
-                				<input st-search="'firstName'" placeholder="search for firstname" class="input-sm form-control" type="search"/>
-                			</th>
-                			<th colspan="4">
-                				<input st-search placeholder="global search" class="input-sm form-control" type="search"/>
-                			</th>
-                		</tr> -->
                 		<tr>
                 			<th st-sort="criteria_type" class="col-sm-4">Eligibility Criterion Type</th>
                 			<th class="col-sm-6">Eligibility Criterion Description</th>

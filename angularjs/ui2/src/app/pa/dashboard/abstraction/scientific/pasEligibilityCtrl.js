@@ -126,7 +126,7 @@
             }
             console.info('otherCriterionObj: ', otherCriterionObj);
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
-            if (isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
+            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
                     !confirm(confirmMsg)) {
                     // if duplicate other criterion description and user cancels, return;
                     return;
@@ -147,9 +147,10 @@
          * @return {JSON object}  Other criterion object
          */
         function editOtherCriterion(index) {
-            vm.otherCriterion = angular.copy(vm.trialDetailObj.other_criteria[index]) || {};
+            vm.otherCriterion = angular.copy(vm.trialDetailObj.other_criteria[index]);
             vm.otherCriterion.edit = true;
             vm.otherCriterion.index = index;
+            vm.descCharsRemaining += vm.otherCriterion.criteria_desc.length; // recalculate the characters remaining
             vm.addOtherCriterionFormShown = true;
         }
 
