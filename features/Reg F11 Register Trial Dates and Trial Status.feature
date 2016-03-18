@@ -586,15 +586,15 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |TrialStatusType                                  |DateTypeAnticipated                | DateTypeAnticipatedError|
       |In Review                                        |allowed                            |                           |
       |Approved                                         |allowed                            |                           |
-      |Active                                           |not allowed                        |Trial Start Date must be actual for the Current Trial Status                           |
-      |Enrolling by Invitation                          |not allowed                        |Trial Start Date must be actual for the current Trial Status                            |
-      |Closed to Accrual                                |not allowed                        |Trial Start Date must be actual for the current Trial Status                             |
-      |Closed to Accrual and Intervention               |not allowed                        |Trial Start Date must be actual for the current Trial Status                             |
-      |Temporarily Closed to Accrual                    |not allowed                        |Trial Start Date must be actual for the current Trial Status                             |
-      |Temporarily Closed to Accrual and Intervention   |not allowed                        |Trial Start Date must be actual for the current Trial Status                             |
+      |Active                                           |not allowed                        |If current Trial Status is Active, Trial Start Date must be Actual                          |
+      |Enrolling by Invitation                          |not allowed                        |If current Trial Status is Enrolling by Invitation, Trial Start Date must be Actual                            |
+      |Closed to Accrual                                |not allowed                        |If current Trial Status is Closed to Accrual, Trial Start Date must be Actual                            |
+      |Closed to Accrual and Intervention               |not allowed                        |If current Trial Status is Closed to Accrual and Intervention, Trial Start Date must be Actual                             |
+      |Temporarily Closed to Accrual                    |not allowed                        |If current Trial Status is Temporarily Closed to Accrual, Trial Start Date must be Actual                            |
+      |Temporarily Closed to Accrual and Intervention   |not allowed                        |If current Trial Status is Temporarily Closed to Accrual and Intervention, Trial Start Date must be Actual                             |
       |Withdrawn                                        |allowed                            |                             |
-      |Administratively Complete                        |not allowed                        |Trial Start Date must be actual for the current Trial Status                              |
-      |Complete                                         |not allowed                        |Trial Start Date must be actual for the current Trial Status                             |
+      |Administratively Complete                        |not allowed                        |If current Trial Status is Administratively Complete, Trial Start Date must be Actual                             |
+      |Complete                                         |not allowed                        |If current Trial Status is Complete, Trial Start Date must be Actual                             |
 
     Examples:
       |trialType  |
@@ -630,8 +630,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual                  |allowed                           |                           |
       |Temporarily Closed to Accrual and Intervention |allowed                           |                           |
       |Withdrawn                                      |allowed                           |                           |
-      |Administratively Complete                      |not allowed                       |if current Trial Status is Administratively Complete, Primary Completion Date must be Actual                           |
-      |Complete                                       |not allowed                       |if current Trial Status is Complete, Primary Completion Date must be Actual                           |
+      |Administratively Complete                      |not allowed                       |If current Trial Status is Administratively Complete, Primary Completion Date must be Actual                           |
+      |Complete                                       |not allowed                       |If current Trial Status is Complete, Primary Completion Date must be Actual                           |
 
     Examples:
       |trialType  |
@@ -645,15 +645,15 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And I am on the Trial Dates Section
     When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there
       |TrialStatusType                                |DateTypeActual                       | DateTypeActualError    |
-      |In Review                                      |not allowed                          |if current Trial Status is In Review,Completion Date must be Anticipated                           |
-      |Approved                                       |not allowed                          |if current Trial Status is Approved , Completion Date must be Anticipated                           |
-      |Active                                         |not allowed                          |if current Trial Status is Active , Completion Date must be Anticipated                          |
-      |Enrolling by Invitation                        |not allowed                          |if current Trial Status is Enrolling by Invitation , Completion Date must be Anticipated                      |
-      |Closed to Accrual                              |not allowed                          |if current Trial Status is Closed to Accrual , Completion Date must be Anticipated                          |
-      |Closed to Accrual and Intervention             |not allowed                          |if current Trial Status is Closed to Accrual and Intervention,  Completion Date must be Anticipated                          |
-      |Temporarily Closed to Accrual                  |not allowed                          |if current Trial Status is Temporarily Closed to Accrual , Completion Date must be Anticipated                           |
-      |Temporarily Closed to Accrual and Intervention |not allowed                          |if current Trial Status is Temporarily Closed to Accrual and Intervention , Completion Date must be Anticipated                      |
-      |Withdrawn                                      |not allowed                          |if current Trial Status is Withdrawn , Completion Date must be Anticipated                           |
+      |In Review                                      |not allowed                          |If current Trial Status is In Review, Completion Date must be Anticipated                           |
+      |Approved                                       |not allowed                          |If current Trial Status is Approved, Completion Date must be Anticipated                           |
+      |Active                                         |not allowed                          |If current Trial Status is Active, Completion Date must be Anticipated                          |
+      |Enrolling by Invitation                        |not allowed                          |If current Trial Status is Enrolling by Invitation, Completion Date must be Anticipated                      |
+      |Closed to Accrual                              |not allowed                          |If current Trial Status is Closed to Accrual, Completion Date must be Anticipated                          |
+      |Closed to Accrual and Intervention             |not allowed                          |If current Trial Status is Closed to Accrual and Intervention, Completion Date must be Anticipated                          |
+      |Temporarily Closed to Accrual                  |not allowed                          |If current Trial Status is Temporarily Closed to Accrual, Completion Date must be Anticipated                           |
+      |Temporarily Closed to Accrual and Intervention |not allowed                          |If current Trial Status is Temporarily Closed to Accrual and Intervention, Completion Date must be Anticipated                      |
+      |Withdrawn                                      |not allowed                          |If current Trial Status is Withdrawn, Completion Date must be Anticipated                           |
       |Administratively Complete                      |allowed                              |                           |
       |Complete                                       |allowed                              |                           |
     When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with the error <DateTypeAnticipatedError> should be there
@@ -667,8 +667,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual                  |allowed                              |                           |
       |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
       |Withdrawn                                      |allowed                              |                           |
-      |Administratively Complete                      |not allowed                          |if current Trial Status is Administratively Complete, Completion Date must be Actual                           |
-      |Complete                                       |not allowed                          |if current Trial Status is Complete, Completion Date must be Actual                           |
+      |Administratively Complete                      |not allowed                          |If current Trial Status is Administratively Complete, Completion Date must be Actual                           |
+      |Complete                                       |not allowed                          |If current Trial Status is Complete, Completion Date must be Actual                           |
 
     Examples:
       |trialType  |
@@ -704,11 +704,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And The Trial Start Date can be in the past, present, or future
     And The Completion Date is always the same as, or later than, the Primary Completion Date
     And The Primary Completion Date is always the same as, or later than, the Trial Start Date
-    And The Primary Completion Date can be earlier than the Current Trial Status Dates Complete
-    When the Primary Completion Date is Actual
-    Then the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete
-    And The Completion Date is always the same as, or later than, the Primary Completion Date
-
+    And The Primary Completion Date must be the same or earlier than the Current Trial Status Dates for the status "Complete"
+    
     Examples:
       |trialType  |
       |National                 |
