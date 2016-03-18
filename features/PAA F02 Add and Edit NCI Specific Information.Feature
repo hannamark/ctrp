@@ -75,7 +75,7 @@ And the screen will be refreshed with the existing data
 
 Scenario Outline: #11 I cannot change the �Send Trial Information to ClinicalTrials.gov? - greyed out
 Given I am logged into the CTRP PA application
-And I am on the NCI Specific Information screen
+And I am at the NCI Specific Information screen to abstract
 When the following <Conditions> and <Field> exist
 Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not greyed out and not editable
 
@@ -91,7 +91,7 @@ Examples:
 |Trial Overall Status is "Administratively Complete"|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
 |Trial Overall Status is "Terminated"|trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
 |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
-  @runthis
+
 Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
 Given I am logged into the CTRP PA application
 And I am at the NCI Specific Information screen

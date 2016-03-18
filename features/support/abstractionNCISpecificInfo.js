@@ -81,6 +81,7 @@ var abstractionNCISpecificInfo = function(){
     //status
     this.trialOverviewProcessingStatus = element(by.css('.col-sm-4.col-xs-12:nth-child(3) p:nth-child(4)'));
     this.trialOverviewResearchCategory = element(by.css('.col-sm-4.col-xs-12:nth-child(2) p:nth-child(2)'));
+    this.trialOverviewCurrentTrialStatus = element(by.css('.col-sm-4.col-xs-12:nth-child(3) p:nth-child(2)'));
 
 
     var helper = new helperFunctions();
@@ -98,6 +99,11 @@ var abstractionNCISpecificInfo = function(){
     //Verify Processing Status
     this.verifyProcessingStatus = function(expProcessingStatus){
         helper.getVerifyLabel(this.trialOverviewProcessingStatus,expProcessingStatus,"Verify Processing Status");
+    };
+
+    //Verify Current Trial Status
+    this.verifyCurrentTrialStatus = function(expCurntTrlStatus){
+        helper.getVerifyLabel(this.trialOverviewCurrentTrialStatus,expCurntTrlStatus,"Verify Current Trial Status");
     };
 
     //Verify Research Category
