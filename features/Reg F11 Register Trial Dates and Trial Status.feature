@@ -630,8 +630,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual                  |allowed                           |                           |
       |Temporarily Closed to Accrual and Intervention |allowed                           |                           |
       |Withdrawn                                      |allowed                           |                           |
-      |Administratively Complete                      |not allowed                       |If current Trial Status is Administratively Complete, Primary Completion Date must be Actual                           |
-      |Complete                                       |not allowed                       |If current Trial Status is Complete, Primary Completion Date must be Actual                           |
+      |Administratively Complete                      |allowed                           |                          |
+      |Complete                                       |not allowed                       |If current Trial Status is Administratively Complete, Primary Completion Date must be Actual                             |
 
     Examples:
       |trialType  |
@@ -704,7 +704,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And The Trial Start Date can be in the past, present, or future
     And The Completion Date is always the same as, or later than, the Primary Completion Date
     And The Primary Completion Date is always the same as, or later than, the Trial Start Date
-    And The Primary Completion Date must be the same or earlier than the Current Trial Status Dates for the status "Complete"
+    
     
     Examples:
       |trialType  |
