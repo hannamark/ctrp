@@ -674,6 +674,10 @@ h5 {
   font-size: 0;
 }
 
+div.ui-grid-cell input[type="checkbox"] {
+    margin-top: 0;
+}
+
 .form-text {
     padding-top: 7px;
 }

@@ -4,10 +4,10 @@
         .controller('pasTrialSubGroupsCtrl', pasTrialSubGroupsCtrl);
 
     pasTrialSubGroupsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService','OutcomeMeasureService', 'toastr',
-        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj'];
+        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj','assayTypes'];
 
     function pasTrialSubGroupsCtrl($scope, TrialService, PATrialService,OutcomeMeasureService, toastr,
-                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
+                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj,assayTypes) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentSubGroup= {};
@@ -23,6 +23,7 @@
         function activate() {
             //submit();
             getTrialDetailCopy();
+            console.log(JSON.stringify(assayTypes))
         }
 
         $scope.deleteRow = function(row) {

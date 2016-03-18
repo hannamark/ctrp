@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311183718) do
+ActiveRecord::Schema.define(version: 20160317205702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,44 @@ ActiveRecord::Schema.define(version: 20160311183718) do
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
   end
+
+  create_table "cadsr_marker_statuses", force: :cascade do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
+  create_table "cadsr_marker_synonyms", force: :cascade do |t|
+    t.string   "alternate_name"
+    t.integer  "cadsr_marker_id"
+    t.integer  "cadsr_marker_status_id"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
+  end
+
+  add_index "cadsr_marker_synonyms", ["cadsr_marker_id"], name: "index_cadsr_marker_synonyms_on_cadsr_marker_id", using: :btree
+  add_index "cadsr_marker_synonyms", ["cadsr_marker_status_id"], name: "index_cadsr_marker_synonyms_on_cadsr_marker_status_id", using: :btree
+
+  create_table "cadsr_markers", force: :cascade do |t|
+    t.string   "name",                   limit: 2000
+    t.string   "meaning",                limit: 2000
+    t.text     "description"
+    t.integer  "cadsr_id"
+    t.string   "nv_term_identifier",     limit: 200
+    t.string   "pv_name",                limit: 2000
+    t.integer  "cadsr_marker_status_id"
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                        default: 0
+  end
+
+  add_index "cadsr_markers", ["cadsr_marker_status_id"], name: "index_cadsr_markers_on_cadsr_marker_status_id", using: :btree
 
   create_table "central_contact_types", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -448,14 +486,47 @@ ActiveRecord::Schema.define(version: 20160311183718) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "marker_assay_type_associations", force: :cascade do |t|
+    t.integer  "marker_id"
+    t.integer  "assay_type_id"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "uuid",          limit: 255
+    t.integer  "lock_version",              default: 0
+  end
+
+  add_index "marker_assay_type_associations", ["assay_type_id"], name: "index_marker_assay_type_associations_on_assay_type_id", using: :btree
+  add_index "marker_assay_type_associations", ["marker_id"], name: "index_marker_assay_type_associations_on_marker_id", using: :btree
+
+  create_table "marker_eval_type_associations", force: :cascade do |t|
+    t.integer  "marker_id"
+    t.integer  "evaluation_type_id"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "uuid",               limit: 255
+    t.integer  "lock_version",                   default: 0
+  end
+
+  add_index "marker_eval_type_associations", ["evaluation_type_id"], name: "index_marker_eval_type_associations_on_evaluation_type_id", using: :btree
+  add_index "marker_eval_type_associations", ["marker_id"], name: "index_marker_eval_type_associations_on_marker_id", using: :btree
+
+  create_table "marker_spec_type_associations", force: :cascade do |t|
+    t.integer  "marker_id"
+    t.integer  "specimen_type_id"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
+  end
+
+  add_index "marker_spec_type_associations", ["marker_id"], name: "index_marker_spec_type_associations_on_marker_id", using: :btree
+  add_index "marker_spec_type_associations", ["specimen_type_id"], name: "index_marker_spec_type_associations_on_specimen_type_id", using: :btree
+
   create_table "markers", force: :cascade do |t|
     t.string   "name",                  limit: 255
     t.string   "record_status",         limit: 255
-    t.integer  "evaluation_type_id"
-    t.integer  "assay_type_id"
     t.integer  "biomarker_use_id"
     t.integer  "biomarker_purpose_id"
-    t.integer  "specimen_type_id"
     t.integer  "trial_id"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
@@ -464,13 +535,11 @@ ActiveRecord::Schema.define(version: 20160311183718) do
     t.string   "evaluation_type_other", limit: 255
     t.string   "assay_type_other",      limit: 255
     t.string   "specimen_type_other",   limit: 255
+    t.string   "protocol_marker_name",  limit: 255
   end
 
-  add_index "markers", ["assay_type_id"], name: "index_markers_on_assay_type_id", using: :btree
   add_index "markers", ["biomarker_purpose_id"], name: "index_markers_on_biomarker_purpose_id", using: :btree
   add_index "markers", ["biomarker_use_id"], name: "index_markers_on_biomarker_use_id", using: :btree
-  add_index "markers", ["evaluation_type_id"], name: "index_markers_on_evaluation_type_id", using: :btree
-  add_index "markers", ["specimen_type_id"], name: "index_markers_on_specimen_type_id", using: :btree
   add_index "markers", ["trial_id"], name: "index_markers_on_trial_id", using: :btree
 
   create_table "maskings", force: :cascade do |t|
@@ -1290,6 +1359,9 @@ ActiveRecord::Schema.define(version: 20160311183718) do
   add_foreign_key "arms_groups", "trials"
   add_foreign_key "associated_trials", "identifier_types"
   add_foreign_key "associated_trials", "trials"
+  add_foreign_key "cadsr_marker_synonyms", "cadsr_marker_statuses"
+  add_foreign_key "cadsr_marker_synonyms", "cadsr_markers"
+  add_foreign_key "cadsr_markers", "cadsr_marker_statuses"
   add_foreign_key "central_contacts", "central_contact_types"
   add_foreign_key "central_contacts", "people"
   add_foreign_key "central_contacts", "trials"
@@ -1308,11 +1380,10 @@ ActiveRecord::Schema.define(version: 20160311183718) do
   add_foreign_key "interventions", "intervention_types"
   add_foreign_key "interventions", "trials"
   add_foreign_key "links", "trials"
-  add_foreign_key "markers", "assay_types"
+  add_foreign_key "marker_assay_type_associations", "assay_types"
+  add_foreign_key "marker_assay_type_associations", "markers"
   add_foreign_key "markers", "biomarker_purposes"
   add_foreign_key "markers", "biomarker_uses"
-  add_foreign_key "markers", "evaluation_types"
-  add_foreign_key "markers", "specimen_types"
   add_foreign_key "markers", "trials"
   add_foreign_key "milestone_wrappers", "milestones"
   add_foreign_key "milestone_wrappers", "submissions"
@@ -1406,6 +1477,9 @@ ActiveRecord::Schema.define(version: 20160311183718) do
   create_sequence "biomarker_uses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "biospecimen_retentions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "board_approval_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "cadsr_marker_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "cadsr_marker_synonyms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "cadsr_markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "central_contact_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "central_contacts_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "citations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1429,6 +1503,9 @@ ActiveRecord::Schema.define(version: 20160311183718) do
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "marker_assay_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "marker_eval_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "marker_spec_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "maskings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

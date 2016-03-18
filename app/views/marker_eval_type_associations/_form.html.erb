@@ -1,0 +1,17 @@
+<%= form_for(@marker_eval_type_association) do |f| %>
+  <% if @marker_eval_type_association.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@marker_eval_type_association.errors.count, "error") %> prohibited this marker_eval_type_association from being saved:</h2>
+
+      <ul>
+      <% @marker_eval_type_association.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

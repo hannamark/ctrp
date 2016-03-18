@@ -20,11 +20,13 @@
         vm.otherCriterion = {};
         vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
+        vm.deleteAllOCCheckbox = false;
 
         vm.prepareOtherCriterion = prepareOtherCriterion;
         vm.upsertOtherCriterion = upsertOtherCriterion;
         vm.deleteOtherCriterion = deleteOtherCriterion;
         vm.updateCriteria = updateCriteria;
+        vm.deleteAllOC = deleteAllOC;
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
@@ -34,6 +36,7 @@
         activate();
         function activate() {
             _getTrialDetailCopy();
+            watchOtherCriteriaDesc();
             // mockupData();
         }
 
@@ -57,6 +60,7 @@
                 if (res.server_response.status === 200) {
                     vm.trialDetailObj = res;
                     vm.trialDetailObj.lock_version = res.lock_version;
+                    vm.deleteAllOCCheckbox = false;
 
                     PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                     $scope.$emit('updatedInChildScope', {});
@@ -100,15 +104,36 @@
         }
 
         /**
+         * Delete/Undelete all other criteria
+         * @param booleanFlag {Boolean}
+         * @return {Void}
+         */
+        function deleteAllOC(booleanFlag) {
+            _.each(vm.trialDetailObj.other_criteria, function(oc, idx) {
+                vm.trialDetailObj.other_criteria[idx]._destroy = booleanFlag;
+            });
+        }
+
+        /**
          * update or insert the otherCriterionObj
-         * @param  {[type]} otherCriterionObj [description]
-         * @return {[type]}                   [description]
+         * @param  {Object} otherCriterionObj
+         * @return {Void}
          */
         function upsertOtherCriterion(otherCriterionObj) {
-            if (otherCriterionObj.criteria_desc === '') {
+            if (otherCriterionObj.criteria_desc.trim() === '') {
+                // return if the description is empty
                 return;
             }
+            console.info('otherCriterionObj: ', otherCriterionObj);
+            var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
+            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
+                    !confirm(confirmMsg)) {
+                    // if duplicate other criterion description and user cancels, return;
+                    return;
+            }
+
             if (otherCriterionObj.id === undefined) {
+                otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
             } else {
                 vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
@@ -122,22 +147,14 @@
          * @return {JSON object}  Other criterion object
          */
         function editOtherCriterion(index) {
-            var obj = vm.trialDetailObj.other_criteria[index] || {};
-            obj.edit = true;
-            obj.index = index;
-            vm.otherCriterion = obj;
+            vm.otherCriterion = angular.copy(vm.trialDetailObj.other_criteria[index]);
+            vm.otherCriterion.edit = true;
+            vm.otherCriterion.index = index;
+            vm.descCharsRemaining += vm.otherCriterion.criteria_desc.length; // recalculate the characters remaining
+            vm.addOtherCriterionFormShown = true;
         }
 
-        // function mockupData() {
-        //     for (var i = 0; i < 20; i++) {
-        //         var obj = i % 2 === 0 ? newOtherCriterion('Inclusion') : newOtherCriterion('Exclusion');
-        //         obj.criteria_desc = 'Test blah blah ' + i;
-        //         vm.trialDetailObj.other_criteria.unshift(obj);
-        //     }
-        // }
-
         function cancelEditOtherCriterion() {
-            console.info('cancelling');
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion = newOtherCriterion('');
         }
@@ -152,6 +169,34 @@
         function updateOtherCriteriaType(otherCriterionType, index) {
             vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
+
+        /**
+         * Check whether the Other Criterion description is duplicate
+         * @param  {String}  otherCriterionDesc
+         * @param  {Array of object}  otherCriteriaArr: an array of other criteria
+         * @return {Boolean}
+         */
+        function isOCDescDuplicate(otherCriterionDesc, otherCriteriaArr) {
+            return _.findIndex(otherCriteriaArr, {criteria_desc: otherCriterionDesc.trim()}) > -1;
+        }
+
+        /**
+         * Watch the other_criteria array in the vm.trialDetailObj
+         * @return {Void}
+         */
+        function watchOtherCriteriaDesc() {
+            $scope.$watchCollection(function() {return vm.trialDetailObj.other_criteria;}, function(
+                newVal, oldVal) {
+                    // number of characters for other criterion description (cumulative)
+                    vm.descCharsRemaining = 5000;
+                    console.info('newVal for other_criteria', newVal);
+                    if (angular.isArray(newVal) && newVal.length > 0) {
+                        _.each(newVal, function(oc, idx) {
+                            vm.descCharsRemaining -= oc.criteria_desc.length;
+                        });
+                    }
+                });
+        } // watchOtherCriteriaDesc
 
     } // pasEligibilityCtrl
 

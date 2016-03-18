@@ -132,6 +132,9 @@
                                       <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
                                           WARNING: {{warning.message}}
                                       </div>
+                                      <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Same Day' && warning.sameDate">
+                                          WARNING: Statuses [{{warning.from}}] and [{{warning.to}}] have the same date
+                                      </div>
                                   </td>
                                   <td class="text-center" class="col-sm-1">
                                       <label class="btn btn-default" restriction-field ng-click="trialStatusView.deleteTrialStatus($index)">
