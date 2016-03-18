@@ -116,21 +116,24 @@
 
         /**
          * update or insert the otherCriterionObj
-         * @param  {[type]} otherCriterionObj [description]
-         * @return {[type]}                   [description]
+         * @param  {Object} otherCriterionObj
+         * @return {Void}
          */
         function upsertOtherCriterion(otherCriterionObj) {
             if (otherCriterionObj.criteria_desc.trim() === '') {
+                // return if the description is empty
                 return;
             }
+            console.info('otherCriterionObj: ', otherCriterionObj);
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
             if (isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
                     !confirm(confirmMsg)) {
                     // if duplicate other criterion description and user cancels, return;
                     return;
             }
-            otherCriterionObj._destroy = vm.deleteAllOCCheckbox; //
+
             if (otherCriterionObj.id === undefined) {
+                otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
             } else {
                 vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
@@ -144,10 +147,9 @@
          * @return {JSON object}  Other criterion object
          */
         function editOtherCriterion(index) {
-            var obj = vm.trialDetailObj.other_criteria[index] || {};
-            obj.edit = true;
-            obj.index = index;
-            vm.otherCriterion = obj;
+            vm.otherCriterion = angular.copy(vm.trialDetailObj.other_criteria[index]) || {};
+            vm.otherCriterion.edit = true;
+            vm.otherCriterion.index = index;
             vm.addOtherCriterionFormShown = true;
         }
 
