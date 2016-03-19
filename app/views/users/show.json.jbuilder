@@ -16,4 +16,5 @@ json.extract! @user,
               :organization_id,
               :organization,
               :family_orgs,
+              :user_status,
               :created_at, :updated_at

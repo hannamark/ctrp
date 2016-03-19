@@ -34,15 +34,12 @@
 
 one:
   name: MyString
-  biomarker_use_id:
-  biomarker_purpose_id: 
+  biomarker_use_id: MyString
+  biomarker_purpose_id: MyString
   record_status: MyString
 
 two:
   name: MyString
-  evaluation_type_id: 
-  assay_type_id: 
-  biomarker_use_id: 
-  biomarker_purpose_id: 
-  specimen_type_id: 
+  biomarker_use_id: MyString
+  biomarker_purpose_id: MyString
   record_status: MyString

@@ -14,6 +14,8 @@
                                      MESSAGES, _, $timeout, trialDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        vm.setAddMode = setAddMode;
+        vm.setEditMode = setEditMode;
         console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
 
         vm.saveTrial = function(){
@@ -45,7 +47,19 @@
 
         }//saveTrial
 
+        function setAddMode() {
+            vm.addEditMode = true;
+        }
 
+
+        /**
+         *  Set Edit Mode.
+         **/
+        function setEditMode(idx) {
+            vm.addEditMode = true;
+            vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
+            console.log("In setEditModel vm.currentArmsGroup = " + JSON.stringify(vm.currentArmsGroup));
+        }
 
     } //pasArmsGroupsCtrl
 
