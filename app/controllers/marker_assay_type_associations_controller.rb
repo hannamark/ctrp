@@ -12,6 +12,14 @@ class MarkerAssayTypeAssociationsController < ApplicationController
   def show
   end
 
+
+  def assay_types_by_marker_id
+    array=[]
+    array =MarkerAssayTypeAssociation.where("marker_id = ? ", params[:marker_id]).pluck(:assay_type_id)
+
+    @assay_types= AssayType.where(id: array)
+  end
+
   # GET /marker_assay_type_associations/new
   def new
     @marker_assay_type_association = MarkerAssayTypeAssociation.new
@@ -64,7 +72,7 @@ class MarkerAssayTypeAssociationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_marker_assay_type_association
-      @marker_assay_type_association = MarkerAssayTypeAssociation.find(params[:id])
+#      @marker_assay_type_association = MarkerAssayTypeAssociation.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

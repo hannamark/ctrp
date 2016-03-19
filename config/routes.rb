@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-  resources :marker_spec_type_associations
 
-  resources :marker_eval_type_associations
-
-  resources :marker_assay_type_associations
 
   resources :trial_versions
 
@@ -125,6 +121,16 @@ Rails.application.routes.draw do
     resources :specimen_types
     resources :biomarker_uses
     resources :biomarker_purposes
+    resources :marker_spec_type_associations
+
+    resources :marker_eval_type_associations
+
+    resources :marker_assay_type_associations do
+      collection do
+        post 'assay_types_by_marker_id'
+      end
+    end
+
 
 
     get '/countries' => 'util#get_countries'

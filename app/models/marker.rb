@@ -40,4 +40,9 @@ class Marker < ActiveRecord::Base
   has_many   :marker_eval_type_associations
   has_many   :marker_spec_type_associations
 
+  accepts_nested_attributes_for  :marker_assay_type_associations, allow_destroy: true
+  accepts_nested_attributes_for  :marker_eval_type_associations, allow_destroy: true
+  accepts_nested_attributes_for  :marker_spec_type_associations, allow_destroy: true
+
+
 end
