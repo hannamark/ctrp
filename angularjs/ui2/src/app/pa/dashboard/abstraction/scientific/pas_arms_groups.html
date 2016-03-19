@@ -10,53 +10,44 @@
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
                     <legend class="sub-bordered">Add/Edit Arms Groups:</legend>
                     <form class="form form-horizontal" role="form">
-
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-9">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <fieldset class="sub-bordered" restriction-field>
-                                            <legend class="sub-bordered">Label:</legend>
-                                            <div class="form-group">
-                                                <label for="label" class="control-label col-xs-12 col-sm-3">Label</label>
-                                                <div class="col-xs-6 col-sm-9">
-                                                    <input type="text" id="label" name="label" class="form-control" ng-model="armView.currentArmsGroup.label" placeholder="label">
-                                                </div>
-                                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(arm_form.brief_summary)}">
-                                                    <label for="brief_title" class="control-label col-xs-12 col-sm-2">Description</label>
-                                                    <div class="col-xs-12 col-sm-10">
-                                                        <textarea name="brief_summary"
-                                                                  id="brief_summary"
-                                                                  rows="5"
-                                                                  class="form-control"
-                                                                  ng-model="armView.curTrial.brief_summary"
-                                                                  maxlength="5000"
-                                                                  ng-maxlength="5000"
-                                                                  ng-required="true">
-                                                        </textarea>
-                                                        <span ng-show="arm_form.brief_summary.$dirty">
-                                                            {{1000 - arm_form.brief_summary.$viewValue.length}} characters left
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.description) && arm_form.description.$error">
-                                                    <span class="help-block" ng-message="required">Please enter the Brief Summary</span>
-                                                </span>
-                                            </div>
-                                        </fieldset>
-
-
-                                        <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="armView.saveSelection()">
-                                                <i class="glyphicon glyphicon-search"></i> Save
-                                            </button>
-                                            <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
-                                                <i class="glyphicon glyphicon-remove"></i> Clear
-                                            </button-->
-                                        </div>
+                        <fieldset class="sub-bordered" restriction-field>
+                            <legend class="sub-bordered">Label:</legend>
+                            <div class="form-group">
+                                <label for="label" class="control-label col-xs-12 col-sm-3">Label</label>
+                                <div class="col-xs-6 col-sm-9">
+                                    <input type="text" id="label" name="label" class="form-control" ng-model="armView.currentArmsGroup.label" placeholder="label">
+                                </div>
+                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(arm_form.brief_summary)}">
+                                    <label for="description" class="control-label col-xs-12 col-sm-2">Description</label>
+                                    <div class="col-xs-12 col-sm-10">
+                                        <textarea name="description"
+                                                  id="description"
+                                                  rows="5"
+                                                  class="form-control"
+                                                  ng-model="armView.currentArmsGroup.description"
+                                                  maxlength="1000"
+                                                  ng-maxlength="2000"
+                                                  ng-required="true">
+                                        </textarea>
+                                        <span ng-show="arm_form.description.$dirty">
+                                            {{1000 - arm_form.description.$viewValue.length}} characters left
+                                        </span>
                                     </div>
                                 </div>
+                                <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.description) && arm_form.description.$error">
+                                    <span class="help-block" ng-message="required">Please enter the Brief Summary</span>
+                                </span>
                             </div>
+                        </fieldset>
+
+
+                        <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="armView.saveSelection()">
+                                <i class="glyphicon glyphicon-search"></i> Save
+                            </button>
+                            <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
+                                <i class="glyphicon glyphicon-remove"></i> Clear
+                            </button-->
                         </div>
                     </form>
 
@@ -100,3 +91,4 @@
             </fieldset>
         </uib-accordion-group>
     </uib-accordion>
+    </div>
