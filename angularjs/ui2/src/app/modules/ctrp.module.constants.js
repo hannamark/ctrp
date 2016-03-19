@@ -71,7 +71,6 @@
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
             'ASSAY_TYPES': '/ctrp/assay_types.json',
-            'ASSAY_TYPES_FOR_A_MARKER': '/ctrp/marker_assay_type_associations/assay_types_by_marker_id',
             'EVALUATION_TYPES': '/ctrp/evaluation_types.json',
             'SPECIMEN_TYPES': '/ctrp/specimen_types.json',
             'BIOMARKER_USES': '/ctrp/biomarker_uses.json',

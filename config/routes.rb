@@ -125,11 +125,7 @@ Rails.application.routes.draw do
 
     resources :marker_eval_type_associations
 
-    resources :marker_assay_type_associations do
-      collection do
-        post 'assay_types_by_marker_id'
-      end
-    end
+    resources :marker_assay_type_associations
 
 
 

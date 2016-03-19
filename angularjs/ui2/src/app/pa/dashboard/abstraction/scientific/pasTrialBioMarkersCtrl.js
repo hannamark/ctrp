@@ -114,16 +114,41 @@
             vm.currentBioMarker.marker_spec_type_associations_attributes=[];
 
 
-            for (var i = 0; i < vm.currentBioMarker.eval_type_associations.length; i++) {
-                var evalHash={}
-                var marker_eval_types_association_id=vm.currentBioMarker.eval_type_associations[i].id;
-                var eval_type_id = vm.currentBioMarker.eval_type_associations[i].evaluation_type_id;
-                evalHash._destroy=true;
-                evalHash.id=marker_eval_types_association_id; //marker_eval_types_association_id
+            if (vm.currentBioMarker.id) {
 
-                //if()
-                vm.currentBioMarker.marker_eval_type_associations_attributes.push(evalHash);
+                if (vm.currentBioMarker.eval_type_associations) {
+                    for (var i = 0; i < vm.currentBioMarker.eval_type_associations.length; i++) {
+                        var evalHash = {}
+                        var marker_eval_types_association_id = vm.currentBioMarker.eval_type_associations[i].id;
+                        var eval_type_id = vm.currentBioMarker.eval_type_associations[i].evaluation_type_id;
+                        evalHash._destroy = true;
+                        evalHash.id = marker_eval_types_association_id; //marker_eval_types_association_id
+
+                        //if()
+                        vm.currentBioMarker.marker_eval_type_associations_attributes.push(evalHash);
+                    }
+                }
+                if (vm.currentBioMarker.asay_type_associations) {
+                    for (var i = 0; i < vm.currentBioMarker.assay_type_associations.length; i++) {
+                        var evalHash = {}
+                        evalHash._destroy = true;
+                        evalHash.id = vm.currentBioMarker.assay_type_associations[i].id;
+                        vm.currentBioMarker.marker_assay_type_associations_attributes.push(evalHash);
+                    }
+                }
+                if(vm.currentBioMarker.spec_type_associations) {
+                    for (var i = 0; i < vm.currentBioMarker.spec_type_associations.length; i++) {
+                        var evalHash = {}
+                        evalHash._destroy = true;
+                        evalHash.id = vm.currentBioMarker.spec_type_associations[i].id;
+                        vm.currentBioMarker.marker_spec_type_associations_attributes.push(evalHash);
+                    }
+                }
             }
+
+
+
+
 
             for (var i = 0; i < vm.checked_eval_types.length; i++) {
                 var evalHash={}
@@ -132,12 +157,7 @@
             }
 
 
-            for (var i = 0; i < vm.currentBioMarker.assay_type_associations.length; i++) {
-                var evalHash={}
-                evalHash._destroy=true;
-                evalHash.id=vm.currentBioMarker.assay_type_associations[i].id;
-                vm.currentBioMarker.marker_assay_type_associations_attributes.push(evalHash);
-            }
+
 
             for (var i = 0; i < vm.checked_assay_types.length; i++) {
                 var evalHash={}
@@ -147,12 +167,6 @@
 
 
 
-            for (var i = 0; i < vm.currentBioMarker.spec_type_associations.length; i++) {
-                var evalHash={}
-                evalHash._destroy=true;
-                evalHash.id=vm.currentBioMarker.spec_type_associations[i].id;
-                vm.currentBioMarker.marker_spec_type_associations_attributes.push(evalHash);
-            }
 
 
             for (var i = 0; i < vm.checked_spec_types.length; i++) {
@@ -257,10 +271,10 @@
             vm.addEditMode = true;
             vm.currentBioMarker = vm.curTrial.bio_markers[idx];
 
-            if (vm.currentBioMarker.assay_type_other.length > 0) {
+            if (vm.currentBioMarker.assay_type_other && vm.currentBioMarker.assay_type_other.length > 0) {
                 vm.isAssayTypeOtherChecked=true;
             }
-            if (vm.currentBioMarker.evaluation_type_other.length > 0) {
+            if (vm.currentBioMarker.evaluation_type_other && vm.currentBioMarker.evaluation_type_other.length > 0) {
                 vm.isEvalTypeOtherChecked=true;
             }
             if (vm.currentBioMarker.specimen_type_other && vm.currentBioMarker.specimen_type_other.length > 0) {
@@ -276,51 +290,7 @@
 
             vm.checked_spec_types=[];
             vm.checked_spec_types = vm.curTrial.bio_markers[idx].spec_types;
-
-
         }
-
-
-        function populateAssayTypesForCurrentBioMarker() {
-            vm.obj = {marker_id: vm.currentBioMarker.id};
-
-                var sam = TrialService.getAssayTypesForMarker(vm.obj).then(function(assayTypes) {
-
-                  vm.checked_assay_types=JSON.stringify(assayTypes);
-
-                }).catch(function(err) {
-                    console.log("error in retrieving assayTypes for current Bio Marker");
-                });
-
-             return vm.checked_assay_types;
-
-        } //populateFamilyMemberships
-
-        function populatePoAffiliations() {
-            //find the organization name with the given id
-
-            var findOrgName = function(poAff, cb) {
-                TrialService.getAssayTypesForMarker(vm.obj).then(function(assayTypes) {
-
-                    vm.checked_assay_types=JSON.stringify(assayTypes);
-
-                }).catch(function(err) {
-                    console.error("error in retrieving organization name with id: " + poAff.organization_id);
-                });
-                cb();
-            };
-
-            //return the organizations
-            var retOrgs = function() {
-                return vm.checked_assay_types;
-            };
-
-            var a=[];
-            vm.obj = {marker_id: vm.currentBioMarker.id};
-            a.push(vm.obj)
-            async.eachSeries(a, findOrgName, retOrgs);
-        } //populatePoAffiliations
-
 
         function resetBioMarker() {
             if(vm.currentBioMarker.id > 0){

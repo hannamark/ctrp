@@ -132,7 +132,6 @@
             getSpecimenTypes:getSpecimenTypes,
             getBiomarkerPurposes:getBiomarkerPurposes,
             getBiomarkerUses:getBiomarkerUses,
-            getAssayTypesForMarker:getAssayTypesForMarker
 
         };
 
@@ -1080,9 +1079,6 @@
         }
         function getBiomarkerUses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.BIOMARKER_USES);
-        }
-        function getAssayTypesForMarker(obj) {
-            return PromiseService.postDataExpectObj(URL_CONFIGS.ASSAY_TYPES_FOR_A_MARKER,obj);
         }
 
 
