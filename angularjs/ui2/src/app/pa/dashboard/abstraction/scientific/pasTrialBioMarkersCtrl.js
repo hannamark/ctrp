@@ -262,6 +262,9 @@
         function setAddMode() {
             vm.addEditMode = true;
             vm.currentBioMarker= {};
+            vm.checked_assay_types=[];
+            vm.checked_eval_types=[];
+            vm.checked_spec_types=[];
         }
 
         /**
