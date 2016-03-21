@@ -8,11 +8,11 @@
                 <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type</label>
                 <div class="col-xs-12 col-sm-4">
                     <select name="identifier_type" id="identifier_type" class="form-control input-sm"
-                        ng-model="assoTrialsView.trialQueryObj.identifierType"
+                        ng-model="assoTrialsView.trialQueryObj.identifierTypeId"
                         ng-options="type.id as type.name for type in assoTrialsView.identifierTypes"
                         required>
                         <option value="">
-                            -- Please select a trial identifier type
+                            -- Please select a trial identifier type...
                         </option>
                     </select>
                 </div>
@@ -28,7 +28,9 @@
                     >
                 </div>
                 <div class="col-xs-12 col-sm-3">
-                    <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Look Up Trial</button>
+                    <button type="button" class="btn btn-primary" ng-click="assoTrialsView.lookupTrial()">
+                        <i class="glyphicon glyphicon-search"></i> Look Up Trial
+                    </button>
                 </div>
             </div>
             <div ng-hide="assoTrialsView.foundTrialObj.official_title.length==0">

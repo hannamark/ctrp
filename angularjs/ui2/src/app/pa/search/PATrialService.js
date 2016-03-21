@@ -152,7 +152,8 @@
             getSamplingMethods: getSamplingMethods,
             getAnatomicSites: getAnatomicSites,
             groupPATrialSearchFieldsData: groupPATrialSearchFieldsData,
-            getTrialIdentifierTypes: getTrialIdentifierTypes
+            getTrialIdentifierTypes: getTrialIdentifierTypes,
+            searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists
         };
 
         return services;
@@ -455,6 +456,18 @@
 
         function getTrialIdentifierTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_ID_TYPES);
+        }
+
+        /**
+         * Search clinical trials, ignoring existing trials even if they have been imported
+         * @param  {String} nctId        NCT trial id
+         * @param  {binary 1 or 0} ignoreExists whether or not ignores the NCT trial has been imported (1 for ignored, 0 for not ignored)
+         * @return {Promise}
+         */
+        function searchClinicalTrialsGovIgnoreExists(nctId) {
+            if (!!nctId) {
+                return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
+            }
         }
 
         /**

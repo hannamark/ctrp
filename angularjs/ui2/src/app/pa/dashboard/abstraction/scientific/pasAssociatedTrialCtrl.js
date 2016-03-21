@@ -13,13 +13,23 @@
         MESSAGES, _, $timeout, identifierTypes) {
             var vm = this;
             vm.identifierTypes = identifierTypes;
-            vm.trialQueryObj = {identifierType: '', trialIdentifier: ''}; // to be POSTed for search
+            vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
             vm.foundTrialObj = _initFoundTrialObj();
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
             vm.associateThisTrial = associateThisTrial;
+            vm.lookupTrial = lookupTrial;
 
+            function lookupTrial() {
+                PATrialService.searchClinicalTrialsGovIgnoreExists(vm.trialQueryObj.trialIdentifier)
+                    .then(function(res) {
+                    console.info('res in looking up trial', res);
+                    vm.foundTrialObj.trial_identifier = res.nct_id;
+                    vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
+                    vm.foundTrialObj.official_title = res.official_title;
+                });
+            } // lookupTrial
 
             function resetTrialLookupForm() {
                 _initFoundTrialObj();

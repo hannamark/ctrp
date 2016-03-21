@@ -10,7 +10,7 @@ class TrialsController < ApplicationController
   end
 
   # GET /trials/1
-  # GET /trials/1.json
+  # GET /trials/1.jsonzf
   def show
     @trial.current_user = @current_user
   end
@@ -446,6 +446,40 @@ class TrialsController < ApplicationController
 
         validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code, same_date)
         @validation_msgs.append(validation_msg)
+      end
+    end
+  end
+
+  def search_clinical_trials_gov_ignore_exists
+    @search_result = {}
+
+    # existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id) params.has_key?(:ignore_exists)
+    # if existing_nct_ids.length > 0
+    #   @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
+    #   return
+    # end
+
+    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+    url = url.sub('NCT********', params[:nct_id])
+    begin
+      xml = Nokogiri::XML(open(url))
+    rescue OpenURI::HTTPError
+      @search_result[:error_msg] = 'A study with the given identifier is not found in ClinicalTrials.gov.'
+    else
+      @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
+      @search_result[:official_title] = xml.xpath('//official_title').text
+      @search_result[:status] = xml.xpath('//overall_status').text
+      @search_result[:condition] = ''
+      xml.xpath('//condition').each_with_index do |condition, i|
+        @search_result[:condition] += ', ' if i > 0
+        @search_result[:condition] += condition
+      end
+      @search_result[:intervention] = ''
+      xml.xpath('//intervention').each_with_index do |intervention, i|
+        @search_result[:intervention] += ', ' if i > 0
+        @search_result[:intervention] += intervention.xpath('intervention_type').text
+        @search_result[:intervention] += ': '
+        @search_result[:intervention] += intervention.xpath('intervention_name').text
       end
     end
   end
