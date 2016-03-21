@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
 
 
+  resources :marker_biomarker_purpose_associations
+
   resources :accrual_disease_terms
 
   resources :trial_documents

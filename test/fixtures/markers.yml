@@ -35,11 +35,9 @@
 one:
   name: MyString
   biomarker_use_id: MyString
-  biomarker_purpose_id: MyString
   record_status: MyString
 
 two:
   name: MyString
   biomarker_use_id: MyString
-  biomarker_purpose_id: MyString
   record_status: MyString

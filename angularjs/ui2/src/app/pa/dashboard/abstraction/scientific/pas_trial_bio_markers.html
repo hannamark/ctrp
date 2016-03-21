@@ -9,20 +9,11 @@
 
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <legend class="sub-bordered">General Details</legend>
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(marker_form.sponsor)}">
-                            <label for="cadsr" class="control-label col-xs-12 col-sm-3">Cadsr</label>
-                            <div class="col-xs-12 col-sm-4">
-                                <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
-                                <ctrp-cadsr-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="markersView.selOrganization.array"></ctrp-cadsr-adv-search-modal-button>
-                            </div>
-                        </div>
-
-
                         <!-- Name -->
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.name)}">
                             <label for="name" class="control-label col-xs-12 col-sm-2">Name</label>
-                            <div class="col-xs-12 col-sm-10">
-                                <input type="text" name="name"
+                            <div class="col-xs-12 col-sm-6">
+                            <input type="text" name="name"
                                        id="name"
                                        rows="5"
                                        class="form-control"
@@ -32,17 +23,21 @@
                                        ng-required="true">
                                 </input>
                             </div>
+
+                               <div class="col-xs-12 col-sm-4">
+                                <ctrp-cadsr-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="markersView.selOrganization.array"></ctrp-cadsr-adv-search-modal-button>
+                               </div>
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.name) && marker_form.name.$error">
-                              <span class="help-block" ng-message="required">Please enter the name</span>
+                              <span class="help-block" ng-message="required">Name must be entered</span>
                             </span>
                         </div>
 
                         <!-- Name ends  -->
 
                         <!-- Protocol Marker Name -->
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.protocol_marker_name)}">
+                        <div class="form-group">
                             <label for="protocol_marker_name" class="control-label col-xs-12 col-sm-2">Protocol Marker Name</label>
-                            <div class="col-xs-12 col-sm-10">
+                            <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="protocol_marker_name"
                                        id="protocol_marker_name"
                                        rows="5"
@@ -53,16 +48,13 @@
                                        ng-required="true">
                                 </input>
                             </div>
-                            <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.protocol_marker_name) && marker_form.protocol_marker_name.$error">
-                              <span class="help-block" ng-message="required">Please enter the protocol marker name</span>
-                            </span>
                         </div>
                         <!-- Protocol Marker Name Ends -->
 
                         <!-- bio marker use -->
-                        <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.biomarker_use)}">
-                            <label for="biomarker_use" class="control-label col-xs-12 col-sm-3">Biomarker Use</label>
-                            <div class="col-xs-12 col-sm-5">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.biomarker_use)}">
+                            <label for="biomarker_use" class="control-label col-xs-12 col-sm-2">Biomarker Use</label>
+                            <div class="col-xs-12 col-sm-6">
                                 <select name="biomarker_use" id="biomarker_use"
                                         class="form-control input-sm"
                                         ng-required="true"
@@ -74,7 +66,7 @@
                             </div>
                         <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) &&
                                     marker_form.biomarker_use.$error">
-                            <span class="help-block" ng-message="required">Biomarker Use is required</span>
+                            <span class="help-block" ng-message="required">Biomarker Use must be entered</span>
                          </span>
                         </div>
                         <!-- end of bio marker use -->
@@ -115,24 +107,23 @@
                                 </div>
 
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.evaluation_type_other) && marker_form.evaluation_type_other.$error">
-                              <span class="help-block" ng-message="required">Please enter the evaluation type other</span>
+                              <span class="help-block" ng-message="required">Evaluation Type Other Text is requiredd</span>
                             </span>
                             </div>
 
-                            <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.evaluation_type_other) &&
-                                    marker_form.evaluation_type_other.$error">
-                            <span class="help-block" ng-message="required">Evaluation Type is required</span>
+                            <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.evaluation_type) &&
+                                    marker_form.evaluation_type.$error">
+                            <span class="help-block" ng-message="required">Evaluation Type must be entered</span>
                              </span>
                         </div>
                     </fieldset>
                     <!-- end of eval type -->
 
 
-
-                        <!-- assay type -->
-                        <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <legend class="sub-bordered">Assay Type </legend>
-                            <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.assay_type)}">
+                    <!-- assay type -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
+                        <legend class="sub-bordered">Assay Type </legend>
+                        <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.assay_type)}">
                             <label for="assay_type" class="control-label col-xs-12 col-sm-2">Assay Type</label>
 
 
@@ -145,33 +136,54 @@
 
                             </div>
 
-                                <div ng-show="markersView.isAssayTypeOtherChecked" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.assay_type_other)}">
-                                    <label for="protocol_marker_name" class="control-label col-xs-12 col-sm-2">Assay Type Other</label>
-                                    <div class="col-xs-12 col-sm-10">
-                                        <input type="text" name="assay_type_other"
-                                               id="assay_type_other"
-                                               rows="5"
-                                               class="form-control"
-                                               ng-model="markersView.currentBioMarker.assay_type_other"
-                                               ng-maxlength="300"
-                                               maxlength="300"
-                                               ng-required="markersView.isAssayTypeOtherChecked">
-                                        </input>
-                                    </div>
+                            <div ng-show="markersView.isAssayTypeOtherChecked" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.assay_type_other)}">
+                                <label for="protocol_marker_name" class="control-label col-xs-12 col-sm-2">Assay Type Other</label>
+                                <div class="col-xs-12 col-sm-10">
+                                    <input type="text" name="assay_type_other"
+                                           id="assay_type_other"
+                                           rows="5"
+                                           class="form-control"
+                                           ng-model="markersView.currentBioMarker.assay_type_other"
+                                           ng-maxlength="300"
+                                           maxlength="300"
+                                           ng-required="markersView.isAssayTypeOtherChecked">
+                                    </input>
+                                </div>
 
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.assay_type_other) && marker_form.assay_type_other.$error">
-                              <span class="help-block" ng-message="required">Please enter the assay type other</span>
+                              <span class="help-block" ng-message="required">Assay Type Other Text is required</span>
                             </span>
-                                </div>
+                            </div>
 
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.assay_type) &&
                                     marker_form.assay_type.$error">
-                            <span class="help-block" ng-message="required">Assay Type is required</span>
+                            <span class="help-block" ng-message="required">Assay Type must be entered</span>
                              </span>
-                            </div>
-                       </fieldset>
-                        <!-- end of assay type -->
+                        </div>
+                    </fieldset>
+                    <!-- end of assay type -->
 
+                    <!-- biomarker purpose type -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
+                        <legend class="sub-bordered">Biomarker Purpose </legend>
+                        <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.biomarker_purpose)}">
+                            <label for="biomarker_purpose" class="control-label col-xs-12 col-sm-2">Biomarker Purpose</label>
+
+                            <div layout="row" layout-wrap flex>
+                                <div flex="40" ng-repeat="bp in markersView.biomarkerPurposes">
+                                    <md-checkbox ng-checked="exists(bp, markersView.checked_biomarker_purposes)" ng-click="toggle(bp, markersView.checked_biomarker_purposes,'BP')" ng-required="true">
+                                        {{ bp.code }}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_purpose) &&
+                                    marker_form.biomarker_purpose.$error">
+                            <span class="help-block" ng-message="required">Biomarker Purpose must be entered</span>
+                             </span>
+                        </div>
+                    </fieldset>
+                    <!-- end of biomarker purpose -->
 
                     <!-- specimen type -->
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
@@ -204,13 +216,13 @@
                                 </div>
 
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.specimen_type_other) && marker_form.specimen_type_other.$error">
-                              <span class="help-block" ng-message="required">Please enter the assay type other</span>
+                              <span class="help-block" ng-message="required">Specimen Type Other Text is required</span>
                             </span>
                             </div>
 
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.spec_type) &&
                                     marker_form.spec_type.$error">
-                            <span class="help-block" ng-message="required">Specimen Type is required</span>
+                            <span class="help-block" ng-message="required">Specimen Type must be entered</span>
                              </span>
                         </div>
                     </fieldset>

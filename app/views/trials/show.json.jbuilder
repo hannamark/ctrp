@@ -66,6 +66,7 @@ json.bio_markers do
     json.assay_type_associations MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id)
     json.eval_type_associations MarkerEvalTypeAssociation.where("marker_id = ? ", marker.id)
     json.spec_type_associations MarkerSpecTypeAssociation.where("marker_id = ? ", marker.id)
+    json.biomarker_purpose_associations MarkerBiomarkerPurposeAssociation.where("marker_id = ?", marker.id)
 
     at_array =MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id).pluck(:assay_type_id)
     assay_types= AssayType.where(id: at_array)
@@ -79,6 +80,9 @@ json.bio_markers do
     spec_types= SpecimenType.where(id: st_array)
     json.spec_types spec_types
 
+    biomarker_purpose_array = MarkerBiomarkerPurposeAssociation.where("marker_id = ? ", marker.id).pluck(:biomarker_purpose_id)
+    biomarker_purposes = BiomarkerPurpose.where(id: biomarker_purpose_array)
+    json.biomarker_purposes biomarker_purposes
 
   end
 end

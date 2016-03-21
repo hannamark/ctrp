@@ -32,7 +32,12 @@
         vm.checked_spec_types=[];
 
         vm.biomarkerPurposes=biomarkerPurposes;
+        console.log(vm.biomarkerPurposes);
+        vm.checked_biomarker_purposes=[];
+
         vm.biomarkerUses=biomarkerUses;
+
+
 
 
         $scope.toggle = function (item, list,type) {
@@ -116,6 +121,7 @@
             vm.currentBioMarker.marker_eval_type_associations_attributes=[];
             vm.currentBioMarker.marker_assay_type_associations_attributes=[];
             vm.currentBioMarker.marker_spec_type_associations_attributes=[];
+            vm.currentBioMarker.marker_biomarker_purpose_associations_attributes=[];
 
 
             if (vm.currentBioMarker.id) {
@@ -145,9 +151,19 @@
                         var evalHash = {}
                         evalHash._destroy = true;
                         evalHash.id = vm.currentBioMarker.spec_type_associations[i].id;
-                        vm.currentBioMarker.marker_spec_type_associations_attributes.push(evalHash);
+                        vm.currentBioMarker.marker_biomarker_purpose_associations_attributes.push(evalHash);
                     }
                 }
+
+                if(vm.currentBioMarker.biomarker_purpose_associations) {
+                    for (var i = 0; i < vm.currentBioMarker.biomarker_purpose_associations.length; i++) {
+                        var evalHash = {}
+                        evalHash._destroy = true;
+                        evalHash.id = vm.currentBioMarker.biomarker_purpose_associations[i].id;
+                        vm.currentBioMarker.marker_biomarker_purpose_associations_attributes.push(evalHash);
+                    }
+                }
+
             }
 
 
@@ -169,7 +185,11 @@
                 vm.currentBioMarker.marker_assay_type_associations_attributes.push(evalHash);
             }
 
-
+            for (var i = 0; i < vm.checked_biomarker_purposes.length; i++) {
+                var evalHash={}
+                evalHash.biomarker_purpose_id=vm.checked_biomarker_purposes[i].id;
+                vm.currentBioMarker.marker_biomarker_purpose_associations_attributes.push(evalHash);
+            }
 
 
 
@@ -285,6 +305,7 @@
             vm.checked_assay_types=[];
             vm.checked_eval_types=[];
             vm.checked_spec_types=[];
+            vm.checked_biomarker_purposes=[];
             vm.selOrganization = {name: '', array: []};
         }
 
@@ -314,6 +335,10 @@
 
             vm.checked_spec_types=[];
             vm.checked_spec_types = vm.curTrial.bio_markers[idx].spec_types;
+
+            vm.checked_biomarker_purposes=[];
+            vm.checked_biomarker_purposes=vm.curTrial.bio_markers[idx].biomarker_purposes;
+
         }
 
         function resetBioMarker() {
