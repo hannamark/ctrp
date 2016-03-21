@@ -33,7 +33,6 @@
         } //linkFn
 
         function personSearch2DirectiveController($scope, UserService, DateService, OrgService, $state, _) {
-            alert('person search 2');
 
             var vm = this;
             vm.name = 'Tony';
