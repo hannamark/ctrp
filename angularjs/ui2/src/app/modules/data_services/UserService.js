@@ -15,6 +15,7 @@
 
         var appVersion = '';
         var appRelMilestone = '';
+        var statusArr = ['In Review', 'Active', 'Inactive', 'Deleted'];
 
         // Initial User Search Parameters
         var initUserSearchParams = {
@@ -125,8 +126,7 @@
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status.name}}">{{row.entity.user_status.name}}</div>'
                 },
                 {
                     name: 'delete',
@@ -134,12 +134,11 @@
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.user_status" ng-true-value="Deleted" ng-false-value="Inactive"><label></div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.user_status" ng-true-value="{{Deleted}}" ng-false-value="{{Inactive}}"><label></div>'
                 }
 
             ]
         };
-
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -415,6 +414,9 @@
             LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
+        this.getStatusArray = function() {
+            return statusArr;
+        };
 
         /******* helper functions *********/
 
