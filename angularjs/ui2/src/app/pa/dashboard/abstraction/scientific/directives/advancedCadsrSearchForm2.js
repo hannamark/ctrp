@@ -41,6 +41,7 @@
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
             $scope.searchParams = CadsrService.getInitialCadsrSearchParams();
+            $scope.searchParams.query_text="1";
 
             $scope.selectedRows = [];
 

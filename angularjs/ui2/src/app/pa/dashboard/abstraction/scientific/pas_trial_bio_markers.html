@@ -263,8 +263,11 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <th>Name</th>
-                        <th>Protocol Name</th>
+                        <th>Evaluation Type</th>
                         <th>Bio Marker Use</th>
+                        <th>Biomarker Purpose</th>
+                        <th>Specimen Type</th>
+                        <th>Record Status</th>
 
                         <th class="text-center">Edit</th>
                         <th class="text-center">Deletion</th>
@@ -278,12 +281,20 @@
                             </td>
 
                             <td>
-                                {{bio_marker.protocol_marker_name}}
+                                {{bio_marker.eval_types_array}}
                             </td>
                             <td>
                                 {{bio_marker.biomarker_use}}
                             </td>
-
+                            <td>
+                                {{bio_marker.biomarker_purposes_array}}
+                            </td>
+                            <td>
+                                {{bio_marker.spec_types_array}}
+                           </td>
+                            <td>
+                                {{bio_marker.record_status}}
+                            </td>
                             <td>
                                 <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="markersView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>

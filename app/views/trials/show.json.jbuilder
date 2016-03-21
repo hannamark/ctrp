@@ -75,14 +75,17 @@ json.bio_markers do
     et_array =MarkerEvalTypeAssociation.where("marker_id = ? ", marker.id).pluck(:evaluation_type_id)
     eval_types= EvaluationType.where(id: et_array)
     json.eval_types eval_types
+    json.eval_types_array eval_types.pluck(:code).inspect[1...-1].gsub('"',"")
 
     st_array =MarkerSpecTypeAssociation.where("marker_id = ? ", marker.id).pluck(:specimen_type_id)
     spec_types= SpecimenType.where(id: st_array)
     json.spec_types spec_types
+    json.spec_types_array spec_types.pluck(:code).inspect[1...-1].gsub('"',"")
 
     biomarker_purpose_array = MarkerBiomarkerPurposeAssociation.where("marker_id = ? ", marker.id).pluck(:biomarker_purpose_id)
     biomarker_purposes = BiomarkerPurpose.where(id: biomarker_purpose_array)
     json.biomarker_purposes biomarker_purposes
+    json.biomarker_purposes_array biomarker_purposes.pluck(:code).inspect[1...-1].gsub('"',"")
 
   end
 end
