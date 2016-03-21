@@ -510,8 +510,8 @@ CadsrMarkerSynonym.find_or_create_by(id: 7725,alternate_name:  'Spi-B Transcript
 CadsrMarkerSynonym.find_or_create_by(id: 7723,alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 CadsrMarkerSynonym.find_or_create_by(id: 7724,alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 
-
-
+NcitStatus.find_or_create_by(code:'ACT',name:'Active')
+NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
