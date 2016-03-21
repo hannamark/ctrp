@@ -1,11 +1,47 @@
-<div class="row">
+<!-- add associated trial -->
+<div class="row top-buffer">
     <form name="associated_trials_form" role="form" class="form-horizontal" novalidate ctrp-submit="assoTrialsView.updateCriteria()">
         <!-- fieldset for eligibility criteria -->
         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
             <legend class="sub-bordered">Associated Trials</legend>
-            
+
 
         </fieldset>
 
     </form>
 </div>
+<!-- end of adding associated trial -->
+<!-- associated trials -->
+<div class="row top-buffer">
+    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
+        <legend class="sub-bordered">Associated Trials</legend>
+        <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th st-sort="criteria_type" class="col-sm-4">Eligibility Criterion Type</th>
+                <th class="col-sm-6">Eligibility Criterion Description</th>
+                <th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
+                <th class="text-center col-sm-1">Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        111
+                    </td>
+                    <td>
+                        fdsf
+                    </td>
+                    <td>
+                        yes
+                    </td>
+                    <td>
+                        Edit
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+<!-- end of associated trials -->
