@@ -33,6 +33,19 @@
                         </div>
 
                         <!-- Name ends  -->
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9" layout="row" layout-wrap flex-xs="100">
+                                <label for="status" class="control-label col-xs-12 col-sm-2">Status:</label>
+
+                            <div class="col-xs-12 col-sm-6">
+                                <p class="form-control-static">{{markersView.currentBioMarker.record_status}}</p>
+                            <span class="help-block alert alert-warning" ng-hide="markersView.currentBioMarker.status_alert">
+                                You have changed name select from caDSR system thus staus has changed to Pending.
+                           </span>
+                            </div>
+
+                                </div>
+                            </div>
 
                         <!-- Protocol Marker Name -->
                         <div class="form-group">
