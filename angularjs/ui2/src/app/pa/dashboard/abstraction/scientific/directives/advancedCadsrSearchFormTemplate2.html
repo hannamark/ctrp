@@ -7,6 +7,45 @@
 
     <div class="row">
         <div class="col-xs-12 col-md-6">
+
+            <div class="form-group">
+                <label for="query_text" class="control-label col-xs-12 col-sm-3 vertical-align">Highlight Query Text: </label>
+                <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
+
+                    <label class="radio-inline">
+                        <input type="radio" id="query_text" name="query_text"
+                               ng-model="searchParams.query_text"
+                               value="1"> Yes
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" id="query_text" name="query_text"
+                               ng-model="searchParams.query_text"
+                               value="2"> No
+                    </label>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="case_sensitive_search" class="control-label col-xs-12 col-sm-3 vertical-align">Case-Sensitive Search: </label>
+                <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
+
+                    <label class="radio-inline">
+                        <input type="radio" id="case_sensitive_search" name="case_sensitive_search"
+                               ng-model="searchParams.case_sensitive_search"
+                               value="Yes"
+                               ng-required="searchParams.case_sensitive_search === ''"> Yes
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" id="case_sensitive_search" name="case_sensitive_search"
+                               ng-model="searchParams.case_sensitive_search"
+                               value="No"
+                               ng-required="!searchParams.case_sensitive_search"> No
+                    </label>
+
+                </div>
+            </div>
+
             <!-- Search Term  -->
 
             <div class="form-group">

@@ -176,6 +176,7 @@ class DataImport
         i1.name = "CBP/beta-catenin Antagonist PRI-724"
         i1.description = "Given IV"
         arm1.intervention = i1
+        trial.interventions << i1
         arm1.label = "Arm I (PRI-724, mFOLFOX6/bevacizumab)"
         arm1.trial = trial
         arm1.description = "Patients receive CBP/beta-catenin antagonist PRI-724 IV continuously on days 1-7, bevacizumab IV over 30 minutes"
@@ -184,6 +185,7 @@ class DataImport
         i2.name = "Bevacizumab"
         i2.description = "Correlative studies"
         arm2.intervention = i2
+        trial.interventions << i2
         arm2.label = "Arm II (mFOLFOX6/bevacizumab)"
         arm2.description = "Patients receive bevacizumab, leucovorin calcium, oxaliplatin, and fluorouracil as in Arm I. Courses repeat every 14 days in the absence of disease progression or unacceptable toxicity."
         arm2.trial = trial

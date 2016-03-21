@@ -7,10 +7,11 @@
             </uib-accordion-heading>
 
             <div class="form-group no-bottom-margin" ng-if="armView.addEditMode">
+
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
                     <legend class="sub-bordered">Add/Edit Arms Groups:</legend>
                     <form class="form form-horizontal" role="form">
-                        <table><tr><td>
+
                         <fieldset class="sub-bordered" restriction-field>
                             <legend class="sub-bordered">Label:</legend>
                             <div class="form-group">
@@ -60,21 +61,33 @@
                                     </div>
                                 </div>
                             </fieldset>
-                        </td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>
+                                        <fieldset  class="sub-bordered" restriction-field>
+                                            <legend class="sub-bordered">Intervention Assignment:</legend>
+                                            <div >
+                                                <table class="table table-bordered table-striped table-hover" >
+                                                    <thead>
+                                                        <th>Assignment</th>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="intervention in armView.curTrial.interventions track by $index" class="animated-item">
+                                                        <td>
+                                                            <input type="checkbox" ng-model="intervention.selected" ng-change="armView.deleteListHandler(armView.curTrial.interventions)" />
+                                                        </td>
+                                                        <td>{{intervention.name}}</td>
+                                                        <td>{{intervention.description}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
 
-                                    </td>
-                                </tr>
-                            </table>
 
-                        </td>
-                        </tr>
-                        </table>
+                                            </div>
+
+                                        </fieldset>
+
                         <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="armView.saveTrial()">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="armView.updateTrial()">
                                 <i class="glyphicon glyphicon-search"></i> Save
                             </button>
                             <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
@@ -108,7 +121,7 @@
                                 </button>
                             </td>
                             <td>
-                                <input type="checkbox" ng-model="arms_group.selected" ng-change="anatomicView.deleteListHandler(armView.curTrial.arms_groups)" />
+                                <input type="checkbox" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" />
                             </td>
                         </tr>
                         </tbody>

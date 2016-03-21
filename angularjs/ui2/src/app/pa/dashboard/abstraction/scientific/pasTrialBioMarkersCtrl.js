@@ -20,7 +20,6 @@
         vm.selOrganization = {name: '', array: []};
         vm.showOrgFields = true;
         vm.disableBtn = false;
-
         vm.assayTypes=assayTypes;
         vm.checked_assay_types=[];
 
@@ -101,6 +100,7 @@
             //submit();
             getTrialDetailCopy();
             watchOrganization();
+            _watchMarkerName();
 
         }
 
@@ -306,13 +306,27 @@
         function watchOrganization() {
             $scope.$watchCollection(function() {return vm.selOrganization.array;}, function(newVal, oldVal) {
                 if (angular.isArray(newVal) && newVal.length > 0) {
-                    console.log("newVal = "+ JSON.stringify(newVal));
                     vm.currentBioMarker.name = newVal[0].name;
-                    vm.currentBioMarker.organization = newVal[0];
-                    vm.currentBioMarker.organization_id = newVal[0].id;
-                    vm.city = newVal[0].city;
+                    vm.masterCopyOfMarkerNameFromCadsr=angular.copy(newVal[0].name);
+                    vm.currentBioMarker.cadsr_id = newVal[0].id;
+                    vm.currentBioMarker.record_status="Active";
+                    vm.currentBioMarker.status_alert=true;
                     vm.selOrganization = {name: vm.currentBioMarker["po_name"], array: []};
-                    //console.log("vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
+                }
+            });
+        }
+
+        function _watchMarkerName() {
+            $scope.$watch(function() {return vm.currentBioMarker.name;}, function(newVal) {
+                if (vm.currentBioMarker.cadsr_id > 0) {
+                    if (newVal !=vm.masterCopyOfMarkerNameFromCadsr){
+                        vm.currentBioMarker.status_alert=false;
+                        vm.currentBioMarker.record_status="Pending";
+                    }else if(newVal ==vm.masterCopyOfMarkerNameFromCadsr){
+                        vm.currentBioMarker.record_status="Active";
+                        vm.currentBioMarker.status_alert=true;
+                    }
+
                 }
             });
         }
@@ -324,6 +338,9 @@
         function setAddMode() {
             vm.addEditMode = true;
             vm.currentBioMarker= {};
+            vm.currentBioMarker.record_status="Pending";
+            vm.currentBioMarker.status_alert=true;
+            vm.currentBioMarker.cadsr_id=0;
             vm.checked_assay_types=[];
             vm.checked_eval_types=[];
             vm.checked_spec_types=[];
@@ -362,6 +379,11 @@
             vm.checked_biomarker_purposes=vm.curTrial.bio_markers[idx].biomarker_purposes;
 
         }
+
+
+
+
+
 
         function resetBioMarker() {
             if(vm.currentBioMarker.id > 0){
