@@ -16,8 +16,22 @@
         vm.curTrial = trialDetailObj;
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
-        console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
+        vm.deleteListHandler = deleteListHandler;
+        vm.deleteSelected = deleteSelected;
+        vm.selectedDeleteAnatomicSiteList = [];
 
+        console.log("trialDetailObj.interventions = " + JSON.stringify(trialDetailObj.interventions));
+
+        vm.updateTrial = function() {
+            if(vm.currentArmsGroup) {
+                vm.curTrial.arms_groups_attributes = [];
+                if (vm.currentArmsGroup.edit || vm.currentArmsGroup.new || (vm.currentArmsGroup._destroy && vm.currentArmsGroup.id)) {
+                    vm.curTrial.arms_groups_attributes.push(vm.currentArmsGroup);
+                }
+            }
+            console.log("vm.curTrial.arms_groups_attributes " + JSON.stringify(vm.curTrial.arms_groups_attributes));
+            vm.saveTrial();
+        }
         vm.saveTrial = function(){
             vm.disableBtn = true;
 
@@ -28,10 +42,6 @@
             outerTrial.trial = vm.curTrial;
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-            vm.curTrial.arms_groups_attributes = [];
-            if (vm.currentArmsGroup.edit || vm.currentArmsGroup.new || (vm.currentArmsGroup._destroy && vm.currentArmsGroup.id)) {
-                vm.curTrial.arms_groups_attributes.push(vm.currentArmsGroup);
-            }
             console.log("vm.curTrial.arms_groups_attributes " + JSON.stringify(vm.curTrial.arms_groups_attributes));
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
@@ -69,6 +79,33 @@
                 vm.currentArmsGroupIndex = idx;
             console.log("In setEditModel vm.currentArmsGroup = " + JSON.stringify(vm.currentArmsGroup));
         }
+
+        function deleteListHandler(armsGroupsInCheckboxes){
+            console.log("In deleteListHandler armsGroupsInCheckboxes"+JSON.stringify(armsGroupsInCheckboxes));
+            var deleteList = [];
+            angular.forEach(armsGroupsInCheckboxes, function(item) {
+                if ( angular.isDefined(item.selected) && item.selected === true ) {
+                    deleteList.push(item);
+                }
+            });
+            vm.selectedDeleteArmsGroupsList = deleteList ;
+            console.log("In vm.selectedDeleteArmsGroupsList=" + JSON.stringify(vm.selectedDeleteArmsGroupsList));
+
+        };
+
+        function deleteSelected(){
+            vm.curTrial.arms_groups_attributes=[];
+            for (var i = 0; i < vm.selectedDeleteArmsGroupsList.length; i++) {
+                var armsGroupsToBeDeletedFromDb = {};
+                armsGroupsToBeDeletedFromDb.id = vm.selectedDeleteArmsGroupsList[i].id;
+                armsGroupsToBeDeletedFromDb._destroy = true;
+                console.log("armsGroupsToBeDeletedFromDb="+JSON.stringify(armsGroupsToBeDeletedFromDb));
+                vm.curTrial.arms_groups_attributes.push(armsGroupsToBeDeletedFromDb);
+            }
+            vm.saveTrial();
+
+        };
+
 
     } //pasArmsGroupsCtrl
 
