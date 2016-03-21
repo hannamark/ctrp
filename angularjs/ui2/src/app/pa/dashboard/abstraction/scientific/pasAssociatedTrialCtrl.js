@@ -14,9 +14,30 @@
             var vm = this;
             vm.identifierTypes = identifierTypes;
             vm.trialQueryObj = {identifierType: '', trialIdentifier: ''}; // to be POSTed for search
+            vm.foundTrialObj = _initFoundTrialObj();
 
-            vm.foundTrialObj = {trial_identifier: '', identifier_type_id: '', trial_id: '', official_title: ''};
-            
+            // actions
+            vm.resetTrialLookupForm = resetTrialLookupForm;
+            vm.associateThisTrial = associateThisTrial;
+
+
+            function resetTrialLookupForm() {
+                _initFoundTrialObj();
+            }
+
+            function _initFoundTrialObj() {
+                return {
+                    trial_identifier: '',
+                    identifier_type_id: '',
+                    trial_id: '',
+                    official_title: ''
+                };
+            }
+
+            function associateThisTrial(trialLookUpResult) {
+                console.info('to associate with ', trialLookUpResult);
+            } // associateThisTrial
+
 
         }
 

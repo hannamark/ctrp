@@ -3,7 +3,7 @@
     <form name="associated_trials_form" role="form" class="form-horizontal" novalidate ctrp-submit="assoTrialsView.updateCriteria()">
         <!-- fieldset for eligibility criteria -->
         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-            <legend class="sub-bordered">Add Associated Trial</legend>
+            <legend class="sub-bordered">Look Up Trial</legend>
             <div class="form-group">
                 <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type</label>
                 <div class="col-xs-12 col-sm-4">
@@ -28,10 +28,11 @@
                     >
                 </div>
                 <div class="col-xs-12 col-sm-3">
-                    <button class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Look Up Trial</button>
+                    <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Look Up Trial</button>
                 </div>
             </div>
             <div ng-hide="assoTrialsView.foundTrialObj.official_title.length==0">
+                <!-- show this div only if the trial is found not null -->
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Research Category</label>
                     <div class="col-xs-12 col-sm-5 form-text">Test test test</div>
@@ -41,8 +42,12 @@
                     <label class="control-label col-xs-12 col-sm-3">Official Title</label>
                     <div class="col-xs-12 col-sm-9 form-text">Test official title</div>
                 </div>
-            </div>
 
+                <div class="form-group text-center">
+                    <button type="button" class="btn btn-warning" ng-click="assoTrialsView.resetTrialLookupForm()">Reset</button>
+                    <button class="btn btn-primary" ng-click="assoTrialsView.associateThisTrial(assoTrialsView.foundTrialObj)">Save</button>
+                </div>
+            </div>
         </fieldset>
 
     </form>
