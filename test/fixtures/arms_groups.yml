@@ -23,10 +23,8 @@
 
 one:
   label: MyString
-  type: 
   description: MyText
 
 two:
   label: MyString
-  type: 
   description: MyText
