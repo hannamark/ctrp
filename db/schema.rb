@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160321172345) do
+ActiveRecord::Schema.define(version: 20160321194649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -597,6 +597,57 @@ ActiveRecord::Schema.define(version: 20160321172345) do
   end
 
   add_index "name_aliases", ["organization_id"], name: "index_name_aliases_on_organization_id", using: :btree
+
+  create_table "ncit_disease_codes", force: :cascade do |t|
+    t.string   "disease_code",      limit: 255
+    t.string   "nt_term_id",        limit: 255
+    t.string   "preferred_name",    limit: 1000
+    t.string   "menu_display_name", limit: 1000
+    t.integer  "ncit_status_id"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                   default: 0
+  end
+
+  add_index "ncit_disease_codes", ["ncit_status_id"], name: "index_ncit_disease_codes_on_ncit_status_id", using: :btree
+
+  create_table "ncit_disease_parents", force: :cascade do |t|
+    t.string   "parent_disease_code", limit: 255
+    t.integer  "ncit_status_id"
+    t.integer  "child_id"
+    t.integer  "parent_id"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.string   "uuid",                limit: 255
+    t.integer  "lock_version",                    default: 0
+  end
+
+  add_index "ncit_disease_parents", ["child_id"], name: "index_ncit_disease_parents_on_child_id", using: :btree
+  add_index "ncit_disease_parents", ["ncit_status_id"], name: "index_ncit_disease_parents_on_ncit_status_id", using: :btree
+  add_index "ncit_disease_parents", ["parent_id"], name: "index_ncit_disease_parents_on_parent_id", using: :btree
+
+  create_table "ncit_disease_synonyms", force: :cascade do |t|
+    t.string   "alternate_name",       limit: 1000
+    t.integer  "ncit_status_id"
+    t.integer  "ncit_disease_code_id"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                      default: 0
+  end
+
+  add_index "ncit_disease_synonyms", ["ncit_disease_code_id"], name: "index_ncit_disease_synonyms_on_ncit_disease_code_id", using: :btree
+  add_index "ncit_disease_synonyms", ["ncit_status_id"], name: "index_ncit_disease_synonyms_on_ncit_status_id", using: :btree
+
+  create_table "ncit_statuses", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
 
   create_table "onhold_reasons", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -1401,6 +1452,12 @@ ActiveRecord::Schema.define(version: 20160321172345) do
   add_foreign_key "milestone_wrappers", "submissions"
   add_foreign_key "milestone_wrappers", "trials"
   add_foreign_key "name_aliases", "organizations"
+  add_foreign_key "ncit_disease_codes", "ncit_statuses"
+  add_foreign_key "ncit_disease_parents", "ncit_disease_codes", column: "child_id"
+  add_foreign_key "ncit_disease_parents", "ncit_disease_codes", column: "parent_id"
+  add_foreign_key "ncit_disease_parents", "ncit_statuses"
+  add_foreign_key "ncit_disease_synonyms", "ncit_disease_codes"
+  add_foreign_key "ncit_disease_synonyms", "ncit_statuses"
   add_foreign_key "onholds", "onhold_reasons"
   add_foreign_key "onholds", "trials"
   add_foreign_key "organizations", "source_contexts"
@@ -1523,6 +1580,10 @@ ActiveRecord::Schema.define(version: 20160321172345) do
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestones_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "name_aliases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_disease_codes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_disease_parents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_disease_synonyms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onhold_reasons_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onholds_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "organizations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
