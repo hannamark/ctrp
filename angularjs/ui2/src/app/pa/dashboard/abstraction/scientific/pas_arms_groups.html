@@ -87,7 +87,7 @@
                                         </fieldset>
 
                         <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="armView.saveTrial()">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="armView.updateTrial()">
                                 <i class="glyphicon glyphicon-search"></i> Save
                             </button>
                             <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
@@ -121,7 +121,7 @@
                                 </button>
                             </td>
                             <td>
-                                <input type="checkbox" ng-model="arms_group.selected" ng-change="anatomicView.deleteListHandler(armView.curTrial.arms_groups)" />
+                                <input type="checkbox" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" />
                             </td>
                         </tr>
                         </tbody>
