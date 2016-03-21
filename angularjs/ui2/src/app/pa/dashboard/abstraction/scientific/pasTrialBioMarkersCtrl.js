@@ -19,7 +19,7 @@
         vm.trialDetailObj = {};
         vm.selOrganization = {name: '', array: []};
         vm.showOrgFields = true;
-
+        vm.disableBtn = false;
 
         vm.assayTypes=assayTypes;
         vm.checked_assay_types=[];
@@ -151,7 +151,7 @@
                         var evalHash = {}
                         evalHash._destroy = true;
                         evalHash.id = vm.currentBioMarker.spec_type_associations[i].id;
-                        vm.currentBioMarker.marker_biomarker_purpose_associations_attributes.push(evalHash);
+                        vm.currentBioMarker.marker_spec_type_associations_attributes.push(evalHash);
                     }
                 }
 
@@ -167,10 +167,16 @@
             }
 
 
-
+            vm.isEvalTypeOtherChecked=false;
+            vm.isAssayTypeOtherChecked=false;
+            vm.isSpecTypeOtherChecked=false;
 
 
             for (var i = 0; i < vm.checked_eval_types.length; i++) {
+               if(vm.checked_eval_types[i].code =="Other")
+               {
+                   vm.isEvalTypeOtherChecked=true;
+               }
                 var evalHash={}
                 evalHash.evaluation_type_id=vm.checked_eval_types[i].id; //eval_type_id
                 vm.currentBioMarker.marker_eval_type_associations_attributes.push(evalHash);
@@ -180,6 +186,10 @@
 
 
             for (var i = 0; i < vm.checked_assay_types.length; i++) {
+                if(vm.checked_assay_types[i].code =="Other")
+                {
+                    vm.isAssayTypeOtherChecked=true;
+                }
                 var evalHash={}
                 evalHash.assay_type_id=vm.checked_assay_types[i].id;
                 vm.currentBioMarker.marker_assay_type_associations_attributes.push(evalHash);
@@ -194,10 +204,19 @@
 
 
             for (var i = 0; i < vm.checked_spec_types.length; i++) {
+                if(vm.checked_spec_types[i].code =="Other")
+                {
+                    vm.isSpecTypeOtherChecked=true;
+                }
+
                 var evalHash={}
                 evalHash.specimen_type_id=vm.checked_spec_types[i].id;
                 vm.currentBioMarker.marker_spec_type_associations_attributes.push(evalHash);
             }
+
+            if(!vm.isEvalTypeOtherChecked)  { vm.currentBioMarker.evaluation_type_other  = ""; }
+            if(!vm.isAssayTypeOtherChecked) { vm.currentBioMarker.assay_type_other = ""; }
+            if(!vm.isSpecTypeOtherChecked)  { vm.currentBioMarker.specimen_type_other  = ""; }
 
             vm.currentBioMarker.trial_id = trialDetailObj.id;
             vm.curTrial.markers_attributes=[];
@@ -224,8 +243,10 @@
                     timeOut: 0
                 })
                 vm.addEditMode=false;
+                vm.disableBtn = false;
 
             }).catch(function(err) {
+                vm.disableBtn = false;
                 console.log("error in creating or updating sub group " + JSON.stringify(outerTrial));
             });
         };//saveBioMarker
@@ -275,6 +296,7 @@
                 })
 
             }).catch(function(err) {
+                vm.disableBtn = false;
                 console.log("error in creating or updating Trial sub group " + JSON.stringify(outerTrial));
             });
         };
