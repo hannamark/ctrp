@@ -119,7 +119,7 @@
                     enableSorting: true,
                     minWidth: '25',
                     width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved"></label></div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved" ng-click="grid.appScope.changeUserApproval(row)"></label></div>'
                 },
                 {
                     name: 'user_status',
@@ -318,7 +318,18 @@
         this.upsertUser = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
+            PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj)
+                .then(function (data) {
+                    console.log('user data returned: ' + JSON.stringify(data["server_response"]));
+                    if (data["server_response"] == 422 || data["server_response"]["status"] == 422) {
+                        toastr.error('Update Failed', 'Update error');
+                    } else {
+                        toastr.success('Update Success', 'User has been updated');
+                    }
+                }).catch(function (err) {
+                    $log.error('error in user update: ' + JSON.stringify(err));
+                });
+
         }; //upsertUser
 
         this.upsertUserSignup = function (userObj) {

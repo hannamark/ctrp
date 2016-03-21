@@ -14,10 +14,23 @@
     function userListCtrl($scope, toastr, LocalCacheService,
         UserService, uiGridConstants, $location, $anchorScroll) {
 
-        function changeUserStatus() {
-            console.log('user row is: ');
-            $scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ROW);
+        $scope.changeUserStatus = function(row) {
+            console.log('user row is: ', row);
+            if (row.entity && row.entity.user_status.id === 4) {
+                row.entity.user_status.name = 'Deleted';
+            } else {
+                row.entity.user_status.name = 'Inactive';
+            }
+            vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
         }
+
+        $scope.changeUserApproval = function(row) {
+            console.log('user approval is: ', row.entity.approved);
+            UserService.upsertUser(row.entity);
+            //vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
+        }
+
+
 
         var vm = this;
         var userSoftDeleteColumnDef = {
@@ -26,7 +39,7 @@
             enableSorting: true,
             minWidth: '100',
             width: '*',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><button ng-click="grid.appScope.changeUserStatus()">Click Me</button><label></div>'
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.user_status.id" ng-true-value="4" ng-false-value="3" ng-click="grid.appScope.changeUserStatus(row)"><label></div>'
         };
 
         vm.statusArr = UserService.getStatusArray();
