@@ -205,8 +205,9 @@
         }
 
         function _checkEditableStatus() {
-            vm.trialDetailObj.pa_editable = !vm.adminCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
-            vm.trialDetailObj.pa_sci_editable = !vm.scientificCheckoutAllowed || curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN';
+            var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
+            vm.trialDetailObj.pa_editable = vm.adminCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
+            vm.trialDetailObj.pa_sci_editable = vm.scientificCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
         }
         //
         // function _getUpdatedTrialDetailObj() {
