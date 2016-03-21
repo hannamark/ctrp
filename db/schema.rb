@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317205702) do
+ActiveRecord::Schema.define(version: 20160320230636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -536,10 +536,12 @@ ActiveRecord::Schema.define(version: 20160317205702) do
     t.string   "assay_type_other",      limit: 255
     t.string   "specimen_type_other",   limit: 255
     t.string   "protocol_marker_name",  limit: 255
+    t.integer  "cadsr_marker_id"
   end
 
   add_index "markers", ["biomarker_purpose_id"], name: "index_markers_on_biomarker_purpose_id", using: :btree
   add_index "markers", ["biomarker_use_id"], name: "index_markers_on_biomarker_use_id", using: :btree
+  add_index "markers", ["cadsr_marker_id"], name: "index_markers_on_cadsr_marker_id", using: :btree
   add_index "markers", ["trial_id"], name: "index_markers_on_trial_id", using: :btree
 
   create_table "maskings", force: :cascade do |t|
@@ -1384,6 +1386,7 @@ ActiveRecord::Schema.define(version: 20160317205702) do
   add_foreign_key "marker_assay_type_associations", "markers"
   add_foreign_key "markers", "biomarker_purposes"
   add_foreign_key "markers", "biomarker_uses"
+  add_foreign_key "markers", "cadsr_markers"
   add_foreign_key "markers", "trials"
   add_foreign_key "milestone_wrappers", "milestones"
   add_foreign_key "milestone_wrappers", "submissions"

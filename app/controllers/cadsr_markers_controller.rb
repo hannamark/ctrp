@@ -61,6 +61,14 @@ class CadsrMarkersController < ApplicationController
     end
   end
 
+  def search
+
+    pv_name = params[:pv_name]
+
+   # @cadsr_markers =CadsrMarker.where("pv_name = ? ", pv_name) #params[:trial_id],start_date,end_date).order('created_at desc')
+   @cadsr_markers=CadsrMarker.all
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_marker_cadsr

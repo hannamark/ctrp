@@ -17,6 +17,8 @@
         vm.deleteSelected = deleteSelected;
         vm.resetBioMarker = resetBioMarker;
         vm.trialDetailObj = {};
+        vm.selOrganization = {name: '', array: []};
+        vm.showOrgFields = true;
 
 
         vm.assayTypes=assayTypes;
@@ -93,6 +95,8 @@
         function activate() {
             //submit();
             getTrialDetailCopy();
+            watchOrganization();
+
         }
 
         $scope.deleteRow = function(row) {
@@ -256,6 +260,22 @@
         };
 
 
+        // Add Participating to a temp array
+        function watchOrganization() {
+            $scope.$watchCollection(function() {return vm.selOrganization.array;}, function(newVal, oldVal) {
+                if (angular.isArray(newVal) && newVal.length > 0) {
+                    console.log("newVal = "+ JSON.stringify(newVal));
+                    vm.currentBioMarker.name = newVal[0].name;
+                    vm.currentBioMarker.organization = newVal[0];
+                    vm.currentBioMarker.organization_id = newVal[0].id;
+                    vm.city = newVal[0].city;
+                    vm.selOrganization = {name: vm.currentBioMarker["po_name"], array: []};
+                    //console.log("vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
+                }
+            });
+        }
+
+
         /**
          *  Set Add Mode.
          **/
@@ -265,6 +285,7 @@
             vm.checked_assay_types=[];
             vm.checked_eval_types=[];
             vm.checked_spec_types=[];
+            vm.selOrganization = {name: '', array: []};
         }
 
         /**
