@@ -24,7 +24,7 @@
                                 <option value="" ng-selected="!userDetailView.userDetails.user_status.id">Select a status</option>
                                 <option ng-repeat="status in userDetailView.statusArr track by status.id" value="{{status.id}}" ng-selected="userDetailView.userDetails.user_status.id === status.id">{{status.name}}</option>
                             </select>
-                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.id" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                             <span class="help-block" ng-show="userDetail_form.userstatus.$error.required">Status is Required</span>
                         </div>
                     </div>

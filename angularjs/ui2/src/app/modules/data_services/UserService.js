@@ -324,17 +324,7 @@
             //update an existing user
             var configObj = {}; //empty config
 
-            PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj)
-                .then(function (data) {
-                    console.log('user data returned: ' + JSON.stringify(data["server_response"]));
-                    if (data["server_response"] == 422 || data["server_response"]["status"] == 422) {
-                        toastr.error('Update Failed', 'Update error');
-                    } else {
-                        toastr.success('Update Success', 'User has been updated');
-                    }
-                }).catch(function (err) {
-                    $log.error('error in user update: ' + JSON.stringify(err));
-                });
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
 
         }; //upsertUser
 

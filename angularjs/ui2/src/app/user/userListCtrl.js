@@ -15,7 +15,7 @@
         UserService, uiGridConstants, $location, $anchorScroll) {
 
         $scope.changeUserStatus = function(row) {
-            var updatedUser = {};
+            var userObj = {};
 
             console.log('user row is: ', row);
             if (row && row.entity) {
@@ -25,24 +25,24 @@
                     row.entity.user_status.name = 'Inactive';
                 }
 
-                updatedUser.id = row.entity.id;
-                updatedUser.user = row.entity;
+                userObj.id = row.entity.id;
+                userObj.user = row.entity;
             }
 
             vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
 
-            UserService.upsertUser(updatedUser);
+            vm.upsertUser(userObj);
         }
 
         $scope.changeUserApproval = function(row) {
-            var updatedUser = {};
+            var userObj = {};
 
             console.log('user row is: ', row);
 
-            updatedUser.id = row.entity.id;
-            updatedUser.user = row.entity;
+            userObj.id = row.entity.id;
+            userObj.user = row.entity;
 
-            UserService.upsertUser(updatedUser);
+            vm.upsertUser(userObj);
             vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
         }
 
@@ -109,6 +109,15 @@
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
+
+        vm.upsertUser = function(updatedUser) {
+            UserService.upsertUser(updatedUser).then(function(response) {
+                toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                console.log('response data is: ', response);
+            }).catch(function(err) {
+                console.log('error in updating user');
+            });
+        }; //upsertUser
 
         activate();
 
