@@ -16,7 +16,7 @@
 
         var vm = this;
 
-        vm.statusArr = ['In Review', 'Active', 'Inactive', 'Deleted'];
+        vm.statusArr = UserService.getStatusArray();
         //toastr.success('Success', 'In userListCtrl');
         vm.searchParams = UserService.getInitialUserSearchParams();
 

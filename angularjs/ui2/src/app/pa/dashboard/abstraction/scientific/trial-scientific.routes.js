@@ -132,6 +132,16 @@
                     label: 'Eligibility Criteria'
                 }
             })
+            .state('main.pa.trialOverview.associatedTrials', {
+                url: '/associated-trials',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_associated_trials.html',
+                controller: 'pasAssociatedTrialCtrl as assoTrialsView',
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Associated Trials'
+                }
+            })
             .state('main.pa.trialOverview.armsGroups', {
                 url: '/arms-groups',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_arms_groups.html',

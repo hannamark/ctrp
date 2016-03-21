@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', '$location', '$anchorScroll'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, $location, $anchorScroll) {
 
         var vm = this;
 
@@ -215,9 +215,16 @@
         /**
          *  Set Add Mode. This causes the first tab to appear for a new Participating Site
          **/
-        function setAddMode() {
+        function setAddMode(addEditModeValue) {
             //console.log("SETTING TO ADDMODE");
-            vm.addEditMode = true;
+            if (!(typeof addEditModeValue === 'undefined' || addEditModeValue === null)) {
+                vm.addEditMode = addEditModeValue;
+                $location.hash('section_top');
+                $anchorScroll()
+            } else {
+                vm.addEditMode = true;
+                vm.tabIndex = 0;
+            }
             vm.currentParticipatingSite = {};
             vm.current_site_recruitment = {};
             vm.city = null;
@@ -227,8 +234,7 @@
             vm.po_name = null;
             vm.selOrganization = {name: '', array: []};
             vm.siteRecruitmentGrid = [];
-            vm.investigatorGrid = [];
-            vm.tabIndex = 0;
+            vm.investigatorGrid = [];        
         }
 
         /**
@@ -493,7 +499,7 @@
             if (!vm.current_investigator.investigator_type){
                 vm.current_investigator.investigator_type = "Principal Investigator";
             }
-            
+
             if(vm.current_investigator.id) {
                 vm.current_investigator.edit = true;
                 vm.investigatorGrid[index].edit = true;

@@ -114,7 +114,7 @@
                      // groupHeaders: true,
                      rowHeight: 25,
                      onModelUpdated: onModelUpdated,
-                     suppressRowClickSelection: true
+                     suppressRowClickSelection: false
                  };
                  // options.datasource = tableDataSource;
                  return options;
@@ -122,23 +122,31 @@
 
             function onRowSelectionChanged() {
                 var selectedRows = vm.gridOptions.api.getSelectedRows();
-                var selectedNodes = vm.gridOptions.api.getSelectedNodes()
+                var selectedNodes = vm.gridOptions.api.getSelectedNodes();
+                var selectionCounts = vm.gridOptions.api.getSelectedNodes().length;
+
+                if (selectionCounts > $scope.maxRowSelectable) {
+                    var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
+                    // vm.gridOptions.api.deselectNode(oldestNode, false); // deselect
+                    vm.gridOptions.api.deselectIndex(0, true);
+                }
+
                 console.info('selectedRows: ', selectedRows);
                 console.info('selectedNodes: ', selectedNodes); // row object is nested in the 'data' field of node
             } // onRowSelectionChanged
 
             function rowSelectedCallback(event) {
+                console.info('is node selected? ', vm.gridOptions.api.isNodeSelected(event.node), event.node.id);
                 var curSelectedNode = event.node;
+                console.log('node props: ', curSelectedNode);
                 var curSelectedRowObj = curSelectedNode.data;
-                var selectionCounts = vm.gridOptions.api.getSelectedNodes().length;
-                if (selectionCounts > $scope.maxRowSelectable) {
-                    // console.info(vm.gridOptions.api.getSelectedNodes());
-                    var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
-                    oldestNode.setSelected(false);
-                    // curSelectedNode.setSelected(false);
-                    // vm.gridOptions.api.getSelectedNodes()[0].setSelected(false); // deselect the oldest selection
-                }
-                // console.info('event.node.data: ', event.node.data); // object of the current row
+                // var selectionCounts = vm.gridOptions.api.getSelectedNodes().length;
+                var selectedRows = vm.gridOptions.api.getSelectedRows();
+                // if (selectionCounts > $scope.maxRowSelectable) {
+                //     var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
+                //     // vm.gridOptions.api.deselectNode(oldestNode, false); // deselect
+                //     vm.gridOptions.api.deselectIndex(0, true);
+                // }
             }
 
             function onModelUpdated() {
