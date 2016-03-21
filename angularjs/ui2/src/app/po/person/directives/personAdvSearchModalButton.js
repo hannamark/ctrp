@@ -45,7 +45,7 @@
 
 
         function personAdvSearchModalButtonController($scope, $timeout) {
-alert('modal button person');
+            //alert('modal button person');
             $scope.savedSelection = [];
             $scope.showGrid = true;
             $scope.curationMode = false;

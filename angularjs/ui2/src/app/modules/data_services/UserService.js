@@ -8,11 +8,12 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope', 'uiGridConstants'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope, uiGridConstants) {
 
+        var service = this;
         var appVersion = '';
         var appRelMilestone = '';
         var statusArr = ['In Review', 'Active', 'Inactive', 'Deleted'];
@@ -127,16 +128,7 @@
                     minWidth: '100',
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status.name}}">{{row.entity.user_status.name}}</div>'
-                },
-                {
-                    name: 'delete',
-                    displayName: 'Delete',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.user_status" ng-true-value="{{Deleted}}" ng-false-value="{{Inactive}}"><label></div>'
                 }
-
             ]
         };
 
@@ -418,8 +410,8 @@
             return statusArr;
         };
 
-        /******* helper functions *********/
 
+        /******* helper functions *********/
         function _setAppVersion(version) {
             if (!version) {
                 //if null or empty value

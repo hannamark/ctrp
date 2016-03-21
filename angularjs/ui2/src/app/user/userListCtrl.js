@@ -14,7 +14,20 @@
     function userListCtrl($scope, toastr, LocalCacheService,
         UserService, uiGridConstants, $location, $anchorScroll) {
 
+        function changeUserStatus() {
+            console.log('user row is: ');
+            $scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ROW);
+        }
+
         var vm = this;
+        var userSoftDeleteColumnDef = {
+            name: 'delete',
+            displayName: 'Delete',
+            enableSorting: true,
+            minWidth: '100',
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><button ng-click="grid.appScope.changeUserStatus()">Click Me</button><label></div>'
+        };
 
         vm.statusArr = UserService.getStatusArray();
         //toastr.success('Success', 'In userListCtrl');
@@ -33,6 +46,10 @@
                 vm.searchUsers();
             });
         }; //gridOptions
+        vm.gridOptions.changeUserStatus = function (gridApi) {
+            console.log('i can get here');
+        }; //gridOptions
+        vm.gridOptions.columnDefs.push(userSoftDeleteColumnDef);
 
         vm.searchUsers = function () {
             //toastr.success('Success', 'In userListCtrl, searchUsers');
@@ -104,7 +121,6 @@
             //do the search with the updated sorting
             vm.searchUsers();
         } //sortChangedCallBack
-
     }
 
 })();
