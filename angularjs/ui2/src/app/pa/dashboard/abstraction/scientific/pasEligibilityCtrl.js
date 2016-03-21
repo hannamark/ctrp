@@ -124,7 +124,6 @@
                 // return if the description is empty
                 return;
             }
-            console.info('otherCriterionObj: ', otherCriterionObj);
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
             if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
                     !confirm(confirmMsg)) {
