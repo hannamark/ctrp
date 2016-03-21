@@ -24,7 +24,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
         vm.statusArr = UserService.getStatusArray();
-        vm.rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
+        vm.rolesArr = UserService.getRolesArray();
 
         vm.checkUserStatus = function() {
             if (!vm.userDetails.user_status.id) {

@@ -22,6 +22,7 @@
             {id: 3, name: 'Inactive'},
             {id: 4, name: 'Deleted'}
         ];
+        var rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
 
         // Initial User Search Parameters
         var initUserSearchParams = {
@@ -417,6 +418,9 @@
             return statusArr;
         };
 
+        this.getRolesArray = function() {
+            return rolesArr;
+        };
 
         /******* helper functions *********/
         function _setAppVersion(version) {
