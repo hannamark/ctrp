@@ -26,8 +26,15 @@
         vm.statusArr = UserService.getStatusArray();
         vm.rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
 
-        vm.updateUser = function () {
+        vm.checkUserStatus = function() {
+            if (!vm.userDetails.user_status.id) {
+                vm.userDetails.user_status.id = null;
+            }
+            console.log('status is: ', vm.userDetails.user_status);
+        }
 
+        vm.updateUser = function () {
+            console.log('vm.userDetails is:', vm.userDetails.user_status);
             console.log('hello email changed ? ' +vm.userDetails.email);
             console.log('IN UPDATEUSER');
             var newUser = {};
@@ -47,10 +54,10 @@
             if (vm.selectedOrgsArray[0] != null){
                 console.log('orgs id is ' + vm.selectedOrgsArray[0].id);
             }
-            console.log('newUser is: ' + JSON.stringify(newUser));
+            //console.log('newUser is: ' + JSON.stringify(newUser));
             UserService.upsertUser(newUser).then(function(response) {
                 toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
-                console.log('response is:', response);
+                //console.log('response is:', response);
                 vm.userDetails.username = response.username;
                 vm.userDetails.email = response.email;
                 vm.userDetails.role = response.role;

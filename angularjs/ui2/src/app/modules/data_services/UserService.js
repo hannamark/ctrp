@@ -16,7 +16,12 @@
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
-        var statusArr = ['In Review', 'Active', 'Inactive', 'Deleted'];
+        var statusArr = [
+            {id: 1, name: 'In Review'},
+            {id: 2, name: 'Active'},
+            {id: 3, name: 'Inactive'},
+            {id: 4, name: 'Deleted'}
+        ];
 
         // Initial User Search Parameters
         var initUserSearchParams = {
