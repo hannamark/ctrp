@@ -223,6 +223,7 @@
                 $anchorScroll()
             } else {
                 vm.addEditMode = true;
+                vm.tabIndex = 0;
             }
             vm.currentParticipatingSite = {};
             vm.current_site_recruitment = {};
@@ -233,8 +234,7 @@
             vm.po_name = null;
             vm.selOrganization = {name: '', array: []};
             vm.siteRecruitmentGrid = [];
-            vm.investigatorGrid = [];
-            vm.tabIndex = 0;
+            vm.investigatorGrid = [];        
         }
 
         /**

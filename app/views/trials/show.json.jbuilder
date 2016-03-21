@@ -58,18 +58,40 @@ json.sub_groups do
   end
 end
 
+json.bio_markers do
+  json.array!(@trial.markers) do |marker|
+    json.extract! marker, :id, :name,:protocol_marker_name, :evaluation_type_other,:assay_type_other,:specimen_type_other,:record_status,:biomarker_use_id
+    json.biomarker_use marker.biomarker_use.present? ? marker.biomarker_use.name : nil
+
+    json.assay_type_associations MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id)
+    json.eval_type_associations MarkerEvalTypeAssociation.where("marker_id = ? ", marker.id)
+    json.spec_type_associations MarkerSpecTypeAssociation.where("marker_id = ? ", marker.id)
+    json.biomarker_purpose_associations MarkerBiomarkerPurposeAssociation.where("marker_id = ?", marker.id)
+
+    at_array =MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id).pluck(:assay_type_id)
+    assay_types= AssayType.where(id: at_array)
+    json.assay_types assay_types
+
+    et_array =MarkerEvalTypeAssociation.where("marker_id = ? ", marker.id).pluck(:evaluation_type_id)
+    eval_types= EvaluationType.where(id: et_array)
+    json.eval_types eval_types
+
+    st_array =MarkerSpecTypeAssociation.where("marker_id = ? ", marker.id).pluck(:specimen_type_id)
+    spec_types= SpecimenType.where(id: st_array)
+    json.spec_types spec_types
+
+    biomarker_purpose_array = MarkerBiomarkerPurposeAssociation.where("marker_id = ? ", marker.id).pluck(:biomarker_purpose_id)
+    biomarker_purposes = BiomarkerPurpose.where(id: biomarker_purpose_array)
+    json.biomarker_purposes biomarker_purposes
+
+  end
+end
+
 json.interventions do
   json.array!(@trial.interventions) do |intervention|
     json.extract! intervention, :id, :name, :description
   end
 end
-
-json.arms_groups do
-  json.array!(@trial.arms_groups) do |arms_group|
-    json.extract! arms_group, :id, :label, :type, :description, :intervention_id
-  end
-end
-
 
 json.collaborators do
   json.array!(@trial.collaborators) do |collaborator|
@@ -135,7 +157,7 @@ end
 
 json.arms_groups do
   json.array!(@trial.arms_groups) do |ag|
-    json.extract! ag, :id, :label, :type, :description, :intervention_id, :trial_id
+    json.extract! ag, :id, :label, :arms_groups_type, :description, :intervention_id, :trial_id
   end
 end
 

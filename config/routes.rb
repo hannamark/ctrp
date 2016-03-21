@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
-  resources :marker_spec_type_associations
 
-  resources :marker_eval_type_associations
 
-  resources :marker_assay_type_associations
 
-  resources :trial_versions
+  resources :marker_biomarker_purpose_associations
 
   resources :accrual_disease_terms
 
@@ -114,6 +111,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :cadsr_markers do
+      collection do
+        get 'index'
+        post 'search'
+      end
+    end
 
 
     resources :outcome_measure_types
@@ -125,6 +128,13 @@ Rails.application.routes.draw do
     resources :specimen_types
     resources :biomarker_uses
     resources :biomarker_purposes
+
+    resources :marker_spec_type_associations
+
+    resources :marker_eval_type_associations
+
+    resources :marker_assay_type_associations
+
 
 
     get '/countries' => 'util#get_countries'

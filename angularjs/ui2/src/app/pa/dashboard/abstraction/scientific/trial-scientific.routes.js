@@ -148,6 +148,40 @@
                     parent: 'main.pa.trialOverview',
                     label: 'Arms Groups'
                 }
+            })
+
+            .state('main.pa.trialOverview.bioMarkers', {
+                url: '/bio-markers',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_bio_markers.html',
+                controller: 'pasBioMarkersCtrl as markersView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    assayTypes: function(TrialService) {
+                        return TrialService.getAssayTypes();
+                    },
+                    evaluationTypes: function(TrialService) {
+                        return TrialService.getEvaluationTypes();
+                    },
+                    specimenTypes: function(TrialService) {
+                        return TrialService.getSpecimenTypes();
+                    },
+                    biomarkerUses: function(TrialService) {
+                        return TrialService.getBiomarkerUses();
+                    },
+                    biomarkerPurposes: function(TrialService) {
+                        return TrialService.getBiomarkerPurposes();
+                    }
+
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Bio Markers'
+                }
             });
     }
 })();

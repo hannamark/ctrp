@@ -1,0 +1,80 @@
+<form class="form form-horizontal" role="form">
+    <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
+        <div class="alert alert-warning fade in">
+            <strong>{{searchWarningMessage}}</strong>
+        </div>
+    </div><br />
+
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <!-- Search Term  -->
+
+            <div class="form-group">
+                <label for="search_term" class="col-xs-12 col-sm-3 control-label">Search Term:</label>
+                <div class="col-xs-12 col-sm-5">
+
+                    <input type="text" id="search_term" class="form-control input-sm"
+                           autocomplete="off" placeholder="Search Term" ng-model="searchParams.pv_name" auto-focus />
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="public_id" class="col-xs-12 col-sm-3 control-label">Public ID:</label>
+                <div class="col-xs-12 col-sm-5">
+
+                    <input type="text" id="public_id" class="form-control input-sm"
+                           autocomplete="off" placeholder="Search Term" ng-model="searchParams.cadsr_id" auto-focus />
+
+                </div>
+
+            </div>
+            <!-- Search Term ends -->
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-toolbar">
+                <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="searchCadsrs('fromStart')" ng-disabled="searching">
+                    <i class="glyphicon glyphicon-search"></i> Search
+                </button>
+                <button class="btn btn-warning pull-right" id="reset_btn" ng-click="resetSearch()" ng-disabled="searching">
+                    <i class="glyphicon glyphicon-remove"></i> Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-xs-12">
+        <span us-spinner="{radius: 20, length: 15}" spinner-on="searching"></span>
+    </div>
+</div>
+
+<div class="row" ng-class="{'top-offset-xs': gridOptions.totalItems != null }" ng-if="searchWarningMessage.length === 0">
+    <div class="col-xs-12">
+        <div class="row" ng-if="gridOptions.totalItems != null">
+            <div class="col-xs-12">
+                <div ng-if="searchWarningMessage.length === 0">
+                    <p><h4>Cadsr Search Results: {{gridOptions.totalItems}} found</h4></p>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-hide="warningMessage==''" ng-cloak>
+            <div class="alert alert-danger fade in">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>{{warningMessage}}</strong>
+            </div>
+        </div>
+        <div class="row animated-item" ng-if="gridOptions.data.length > 0">
+            <div class="col-xs-12">
+                <div ui-grid="gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row top-offset-xs"></div>

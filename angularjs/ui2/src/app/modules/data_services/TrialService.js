@@ -9,10 +9,10 @@
         .factory('TrialService', TrialService);
 
     TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
-        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http'];
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http','PromiseService'];
 
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
-            PromiseTimeoutService, Upload, HOST, DateService, $http) {
+            PromiseTimeoutService, Upload, HOST, DateService, $http,PromiseService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -131,7 +131,7 @@
             getEvaluationTypes:getEvaluationTypes,
             getSpecimenTypes:getSpecimenTypes,
             getBiomarkerPurposes:getBiomarkerPurposes,
-            getBiomarkerUses:getBiomarkerUses
+            getBiomarkerUses:getBiomarkerUses,
 
         };
 
@@ -1080,7 +1080,6 @@
         function getBiomarkerUses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.BIOMARKER_USES);
         }
-
 
 
     }

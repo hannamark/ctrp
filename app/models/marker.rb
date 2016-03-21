@@ -34,10 +34,16 @@ class Marker < ActiveRecord::Base
   include BasicConcerns
 
   belongs_to :biomarker_use
-  belongs_to :biomarker_purpose
   belongs_to :trial
-  has_many   :marker_assay_type_associations
-  has_many   :marker_eval_type_associations
-  has_many   :marker_spec_type_associations
+  has_many   :marker_assay_type_associations, dependent: :destroy
+  has_many   :marker_eval_type_associations, dependent: :destroy
+  has_many   :marker_spec_type_associations, dependent: :destroy
+  has_many   :marker_biomarker_purpose_associations, dependent: :destroy
+
+  accepts_nested_attributes_for  :marker_assay_type_associations, allow_destroy: true
+  accepts_nested_attributes_for  :marker_eval_type_associations, allow_destroy: true
+  accepts_nested_attributes_for  :marker_spec_type_associations, allow_destroy: true
+  accepts_nested_attributes_for  :marker_biomarker_purpose_associations, allow_destroy: true
+
 
 end

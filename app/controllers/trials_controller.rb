@@ -519,7 +519,7 @@ class TrialsController < ApplicationController
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                  arms_groups_attributes: [:id, :label, :type, :description, :intervention_id, :trial_id, :_destroy],
+                                  arms_groups_attributes: [:id, :label, :arms_groups_type, :description, :intervention_id, :trial_id, :_destroy],
                                   central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
                                   trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                   collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],
@@ -534,7 +534,13 @@ class TrialsController < ApplicationController
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
-                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy])
+                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
+                                  markers_attributes: [:id,:name,:protocol_marker_name,:biomarker_use_id,:evaluation_type_other,:assay_type_other,:_destroy,:record_status,
+                                                       :specimen_type_other,:record_status,
+                                                       marker_eval_type_associations_attributes:[:id,:evaluation_type_id,:_destroy],
+                                                       marker_assay_type_associations_attributes:[:id,:assay_type_id,:_destroy],
+                                                       marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
+                                                       marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]])
   end
 
   # Convert status code to name in validation messages

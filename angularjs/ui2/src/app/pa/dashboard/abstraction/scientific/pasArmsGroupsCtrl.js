@@ -15,6 +15,7 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.setAddMode = setAddMode;
+        vm.setEditMode = setEditMode;
         console.log("trialDetailObj = " + JSON.stringify(trialDetailObj));
 
         vm.saveTrial = function(){
@@ -27,7 +28,11 @@
             outerTrial.trial = vm.curTrial;
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-
+            vm.curTrial.arms_groups_attributes = [];
+            if (vm.currentArmsGroup.edit || vm.currentArmsGroup.new || (vm.currentArmsGroup._destroy && vm.currentArmsGroup.id)) {
+                vm.curTrial.arms_groups_attributes.push(vm.currentArmsGroup);
+            }
+            console.log("vm.curTrial.arms_groups_attributes " + JSON.stringify(vm.curTrial.arms_groups_attributes));
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.lock_version = response.lock_version || '';
@@ -47,9 +52,23 @@
         }//saveTrial
 
         function setAddMode() {
-            vm.addMode = true;
+            vm.addEditMode = true;
+            vm.currentArmsGroup = {};
+            vm.currentArmsGroup.new = true;
+            vm.currentArmsGroupIndex = null;
         }
 
+
+        /**
+         *  Set Edit Mode.
+         **/
+        function setEditMode(idx) {
+            vm.addEditMode = true;
+            vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
+            vm.currentArmsGroup.edit = true;
+                vm.currentArmsGroupIndex = idx;
+            console.log("In setEditModel vm.currentArmsGroup = " + JSON.stringify(vm.currentArmsGroup));
+        }
 
     } //pasArmsGroupsCtrl
 
