@@ -15,22 +15,36 @@
         UserService, uiGridConstants, $location, $anchorScroll) {
 
         $scope.changeUserStatus = function(row) {
+            var updatedUser = {};
+
             console.log('user row is: ', row);
-            if (row.entity && row.entity.user_status.id === 4) {
-                row.entity.user_status.name = 'Deleted';
-            } else {
-                row.entity.user_status.name = 'Inactive';
+            if (row && row.entity) {
+                if (row.entity.user_status.id === 4) {
+                    row.entity.user_status.name = 'Deleted';
+                } else {
+                    row.entity.user_status.name = 'Inactive';
+                }
+
+                updatedUser.id = row.entity.id;
+                updatedUser.user = row.entity;
             }
+
             vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
+
+            UserService.upsertUser(updatedUser);
         }
 
         $scope.changeUserApproval = function(row) {
-            console.log('user approval is: ', row.entity.approved);
-            UserService.upsertUser(row.entity);
-            //vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
+            var updatedUser = {};
+
+            console.log('user row is: ', row);
+
+            updatedUser.id = row.entity.id;
+            updatedUser.user = row.entity;
+
+            UserService.upsertUser(updatedUser);
+            vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
         }
-
-
 
         var vm = this;
         var userSoftDeleteColumnDef = {

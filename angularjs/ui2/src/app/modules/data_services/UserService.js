@@ -318,6 +318,7 @@
         this.upsertUser = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
+
             PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj)
                 .then(function (data) {
                     console.log('user data returned: ' + JSON.stringify(data["server_response"]));
