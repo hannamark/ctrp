@@ -3,8 +3,45 @@
     <form name="associated_trials_form" role="form" class="form-horizontal" novalidate ctrp-submit="assoTrialsView.updateCriteria()">
         <!-- fieldset for eligibility criteria -->
         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-            <legend class="sub-bordered">Associated Trials</legend>
+            <legend class="sub-bordered">Add Associated Trial</legend>
+            <div class="form-group">
+                <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type</label>
+                <div class="col-xs-12 col-sm-4">
+                    <select name="identifier_type" id="identifier_type" class="form-control input-sm"
+                        ng-model="assoTrialsView.trialQueryObj.identifierType"
+                        ng-options="type.id as type.name for type in assoTrialsView.identifierTypes"
+                        required>
+                        <option value="">
+                            -- Please select a trial identifier type
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Trial Identifier</label>
+                <div class="col-xs-12 col-sm-4">
+                    <input type="text" name="trial_identifier" id="trial_identifier"
+                        class="form-control input-sm"
+                        ng-model="assoTrialsView.trialQueryObj.trialIdentifier"
+                        required
+                        placeholder="Trial Identifier"
+                    >
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <button class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Look Up Trial</button>
+                </div>
+            </div>
+            <div ng-hide="assoTrialsView.foundTrialObj.official_title.length==0">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Research Category</label>
+                    <div class="col-xs-12 col-sm-5 form-text">Test test test</div>
+                </div>
 
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Official Title</label>
+                    <div class="col-xs-12 col-sm-9 form-text">Test official title</div>
+                </div>
+            </div>
 
         </fieldset>
 
@@ -13,35 +50,37 @@
 <!-- end of adding associated trial -->
 <!-- associated trials -->
 <div class="row top-buffer">
-    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-        <legend class="sub-bordered">Associated Trials</legend>
-        <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover table-bordered">
-            <thead>
-            <tr>
-                <th st-sort="criteria_type" class="col-sm-4">Eligibility Criterion Type</th>
-                <th class="col-sm-6">Eligibility Criterion Description</th>
-                <th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
-                <th class="text-center col-sm-1">Edit</th>
-            </tr>
-            </thead>
-            <tbody>
+    <form>
+        <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
+            <legend class="sub-bordered">Associated Trials</legend>
+            <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover table-bordered">
+                <thead>
                 <tr>
-                    <td>
-                        111
-                    </td>
-                    <td>
-                        fdsf
-                    </td>
-                    <td>
-                        yes
-                    </td>
-                    <td>
-                        Edit
-                    </td>
+                    <th st-sort="criteria_type" class="col-sm-4">Eligibility Criterion Type</th>
+                    <th class="col-sm-6">Eligibility Criterion Description</th>
+                    <th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
+                    <th class="text-center col-sm-1">Edit</th>
                 </tr>
-            </tbody>
-        </table>
-    </fieldset>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            111
+                        </td>
+                        <td>
+                            fdsf
+                        </td>
+                        <td>
+                            yes
+                        </td>
+                        <td>
+                            Edit
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
 </div>
 
 <!-- end of associated trials -->

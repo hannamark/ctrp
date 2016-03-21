@@ -7,12 +7,16 @@
         .controller('pasAssociatedTrialCtrl', pasAssociatedTrialCtrl);
 
     pasAssociatedTrialCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout'];
+        'MESSAGES', '_', '$timeout', 'identifierTypes'];
 
     function pasAssociatedTrialCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout) {
+        MESSAGES, _, $timeout, identifierTypes) {
             var vm = this;
-            console.info('in associated trials');
+            vm.identifierTypes = identifierTypes;
+            vm.trialQueryObj = {identifierType: '', trialIdentifier: ''}; // to be POSTed for search
+
+            vm.foundTrialObj = {trial_identifier: '', identifier_type_id: '', trial_id: '', official_title: ''};
+            
 
         }
 

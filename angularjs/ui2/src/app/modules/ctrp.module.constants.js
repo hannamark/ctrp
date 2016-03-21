@@ -112,7 +112,8 @@
                 'BIOSPECIMEN_RETENTIONS': '/ctrp/registry/trials/biospecimen_rententions.json',
                 'GENDERS': '/ctrp/registry/trials/genders.json',
                 'AGE_UNITS': '/ctrp/registry/trials/age_units.json',
-                'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json'
+                'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json',
+                'TRIAL_ID_TYPES': '/ctrp/registry/trials/trial_identifier_types.json'
             }
         })
         .constant('MESSAGES', {

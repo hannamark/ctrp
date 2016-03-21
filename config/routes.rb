@@ -201,6 +201,7 @@ Rails.application.routes.draw do
           get  'biospecimen_rententions'
           get  'genders'
           get  'age_units'
+          get  'trial_identifier_types'
         end
       end
 

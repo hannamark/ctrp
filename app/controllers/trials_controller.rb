@@ -81,6 +81,13 @@ class TrialsController < ApplicationController
     end
   end
 
+  def trial_identifier_types
+    @trial_identifier_types = IdentifierType.all
+    respond_to do |format|
+      format.json { render :json => @trial_identifier_types }
+    end
+  end
+
   def age_units
     @age_units = AgeUnit.all
     respond_to do |format|

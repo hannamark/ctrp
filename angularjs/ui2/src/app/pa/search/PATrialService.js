@@ -151,7 +151,8 @@
             getGenderList: getGenderList,
             getSamplingMethods: getSamplingMethods,
             getAnatomicSites: getAnatomicSites,
-            groupPATrialSearchFieldsData: groupPATrialSearchFieldsData
+            groupPATrialSearchFieldsData: groupPATrialSearchFieldsData,
+            getTrialIdentifierTypes: getTrialIdentifierTypes
         };
 
         return services;
@@ -450,6 +451,10 @@
 
         function getSamplingMethods() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SAMPLING_METHODS);
+        }
+
+        function getTrialIdentifierTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_ID_TYPES);
         }
 
         /**
