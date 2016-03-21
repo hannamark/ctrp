@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160321013340) do
+ActiveRecord::Schema.define(version: 20160321172345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1227,7 +1227,6 @@ ActiveRecord::Schema.define(version: 20160321013340) do
     t.integer  "min_age"
     t.integer  "max_age"
     t.integer  "assigned_to_id"
-    t.integer  "owner_id"
     t.integer  "board_approval_status_id"
     t.integer  "intervention_model_id"
     t.integer  "masking_id"
@@ -1272,7 +1271,6 @@ ActiveRecord::Schema.define(version: 20160321013340) do
   add_index "trials", ["masking_id"], name: "index_trials_on_masking_id", using: :btree
   add_index "trials", ["max_age_unit_id"], name: "index_trials_on_max_age_unit_id", using: :btree
   add_index "trials", ["min_age_unit_id"], name: "index_trials_on_min_age_unit_id", using: :btree
-  add_index "trials", ["owner_id"], name: "index_trials_on_owner_id", using: :btree
   add_index "trials", ["phase_id"], name: "index_trials_on_phase_id", using: :btree
   add_index "trials", ["pi_id"], name: "index_trials_on_pi_id", using: :btree
   add_index "trials", ["primary_purpose_id"], name: "index_trials_on_primary_purpose_id", using: :btree
@@ -1474,7 +1472,6 @@ ActiveRecord::Schema.define(version: 20160321013340) do
   add_foreign_key "trials", "study_sources"
   add_foreign_key "trials", "time_perspectives"
   add_foreign_key "trials", "users", column: "assigned_to_id"
-  add_foreign_key "trials", "users", column: "owner_id"
   add_foreign_key "users", "user_statuses"
   create_sequence "accrual_disease_terms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "age_units_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

@@ -65,7 +65,6 @@
 #  min_age                       :integer
 #  max_age                       :integer
 #  assigned_to_id                :integer
-#  owner_id                      :integer
 #  board_approval_status_id      :integer
 #  intervention_model_id         :integer
 #  masking_id                    :integer
@@ -111,7 +110,6 @@
 #  index_trials_on_masking_id                (masking_id)
 #  index_trials_on_max_age_unit_id           (max_age_unit_id)
 #  index_trials_on_min_age_unit_id           (min_age_unit_id)
-#  index_trials_on_owner_id                  (owner_id)
 #  index_trials_on_phase_id                  (phase_id)
 #  index_trials_on_pi_id                     (pi_id)
 #  index_trials_on_primary_purpose_id        (primary_purpose_id)
@@ -154,7 +152,6 @@ class Trial < TrialBase
 
   # PA fields
   belongs_to :assigned_to, class_name: "User"
-  belongs_to :owner, class_name: "User"
   belongs_to :board_approval_status
   belongs_to :board_affiliation, class_name: "Organization"
   belongs_to :intervention_model
