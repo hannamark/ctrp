@@ -137,6 +137,12 @@
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_associated_trials.html',
                 controller: 'pasAssociatedTrialCtrl as assoTrialsView',
                 section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    identifierTypes: function(PATrialService) {
+                        return PATrialService.getTrialIdentifierTypes();
+                    }
+                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Associated Trials'

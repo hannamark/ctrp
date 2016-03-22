@@ -371,6 +371,9 @@ BiomarkerPurpose.find_or_create_by(code: 'Eligibility Criterion', name:'Eligibil
 BiomarkerPurpose.find_or_create_by(code: 'Research', name:'Research')
 BiomarkerPurpose.find_or_create_by(code: 'Response Assessment', name:'Response Assessment')
 
+IdentifierType.find_or_create_by(code: 'CTRP', name: 'CTRP')
+IdentifierType.find_or_create_by(code: 'NCI', name: 'NCI')
+
 CadsrMarker.find_or_create_by(id:659,
                               name: 'SLC2A4 (GLUT4, name:  solute carrier family 2 (facilitated glucose transporter), member 4)',
                               meaning: 'SLC2A4 Gene',
