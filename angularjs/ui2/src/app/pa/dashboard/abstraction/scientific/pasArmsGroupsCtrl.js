@@ -75,10 +75,12 @@
                 //console.log("response.arms_groups="+ JSON.stringify(response.arms_groups));
                 vm.curTrial.arms_groups_attributes=[];
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                if(vm.currentArmsGroup.new){
+                //if(vm.currentArmsGroup.new){
                     vm.currentArmsGroup.new =false;
+                    vm.addEditMode = false;
+                //}
+                $state.go('main.pa.trialOverview.armsGroups');
 
-                }
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
@@ -90,12 +92,24 @@
 
         }//saveTrial
 
+
+
         function setAddMode() {
             vm.addEditMode = true;
             vm.currentArmsGroup = {};
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
+            var tempIntervention = {};
+            for (var i = 0; i < vm.curTrial.interventions.length; i++) {
+                tempIntervention.id = vm.curTrial.interventions[i].id;
+                tempIntervention.name = vm.curTrial.interventions[i].name;
+                tempIntervention.description = vm.curTrial.interventions[i].description;
+                tempIntervention.selected = false;
+                vm.trial_interventions.push(tempIntervention);
+                console.log("vm.trial_interventions="+JSON.stringify(vm.trial_interventions));
+                tempIntervention = {};
+            }
         }
 
 
