@@ -546,6 +546,8 @@ class Trial < TrialBase
     joins(join_clause).where(where_clause, value_exp, value_exp, value_exp)
   }
 
+  scope :with_nci_id, -> (nci_id) { where(nci_id: nci_id) }
+
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
   scope :with_phases, -> (value) {

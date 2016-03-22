@@ -190,6 +190,7 @@ Rails.application.routes.draw do
           post 'get_grants_serialnumber'
           get  'get_central_contact_types'
           get  'search_clinical_trials_gov'
+          get  'search_trial_with_nci_id'
           get  'search_clinical_trials_gov_ignore_exists'
           post 'import_clinical_trials_gov'
           get  'get_board_approval_statuses'

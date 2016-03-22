@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  # before_filter :wrapper_authenticate_user unless Rails.env.test?
+  # load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -79,6 +79,18 @@ class TrialsController < ApplicationController
     respond_to do |format|
       format.json { render :json => @genders }
     end
+  end
+
+  def search_trial_with_nci_id
+    @search_result = {}
+
+    if params.has_key?(:nci_id)
+      @search_result = Trial.with_nci_id(params[:nci_id]).first
+      # @search_result[:error_msg] = ''
+    else
+      @search_result[:error_msg] = 'Trial is not found'
+    end
+
   end
 
   def trial_identifier_types
@@ -464,23 +476,24 @@ class TrialsController < ApplicationController
     begin
       xml = Nokogiri::XML(open(url))
     rescue OpenURI::HTTPError
-      @search_result[:error_msg] = 'A study with the given identifier is not found in ClinicalTrials.gov.'
+      @search_result[:error_msg] = 'Trial is not found'
     else
       @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
       @search_result[:official_title] = xml.xpath('//official_title').text
-      @search_result[:status] = xml.xpath('//overall_status').text
-      @search_result[:condition] = ''
-      xml.xpath('//condition').each_with_index do |condition, i|
-        @search_result[:condition] += ', ' if i > 0
-        @search_result[:condition] += condition
-      end
-      @search_result[:intervention] = ''
-      xml.xpath('//intervention').each_with_index do |intervention, i|
-        @search_result[:intervention] += ', ' if i > 0
-        @search_result[:intervention] += intervention.xpath('intervention_type').text
-        @search_result[:intervention] += ': '
-        @search_result[:intervention] += intervention.xpath('intervention_name').text
-      end
+      # @search_result[:status] = xml.xpath('//overall_status').text
+      # @search_result[:condition] = ''
+      # xml.xpath('//condition').each_with_index do |condition, i|
+      #   @search_result[:condition] += ', ' if i > 0
+      #   @search_result[:condition] += condition
+      # end
+      # @search_result[:intervention] = ''
+      # xml.xpath('//intervention').each_with_index do |intervention, i|
+      #   @search_result[:intervention] += ', ' if i > 0
+      #   @search_result[:intervention] += intervention.xpath('intervention_type').text
+      #   @search_result[:intervention] += ': '
+      #   @search_result[:intervention] += intervention.xpath('intervention_name').text
+      # end
+
     end
   end
 
