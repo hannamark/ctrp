@@ -15,6 +15,7 @@
             vm.identifierTypes = identifierTypes;
             vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
             vm.foundTrialObj = _initFoundTrialObj();
+            vm.associatedTrials = [];
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
@@ -30,6 +31,7 @@
                     console.info('res in looking up trial', res);
                     vm.foundTrialObj.trial_id = res.id || null;
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
+                    vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
                     vm.foundTrialObj.official_title = res.official_title || '';
                     vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
@@ -46,12 +48,13 @@
                     trial_identifier: '',
                     identifier_type_id: '',
                     trial_id: '',
-                    official_title: ''
+                    official_title: '',
+                    _destroy: false
                 };
             }
 
             function associateThisTrial(trialLookUpResult) {
-                console.info('to associate with ', trialLookUpResult);
+                vm.associatedTrials.unshift(trialLookUpResult);
             } // associateThisTrial
 
 

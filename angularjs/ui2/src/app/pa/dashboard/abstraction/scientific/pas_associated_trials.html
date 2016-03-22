@@ -63,28 +63,38 @@
     <form>
         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
             <legend class="sub-bordered">Associated Trials</legend>
-            <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover table-bordered">
+            <span ng-show="assoTrialsView.associatedTrials.length === 0">Nothing found to display</span>
+            <table st-table="assoTrialsView.associatedTrials" class="table table-striped table-hover table-bordered" ng-hide="assoTrialsView.associatedTrials.length === 0">
                 <thead>
                 <tr>
-                    <th st-sort="criteria_type" class="col-sm-4">Eligibility Criterion Type</th>
-                    <th class="col-sm-6">Eligibility Criterion Description</th>
-                    <th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
-                    <th class="text-center col-sm-1">Edit</th>
+                    <th st-sort="criteria_type" class="col-sm-2">Trial Identifier</th>
+                    <th class="col-sm-2">Identifier Type</th>
+                    <th class="text-center col-sm-2">Trial Type</th>
+                    <th class="text-center col-sm-3">Official Title</th>
+                    <th class="text-center col-sm-1">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <!-- trial_identifier: '',
+                    identifier_type_id: '',
+                    trial_id: '',
+                    official_title: '',
+                    _destroy: false -->
+                    <tr ng-repeat="t in assoTrialsView.associatedTrials track by $index">
                         <td>
-                            111
+                            {{t.trial_identifier}}
                         </td>
                         <td>
-                            fdsf
+                            {{t.identifierTypeStr}}
                         </td>
                         <td>
-                            yes
+                            {{t.researchCategory}}
                         </td>
                         <td>
-                            Edit
+                            {{t.official_title}}
+                        </td>
+                        <td>
+                            Delete
                         </td>
                     </tr>
                 </tbody>
