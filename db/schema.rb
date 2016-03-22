@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160321194649) do
+ActiveRecord::Schema.define(version: 20160321201358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,18 +99,17 @@ ActiveRecord::Schema.define(version: 20160321194649) do
   end
 
   create_table "arms_groups", force: :cascade do |t|
-    t.string   "label",            limit: 255
+    t.string   "label",             limit: 255
     t.text     "description"
-    t.integer  "intervention_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.string   "uuid",             limit: 255
-    t.integer  "lock_version",                 default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.string   "arms_groups_type"
+    t.string   "intervention_text"
   end
 
-  add_index "arms_groups", ["intervention_id"], name: "index_arms_groups_on_intervention_id", using: :btree
   add_index "arms_groups", ["trial_id"], name: "index_arms_groups_on_trial_id", using: :btree
 
   create_table "assay_types", force: :cascade do |t|
@@ -1206,9 +1205,9 @@ ActiveRecord::Schema.define(version: 20160321194649) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1404,9 +1403,9 @@ ActiveRecord::Schema.define(version: 20160321194649) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1416,7 +1415,6 @@ ActiveRecord::Schema.define(version: 20160321194649) do
   add_foreign_key "alternate_titles", "trials"
   add_foreign_key "anatomic_site_wrappers", "anatomic_sites"
   add_foreign_key "anatomic_site_wrappers", "trials"
-  add_foreign_key "arms_groups", "interventions"
   add_foreign_key "arms_groups", "trials"
   add_foreign_key "associated_trials", "identifier_types"
   add_foreign_key "associated_trials", "trials"
