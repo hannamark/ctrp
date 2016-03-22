@@ -54,7 +54,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control input-sm" id="user_status" ng-model="userView.searchParams.user_status">
                                     <option value="">Select a status</option>
-                                    <option ng-repeat="status in userView.statusArr" value="{{status}}">{{status}}</option>
+                                    <option ng-repeat="status in userView.statusArr" value="{{status.id}}">{{status.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -116,6 +116,7 @@
             </div>
         </div>
         <div class="row top-offset-xs" ng-if="userView.gridOptions.totalItems != null"></div>
+<!--
         <div class="row" ng-if="userView.gridOptions.totalItems != null">
             <div class="col-xs-12">
                 <div class="btn-toolbar">
@@ -128,6 +129,7 @@
                 </div>
             </div>
         </div>
+-->
         <div class="row top-offset-xs"></div>
     </div>
 </div>

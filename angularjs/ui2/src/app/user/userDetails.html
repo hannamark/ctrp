@@ -20,11 +20,26 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus)}">
                         <label class="control-label col-xs-12 col-sm-3">User Status:</label>
                         <div class="col-xs-12 col-sm-6">
-                            <select class="form-control input-sm" id="userstatus" ng-model="userDetailView.userDetails.user_status" name="userstatus" required ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'">
-                                <option value="" ng-selected="userDetailView.userDetails.user_status == ''">Select a status</option>
-                                <option ng-repeat="status in userDetailView.statusArr track by $index" value="{{status}}" ng-selected="userDetailView.userDetails.user_status === status">{{status}}</option>
+                            <!-- <select class="form-control input-sm" id="userstatus"
+                                ng-model="userDetailView.userDetails.user_status.id"
+                                name="userstatus"
+                                required
+                                ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
+                                ng-change="userDetailView.checkUserStatus()">
+                                <option value="" ng-selected="!userDetailView.userDetails.user_status.id">Select a status</option>
+                                <option ng-repeat="status in userDetailView.statusArr track by status.id" value="{{status.id}}" ng-selected="userDetailView.userDetails.user_status.id === status.id">{{status.name}}</option>
+                            </select> -->
+                            <select name="userstatus" id="userstatus"
+                                class="form-control input-sm"
+                                ng-model="userDetailView.userDetails.user_status.id"
+                                ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
+                                ng-change="userDetailView.checkUserStatus()"
+                                ng-options="status.id as status.name for status in userDetailView.statusArr"
+                                required>
+                                <option value="">Select a status</option>
                             </select>
-                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.id" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                             <span class="help-block" ng-show="userDetail_form.userstatus.$error.required">Status is Required</span>
                         </div>
                     </div>

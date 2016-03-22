@@ -34,6 +34,11 @@
         console.log(vm.biomarkerPurposes);
         vm.checked_biomarker_purposes=[];
 
+        $scope.checked_eval_types=vm.checked_eval_types;
+        $scope.checked_assay_types=vm.checked_assay_types;
+        $scope.checked_spec_types=vm.checked_spec_types;
+        $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
+
         vm.biomarkerUses=biomarkerUses;
 
 
@@ -101,6 +106,10 @@
             getTrialDetailCopy();
             watchOrganization();
             _watchMarkerName();
+            _watchCheckedEvalTypes();
+            _watchCheckedAssayTypes();
+            _watchCheckedSpecTypes();
+            _watchCheckedBiomaarkerPurposes();
 
         }
 
@@ -109,6 +118,51 @@
         };
 
 
+        function _watchCheckedEvalTypes() {
+            $scope.$watchCollection('checked_eval_types', function (newNames, oldNames) {
+                if (newNames && newNames.length == 0) {
+                    vm.isEvalTypesChecked =null;
+                    vm.show_eval_type_alert=true;
+                } else {
+                    vm.isEvalTypesChecked =1;
+                    vm.show_eval_type_alert=false;
+                }
+            });
+        }
+        function _watchCheckedAssayTypes() {
+            $scope.$watchCollection('checked_assay_types', function (newNames, oldNames) {
+                if (newNames && newNames.length == 0) {
+                    vm.isAssayTypesChecked =null;
+                    vm.show_assay_type_alert=true;
+                } else {
+                    vm.isAssayTypesChecked =1;
+                    vm.show_assay_type_alert=false;
+                }
+            });
+        }
+        function _watchCheckedSpecTypes() {
+            $scope.$watchCollection('checked_spec_types', function (newNames, oldNames) {
+                if (newNames && newNames.length == 0) {
+                    vm.isSpecTypesChecked =null;
+                    vm.show_spec_type_alert=true;
+                } else {
+                    vm.isSpecTypesChecked =1;
+                    vm.show_spec_type_alert=false;
+                }
+            });
+        }
+
+        function _watchCheckedBiomaarkerPurposes() {
+            $scope.$watchCollection('checked_biomarker_purposes', function (newNames, oldNames) {
+                if (newNames && newNames.length == 0) {
+                    vm.isBiomarkerPurposesChecked =null;
+                    vm.show_biomarker_purpose_alert=true;
+                } else {
+                    vm.isBiomarkerPurposesChecked =1;
+                    vm.show_biomarker_purpose_alert=false;
+                }
+            });
+        }
 
 
         vm.saveBioMarker = function(){
@@ -346,6 +400,11 @@
             vm.checked_spec_types=[];
             vm.checked_biomarker_purposes=[];
             vm.selOrganization = {name: '', array: []};
+
+            $scope.checked_eval_types=vm.checked_eval_types;
+            $scope.checked_assay_types=vm.checked_assay_types;
+            $scope.checked_spec_types=vm.checked_spec_types;
+            $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
         }
 
         /**
@@ -377,6 +436,12 @@
 
             vm.checked_biomarker_purposes=[];
             vm.checked_biomarker_purposes=vm.curTrial.bio_markers[idx].biomarker_purposes;
+
+            $scope.checked_eval_types=vm.checked_eval_types;
+            $scope.checked_assay_types=vm.checked_assay_types;
+            $scope.checked_spec_types=vm.checked_spec_types;
+            $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
+            vm.currentBioMarker.status_alert=false;
 
         }
 

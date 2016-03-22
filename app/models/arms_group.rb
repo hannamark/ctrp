@@ -21,7 +21,6 @@
 
 class ArmsGroup < ActiveRecord::Base
   include BasicConcerns
-
-  belongs_to :intervention
+  
   belongs_to :trial
 end
