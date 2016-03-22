@@ -17,12 +17,15 @@
                             <div class="form-group">
                                 <label for="label" class="control-label col-xs-12 col-sm-3">Label</label>
                                 <div class="col-xs-6 col-sm-9">
-                                    <input type="text" id="label" name="label" class="form-control" ng-model="armView.currentArmsGroup.label" placeholder="label">
+                                    <input type="text" id="label" name="label" class="form-control" maxlength="62" ng-required="true" ng-model="armView.currentArmsGroup.label" placeholder="label">
                                 </div>
-                                <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.description) && arm_form.description.$error">
-                                    <span class="help-block" ng-message="required">Please enter the Brief Summary</span>
+                                <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.label) && arm_form.label.$error">
+                                    <span class="help-block" ng-message="required">Please enter label</span>
                                 </span>
                             </div>
+                            <span ng-show="arm_form.label.$dirty">
+                                    {{62 - arm_form.label.$viewValue.length}} characters left
+                            </span>
                         </fieldset>
                         <fieldset class="sub-bordered" restriction-field ng-show="armView.interventional">
                             <div class="form-group">
