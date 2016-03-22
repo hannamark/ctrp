@@ -28,6 +28,10 @@
         }
 
         console.log("vm.interventional = " + JSON.stringify(vm.curTrial.research_category));
+        vm.reload = function() {
+            console.log("RELOAD");
+            $state.go($state.$current, null, { reload: true });
+        };
 
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
