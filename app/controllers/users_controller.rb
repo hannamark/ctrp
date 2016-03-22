@@ -132,6 +132,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status)
+      params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status_id)
     end
 end
