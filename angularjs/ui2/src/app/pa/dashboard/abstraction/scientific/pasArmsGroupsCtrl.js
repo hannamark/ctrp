@@ -84,6 +84,7 @@
             vm.currentArmsGroup = {};
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
+            vm.trial_interventions = [];
         }
 
 
@@ -96,6 +97,7 @@
             vm.currentArmsGroup.edit = true;
             vm.currentArmsGroupIndex = idx;
             vm.intervention_array = new Array();
+            vm.trial_interventions = [];
             var exists = false;
             if(vm.curTrial.arms_groups[idx].intervention_text){
                 vm.intervention_array =  vm.curTrial.arms_groups[idx].intervention_text.split(",");
