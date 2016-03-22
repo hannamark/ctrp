@@ -75,10 +75,12 @@
                 //console.log("response.arms_groups="+ JSON.stringify(response.arms_groups));
                 vm.curTrial.arms_groups_attributes=[];
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                if(vm.currentArmsGroup.new){
+                //if(vm.currentArmsGroup.new){
                     vm.currentArmsGroup.new =false;
+                    vm.addEditMode = false;
+                //}
+                $state.go('main.pa.trialOverview.armsGroups');
 
-                }
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
