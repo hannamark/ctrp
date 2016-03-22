@@ -35,12 +35,12 @@
 
         vm.updateUser = function () {
             console.log('vm.userDetails is:', vm.userDetails.user_status);
-            console.log('hello email changed ? ' +vm.userDetails.email);
-            console.log('IN UPDATEUSER');
+            //console.log('hello email changed ? ' +vm.userDetails.email);
+            //console.log('IN UPDATEUSER');
             var newUser = {};
-            newUser.new = vm.userDetails.new || '';
+            //newUser.new = vm.userDetails.new || '';
             newUser.id = vm.userDetails.id || '';
-            newUser.user_status_id = vm.userDetails.user_status.id;
+            //console.log("newUser="+JSON.stringify(newUser));
             if(vm.selectedOrgsArray.length >0) {
                 /* Only updates using the first item in the org. array */
                 if (vm.selectedOrgsArray[0]._destroy) {
@@ -50,6 +50,8 @@
                 }
             }
             newUser.user = vm.userDetails;
+            newUser.user.user_status_id = vm.userDetails.user_status.id;
+            //console.log("22newUser="+JSON.stringify(newUser));
            //newUser.org_id=watch.org[o];
 
             if (vm.selectedOrgsArray[0] != null){
