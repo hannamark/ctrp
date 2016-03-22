@@ -861,6 +861,10 @@ AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitme
 
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Abnormal_Cell.zip,Activity.zip,Anatomic_Structure_System_or_Substance.zip,Biochemical_Pathway.zip,Biological_Process.zip,Chemotherapy_Regimen.zip,Chemotherapy_Regimen_or_Agent_Combination.zip,Conceptual_Entity.zip,Diagnostic_or_Prognostic_Factor.zip,Disease_Disorder_or_Finding.zip,Drug_Food_Chemical_or_Biomedical_Material.zip,Experimental_Organism_Anatomical_Concept.zip,Experimental_Organism_Diagnosis.zip,Gene.zip,Gene_Product.zip,Manufactured_Object.zip,Molecular_Abnormality.zip,NCI_Administrative_Concept.zip,Neoplasm.zip,Organism.zip,Pharmacologic_Substance.zip,Property_or_Attribute.zip')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 
 ########## SEEDING MAIL TEMPLATES STARTS ##########

@@ -28,4 +28,24 @@ class NcitDiseaseCode < ActiveRecord::Base
   has_many :children, through: :child_ncit_disease_parents
   has_many :parent_ncit_disease_parents, class_name: "NcitDiseaseParent", foreign_key: "child_id"
   has_many :parents, through: :parent_ncit_disease_parents
+
+  def self.import_ncit
+    FileUtils.rm_rf('../../storage/ncit')
+    FileUtils.mkdir_p('../../storage/ncit')
+
+    url = AppSetting.find_by_code('NCI_THESAURUS_URL').value
+    file_names = AppSetting.find_by_code('NCI_THESAURUS_FILES').big_value.split(',')
+
+    file_names.each do |file_name|
+      File.open("../../storage/ncit/#{file_name}", 'wb') do |fo|
+        fo.write open(url + file_name).read
+      end
+
+      Zip::File.open("../../storage/ncit/#{file_name}") do |zipfile|
+        zipfile.each do |entry|
+          xml = Nokogiri::XML(entry.get_input_stream.read)
+        end
+      end
+    end
+  end
 end
