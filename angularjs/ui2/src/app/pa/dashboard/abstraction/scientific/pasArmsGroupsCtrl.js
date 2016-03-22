@@ -72,7 +72,13 @@
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 $scope.$emit('updatedInChildScope', {});
                 vm.curTrial = response;
+                //console.log("response.arms_groups="+ JSON.stringify(response.arms_groups));
+                vm.curTrial.arms_groups_attributes=[];
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                if(vm.currentArmsGroup.new){
+                    vm.currentArmsGroup.new =false;
+
+                }
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
