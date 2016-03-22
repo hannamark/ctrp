@@ -23,10 +23,10 @@
             vm.lookupTrial = lookupTrial;
 
             function lookupTrial() {
-                if (vm.trialQueryObj.trialIdentifier.length === 0) {
+                if (vm.trialQueryObj.trialIdentifier.trim().length === 0) {
                     return;
                 }
-                PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier)
+                PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
                     console.info('res in looking up trial', res);
                     vm.foundTrialObj.trial_id = res.id || null;
@@ -54,6 +54,10 @@
             }
 
             function associateThisTrial(trialLookUpResult) {
+                if (_.findIndex(vm.associatedTrials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
+                    // no duplicate
+                    return;
+                }
                 vm.associatedTrials.unshift(trialLookUpResult);
             } // associateThisTrial
 
