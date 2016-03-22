@@ -40,6 +40,7 @@
             var newUser = {};
             newUser.new = vm.userDetails.new || '';
             newUser.id = vm.userDetails.id || '';
+            newUser.user_status_id = vm.userDetails.user_status.id;
             if(vm.selectedOrgsArray.length >0) {
                 /* Only updates using the first item in the org. array */
                 if (vm.selectedOrgsArray[0]._destroy) {
