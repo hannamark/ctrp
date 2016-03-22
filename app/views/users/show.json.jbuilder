@@ -1,4 +1,5 @@
 json.extract! @user,
+              :id,
               :username,
               :email,
               :first_name,
@@ -17,4 +18,5 @@ json.extract! @user,
               :organization,
               :family_orgs,
               :user_status,
+              :user_status_id,
               :created_at, :updated_at
