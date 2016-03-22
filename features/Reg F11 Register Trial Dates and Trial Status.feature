@@ -127,7 +127,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Active	                                        |Active	                                        |			        |yes    | ERROR: Duplicate [Active] status is not allowed	                                                                                                                                                                                                                            |
       |Active	                                        |Enrolling by Invitation	                    |			        |yes    | ERROR: Invalid status transition from [Active] to [Enrolling by Invitation]	                                                                                                                                                                                                |
       |Active	                                        |Closed to Accrual	                            |			        |no     | WARNING: Statuses [Active] and [Closed to Accrual] have the same date                                                                                                                                                                                      |
-      |Active	                                        |Closed to Accrual and Intervention             |			        |no     | WARNING: Interim status [Closed to Accrual] is missing\n WARNING: Statuses [Active] and [Closed to Accrual and Intervention] have the same date                                                                                                                |
+      |Active	                                        |Closed to Accrual and Intervention             |			        |no     | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Statuses [Active] and [Closed to Accrual and Intervention] have the same date                                                                                                                |
       |Active	                                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|no     | WARNING: Statuses [Active] and [Temporarily Closed to Accrual] have the same date  	                                                                                                                                                                        |
       |Active	                                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no     | WARNING: Statuses [Active] and [Temporarily Closed to Accrual and Intervention] have the same date                                                                                                                                                         |
       |Active	                                        |Complete	                                    |			        |yes    | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                                                                |
@@ -156,7 +156,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Enrolling by Invitation	                        |Active	                                        |			        |yes       | ERROR: Invalid status transition from [Enrolling by Invitation] to [Active]                                                                                                                                                                                                    |                  
       |Enrolling by Invitation	                        |Enrolling by Invitation	                    |			        |yes       | ERROR: Duplicate [Enrolling by Invitation] status is not allowed	                                                                                                                                                                                                            |
       |Enrolling by Invitation	                        |Closed to Accrual	                            |			        |no        | WARNING: Statuses [Enrolling by Invitation] and [Closed to Accrual] have the same date                                                                                                                                                                                                                                                                        |
-      |Enrolling by Invitation	                        |Closed to Accrual and Intervention             |			        |no        | WARNING: Interim status [Closed to Accrual] is missing\n WARNING: Statuses [Enrolling by Invitation] and [Closed to Accrual and Intervention] have the same date 	                                                                                                                                                                                                                        |
+      |Enrolling by Invitation	                        |Closed to Accrual and Intervention             |			        |no        | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Statuses [Enrolling by Invitation] and [Closed to Accrual and Intervention] have the same date 	                                                                                                                                                                                                                        |
       |Enrolling by Invitation	                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|no        | WARNING: Statuses [Enrolling by Invitation] and [Temporarily Closed to Accrual] have the same date                                                                                                                                                                                                                                                                       |
       |Enrolling by Invitation	                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no        | WARNING: Statuses [Enrolling by Invitation] and [Temporarily Closed to Accrual and Intervention] have the same date                                                                                                                                                                                                                                                                       |
       |Enrolling by Invitation	                        |Complete	                                    |			        |yes       | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
@@ -544,28 +544,6 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline: #7 Rules for Status/Dates relationships
-    Given I have selected the option to register a trial <trialType>
-    And I am on the Trial Dates Section
-    When Current Trial Status is <TrialStatusType> then the Trial date Type must be <DateType>
-      |TrialStatusType                          |DateType                                         |
-      |Active                                   |Trial Start Date must be Actual                  |
-      |Enrolling by Invitation                  |Trial Start Date must be Actual                  |
-      |Closed to Accrual                        |Trial Start Date must be Actual                  |
-      |Closed to Accrual and Intervention       |Trial Start Date must be Actual                  |
-      |Temp Closed to Accrual                   |Trial Start Date must be Actual                  |
-      |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual                  |
-      |Complete                                 |All date types must be Actual                    |
-      |Administratively Complete                |Trial Start Date must be Actual                  |
-      |In Review                                |Trial Start Date could be Actual or Anticipated  |
-      |Approved                                 |Trial Start Date could be Actual or Anticipated  |
-
-    Examples:
-      |trialType  |
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
-
   Scenario Outline: #7a Rules for Status/Dates relationships for "Trial Start Date"
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Section
@@ -676,11 +654,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Externally Peer-Reviewed |
       |Institutional            |
 
-
-
-
-
-  Scenario Outline: #8 Rules for Study Date types
+Scenario Outline: #8 Rules for Study Date types
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Screen
     When the Trial date is in the past
@@ -698,13 +672,11 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
   Scenario Outline: #9 general rules for Study Date values are as follows
-    Given I have selected the option to register a trial <trialType>
-    And I am on the trial date section
+    Given I have selected the option to register a trial <trialType
+    And I am on the Trial Dates Screen
     And The Trial Start Date can be in the past, present, or future
-    And The Trial Start Date can be in the past, present, or future
-    And The Completion Date is always the same as, or later than, the Primary Completion Date
     And The Primary Completion Date is always the same as, or later than, the Trial Start Date
-    
+    And The Completion Date is always the same as, or later than, the Primary Completion Date
     
     Examples:
       |trialType  |

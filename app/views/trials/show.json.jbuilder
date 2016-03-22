@@ -161,6 +161,17 @@ end
 json.arms_groups do
   json.array!(@trial.arms_groups) do |ag|
     json.extract! ag, :id, :label, :arms_groups_type, :description, :intervention_text, :trial_id
+    if(ag.intervention_text)
+      intervention_list = ag.intervention_text.split(",");
+      display_interventions = ""
+      intervention_list.each do |i|
+        intervention = Intervention.find_by_id(i)
+        unless intervention.nil?
+         display_interventions = display_interventions + Intervention.find_by_id(i).name
+        end
+      end
+      json.display_interventions display_interventions
+    end
   end
 end
 
