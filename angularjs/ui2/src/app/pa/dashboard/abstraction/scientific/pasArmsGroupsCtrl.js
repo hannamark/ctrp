@@ -22,8 +22,12 @@
         vm.selectedDeleteAnatomicSiteList = [];
         vm.interventionList = [];
         vm.trial_interventions = [];
+        vm.interventional = false;
+        if(vm.curTrial.research_category.name=='Interventional') {
+            vm.interventional = true;
+        }
 
-        console.log("trialDetailObj.interventions = " + JSON.stringify(trialDetailObj.interventions));
+        console.log("vm.interventional = " + JSON.stringify(vm.curTrial.research_category));
 
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
@@ -89,9 +93,11 @@
             vm.currentArmsGroupIndex = idx;
             vm.intervention_array = new Array();
             var exists = false;
-            vm.intervention_array =  vm.curTrial.arms_groups[idx].intervention_text.split(",");
-            console.log("HIIII vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
-            console.log("HIIII vm.intervention_array="+JSON.stringify(vm.intervention_array));
+            if(vm.curTrial.arms_groups[idx].intervention_text){
+                vm.intervention_array =  vm.curTrial.arms_groups[idx].intervention_text.split(",");
+                console.log("vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
+                console.log("vm.intervention_array="+JSON.stringify(vm.intervention_array));
+            }
             var temp_intervention = {};
             for (var i = 0; i < vm.curTrial.interventions.length; i++) {
                for (var j = 0; j < vm.intervention_array.length; j++) {
