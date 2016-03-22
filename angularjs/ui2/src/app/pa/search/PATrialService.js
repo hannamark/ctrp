@@ -153,7 +153,9 @@
             getAnatomicSites: getAnatomicSites,
             groupPATrialSearchFieldsData: groupPATrialSearchFieldsData,
             getTrialIdentifierTypes: getTrialIdentifierTypes,
-            searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists
+            searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists,
+            searchNCITrial: searchNCITrial,
+            lookupTrial: lookupTrial
         };
 
         return services;
@@ -465,8 +467,29 @@
          * @return {Promise}
          */
         function searchClinicalTrialsGovIgnoreExists(nctId) {
-            if (!!nctId) {
-                return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
+        }
+
+        /**
+         * Search NCI trial in the database
+         * @param  {String} nciTrialId, trial id that starts with NCI- (e.g. NCI-2014-00894)
+         * @return {Promise}
+         */
+        function searchNCITrial(nciTrialId) {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_NCI_TRIAL + '?nci_id=' + nciTrialId);
+        }
+
+        /**
+         * Look up a trial with the given identifier from either NCT or NCI (local database)
+         * @param  {[type]} trialIdentifier [description]
+         * @return {[type]}                 [description]
+         */
+        function lookupTrial(trialIdentifier) {
+
+            if (!!trialIdentifier && trialIdentifier.startsWith('NCT')) {
+                return searchClinicalTrialsGovIgnoreExists(trialIdentifier);
+            } else {
+                return searchNCITrial(trialIdentifier);
             }
         }
 

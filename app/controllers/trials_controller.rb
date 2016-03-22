@@ -82,13 +82,13 @@ class TrialsController < ApplicationController
   end
 
   def search_trial_with_nci_id
-    @search_result = {}
 
     if params.has_key?(:nci_id)
-      @search_result = Trial.with_nci_id(params[:nci_id]).first
-      # @search_result[:error_msg] = ''
+      @search_result = Trial.with_nci_id(params[:nci_id].upcase).first
+      @search_result = @search_result.nil? ? {error_msg: 'Trial is not found'} : @search_result
     else
-      @search_result[:error_msg] = 'Trial is not found'
+      # missing nci_id
+      @search_result = {error_msg: 'Trial is not found'}
     end
 
   end

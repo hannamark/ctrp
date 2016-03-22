@@ -114,7 +114,8 @@
                 'AGE_UNITS': '/ctrp/registry/trials/age_units.json',
                 'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json',
                 'TRIAL_ID_TYPES': '/ctrp/registry/trials/trial_identifier_types.json',
-                'SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS': '/ctrp/registry/trials/search_clinical_trials_gov_ignore_exists.json'
+                'SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS': '/ctrp/registry/trials/search_clinical_trials_gov_ignore_exists.json',
+                'SEARCH_NCI_TRIAL': '/ctrp/registry/trials/search_trial_with_nci_id.json'
             }
         })
         .constant('MESSAGES', {

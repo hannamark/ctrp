@@ -22,12 +22,18 @@
             vm.lookupTrial = lookupTrial;
 
             function lookupTrial() {
-                PATrialService.searchClinicalTrialsGovIgnoreExists(vm.trialQueryObj.trialIdentifier)
+                if (vm.trialQueryObj.trialIdentifier.length === 0) {
+                    return;
+                }
+                PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier)
                     .then(function(res) {
                     console.info('res in looking up trial', res);
-                    vm.foundTrialObj.trial_identifier = res.nct_id;
+                    vm.foundTrialObj.trial_id = res.id || null;
+                    vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
-                    vm.foundTrialObj.official_title = res.official_title;
+                    vm.foundTrialObj.official_title = res.official_title || '';
+                    vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
+                    vm.foundTrialObj.errorMsg = !!res.error_msg ? res.error_msg : '';
                 });
             } // lookupTrial
 
