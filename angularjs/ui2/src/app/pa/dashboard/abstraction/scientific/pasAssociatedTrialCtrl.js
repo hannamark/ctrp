@@ -58,7 +58,7 @@
                     // no duplicate
                     return;
                 }
-                vm.associatedTrials.unshift(trialLookUpResult);
+                vm.associatedTrials.unshift(angular.copy(trialLookUpResult));
             } // associateThisTrial
 
 
