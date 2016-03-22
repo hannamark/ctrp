@@ -53,6 +53,11 @@
         vm.saveTrial = function(){
             vm.disableBtn = true;
 
+            if(vm.currentArmsGroup){
+                if(!vm.currentArmsGroup.label || !vm.currentArmsGroup.description){
+                    return;
+                }
+            }
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
