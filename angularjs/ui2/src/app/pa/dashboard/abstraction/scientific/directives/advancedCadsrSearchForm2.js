@@ -115,19 +115,18 @@
 
             /* resetSearch */
             $scope.resetSearch = function () {
-                $scope.searchParams = OrgService.getInitialOrgSearchParams();
-                var excludedKeys = ['alias','wc_search'];
+                $scope.searchParams = CadsrService.getInitialCadsrSearchParams();
+                var excludedKeys = ['highlight_query_text','case_sensitive_search'];
                 Object.keys($scope.searchParams).forEach(function (key) {
 
                     if (excludedKeys.indexOf(key) === -1) {
-                        // $scope.searchParams[key] = '';
                         $scope.searchParams[key] = angular.isArray($scope.searchParams[key]) ? [] : '';
                     }
 
                 });
 
-                $scope.searchParams['alias'] = true;
-                $scope.searchParams['wc_search'] = true;
+                $scope.searchParams['case_sensitive_search'] = "Yes";
+                $scope.searchParams['highlight_query_text'] = "Yes";
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
@@ -160,6 +159,12 @@
 
             function activate() {
                 prepareGidOptions();
+                if (fromStateName != 'main.orgDetail') {
+                    $scope.resetSearch();
+                } else {
+                    //$scope.searchOrgs(); //refresh search results
+                }
+                hideHyperLinkInModal();
             }
 
 
