@@ -17,14 +17,24 @@
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
+        vm.selectListHandler = selectListHandler;
         vm.deleteSelected = deleteSelected;
         vm.selectedDeleteAnatomicSiteList = [];
+        vm.interventionList = [];
+        vm.trial_interventions = [];
 
         console.log("trialDetailObj.interventions = " + JSON.stringify(trialDetailObj.interventions));
 
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
                 vm.curTrial.arms_groups_attributes = [];
+                vm.currentArmsGroup.intervention_text = "";
+                if(vm.interventionList.length > 0){
+                    for (var i = 0; i < vm.interventionList.length; i++) {
+                        vm.currentArmsGroup.intervention_text = vm.currentArmsGroup.intervention_text + vm.interventionList[i].id + ",";
+                        //console.log("GOOGLE vm.currentArmsGroup.intervention_text" +vm.currentArmsGroup.intervention_text);
+                    }
+                }
                 if (vm.currentArmsGroup.edit || vm.currentArmsGroup.new || (vm.currentArmsGroup._destroy && vm.currentArmsGroup.id)) {
                     vm.curTrial.arms_groups_attributes.push(vm.currentArmsGroup);
                 }
@@ -76,8 +86,33 @@
             vm.addEditMode = true;
             vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
             vm.currentArmsGroup.edit = true;
-                vm.currentArmsGroupIndex = idx;
-            console.log("In setEditModel vm.currentArmsGroup = " + JSON.stringify(vm.currentArmsGroup));
+            vm.currentArmsGroupIndex = idx;
+            vm.intervention_array = new Array();
+            var exists = false;
+            vm.intervention_array =  vm.curTrial.arms_groups[idx].intervention_text.split(",");
+            console.log("HIIII vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
+            console.log("HIIII vm.intervention_array="+JSON.stringify(vm.intervention_array));
+            var temp_intervention = {};
+            for (var i = 0; i < vm.curTrial.interventions.length; i++) {
+               for (var j = 0; j < vm.intervention_array.length; j++) {
+                   if(vm.curTrial.interventions[i].id == vm.intervention_array[j]){
+                       exists = true;
+                   }
+               }
+                temp_intervention.id = vm.curTrial.interventions[i].id;
+                temp_intervention.name = vm.curTrial.interventions[i].name;
+                temp_intervention.description = vm.curTrial.interventions[i].description;
+               if(exists) {
+                   temp_intervention.selected = true;
+               } else {
+                   temp_intervention.selected = false;
+               }
+               vm.trial_interventions.push(temp_intervention);
+                temp_intervention = {};
+                exists = false;
+            }
+
+            console.log("In setEditModel vm.trial_interventions = " + JSON.stringify(vm.trial_interventions));
         }
 
         function deleteListHandler(armsGroupsInCheckboxes){
@@ -103,6 +138,20 @@
                 vm.curTrial.arms_groups_attributes.push(armsGroupsToBeDeletedFromDb);
             }
             vm.saveTrial();
+
+        };
+
+        function selectListHandler(interventionCheckboxes){
+            console.log("In selectListHandler interventionCheckboxes"+JSON.stringify(interventionCheckboxes));
+            var selectList = [];
+            angular.forEach(interventionCheckboxes, function(item) {
+                if ( angular.isDefined(item.selected) && item.selected === true ) {
+                    selectList.push(item);
+                }
+            });
+            vm.interventionList = selectList ;
+           // vm.currentArmsGroup.interventions =  vm.interventionList;
+            console.log("In selectList=" + JSON.stringify(selectList));
 
         };
 

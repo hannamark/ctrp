@@ -160,7 +160,7 @@ end
 
 json.arms_groups do
   json.array!(@trial.arms_groups) do |ag|
-    json.extract! ag, :id, :label, :arms_groups_type, :description, :intervention_id, :trial_id
+    json.extract! ag, :id, :label, :arms_groups_type, :description, :intervention_text, :trial_id
   end
 end
 

@@ -20,8 +20,10 @@
             console.log('user row is: ', row);
             if (row && row.entity) {
                 if (row.entity.user_status.id === 4) {
+                    row.entity.user_status_id = 4;
                     row.entity.user_status.name = 'Deleted';
                 } else {
+                    row.entity.user_status_id = 3;
                     row.entity.user_status.name = 'Inactive';
                 }
 
