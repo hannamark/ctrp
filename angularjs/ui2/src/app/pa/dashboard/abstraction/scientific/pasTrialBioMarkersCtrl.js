@@ -172,6 +172,10 @@
                 vm.currentBioMarker.new = true;
             }
 
+            if(vm.currentBioMarker.record_status=="Pending"){
+                vm.currentBioMarker.cadsr_marker_id=null;
+            }
+
             vm.currentBioMarker.marker_eval_type_associations_attributes=[];
             vm.currentBioMarker.marker_assay_type_associations_attributes=[];
             vm.currentBioMarker.marker_spec_type_associations_attributes=[];
@@ -362,7 +366,7 @@
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.currentBioMarker.name = newVal[0].name;
                     vm.masterCopyOfMarkerNameFromCadsr=angular.copy(newVal[0].name);
-                    vm.currentBioMarker.cadsr_id = newVal[0].id;
+                    vm.currentBioMarker.cadsr_marker_id = newVal[0].id;
                     vm.currentBioMarker.record_status="Active";
                     vm.currentBioMarker.status_alert=true;
                     vm.selOrganization = {name: vm.currentBioMarker["po_name"], array: []};
@@ -372,7 +376,7 @@
 
         function _watchMarkerName() {
             $scope.$watch(function() {return vm.currentBioMarker.name;}, function(newVal) {
-                if (vm.currentBioMarker.cadsr_id > 0) {
+                if (vm.currentBioMarker.cadsr_marker_id > 0 && !vm.currentBioMarker.id) {
                     if (newVal !=vm.masterCopyOfMarkerNameFromCadsr){
                         vm.currentBioMarker.status_alert=false;
                         vm.currentBioMarker.record_status="Pending";
@@ -380,8 +384,22 @@
                         vm.currentBioMarker.record_status="Active";
                         vm.currentBioMarker.status_alert=true;
                     }
-
                 }
+                console.log(newVal);
+                console.log(vm.currentBioMarker.cadsr_marker_id);
+
+                if (vm.currentBioMarker.cadsr_marker_id > 0 && vm.currentBioMarker.id) {
+                    console.log(vm.currentBioMarker.cadsr_marker_id);
+                    console.log(vm.currentBioMarker.id);
+                    if (newVal !=vm.masterCopyOfMarkerNameFromCadsr){
+                        vm.currentBioMarker.status_alert=false;
+                        vm.currentBioMarker.record_status="Pending";
+                    }else if(newVal ==vm.masterCopyOfMarkerNameFromCadsr){
+                        vm.currentBioMarker.record_status="Active";
+                        vm.currentBioMarker.status_alert=true;
+                    }
+                }
+
             });
         }
 
@@ -394,7 +412,7 @@
             vm.currentBioMarker= {};
             vm.currentBioMarker.record_status="Pending";
             vm.currentBioMarker.status_alert=true;
-            vm.currentBioMarker.cadsr_id=0;
+            vm.currentBioMarker.cadsr_marker_id=0;
             vm.checked_assay_types=[];
             vm.checked_eval_types=[];
             vm.checked_spec_types=[];
@@ -413,6 +431,9 @@
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentBioMarker = vm.curTrial.bio_markers[idx];
+            vm.currentBioMarker.status_alert=true;
+            //vm.currentBioMarker.cadsr_marker_id=0;
+            vm.masterCopyOfMarkerNameFromCadsr=angular.copy(vm.currentBioMarker.name);
 
             if (vm.currentBioMarker.assay_type_other && vm.currentBioMarker.assay_type_other.length > 0) {
                 vm.isAssayTypeOtherChecked=true;
@@ -441,7 +462,6 @@
             $scope.checked_assay_types=vm.checked_assay_types;
             $scope.checked_spec_types=vm.checked_spec_types;
             $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
-            vm.currentBioMarker.status_alert=false;
 
         }
 

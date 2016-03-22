@@ -60,7 +60,7 @@ end
 
 json.bio_markers do
   json.array!(@trial.markers) do |marker|
-    json.extract! marker, :id, :name,:protocol_marker_name, :evaluation_type_other,:assay_type_other,:specimen_type_other,:record_status,:biomarker_use_id
+    json.extract! marker, :id, :name,:protocol_marker_name, :evaluation_type_other,:assay_type_other,:specimen_type_other,:record_status,:biomarker_use_id,:cadsr_marker_id
     json.biomarker_use marker.biomarker_use.present? ? marker.biomarker_use.name : nil
 
     json.assay_type_associations MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id)
