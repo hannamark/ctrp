@@ -154,7 +154,7 @@
 
         function _watchCheckedBiomaarkerPurposes() {
             $scope.$watchCollection('checked_biomarker_purposes', function (newNames, oldNames) {
-                if (newNames && newNames.length == 0) {
+                if (newNames && newNames.length == 0 ) {
                     vm.isBiomarkerPurposesChecked =null;
                     vm.show_biomarker_purpose_alert=true;
                 } else {

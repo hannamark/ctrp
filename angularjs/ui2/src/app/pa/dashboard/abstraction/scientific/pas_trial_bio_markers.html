@@ -8,7 +8,7 @@
                     </uib-accordion-heading>
 
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <legend class="sub-bordered">General Details</legend>
+                        <legend class="sub-bordered">Names & Status</legend>
                         <!-- Name -->
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.name)}">
                             <label for="name" class="control-label col-xs-12 col-sm-2">Name</label>
@@ -64,27 +64,6 @@
                             </div>
                         </div>
                         <!-- Protocol Marker Name Ends -->
-
-                        <!-- bio marker use -->
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.biomarker_use)}">
-                            <label for="biomarker_use" class="control-label col-xs-12 col-sm-2">Biomarker Use</label>
-                            <div class="col-xs-12 col-sm-6">
-                                <select name="biomarker_use" id="biomarker_use"
-                                        class="form-control input-sm"
-                                        ng-required="true"
-                                        ng-model="markersView.currentBioMarker.biomarker_use_id"
-                                        ng-options="use.id as use.name for use in markersView.biomarkerUses"
-                                        >
-                                    <option value="">- Please select a bio marker use...</option>
-                                </select>
-                            </div>
-                        <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) &&
-                                    marker_form.biomarker_use.$error">
-                            <span class="help-block" ng-message="required">Biomarker Use must be entered</span>
-                         </span>
-                        </div>
-                        <!-- end of bio marker use -->
-
                     </fieldset>
 
 
@@ -184,7 +163,29 @@
 
                     <!-- biomarker purpose type -->
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-model="markersView.isBiomarkerPurposesChecked" required=“">
-                        <legend class="sub-bordered">Biomarker Purpose </legend>
+                        <legend class="sub-bordered">Biomarker Use & Purpose</legend>
+
+                        <!-- bio marker use -->
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.biomarker_use)}">
+                            <label for="biomarker_use" class="control-label col-xs-12 col-sm-2">Biomarker Use</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <select name="biomarker_use" id="biomarker_use"
+                                        class="form-control input-sm"
+                                        ng-required="true"
+                                        ng-model="markersView.currentBioMarker.biomarker_use_id"
+                                        ng-options="use.id as use.name for use in markersView.biomarkerUses"
+                                        >
+                                    <option value="">- Please select a bio marker use...</option>
+                                </select>
+                            </div>
+                        <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) &&
+                                    marker_form.biomarker_use.$error">
+                            <span class="help-block" ng-message="required">Biomarker Use must be entered</span>
+                         </span>
+                        </div>
+                        <!-- end of bio marker use -->
+
+
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.biomarker_purpose)}">
                             <label for="biomarker_purpose" class="control-label col-xs-12 col-sm-2">Biomarker Purpose</label>
 
