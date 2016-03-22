@@ -110,6 +110,7 @@
                         <thead>
                         <th>Label</th>
                         <th>Type</th>
+                        <th>Interventions</th>
                         <th>Description</th>
                         <th class="text-center">Edit</th>
                         <th class="text-center">Deletion</th>
@@ -117,8 +118,10 @@
                         <tbody>
                         <tr ng-repeat="arms_group in armView.curTrial.arms_groups track by $index" class="animated-item">
                             <td>{{arms_group.label}}</td>
-                            <td>&nbsp;</td>
+                            <td>{{arms_group.arms_groups_type}}</td>
+                            <td>{{arms_group.display_interventions}}</td>
                             <td>{{arms_group.description}}</td>
+
                             <td>
                                 <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="armView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
