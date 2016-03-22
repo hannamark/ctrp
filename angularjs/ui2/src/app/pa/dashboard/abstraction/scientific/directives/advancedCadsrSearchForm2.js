@@ -42,11 +42,8 @@
             var curStateName = $state.$current.name || '';
             $scope.searchParams = CadsrService.getInitialCadsrSearchParams();
 
-            console.log($scope.searchParams.highlight_query_text);
-
 
             $scope.selectedRows = [];
-
             $scope.nullifiedId = '';
             $scope.warningMessage = '';
             $scope.curationShown = false;
@@ -56,7 +53,7 @@
 
 
             $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
+            $scope.showGrid    = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
             $scope.searchCadsrs = function (newSearchFlag) {
 
@@ -125,7 +122,7 @@
 
                 });
 
-                $scope.searchParams['case_sensitive_search'] = "Yes";
+                $scope.searchParams['case_sensitive_search'] = "No";
                 $scope.searchParams['highlight_query_text'] = "Yes";
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
@@ -338,7 +335,6 @@
                                 'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
                         }
                     } else {
-                        // $scope.gridOptions = OrgService.getGridOptions();
                         $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                             '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
                         //make visible if it is not in modal and curator mode is off.

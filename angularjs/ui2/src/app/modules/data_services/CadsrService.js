@@ -19,7 +19,7 @@
         var initialCadsrSearchParams = {
 
             highlight_query_text: 'Yes',
-            case_sensitive_search: 'Yes',
+            case_sensitive_search: 'No',
             public_id : '',
             search_term : '',
 
