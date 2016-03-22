@@ -92,12 +92,24 @@
 
         }//saveTrial
 
+
+
         function setAddMode() {
             vm.addEditMode = true;
             vm.currentArmsGroup = {};
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
+            var tempIntervention = {};
+            for (var i = 0; i < vm.curTrial.interventions.length; i++) {
+                tempIntervention.id = vm.curTrial.interventions[i].id;
+                tempIntervention.name = vm.curTrial.interventions[i].name;
+                tempIntervention.description = vm.curTrial.interventions[i].description;
+                tempIntervention.selected = false;
+                vm.trial_interventions.push(tempIntervention);
+                console.log("vm.trial_interventions="+JSON.stringify(vm.trial_interventions));
+                tempIntervention = {};
+            }
         }
 
 
