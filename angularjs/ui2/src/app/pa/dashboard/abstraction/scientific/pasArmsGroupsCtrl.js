@@ -22,8 +22,16 @@
         vm.selectedDeleteAnatomicSiteList = [];
         vm.interventionList = [];
         vm.trial_interventions = [];
+        vm.interventional = false;
+        if(vm.curTrial.research_category.name=='Interventional') {
+            vm.interventional = true;
+        }
 
-        console.log("trialDetailObj.interventions = " + JSON.stringify(trialDetailObj.interventions));
+        console.log("vm.interventional = " + JSON.stringify(vm.curTrial.research_category));
+        vm.reload = function() {
+            console.log("RELOAD");
+            $state.go($state.$current, null, { reload: true });
+        };
 
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
@@ -45,6 +53,11 @@
         vm.saveTrial = function(){
             vm.disableBtn = true;
 
+            if(vm.currentArmsGroup){
+                if(!vm.currentArmsGroup.label || !vm.currentArmsGroup.description){
+                    return;
+                }
+            }
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -59,7 +72,15 @@
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 $scope.$emit('updatedInChildScope', {});
                 vm.curTrial = response;
+                //console.log("response.arms_groups="+ JSON.stringify(response.arms_groups));
+                vm.curTrial.arms_groups_attributes=[];
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                //if(vm.currentArmsGroup.new){
+                    vm.currentArmsGroup.new =false;
+                    vm.addEditMode = false;
+                //}
+                $state.go('main.pa.trialOverview.armsGroups');
+
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                     extendedTimeOut: 1000,
@@ -71,11 +92,24 @@
 
         }//saveTrial
 
+
+
         function setAddMode() {
             vm.addEditMode = true;
             vm.currentArmsGroup = {};
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
+            vm.trial_interventions = [];
+            var tempIntervention = {};
+            for (var i = 0; i < vm.curTrial.interventions.length; i++) {
+                tempIntervention.id = vm.curTrial.interventions[i].id;
+                tempIntervention.name = vm.curTrial.interventions[i].name;
+                tempIntervention.description = vm.curTrial.interventions[i].description;
+                tempIntervention.selected = false;
+                vm.trial_interventions.push(tempIntervention);
+                console.log("vm.trial_interventions="+JSON.stringify(vm.trial_interventions));
+                tempIntervention = {};
+            }
         }
 
 
@@ -88,10 +122,13 @@
             vm.currentArmsGroup.edit = true;
             vm.currentArmsGroupIndex = idx;
             vm.intervention_array = new Array();
+            vm.trial_interventions = [];
             var exists = false;
-            vm.intervention_array =  vm.curTrial.arms_groups[idx].intervention_text.split(",");
-            console.log("HIIII vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
-            console.log("HIIII vm.intervention_array="+JSON.stringify(vm.intervention_array));
+            if(vm.curTrial.arms_groups[idx].intervention_text){
+                vm.intervention_array =  vm.curTrial.arms_groups[idx].intervention_text.split(",");
+                console.log("vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
+                console.log("vm.intervention_array="+JSON.stringify(vm.intervention_array));
+            }
             var temp_intervention = {};
             for (var i = 0; i < vm.curTrial.interventions.length; i++) {
                for (var j = 0; j < vm.intervention_array.length; j++) {

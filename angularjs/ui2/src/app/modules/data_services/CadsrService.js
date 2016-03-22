@@ -18,8 +18,8 @@
         var statesOrProvinces = [];
         var initialCadsrSearchParams = {
 
-            highligh_query_text: true,
-            case_sensitive_search: true,
+            highlight_query_text: 'Yes',
+            case_sensitive_search: 'Yes',
             public_id : '',
             search_term : '',
 

@@ -8,7 +8,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :accrual_disease_term_id, :accrual_disease_term, :lead_org_id, :pi_id, :sponsor_id, :investigator_id, :investigator_aff_id, :time_perspective_id, :time_perspective_other,
               :created_at, :updated_at, :created_by, :updated_by, :study_source, :lead_org, :pi, :sponsor,
               :investigator, :investigator_aff, :other_ids, :trial_funding_sources, :funding_sources, :grants,
-              :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :other_criteria, :is_draft, :lock_version,
+              :trial_status_wrappers, :ind_ides, :oversight_authorities, :trial_documents, :associated_trials, :other_criteria, :is_draft, :lock_version,
               :brief_title, :brief_summary, :objective, :detailed_description, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
@@ -38,10 +38,17 @@ json.ind_ides do
   end
 end
 
+json.associated_trials do
+  json.array!(@trial.associated_trials) do |associated_trial|
+    json.extract! associated_trial, :trial_id, :id, :trial_identifier, :identifier_type_id, :official_title #:nci_id, :nct_trial_id, :lead_protocol_id, :official_title, :research_category_id, :research_category
+    json.set! :trial_detail, associated_trial.trial_id.nil? ? Trial.find(associated_trial.trial_id) : nil
+  end
+end
+
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status
-    json.set! :added_by, document.added_by_id.nil? ? User.find(1) : ''    #document.added_by_id
+    json.set! :added_by, document.added_by_id.nil? ? User.find(document.added_by_id) : ''    #document.added_by_id
   end
 end
 
@@ -60,7 +67,7 @@ end
 
 json.bio_markers do
   json.array!(@trial.markers) do |marker|
-    json.extract! marker, :id, :name,:protocol_marker_name, :evaluation_type_other,:assay_type_other,:specimen_type_other,:record_status,:biomarker_use_id
+    json.extract! marker, :id, :name,:protocol_marker_name, :evaluation_type_other,:assay_type_other,:specimen_type_other,:record_status,:biomarker_use_id,:cadsr_marker_id
     json.biomarker_use marker.biomarker_use.present? ? marker.biomarker_use.name : nil
 
     json.assay_type_associations MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id)
@@ -161,6 +168,17 @@ end
 json.arms_groups do
   json.array!(@trial.arms_groups) do |ag|
     json.extract! ag, :id, :label, :arms_groups_type, :description, :intervention_text, :trial_id
+    if(ag.intervention_text)
+      intervention_list = ag.intervention_text.split(",");
+      display_interventions = ""
+      intervention_list.each do |i|
+        intervention = Intervention.find_by_id(i)
+        unless intervention.nil?
+         display_interventions = display_interventions + Intervention.find_by_id(i).name
+        end
+      end
+      json.display_interventions display_interventions
+    end
   end
 end
 

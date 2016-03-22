@@ -151,7 +151,11 @@
             getGenderList: getGenderList,
             getSamplingMethods: getSamplingMethods,
             getAnatomicSites: getAnatomicSites,
-            groupPATrialSearchFieldsData: groupPATrialSearchFieldsData
+            groupPATrialSearchFieldsData: groupPATrialSearchFieldsData,
+            getTrialIdentifierTypes: getTrialIdentifierTypes,
+            searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists,
+            searchNCITrial: searchNCITrial,
+            lookupTrial: lookupTrial
         };
 
         return services;
@@ -450,6 +454,43 @@
 
         function getSamplingMethods() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SAMPLING_METHODS);
+        }
+
+        function getTrialIdentifierTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_ID_TYPES);
+        }
+
+        /**
+         * Search clinical trials, ignoring existing trials even if they have been imported
+         * @param  {String} nctId        NCT trial id
+         * @param  {binary 1 or 0} ignoreExists whether or not ignores the NCT trial has been imported (1 for ignored, 0 for not ignored)
+         * @return {Promise}
+         */
+        function searchClinicalTrialsGovIgnoreExists(nctId) {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
+        }
+
+        /**
+         * Search NCI trial in the database
+         * @param  {String} nciTrialId, trial id that starts with NCI- (e.g. NCI-2014-00894)
+         * @return {Promise}
+         */
+        function searchNCITrial(nciTrialId) {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_NCI_TRIAL + '?nci_id=' + nciTrialId);
+        }
+
+        /**
+         * Look up a trial with the given identifier from either NCT or NCI (local database)
+         * @param  {[type]} trialIdentifier [description]
+         * @return {[type]}                 [description]
+         */
+        function lookupTrial(trialIdentifier) {
+
+            if (!!trialIdentifier && trialIdentifier.startsWith('NCT')) {
+                return searchClinicalTrialsGovIgnoreExists(trialIdentifier);
+            } else {
+                return searchNCITrial(trialIdentifier);
+            }
         }
 
         /**

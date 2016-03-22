@@ -7,55 +7,17 @@
 
     <div class="row">
         <div class="col-xs-12 col-md-6">
-
             <div class="form-group">
-                <label for="query_text" class="control-label col-xs-12 col-sm-3 vertical-align">Highlight Query Text: </label>
-                <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
+                <label for="highlight_query_text" class="control-label col-xs-12 col-sm-3 vertical-align">Highlight Query Text: </label>
 
-                    <label class="radio-inline">
-                        <input type="radio" id="query_text" name="query_text"
-                               ng-model="searchParams.query_text"
-                               value="1"> Yes
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" id="query_text" name="query_text"
-                               ng-model="searchParams.query_text"
-                               value="2"> No
-                    </label>
+                <md-radio-group ng-model="searchParams.highlight_query_text">
+                    <md-radio-button value="Yes" class="md-primary" ng-style="{'display':'inline'}"> Yes</md-radio-button>
+                    <md-radio-button value="No" class="md-primary" ng-style="{'display':'inline'}">  No </md-radio-button>
+                </md-radio-group>
 
-                </div>
             </div>
+            <div>
 
-            <div class="form-group">
-                <label for="case_sensitive_search" class="control-label col-xs-12 col-sm-3 vertical-align">Case-Sensitive Search: </label>
-                <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
-
-                    <label class="radio-inline">
-                        <input type="radio" id="case_sensitive_search" name="case_sensitive_search"
-                               ng-model="searchParams.case_sensitive_search"
-                               value="Yes"
-                               ng-required="searchParams.case_sensitive_search === ''"> Yes
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" id="case_sensitive_search" name="case_sensitive_search"
-                               ng-model="searchParams.case_sensitive_search"
-                               value="No"
-                               ng-required="!searchParams.case_sensitive_search"> No
-                    </label>
-
-                </div>
-            </div>
-
-            <!-- Search Term  -->
-
-            <div class="form-group">
-                <label for="search_term" class="col-xs-12 col-sm-3 control-label">Search Term:</label>
-                <div class="col-xs-12 col-sm-5">
-
-                    <input type="text" id="search_term" class="form-control input-sm"
-                           autocomplete="off" placeholder="Search Term" ng-model="searchParams.pv_name" auto-focus />
-
-                </div>
 
             </div>
 
@@ -69,7 +31,33 @@
                 </div>
 
             </div>
-            <!-- Search Term ends -->
+
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+
+            <div class="form-group">
+                <label for="case_sensitive_search" class="control-label col-xs-12 col-sm-3 vertical-align">Case Sensitive Search: </label>
+                <md-radio-group ng-model="searchParams.case_sensitive_search">
+                    <md-radio-button value="Yes" class="md-primary" ng-style="{'display':'inline'}"> Yes</md-radio-button>
+                    <md-radio-button value="No" class="md-primary" ng-style="{'display':'inline'}">  No </md-radio-button>
+                </md-radio-group>
+            </div>
+
+            <div class="form-group">
+                <label for="search_term" class="col-xs-12 col-sm-3 control-label">Search Term:</label>
+                <div class="col-xs-12 col-sm-5">
+
+                    <input type="text" id="search_term" class="form-control input-sm"
+                           autocomplete="off" placeholder="Search Term" ng-model="searchParams.pv_name" auto-focus />
+
+                </div>
+
+            </div>
+
+
+
+
 
         </div>
 

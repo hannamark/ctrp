@@ -41,7 +41,9 @@
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
             $scope.searchParams = CadsrService.getInitialCadsrSearchParams();
-            $scope.searchParams.query_text="1";
+
+            console.log($scope.searchParams.highlight_query_text);
+
 
             $scope.selectedRows = [];
 
@@ -50,60 +52,17 @@
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
             $scope.searchWarningMessage = '';
-
             $scope.searching = false;
 
 
-
-            $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable;
-            if ($scope.maxRowSelectable > 0) {
-                $scope.curationModeEnabled = true;
-            } else {
-                $scope.curationModeEnabled = false;
-            }
-            //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
             $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
             $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
-
-            $scope.typeAheadNameSearch = function () {
-                var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
-                //search context: 'CTRP', to avoid duplicate names
-                var queryObj = {
-                    name: wildcardOrgName,
-                    source_context: 'CTRP',
-                    source_status: 'Active'
-                };
-                //for trial-related org search, use only 'Active' source status
-                if (curStateName.indexOf('trial') === -1) {
-                    delete queryObj.source_status;
-                }
-                return OrgService.searchOrgs(queryObj).then(function(res) {
-                    //remove duplicates
-                    var uniqueNames = [];
-                    var orgNames = [];
-                    orgNames = res.orgs.map(function (org) {
-                        return org.name;
-                    });
-
-                    return uniqueNames = orgNames.filter(function (name) {
-                        return uniqueNames.indexOf(name) === -1;
-                    });
-                });
-            }; //typeAheadNameSearch
-
-
-            /* searchOrgs */
             $scope.searchCadsrs = function (newSearchFlag) {
 
                 if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
-                // console.log("In searchOrgs " + JSON.stringify($scope.searchParams));
-
-                //Checking to see if any search parameter was entered. If not, it should throw a warning to the user to select atleast one parameter.
-                // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
                 var ignoreKeys = ['rows', 'alias', 'start','wc_search'];
 
@@ -156,19 +115,18 @@
 
             /* resetSearch */
             $scope.resetSearch = function () {
-                $scope.searchParams = OrgService.getInitialOrgSearchParams();
-                var excludedKeys = ['alias','wc_search'];
+                $scope.searchParams = CadsrService.getInitialCadsrSearchParams();
+                var excludedKeys = ['highlight_query_text','case_sensitive_search'];
                 Object.keys($scope.searchParams).forEach(function (key) {
 
                     if (excludedKeys.indexOf(key) === -1) {
-                        // $scope.searchParams[key] = '';
                         $scope.searchParams[key] = angular.isArray($scope.searchParams[key]) ? [] : '';
                     }
 
                 });
 
-                $scope.searchParams['alias'] = true;
-                $scope.searchParams['wc_search'] = true;
+                $scope.searchParams['case_sensitive_search'] = "Yes";
+                $scope.searchParams['highlight_query_text'] = "Yes";
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
                 $scope.gridOptions.data = [];
@@ -201,19 +159,13 @@
 
             function activate() {
                 prepareGidOptions();
-
                 if (fromStateName != 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
-                   $scope.searchOrgs(); //refresh search results
+                    //$scope.searchOrgs(); //refresh search results
                 }
                 hideHyperLinkInModal();
             }
-
-
-
-
-
 
 
             /**
