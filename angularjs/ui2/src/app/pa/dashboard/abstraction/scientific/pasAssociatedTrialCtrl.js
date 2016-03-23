@@ -22,7 +22,7 @@
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
-            vm.associateThisTrial = associateThisTrial;
+            vm.associateTrial = associateTrial;
             vm.lookupTrial = lookupTrial;
             vm.showTrialLookupForm = showTrialLookupForm;
             vm.closeLookupForm = closeLookupForm;
@@ -93,14 +93,14 @@
              * @param  {Object}  trialLookUpResult [description]
              * @return {Void}                   [description]
              */
-            function associateThisTrial(trialLookUpResult) {
+            function associateTrial(trialLookUpResult) {
                 if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
                         vm.associationErrorMsg = 'Error: Trial association already exists'
                     // no duplicate
                     return;
                 }
                 vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
-            } // associateThisTrial
+            } // associateTrial
 
             /**
              * Update associated trials at the backend
@@ -108,6 +108,27 @@
              */
             function updateTrialAssociations() {
                 vm.trialDetailObj.associated_trials_attributes = vm.trialDetailObj.associated_trials;
+                var curTrialIdentifierTypeId = null; // use the first one that is not null
+                var curTrialIdentifier = null;
+                if (!!vm.trialDetailObj.nci_id) {
+                    curTrialIdentifierTypeId = _.findWhere(vm.identifierTypes, {name: 'CTRP'}).id;
+                    curTrialIdentifier = vm.trialDetailObj.nci_id;
+                } else if (!!vm.trialDetailObj.nct_trial_id) {
+                    curTrialIdentifierTypeId = _.findWhere(vm.identifierTypes, {name: 'NCT'}).id;
+                    curTrialIdentifier = vm.trialDetailObj.nct_trial_id;
+                }
+
+                _.each(vm.trialDetailObj.associated_trials, function(trial) {
+                    // create the trial association mirror
+                    var associatedTrialB = {
+                        trial_id: trial.trial_id,
+                        trial_identifier: curTrialIdentifier,
+                        identifier_type_id: curTrialIdentifierTypeId,
+                        official_title: vm.trialDetailObj.official_title
+                    };
+                    vm.trialDetailObj.associated_trials_attributes.push(associatedTrialB);
+                });
+
                 var outerTrial = {};
                 outerTrial.new = false;
                 outerTrial.id = vm.trialDetailObj.id;

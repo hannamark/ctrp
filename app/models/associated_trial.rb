@@ -23,4 +23,10 @@ class AssociatedTrial < ActiveRecord::Base
 
   belongs_to :identifier_type
   belongs_to :trial
+
+  scope :search_trial_associations, -> (trial_identifier, identifier_type_id, trial_id) {
+    where(trial_identifier: trial_identifier, identifier_type_id: trial_identifier, trial_id: trial_id)
+    # where(trial_identifier: trial_identifier)
+  }
+
 end
