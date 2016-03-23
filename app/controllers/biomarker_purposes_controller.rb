@@ -4,7 +4,7 @@ class BiomarkerPurposesController < ApplicationController
   # GET /biomarker_purposes
   # GET /biomarker_purposes.json
   def index
-    @biomarker_purposes = BiomarkerPurpose.all
+    @biomarker_purposes = BiomarkerPurpose.all.order(:id)
   end
 
   # GET /biomarker_purposes/1

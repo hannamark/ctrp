@@ -10,7 +10,7 @@ class TrialsController < ApplicationController
   end
 
   # GET /trials/1
-  # GET /trials/1.json
+  # GET /trials/1.jsonzf
   def show
     @trial.current_user = @current_user
   end
@@ -78,6 +78,25 @@ class TrialsController < ApplicationController
     @genders = Gender.all
     respond_to do |format|
       format.json { render :json => @genders }
+    end
+  end
+
+  def search_trial_with_nci_id
+
+    if params.has_key?(:nci_id)
+      @search_result = Trial.with_nci_id(params[:nci_id].upcase).first
+      @search_result = @search_result.nil? ? {error_msg: 'Trial is not found'} : @search_result
+    else
+      # missing nci_id
+      @search_result = {error_msg: 'Trial is not found'}
+    end
+
+  end
+
+  def trial_identifier_types
+    @trial_identifier_types = IdentifierType.all
+    respond_to do |format|
+      format.json { render :json => @trial_identifier_types }
     end
   end
 
@@ -443,6 +462,41 @@ class TrialsController < ApplicationController
     end
   end
 
+  def search_clinical_trials_gov_ignore_exists
+    @search_result = {}
+
+    # existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id) params.has_key?(:ignore_exists)
+    # if existing_nct_ids.length > 0
+    #   @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
+    #   return
+    # end
+
+    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+    url = url.sub('NCT********', params[:nct_id])
+    begin
+      xml = Nokogiri::XML(open(url))
+    rescue OpenURI::HTTPError
+      @search_result[:error_msg] = 'Trial is not found'
+    else
+      @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
+      @search_result[:official_title] = xml.xpath('//official_title').text
+      # @search_result[:status] = xml.xpath('//overall_status').text
+      # @search_result[:condition] = ''
+      # xml.xpath('//condition').each_with_index do |condition, i|
+      #   @search_result[:condition] += ', ' if i > 0
+      #   @search_result[:condition] += condition
+      # end
+      # @search_result[:intervention] = ''
+      # xml.xpath('//intervention').each_with_index do |intervention, i|
+      #   @search_result[:intervention] += ', ' if i > 0
+      #   @search_result[:intervention] += intervention.xpath('intervention_type').text
+      #   @search_result[:intervention] += ': '
+      #   @search_result[:intervention] += intervention.xpath('intervention_name').text
+      # end
+
+    end
+  end
+
   def search_clinical_trials_gov
     @search_result = {}
 
@@ -529,6 +583,7 @@ class TrialsController < ApplicationController
                                   ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
+                                  associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
                                   other_criteria_attributes: [:id, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],

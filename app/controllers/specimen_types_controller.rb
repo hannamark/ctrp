@@ -4,7 +4,7 @@ class SpecimenTypesController < ApplicationController
   # GET /specimen_types
   # GET /specimen_types.json
   def index
-    @specimen_types = SpecimenType.all
+    @specimen_types = SpecimenType.all.order(:id)
   end
 
   # GET /specimen_types/1

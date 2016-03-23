@@ -4,7 +4,7 @@ class AssayTypesController < ApplicationController
   # GET /assay_types
   # GET /assay_types.json
   def index
-    @assay_types = AssayType.all
+    @assay_types = AssayType.all.order(:id)
   end
 
   # GET /assay_types/1

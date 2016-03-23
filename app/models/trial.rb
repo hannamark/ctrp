@@ -192,6 +192,7 @@ class Trial < TrialBase
   attr_accessor :coming_from
   attr_accessor :current_user
 
+  accepts_nested_attributes_for :associated_trials, allow_destroy: true
   accepts_nested_attributes_for :arms_groups, allow_destroy: true
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
@@ -488,6 +489,7 @@ class Trial < TrialBase
         # Populate the trial data in the email body
         mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
         mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
 
         table = '<table border="0">'
@@ -544,6 +546,8 @@ class Trial < TrialBase
 
     joins(join_clause).where(where_clause, value_exp, value_exp, value_exp)
   }
+
+  scope :with_nci_id, -> (nci_id) { where(nci_id: nci_id) }
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 

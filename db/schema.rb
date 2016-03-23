@@ -537,6 +537,7 @@ ActiveRecord::Schema.define(version: 20160321201358) do
     t.string   "name",                  limit: 255
     t.string   "record_status",         limit: 255
     t.integer  "biomarker_use_id"
+    t.integer  "biomarker_purpose_id"
     t.integer  "trial_id"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
@@ -549,6 +550,7 @@ ActiveRecord::Schema.define(version: 20160321201358) do
     t.integer  "cadsr_marker_id"
   end
 
+  add_index "markers", ["biomarker_purpose_id"], name: "index_markers_on_biomarker_purpose_id", using: :btree
   add_index "markers", ["biomarker_use_id"], name: "index_markers_on_biomarker_use_id", using: :btree
   add_index "markers", ["cadsr_marker_id"], name: "index_markers_on_cadsr_marker_id", using: :btree
   add_index "markers", ["trial_id"], name: "index_markers_on_trial_id", using: :btree
@@ -1443,6 +1445,7 @@ ActiveRecord::Schema.define(version: 20160321201358) do
   add_foreign_key "marker_assay_type_associations", "markers"
   add_foreign_key "marker_biomarker_purpose_associations", "biomarker_purposes"
   add_foreign_key "marker_biomarker_purpose_associations", "markers"
+  add_foreign_key "markers", "biomarker_purposes"
   add_foreign_key "markers", "biomarker_uses"
   add_foreign_key "markers", "cadsr_markers"
   add_foreign_key "markers", "trials"

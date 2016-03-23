@@ -34,6 +34,12 @@
         }
 
         vm.updateUser = function () {
+            // Selected Orgs is required but not really a validated form field (it is wrapped in a directive)
+            // So check selectedOrgs length and do nothing if array.length < 1
+            if (!vm.selectedOrgsArray.length) {
+                return;
+            }
+
             console.log('vm.userDetails is:', vm.userDetails.user_status);
             //console.log('hello email changed ? ' +vm.userDetails.email);
             //console.log('IN UPDATEUSER');
@@ -45,6 +51,7 @@
                 /* Only updates using the first item in the org. array */
                 if (vm.selectedOrgsArray[0]._destroy) {
                     vm.userDetails.organization_id = null;
+                    vm.selectedOrgsArray = [];
                 } else {
                     vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
                 }
@@ -100,6 +107,10 @@
 
         vm.reset = function() {
             vm.userDetails = angular.copy(userDetailObj);
+
+            if (vm.selectedOrgsArray.length && vm.selectedOrgsArray[0]._destroy) {
+                vm.selectedOrgsArray[0]._destroy = false;
+            }
         };
 
         $scope.$watch(function() {return vm.selectedOrgsArray;}, function(newVal) {
