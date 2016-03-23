@@ -217,7 +217,7 @@ StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
 
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
-OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Pre-specified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
 Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
