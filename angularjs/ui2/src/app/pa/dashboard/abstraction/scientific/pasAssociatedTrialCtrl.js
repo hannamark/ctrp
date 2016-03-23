@@ -54,8 +54,13 @@
                 });
             } // lookupTrial
 
-            function resetTrialLookupForm() {
-                _initFoundTrialObj();
+            function resetTrialLookupForm(form) {
+                form.$valid = true;
+                form.$pristine = true;
+                // form.trial_identifier.$error = null;
+                // form.identifier_type.$error = null;
+                vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''};
+                vm.foundTrialObj = _initFoundTrialObj();
             }
 
             function _initFoundTrialObj() {
@@ -82,7 +87,9 @@
             }
 
             function associateThisTrial(trialLookUpResult) {
-                if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
+                if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1 ||
+                    trialLookUpResult.trial_identifier === vm.trialDetailObj.nci_id || trialLookUpResult.trial_identifier === vm.trialDetailObj.nct_trial_id) {
+                        vm.associationErrorMsg = 'Error: Trial association can not be duplicated or to itself'
                     // no duplicate
                     return;
                 }
