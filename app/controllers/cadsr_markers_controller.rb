@@ -75,15 +75,16 @@ class CadsrMarkersController < ApplicationController
 
       @cadsr_markers=CadsrMarker.all
 
-
-    if (!cadsr_id.nil? && cadsr_id != "")
-      @cadsr_markers=CadsrMarker.where(cadsr_id: cadsr_id)
+    if (!cadsr_id.nil?)
+      @cadsr_markers_ids=@cadsr_markers.matches('cadsr_id',cadsr_id)
     end
 
     if(!pv_name.nil? && pv_name !="" && !@cadsr_markers.nil?)
       @cadsr_markers = @cadsr_markers.matches_wc('pv_name', pv_name,case_sensitive_search)
-    else
-      @cadsr_markers=[]
+    end
+
+    if (@cadsr_markers.nil? )
+        @cadsr_markers=[];
     end
 
 

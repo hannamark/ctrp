@@ -27,6 +27,8 @@ class CadsrMarker < ActiveRecord::Base
 
   private
 
+  scope :matches, -> (column, value) { where("cadsr_markers.#{column} = ?", "#{value}") }
+
   scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'

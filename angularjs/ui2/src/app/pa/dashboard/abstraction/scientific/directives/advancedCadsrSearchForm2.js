@@ -81,7 +81,7 @@
                     CadsrService.searchCadsrs($scope.searchParams).then(function (data) {
                         if ($scope.showGrid && data.cadsr_markers) {
                             $scope.gridOptions.data = data.cadsr_markers;
-                            $scope.gridOptions.totalItems = data.total;
+                            $scope.gridOptions.totalItems = data.cadsr_markers["length"];
 
                             //pin the selected rows, if any, at the top of the results
                             _.each($scope.selectedRows, function (curRow, idx) {
