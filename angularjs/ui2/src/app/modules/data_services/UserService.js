@@ -33,7 +33,7 @@
             email: '',
             phone: '',
             approved: '',
-            user_status: '',
+            user_status_id: '',
             // affiliated_org_name: '',
 
             //for pagination and sorting

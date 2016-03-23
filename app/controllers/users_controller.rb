@@ -109,12 +109,22 @@ end
     params[:order] = 'asc' if params[:order].blank?
     @users = User.all
 
+=begin
     if params[:username].present? || params[:first_name].present? || params[:last_name].present? || params[:email].present?
       @users = @users.select{|x| x.username && x.username.include?(params[:username])} if params[:username].present?
       @users = @users.select{|x| x.first_name && x.first_name.include?(params[:first_name])} if params[:first_name].present?
       @users = @users.select{|x| x.last_name && x.last_name.include?(params[:last_name])} if params[:last_name].present?
-      @users = @users.select{|x| x.email && x.email.include?(params[:email])} if params[:email].present?
+      @users  = @users.select{|x| x.email && x.email.include?(params[:email])} if params[:email].present?
     end
+=end
+
+    if params[:username].present? || params[:first_name].present? || params[:last_name].present? || params[:email].present?
+      @users = @users.matches_wc('username', params[:username]) if params[:username].present?
+      @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present?
+      @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present?
+      @users = @users.matches_wc('email', params[:email]) if params[:email].present?
+    end
+
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users
   end
