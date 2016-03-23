@@ -41,7 +41,7 @@ end
 json.associated_trials do
   json.array!(@trial.associated_trials) do |associated_trial|
     json.extract! associated_trial, :trial_id, :id, :trial_identifier, :identifier_type_id, :official_title #:nci_id, :nct_trial_id, :lead_protocol_id, :official_title, :research_category_id, :research_category
-    json.set! :trial_detail, associated_trial.trial_id.nil? ? Trial.find(associated_trial.trial_id) : nil
+    json.set! :trial_detail, associated_trial.trial_id.nil? ? nil : Trial.find(associated_trial.trial_id)
   end
 end
 
