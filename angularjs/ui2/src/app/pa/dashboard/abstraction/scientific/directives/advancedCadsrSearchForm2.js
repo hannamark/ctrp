@@ -42,11 +42,8 @@
             var curStateName = $state.$current.name || '';
             $scope.searchParams = CadsrService.getInitialCadsrSearchParams();
 
-            console.log($scope.searchParams.highlight_query_text);
-
 
             $scope.selectedRows = [];
-
             $scope.nullifiedId = '';
             $scope.warningMessage = '';
             $scope.curationShown = false;
@@ -56,7 +53,7 @@
 
 
             $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
+            $scope.showGrid    = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
 
             $scope.searchCadsrs = function (newSearchFlag) {
 
@@ -64,7 +61,7 @@
                     $scope.searchParams.start = 1;
                 }
                 var isEmptySearch = true;
-                var ignoreKeys = ['rows', 'alias', 'start','wc_search'];
+                var ignoreKeys = ['rows', 'case_sensitive_search', 'start','highlight_query_text'];
 
                 _.keys($scope.searchParams).forEach(function (key) {
 
@@ -81,12 +78,10 @@
 
                 if(!isEmptySearch) {
                     $scope.searching = true;
-
-
                     CadsrService.searchCadsrs($scope.searchParams).then(function (data) {
                         if ($scope.showGrid && data.cadsr_markers) {
                             $scope.gridOptions.data = data.cadsr_markers;
-                            $scope.gridOptions.totalItems = data.total;
+                            $scope.gridOptions.totalItems = data.cadsr_markers["length"];
 
                             //pin the selected rows, if any, at the top of the results
                             _.each($scope.selectedRows, function (curRow, idx) {
@@ -101,16 +96,15 @@
                             });
                         }
                         $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
-                        // console.log($scope.$parent);
 
                     }).catch(function (error) {
-                        console.log("error in retrieving orgs: " + JSON.stringify(error));
+                        console.log("error in retrieving caDSR records: " + JSON.stringify(error));
                     }).finally(function() {
                         console.log('search finished');
                         $scope.searching = false;
                     });
                 }
-            }; //searchOrgs
+            }; //search_caDSRs
 
 
             /* resetSearch */
@@ -125,7 +119,7 @@
 
                 });
 
-                $scope.searchParams['case_sensitive_search'] = "Yes";
+                $scope.searchParams['case_sensitive_search'] = "No";
                 $scope.searchParams['highlight_query_text'] = "Yes";
                 // $scope.searchOrgs();
                 $scope.$parent.orgSearchResults = {};
@@ -338,7 +332,6 @@
                                 'title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>';
                         }
                     } else {
-                        // $scope.gridOptions = OrgService.getGridOptions();
                         $scope.gridOptions.columnDefs[orgNameIndex].cellTemplate = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                             '<a ui-sref="main.orgDetail({orgId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>';
                         //make visible if it is not in modal and curator mode is off.

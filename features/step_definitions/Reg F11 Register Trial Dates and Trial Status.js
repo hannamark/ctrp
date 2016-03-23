@@ -20,8 +20,32 @@ module.exports = function() {
     /*********************
      * Validation message *
      *********************/
-    var FDAIND_IDERequired = 'IND/IDE is required';
-    var FDATableValidationMessage = 'Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type';
+    var warningMsgApproved = 'WARNING: Interim status [In Review] is missing';
+    var warningMsgWithdrawnActiveEBI = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing';
+    var warningMsgClosedToAccrualTemporarilyClosedToAccrual = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing';
+    var warningMsgClosedToAccrualAndIntervention = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing';
+    var warningMsgTemporarilyClosedToAccrualAndIntervention = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing';
+    var warningMsgCompleteAdministrativelyComplete = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing';
+    var errorMsgStatus = 'Trial Status is required';
+    var errorMsgStatusStatusDate = 'Please provide a Status Date, select a Status';
+    var errorMsgStatusStatusDateStudyStopped = 'Please provide a Status Date, select a Status and enter Why Study Stopped';
+    var errorMsgTrialStatusFuture = 'The Status Date should not be in the future';
+    var errorMsgTrialStartDate = 'Trial Start Date is required';
+    var errorMsgTrialPrimaryCompletionDate = 'Primary Completion Date is required';
+    var errorMsgTrialCompletionDate = 'Completion Date is required';
+    var errorMsgTrialStartDateType = 'Trial Start Date Type is required';
+    var errorMsgTrialPrimaryCompletionDateType = 'Primary Completion Date Type is required';
+    var errorMsgTrialCompletionDateType = 'Completion Date Type is required';
+    var errorMsgTrialStartDatePastTypeAnticipated = 'Trial Start Date type cannot be Anticipated if Trial Start Date is in the past';
+    var errorMsgTrialPrimaryCompletionDatePastTypeAnticipated = 'Primary Completion Date type cannot be Anticipated if Primary Completion Date is in the past';
+    var errorMsgTrialCompletionDatePastTypeAnticipated = 'Completion Date type cannot be Anticipated if Completion Date is in the past';
+    var errorMsgTrialStartDateFutureTypeActual = 'Trial Start Date type cannot be Actual if Trial Start Date is in the future';
+    var errorMsgTrialPrimaryCompletionDateFutureTypeActual = 'Primary Completion Date type cannot be Actual if Primary Completion Date is in the future';
+    var errorMsgTrialCompletionDateFutureTypeActual = 'Completion Date type cannot be Actual if Completion Date is in the future';
+    var primaryCompletionDateErrorMessageWithTrialStartDate = 'The Primary Completion Date should be the same as, or later than, the Trial Start Date';
+    var completionDateErrorMessageWithTrialPrimaryCompletionDate = 'The Completion Date should be the same as, or later than, the Primary Completion Date';
+
+
 
 
     this.Given(/^I am on the Register Trial Status screen$/, function (callback) {
@@ -57,49 +81,49 @@ module.exports = function() {
                         if (statusTable[i].statusFrom === 'In Review') {
                             projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', '');
                         } else if (statusTable[i].statusFrom === 'Approved') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgApproved);
                         } else if (statusTable[i].statusFrom === 'Withdrawn' || statusTable[i].statusFrom === 'Active' || statusTable[i].statusFrom === 'Enrolling by Invitation') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgWithdrawnActiveEBI);
                         } else if (statusTable[i].statusFrom === 'Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgClosedToAccrualTemporarilyClosedToAccrual);
                         } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgClosedToAccrualAndIntervention);
                         } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgTemporarilyClosedToAccrualAndIntervention);
                         } else if (statusTable[i].statusFrom === 'Complete' || statusTable[i].statusFrom === 'Administratively Complete') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgCompleteAdministrativelyComplete);
                         }
                     } else if (statusTable[i].whyStudyStopped !== '' && (statusTable[i].statusFrom === 'Withdrawn' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' || statusTable[i].statusFrom === 'Administratively Complete')) {
                         if (statusTable[i].statusFrom === 'In Review') {
                             projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '');
                         } else if (statusTable[i].statusFrom === 'Approved') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, 'WARNING: Interim status [In Review] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, warningMsgApproved);
                         } else if (statusTable[i].statusFrom === 'Withdrawn' || statusTable[i].statusFrom === 'Active' || statusTable[i].statusFrom === 'Enrolling by Invitation') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, warningMsgWithdrawnActiveEBI);
                         } else if (statusTable[i].statusFrom === 'Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, warningMsgClosedToAccrualTemporarilyClosedToAccrual);
                         } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, warningMsgClosedToAccrualAndIntervention);
                         } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, warningMsgTemporarilyClosedToAccrualAndIntervention);
                         } else if (statusTable[i].statusFrom === 'Complete' || statusTable[i].statusFrom === 'Administratively Complete') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', statusTable[i].whyStudyStopped, warningMsgCompleteAdministrativelyComplete);
                         }
                     } else {
                         if (statusTable[i].statusFrom === 'In Review') {
                             projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', '');
                         } else if (statusTable[i].statusFrom === 'Approved') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgApproved);
                         } else if (statusTable[i].statusFrom === 'Withdrawn' || statusTable[i].statusFrom === 'Active' || statusTable[i].statusFrom === 'Enrolling by Invitation') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgWithdrawnActiveEBI);
                         } else if (statusTable[i].statusFrom === 'Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgClosedToAccrualTemporarilyClosedToAccrual);
                         } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgClosedToAccrualAndIntervention);
                         } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgTemporarilyClosedToAccrualAndIntervention);
                         } else if (statusTable[i].statusFrom === 'Complete' || statusTable[i].statusFrom === 'Administratively Complete') {
-                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing');
+                            projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgCompleteAdministrativelyComplete);
                         }
                     }
                 }
@@ -135,17 +159,17 @@ module.exports = function() {
                     if (statusTable[i].statusFrom === 'In Review') {
                         expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal('');
                     } else if (statusTable[i].statusFrom === 'Approved') {
-                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal('WARNING: Interim status [In Review] is missing');
+                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal(warningMsgApproved);
                     } else if (statusTable[i].statusFrom === 'Withdrawn' || statusTable[i].statusFrom === 'Active' || statusTable[i].statusFrom === 'Enrolling by Invitation') {
-                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal('WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing');
+                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal(warningMsgWithdrawnActiveEBI);
                     } else if (statusTable[i].statusFrom === 'Closed to Accrual' || statusTable[i].statusFrom === 'Temporarily Closed to Accrual') {
-                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal('WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing');
+                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal(warningMsgClosedToAccrualTemporarilyClosedToAccrual);
                     } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention') {
-                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal('WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing');
+                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal(warningMsgClosedToAccrualAndIntervention);
                     } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
-                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal('WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing');
+                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal(warningMsgTemporarilyClosedToAccrualAndIntervention);
                     } else if (statusTable[i].statusFrom === 'Complete' || statusTable[i].statusFrom === 'Administratively Complete') {
-                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal('WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing');
+                        expect(addTrial.addTrialErrorWarningTable.get(0).getText()).to.eventually.equal(warningMsgCompleteAdministrativelyComplete);
                     }
                 }
             }
@@ -245,7 +269,7 @@ module.exports = function() {
                 addTrial.clickAddTrialAddStatusButton();
                 if (statusTable[i].statusDateFrom === 'Date Entered past') {
                     if (statusTable[i].statusFrom === 'Approved') {
-                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [In Review] is missing');
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', warningMsgApproved);
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
                         projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing');
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
@@ -255,7 +279,7 @@ module.exports = function() {
                     }
                 } else if (statusTable[i].statusDateFrom === 'Date in Future') {
                     if (statusTable[i].statusFrom === 'Approved') {
-                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [In Review] is missing');
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', warningMsgApproved);
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
                         projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing');
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
@@ -265,7 +289,7 @@ module.exports = function() {
                     }
                 } else {
                     if (statusTable[i].statusFrom === 'Approved') {
-                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [In Review] is missing');
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', warningMsgApproved);
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
                         projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', 'Reason for Study stopped added cuke test', 'WARNING: Interim status [Active] is missing');
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
@@ -278,7 +302,7 @@ module.exports = function() {
                 addTrial.clickAddTrialAddStatusButton();
                 if (statusTable[i].statusDateFrom === 'Date Entered past') {
                     if (statusTable[i].statusFrom === 'Approved') {
-                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', warningMsgApproved);
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
                         projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().subtract(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing');
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
@@ -288,7 +312,7 @@ module.exports = function() {
                     }
                 } else if (statusTable[i].statusDateFrom === 'Date in Future') {
                     if (statusTable[i].statusFrom === 'Approved') {
-                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', warningMsgApproved);
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
                         projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().add(1, 'months').startOf('month').format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing');
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
@@ -298,7 +322,7 @@ module.exports = function() {
                     }
                 } else {
                     if (statusTable[i].statusFrom === 'Approved') {
-                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [In Review] is missing');
+                        projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', warningMsgApproved);
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' || statusTable[i].statusFrom === 'Closed to Accrual')) {
                         projectFunctionsRegistry.verifyAddTrialStatusInformation(statusTable[i].statusFrom, moment().format('DD-MMM-YYYY'), '', '', 'WARNING: Interim status [Active] is missing');
                     } else if (statusTable[i].condition === 'all the previous Status before Active has been added' && statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention') {
@@ -399,7 +423,7 @@ module.exports = function() {
     });
 
     this.Then(/^I should get an error message as "([^"]*)"$/, function (arg1, callback) {
-        if(arg1 === 'Trial Status is required'){
+        if(arg1 === errorMsgStatus){
             expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
         }
         browser.sleep(25).then(callback);
@@ -408,24 +432,24 @@ module.exports = function() {
     this.Given(/^On Add Trial Status if Status Date or Status is missing$/, function (callback) {
         addTrial.clickAddTrialAddStatusButton();
         /****** Status Date and Status both not provided *********/
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage('Please provide a Status Date, select a Status')).to.become('true');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('true');
         /****** Status Date provided but Status not provided *********/
         addTrial.clickAddTrialDateField('0');
         addTrial.clickAddTrialDateToday();
         addTrial.clickAddTrialAddStatusButton();
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage('Please provide a Status Date, select a Status')).to.become('true');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('true');
         /****** Status Date not provided but Status provided *********/
         addTrial.clickAddTrialResetButton();
         addTrial.selectAddTrialStatus('In Review');
         addTrial.clickAddTrialAddStatusButton();
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage('Please provide a Status Date, select a Status')).to.become('true');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('true');
         /****** Status Date and Status both provided so no error *********/
         addTrial.clickAddTrialResetButton();
         addTrial.clickAddTrialDateField('0');
         addTrial.clickAddTrialDateToday();
         addTrial.selectAddTrialStatus('In Review');
         addTrial.clickAddTrialAddStatusButton();
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage('Please provide a Status Date, select a Status')).to.become('false');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('false');
         browser.sleep(25).then(callback);
     });
 
@@ -446,7 +470,7 @@ module.exports = function() {
             addTrial.clickAddTrialDateToday();
             addTrial.selectAddTrialStatus(trialStatusStudyStoppedItems[i]);
             addTrial.clickAddTrialAddStatusButton();
-            expect(projectFunctionsRegistry.verifyTrialValidationMessage('Please provide a Status Date, select a Status and enter Why Study Stopped')).to.become('true');
+            expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDateStudyStopped)).to.become('true');
         }
         browser.sleep(25).then(callback);
     });
@@ -514,7 +538,7 @@ module.exports = function() {
     this.Then(/^It should give an error message for future status date$/, function (callback) {
         addTrial.selectAddTrialStatus('In Review');
         addTrial.clickAddTrialAddStatusButton();
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage('The Status Date should not be in the future')).to.become('true');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgTrialStatusFuture)).to.become('true');
         expect(addTrial.addTrialStatusDateTableVerifyDateExist.isPresent()).to.become(false);
         browser.sleep(25).then(callback);
     });
@@ -602,12 +626,12 @@ module.exports = function() {
     });
 
     this.Then(/^no errors should be displayed$/, function (callback) {
-        expect(projectFunctions.verifyWarningMessage('Trial Start Date is required')).to.become('false');
-        expect(projectFunctions.verifyWarningMessage('Trial Start Date Type is required')).to.become('false');
-        expect(projectFunctions.verifyWarningMessage('Primary Completion Date is required')).to.become('false');
-        expect(projectFunctions.verifyWarningMessage('Primary Completion Date Type is required')).to.become('false');
-        expect(projectFunctions.verifyWarningMessage('Completion Date is required')).to.become('false');
-        expect(projectFunctions.verifyWarningMessage('Completion Date Type is required')).to.become('false');
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialStartDate)).to.become('false');
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialStartDateType)).to.become('false');
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialPrimaryCompletionDate)).to.become('false');
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialPrimaryCompletionDateType)).to.become('false');
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialCompletionDate)).to.become('false');
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialCompletionDateType)).to.become('false');
         addTrial.getVerifyAddTrialStartDate(moment().format('DD-MMM-YYYY'));
         addTrial.verifyAddTrialStartDateOption('1', true);
         addTrial.getVerifyAddTrialPrimaryCompletionDate(moment().format('DD-MMM-YYYY'));
@@ -651,8 +675,7 @@ module.exports = function() {
         }
         browser.sleep(25).then(callback);
     });
-
-    this.When(/^Current Trial Status is (.*) then for the "([^"]*)" below rules for "([^"]*)" (.*) along with warning (.*) should be there$/, function (TrialStatusType, arg1, arg2, DateTypeActual, DateTypeActualWarning, table, callback) {
+    this.When(/^Current Trial Status is (.*) then for the "([^"]*)" below rules for "([^"]*)" (.*) along with the error (.*) should be there$/, function (TrialStatusType, arg1, arg2, DateTypeActual, DateTypeActualError, table, callback) {
         trialDateTable = table.hashes();
         for (var i = 0; i < trialDateTable.length; i++) {
             addTrial.clickAddTrialResetButton();
@@ -671,39 +694,39 @@ module.exports = function() {
                     addTrial.clickAddTrialDateToday();
                     addTrial.selectAddTrialStartDateOption('0');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialStartDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualWarning);
+                    expect(addTrial.addTrialStartDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualError);
                     addTrial.clickAddTrialDateField('1');
                     addTrial.clickAddTrialDateClear();
                     addTrial.clickAddTrialDateField('1');
                     addTrial.clickAddTrialDateFieldPreviousMonth('01');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialStartDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualWarning);
+                    expect(addTrial.addTrialStartDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualError);
                 }
                 else if (arg1 === 'Primary Completion Date') {
                     addTrial.clickAddTrialDateField('2');
                     addTrial.clickAddTrialDateToday();
                     addTrial.selectAddTrialPrimaryCompletionDateOption('0');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualWarning);
+                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualError);
                     addTrial.clickAddTrialDateField('2');
                     addTrial.clickAddTrialDateClear();
                     addTrial.clickAddTrialDateField('2');
                     addTrial.clickAddTrialDateFieldPreviousMonth('01');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualWarning);
+                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualError);
                 }
                 else if (arg1 === 'Completion Date') {
                     addTrial.clickAddTrialDateField('3');
                     addTrial.clickAddTrialDateToday();
                     addTrial.selectAddTrialCompletionDateOption('0');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualWarning);
+                    expect(addTrial.addTrialCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualError);
                     addTrial.clickAddTrialDateField('3');
                     addTrial.clickAddTrialDateClear();
                     addTrial.clickAddTrialDateField('3');
                     addTrial.clickAddTrialDateFieldPreviousMonth('01');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualWarning);
+                    expect(addTrial.addTrialCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeActualError);
                 }
             }
             else if (arg2 === 'Anticipated'){
@@ -712,39 +735,39 @@ module.exports = function() {
                     addTrial.clickAddTrialDateToday();
                     addTrial.selectAddTrialStartDateOption('1');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialStartDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedWarning);
+                    expect(addTrial.addTrialStartDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedError);
                     addTrial.clickAddTrialDateField('1');
                     addTrial.clickAddTrialDateClear();
                     addTrial.clickAddTrialDateField('1');
                     addTrial.clickAddTrialDateFieldNextMonth('01');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialStartDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedWarning);
+                    expect(addTrial.addTrialStartDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedError);
                 }
                 else if (arg1 === 'Primary Completion Date') {
                     addTrial.clickAddTrialDateField('2');
                     addTrial.clickAddTrialDateToday();
                     addTrial.selectAddTrialPrimaryCompletionDateOption('1');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedWarning);
+                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedError);
                     addTrial.clickAddTrialDateField('2');
                     addTrial.clickAddTrialDateClear();
                     addTrial.clickAddTrialDateField('2');
                     addTrial.clickAddTrialDateFieldNextMonth('01');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedWarning);
+                    expect(addTrial.addTrialPrimaryCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedError);
                 }
                 else if (arg1 === 'Completion Date') {
                     addTrial.clickAddTrialDateField('3');
                     addTrial.clickAddTrialDateToday();
                     addTrial.selectAddTrialCompletionDateOption('1');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedWarning);
+                    expect(addTrial.addTrialCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedError);
                     addTrial.clickAddTrialDateField('3');
                     addTrial.clickAddTrialDateClear();
                     addTrial.clickAddTrialDateField('3');
                     addTrial.clickAddTrialDateFieldNextMonth('01');
                     addTrial.clickAddTrialReviewButton();
-                    expect(addTrial.addTrialCompletionDateErrorMessage.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedWarning);
+                    expect(addTrial.addTrialCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(trialDateTable[i].DateTypeAnticipatedError);
                 }
 
             }
@@ -782,7 +805,7 @@ module.exports = function() {
         console.log('******* Trial Start Date Anticipated Type Option Verification in Past *********');
         addTrial.selectAddTrialStartDateOption('1');
         addTrial.clickAddTrialReviewButton();
-        expect(addTrial.addTrialStartDateErrorMessageActualAnticipated.getText()).to.eventually.equal('Trial Start Date type cannot be Anticipated if Trial Start Date is in the past');
+        expect(addTrial.addTrialStartDateErrorMessageActualAnticipated.getText()).to.eventually.equal(errorMsgTrialStartDatePastTypeAnticipated);
         console.log('******* Trial Primary Completion Date Actual Type Option Verification in Past *********');
         addTrial.selectAddTrialPrimaryCompletionDateOption('0');
         addTrial.clickAddTrialReviewButton();
@@ -790,7 +813,7 @@ module.exports = function() {
         console.log('******* Trial Primary Completion Date Anticipated Type Option Verification in Past *********');
         addTrial.selectAddTrialPrimaryCompletionDateOption('1');
         addTrial.clickAddTrialReviewButton();
-        expect(addTrial.addTrialPrimaryCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal('Primary Completion Date type cannot be Anticipated if Primary Completion Date is in the past');
+        expect(addTrial.addTrialPrimaryCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal(errorMsgTrialPrimaryCompletionDatePastTypeAnticipated);
         console.log('******* Trial Completion Date Actual Type Option Verification in Past *********');
         addTrial.selectAddTrialCompletionDateOption('0');
         addTrial.clickAddTrialReviewButton();
@@ -798,7 +821,7 @@ module.exports = function() {
         console.log('******* Trial Completion Date Anticipated Type Option Verification in Past *********');
         addTrial.selectAddTrialCompletionDateOption('1');
         addTrial.clickAddTrialReviewButton();
-        expect(addTrial.addTrialCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal('Completion Date type cannot be Anticipated if Completion Date is in the past');
+        expect(addTrial.addTrialCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal(errorMsgTrialCompletionDatePastTypeAnticipated);
         browser.sleep(25).then(callback);
     });
 
@@ -864,7 +887,7 @@ module.exports = function() {
         console.log('******* Trial Start Date Actual Type Option Verification in Future *********');
         addTrial.selectAddTrialStartDateOption('0');
         addTrial.clickAddTrialReviewButton();
-        expect(addTrial.addTrialStartDateErrorMessageActualAnticipated.getText()).to.eventually.equal('Trial Start Date type cannot be Actual if Trial Start Date is in the future');
+        expect(addTrial.addTrialStartDateErrorMessageActualAnticipated.getText()).to.eventually.equal(errorMsgTrialStartDateFutureTypeActual);
         console.log('******* Trial Start Date Anticipated Type Option Verification in Future *********');
         addTrial.selectAddTrialStartDateOption('1');
         addTrial.clickAddTrialReviewButton();
@@ -872,7 +895,7 @@ module.exports = function() {
         console.log('******* Trial Primary Completion Date Actual Type Option Verification in Future *********');
         addTrial.selectAddTrialPrimaryCompletionDateOption('0');
         addTrial.clickAddTrialReviewButton();
-        expect(addTrial.addTrialPrimaryCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal('Primary Completion Date type cannot be Actual if Primary Completion Date is in the future');
+        expect(addTrial.addTrialPrimaryCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal(errorMsgTrialPrimaryCompletionDateFutureTypeActual);
         console.log('******* Trial Primary Completion Date Anticipated Type Option Verification in Future *********');
         addTrial.selectAddTrialPrimaryCompletionDateOption('1');
         addTrial.clickAddTrialReviewButton();
@@ -880,7 +903,7 @@ module.exports = function() {
         console.log('******* Trial Completion Date Actual Type Option Verification in Future *********');
         addTrial.selectAddTrialCompletionDateOption('0');
         addTrial.clickAddTrialReviewButton();
-        expect(addTrial.addTrialCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal('Completion Date type cannot be Actual if Completion Date is in the future');
+        expect(addTrial.addTrialCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal(errorMsgTrialCompletionDateFutureTypeActual);
         console.log('******* Trial Completion Date Anticipated Type Option Verification in Future *********');
         addTrial.selectAddTrialCompletionDateOption('1');
         addTrial.clickAddTrialReviewButton();
@@ -888,6 +911,68 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^The Trial Start Date can be in the past, present, or future$/, function (callback) {
+        console.log('******* Trial Start Date Verification Date in Past *********');
+        addTrial.clickAddTrialDateField('1');
+        addTrial.clickAddTrialDateFieldPreviousMonth('01');
+        addTrial.clickAddTrialReviewButton();
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialStartDate)).to.become('false');
+        console.log('******* Trial Start Date Verification Date Today *********');
+        addTrial.clickAddTrialDateField('1');
+        addTrial.clickAddTrialDateToday();
+        addTrial.clickAddTrialReviewButton();
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialStartDate)).to.become('false');
+        console.log('******* Trial Start Date Verification Date in Future *********');
+        addTrial.clickAddTrialDateField('1');
+        addTrial.clickAddTrialDateFieldNextMonth('01');
+        addTrial.clickAddTrialReviewButton();
+        expect(projectFunctions.verifyWarningMessage(errorMsgTrialStartDate)).to.become('false');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^The Completion Date is always the same as, or later than, the Primary Completion Date$/, function (callback) {
+        addTrial.clickAddTrialResetButton();
+        addTrial.clickAddTrialDateField('2');
+        addTrial.clickAddTrialDateToday();
+        console.log('******* Trial Completion Date Verification Date in Past as compare to Primary Completion Date *********');
+        addTrial.clickAddTrialDateField('3');
+        addTrial.clickAddTrialDateFieldPreviousMonth('01');
+        addTrial.clickAddTrialReviewButton();
+        expect(addTrial.addTrialCompletionDateErrorMessageWithTrialPrimaryCompletionDate.getText()).to.eventually.equal(completionDateErrorMessageWithTrialPrimaryCompletionDate);
+        console.log('******* Trial Completion Date Verification Date in Today as compare to Primary Completion Date *********');
+        addTrial.clickAddTrialDateField('3');
+        addTrial.clickAddTrialDateToday();
+        addTrial.clickAddTrialReviewButton();
+        expect(addTrial.addTrialCompletionDateErrorMessageWithTrialPrimaryCompletionDate.getText()).to.eventually.equal('');
+        console.log('******* Trial Completion Date Verification Date in later as compare to Primary Completion Date *********');
+        addTrial.clickAddTrialDateField('3');
+        addTrial.clickAddTrialDateFieldNextMonth('01');
+        addTrial.clickAddTrialReviewButton();
+        expect(addTrial.addTrialCompletionDateErrorMessageWithTrialPrimaryCompletionDate.getText()).to.eventually.equal('');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^The Primary Completion Date is always the same as, or later than, the Trial Start Date$/, function (callback) {
+        addTrial.clickAddTrialResetButton();
+        addTrial.clickAddTrialDateField('1');
+        addTrial.clickAddTrialDateToday();
+        console.log('******* Trial Primary Completion Date Verification Date in Past as compare to Trial Start Date *********');
+        addTrial.clickAddTrialDateField('2');
+        addTrial.clickAddTrialDateFieldPreviousMonth('01');
+        addTrial.clickAddTrialReviewButton();
+        expect(addTrial.addTrialPrimaryCompletionDateErrorMessageWithTrialStartDate.getText()).to.eventually.equal(primaryCompletionDateErrorMessageWithTrialStartDate);
+        console.log('******* Trial Primary Completion Date Verification Date in Today as compare to Trial Start Date *********');
+        addTrial.clickAddTrialDateField('2');
+        addTrial.clickAddTrialDateToday();
+        addTrial.clickAddTrialReviewButton();
+        expect(addTrial.addTrialPrimaryCompletionDateErrorMessageWithTrialStartDate.getText()).to.eventually.equal('');
+        console.log('******* Trial Primary Completion Date Verification Date in later as compare to Trial Start Date *********');
+        addTrial.clickAddTrialDateField('2');
+        addTrial.clickAddTrialDateFieldNextMonth('01');
+        addTrial.clickAddTrialReviewButton();
+        expect(addTrial.addTrialPrimaryCompletionDateErrorMessageWithTrialStartDate.getText()).to.eventually.equal('');
+        browser.sleep(25).then(callback);
+    });
 
 
 };
