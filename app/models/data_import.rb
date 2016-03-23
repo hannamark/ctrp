@@ -299,7 +299,7 @@ class DataImport
       psi = ParticipatingSiteInvestigator.new
       psi.person = ps.person;
       psi.investigator_type = "Principal Investigator"
-      psi.set_as_contact = true;
+      psi.set_as_contact = false;
       ps.participating_site_investigators << psi
 
       psi2 = ParticipatingSiteInvestigator.new
