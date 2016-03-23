@@ -61,7 +61,7 @@
                     $scope.searchParams.start = 1;
                 }
                 var isEmptySearch = true;
-                var ignoreKeys = ['rows', 'alias', 'start','wc_search'];
+                var ignoreKeys = ['rows', 'case_sensitive_search', 'start','highlight_query_text'];
 
                 _.keys($scope.searchParams).forEach(function (key) {
 
@@ -78,8 +78,6 @@
 
                 if(!isEmptySearch) {
                     $scope.searching = true;
-
-
                     CadsrService.searchCadsrs($scope.searchParams).then(function (data) {
                         if ($scope.showGrid && data.cadsr_markers) {
                             $scope.gridOptions.data = data.cadsr_markers;
@@ -98,16 +96,15 @@
                             });
                         }
                         $scope.$parent.orgSearchResults = data; //{orgs: [], total, }
-                        // console.log($scope.$parent);
 
                     }).catch(function (error) {
-                        console.log("error in retrieving orgs: " + JSON.stringify(error));
+                        console.log("error in retrieving caDSR records: " + JSON.stringify(error));
                     }).finally(function() {
                         console.log('search finished');
                         $scope.searching = false;
                     });
                 }
-            }; //searchOrgs
+            }; //search_caDSRs
 
 
             /* resetSearch */

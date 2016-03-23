@@ -444,13 +444,13 @@ CadsrMarker.find_or_create_by(id:724,
                               name: 'MIR382 (MIRN382, name:  microRNA 382, name:  hsa-mir-382)',
                               meaning: 'MIR382 gene',
                               description: 'No Value Exists',
-                              name: 3359747,
+                              cadsr_id: 3359747,
                               cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1537903', pv_name: 'MIR382')
 
 CadsrMarker.find_or_create_by(id:374,
                               name: 'CD33 (SIGLEC3, name:  CD33 antigen (gp67), name:  sialic acid binding Ig-like lectin 3, name:  FLJ00391, name:  SIGLEC-3, name:  p67)',
                               meaning: 'CD33 gene',
-                              name: 'No Value Exists',
+                              description: 'No Value Exists',
                               cadsr_id: 3279301,
                               cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1439292', pv_name: 'CD33')
 
