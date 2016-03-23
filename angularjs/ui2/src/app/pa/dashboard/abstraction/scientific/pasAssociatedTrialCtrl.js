@@ -26,6 +26,8 @@
             vm.lookupTrial = lookupTrial;
             vm.showTrialLookupForm = showTrialLookupForm;
             vm.closeLookupForm = closeLookupForm;
+            vm.updateTrialAssociations = updateTrialAssociations;
+            vm.resetAssociations = _getTrialDetailCopy
 
             activate();
             function activate() {
@@ -86,15 +88,53 @@
                 vm.showLookupForm = false;
             }
 
+            /**
+             * Add the trial to the trial associations array
+             * @param  {Object}  trialLookUpResult [description]
+             * @return {Void}                   [description]
+             */
             function associateThisTrial(trialLookUpResult) {
-                if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1 ||
-                    trialLookUpResult.trial_identifier === vm.trialDetailObj.nci_id || trialLookUpResult.trial_identifier === vm.trialDetailObj.nct_trial_id) {
-                        vm.associationErrorMsg = 'Error: Trial association can not be duplicated or to itself'
+                if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
+                        vm.associationErrorMsg = 'Error: Trial association already exists'
                     // no duplicate
                     return;
                 }
                 vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
             } // associateThisTrial
+
+            /**
+             * Update associated trials at the backend
+             * @return {Void}
+             */
+            function updateTrialAssociations() {
+                vm.trialDetailObj.associated_trials_attributes = vm.trialDetailObj.associated_trials;
+                var outerTrial = {};
+                outerTrial.new = false;
+                outerTrial.id = vm.trialDetailObj.id;
+                outerTrial.trial = vm.trialDetailObj;
+                outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+
+                PATrialService.upsertTrial(outerTrial).then(function(res) {
+                    if (res.server_response.status === 200) {
+                        vm.trialDetailObj = res;
+                        vm.trialDetailObj.lock_version = res.lock_version;
+                        PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                        $scope.$emit('updatedInChildScope', {});
+
+                        toastr.clear();
+                        toastr.success('Trial Associations have been updated', 'Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                        _getTrialDetailCopy();
+                    }
+                }).catch(function(err) {
+                    console.error('trial association error: ', err);
+                }).finally(function() {
+                    console.info('trial associations have been updated');
+                });
+
+            }
 
 
         }
