@@ -87,7 +87,7 @@ class CadsrMarkersController < ApplicationController
       end
     end
 
-    
+
     if(!pv_name.nil? && pv_name !="" && !@cadsr_markers.nil? && @cadsr_markers.length > 0)
       @cadsr_markers = @cadsr_markers.matches_wc('pv_name', pv_name,case_sensitive_search)
     end
