@@ -291,23 +291,23 @@ class DataImport
       ps.site_rec_status_wrappers <<  srs
       #Organization and Person
       ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
-      ps.person = Person.all[rand(0..(Person.all.size-1))]
-      ps.contact_name = ps.person.fname + " " + ps.person.lname;
-      ps.contact_type = "PI";
-      ps.contact_email = ps.person.email;
-      ps.contact_phone = ps.person.phone;
-      psi = ParticipatingSiteInvestigator.new
-      psi.person = ps.person;
-      psi.investigator_type = "Principal Investigator"
-      psi.set_as_contact = false;
-      ps.participating_site_investigators << psi
+      #ps.person = Person.all[rand(0..(Person.all.size-1))]
+      #ps.contact_name = ps.person.fname + " " + ps.person.lname;
+      #ps.contact_type = "PI";
+      #ps.contact_email = ps.person.email;
+      #ps.contact_phone = ps.person.phone;
+      #psi = ParticipatingSiteInvestigator.new
+      #psi.person = ps.person;
+      #psi.investigator_type = "Principal Investigator"
+      #psi.set_as_contact = false;
+      #ps.participating_site_investigators << psi
 
-      psi2 = ParticipatingSiteInvestigator.new
-      psi2.person = Person.all[rand(0..(Person.all.size-1))]
-      psi2.investigator_type = "Principal Investigator"
-      psi2.set_as_contact = false
+      #psi2 = ParticipatingSiteInvestigator.new
+      #psi2.person = Person.all[rand(0..(Person.all.size-1))]
+      #psi2.investigator_type = "Principal Investigator"
+      #psi2.set_as_contact = false
 
-      ps.participating_site_investigators << psi2
+      #ps.participating_site_investigators << psi2
       trial.participating_sites << ps
       trial.save!
     end
