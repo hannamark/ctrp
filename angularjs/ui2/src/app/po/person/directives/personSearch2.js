@@ -33,6 +33,7 @@
         } //linkFn
 
         function personSearch2DirectiveController($scope, UserService, DateService, OrgService, $state, _) {
+
             var vm = this;
             vm.name = 'Tony';
             vm.searchParams = PersonService.getInitialPersonSearchParams();

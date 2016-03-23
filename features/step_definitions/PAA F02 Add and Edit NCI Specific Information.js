@@ -71,6 +71,7 @@ module.exports = function() {
     var leadProtocolIDG = 'CTRP_01_1790';
     var leadProtocolIDH = 'CTRP_01_1792';
     var leadProtocolIDI = 'CTRP_01_1794';
+    var leadProtocolIDJ = 'CTRP_01_1780';
     var searchResultCountText = 'Trial Search Results';
     var adminDataNCISpecific = 'NCI specific information';
     var nciSpecificStudySourceVal = '';
@@ -80,6 +81,7 @@ module.exports = function() {
     var orgSearchNameB = 'Boston University School Of Public Health';
     var orgSearchNameC = 'National Cancer Institute';
     var orgSearchNameD = 'Wake Forest University at Clemmons';
+    var orgSearchNameE = 'NCI - Center for Cancer Research';
     var nciSpecificFundingSourceValA = '';
     var programCode = '7771234';
     var programCdeEdit = '8881234';
@@ -111,6 +113,7 @@ module.exports = function() {
     var glblArg = '';
     var getOptionA = '';
     var getOptionB = '';
+    var conditionCrntItrn = '';
 
     /*
      Scenario: #1 I can view and edit the value for Study Source
@@ -1602,30 +1605,206 @@ module.exports = function() {
      Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not greyed out and not editible
 
      Examples:
-
-     |<Conditions>|<Field>|
-     |Trial is sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name = "National Cancer Institute"|
+     |Conditions|Field|
+     |Trial is sponsored by "National Cancer Institute"|trials.sponsor_id Organizations.name = "National Cancer Institute"|
      |Trial Lead Organization is "NCI - Center for Cancer Research"|trials.lead_org_id Organizations.name = "NCI - Center for Cancer Research"|
      |Trial processing status is not "Verification Pending"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Verification Pending"|
-     |Trial processing status is not "Abstracted"| processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted"|
-     |Trial processing status is not "No Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = No Response"|
-     |Trial processing status is not "Abstracted, Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted, Response"|
-     |Trial Overall Status is �Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Complete"|
-     |Trial Overall Status is �Administratively Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
-     |Trial Overall Status is �Terminated�| trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
+     |Trial processing status is not "Abstracted"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted"|
+     |Trial processing status is not "Abstraction Verified Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstraction Verified Response"|
+     |Trial processing status is not "Abstraction Verified No Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstraction Verified No Response"|
+     |Trial Overall Status is "Complete"|trial_status_wrappers.trial_status_id trial_statuses.name = "Complete"|
+     |Trial Overall Status is "Administratively Complete"|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
+     |Trial Overall Status is "Terminated"|trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
      |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
      */
 
+    this.Given(/^I am at the NCI Specific Information screen to abstract$/, function (callback) {
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        browser.sleep(25).then(callback);
+    });
+
     this.When(/^the following (.*) and (.*) exist$/, function (Conditions, Field, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var conditionReplc = Conditions.toString().replace(/"/g, "\n", -1);
+        var conditionSplt = conditionReplc.split("\n");
+        conditionCrntItrn = conditionSplt[1];
+        console.log('Current condition:['+conditionCrntItrn+']');
+        if (conditionCrntItrn === "National Cancer Institute"){
+            searchTrialToAbstract(leadProtocolID);
+            sponsorLeadOrg();
+        }
+        if (conditionCrntItrn === "NCI - Center for Cancer Research"){
+            searchTrialToAbstract(leadProtocolID);
+            sponsorLeadOrg();
+        }
+        if (conditionCrntItrn === "Verification Pending"){
+            searchTrialToAbstract(leadProtocolID);
+            helper.wait_for(3000);
+        }
+        if (conditionCrntItrn === "Abstracted"){
+            searchTrialToAbstract(leadProtocolID);
+            helper.wait_for(3000);
+        }
+        if (conditionCrntItrn === "Abstraction Verified Response"){
+            searchTrialToAbstract(leadProtocolIDB);
+            helper.wait_for(3000);
+            var getArg1ProcessingStatus = 'Processing Status: '+conditionCrntItrn;
+            console.log('Expected Processing Status Value: '+getArg1ProcessingStatus);
+            nciSpecific.trialOverviewProcessingStatus.getText().then(function(value){
+                if(value === getArg1ProcessingStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyProcessingStatus(getArg1ProcessingStatus);
+                };
+            });
+        }
+        if (conditionCrntItrn === "Abstraction Verified No Response"){
+            searchTrialToAbstract(leadProtocolID);
+            helper.wait_for(3000);
+            var getArg1ProcessingStatus = 'Processing Status: '+conditionCrntItrn;
+            console.log('Expected Processing Status Value: '+getArg1ProcessingStatus);
+            nciSpecific.trialOverviewProcessingStatus.getText().then(function(value){
+                if(value === getArg1ProcessingStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyProcessingStatus(getArg1ProcessingStatus);
+                };
+            });
+        }
+        if (conditionCrntItrn === "Complete"){
+            searchTrialToAbstract(leadProtocolIDD);
+            helper.wait_for(3000);
+            var getTrialStatus = 'Current Trial Status: '+conditionCrntItrn;
+            nciSpecific.trialOverviewCurrentTrialStatus.getText().then(function(value){
+                if(value === getTrialStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyCurrentTrialStatus(getTrialStatus);
+                };
+            });
+        }
+        if (conditionCrntItrn === "Administratively Complete"){
+            searchTrialToAbstract(leadProtocolIDJ);
+            helper.wait_for(3000);
+            var getTrialStatus = 'Current Trial Status: '+conditionCrntItrn;
+            nciSpecific.trialOverviewCurrentTrialStatus.getText().then(function(value){
+                if(value === getTrialStatus){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyCurrentTrialStatus(getTrialStatus);
+                };
+            });
+        }
+        if (conditionCrntItrn === "Terminated"){
+            searchTrialToAbstract(leadProtocolID);
+            helper.wait_for(3000);
+        }
+        if (conditionCrntItrn === "Interventional"){
+            searchTrialToAbstract(leadProtocolIDJ);
+            helper.wait_for(3000);
+            var getResearchCategory = 'Clinical Research Category: '+conditionCrntItrn;
+            nciSpecific.trialOverviewResearchCategory.getText().then(function(value){
+                if(value === getResearchCategory){
+                    console.log('Verifying: '+value);
+                    nciSpecific.verifyResearchCategory(getResearchCategory);
+                };
+            });
+        }
+        nciSpecific.clickAdminDataNCISpecificInformation();
+        helper.wait_for(3000);
+        nciSpecific.nciSpecificSendCTDotGovLbl.isPresent().then(function(booln){
+            if (booln) {
+                nciSpecific.nciSpecificSendTrialRadio.get(1).isSelected().then(function (condition2) {
+                    if (condition2 === true) {
+                        glblArg = 'Yes';
+                    }
+                });
+                nciSpecific.nciSpecificSendTrialRadio.get(0).isSelected().then(function (condition1) {
+                    if (condition1 === true) {
+                        glblArg = 'No';
+                    }
+                });
+            }
+        });
+        function searchTrialToAbstract(searchByID){
+            pageSearchTrail.setSearchTrialProtocolID(searchByID);
+            pageSearchTrail.clickSearchTrialSearchButton();
+            commonFunctions.verifyPASearchResultCount(searchResultCountText);
+            commonFunctions.clickGridFirstLink(1,1);
+            commonFunctions.clickLinkText(searchByID);
+            commonFunctions.adminCheckOut();
+            nciSpecific.clickAdminDataNCISpecificInformation();
+        };
+        function sponsorLeadOrg(){
+            trialDetails.clickAdminDataGeneralTrial();
+            helper.wait_for(3000);
+            trialDetails.clickSearchOrgButtonByIndex('1');
+            searchOrg.setOrgName(orgSearchNameC);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameC, "Verifying the Sponsor Organization Name");
+            trialDetails.clickAdminDataGeneralTrial();
+            trialDetails.clickSearchOrgButtonByIndex('0');
+            searchOrg.setOrgName(orgSearchNameE);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameE, "Verifying the Lead Organization Name");
+        };
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the label and element for �Send Trial Information to ClinicalTrials\.gov\?� will not greyed out and not editable$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
+        function selectYesOrNoAndVerifySelection (){
+            //helper.verifyElementPresents(nciSpecific.nciSpecificSendCTDotGovLbl, true);
+            var arg3 = 'Send Trial Information to ClinicalTrials.gov?';
+            //Select send to trial CTDotGov
+            if (glblArg === 'No'){
+                nciSpecific.selectSendTrial('1');
+            } else if(glblArg === 'Yes'){
+                nciSpecific.selectSendTrial('0');
+            };
+            //Save
+            nciSpecific.clickSave();
+            console.log('Current Selection: ['+glblArg+']');
+            if (glblArg === 'Yes'){
+                nciSpecific.verifySendToTrialCTDotGov('0', true);
+            } else if(glblArg === 'No'){
+                nciSpecific.verifySendToTrialCTDotGov('1', true);
+            };
+        };
+        if (conditionCrntItrn === "National Cancer Institute"){
+            selectYesOrNoAndVerifySelection();
+        }
+        if (conditionCrntItrn === "NCI - Center for Cancer Research"){
+            selectYesOrNoAndVerifySelection();
+        }
+        if (conditionCrntItrn === "Verification Pending"){
 
+        }
+        if (conditionCrntItrn === "Abstracted"){
+
+        }
+        if (conditionCrntItrn === "Abstraction Verified Response"){
+            helper.verifyElementPresents(nciSpecific.nciSpecificSendCTDotGovLbl, false);
+        }
+        if (conditionCrntItrn === "Abstraction Verified No Response"){
+            helper.verifyElementPresents(nciSpecific.nciSpecificSendCTDotGovLbl, true);
+        }
+        if (conditionCrntItrn === "Complete"){
+            helper.verifyElementPresents(nciSpecific.nciSpecificSendCTDotGovLbl, false);
+        }
+        if (conditionCrntItrn === "Administratively Complete"){
+            helper.verifyElementPresents(nciSpecific.nciSpecificSendCTDotGovLbl, false);
+        }
+        if (conditionCrntItrn === "Terminated"){
+
+        }
+        if (conditionCrntItrn === "Interventional"){
+            helper.verifyElementPresents(nciSpecific.nciSpecificSendCTDotGovLbl, false);
+        }
+        browser.sleep(250).then(callback);
+    });
 
     /*
      Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�

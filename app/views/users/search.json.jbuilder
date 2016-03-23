@@ -1,6 +1,6 @@
 json.users do
   json.array!(@users) do |user|
-    json.extract! user, :id, :username,:first_name, :last_name, :email, :approved
+    json.extract! user, :id, :username,:first_name, :last_name, :email, :approved, :user_status
     json.organization_name user.organization.nil? ? nil : user.organization.name
     json.organization_id  user.organization.nil? ? nil : user.organization.id
    # json.aff_orgs family.organizations.first(5) do |org|

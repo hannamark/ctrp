@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316174748) do
+ActiveRecord::Schema.define(version: 20160321201358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,18 +99,17 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   end
 
   create_table "arms_groups", force: :cascade do |t|
-    t.string   "label",           limit: 255
-    t.string   "type",            limit: 255
+    t.string   "label",             limit: 255
     t.text     "description"
-    t.integer  "intervention_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
-    t.string   "uuid",            limit: 255
-    t.integer  "lock_version",                default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
+    t.string   "arms_groups_type"
+    t.string   "intervention_text"
   end
 
-  add_index "arms_groups", ["intervention_id"], name: "index_arms_groups_on_intervention_id", using: :btree
   add_index "arms_groups", ["trial_id"], name: "index_arms_groups_on_trial_id", using: :btree
 
   create_table "assay_types", force: :cascade do |t|
@@ -175,16 +174,20 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   create_table "cadsr_marker_statuses", force: :cascade do |t|
     t.string   "code"
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "cadsr_marker_synonyms", force: :cascade do |t|
     t.string   "alternate_name"
     t.integer  "cadsr_marker_id"
     t.integer  "cadsr_marker_status_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
   end
 
   add_index "cadsr_marker_synonyms", ["cadsr_marker_id"], name: "index_cadsr_marker_synonyms_on_cadsr_marker_id", using: :btree
@@ -198,8 +201,10 @@ ActiveRecord::Schema.define(version: 20160316174748) do
     t.string   "nv_term_identifier",     limit: 200
     t.string   "pv_name",                limit: 2000
     t.integer  "cadsr_marker_status_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                        default: 0
   end
 
   add_index "cadsr_markers", ["cadsr_marker_status_id"], name: "index_cadsr_markers_on_cadsr_marker_status_id", using: :btree
@@ -480,14 +485,59 @@ ActiveRecord::Schema.define(version: 20160316174748) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "marker_assay_type_associations", force: :cascade do |t|
+    t.integer  "marker_id"
+    t.integer  "assay_type_id"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "uuid",          limit: 255
+    t.integer  "lock_version",              default: 0
+  end
+
+  add_index "marker_assay_type_associations", ["assay_type_id"], name: "index_marker_assay_type_associations_on_assay_type_id", using: :btree
+  add_index "marker_assay_type_associations", ["marker_id"], name: "index_marker_assay_type_associations_on_marker_id", using: :btree
+
+  create_table "marker_biomarker_purpose_associations", force: :cascade do |t|
+    t.integer  "marker_id"
+    t.integer  "biomarker_purpose_id"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
+  end
+
+  add_index "marker_biomarker_purpose_associations", ["biomarker_purpose_id"], name: "index_on_biomarker_purpose", using: :btree
+  add_index "marker_biomarker_purpose_associations", ["marker_id"], name: "index_marker_biomarker_purpose_associations_on_marker_id", using: :btree
+
+  create_table "marker_eval_type_associations", force: :cascade do |t|
+    t.integer  "marker_id"
+    t.integer  "evaluation_type_id"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "uuid",               limit: 255
+    t.integer  "lock_version",                   default: 0
+  end
+
+  add_index "marker_eval_type_associations", ["evaluation_type_id"], name: "index_marker_eval_type_associations_on_evaluation_type_id", using: :btree
+  add_index "marker_eval_type_associations", ["marker_id"], name: "index_marker_eval_type_associations_on_marker_id", using: :btree
+
+  create_table "marker_spec_type_associations", force: :cascade do |t|
+    t.integer  "marker_id"
+    t.integer  "specimen_type_id"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
+  end
+
+  add_index "marker_spec_type_associations", ["marker_id"], name: "index_marker_spec_type_associations_on_marker_id", using: :btree
+  add_index "marker_spec_type_associations", ["specimen_type_id"], name: "index_marker_spec_type_associations_on_specimen_type_id", using: :btree
+
   create_table "markers", force: :cascade do |t|
     t.string   "name",                  limit: 255
     t.string   "record_status",         limit: 255
-    t.integer  "evaluation_type_id"
-    t.integer  "assay_type_id"
     t.integer  "biomarker_use_id"
     t.integer  "biomarker_purpose_id"
-    t.integer  "specimen_type_id"
     t.integer  "trial_id"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
@@ -497,13 +547,12 @@ ActiveRecord::Schema.define(version: 20160316174748) do
     t.string   "assay_type_other",      limit: 255
     t.string   "specimen_type_other",   limit: 255
     t.string   "protocol_marker_name",  limit: 255
+    t.integer  "cadsr_marker_id"
   end
 
-  add_index "markers", ["assay_type_id"], name: "index_markers_on_assay_type_id", using: :btree
   add_index "markers", ["biomarker_purpose_id"], name: "index_markers_on_biomarker_purpose_id", using: :btree
   add_index "markers", ["biomarker_use_id"], name: "index_markers_on_biomarker_use_id", using: :btree
-  add_index "markers", ["evaluation_type_id"], name: "index_markers_on_evaluation_type_id", using: :btree
-  add_index "markers", ["specimen_type_id"], name: "index_markers_on_specimen_type_id", using: :btree
+  add_index "markers", ["cadsr_marker_id"], name: "index_markers_on_cadsr_marker_id", using: :btree
   add_index "markers", ["trial_id"], name: "index_markers_on_trial_id", using: :btree
 
   create_table "maskings", force: :cascade do |t|
@@ -549,6 +598,57 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   end
 
   add_index "name_aliases", ["organization_id"], name: "index_name_aliases_on_organization_id", using: :btree
+
+  create_table "ncit_disease_codes", force: :cascade do |t|
+    t.string   "disease_code",      limit: 255
+    t.string   "nt_term_id",        limit: 255
+    t.string   "preferred_name",    limit: 1000
+    t.string   "menu_display_name", limit: 1000
+    t.integer  "ncit_status_id"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                   default: 0
+  end
+
+  add_index "ncit_disease_codes", ["ncit_status_id"], name: "index_ncit_disease_codes_on_ncit_status_id", using: :btree
+
+  create_table "ncit_disease_parents", force: :cascade do |t|
+    t.string   "parent_disease_code", limit: 255
+    t.integer  "ncit_status_id"
+    t.integer  "child_id"
+    t.integer  "parent_id"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.string   "uuid",                limit: 255
+    t.integer  "lock_version",                    default: 0
+  end
+
+  add_index "ncit_disease_parents", ["child_id"], name: "index_ncit_disease_parents_on_child_id", using: :btree
+  add_index "ncit_disease_parents", ["ncit_status_id"], name: "index_ncit_disease_parents_on_ncit_status_id", using: :btree
+  add_index "ncit_disease_parents", ["parent_id"], name: "index_ncit_disease_parents_on_parent_id", using: :btree
+
+  create_table "ncit_disease_synonyms", force: :cascade do |t|
+    t.string   "alternate_name",       limit: 1000
+    t.integer  "ncit_status_id"
+    t.integer  "ncit_disease_code_id"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                      default: 0
+  end
+
+  add_index "ncit_disease_synonyms", ["ncit_disease_code_id"], name: "index_ncit_disease_synonyms_on_ncit_disease_code_id", using: :btree
+  add_index "ncit_disease_synonyms", ["ncit_status_id"], name: "index_ncit_disease_synonyms_on_ncit_status_id", using: :btree
+
+  create_table "ncit_statuses", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
 
   create_table "onhold_reasons", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -1069,8 +1169,8 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   create_table "trial_ownerships", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
   end
@@ -1179,7 +1279,6 @@ ActiveRecord::Schema.define(version: 20160316174748) do
     t.integer  "min_age"
     t.integer  "max_age"
     t.integer  "assigned_to_id"
-    t.integer  "owner_id"
     t.integer  "board_approval_status_id"
     t.integer  "intervention_model_id"
     t.integer  "masking_id"
@@ -1224,7 +1323,6 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   add_index "trials", ["masking_id"], name: "index_trials_on_masking_id", using: :btree
   add_index "trials", ["max_age_unit_id"], name: "index_trials_on_max_age_unit_id", using: :btree
   add_index "trials", ["min_age_unit_id"], name: "index_trials_on_min_age_unit_id", using: :btree
-  add_index "trials", ["owner_id"], name: "index_trials_on_owner_id", using: :btree
   add_index "trials", ["phase_id"], name: "index_trials_on_phase_id", using: :btree
   add_index "trials", ["pi_id"], name: "index_trials_on_pi_id", using: :btree
   add_index "trials", ["primary_purpose_id"], name: "index_trials_on_primary_purpose_id", using: :btree
@@ -1319,7 +1417,6 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   add_foreign_key "alternate_titles", "trials"
   add_foreign_key "anatomic_site_wrappers", "anatomic_sites"
   add_foreign_key "anatomic_site_wrappers", "trials"
-  add_foreign_key "arms_groups", "interventions"
   add_foreign_key "arms_groups", "trials"
   add_foreign_key "associated_trials", "identifier_types"
   add_foreign_key "associated_trials", "trials"
@@ -1344,16 +1441,24 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   add_foreign_key "interventions", "intervention_types"
   add_foreign_key "interventions", "trials"
   add_foreign_key "links", "trials"
-  add_foreign_key "markers", "assay_types"
+  add_foreign_key "marker_assay_type_associations", "assay_types"
+  add_foreign_key "marker_assay_type_associations", "markers"
+  add_foreign_key "marker_biomarker_purpose_associations", "biomarker_purposes"
+  add_foreign_key "marker_biomarker_purpose_associations", "markers"
   add_foreign_key "markers", "biomarker_purposes"
   add_foreign_key "markers", "biomarker_uses"
-  add_foreign_key "markers", "evaluation_types"
-  add_foreign_key "markers", "specimen_types"
+  add_foreign_key "markers", "cadsr_markers"
   add_foreign_key "markers", "trials"
   add_foreign_key "milestone_wrappers", "milestones"
   add_foreign_key "milestone_wrappers", "submissions"
   add_foreign_key "milestone_wrappers", "trials"
   add_foreign_key "name_aliases", "organizations"
+  add_foreign_key "ncit_disease_codes", "ncit_statuses"
+  add_foreign_key "ncit_disease_parents", "ncit_disease_codes", column: "child_id"
+  add_foreign_key "ncit_disease_parents", "ncit_disease_codes", column: "parent_id"
+  add_foreign_key "ncit_disease_parents", "ncit_statuses"
+  add_foreign_key "ncit_disease_synonyms", "ncit_disease_codes"
+  add_foreign_key "ncit_disease_synonyms", "ncit_statuses"
   add_foreign_key "onholds", "onhold_reasons"
   add_foreign_key "onholds", "trials"
   add_foreign_key "organizations", "source_contexts"
@@ -1425,7 +1530,6 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   add_foreign_key "trials", "study_sources"
   add_foreign_key "trials", "time_perspectives"
   add_foreign_key "trials", "users", column: "assigned_to_id"
-  add_foreign_key "trials", "users", column: "owner_id"
   add_foreign_key "users", "user_statuses"
   create_sequence "accrual_disease_terms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "age_units_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1468,11 +1572,19 @@ ActiveRecord::Schema.define(version: 20160316174748) do
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "marker_assay_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "marker_biomarker_purpose_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "marker_eval_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "marker_spec_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "maskings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestones_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "name_aliases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_disease_codes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_disease_parents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_disease_synonyms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onhold_reasons_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onholds_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "organizations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

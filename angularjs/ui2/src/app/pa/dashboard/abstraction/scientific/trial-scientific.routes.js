@@ -132,6 +132,22 @@
                     label: 'Eligibility Criteria'
                 }
             })
+            .state('main.pa.trialOverview.associatedTrials', {
+                url: '/associated-trials',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_associated_trials.html',
+                controller: 'pasAssociatedTrialCtrl as assoTrialsView',
+                section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    identifierTypes: function(PATrialService) {
+                        return PATrialService.getTrialIdentifierTypes();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Associated Trials'
+                }
+            })
             .state('main.pa.trialOverview.armsGroups', {
                 url: '/arms-groups',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_arms_groups.html',
@@ -147,6 +163,40 @@
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Arms Groups'
+                }
+            })
+
+            .state('main.pa.trialOverview.bioMarkers', {
+                url: '/bio-markers',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_trial_bio_markers.html',
+                controller: 'pasBioMarkersCtrl as markersView',
+                section: 'pa',
+                resolve: {
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    assayTypes: function(TrialService) {
+                        return TrialService.getAssayTypes();
+                    },
+                    evaluationTypes: function(TrialService) {
+                        return TrialService.getEvaluationTypes();
+                    },
+                    specimenTypes: function(TrialService) {
+                        return TrialService.getSpecimenTypes();
+                    },
+                    biomarkerUses: function(TrialService) {
+                        return TrialService.getBiomarkerUses();
+                    },
+                    biomarkerPurposes: function(TrialService) {
+                        return TrialService.getBiomarkerPurposes();
+                    }
+
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Bio Markers'
                 }
             });
     }

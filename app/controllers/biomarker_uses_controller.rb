@@ -4,7 +4,7 @@ class BiomarkerUsesController < ApplicationController
   # GET /biomarker_uses
   # GET /biomarker_uses.json
   def index
-    @biomarker_uses = BioMarkerUse.all
+    @biomarker_uses = BiomarkerUse.all.order(:id)
   end
 
   # GET /biomarker_uses/1
@@ -14,7 +14,7 @@ class BiomarkerUsesController < ApplicationController
 
   # GET /biomarker_uses/new
   def new
-    @biomarker_use = BioMarkerUse.new
+    @biomarker_use = BiomarkerUse.new
   end
 
   # GET /biomarker_uses/1/edit
@@ -24,7 +24,7 @@ class BiomarkerUsesController < ApplicationController
   # POST /biomarker_uses
   # POST /biomarker_uses.json
   def create
-    @biomarker_use = BioMarkerUse.new(biomarker_use_params)
+    @biomarker_use = BiomarkerUse.new(biomarker_use_params)
 
     respond_to do |format|
       if @biomarker_use.save
@@ -64,7 +64,7 @@ class BiomarkerUsesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_biomarker_use
-      @biomarker_use = BioMarkerUse.find(params[:id])
+      @biomarker_use = BiomarkerUse.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

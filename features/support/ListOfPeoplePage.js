@@ -26,6 +26,8 @@ ListOfPeoplePage = function () {
     this.personLastUpdatedEndDate = element(by.model('searchParams.endDate'));
     this.personSearchButton = element(by.css('#submission_btn'));// element(by.css('button[ng-click="searchPeople()"]'));
     this.personClearButton = element(by.css('button[ng-click="resetSearch()"]'));
+    this.trialPersonSearchSrcContext = element(by.binding('sourceContextArr[0].name'));
+    this.trialPersonSearchSrcStatus = element(by.binding('sourceStatusArr[0].name'));
 
     var listPerson = new helper();
 

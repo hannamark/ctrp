@@ -10,7 +10,7 @@ class TrialsController < ApplicationController
   end
 
   # GET /trials/1
-  # GET /trials/1.json
+  # GET /trials/1.jsonzf
   def show
     @trial.current_user = @current_user
   end
@@ -78,6 +78,25 @@ class TrialsController < ApplicationController
     @genders = Gender.all
     respond_to do |format|
       format.json { render :json => @genders }
+    end
+  end
+
+  def search_trial_with_nci_id
+
+    if params.has_key?(:nci_id)
+      @search_result = Trial.with_nci_id(params[:nci_id].upcase).first
+      @search_result = @search_result.nil? ? {error_msg: 'Trial is not found'} : @search_result
+    else
+      # missing nci_id
+      @search_result = {error_msg: 'Trial is not found'}
+    end
+
+  end
+
+  def trial_identifier_types
+    @trial_identifier_types = IdentifierType.all
+    respond_to do |format|
+      format.json { render :json => @trial_identifier_types }
     end
   end
 
@@ -443,6 +462,41 @@ class TrialsController < ApplicationController
     end
   end
 
+  def search_clinical_trials_gov_ignore_exists
+    @search_result = {}
+
+    # existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id) params.has_key?(:ignore_exists)
+    # if existing_nct_ids.length > 0
+    #   @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
+    #   return
+    # end
+
+    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+    url = url.sub('NCT********', params[:nct_id])
+    begin
+      xml = Nokogiri::XML(open(url))
+    rescue OpenURI::HTTPError
+      @search_result[:error_msg] = 'Trial is not found'
+    else
+      @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
+      @search_result[:official_title] = xml.xpath('//official_title').text
+      # @search_result[:status] = xml.xpath('//overall_status').text
+      # @search_result[:condition] = ''
+      # xml.xpath('//condition').each_with_index do |condition, i|
+      #   @search_result[:condition] += ', ' if i > 0
+      #   @search_result[:condition] += condition
+      # end
+      # @search_result[:intervention] = ''
+      # xml.xpath('//intervention').each_with_index do |intervention, i|
+      #   @search_result[:intervention] += ', ' if i > 0
+      #   @search_result[:intervention] += intervention.xpath('intervention_type').text
+      #   @search_result[:intervention] += ': '
+      #   @search_result[:intervention] += intervention.xpath('intervention_name').text
+      # end
+
+    end
+  end
+
   def search_clinical_trials_gov
     @search_result = {}
 
@@ -519,7 +573,7 @@ class TrialsController < ApplicationController
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                  arms_groups_attributes: [:id, :label, :type, :description, :intervention_id, :trial_id, :_destroy],
+                                  arms_groups_attributes: [:id, :label, :arms_groups_type, :description, :intervention_text, :trial_id, :_destroy],
                                   central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
                                   trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                   collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],
@@ -529,12 +583,19 @@ class TrialsController < ApplicationController
                                   ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
+                                  associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
                                   other_criteria_attributes: [:id, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
-                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy])
+                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
+                                  markers_attributes: [:id,:name,:protocol_marker_name,:biomarker_use_id,:evaluation_type_other,:assay_type_other,:_destroy,:record_status,
+                                                       :specimen_type_other,:cadsr_marker_id,
+                                                       marker_eval_type_associations_attributes:[:id,:evaluation_type_id,:_destroy],
+                                                       marker_assay_type_associations_attributes:[:id,:assay_type_id,:_destroy],
+                                                       marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
+                                                       marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]])
   end
 
   # Convert status code to name in validation messages

@@ -87,8 +87,8 @@ When I click save
 Then the Markers list will be displayed
  
 
-      |Name                |
-      |Evaluation Type                   |
+      |Name|
+      |Evaluation Type|
       |Biomarker Use                    |
       |Biomarker Purpose  |
       |Specimen Type                   |

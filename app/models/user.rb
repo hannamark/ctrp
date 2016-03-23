@@ -71,6 +71,21 @@ class  User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
+  scope :matches, -> (column, value) { where("users.#{column} = ?", "#{value}") }
+
+  scope :matches_wc, -> (column, value) {
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      where("users.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      where("users.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      where("users.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      where("users.#{column} ilike ?", "#{value}")
+    end
+  }
+
   attr_accessor :password
 
   def to_param
