@@ -14,7 +14,6 @@
             var vm = this;
             vm.identifierTypes = identifierTypes;
             vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
-            vm.foundTrialObj = _initFoundTrialObj();
             vm.trialDetailObj = {};
             vm.trialDetailObj.associated_trials = [];
             vm.lookupBtnDisabled = false;
@@ -32,6 +31,7 @@
             activate();
             function activate() {
                 _getTrialDetailCopy();
+                vm.foundTrialObj = _initFoundTrialObj();
             }
 
             function lookupTrial() {
@@ -42,7 +42,8 @@
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
                     console.info('res in looking up trial', res);
-                    vm.foundTrialObj.trial_id = res.id || null;
+                    // vm.foundTrialObj.trial_id = res.id || null;
+                    vm.foundTrialObj.id = res.id;
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
                     vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
@@ -69,7 +70,7 @@
                 return {
                     trial_identifier: '',
                     identifier_type_id: '',
-                    trial_id: '',
+                    trial_id: vm.trialDetailObj.id, // parent trial id, associated trials are its children
                     official_title: '',
                     _destroy: false
                 };
@@ -77,7 +78,6 @@
 
             function _getTrialDetailCopy() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
-                console.info('trialDetailObj.associated_trials: ', vm.trialDetailObj.associated_trials);
             }
 
             function showTrialLookupForm() {
@@ -107,7 +107,8 @@
              * @return {Void}
              */
             function updateTrialAssociations() {
-                vm.trialDetailObj.associated_trials_attributes = vm.trialDetailObj.associated_trials;
+                vm.trialDetailObj.associated_trials_attributes = angular.copy(vm.trialDetailObj.associated_trials);
+
                 var curTrialIdentifierTypeId = null; // use the first one that is not null
                 var curTrialIdentifier = null;
                 if (!!vm.trialDetailObj.nci_id) {
@@ -119,9 +120,10 @@
                 }
 
                 _.each(vm.trialDetailObj.associated_trials, function(trial) {
-                    // create the trial association mirror
+                    // create the trial association mirror (association is both ways) using the current trial
+                    // under abstraction
                     var associatedTrialB = {
-                        trial_id: trial.trial_id,
+                        trial_id: trial.id, // the parent trial id for the association (has-many)
                         trial_identifier: curTrialIdentifier,
                         identifier_type_id: curTrialIdentifierTypeId,
                         official_title: vm.trialDetailObj.official_title
@@ -129,6 +131,9 @@
                     vm.trialDetailObj.associated_trials_attributes.push(associatedTrialB);
                 });
 
+                console.info('vm.trialDetailObj.associated_trials_attributes: ', vm.trialDetailObj.associated_trials_attributes);
+
+                /*
                 var outerTrial = {};
                 outerTrial.new = false;
                 outerTrial.id = vm.trialDetailObj.id;
@@ -154,6 +159,7 @@
                 }).finally(function() {
                     console.info('trial associations have been updated');
                 });
+                */
 
             }
 
