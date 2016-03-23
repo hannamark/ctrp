@@ -43,6 +43,9 @@ ListOfOrganizationsPage = function () {
     this.orgFamilyRelationship = element(by.model('org.family_relationship_id'));
     this.orgAffiliatedRemoveButton = element(by.css('.glyphicon.glyphicon-remove-circle'));
     this.orgSearchResultsPage = element.all(by.css('div.ui-grid-viewport'));
+    this.searchResultHeader = element.all(by.css('div[ui-grid-header-cell=""]'));
+    this.searchResultMenu = element(by.css('.ui-grid-icon-menu'));
+    this.searchResultClearFilter = element(by.buttonText('Clear all filters'));
 
    // this.searchResult = element.all(by.css('div[ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"]'));//element.all(by.css('.ui-grid-row'));//element.all(by.binding('grid.getCellValue(row, col) '));
     this.pageResult = element.all(by.css('div.row'));
