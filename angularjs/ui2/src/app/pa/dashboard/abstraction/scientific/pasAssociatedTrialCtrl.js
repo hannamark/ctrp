@@ -42,8 +42,6 @@
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
                     console.info('res in looking up trial', res);
-                    // vm.foundTrialObj.trial_id = res.id || null;
-                    vm.foundTrialObj.id = res.id;
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
                     vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
@@ -78,6 +76,11 @@
 
             function _getTrialDetailCopy() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                vm.trialDetailObj.associated_trials = _.map(vm.trialDetailObj.associated_trials, function(trial) {
+                    trial.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: trial.identifier_type_id}).name;
+                    trial.researchCategory = ''; // TODO:
+                    return trial;
+                });
             }
 
             function showTrialLookupForm() {
@@ -107,8 +110,8 @@
              * @return {Void}
              */
             function updateTrialAssociations() {
-                vm.trialDetailObj.associated_trials_attributes = angular.copy(vm.trialDetailObj.associated_trials);
-
+                vm.trialDetailObj.associated_trials_attributes = vm.trialDetailObj.associated_trials;
+                /*
                 var curTrialIdentifierTypeId = null; // use the first one that is not null
                 var curTrialIdentifier = null;
                 if (!!vm.trialDetailObj.nci_id) {
@@ -119,11 +122,12 @@
                     curTrialIdentifier = vm.trialDetailObj.nct_trial_id;
                 }
 
+                // associate the current trial to each trial
                 _.each(vm.trialDetailObj.associated_trials, function(trial) {
                     // create the trial association mirror (association is both ways) using the current trial
                     // under abstraction
                     var associatedTrialB = {
-                        trial_id: trial.id, // the parent trial id for the association (has-many)
+                        trial_id: trial.id || null, // the parent trial id for the association (has-many)
                         trial_identifier: curTrialIdentifier,
                         identifier_type_id: curTrialIdentifierTypeId,
                         official_title: vm.trialDetailObj.official_title
@@ -132,8 +136,8 @@
                 });
 
                 console.info('vm.trialDetailObj.associated_trials_attributes: ', vm.trialDetailObj.associated_trials_attributes);
+                */
 
-                /*
                 var outerTrial = {};
                 outerTrial.new = false;
                 outerTrial.id = vm.trialDetailObj.id;
@@ -159,7 +163,6 @@
                 }).finally(function() {
                     console.info('trial associations have been updated');
                 });
-                */
 
             }
 
