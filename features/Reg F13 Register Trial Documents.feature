@@ -59,10 +59,14 @@ Then The Trial Related Documents section will not indicate any errors during Tri
       
       
       |FileType |
-      |pdf      |
-      |Microsoft Word Document      |
-      |Microsoft Excel Document    |
-     
+      |Pdf|
+      |Doc|
+      |docx|
+      |docm|
+      |Xls|
+      |xlsx|
+      |xlsm|
+      |xlsb|
       
 
 
