@@ -18,6 +18,7 @@
             vm.trialDetailObj.associated_trials = [];
             vm.lookupBtnDisabled = false;
             vm.showLookupForm = false;
+            vm.deleteAllAssoCheckbox = false;
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
@@ -26,7 +27,9 @@
             vm.showTrialLookupForm = showTrialLookupForm;
             vm.closeLookupForm = closeLookupForm;
             vm.updateTrialAssociations = updateTrialAssociations;
-            vm.resetAssociations = _getTrialDetailCopy
+            vm.resetAssociations = _getTrialDetailCopy;
+            vm.deleteAssociation = deleteAssociation;
+            vm.deleteAllAssociations = deleteAllAssociations;
 
             activate();
             function activate() {
@@ -105,39 +108,22 @@
                 vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
             } // associateTrial
 
+            function deleteAllAssociations(booleanFlag) {
+                _.each(vm.trialDetailObj.associated_trials, function(trial, idx) {
+                    vm.trialDetailObj.associated_trials[idx]._destroy = booleanFlag;
+                });
+            }
+
+            function deleteAssociation(index) {
+                vm.trialDetailObj.associated_trials[index]._destroy = !vm.trialDetailObj.associated_trials[index]._destroy;
+            }
+
             /**
              * Update associated trials at the backend
              * @return {Void}
              */
             function updateTrialAssociations() {
                 vm.trialDetailObj.associated_trials_attributes = vm.trialDetailObj.associated_trials;
-                /*
-                var curTrialIdentifierTypeId = null; // use the first one that is not null
-                var curTrialIdentifier = null;
-                if (!!vm.trialDetailObj.nci_id) {
-                    curTrialIdentifierTypeId = _.findWhere(vm.identifierTypes, {name: 'CTRP'}).id;
-                    curTrialIdentifier = vm.trialDetailObj.nci_id;
-                } else if (!!vm.trialDetailObj.nct_trial_id) {
-                    curTrialIdentifierTypeId = _.findWhere(vm.identifierTypes, {name: 'NCT'}).id;
-                    curTrialIdentifier = vm.trialDetailObj.nct_trial_id;
-                }
-
-                // associate the current trial to each trial
-                _.each(vm.trialDetailObj.associated_trials, function(trial) {
-                    // create the trial association mirror (association is both ways) using the current trial
-                    // under abstraction
-                    var associatedTrialB = {
-                        trial_id: trial.id || null, // the parent trial id for the association (has-many)
-                        trial_identifier: curTrialIdentifier,
-                        identifier_type_id: curTrialIdentifierTypeId,
-                        official_title: vm.trialDetailObj.official_title
-                    };
-                    vm.trialDetailObj.associated_trials_attributes.push(associatedTrialB);
-                });
-
-                console.info('vm.trialDetailObj.associated_trials_attributes: ', vm.trialDetailObj.associated_trials_attributes);
-                */
-
                 var outerTrial = {};
                 outerTrial.new = false;
                 outerTrial.id = vm.trialDetailObj.id;
@@ -150,6 +136,7 @@
                         vm.trialDetailObj.lock_version = res.lock_version;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                         $scope.$emit('updatedInChildScope', {});
+                        vm.deleteAllAssoCheckbox = false;
 
                         toastr.clear();
                         toastr.success('Trial Associations have been updated', 'Successful!', {

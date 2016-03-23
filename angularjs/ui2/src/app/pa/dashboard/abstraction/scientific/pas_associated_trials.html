@@ -88,19 +88,14 @@
                     <thead>
                     <tr>
                         <th class="col-sm-2 text-center">Trial Identifier</th>
-                        <th class="col-sm-2 text-center">Identifier Type</th>
+                        <th class="col-sm-1 text-center">Identifier Type</th>
                         <th class="text-center col-sm-1">Trial Type</th>
                         <th class="text-center col-sm-4">Official Title</th>
-                        <th class="text-center col-sm-1">Delete</th>
+                        <th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_all_asso" id="delete_all_asso" ng-model="assoTrialsView.deleteAllAssoCheckbox" ng-change="assoTrialsView.deleteAllAssociations(assoTrialsView.deleteAllAssoCheckbox)"></th>
                     </tr>
                     </thead>
                     <tbody>
-                        <!-- trial_identifier: '',
-                        identifier_type_id: '',
-                        trial_id: '',
-                        official_title: '',
-                        _destroy: false -->
-                        <tr ng-repeat="t in assoTrialsView.trialDetailObj.associated_trials track by $index">
+                        <tr ng-repeat="t in assoTrialsView.trialDetailObj.associated_trials track by $index" ng-class="t._destroy ? 'deleted-text' : ''">
                             <td class="text-center">
                                 {{t.trial_identifier}}
                             </td>
@@ -114,7 +109,9 @@
                                 {{t.official_title}}
                             </td>
                             <td class="text-center">
-                                Delete
+                                <label class="btn btn-default" restriction-field ng-click="assoTrialsView.deleteAssociation($index)">
+                                    <i class="glyphicon" ng-class="t._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                </label>
                             </td>
                         </tr>
                     </tbody>
