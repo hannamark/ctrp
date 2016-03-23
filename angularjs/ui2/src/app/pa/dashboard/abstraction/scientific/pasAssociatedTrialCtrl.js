@@ -15,13 +15,22 @@
             vm.identifierTypes = identifierTypes;
             vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
             vm.foundTrialObj = _initFoundTrialObj();
-            vm.associatedTrials = [];
+            vm.trialDetailObj = {};
+            vm.trialDetailObj.associated_trials = [];
             vm.lookupBtnDisabled = false;
+            vm.showLookupForm = false;
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
             vm.associateThisTrial = associateThisTrial;
             vm.lookupTrial = lookupTrial;
+            vm.showTrialLookupForm = showTrialLookupForm;
+            vm.closeLookupForm = closeLookupForm;
+
+            activate();
+            function activate() {
+                _getTrialDetailCopy();
+            }
 
             function lookupTrial() {
                 if (vm.trialQueryObj.trialIdentifier.trim().length === 0) {
@@ -59,12 +68,25 @@
                 };
             }
 
+            function _getTrialDetailCopy() {
+                vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                console.info('trialDetailObj.associated_trials: ', vm.trialDetailObj.associated_trials);
+            }
+
+            function showTrialLookupForm() {
+                vm.showLookupForm = true;
+            }
+
+            function closeLookupForm() {
+                vm.showLookupForm = false;
+            }
+
             function associateThisTrial(trialLookUpResult) {
-                if (_.findIndex(vm.associatedTrials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
+                if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
                     // no duplicate
                     return;
                 }
-                vm.associatedTrials.unshift(angular.copy(trialLookUpResult));
+                vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
             } // associateThisTrial
 
 
