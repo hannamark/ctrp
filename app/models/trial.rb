@@ -489,6 +489,7 @@ class Trial < TrialBase
         # Populate the trial data in the email body
         mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
         mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
 
         table = '<table border="0">'
