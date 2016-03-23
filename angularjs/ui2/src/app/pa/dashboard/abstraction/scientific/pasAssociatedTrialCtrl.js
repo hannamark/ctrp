@@ -16,6 +16,7 @@
             vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
             vm.foundTrialObj = _initFoundTrialObj();
             vm.associatedTrials = [];
+            vm.lookupBtnDisabled = false;
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
@@ -26,6 +27,7 @@
                 if (vm.trialQueryObj.trialIdentifier.trim().length === 0) {
                     return;
                 }
+                vm.lookupBtnDisabled = true;
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
                     console.info('res in looking up trial', res);
@@ -36,6 +38,10 @@
                     vm.foundTrialObj.official_title = res.official_title || '';
                     vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
                     vm.foundTrialObj.errorMsg = !!res.error_msg ? res.error_msg : '';
+                }).catch(function(err) {
+                    console.error('err in looking up the trial: ', vm.trialQueryObj);
+                }).finally(function() {
+                    vm.lookupBtnDisabled = false;
                 });
             } // lookupTrial
 

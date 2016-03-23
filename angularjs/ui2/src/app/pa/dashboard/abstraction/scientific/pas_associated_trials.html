@@ -28,7 +28,9 @@
                     >
                 </div>
                 <div class="col-xs-12 col-sm-3">
-                    <button type="button" class="btn btn-primary" ng-click="assoTrialsView.lookupTrial()">
+                    <button type="button" class="btn btn-primary"
+                        ng-click="assoTrialsView.lookupTrial()"
+                        ng-disabled="assoTrialsView.lookupBtnDisabled">
                         <i class="glyphicon glyphicon-search"></i> Look Up Trial
                     </button>
                 </div>
