@@ -62,7 +62,7 @@
 
                 <div class="form-group text-center">
                     <button type="button" class="btn btn-warning" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">Reset</button>
-                    <button class="btn btn-primary" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
+                    <button type="button" class="btn btn-primary" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
                     <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             <div class="row">
                 <span ng-show="assoTrialsView.trialDetailObj.associated_trials.length === 0">Nothing found to display</span>
 
-                <button type="button" class="btn btn-default" ng-click="assoTrialsView.showTrialLookupForm()">
+                <button type="button" class="btn btn-default" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
                     <i class="glyphicon glyphicon-plus"></i> Add a Trial
                 </button>
             </div>

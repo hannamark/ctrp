@@ -38,10 +38,11 @@
             }
 
             function lookupTrial() {
-                if (vm.trialQueryObj.trialIdentifier.trim().length === 0) {
+                if (!vm.trialQueryObj.identifierTypeId || !vm.trialQueryObj.trialIdentifier || vm.trialQueryObj.trialIdentifier.trim().length === 0) {
                     return;
                 }
                 vm.lookupBtnDisabled = true;
+                vm.associationErrorMsg = '';
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
                     console.info('res in looking up trial', res);
@@ -50,7 +51,7 @@
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
                     vm.foundTrialObj.official_title = res.official_title || '';
                     vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
-                    vm.foundTrialObj.research_category_name = res.research_category
+                    vm.foundTrialObj.research_category_name = res.research_category;
                     vm.foundTrialObj.errorMsg = !!res.error_msg ? res.error_msg : '';
                 }).catch(function(err) {
                     console.error('err in looking up the trial: ', vm.trialQueryObj);
@@ -60,12 +61,16 @@
             } // lookupTrial
 
             function resetTrialLookupForm(form) {
-                form.$valid = true;
-                form.$pristine = true;
+
                 // form.trial_identifier.$error = null;
                 // form.identifier_type.$error = null;
                 vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''};
                 vm.foundTrialObj = _initFoundTrialObj();
+                form.$setPristine();
+                form.$dirty = false;
+                form.$submitted = false;
+                form.$setValidity();
+                form.$setUntouched();
             }
 
             function _initFoundTrialObj() {
@@ -87,8 +92,11 @@
                 });
             }
 
-            function showTrialLookupForm() {
+            function showTrialLookupForm(form) {
                 vm.showLookupForm = true;
+                resetTrialLookupForm(form);
+                // form.trial_identifier.$error = null;
+                // form.identifier_type.$error = null;
             }
 
             function closeLookupForm() {
@@ -102,11 +110,12 @@
              */
             function associateTrial(trialLookUpResult) {
                 if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
-                        vm.associationErrorMsg = 'Error: Trial association already exists'
+                        vm.associationErrorMsg = 'Error: Trial association already exists';
                     // no duplicate
                     return;
                 }
                 vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
+                closeLookupForm();
             } // associateTrial
 
             function deleteAllAssociations(booleanFlag) {
@@ -151,7 +160,6 @@
                 }).finally(function() {
                     console.info('trial associations have been updated');
                 });
-
             }
 
 
