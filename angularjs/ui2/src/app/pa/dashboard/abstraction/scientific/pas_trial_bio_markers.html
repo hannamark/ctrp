@@ -37,9 +37,7 @@
                                 <label for="status" class="control-label col-xs-12 col-sm-2">Status:</label>
                                 <div class="col-xs-12 col-sm-6">
                                     <p class="form-control-static">{{markersView.currentBioMarker.record_status}}</p>
-                                </div>
-                                <div class="col-xs-12 col-sm-12" layout="row" layout-wrap flex-xs="100">
-                                    <span class="help-block alert alert-warning" ng-hide="markersView.currentBioMarker.status_alert">
+                                    <span class="help-block" ng-hide="markersView.currentBioMarker.status_alert">
                                         You have changed name selected from caDSR system thus the status has been changed to Pending.
                                     </span>
                                 </div>
@@ -329,7 +327,7 @@
                         <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
                             <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field ng-click="markersView.setAddMode()">Add Bio Marker</button>
                             <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="markersView.deleteSelected()" ng-disabled="!markersView.selectedDeleteBioMarkersList.length">
-                                <i class="glyphicon glyphicon-remove"></i>Delete Bio Markers
+                                <i class="glyphicon glyphicon-remove"></i> Delete Bio Markers
                             </button>
                         </div>
                     </div>
