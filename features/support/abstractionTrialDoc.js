@@ -1,7 +1,7 @@
 /**
  * Author: Shamim Ahmed
- * Date: 02/20/2016
- * Page Object: Abstraction Regulatory Information FDAAA
+ * Date: 03/20/2016
+ * Page Object: Abstraction Trial Related Documents
  */
 
 var chai = require('chai');
@@ -10,9 +10,12 @@ chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 
 var helperFunctions = require('../support/helper');
+//File System
+var fs = require('fs');
+var junit = require('cucumberjs-junitxml');
+var testFileUpload = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testSamples';
 
-
-var abstractionRegulatoryInfo = function(){
+var abstractionTrialDoc = function(){
 
     /*
      * Admin Data
@@ -34,107 +37,167 @@ var abstractionRegulatoryInfo = function(){
     this.adminDataCollaborators = element(by.css('a[ui-sref="main.pa.trialOverview.collaborators"]'));
     //NCI Specific Information
     this.adminDataNciSpecific = element(by.css('a[ui-sref="main.pa.trialOverview.nciInfo"]'));
+    //Trial Related Document
+    this.adminDataTrialRelatedDocument = element(by.css('a[ui-sref="main.pa.trialOverview.paTrialRelatedDocs"]'));
+    //Participating Sites
+    this.adminDataTrialParticipatingSite = element(by.css('a[ui-sref="main.pa.trialOverview.participatingSites"]'));
 
 
     /*
-     * Regulatory Information object(s)
+     * Trial Related Document object(s)
      */
-    //Responsible Party
-    this.regulatoryInfoResponsiblePartyList = element(by.model('trialDetailView.curTrial.responsible_party_id'));
-    this.regulatoryInfoResponsiblePartyListAll = element.all(by.model('trialDetailView.curTrial.responsible_party_id'));
-    this.regulatoryInfoResponsiblePartyListLbl = element(by.css('label.control-label.col-xs-12.col-sm-3'));
-    //Sponsor
-    this.regulatoryInfoSponsor = element(by.css('input[name="sponsor_name"]'));//by.css('input.form-control.input-sm')
-    this.regulatoryInfoSponsorLbl = element(by.css('label.control-label.col-xs-12.col-sm-3'));
-    //Principal Investigator
-    this.regulatoryInfoInvestigator = element(by.css('input[name="investigator_name1"]'));
-    this.regulatoryInfoInvestigatorTitle = element(by.model('trialDetailView.curTrial.investigator_title'));
-    this.regulatoryInfoInvestigatorAffiliation = element(by.css('input[name="inv_aff_name1"]'));
-    this.regulatoryInfoInvestigatorSearchOrg = element.all(by.id('org_search_modal'));
-    //Sponsor Investigator
-    this.regulatoryInfoInvestigatorPersonSearch = element.all(by.id('person_search_modal')); //by.css('button[ng-click="searchPerson(\\'lg\\')"]')
-    //Investigator Title Wraning message
-    this.regulatoryInfoResponsiblePartyInvesWaning = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)"]'));
-
-    //Trial Oversight Authority
-    this.regulatoryInfoAuthorityCountry = element(by.model('trialDetailView.authority_country'));
-    this.regulatoryInfoAuthorityOrg = element(by.model('trialDetailView.authority_org'));
-    this.regulatoryInfoAuthorityAdd = element(by.css('button[ng-click="trialDetailView.addAuthority()"]'));
-    this.regulatoryInfoAuthorityErr = element(by.css('.add-association-error.ng-binding'));
-
-    //Indicator
-    this.regulatoryInfoIndicatorFDA = element.all(by.model('trialDetailView.curTrial.intervention_indicator'));
-    this.regulatoryInfoIndicator801 = element.all(by.model('trialDetailView.curTrial.sec801_indicator'));
-    this.regulatoryInfoIndicatorData = element.all(by.model('trialDetailView.curTrial.data_monitor_indicator'));
+    this.trialDocSelectADocList = element(by.model('trialRelatedDocsView.curDoc.document_type'));
+    this.trialDocSelectADocListAll = element.all(by.model('trialRelatedDocsView.curDoc.document_type'));
+    this.trialDocBrowse = element(by.model('trialRelatedDocsView.curDoc.file'));
+    this.trialDocAddButton = element(by.buttonText('Add')); // by.css('div[ng-hide="trialRelatedDocsView.curDoc.edit"]')
+    this.trialDocSubType = element(by.model('trialRelatedDocsView.curDoc.document_subtype'));
 
     //Save and Reset
-    this.regulatoryInfoSave = element(by.id('submit_processing'));
-    this.regulatoryInfoReset = element(by.css('button[ng-click="trialDetailView.reload()"]')); //.btn.btn-warning.pull-right
+    this.trialDocSave = element(by.id('save_btn'));
+    this.trialDocReset = element(by.css('button[ng-click="trialRelatedDocsView.resetForm()"]')); //.btn.btn-warning.pull-right
 
     //page Header
-    this.generalTrailHeader = element(by.css('h4.panel-title'));
+    this.trialDocHeader = element(by.css('h4.panel-title'));
 
     //Labels Text
-    this.fdaaaTitle = element(by.css('h4.ng-scope'));
+    this.trialDocTitle = element(by.css('h4.ng-scope'));
+
+
+    this.trialTable = element(by.css('.table.table-bordered.table-striped.table-hover'));
+    this.trialTableRw = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
+
+    this.trialTHeadA = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(1)'));
+    this.trialTHeadB = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(2)'));
+    this.trialTHeadC = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(3)'));
+    this.trialTHeadD = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(4)'));
+    this.trialTHeadE = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(5)'));
+    this.trialTHeadF = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(6)'));
 
 
     this.authorityTable = element.all(by.css('.table.table-bordered.table-striped.table-condensed tbody tr'));
     this.authorityTableHeaderA = element(by.css('.table.table-bordered.table-striped.table-condensed thead tr th:nth-child(01)'));
     this.authorityTableHeaderB = element(by.css('.table.table-bordered.table-striped.table-condensed thead tr th:nth-child(02)'));
-    this.authoTblColARwAExists = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(01) td:nth-child(01)'));
+    this.tblColARwAExists = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(01) td:nth-child(01)'));
 
-    var deleteA = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(1) td:nth-child(03) label'));
-    var deleteB = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(2) td:nth-child(03) label'));
-    var deleteC = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(3) td:nth-child(03) label'));
-    var deleteD = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(4) td:nth-child(03) label'));
-    var deleteE = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(5) td:nth-child(03) label'));
-    var deleteF = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(6) td:nth-child(03) label'));
-    var deleteG = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(7) td:nth-child(03) label'));
-    var deleteH = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(8) td:nth-child(03) label'));
+    var deleteA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(06) label'));
+    var deleteB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(06) label'));
+    var deleteC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(06) label'));
+    var deleteD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(06) label'));
+    var deleteE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(06) label'));
+    var deleteF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(06) label'));
+    var deleteG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(06) label'));
+    var deleteH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(06) label'));
 
-    var authoTblColARwA = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(01) td:nth-child(01)'));
-    var authoTblColARwB = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(02) td:nth-child(01)'));
-    var authoTblColARwC = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(03) td:nth-child(01)'));
-    var authoTblColARwD = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(04) td:nth-child(01)'));
-    var authoTblColARwE = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(05) td:nth-child(01)'));
-    var authoTblColARwF = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(06) td:nth-child(01)'));
-    var authoTblColARwG = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(07) td:nth-child(01)'));
-    var authoTblColARwH = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(08) td:nth-child(01)'));
+    var tblColARwA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(1)'));
+    var tblColARwB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(1)'));
+    var tblColARwC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(1)'));
+    var tblColARwD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(1)'));
+    var tblColARwE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(1)'));
+    var tblColARwF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(1)'));
+    var tblColARwG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(1)'));
+    var tblColARwH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(1)'));
 
-    var authoTblColBRwA = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(01) td:nth-child(02)'));
-    var authoTblColBRwB = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(02) td:nth-child(02)'));
-    var authoTblColBRwC = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(03) td:nth-child(02)'));
-    var authoTblColBRwD = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(04) td:nth-child(02)'));
-    var authoTblColBRwE = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(05) td:nth-child(02)'));
-    var authoTblColBRwF = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(06) td:nth-child(02)'));
-    var authoTblColBRwG = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(07) td:nth-child(02)'));
-    var authoTblColBRwH = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(08) td:nth-child(02)'));
+    var tblColBRwA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(01) td:nth-child(02)'));
+    var tblColBRwB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(02) td:nth-child(02)'));
+    var tblColBRwC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(03) td:nth-child(02)'));
+    var tblColBRwD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(04) td:nth-child(02)'));
+    var tblColBRwE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(05) td:nth-child(02)'));
+    var tblColBRwF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(06) td:nth-child(02)'));
+    var tblColBRwG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(07) td:nth-child(02)'));
+    var tblColBRwH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(08) td:nth-child(02)'));
 
-    var authoTblColCRwA = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(01) td:nth-child(03) label'));
-    var authoTblColCRwB = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(02) td:nth-child(03) label'));
-    var authoTblColCRwC = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(03) td:nth-child(03) label'));
-    var authoTblColCRwD = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(04) td:nth-child(03) label'));
-    var authoTblColCRwE = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(05) td:nth-child(03) label'));
-    var authoTblColCRwF = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(06) td:nth-child(03) label'));
-    var authoTblColCRwG = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(07) td:nth-child(03) label'));
-    var authoTblColCRwH = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(08) td:nth-child(03) label'));
+    var tblColCRwA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(01) td:nth-child(03)'));
+    var tblColCRwB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(02) td:nth-child(03)'));
+    var tblColCRwC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(03) td:nth-child(03)'));
+    var tblColCRwD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(04) td:nth-child(03)'));
+    var tblColCRwE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(05) td:nth-child(03)'));
+    var tblColCRwF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(06) td:nth-child(03)'));
+    var tblColCRwG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(07) td:nth-child(03)'));
+    var tblColCRwH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(08) td:nth-child(03)'));
 
+    var tblColDRwA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(01) td:nth-child(04)'));
+    var tblColDRwB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(02) td:nth-child(04)'));
+    var tblColDRwC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(03) td:nth-child(04)'));
+    var tblColDRwD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(04) td:nth-child(04)'));
+    var tblColDRwE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(05) td:nth-child(04)'));
+    var tblColDRwF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(06) td:nth-child(04)'));
+    var tblColDRwG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(07) td:nth-child(04)'));
+    var tblColDRwH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(08) td:nth-child(04)'));
+
+    var tblColERwA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(01) td:nth-child(05)'));
+    var tblColERwB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(02) td:nth-child(05)'));
+    var tblColERwC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(03) td:nth-child(05)'));
+    var tblColERwD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(04) td:nth-child(05)'));
+    var tblColERwE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(05) td:nth-child(05)'));
+    var tblColERwF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(06) td:nth-child(05)'));
+    var tblColERwG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(07) td:nth-child(05)'));
+    var tblColERwH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(08) td:nth-child(05)'));
+
+    var tblColFRwA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(01) td:nth-child(06)'));
+    var tblColFRwB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(02) td:nth-child(06)'));
+    var tblColFRwC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(03) td:nth-child(06)'));
+    var tblColFRwD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(04) td:nth-child(06)'));
+    var tblColFRwE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(05) td:nth-child(06)'));
+    var tblColFRwF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(06) td:nth-child(06)'));
+    var tblColFRwG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(07) td:nth-child(06)'));
+    var tblColFRwH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(08) td:nth-child(06)'));
+
+    //Registry Page object(s)
+    this.trailFileUploadProtocol = element(by.model('trialDetailView.protocol_document'));
+    this.trailFileUploadIRB = element(by.model('trialDetailView.irb_approval'));
+    this.trailFileUploadParticipating = element(by.model('trialDetailView.participating_sites'));
+    this.trailFileUploadInformed = element(by.model('trialDetailView.informed_consent'));
+    this.trailFileUploadOther = element(by.model('trialDetailView.other_documents[$index]'));
 
     var helper = new helperFunctions();
 
+    this.selectADocument = function(getDocVal){
+        helper.selectValueFromList(this.trialDocSelectADocList, getDocVal,"Please select a document - drop down field selected as:["+getDocVal+"]");
+    };
 
-    this.findTrailAuthorityAndDeleteOrVerify = function(getAuthoCountryName, getAuthoOrgName, getDeleteConf, getVerify){
-        this.waitForRegulatoryInfoElement(this.authoTblColARwAExists, "Trial Oversight Authority Table");
-        this.authorityTable.then(function(rows){
+    this.trialRelatedFileUpload = function(regOrPA, browsIndx, getFileName){
+        var buildFilePath;
+        console.log('Test Sample File(s) Location:['+testFileUpload+']');
+        buildFilePath = ''+testFileUpload+'/'+getFileName;
+        console.log('Test Sample File(s) Path:['+buildFilePath+']');
+        if (regOrPA === 'PA'){
+            helper.setUploadedFile(this.trialDocBrowse,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
+        } else if(regOrPA === 'reg'){
+            if (browsIndx === '1'){
+                helper.setUploadedFile(this.trailFileUploadProtocol,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
+            } else if(browsIndx === '2'){
+                helper.setUploadedFile(this.trailFileUploadIRB,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
+            } else if(browsIndx === '3'){
+                helper.setUploadedFile(this.trailFileUploadParticipating,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
+            } else if(browsIndx === '4'){
+                helper.setUploadedFile(this.trailFileUploadInformed,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
+            } else if(browsIndx === '5'){
+                helper.setUploadedFile(this.trailFileUploadOther,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
+            }
+        }
+    };
+
+    this.setSubType = function(getSubType){
+      helper.setValue(this.trialDocSubType, getSubType, "Other - SubType - field");
+    };
+
+    this.clickAddButton = function(){
+        helper.clickButton(this.trialDocAddButton,"Add - button");
+        helper.wait_for(25);
+    };
+
+    this.findTrialDocAndDeleteOrVerify = function(getAuthoCountryName, getAuthoOrgName, getDeleteConf, getVerify){
+        this.waitForRegulatoryInfoElement(this.tblColARwAExists, "Table");
+        this.trialTableRw.then(function(rows){
             console.log('total Row Count:['+(rows.length)+']');
             for (var i=0; i<(rows.length); i++){
                 //Row 1
                 if (i === 0){
                     console.log('Test 1');
-                    getAuthoCntryNm = authoTblColARwA.getText('value');
+                    getAuthoCntryNm = tblColARwA.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwA.getText('value');
+                            getAuthoOrgNm = tblColBRwA.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 1 org');
@@ -143,12 +206,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteA, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwA.getText('value');
+                                        verifyAuthoCntryNm = tblColARwA.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwA.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwA.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -162,10 +225,10 @@ var abstractionRegulatoryInfo = function(){
                 //Row 2
                 if (i === 1){
                     console.log('Test 2');
-                    getAuthoCntryNm = authoTblColARwB.getText('value');
+                    getAuthoCntryNm = tblColARwB.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwB.getText('value');
+                            getAuthoOrgNm = tblColBRwB.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 2 org');
@@ -174,12 +237,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteB, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwB.getText('value');
+                                        verifyAuthoCntryNm = tblColARwB.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwB.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwB.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -193,10 +256,10 @@ var abstractionRegulatoryInfo = function(){
                 //Row 3
                 if (i === 2){
                     console.log('Test 3');
-                    getAuthoCntryNm = authoTblColARwC.getText('value');
+                    getAuthoCntryNm = tblColARwC.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwC.getText('value');
+                            getAuthoOrgNm = tblColBRwC.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 3 org');
@@ -205,12 +268,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteC, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwC.getText('value');
+                                        verifyAuthoCntryNm = tblColARwC.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwC.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwC.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -224,10 +287,10 @@ var abstractionRegulatoryInfo = function(){
                 //Row 4
                 if (i === 3){
                     console.log('Test 4');
-                    getAuthoCntryNm = authoTblColARwD.getText('value');
+                    getAuthoCntryNm = tblColARwD.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwD.getText('value');
+                            getAuthoOrgNm = tblColBRwD.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 4 org');
@@ -236,12 +299,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteD, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwD.getText('value');
+                                        verifyAuthoCntryNm = tblColARwD.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwD.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwD.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -255,10 +318,10 @@ var abstractionRegulatoryInfo = function(){
                 //Row 5
                 if (i === 4){
                     console.log('Test 5');
-                    getAuthoCntryNm = authoTblColARwE.getText('value');
+                    getAuthoCntryNm = tblColARwE.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwE.getText('value');
+                            getAuthoOrgNm = tblColBRwE.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 5 org');
@@ -267,12 +330,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteE, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwE.getText('value');
+                                        verifyAuthoCntryNm = tblColARwE.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwE.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwE.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -286,10 +349,10 @@ var abstractionRegulatoryInfo = function(){
                 //Row 6
                 if (i === 5){
                     console.log('Test 6');
-                    getAuthoCntryNm = authoTblColARwF.getText('value');
+                    getAuthoCntryNm = tblColARwF.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwF.getText('value');
+                            getAuthoOrgNm = tblColBRwF.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 6 org');
@@ -298,12 +361,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteF, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwF.getText('value');
+                                        verifyAuthoCntryNm = tblColARwF.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwF.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwF.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -317,10 +380,10 @@ var abstractionRegulatoryInfo = function(){
                 //Row 7
                 if (i === 6){
                     console.log('Test 7');
-                    getAuthoCntryNm = authoTblColARwG.getText('value');
+                    getAuthoCntryNm = tblColARwG.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwG.getText('value');
+                            getAuthoOrgNm = tblColBRwG.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 7 org');
@@ -329,12 +392,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteG, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwG.getText('value');
+                                        verifyAuthoCntryNm = tblColARwG.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwG.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwG.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -348,10 +411,10 @@ var abstractionRegulatoryInfo = function(){
                 //Row 8
                 if (i === 7){
                     console.log('Test 8');
-                    getAuthoCntryNm = authoTblColARwH.getText('value');
+                    getAuthoCntryNm = tblColARwH.getText('value');
                     getAuthoCntryNm.then(function(Test1){
                         if (Test1 === getAuthoCountryName){
-                            getAuthoOrgNm = authoTblColBRwH.getText('value');
+                            getAuthoOrgNm = tblColBRwH.getText('value');
                             getAuthoOrgNm.then(function(Test1Org) {
                                 if (Test1Org === getAuthoOrgName) {
                                     console.log('Test 8 org');
@@ -360,12 +423,12 @@ var abstractionRegulatoryInfo = function(){
                                         helper.clickButton(deleteH, "Delete Button");
                                     };
                                     if (getVerify === 'verify') {
-                                        verifyAuthoCntryNm = authoTblColARwH.getText('value');
+                                        verifyAuthoCntryNm = tblColARwH.getText('value');
                                         verifyAuthoCntryNm.then(function(actualCountry){
                                             expect(actualCountry.toString()).to.eql(getAuthoCountryName.toString());
                                             console.log('Verify Oversight Authority Country');
                                         });
-                                        verifyAuthoOrgNm = authoTblColBRwH.getText('value');
+                                        verifyAuthoOrgNm = tblColBRwH.getText('value');
                                         verifyAuthoOrgNm.then(function(actualOrg) {
                                             expect(actualOrg.toString()).to.eql(getAuthoOrgName.toString());
                                             console.log('Verify Oversight Authority Organization');
@@ -425,6 +488,16 @@ var abstractionRegulatoryInfo = function(){
     //NCI Specific Information : Click Left Navigation Link
     this.clickAdminDataNCISpecificInformation = function(){
       helper.clickButton(this.adminDataNciSpecific, "NCI Specific Information Admin Data Button");
+    };
+
+    //Trial Related Document : Click Left Navigation Link
+    this.clickAdminDataTrialRelatedDocument = function(){
+        helper.clickButton(this.adminDataTrialRelatedDocument, "Trial Related Document Admin Data Button");
+    };
+
+    //Participating Sites : Click Left Navigation Link
+    this.clickAdminDataParticipatingSites = function(){
+        helper.clickButton(this.adminDataTrialParticipatingSite, "Participating Sites Admin Data Button");
     };
 
     //***********************************
@@ -493,12 +566,12 @@ var abstractionRegulatoryInfo = function(){
     //*********Save and Reset*************
     //Save : Button
     this.clickSave = function(){
-        helper.clickButton(this.regulatoryInfoSave,"Save - button");
+        helper.clickButton(this.trialDocSave,"Save - button");
     };
 
     //Cancel : Button
     this.clickReset = function(){
-        helper.clickButton(this.regulatoryInfoReset,"Reset - button");
+        helper.clickButton(this.trialDocReset,"Reset - button");
     };
 
 
@@ -533,4 +606,4 @@ var abstractionRegulatoryInfo = function(){
 
 };
 
-module.exports = abstractionRegulatoryInfo;
+module.exports = abstractionTrialDoc;
