@@ -63,11 +63,11 @@
                         <!-- eval type -->
                         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-model="markersView.isEvalTypesChecked" required="">
                             <legend class="sub-bordered">Evaluation Type </legend>
-                            <div class="form-group no-bottom-margin" ng-class="{'has-error': !markersView.checked_eval_types.length}">
+                            <div class="form-group no-bottom-margin" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_eval_types.length)}">
                                 <label for="eval_type" class="control-label col-xs-12 col-sm-2">Types:</label>
                                 <div class="col-xs-12 col-sm-10"></div>
                             </div>
-                            <div class="form-group" ng-class="{'has-error': !markersView.checked_eval_types.length}">
+                            <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_eval_types.length)}">
                                 <div class="col-xs-12 col-sm-2"></div>
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
@@ -105,11 +105,11 @@
                         <!-- assay type -->
                         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-model="markersView.isAssayTypesChecked" required="">
                             <legend class="sub-bordered">Assay Type </legend>
-                            <div class="form-group no-bottom-margin"  ng-class="{'has-error': !markersView.checked_assay_types.length}">
+                            <div class="form-group no-bottom-margin"  ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_assay_types.length)}">
                                 <label for="assay_type" class="control-label col-xs-12 col-sm-2">Types:</label>
                                 <div class="col-xs-12 col-sm-10"></div>
                             </div>
-                            <div class="form-group" ng-class="{'has-error': !markersView.checked_assay_types.length}">
+                            <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_assay_types.length)}">
                                 <div class="col-xs-12 col-sm-2"></div>
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
@@ -167,11 +167,11 @@
                             </div>
                             <!-- end of bio marker use -->
 
-                            <div class="form-group no-bottom-margin" ng-class="{'has-error': !markersView.checked_biomarker_purposes.length}">
+                            <div class="form-group no-bottom-margin" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_biomarker_purposes.length)}">
                                 <label class="control-label col-xs-12 col-sm-2">Purposes:</label>
                                 <div class="col-xs-12 col-sm-10"></div>
                             </div>
-                            <div class="form-group" ng-class="{'has-error': !markersView.checked_biomarker_purposes.length}">
+                            <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_biomarker_purposes.length)}">
                                 <div class="col-xs-12 col-sm-2"></div>
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
@@ -196,11 +196,11 @@
                         <!-- specimen type -->
                         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-model="markersView.isSpecTypesChecked" required="">
                             <legend class="sub-bordered">Specimen Type </legend>
-                            <div class="form-group no-bottom-margin" ng-class="{'has-error': !markersView.checked_spec_types.length}">
+                            <div class="form-group no-bottom-margin" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_spec_types.length)}">
                                 <label for="spec_type" class="control-label col-xs-12 col-sm-2">Types:</label>
                                 <div class="col-xs-12 col-sm-10"></div>
                             </div>
-                            <div class="form-group" ng-class="{'has-error': !markersView.checked_spec_types.length}">
+                            <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_spec_types.length)}">
                                 <div class="col-xs-12 col-sm-2"></div>
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
@@ -229,7 +229,7 @@
                                     </div>
 
                                     <span class="help-block top-offset-xss" ng-show="required" class="required" ng-hide="!markersView.show_spec_type_alert">Specimen Type must be entered</span>
-                                    
+
                                 </div>
                             </div>
                         </fieldset>
