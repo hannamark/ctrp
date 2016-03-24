@@ -230,7 +230,7 @@
             if (!(typeof addEditModeValue === 'undefined' || addEditModeValue === null)) {
                 vm.addEditMode = addEditModeValue;
                 $location.hash('section_top');
-                $anchorScroll()
+                $anchorScroll();
             } else {
                 vm.addEditMode = true;
                 vm.tabIndex = 0;
@@ -244,7 +244,7 @@
             vm.po_name = null;
             vm.selOrganization = {name: '', array: []};
             vm.siteRecruitmentGrid = [];
-            vm.investigatorGrid = [];        
+            vm.investigatorGrid = [];
         }
 
         /**

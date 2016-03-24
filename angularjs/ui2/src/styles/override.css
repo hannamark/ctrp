@@ -300,6 +300,9 @@ header img {
 .top-offset-tiny {
     margin-top: 5px;
 }
+.top-offset-xss {
+    margin-top: 15px;
+}
 .top-offset-xs {
 	margin-top: 25px;
 }
@@ -741,7 +744,7 @@ input[type=radio] {
     border-radius: 6px;
 }
 
-.no-bottom-margin {
+.no-bottom-margin, .form-group.no-bottom-margin {
     margin-bottom: 0;
 }
 
