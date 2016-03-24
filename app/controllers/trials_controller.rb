@@ -480,6 +480,7 @@ class TrialsController < ApplicationController
     else
       @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
       @search_result[:official_title] = xml.xpath('//official_title').text
+      @search_result[:research_category_name] = xml.xpath('//study_type').text
       # @search_result[:status] = xml.xpath('//overall_status').text
       # @search_result[:condition] = ''
       # xml.xpath('//condition').each_with_index do |condition, i|
