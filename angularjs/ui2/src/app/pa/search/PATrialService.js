@@ -485,7 +485,7 @@
          * @return {[type]}                 [description]
          */
         function lookupTrial(trialIdentifier) {
-
+            trialIdentifier = trialIdentifier.toUpperCase();
             if (!!trialIdentifier && trialIdentifier.startsWith('NCT')) {
                 return searchClinicalTrialsGovIgnoreExists(trialIdentifier);
             } else {

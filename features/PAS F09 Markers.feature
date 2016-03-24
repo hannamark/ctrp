@@ -96,14 +96,9 @@ Then the Markers list will be displayed
       |Edit| 
       |Delete| 
 
-  Scenario: #2 Biomarker Use rule
-    Given I am on the Add Marker Screen 
-     When I select "Integrated" for Biomarker Use
-     Then the Biomarker Purpose is not required
 
 
-
-Scenario: #3 Set Marker Record Status
+Scenario: #2 Set Marker Record Status
 Given I am on the Add Marker Screen
 When I have selected Name from caDSR
 Then Record Status is set to Active
@@ -113,19 +108,27 @@ And I select save
 Then the record status "Pending" will be displayed on the Markers table
 And the pending marker will be added to the "New Marker Requests" screen
 
-Scenario:  #4 Marker Mandatory Fields Rules
+
+
+Scenario:  #3 Marker Mandatory Fields Rules
 Given I am on the Markers screen
 When the Marker <MarkerField> is not entered 
 And I select Save
 Then an error message <MarkerErrorMessage> will be displayed
 
 |<MarkerField>     |  <MarkerErrorMessage>|
-| Evaluation Type  | Evaluation Type must be entered|
-|   Name           |   Name must be entered|
-|  Assay Type      |   Assay Type must be entered|
-|Biomarker Use     |   Biomarker Use must be entered|
-|Biomarker Purpose | Biomarker Purpose must be entered|
-|Specimen Type     |  Specimen Type must be entered|
+| Evaluation Type  | Evaluation Type is Required|
+|   Name           |   Name is Required|
+|  Assay Type      |   Assay Type is Required|
+|Biomarker Use value of "Integral"     |   Biomarker Use is Required|
+|Biomarker Purpose | Biomarker Purpose is Required|
+|Specimen Type     |  Specimen Type is Required|
+
+  Scenario: #4 Biomarker Use rule
+    Given I am on the Add Marker Screen 
+     When I select "Integrated" for Biomarker Use
+     Then the Biomarker Purpose is not required
+
 
 Scenario:#5 Selection of Other for Evaluation Type
  Given I am on the Add Marker screen

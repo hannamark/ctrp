@@ -480,6 +480,7 @@ class TrialsController < ApplicationController
     else
       @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
       @search_result[:official_title] = xml.xpath('//official_title').text
+      @search_result[:research_category] = xml.xpath('//study_type').text
       # @search_result[:status] = xml.xpath('//overall_status').text
       # @search_result[:condition] = ''
       # xml.xpath('//condition').each_with_index do |condition, i|
@@ -583,7 +584,7 @@ class TrialsController < ApplicationController
                                   ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
-                                  associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title],
+                                  associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status],
                                   other_criteria_attributes: [:id, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],

@@ -74,6 +74,24 @@
                                             </div>
                                         </div>
                                     </fieldset>
+                                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                                        <legend class="sub-bordered">Program Code:</legend>
+                                        <div class="form-group">
+                                            <label for="program_code" class="control-label col-xs-12 col-sm-3">Program Code</label>
+                                            <div class="col-xs-12 col-sm-9">
+                                                <input type="text" id="program_code" name="program_code" class="form-control" ng-model="psView.currentParticipatingSite.program_code" placeholder="Program Code">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                                        <legend class="sub-bordered">Local Trial Identifier:</legend>
+                                        <div class="form-group">
+                                            <label for="program_code" class="control-label col-xs-12 col-sm-3">Local Trial Identifier</label>
+                                            <div class="col-xs-12 col-sm-9">
+                                                <input type="text" id="local_trial_identifier" name="local_trial_identifier" class="form-control" ng-model="psView.local_trial_identifier" placeholder="Local Trial Identifier">
+                                            </div>
+                                        </div>
+                                    </fieldset>
                                     <!-- fieldset for Site Recruitment -->
                                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                                         <legend class="sub-bordered">Site Recruitment</legend>
@@ -342,7 +360,7 @@
                                 <!-- Saving the form for the Investigator tab" -->
                                 <div class="form-group no-bottom-margin">
                                     <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()" ng-disabled="psView.current_investigator.edit">Save</button>
+                                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()" ng-disabled="psView.current_investigator.uiEdit">Save</button>
                                         <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit">
                                             <i class="glyphicon glyphicon-remove"></i> Reset
                                         </button>

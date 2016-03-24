@@ -7,7 +7,7 @@
         'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj'];
 
     function pasTrialOutcomeMeasuresCtrl($scope, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
-                                MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
+                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentOutcomeMeasure= {};
@@ -43,15 +43,9 @@
             vm.copyOM = {};
         }
 
-        vm.cancel = function() {
-            vm.resetOutcomeMeasure();
-            vm.setToDefaultMode();
-        }
-
         vm.saveOutcomeMeasure = function(){
             vm.disableBtn = true;
 
-            console.log(vm.addMode,vm.editMode,vm.copyMode);
             if (!vm.currentOutcomeMeasure.id || vm.copyMode) {
                 vm.currentOutcomeMeasure.new = true;
                 vm.currentOutcomeMeasure.id = null;
@@ -162,13 +156,13 @@
             vm.editMode || vm.copyMode || vm.addMode ? resetOutcomeMeasure() : vm.addMode = vm.copyMode = false;
             vm.editMode = true;
             vm.currentOutcomeMeasure = vm.curTrial.outcome_measures[idx];
-            copyCurrentOutcomeMeasure(vm.curTrial.outcome_measures[idx]);
+            saveCopyCurrentOutcomeMeasure(vm.curTrial.outcome_measures[idx]);
         }
 
         /**
-         *  Set Edit Mode.
+         *  Save copy of currentOutcomeMeasure "TO" vm.copyOM.
          **/
-        function copyCurrentOutcomeMeasure(currentOutcomeMeasure) {
+        function saveCopyCurrentOutcomeMeasure(currentOutcomeMeasure) {
             vm.copyOM = {};
             angular.copy(currentOutcomeMeasure, vm.copyOM);
         }
@@ -180,7 +174,7 @@
             vm.copyMode || vm.addMode || vm.editMode ? resetOutcomeMeasure() : vm.addMode = vm.editMode = false;
             vm.copyMode = true;
             vm.currentOutcomeMeasure = angular.copy(vm.curTrial.outcome_measures[idx]);
-            copyCurrentOutcomeMeasure(vm.curTrial.outcome_measures[idx]);
+            saveCopyCurrentOutcomeMeasure(vm.curTrial.outcome_measures[idx]);
         }
 
         function resetOutcomeMeasure() {
