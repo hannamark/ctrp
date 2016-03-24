@@ -507,7 +507,11 @@ class Trial < TrialBase
         mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
         mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
 
-        CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+        begin
+          CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+        rescue  Exception => e
+          logger.warn "email delivery error = #{e}"
+        end
       end
     end
   end

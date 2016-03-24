@@ -672,7 +672,7 @@ Scenario Outline: #8 Rules for Study Date types
       |Institutional            |
 
   Scenario Outline: #9 general rules for Study Date values are as follows
-    Given I have selected the option to register a trial <trialType
+  Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Screen
     And The Trial Start Date can be in the past, present, or future
     And The Primary Completion Date is always the same as, or later than, the Trial Start Date

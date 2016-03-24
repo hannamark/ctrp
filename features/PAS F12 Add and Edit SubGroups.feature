@@ -29,7 +29,7 @@ And I have selected a trial
 And I am on the Add/Edit Sub-group Information screen
 When I select Save 
 And Label is Null
-Then a warning message will appear 'Label is required'
+Then an error message will appear 'Label is Required'
 
 Scenario:  #4 Sub-group Description not null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -37,7 +37,7 @@ And I have selected a trial
 And I am on the Add/Edit Sub-group Information screen
 When I select Save 
 And Description is Null
-Then a warning message will appear 'Description is required'
+Then an error message will appear 'Description is Required'
 
 Scenario: #5 Label field character count
 Given I am logged into the CTRP Protocol Abstraction application
