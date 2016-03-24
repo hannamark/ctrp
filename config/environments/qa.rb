@@ -44,7 +44,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-      address: "mailfwd.nih.gov",
+      address: "mailfwd.hub.nih.gov",
       port: 25,
       authentication: "plain"
   }
