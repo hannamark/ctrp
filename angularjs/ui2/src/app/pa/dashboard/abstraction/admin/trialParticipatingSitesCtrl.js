@@ -16,6 +16,8 @@
 
         // injected objects
         vm.curTrial = trialDetailObj;
+
+        console.log("Initial vm.curTrial.participating_sites="+JSON.stringify(trialDetailObj.participating_sites));
         vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
 
         // initializations
@@ -297,7 +299,7 @@
          *  Initialize Investigator Grid
          */
         vm.initInvestigatorGrid = function (){
-            //console.log("in vm.initInvestigatorGrid");
+            console.log("in vm.initInvestigatorGrid vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
             vm.investigatorGrid = [];
             for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
                 var invObj = vm.currentParticipatingSite.participating_site_investigators[i];
@@ -306,7 +308,11 @@
                 invObj.new = false;
                 invObj.uiEdit = false;
                 invObj._destroy = false;
-
+                // refreshing the current participating site person
+                if(vm.persisted_contact &&  vm.persisted_contact.persisted_person) {
+                    vm.currentParticipatingSite.person = vm.persisted_contact.persisted_person;
+                    vm.currentParticipatingSite.person_id = vm.persisted_contact.persisted_person.id;
+                }
                 if(vm.currentParticipatingSite.contact_type == "PI"){
                     if (vm.currentParticipatingSite.person.id == invObj.person.id) {
                         invObj.set_as_contact = true;
@@ -482,11 +488,16 @@
          */
         function deleteInvestigator(index) {
             //if (index < vm.tempTrialStatuses.length) {
-            console.log("In delete  deleteInvestigator");
+            console.log("In delete  deleteInvestigator vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
             if (vm.currentParticipatingSite.participating_site_investigators[index]){
                 vm.currentParticipatingSite.participating_site_investigators[index].edit = false;
                 vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
                 if (vm.currentParticipatingSite.contact_type == "PI") {
+                    // refreshing the current participating site person
+                    if(vm.persisted_contact &&  vm.persisted_contact.persisted_person) {
+                        vm.currentParticipatingSite.person = vm.persisted_contact.persisted_person;
+                        vm.currentParticipatingSite.person_id = vm.persisted_contact.persisted_person.id;
+                    }
                     if (vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
                         vm.currentParticipatingSite.contact_name = null;
                         vm.currentParticipatingSite.contact_phone =  null;
@@ -497,6 +508,7 @@
                         vm.persisted_contact.contact_email = null;
                         vm.persisted_contact.contact_type = null;
                         vm.persisted_contact.persisted_person = null;
+                        vm.persisted_contact.persisted_person_id = null;
                     }
                 }
                 if( vm.current_investigator) {
