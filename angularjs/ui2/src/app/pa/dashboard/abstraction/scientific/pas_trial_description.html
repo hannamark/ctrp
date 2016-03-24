@@ -72,6 +72,9 @@
                                           class="form-control"
                                           ng-model="descView.curTrial.objective">
                                 </textarea>
+                                <span ng-show="desc_form.objective.$dirty">
+                                    {{32000 - desc_form.objective.$viewValue.length}} characters left
+                                </span>
                             </div>
                         </div>
                     </fieldset>
