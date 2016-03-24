@@ -7,7 +7,7 @@
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
-                <fieldset class="sub-bordered" restriction-fieldng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                     <legend class="sub-bordered">Study Source:</legend>
                     <div class="form-group required" ng-class="{'has-error': !trialNciView.study_source_id && ctrpbtn.trial_form.needsAttention(trial_form.study_source_id)}">
                         <label for="study_source" class="control-label col-xs-12 col-sm-3">Study Source: </label>
@@ -56,7 +56,7 @@
             <!-- second row in the accordion body -->
             <div class="row">
                 <!--div class="col-xs-12 pull-left"-->
-                <fieldset class="sub-bordered" restriction-field>
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                     <legend class="sub-bordered">Program Code:</legend>
                     <div class="form-group">
                         <label for="program_code" class="control-label col-xs-12 col-sm-3">Program Code</label>
@@ -114,6 +114,7 @@
                         </div>
                  </fieldset>
                         <!-- end of first form-group -->
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
 
                         <!-- first form-group -->
                         <div class="form-group">
@@ -138,6 +139,7 @@
                                 </button>
                             </div>
                         </div>
+                </fieldset>
                 <!--/div-->
             </div>
         </uib-accordion-group>

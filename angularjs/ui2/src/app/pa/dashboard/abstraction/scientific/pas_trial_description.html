@@ -13,7 +13,7 @@
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.brief_title)}">
                             <label for="brief_title" class="control-label col-xs-12 col-sm-2">Brief Title</label>
                             <div class="col-xs-12 col-sm-10">
-                                <textarea name="brief_title"
+                                <input name="brief_title"
                                           id="brief_title"
                                           rows="5"
                                           class="form-control"
@@ -21,7 +21,7 @@
                                           ng-maxlength="300"
                                           maxlength="300"
                                           ng-required="true">
-                                </textarea>
+                                </input>
                                 <span ng-show="desc_form.brief_title.$dirty">
                                     {{300 - desc_form.brief_title.$viewValue.length}} characters left
                                 </span>
@@ -29,7 +29,7 @@
                             </div>
 
                             <span ng-messages="ctrpbtn.desc_form.needsAttention(desc_form.brief_title) && desc_form.brief_title.$error">
-                              <span class="help-block" ng-message="required">Please enter the Brief Title</span>
+                              <span class="help-block" ng-message="required">Brief Title is required</span>
                             </span>
                         </div>
                     </fieldset>
@@ -55,7 +55,7 @@
                             </div>
 
                             <span ng-messages="ctrpbtn.desc_form.needsAttention(desc_form.brief_summary) && desc_form.brief_summary.$error">
-                              <span class="help-block" ng-message="required">Please enter the Brief Summary</span>
+                              <span class="help-block" ng-message="required">Summary is required</span>
                             </span>
                         </div>
                     </fieldset>
