@@ -252,18 +252,20 @@
             vm.addEditMode = true;
             vm.currentParticipatingSite = vm.curTrial.participating_sites[idx];
             console.log("HIIII in setEditMode = " + JSON.stringify(vm.currentParticipatingSite));
-            vm.city =  vm.curTrial.participating_sites[idx].organization.city;
-            vm.state_province =  vm.curTrial.participating_sites[idx].organization.state_province;
-            vm.country = vm.curTrial.participating_sites[idx].organization.country;
-            vm.postal_code = vm.curTrial.participating_sites[idx].organization.postal_code;
-            vm.po_name = vm.curTrial.participating_sites[idx].organization.po_name;
-            vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
+            if(vm.curTrial.participating_sites[idx].organization) {
+                vm.city = vm.curTrial.participating_sites[idx].organization.city;
+                vm.state_province = vm.curTrial.participating_sites[idx].organization.state_province;
+                vm.country = vm.curTrial.participating_sites[idx].organization.country;
+                vm.postal_code = vm.curTrial.participating_sites[idx].organization.postal_code;
+                vm.po_name = vm.curTrial.participating_sites[idx].organization.po_name;
+                vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
+            }
             vm.persisted_contact = {};
             vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
             vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
             vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
             vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
-            vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person
+            vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
             vm.persisted_organization = vm.currentParticipatingSite.organization;
             vm.initSiteRecruitmentGrid();
             vm.initInvestigatorGrid();
@@ -486,10 +488,15 @@
                 vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
                 if (vm.currentParticipatingSite.contact_type == "PI") {
                     if (vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
-                        vm.currentParticipatingSite.person = null;
-                        vm.currentParticipatingSite.person_id = null;
+                        vm.currentParticipatingSite.contact_name = null;
+                        vm.currentParticipatingSite.contact_phone =  null;
+                        vm.currentParticipatingSite.contact_email =  null;
                         vm.currentParticipatingSite.contact_type = null;
-                        vm.currentParticipatingSite.contact_type = null;
+                        vm.persisted_contact.contact_name = null;
+                        vm.persisted_contact.contact_phone = null;
+                        vm.persisted_contact.contact_email = null;
+                        vm.persisted_contact.contact_type = null;
+                        vm.persisted_contact.persisted_person = null;
                     }
                 }
                 if( vm.current_investigator) {
@@ -556,7 +563,7 @@
            // if (vm.current_investigator.edit) {
                 for (var i = 0; i < vm.investigatorGrid.length; i++) {
                     console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
-                     if (vm.current_investigator.id == vm.investigatorGrid[i].id){
+                     if (vm.current_investigator.person.id == vm.investigatorGrid[i].person.id){
                         vm.investigatorGrid.splice(i,1);
                         vm.investigatorGrid.splice(i, 0, vm.current_investigator);
                         //vm.investigatorGrid.push(vm.current_investigator);
@@ -564,6 +571,17 @@
                              vm.currentParticipatingSite.person_id =  vm.current_investigator.person.id;
                              vm.currentParticipatingSite.person =  vm.current_investigator.person;
                              vm.currentParticipatingSite.contact_type = "PI";
+                         } else {
+                             if(vm.currentParticipatingSite.contact_type == "PI"){
+                                 if(vm.currentParticipatingSite.person.id == vm.current_investigator.person.id){
+                                     vm.currentParticipatingSite.contact_name = null;
+                                     vm.currentParticipatingSite.contact_phone = null;
+                                     vm.currentParticipatingSite.contact_email = null;
+                                     vm.currentParticipatingSite.person_id = null;
+                                     vm.currentParticipatingSite.person = null;
+                                     vm.currentParticipatingSite.contact_type = null;
+                                 }
+                             }
                          }
                     } else {
                          if(vm.current_investigator.set_as_contact){
@@ -651,6 +669,7 @@
                         vm.currentParticipatingSite.contact_phone = null;
                         vm.currentParticipatingSite.contact_email = null;
                         vm.currentParticipatingSite.person_id = null;
+                        vm.currentParticipatingSite.person = null;
                     }
                 }
 
