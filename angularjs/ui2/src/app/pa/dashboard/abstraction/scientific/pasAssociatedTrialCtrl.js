@@ -46,10 +46,11 @@
                     .then(function(res) {
                     console.info('res in looking up trial', res);
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
-                    vm.foundTrialObj.research_category_name = res.research_category_name || _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
+                    vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
                     vm.foundTrialObj.official_title = res.official_title || '';
                     vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
+                    vm.foundTrialObj.research_category_name = res.research_category
                     vm.foundTrialObj.errorMsg = !!res.error_msg ? res.error_msg : '';
                 }).catch(function(err) {
                     console.error('err in looking up the trial: ', vm.trialQueryObj);
@@ -80,7 +81,7 @@
             function _getTrialDetailCopy() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 vm.trialDetailObj.associated_trials = _.map(vm.trialDetailObj.associated_trials, function(trial) {
-                    trial.research_category_name = _.findWhere(vm.identifierTypes, {id: trial.identifier_type_id}).name;
+                    trial.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: trial.identifier_type_id}).name;
                     trial.researchCategory = ''; // TODO:
                     return trial;
                 });

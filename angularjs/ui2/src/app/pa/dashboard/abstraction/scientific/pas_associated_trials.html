@@ -98,19 +98,18 @@
                         <tr ng-repeat="t in assoTrialsView.trialDetailObj.associated_trials track by $index" ng-class="t._destroy ? 'deleted-text' : ''">
                             <td class="text-center">
                                 <span ng-show="t.trial_identifier.indexOf('NCI') > -1">
-                                    {{t.trial_identifier}}
-                                    <!-- <a ui-sref="main.trialDetail({trialId: t.associated_trial_id, editType: 'complete'})">{{t.trial_identifier}}</a> -->
+                                    <a ui-sref="main.trialDetail({trialId: t.associated_trial_id, editType: 'complete'})">{{t.trial_identifier}}</a>
                                 </span>
                                 <span ng-show="t.trial_identifier.indexOf('NCI') === -1">
-                                    <a href="https://clinicaltrials.gov/ct2/show/{{t.trial_identifier}}" target="_blank">{{t.trial_identifier}}</a> <!-- <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i> -->
+                                    <a href="https://clinicaltrials.gov/ct2/show/{{t.trial_identifier}}" target="_blank">{{t.trial_identifier}}<i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
                                 </span>
                                 <!-- {{t.trial_identifier}} -->
                             </td>
                             <td class="text-center">
-                                {{t.research_category_name}}
+                                {{t.identifierTypeStr}}
                             </td>
                             <td class="text-center">
-                                {{t.researchCategory}}
+                                {{t.research_category_name}}
                             </td>
                             <td>
                                 {{t.official_title}}
