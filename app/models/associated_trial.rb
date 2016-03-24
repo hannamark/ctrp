@@ -46,7 +46,8 @@ class AssociatedTrial < ActiveRecord::Base
       if (!isExisted)
         Rails.logger.info "creating a reverse trial association"
         Rails.logger.info "parent_trial.id: #{@parent_trial.id}, child_trial.nci_id: #{@child_trial.nci_id}"
-        at = AssociatedTrial.new(trial_identifier: @child_trial.nci_id, identifier_type_id: identifier_type_id, trial_id: @parent_trial.id, official_title: @child_trial.official_title)
+        research_category_name = ResearchCategory.find_by_id(@child_trial.research_category_id).name
+        at = AssociatedTrial.new(trial_identifier: @child_trial.nci_id, identifier_type_id: identifier_type_id, trial_id: @parent_trial.id, official_title: @child_trial.official_title, research_category_name: research_category_name)
         at.save!
       else
         Rails.logger.error "reverse trial already exists!"
