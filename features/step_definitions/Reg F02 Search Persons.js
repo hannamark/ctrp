@@ -34,9 +34,19 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected the option "([^"]*)"$/, function (arg1, callback) {
+        if(arg1 === 'Search Persons'){
         menuItem.clickPeople();
         menuItem.clickListPeople();
         searchPerson.clickClear();
+        }
+        else if(arg1 === 'Search Organizations') {
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchPerson.clickClear();
+        }
+        else{
+            callback(new Error(" ***** No Match found ***** "));
+        }
         browser.sleep(25).then(callback);
     });
 

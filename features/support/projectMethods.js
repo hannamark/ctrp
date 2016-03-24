@@ -22,6 +22,7 @@ var loginPage = require('../support/LoginPage');
 var moment = require('moment');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 var trialMenuItemList = require('../support/trialCommonBar');
+var addTrialPage = require('../support/registerTrialPage');
 
 
 var projectMethods = function() {
@@ -37,6 +38,7 @@ var projectMethods = function() {
     var helper = new helperFunctions();
     var commonFunctions = new abstractionCommonMethods();
     var trialMenuItem = new trialMenuItemList();
+    var addTrial = new addTrialPage();
     var self = this;
 
     /**********************************
@@ -698,6 +700,91 @@ var projectMethods = function() {
         });
     };
 
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Organization with Parameters for Search, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgForSearchWithParameters = function(user, orgName, orgAlias, orgAdd1, orgAdd2, orgCountry, orgState, orgCity, orgPostal, orgEmail, orgPhone, orgFax, orgFamilyName, familyStatus, familyType, orgFamilyRel, orgEffDay, orgEffMonth, orgEffYear, orgExpDay, orgExpMonth, orgExpYear ){
+        if(user === 'ctrpcurator') {
+            menuItem.clickHomeEnterOrganizations();
+            login.clickWriteMode('On');
+        }
+            menuItem.clickOrganizations();
+            menuItem.clickListOrganizations();
+            searchOrg.setOrgName(orgName + moment().format('MMMDoYY h'));
+            orgSearch = searchOrg.orgName.getAttribute('value');
+            searchOrg.clickSearchButton();
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
+                if(state === true) {
+                    console.log('Organization exists');
+                    orgSearch.then(function(value){
+                        element(by.linkText(value)).click();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        cukeFamily = addOrg.addVerifyOrgFamilyName.getText();
+                    });
+                }
+                else {
+                    commonFunctions.onPrepareLoginTest('ctrpcurator');
+                    menuItem.clickHomeEnterOrganizations();
+                    login.clickWriteMode('On');
+                    browser.driver.wait(function() {
+                        console.log('wait here');
+                        return true;
+                    }, 40).then(function() {
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        orgSearch.then(function(value){
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias(orgAlias);
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress(orgAdd1);
+                        addOrg.setAddAddress2(orgAdd2);
+                        selectValue.selectCountry(orgCountry);
+                        selectValue.selectState(orgState);
+                        addOrg.setAddCity(orgCity);
+                        addOrg.setAddPostalCode(orgPostal);
+                        addOrg.setAddEmail(orgEmail);
+                        addOrg.setAddPhone(orgPhone);
+                        addOrg.setAddFax(orgFax);
+                        addOrg.clickSave();
+                        orgSourceId = addOrg.addOrgCTRPID.getText();
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddFamily();
+                        addFamily.setAddFamilyName(orgFamilyName + moment().format('MMMDoYY hmmss'));
+                        cukeFamily = addFamily.addFamilyName.getAttribute('value');
+                        selectValue.selectFamilyStatus(familyStatus);
+                        selectValue.selectFamilyType(familyType);
+                        searchOrg.clickOrgSearchModel();
+                        searchOrg.setOrgName(orgSearch);
+                        searchOrg.clickSearchButton();
+                        searchOrg.selectOrgModelItem();
+                        searchOrg.clickOrgModelConfirm();
+                        selectValue.selectOrgFamilyRelationship(orgFamilyRel);
+                        addTrial.clickAddTrialDateField('0');
+                        addTrial.clickAddTrialDateFieldDifferentYear(orgEffYear, orgEffMonth, orgEffDay);
+                        addTrial.clickAddTrialDateField('1');
+                        addTrial.clickAddTrialDateFieldDifferentYear(orgExpYear, orgExpMonth, orgExpDay);
+                        addFamily.clickSave();
+                        browser.driver.wait(function () {
+                            console.log('wait here');
+                            return true;
+                        }, 40).then(function () {
+                            login.loginUser.getText().then(function (value) {
+                                if (user !== value) {
+                                    commonFunctions.onPrepareLoginTest(user);
+                                    if (user === 'ctrptrialsubmitter') {
+                                        trialMenuItem.clickHomeSearchTrial();
+                                        login.clickWriteMode('On');
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }
+            });
+    };
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Edit, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
@@ -818,7 +905,6 @@ var projectMethods = function() {
      * Method: This will create Person for Search with parameters, it creates a new person then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.createPersonForSearchWithParameters = function(user, prefix, fName, mName, lName, suffix, email, phone, affOrgName, affOrgAlias, affOrgAddress1, affOrgAddress2, affOrgCountry, affOrgState, affOrgCity, affOrgPostalCode, affOrgEmail, affOrgPhone, affOrgFax  ){
-
             if(user === 'ctrpcurator') {
                 menuItem.clickHomeEnterOrganizations();
                 login.clickWriteMode('On');
