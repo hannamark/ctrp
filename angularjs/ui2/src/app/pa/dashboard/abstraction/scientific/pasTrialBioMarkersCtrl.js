@@ -4,10 +4,10 @@
         .controller('pasBioMarkersCtrl', pasBioMarkersCtrl);
 
     pasBioMarkersCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj','assayTypes','evaluationTypes','specimenTypes','biomarkerUses','biomarkerPurposes'];
+        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj','assayTypes','evaluationTypes','specimenTypes','biomarkerUses','biomarkerPurposes','$location','$anchorScroll'];
 
     function pasBioMarkersCtrl($scope, TrialService, PATrialService, toastr,
-                                   MESSAGES, _, $timeout, uiGridConstants,trialDetailObj,assayTypes,evaluationTypes,specimenTypes,biomarkerUses,biomarkerPurposes) {
+                                   MESSAGES, _, $timeout, uiGridConstants,trialDetailObj,assayTypes,evaluationTypes,specimenTypes,biomarkerUses,biomarkerPurposes, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentBioMarker= {};
@@ -40,9 +40,6 @@
         $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
 
         vm.biomarkerUses=biomarkerUses;
-
-
-
 
         $scope.toggle = function (item, list,type) {
 
@@ -84,8 +81,10 @@
                 }
             }
 
-            if (idx > -1) list.splice(idx, 1);
-            else list.push(item);
+            if (idx > -1)
+                list.splice(idx, 1);
+            else
+                list.push(item);
         };
 
         $scope.exists = function (item, list) {
@@ -94,11 +93,9 @@
                 if(list[i].id == item.id) {
                     return true;
                 }
-            };
+            }
             return false;
         };
-
-        //
 
         activate();
         function activate() {
@@ -116,7 +113,6 @@
         $scope.deleteRow = function(row) {
             OutcomeMeasureService.getGridOptions().data.splice(row.entity.id, 1);
         };
-
 
         function _watchCheckedEvalTypes() {
             $scope.$watchCollection('checked_eval_types', function (newNames, oldNames) {
@@ -224,11 +220,9 @@
 
             }
 
-
             vm.isEvalTypeOtherChecked=false;
             vm.isAssayTypeOtherChecked=false;
             vm.isSpecTypeOtherChecked=false;
-
 
             for (var i = 0; i < vm.checked_eval_types.length; i++) {
                if(vm.checked_eval_types[i].code =="Other")
@@ -239,9 +233,6 @@
                 evalHash.evaluation_type_id=vm.checked_eval_types[i].id; //eval_type_id
                 vm.currentBioMarker.marker_eval_type_associations_attributes.push(evalHash);
             }
-
-
-
 
             for (var i = 0; i < vm.checked_assay_types.length; i++) {
                 if(vm.checked_assay_types[i].code =="Other")
@@ -407,22 +398,28 @@
         /**
          *  Set Add Mode.
          **/
-        function setAddMode() {
-            vm.addEditMode = true;
-            vm.currentBioMarker= {};
-            vm.currentBioMarker.record_status="Pending";
-            vm.currentBioMarker.status_alert=true;
-            vm.currentBioMarker.cadsr_marker_id=0;
-            vm.checked_assay_types=[];
-            vm.checked_eval_types=[];
-            vm.checked_spec_types=[];
-            vm.checked_biomarker_purposes=[];
-            vm.selOrganization = {name: '', array: []};
+        function setAddMode(addEditModeValue) {
+            if (!(typeof addEditModeValue === 'undefined' || addEditModeValue === null)) {
+                vm.addEditMode = addEditModeValue;
+                $location.hash('section_top');
+                $anchorScroll();
+            } else {
+                vm.addEditMode = true;
+                vm.currentBioMarker= {};
+                vm.currentBioMarker.record_status="Pending";
+                vm.currentBioMarker.status_alert=true;
+                vm.currentBioMarker.cadsr_marker_id=0;
+                vm.checked_assay_types=[];
+                vm.checked_eval_types=[];
+                vm.checked_spec_types=[];
+                vm.checked_biomarker_purposes=[];
+                vm.selOrganization = {name: '', array: []};
 
-            $scope.checked_eval_types=vm.checked_eval_types;
-            $scope.checked_assay_types=vm.checked_assay_types;
-            $scope.checked_spec_types=vm.checked_spec_types;
-            $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
+                $scope.checked_eval_types=vm.checked_eval_types;
+                $scope.checked_assay_types=vm.checked_assay_types;
+                $scope.checked_spec_types=vm.checked_spec_types;
+                $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
+            }
         }
 
         /**
@@ -465,11 +462,6 @@
 
         }
 
-
-
-
-
-
         function resetBioMarker() {
             if(vm.currentBioMarker.id > 0){
                 var cachedTrial = PATrialService.getCurrentTrialFromCache();
@@ -498,6 +490,4 @@
         } //getTrialDetailCopy
 
     }
-
 })();
-
