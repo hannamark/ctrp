@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160321201358) do
+ActiveRecord::Schema.define(version: 20160324172554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,14 +122,15 @@ ActiveRecord::Schema.define(version: 20160321201358) do
   end
 
   create_table "associated_trials", force: :cascade do |t|
-    t.string   "trial_identifier",   limit: 255
+    t.string   "trial_identifier",       limit: 255
     t.integer  "identifier_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.string   "uuid",               limit: 255
-    t.integer  "lock_version",                   default: 0
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
     t.text     "official_title"
+    t.string   "research_category_name"
   end
 
   add_index "associated_trials", ["identifier_type_id"], name: "index_associated_trials_on_identifier_type_id", using: :btree
@@ -777,20 +778,21 @@ ActiveRecord::Schema.define(version: 20160321201358) do
   add_index "participating_site_investigators", ["person_id"], name: "index_participating_site_investigators_on_person_id", using: :btree
 
   create_table "participating_sites", force: :cascade do |t|
-    t.string   "protocol_id",     limit: 255
-    t.string   "program_code",    limit: 255
-    t.string   "contact_name",    limit: 255
-    t.string   "contact_phone",   limit: 255
-    t.string   "contact_email",   limit: 255
+    t.string   "protocol_id",            limit: 255
+    t.string   "program_code",           limit: 255
+    t.string   "contact_name",           limit: 255
+    t.string   "contact_phone",          limit: 255
+    t.string   "contact_email",          limit: 255
     t.integer  "trial_id"
     t.integer  "organization_id"
     t.integer  "person_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
-    t.string   "uuid",            limit: 255
-    t.integer  "lock_version",                default: 0
-    t.string   "extension",       limit: 255
-    t.string   "contact_type",    limit: 255
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
+    t.string   "extension",              limit: 255
+    t.string   "contact_type",           limit: 255
+    t.string   "local_trial_identifier"
   end
 
   add_index "participating_sites", ["organization_id"], name: "index_participating_sites_on_organization_id", using: :btree

@@ -62,7 +62,7 @@
 
                 <div class="form-group text-center">
                     <button type="button" class="btn btn-warning" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">Reset</button>
-                    <button class="btn btn-primary" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
+                    <button type="button" class="btn btn-primary" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
                     <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             <div class="row">
                 <span ng-show="assoTrialsView.trialDetailObj.associated_trials.length === 0">Nothing found to display</span>
 
-                <button type="button" class="btn btn-default" ng-click="assoTrialsView.showTrialLookupForm()">
+                <button type="button" class="btn btn-default" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
                     <i class="glyphicon glyphicon-plus"></i> Add a Trial
                 </button>
             </div>
@@ -97,13 +97,18 @@
                     <tbody>
                         <tr ng-repeat="t in assoTrialsView.trialDetailObj.associated_trials track by $index" ng-class="t._destroy ? 'deleted-text' : ''">
                             <td class="text-center">
-                                {{t.trial_identifier}}
+                                <span ng-show="t.trial_identifier.indexOf('NCI') > -1">
+                                    <a ui-sref="main.viewTrial({trialId: t.associated_trial_id})">{{t.trial_identifier}}</a>
+                                </span>
+                                <span ng-show="t.trial_identifier.indexOf('NCI') === -1">
+                                    <a href="https://clinicaltrials.gov/ct2/show/{{t.trial_identifier}}" target="_blank">{{t.trial_identifier}}</a>
+                                </span>
                             </td>
                             <td class="text-center">
                                 {{t.identifierTypeStr}}
                             </td>
                             <td class="text-center">
-                                {{t.researchCategory}}
+                                {{t.research_category_name}}
                             </td>
                             <td>
                                 {{t.official_title}}
