@@ -270,6 +270,10 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         }; //getUserByName
 
+        this.getCurrentUserDetails = function () {
+            var username = LocalCacheService.getCacheWithKey('username');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
+        };
 
         /**
          * Get the user role of the logged in user
