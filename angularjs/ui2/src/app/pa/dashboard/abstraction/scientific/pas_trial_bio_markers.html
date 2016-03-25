@@ -72,8 +72,8 @@
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
                                         <div class="checkbox checkbox-info" flex="40" ng-repeat="et in markersView.evalTypes">
-                                            <label for="eval_types">
-                                                <input id="eval_types" type="checkbox" ng-checked="exists(et, markersView.checked_eval_types)" ng-click="toggle(et, markersView.checked_eval_types,'ET')" ng-required="true"> {{ et.code }}
+                                            <label>
+                                                <input id="eval_types_{{$index}}" type="checkbox" ng-checked="exists(et, markersView.checked_eval_types)" ng-click="toggle(et, markersView.checked_eval_types,'ET')" ng-required="true"> {{ et.code }}
                                             </label>
                                         </div>
                                     </div>
@@ -114,8 +114,8 @@
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
                                         <div class="checkbox checkbox-info" flex="40" ng-repeat="at in markersView.assayTypes">
-                                            <label for="assay_types">
-                                                <input id="assay_types" type="checkbox" ng-checked="exists(at, markersView.checked_assay_types)" ng-click="toggle(at, markersView.checked_assay_types,'AT')" ng-required="true"> {{ at.code }}
+                                            <label>
+                                                <input id="assay_types_{{$index}}" type="checkbox" ng-checked="exists(at, markersView.checked_assay_types)" ng-click="toggle(at, markersView.checked_assay_types,'AT')" ng-required="true"> {{ at.code }}
                                             </label>
                                         </div>
                                     </div>
@@ -135,9 +135,6 @@
                                             </span>
                                         </div>
                                     </div>
-
-
-
                                     <span class="help-block top-offset-xss" ng-show="required" class="required" ng-hide="!markersView.show_assay_type_alert">Assay Type must be entered</span>
                                 </div>
                             </div>
@@ -149,15 +146,14 @@
                             <legend class="sub-bordered">Biomarker Use & Purpose</legend>
 
                             <!-- bio marker use -->
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markers_form.biomarker_use)}">
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use)}">
                                 <label for="biomarker_use" class="control-label col-xs-12 col-sm-2">Biomarker Use:</label>
                                 <div class="col-xs-12 col-sm-6">
                                     <select name="biomarker_use" id="biomarker_use"
                                             class="form-control input-sm"
                                             ng-required="true"
                                             ng-model="markersView.currentBioMarker.biomarker_use_id"
-                                            ng-options="use.id as use.name for use in markersView.biomarkerUses"
-                                            >
+                                            ng-options="use.id as use.name for use in markersView.biomarkerUses">
                                         <option value="">- Please select a bio marker use...</option>
                                     </select>
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) && marker_form.biomarker_use.$error">
@@ -176,8 +172,8 @@
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
                                         <div class="checkbox checkbox-info" flex="40" ng-repeat="bp in markersView.biomarkerPurposes">
-                                            <label for="biomarker_purposes">
-                                                <input id="biomarker_purposes" type="checkbox" ng-checked="exists(bp, markersView.checked_biomarker_purposes)" ng-click="toggle(bp, markersView.checked_biomarker_purposes,'BP')" ng-required="true"> {{ bp.code }}
+                                            <label>
+                                                <input id="biomarker_purposes_{{$index}}" type="checkbox" ng-checked="exists(bp, markersView.checked_biomarker_purposes)" ng-click="toggle(bp, markersView.checked_biomarker_purposes,'BP')" ng-required="true"> {{ bp.code }}
                                             </label>
                                         </div>
                                     </div>
@@ -205,8 +201,8 @@
                                 <div class="col-xs-12 col-sm-10">
                                     <div layout="row" layout-wrap flex>
                                         <div class="checkbox checkbox-info" flex="40" ng-repeat="st in markersView.specTypes">
-                                            <label for="spec_types">
-                                                <input id="spec_types" type="checkbox" ng-checked="exists(st, markersView.checked_spec_types)" ng-click="toggle(st, markersView.checked_spec_types,'ST')" ng-required="true"> {{ st.code }}
+                                            <label>
+                                                <input id="spec_types_{{$index}}" type="checkbox" ng-checked="exists(st, markersView.checked_spec_types)" ng-click="toggle(st, markersView.checked_spec_types,'ST')" ng-required="true"> {{ st.code }}
                                             </label>
                                         </div>
                                     </div>

@@ -419,6 +419,12 @@
                 $scope.checked_assay_types=vm.checked_assay_types;
                 $scope.checked_spec_types=vm.checked_spec_types;
                 $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
+
+                vm.isSpecTypeOtherChecked = false;
+                vm.isAssayTypeOtherChecked = false
+                vm.isEvalTypeOtherChecked = false;
+                
+
             }
         }
 
@@ -465,20 +471,20 @@
         function resetBioMarker() {
             if(vm.currentBioMarker.id > 0){
                 var cachedTrial = PATrialService.getCurrentTrialFromCache();
+
                 vm.checked_assay_types=[];
-
                 vm.checked_eval_types=[];
-
                 vm.checked_spec_types=[];
-
                 vm.checked_biomarker_purposes=[];
+
                 for (var i = 0; i < cachedTrial.bio_markers.length; i++) {
                     if(cachedTrial.bio_markers[i].id == vm.currentBioMarker.id){
                         vm.currentBioMarker = cachedTrial.bio_markers[i];
-                        
+
                         vm.isEvalTypeOtherChecked=false;
                         vm.isAssayTypeOtherChecked=false;
                         vm.isSpecTypeOtherChecked=false;
+
                         if (vm.currentBioMarker.assay_type_other && vm.currentBioMarker.assay_type_other.length > 0) {
                             vm.isAssayTypeOtherChecked=true;
                         }
@@ -497,10 +503,8 @@
                         $scope.checked_assay_types=vm.checked_assay_types;
                         $scope.checked_spec_types=vm.checked_spec_types;
                         $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
-
                     }
                 }
-
             } else {
                 vm.setAddMode();
             }
@@ -508,7 +512,6 @@
             $timeout(function() {
                 getTrialDetailCopy();
             }, 0);
-
         }
 
         function getTrialDetailCopy() {

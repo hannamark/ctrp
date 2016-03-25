@@ -170,7 +170,7 @@ And I have selected a trial
 And I have selected Check In  
 And I select the Check Type 
 And I do not enter a Comment
-Then the system will display the Error Message "Please enter a Check In comment"
+Then the system will display the Error Message "Check In Comment is Required"
 And the trail will not be checked in
 
 Scenario: #8 Trial Check In with Warnings and Errors (same as PA F12)
