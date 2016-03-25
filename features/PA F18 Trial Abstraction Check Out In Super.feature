@@ -25,11 +25,11 @@ Then the Trial Administration and Scientific sections (listed below) will locked
 |Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
-|Disease / Condition|
+|Diseases / Conditions|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
 |Sub-Groups Stratification|
-|Markers|
+|Biomarkers|
 And the Check Out Type will be Administrative
 And the Administrative Check Out User will be my User ID
 And the Administrative Check Out Date will be the current date and time
@@ -170,7 +170,7 @@ And I have selected a trial
 And I have selected Check In  
 And I select the Check Type 
 And I do not enter a Comment
-Then the system will display the Error Message "Please enter a Check In comment"
+Then the system will display the Error Message "Check In Comment is Required"
 And the trail will not be checked in
 
 Scenario: #8 Trial Check In with Warnings and Errors (same as PA F12)
