@@ -72,14 +72,23 @@ class CadsrMarkersController < ApplicationController
     p highlight_query_text
     p case_sensitive_search
     p cadsr_id
+    p "true" if Integer("123") rescue nil?
 
-      @cadsr_markers=CadsrMarker.all
 
-    if (!cadsr_id.nil?)
-      @cadsr_markers_ids=@cadsr_markers.matches('cadsr_id',cadsr_id)
+    @cadsr_markers=CadsrMarker.all
+
+    if (!cadsr_id.nil? && cadsr_id !="")
+      p "cadsr_id is not nil"
+       p cadsr_id
+      if (Integer(cadsr_id) rescue nil?)
+        @cadsr_markers=@cadsr_markers.matches('cadsr_id',cadsr_id)
+      else
+       @cadsr_markers=[]
+      end
     end
 
-    if(!pv_name.nil? && pv_name !="" && !@cadsr_markers.nil?)
+
+    if(!pv_name.nil? && pv_name !="" && !@cadsr_markers.nil? && @cadsr_markers.length > 0)
       @cadsr_markers = @cadsr_markers.matches_wc('pv_name', pv_name,case_sensitive_search)
     end
 

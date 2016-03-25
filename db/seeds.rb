@@ -217,7 +217,7 @@ StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
 
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
-OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Pre-specified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
 Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
@@ -370,7 +370,7 @@ BiomarkerPurpose.find_or_create_by(id:1, code: 'Eligibility Criterion', name:'El
 BiomarkerPurpose.find_or_create_by(id:4, code: 'Research', name:'Research')
 BiomarkerPurpose.find_or_create_by(id:5, code: 'Response Assessment', name:'Response Assessment')
 
-IdentifierType.find_or_create_by(code: 'CTRP', name: 'CTRP')
+IdentifierType.find_or_create_by(code: 'NCI', name: 'NCI')
 IdentifierType.find_or_create_by(code: 'NCT', name: 'NCT')
 
 CadsrMarker.find_or_create_by(id:659,

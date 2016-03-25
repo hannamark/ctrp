@@ -214,7 +214,7 @@
                         return TrialService.getTrialById($stateParams.trialId);
                     },
                     userDetailObj: function(UserService) {
-                        return UserService.getUserDetailsByUsername();
+                        return UserService.getCurrentUserDetails();
                     },
                     srStatusObj: function(TrialService) {
                         return TrialService.getSrStatuses();
@@ -243,7 +243,7 @@
                         return TrialService.getTrialById($stateParams.trialId);
                     },
                     userDetailObj: function(UserService) {
-                        return UserService.getUserDetailsByUsername();
+                        return UserService.getCurrentUserDetails();
                     },
                     srStatusObj: function(TrialService) {
                         return TrialService.getSrStatuses();
@@ -270,7 +270,7 @@
                         return null;
                     },
                     userDetailObj: function(UserService) {
-                        return UserService.getUserDetailsByUsername();
+                        return UserService.getCurrentUserDetails();
                     },
                     srStatusObj: function(TrialService) {
                         return TrialService.getSrStatuses();

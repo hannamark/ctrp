@@ -15,14 +15,21 @@ And I provide the <Country> of the organization where the default is "All Countr
 And I submit my search request
 Then the system should display the organization with that PO Organization ID
 And the <Organization Search Results> will display Organizations with an Active status in the CTRP Context sorted by Organization Name:
-|PO Organization ID|
-|CTEP Organization ID|
-|Organization Name|
-|Family Name|
+|CTRP ID|
+|CTEP ID|
+|Name|
+|Source Status|
+|Source Context|
+|Source ID|
+|Families|
+|Phone|
+|Email|
 |City|
 |State|
 |Country|
-|Zip|
+|Postal Code|
+
+
 
 Example:
 |Source ID	||Organization Name	||Family Name	||City		||State		||Country	||Result	|
@@ -34,6 +41,15 @@ Example:
 |		||			||Dana-Farber/Harvard Cancer Center||	||	||All Countries	||True		|
 |		||			||		||		||California	||Unites States	||True		|
 |		||			||		||CA		||		||Peru		||False		|
+
+
+Scenario: #2 I am able to search for Organizations in CTRP as a Registry user
+  Given I am logged into the CTRP Registration application
+  And I have selected the option "Search Organizations” 
+    And the Exact Search is checked by default
+    And I can uncheck the Exact Search
+    And the source context will be "CTRP"
+    And the source status will be "Active"
 
 
 
