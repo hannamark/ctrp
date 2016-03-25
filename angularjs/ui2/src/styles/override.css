@@ -886,4 +886,5 @@ md-checkbox.md-default-theme.md-checked .md-icon {
 /* Angular Material Overrides */
 .md-tab {
     font-size: 13px;
+    text-transform:capitalize;
 }
