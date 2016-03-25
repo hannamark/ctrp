@@ -34,6 +34,10 @@ class NcitDiseaseCode < ActiveRecord::Base
       FileUtils.rm_rf('../../storage/ncit')
       FileUtils.mkdir_p('../../storage/ncit')
 
+      NcitDiseaseParent.delete_all
+      NcitDiseaseSynonym.delete_all
+      NcitDiseaseCode.delete_all
+
       url = AppSetting.find_by_code('NCI_THESAURUS_URL').value
       file_names = AppSetting.find_by_code('NCI_THESAURUS_FILES').big_value.split(',')
       act = NcitStatus.find_by_code('ACT')
