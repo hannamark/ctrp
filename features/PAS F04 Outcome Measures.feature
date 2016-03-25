@@ -67,10 +67,10 @@ And the message Record Updated displays
      
      
       |<AddEditMeasureFieldType>   |<FieldError>  |
-      |Outcome Measure Type        |Outcome Measure Type must be Entered  |
-      |Title                       |Title must be Entered  |
-      |Time Frame                  |Time Frame must be Entered |
-      |Safety Issue                |Safety Issue must be Entered  |
+      |Outcome Measure Type        |Outcome Measure Type is Required  |
+      |Title                       |Title is Required  |
+      |Time Frame                  |Time Frame is Required |
+      |Safety Issue                |Safety Issue is Required  |
 
 
 Scenario:  #4  Reorder Outcome Measures

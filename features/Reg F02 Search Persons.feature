@@ -17,6 +17,7 @@ Scenario Outline: #1 I am able to search for person in CTRP as a Registry user
   And I provide the Source ID <sourceID> of the Person
   And I provide the Email <email> of the Person
   And I provide the Phone <phone> of the Person
+  And I provide the exact match condition <ExactMatch>
   And I submit my search request
   Then the system should display Active Person records in the CTRP context matching the search criteria
   And the Person Search Results <result> will display the following sorted by Person Last Name:
@@ -24,7 +25,7 @@ Scenario Outline: #1 I am able to search for person in CTRP as a Registry user
     |CTEP ID|
     |First|
     |Middle|
-    |Last1|
+    |Last 1|
     |Source Context|
     |Source Status|
     |Source ID|

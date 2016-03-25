@@ -56,6 +56,7 @@ class Ability
       cannot :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_TRIAL-SUBMITTER' && user.approved?
       can :manage, [Trial]
+      can :unique, Organization
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice
@@ -76,6 +77,7 @@ class Ability
       cannot :dashboard
     elsif user.role == 'ROLE_ABSTRACTOR' && user.approved?
       can :manage, [Trial, Comment]
+      can :unique, Organization
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice

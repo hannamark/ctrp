@@ -138,13 +138,13 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
     Examples: 
   
       | <TrialDesignField>        | <TrialDesignErrorMessage>             | 
-      | Primary Purpose           | Primary Purpose must be entered       | 
-      | Trial Phase               | Trial Phase must be entered           | 
-      | Intervention Model        | Intervention Model must be entered    | 
-      | Number of Arms/Groups     | Number of Arms/Groups must be entered | 
-      | Masking                   | Masking must be entered               | 
-      | Allocation                | Allocation must be entered            | 
-      | Target Enrollment         | Target Enrollment must be entered     | 
+      | Primary Purpose           | Primary Purpose is Required       | 
+      | Trial Phase               | Trial Phase is Required           | 
+      | Intervention Model        | Intervention Model is Required    | 
+      | Number of Arms/Groups     | Number of Arms/Groups is Requiredd | 
+      | Masking                   | Masking is Required                | 
+      | Allocation                | Allocation is Required           | 
+      | Target Enrollment         | Target Enrollment is Required     | 
 
 Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPORT Information Source
     Given I am on the Trial Design Screen
@@ -156,8 +156,8 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
     Examples: 
   
       | <TrialDesignField>        | <TrialDesignErrorMessage>             | 
-      | Primary Purpose           | Primary Purpose must be entered       | 
-      | Trial Phase               | Trial Phase must be entered           | 
+      | Primary Purpose           | Primary Purpose is Required       | 
+      | Trial Phase               | Trial Phase is Required           | 
     
   Scenario:#5 Masking field Rules
     Given I am on the Trial Design screen
@@ -243,12 +243,12 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
     Examples: 
   
       | <TrialDesignField>    | <TrialDesignErrorMessage>             | 
-      | Primary Purpose       | Primary Purpose must be entered       | 
-      | Trial Phase           | Trial Phase must be entered           | 
-      | Number of Arms/Groups | Number of Arms/Groups must be entered | 
-      | Masking            | Masking must be entered                  | 
-      | Allocation         | Allocation must be entered               | 
-      | Target Enrollment  | Target Enrollment must be entered        | 
+      | Primary Purpose       | Primary Purpose is Required       | 
+      | Trial Phase           | Trial Phase is Required           | 
+      | Number of Arms/Groups | Number of Arms/Groups is Required | 
+      | Masking            | Masking is Required                  | 
+      | Allocation         | Allocation is Required               | 
+      | Target Enrollment  | Target Enrollment is Required        | 
   
     Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for IMPORT Information Source
     Given I am on the Trial Design Screen
@@ -260,11 +260,11 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
     Examples: 
   
       | <TrialDesignField>    | <TrialDesignErrorMessage>             | 
-      | Primary Purpose       | Primary Purpose must be entered       | 
-      | Trial Phase           | Trial Phase must be entered           | 
+      | Primary Purpose       | Primary Purpose is Required       | 
+      | Trial Phase           | Trial Phase is Required           | 
    
     
-  Scenario Outline: #10 I can up and edit Trial Design for a Expanded Access Clinical Research Category trial 
+  Scenario Outline: #10 I can update and edit Trial Design for a Expanded Access Clinical Research Category trial 
     Given I am logged into the CTRP Protocol Abstraction application
       And I have selected a trial
       And I am on the Trial Design screen
@@ -293,7 +293,7 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
      When I have selected Other for Primary Purpose
      Then I must enter description in the displayed field "if Primary Purpose is "Other", describe"
      When Description is not entered in the displayed field "if Primary Purpose is "Other", describe"
-     Then a warning message will appear "Primary Purpose Of Other text is required”
+     Then an error message will appear "Primary Purpose Of Other text is Required”
   
   Scenario:  #12 Character display for Primary Purpose of Other
     Given I am logged into the CTRP Protocol Abstraction application
