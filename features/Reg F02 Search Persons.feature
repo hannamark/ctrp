@@ -11,26 +11,28 @@ Scenario Outline: #1 I am able to search for person in CTRP as a Registry user
     |PersonFirstName| |PersonLastName| |Affiliation| |SourceStatus| |email| |phone|
     |shiFNameTrial         | |shiLNameTrial        | |shiPerOrgAffTrial| |Active      | |shiPercukeTrial@pr.com| |420-999-8906|
   And I have selected the option "Search Persons"
-  When I provide the Source ID <sourceID> of the Person
   When I provide the First Name <firstName> of the Person
-  When I provide the Last Name <lastName> of the Person
-  When I provide the Email <email> of the Person
-  When I provide the Phone <phone> of the Person
-  When I provide the Organization Affiliation <organizationAffiliation> of the Person
-  When I provide the Exact Match condition <exactMatch>
+  And I provide the Last Name <lastName> of the Person
+  And I provide the Organization Affiliation <organizationAffiliation> of the Person
+  And I provide the Source ID <sourceID> of the Person
+  And I provide the Email <email> of the Person
+  And I provide the Phone <phone> of the Person
   And I submit my search request
   Then the system should display Active Person records in the CTRP context matching the search criteria
   And the Person Search Results <result> will display the following sorted by Person Last Name:
-    |CTRP PersonID|
-    |CTEP Person ID|
-    |Prefix|
-    |First Name|
-    |Middle Name|
-    |Last Name|
-    |Suffix|
+    |CTRP ID|
+    |CTEP ID|
+    |First|
+    |Middle|
+    |Last1|
+    |Source Context|
+    |Source Status|
+    |Source ID|
     |Email|
     |Phone|
-    |Organization Affiliation|
+    |Affiliated Orgs|
+    |Prefix|
+    |Suffix|
 
   Examples:
     |sourceID  |firstName     |lastName      |email                  |phone      |organizationAffiliation  |exactMatch |result    |
