@@ -863,6 +863,10 @@ AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitme
 
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 
 ########## SEEDING MAIL TEMPLATES STARTS ##########
