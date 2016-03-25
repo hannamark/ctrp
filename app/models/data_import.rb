@@ -175,7 +175,7 @@ class DataImport
         i1 = Intervention.new
         i1.name = "CBP/beta-catenin Antagonist PRI-724"
         i1.description = "Given IV"
-        arm1.intervention = i1
+       # arm1.intervention_text= i1.name
         trial.interventions << i1
         arm1.label = "Arm I (PRI-724, mFOLFOX6/bevacizumab)"
         arm1.trial = trial
@@ -184,7 +184,7 @@ class DataImport
         arm2 = ArmsGroup.new
         i2.name = "Bevacizumab"
         i2.description = "Correlative studies"
-        arm2.intervention = i2
+        #arm2.intervention_text = i2.name
         trial.interventions << i2
         arm2.label = "Arm II (mFOLFOX6/bevacizumab)"
         arm2.description = "Patients receive bevacizumab, leucovorin calcium, oxaliplatin, and fluorouracil as in Arm I. Courses repeat every 14 days in the absence of disease progression or unacceptable toxicity."
@@ -291,23 +291,23 @@ class DataImport
       ps.site_rec_status_wrappers <<  srs
       #Organization and Person
       ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
-      ps.person = Person.all[rand(0..(Person.all.size-1))]
-      ps.contact_name = ps.person.fname + " " + ps.person.lname;
-      ps.contact_type = "PI";
-      ps.contact_email = ps.person.email;
-      ps.contact_phone = ps.person.phone;
-      psi = ParticipatingSiteInvestigator.new
-      psi.person = ps.person;
-      psi.investigator_type = "Principal Investigator"
-      psi.set_as_contact = true;
-      ps.participating_site_investigators << psi
+      #ps.person = Person.all[rand(0..(Person.all.size-1))]
+      #ps.contact_name = ps.person.fname + " " + ps.person.lname;
+      #ps.contact_type = "PI";
+      #ps.contact_email = ps.person.email;
+      #ps.contact_phone = ps.person.phone;
+      #psi = ParticipatingSiteInvestigator.new
+      #psi.person = ps.person;
+      #psi.investigator_type = "Principal Investigator"
+      #psi.set_as_contact = false;
+      #ps.participating_site_investigators << psi
 
-      psi2 = ParticipatingSiteInvestigator.new
-      psi2.person = Person.all[rand(0..(Person.all.size-1))]
-      psi2.investigator_type = "Principal Investigator"
-      psi2.set_as_contact = false
+      #psi2 = ParticipatingSiteInvestigator.new
+      #psi2.person = Person.all[rand(0..(Person.all.size-1))]
+      #psi2.investigator_type = "Principal Investigator"
+      #psi2.set_as_contact = false
 
-      ps.participating_site_investigators << psi2
+      #ps.participating_site_investigators << psi2
       trial.participating_sites << ps
       trial.save!
     end

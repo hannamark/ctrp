@@ -4,7 +4,7 @@ class EvaluationTypesController < ApplicationController
   # GET /evaluation_types
   # GET /evaluation_types.json
   def index
-    @evaluation_types = EvaluationType.all
+    @evaluation_types = EvaluationType.all.order(:id)
   end
 
   # GET /evaluation_types/1

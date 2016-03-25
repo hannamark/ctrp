@@ -64,9 +64,47 @@ class CadsrMarkersController < ApplicationController
   def search
 
     pv_name = params[:pv_name]
+    highlight_query_text = params[:highlight_query_text]
+    case_sensitive_search =  params[:case_sensitive_search]
+    cadsr_id = params[:public_id]
 
-   # @cadsr_markers =CadsrMarker.where("pv_name = ? ", pv_name) #params[:trial_id],start_date,end_date).order('created_at desc')
-   @cadsr_markers=CadsrMarker.all
+    p pv_name
+    p highlight_query_text
+    p case_sensitive_search
+    p cadsr_id
+    p "true" if Integer("123") rescue nil?
+
+
+    @cadsr_markers=CadsrMarker.all
+
+    if (!cadsr_id.nil? && cadsr_id !="")
+      p "cadsr_id is not nil"
+       p cadsr_id
+      if (Integer(cadsr_id) rescue nil?)
+        @cadsr_markers=@cadsr_markers.matches('cadsr_id',cadsr_id)
+      else
+       @cadsr_markers=[]
+      end
+    end
+
+
+    if(!pv_name.nil? && pv_name !="" && !@cadsr_markers.nil? && @cadsr_markers.length > 0)
+      @cadsr_markers = @cadsr_markers.matches_wc('pv_name', pv_name,case_sensitive_search)
+    end
+
+    if (@cadsr_markers.nil? )
+        @cadsr_markers=[];
+    end
+
+
+
+
+
+
+
+
+    # @cadsr_markers =CadsrMarker.where("pv_name = ? ", pv_name) #params[:trial_id],start_date,end_date).order('created_at desc')
+
   end
 
   private

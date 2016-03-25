@@ -114,11 +114,16 @@
               <label for="other_identifier" class="control-label col-xs-12 col-sm-2">Identifier:</label>
               <div class="col-xs-12 col-sm-10">
                 <div class="col-xs-12 col-sm-3">
-                  <select ng-init="generalTrialDetailView.otherIdentifier.protocol_id_origin_id" class="form-control input-sm" id="other_identifier"
+                    <select ng-init="generalTrialDetailView.otherIdentifier.protocol_id_origin_id" class="form-control input-sm" id="other_identifier"
                       ng-model="generalTrialDetailView.otherIdentifier.protocol_id_origin_id"
                       ng-options="identifier.id as identifier.name for identifier in generalTrialDetailView.protocolIdOriginArr" name="other_ids">
                       <option value="">Select an identifier</option>
-                  </select>
+                    </select>
+                    <div class="has-error" ng-show="generalTrialDetailView.otherIdErrorMsg.length > 0">
+                      <span class="help-block">
+                          Warning: {{generalTrialDetailView.otherIdErrorMsg}}
+                      </span>
+                    </div>
                 </div>
                 <div class="col-xs-12 col-sm-6">
                   <input type="text" id="identifier_name" class="form-control input-sm" ng-model="generalTrialDetailView.otherIdentifier.protocol_id">
@@ -127,9 +132,6 @@
                     <!-- otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''}; -->
                   <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id"><i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
-              </div>
-              <div class="add-association-error" ng-show="generalTrialDetailView.otherIdErrorMsg.length > 0">
-                  {{generalTrialDetailView.otherIdErrorMsg}}
               </div>
             </div>
 
@@ -254,17 +256,17 @@
                 <label for="central_contact" class="control-label col-xs-12 col-sm-2">Central Contact:</label>
                 <div class="col-xs-12 col-sm-10">
                   <div class="col-xs-12 col-sm-6">
-                    <input type="text" id="central_contact_name" name="central_contact_name" class="form-control" placeholder="Central Contact"
+                    <input type="text" id="central_contact_name" name="central_contact_name" class="form-control input-sm" placeholder="Central Contact"
                         ng-disabled="generalTrialDetailView.centralContactType !== 'General'"
                         ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].fullname"
                         ng-required="generalTrialDetailView.centralContactNameRequired">
+                    <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name) && general_trial_details_form.central_contact_name.$error">
+                        <span class="help-block" ng-message="required">Central contact name is required</span>
+                    </span>
                   </div>
                   <div class="col-xs-12 col-sm-6" ng-show="generalTrialDetailView.centralContactType == 'Person'">
                     <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
                   </div>
-                  <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name) && general_trial_details_form.central_contact_name.$error">
-                      <span class="help-block" ng-message="required">Central contact name is required</span>
-                  </span>
                 </div>
               </div>
 
@@ -275,7 +277,7 @@
                     <div class="col-xs-12 col-sm-10">
                       <div class="col-xs-12 col-sm-6">
                         <input type="email" id="email" name="email" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email"
-                            class="form-control" placeholder="Email">
+                            class="form-control input-sm" placeholder="Email">
                         <span class="form-control-feedback" ng-show="general_trial_details_form.email.$viewValue.length > 0" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                       </div>
                     </div>
@@ -287,11 +289,11 @@
                     <div class="col-xs-12 col-sm-10">
                       <div class="col-xs-12 col-sm-4">
                         <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
-                            class="form-control" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
+                            class="form-control input-sm" placeholder="Phone", ng-change="generalTrialDetailView.isValidPhoneNumber()">
                         <span ng-show="general_trial_details_form.phone.$viewValue.length > 0" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                       </div>
                       <div class="col-xs-12 col-sm-2">
-                          <input type="text" class="form-control" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension"
+                          <input type="text" class="form-control input-sm" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension"
                               placeholder="Extension">
                       </div>
                     </div>

@@ -84,14 +84,19 @@ var registerTrial = function(){
     this.addTrialStartDateOption = element.all(by.model('trialDetailView.curTrial.start_date_qual'));
     this.addTrialStartDateErrorMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)"]'));
     this.addTrialStartDateErrorMessageActualAnticipated = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.sdq_dummy2)"]'));
+    this.addTrialStartDateErrorMessageForTrialStatus = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.sdq_dummy)"]'));
     this.addTrialPrimaryCompletionDate = element(by.model('trialDetailView.curTrial.primary_comp_date'));
     this.addTrialPrimaryCompletionDateOption = element.all(by.model('trialDetailView.curTrial.primary_comp_date_qual'));
     this.addTrialPrimaryCompletionDateErrorMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual)"]'));
     this.addTrialPrimaryCompletionDateErrorMessageActualAnticipated = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy2)"]'));
+    this.addTrialPrimaryCompletionDateErrorMessageForTrialStatus = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy)"]'));
+    this.addTrialPrimaryCompletionDateErrorMessageWithTrialStartDate = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy3)"]'));
     this.addTrialCompletionDate = element(by.model('trialDetailView.curTrial.comp_date'));
     this.addTrialCompletionDateOption = element.all(by.model('trialDetailView.curTrial.comp_date_qual'));
     this.addTrialCompletionDateErrorMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual)"]'));
     this.addTrialCompletionDateErrorMessageActualAnticipated = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy2)"]'));
+    this.addTrialCompletionDateErrorMessageForTrialStatus = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy)"]'));
+    this.addTrialCompletionDateErrorMessageWithTrialPrimaryCompletionDate = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy3)"]'));
 
     /** FDA IND/IDE Information **/
     this.addTrialFDAIND_IDETypesQuestion = element(by.css('div[is-open="trialDetailView.accordions[9]"]')).all(by.css('.control-label.col-xs-12.col-sm-3'));

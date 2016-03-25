@@ -3,11 +3,11 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasTrialOutcomeMeasuresCtrl', pasTrialOutcomeMeasuresCtrl);
 
-    pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', 'TrialService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
+    pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', '$filter', 'TrialService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
         'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj'];
 
-    function pasTrialOutcomeMeasuresCtrl($scope, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
-                                MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
+    function pasTrialOutcomeMeasuresCtrl($scope, $filter, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
+                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentOutcomeMeasure= {};
@@ -38,13 +38,17 @@
             OutcomeMeasureService.getGridOptions().data.splice(row.entity.id, 1);
         };
 
+        vm.setToDefaultMode = function() {
+            vm.addMode = vm.editMode = vm.copyMode = false;
+            vm.copyOM = {};
+        }
 
         vm.saveOutcomeMeasure = function(){
             vm.disableBtn = true;
 
-
-            if (!vm.currentOutcomeMeasure.id) {
+            if (!vm.currentOutcomeMeasure.id || vm.copyMode) {
                 vm.currentOutcomeMeasure.new = true;
+                vm.currentOutcomeMeasure.id = null;
             }
             // An outer param wrapper is needed for nested attributes to work
             //var outerOM = {};
@@ -83,8 +87,8 @@
                             }
                         }
                     }
-                    vm.addEditMode=false;
-
+                    vm.setToDefaultMode();
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 }
             }).catch(function(err) {
                 console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
@@ -105,6 +109,7 @@
         };
 
         function deleteSelected(){
+            vm.setToDefaultMode();
             vm.curTrial.outcome_measures_attributes=[];
             for (var i = 0; i < vm.selectedDeleteOutcomeMeasuresList.length; i++) {
                 vm.deleteOutcomeMeasure( vm.selectedDeleteOutcomeMeasuresList[i].id);
@@ -140,50 +145,41 @@
          *  Set Add Mode.
          **/
         function setAddMode() {
-            vm.addEditMode = true;
-            vm.currentOutcomeMeasure= {};
+            vm.setToDefaultMode();
+            vm.addMode = true;
+            vm.currentOutcomeMeasure = {};
         }
 
         /**
          *  Set Edit Mode.
          **/
         function setEditMode(idx) {
-            vm.addEditMode = true;
+            vm.editMode || vm.copyMode || vm.addMode ? resetOutcomeMeasure() : vm.addMode = vm.copyMode = false;
+            vm.editMode = true;
             vm.currentOutcomeMeasure = vm.curTrial.outcome_measures[idx];
+            saveCopyCurrentOutcomeMeasure(vm.curTrial.outcome_measures[idx]);
+        }
+
+        /**
+         *  Save copy of currentOutcomeMeasure "TO" vm.copyOM.
+         **/
+        function saveCopyCurrentOutcomeMeasure(currentOutcomeMeasure) {
+            vm.copyOM = {};
+            angular.copy(currentOutcomeMeasure, vm.copyOM);
         }
 
         /**
          *  Set Copy Mode.
          **/
         function setCopyMode(idx) {
-            vm.addEditMode = true;
-            vm.currentOutcomeMeasure ={}
-            vm.copyOM =vm.curTrial.outcome_measures[idx];
-            vm.currentOutcomeMeasure.title = vm.copyOM.title
-            vm.currentOutcomeMeasure.time_frame = vm.copyOM.time_frame
-            vm.currentOutcomeMeasure.description = vm.copyOM.description
-            vm.currentOutcomeMeasure.outcome_measure_type_id = vm.copyOM.outcome_measure_type_id
-            vm.currentOutcomeMeasure.safety_issue = vm.copyOM.safety_issue
-            vm.currentOutcomeMeasure.new=true;
-            vm.currentOutcomeMeasure.id=null;
+            vm.copyMode || vm.addMode || vm.editMode ? resetOutcomeMeasure() : vm.addMode = vm.editMode = false;
+            vm.copyMode = true;
+            vm.currentOutcomeMeasure = angular.copy(vm.curTrial.outcome_measures[idx]);
+            saveCopyCurrentOutcomeMeasure(vm.curTrial.outcome_measures[idx]);
         }
 
         function resetOutcomeMeasure() {
-            if(vm.currentOutcomeMeasure.id > 0){
-                var cachedTrial = PATrialService.getCurrentTrialFromCache();
-                for (var i = 0; i < cachedTrial.outcome_measures.length; i++) {
-                    if(cachedTrial.outcome_measures[i].id == vm.currentOutcomeMeasure.id){
-                        vm.currentOutcomeMeasure = cachedTrial.outcome_measures[i];
-                    }
-                }
-            } else {
-                vm.setAddMode();
-            }
-
-            $timeout(function() {
-                getTrialDetailCopy();
-            }, 0);
-
+            vm.addMode || vm.editMode || vm.copyMode ? angular.copy(vm.copyOM, vm.currentOutcomeMeasure) : vm.currentOutcomeMeasure = {};
         }
 
         function getTrialDetailCopy() {

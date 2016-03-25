@@ -18,8 +18,8 @@
         var statesOrProvinces = [];
         var initialCadsrSearchParams = {
 
-            highligh_query_text: true,
-            case_sensitive_search: true,
+            highlight_query_text: 'Yes',
+            case_sensitive_search: 'No',
             public_id : '',
             search_term : '',
 
@@ -50,7 +50,7 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'pv_name',displayName:'Permissible Value', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'pv_name',displayName:'Permissible Value (with synonyms)', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'meaning', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'description', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'cadsr_id',displayName:'Public ID', enabledSorting: true , minWidth: '100', width: '*'}

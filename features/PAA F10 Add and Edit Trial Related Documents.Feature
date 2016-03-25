@@ -2,22 +2,23 @@
 Feature: PAA F10 Add and Edit Trial Related Documents  
 
 As any CTRP PA User, I can add and edit Trial Related Documents
-
+  @runthis
 Scenario: #1 I can add Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
 When I select add a document
 And have browsed and selected file to attach
 And have selected the Document type from the list of:
+|- Please select a document type ...|
+|Change Memo Document|
+|Complete Sheet|
+|IRB Approval|
+|Informed Consent|
+|List of Participating Sites|
+|Other|
 |Protocol Document|
-|IRB Approval Document|
-|Informed Consent Document|
-|Participating Sites|
 |Protocol Highlighted Document|
 |TSR|
-|Complete Sheet|
-|Change Memo|
-|Other|
 And have entered a Description of the Document when the document type is Other
 Then the Trial Related Document will be associated with the trail
 And the date the document was will be listed with the document 

@@ -25,11 +25,11 @@ Then the Trial Administration and Scientific sections (listed below) will locked
 |Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
-|Disease / Condition|
+|Diseases / Conditions|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
 |Sub-Groups Stratification|
-|Markers|
+|Biomarkers|
 And the Check Out Type will be Administrative
 And the Administrative Check Out User will be my User ID
 And the Administrative Check Out Date will be the current date and time
