@@ -43,9 +43,9 @@ When I click on the save button to add the Intervention
 Then the intervention type will be added
 When an Intervention name is not entered
 And I have clicked on the Search Button
-Then an error type will be displayed
+Then an error message will be displayed
 
-      |Message.Please enter at least one search criteria  |
+      |Intervention Name is Required  |
 
  Scenario: #2 Intervention Type Rule
     Given I am on the Search Intervention Screen

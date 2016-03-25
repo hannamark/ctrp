@@ -35,11 +35,11 @@ Then the sidebar menu will be displayed expanded:
 |Arms/Groups|
 |Eligibility Criteria|
 |Associated Trials|
-|Disease / Condition|
+|Diseases / Conditions|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
 |Sub-Groups Stratification Criteria|
-|Markers|
+|Biomarkers|
 |Completion (Section)|
 |Abstraction Validation|
 
