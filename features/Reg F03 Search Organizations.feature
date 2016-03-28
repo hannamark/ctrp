@@ -11,7 +11,7 @@ Feature: Reg F03 Search Organizations
       |Name|Alias |FamilyName |SourceStatus| City| State|Country |PostalCode |Phone |Email|
       |SopNameCancer |SopAlias |sopFName| Active | SopCity| Ifrane| Morocco |22306 |420-999-8906 |SopPercukeTrial@pr.com|
 
-    And I have selected the option Search "Organizations"
+    And I have selected the option "Search Organizations"
     When I provide the name <Name> of the organization
     And I have checked the condition for Search Alias <Alias> of the organization
     And I provide the Family Name <Family Name> of the organization
@@ -95,10 +95,9 @@ Feature: Reg F03 Search Organizations
       |2365     |xyzzz            | Checked    |           |       |      |       |           |420-999-89  |SopPercukeTrial@pr     | Checked|false   |
 
 
-
-  Scenario: #2 I am able to search for Organizations in CTRP as a Registry user
-    Given I am logged into the CTRP Registration application
-    And I have selected the option "Search Organizations"
+Scenario: #2 I am able to search for Organizations in CTRP as a Registry user
+  Given I am logged into the CTRP Registration application
+  And I have selected the option "Search Organizations"
     And the Exact Search is checked by default
     And I can uncheck the Exact Search
     And the source context will be "CTRP"
