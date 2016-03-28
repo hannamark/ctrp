@@ -37,12 +37,14 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
 
     render xml:val_errors.to_xml, status: '404'  if val_errors.any?
-
+  end
+  before_filter only: [:create] do
+    
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"create","")
 
     if !@paramsLoader.errors.empty?
-      render xml: @paramsLoader.errors, status: :bad_request
+      render xml: @paramsLoader.errors, status: '404'
     end
   end # end of before_create
 
@@ -64,7 +66,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @paramsLoader.load_params(@xmlMapperObject,"update","")
 
     if !@paramsLoader.errors.empty?
-      render xml: @paramsLoader.errors, status: :bad_request
+      render xml: @paramsLoader.errors, status:'404'
     end
 
   end #end of before_update
@@ -78,10 +80,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     render xml:val_errors.to_xml, status: '404'  if val_errors.any?
 
     @paramsLoader = ApiTrialParamsLoader.new()
-    @paramsLoader.load_params(@xmlMapperObject,"update","")
+    @paramsLoader.load_params(@xmlMapperObject,"amend","")
 
     if !@paramsLoader.errors.empty?
-      render xml: @paramsLoader.errors, status: :bad_request
+      render xml: @paramsLoader.errors, status: '404'
     end
 
   end #end of before_update
