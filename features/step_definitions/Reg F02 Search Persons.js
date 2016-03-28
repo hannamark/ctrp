@@ -40,8 +40,7 @@ module.exports = function() {
         searchPerson.clickClear();
         }
         else if(arg1 === 'Search Organizations') {
-            menuItem.clickOrganizations();
-            menuItem.clickListOrganizations();
+            projectFunctions.searchOrganizationLink();
             searchPerson.clickClear();
         }
         else{
@@ -237,8 +236,8 @@ module.exports = function() {
 
 
     this.Given(/^the Exact Search is checked by default$/, function (callback) {
-        menuItem.clickPeople();
-        menuItem.clickListPeople();
+        //menuItem.clickPeople();
+        //menuItem.clickListPeople();
         searchOrg.exactSearch.isSelected().should.eventually.equal(true);
         browser.sleep(25).then(callback);
     });

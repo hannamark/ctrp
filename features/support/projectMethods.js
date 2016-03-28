@@ -709,15 +709,22 @@ var projectMethods = function() {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
         }
-            menuItem.clickOrganizations();
-            menuItem.clickListOrganizations();
+        //browser.driver.wait(function() {
+        //    console.log('wait here');
+        //    return true;
+        //}, 40).then(function() {
+            self.searchOrganizationLink();
+
+
+            //menuItem.clickOrganizations();
+            //menuItem.clickListOrganizations();
             searchOrg.setOrgName(orgName + moment().format('MMMDoYY h'));
             orgSearch = searchOrg.orgName.getAttribute('value');
             searchOrg.clickSearchButton();
-            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
-                if(state === true) {
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
+                if (state === true) {
                     console.log('Organization exists');
-                    orgSearch.then(function(value){
+                    orgSearch.then(function (value) {
                         element(by.linkText(value)).click();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                         cukeFamily = addOrg.addVerifyOrgFamilyName.getText();
@@ -727,13 +734,13 @@ var projectMethods = function() {
                     commonFunctions.onPrepareLoginTest('ctrpcurator');
                     menuItem.clickHomeEnterOrganizations();
                     login.clickWriteMode('On');
-                    browser.driver.wait(function() {
+                    browser.driver.wait(function () {
                         console.log('wait here');
                         return true;
-                    }, 40).then(function() {
+                    }, 40).then(function () {
                         menuItem.clickOrganizations();
                         menuItem.clickAddOrganizations();
-                        orgSearch.then(function(value){
+                        orgSearch.then(function (value) {
                             console.log('Add org Name' + value);
                             addOrg.setAddOrgName(value);
                         });
@@ -771,7 +778,7 @@ var projectMethods = function() {
                             console.log('wait here');
                             return true;
                         }, 40).then(function () {
-                            login.loginUser.getText().then(function (value) {
+                            element(by.binding('headerView.username')).getText().then(function (value) {
                                 if (user !== value) {
                                     commonFunctions.onPrepareLoginTest(user);
                                     if (user === 'ctrptrialsubmitter') {
@@ -784,6 +791,7 @@ var projectMethods = function() {
                     });
                 }
             });
+       // });
     };
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Organization for Edit, it creates a new org then checks if it exist then use the same one
@@ -1078,7 +1086,29 @@ var projectMethods = function() {
         row.element(by.repeater('(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name').row(element(by.cssContainingText('.ui-grid-cell-contents', '')).then(function(cell){cell.click();})));
     };
 
+    /********************************************
+     * Method: searchOrganization based on logged in User
+     ********************************************/
+    this.searchOrganizationLink = function(){
+        //browser.driver.wait(function () {
+        //    console.log('wait here');
+        //    return true;
+        //}, 40).then(function () {
+            element(by.binding('headerView.username')).getText().then(function (value) {
+                console.log('value of login user');
+                console.log(value);
+                if(value === 'ctrptrialsubmitter'){
+                    menuItem.clickJustOrganizations();
+                    menuItem.clickListOrganizations();
+                }
+                if (value === 'ctrpcurator') {
+                    menuItem.clickOrganizations();
+                    menuItem.clickListOrganizations();
+                }
+            });
+      //  });
 
+    };
 
 };
 module.exports = projectMethods;
