@@ -27,7 +27,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     ## Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
      ##
     lead_protocol_id = @xmlMapperObject.lead_protocol_id
-    lead_org_id = $mapperObject.leadOrganization.existingOrganization.id
+    lead_org_id = @xmlMapperObject.leadOrganization.existingOrganization.id
     @trial = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id)
 
     if @trial.present?
