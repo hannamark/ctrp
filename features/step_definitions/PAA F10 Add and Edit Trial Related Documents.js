@@ -290,8 +290,14 @@ module.exports = function() {
     });
 
     this.Then(/^the date the document was will be listed with the document$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        //Handalling Required Document Type Upload
+        trialDoc.trialRelatedFileUpload('PA', '1', 'testSampleDocFile_IRB.docx');
+        trialDoc.selectADocument(selectOptionIRB);
+        trialDoc.clickAddButton();
+        trialDoc.trialRelatedFileUpload('PA', '1', 'testSampleDocFile_Protocol.docx');
+        trialDoc.selectADocument(selectOptionProtocolDoc);
+        trialDoc.clickAddButton();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the users name that added the document will be listed with the document$/, function (callback) {

@@ -10,6 +10,7 @@
     "node": ">= 0.4.1"
   },
   "dependencies": {
+    "cucumber": "^0.5.2",
     "protractor": "2.2.0"
   },
   "keywords": [
@@ -25,6 +26,7 @@
   "devDependencies": {
     "chai": "*",
     "chai-as-promised": "*",
+    "cucumber": "^0.7.0",
     "cucumberjs-junitxml": "0.0.12",
     "moment": "^2.10.6",
     "protractor-cucumber-junit": "^1.1.3",
