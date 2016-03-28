@@ -274,7 +274,7 @@ class Trial < TrialBase
   def my_site_id
     if self.current_user.present? && self.current_user.role != 'ROLE_SITE-SU'
       self.participating_sites.each do |e|
-        if self.current_user.organization.present? && e.organization.id == self.current_user.organization.id
+        if self.current_user.organization.present? && e.organization.present? && e.organization.id == self.current_user.organization.id
           return e.id
         end
       end
