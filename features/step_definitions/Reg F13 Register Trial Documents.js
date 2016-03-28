@@ -1,5 +1,5 @@
 /**
- * Author: Shamim Ahmed
+ * Author: singhs10
  * Date: 12/08/2015
  * Feature: Reg F13 Register Trial Documents
  */
@@ -12,6 +12,8 @@ var projectFunctionsPage= require('../support/projectMethods');
 var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
+var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
+var helperFunctions = require('../support/helper');
 
 
 module.exports = function() {
@@ -19,6 +21,8 @@ module.exports = function() {
     var addTrial = new addTrialPage();
     var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
+    var trialDoc = new abstractionTrialRelatedDocument();
+    var helper = new helperFunctions();
 
     /*
      Scenario Outline: #1 I can attach Trial Related Documents to a trial registration
@@ -39,81 +43,60 @@ module.exports = function() {
      */
 
     this.Given(/^I am on the Register Trial Related Documents screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        addTrial.setAddTrialLeadProtocolIdentifier('test final 17xxx');
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected a file to attach as the Protocol Document$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+              trialDoc.trialRelatedFileUpload('reg', '1', 'testSampleDocFile.docx');
+    //    addTrial.clickAddTrialSaveDraftButton();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected a file to attach as the IRB Approval$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        trialDoc.trialRelatedFileUpload('reg', '2', 'testSampleDocFile.docx');
+     //   addTrial.clickAddTrialSaveDraftButton();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected a file to attach as the list of Participating Sites$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        trialDoc.trialRelatedFileUpload('reg', '3', 'testSampleDocFile.docx');
+     //   addTrial.clickAddTrialSaveDraftButton();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected a file to attach as the Informed Consent Document$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        trialDoc.trialRelatedFileUpload('reg', '4', 'testSampleDocFile.docx');
+    //    addTrial.clickAddTrialSaveDraftButton();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected one or more files to attach as Other file and entered the description of the file$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        trialDoc.trialRelatedFileUpload('reg', '5', 'testSampleDocFile.docx');
+      //  addTrial.clickAddTrialSaveDraftButton();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Register Trial Related Document for the trial registration will not indicate an errors during Trial Review$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+   //     helper.wait(trialMenuItem.pageHeaderTextTrial, 'not loaded');
+        addTrial.clickAddTrialSaveDraftButton();
+        browser.wait(function () {
+            return element(by.linkText('testSampleDocFile.docx')).isPresent().then(function (state) {
+                if (state === true) {
+                    return element(by.linkText('testSampleDocFile.docx')).isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, " did not appear");
+        //trialMenuItem.pageHeaderTextTrial.getText.then(function(value){
+        //
+        //});
+
+        browser.sleep(25).then(callback);
     });
-
-    this.When(/^I have not attached a file as the Protocol Document$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Given(/^I have not attached a file as the IRB Approval$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^Trial Related Documents section will indicate an error$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.When(/^And I have indicated if the Informed Consent is included with the Protocol Document as Yes or No$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Given(/^I must have selected a file to attach as the Informed Consent Document if Interventional and Informed Consent not included in Protocol Document\)$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^the Trial Related Documents section will not indicate any errors during Trial Review$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.When(/^I have selected a file to attach (.*) as a trial document$/, function (FileType, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^The Trial Related Documents section will not indicate any errors during Trial Review$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-
 
 
 };
