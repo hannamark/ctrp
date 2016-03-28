@@ -179,7 +179,7 @@ SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registry')
 SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
 SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
-SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
+SubmissionMethod.find_or_create_by(code: 'RSV', name: 'REST Service')
 SubmissionMethod.find_or_create_by(code: 'OTHER', name: 'Other')
 
 SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
