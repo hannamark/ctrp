@@ -419,6 +419,12 @@
                 $scope.checked_assay_types=vm.checked_assay_types;
                 $scope.checked_spec_types=vm.checked_spec_types;
                 $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
+
+                vm.isSpecTypeOtherChecked = false;
+                vm.isAssayTypeOtherChecked = false
+                vm.isEvalTypeOtherChecked = false;
+                
+
             }
         }
 
@@ -465,13 +471,40 @@
         function resetBioMarker() {
             if(vm.currentBioMarker.id > 0){
                 var cachedTrial = PATrialService.getCurrentTrialFromCache();
+
+                vm.checked_assay_types=[];
+                vm.checked_eval_types=[];
+                vm.checked_spec_types=[];
+                vm.checked_biomarker_purposes=[];
+
                 for (var i = 0; i < cachedTrial.bio_markers.length; i++) {
                     if(cachedTrial.bio_markers[i].id == vm.currentBioMarker.id){
                         vm.currentBioMarker = cachedTrial.bio_markers[i];
+
+                        vm.isEvalTypeOtherChecked=false;
+                        vm.isAssayTypeOtherChecked=false;
+                        vm.isSpecTypeOtherChecked=false;
+
+                        if (vm.currentBioMarker.assay_type_other && vm.currentBioMarker.assay_type_other.length > 0) {
+                            vm.isAssayTypeOtherChecked=true;
+                        }
+                        if (vm.currentBioMarker.evaluation_type_other && vm.currentBioMarker.evaluation_type_other.length > 0) {
+                            vm.isEvalTypeOtherChecked=true;
+                        }
+                        if (vm.currentBioMarker.specimen_type_other && vm.currentBioMarker.specimen_type_other.length > 0) {
+                            vm.isSpecTypeOtherChecked=true;
+                        }
+
+                        vm.checked_assay_types = cachedTrial.bio_markers[i].assay_types;
+                        vm.checked_eval_types = cachedTrial.bio_markers[i].eval_types;
+                        vm.checked_spec_types = cachedTrial.bio_markers[i].spec_types;
+                        vm.checked_biomarker_purposes=vm.curTrial.bio_markers[i].biomarker_purposes;
+                        $scope.checked_eval_types=vm.checked_eval_types;
+                        $scope.checked_assay_types=vm.checked_assay_types;
+                        $scope.checked_spec_types=vm.checked_spec_types;
+                        $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
                     }
                 }
-
-
             } else {
                 vm.setAddMode();
             }
@@ -479,7 +512,6 @@
             $timeout(function() {
                 getTrialDetailCopy();
             }, 0);
-
         }
 
         function getTrialDetailCopy() {

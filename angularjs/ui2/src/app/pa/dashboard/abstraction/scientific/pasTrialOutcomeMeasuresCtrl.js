@@ -3,10 +3,10 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasTrialOutcomeMeasuresCtrl', pasTrialOutcomeMeasuresCtrl);
 
-    pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', 'TrialService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
+    pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', '$filter', 'TrialService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
         'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj'];
 
-    function pasTrialOutcomeMeasuresCtrl($scope, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
+    function pasTrialOutcomeMeasuresCtrl($scope, $filter, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
                                          MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
@@ -87,11 +87,12 @@
                             }
                         }
                     }
+                    vm.setToDefaultMode();
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 }
             }).catch(function(err) {
                 console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
             });
-            vm.setToDefaultMode();
         };//saveOutcomeMeasure
 
         function deleteListHandler(outcomeMeasuresSelectedInCheckboxes){

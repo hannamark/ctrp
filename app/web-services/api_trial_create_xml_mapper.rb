@@ -2,6 +2,12 @@ require 'api_trial_child_xml_mappers.rb'
 class ApiTrialCreateXmlMapper
     include XML::Mapping
 
+    text_node :clinical_trial_dot_xml_required, "clinicalTrialsDotGovXmlRequired", :default_value=>nil, :optional=>true,
+              :reader=>proc{|obj,xml,default_reader|
+                default_reader.call(obj,xml)
+                obj.clinical_trial_dot_xml_required=BooleanMapper.map(obj.clinical_trial_dot_xml_required)
+              }
+
     ###Trial Identifiers
     text_node :study_source_id,"category",:optional=>true,:default_value=>nil,
               :reader=>proc{|obj,xml,default_reader|

@@ -4,7 +4,7 @@ Feature: As a CTRP Abstractor, I can add and edit Sub-groups Criteria
 Scenario: #1 I can add Sub-group Criteria for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
-And I am on the Subgroups Information screen
+And I am on the Sub-groups Information screen
 And I have selected Add button
 And the Add/Edit Sub-group Information screen displays
 And I have entered a value for Label
@@ -85,9 +85,9 @@ And I can click on the Select All button to check delete check box for all entri
 When I have clicked on Delete button
 And the message displays 'click OK to remove selected Marker(s) fromm the study. Click Cancel to abort'
 When I have clicked the OK button
-Then the SubGroup is removed from the trial record
+Then the Sub-Group is removed from the trial record
 And 'Record(s) deleted' message is displayed
 When I have clicked on the Cancel button
-Then the SubGroup(s) is not removed from the trial record
+Then the Sub-Group(s) is not removed from the trial record
 And 'Record(s) deleted' message is not displayed
 

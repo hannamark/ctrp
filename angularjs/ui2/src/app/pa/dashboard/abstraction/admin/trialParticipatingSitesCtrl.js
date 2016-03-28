@@ -489,7 +489,9 @@
         function deleteInvestigator(index) {
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In delete  deleteInvestigator vm.currentParticipatingSite="+JSON.stringify(vm.currentParticipatingSite));
-            if (vm.currentParticipatingSite.participating_site_investigators[index]){
+
+            /* currentParticipatingSite can be empty {} so check to see if it has participating_site_investigators [] as a property */
+            if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators') && vm.currentParticipatingSite.participating_site_investigators[index]){
                 vm.currentParticipatingSite.participating_site_investigators[index].edit = false;
                 vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
                 if (vm.currentParticipatingSite.contact_type == "PI") {

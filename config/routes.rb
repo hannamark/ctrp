@@ -16,14 +16,19 @@ Rails.application.routes.draw do
           scope '/trials' do
             scope '/complete' do
               post '/' => 'api_trials#create'
-              post '/:idType/:id' => 'api_trials#update'
-              put '/:idType/:id' => 'api_trials#amend'
+              post '/:idType/:id' => 'api_trials#update',constraints: {
+                                                            idType:  'nci'
+                                                        }
+              put '/:idType/:id' => 'api_trials#amend',constraints: {
+                                                          idType:  'nci'
+                                                      }
               #put  '/:id/status' =>  'api_trials#change_status'
             end
           end
         end
       end
     end
+
 
 
     devise_for :users
