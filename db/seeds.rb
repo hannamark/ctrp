@@ -179,7 +179,7 @@ SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registry')
 SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
 SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
-SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
+SubmissionMethod.find_or_create_by(code: 'RSV', name: 'REST Service')
 SubmissionMethod.find_or_create_by(code: 'OTHER', name: 'Other')
 
 SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
@@ -862,6 +862,10 @@ sr_status_transition = '{
 AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitment Status Transition Matrix', value: 'see big value', big_value: sr_status_transition)
 
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
 ########## SEEDING APP SETTINGS ENDS ##########
 

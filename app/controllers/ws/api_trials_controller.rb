@@ -19,40 +19,64 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   before_action :validate_rest_request
 
   before_filter only: [:create] do
+
+    val_errors = Array.new()
+
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+
+    ## Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
+     ##
+    lead_protocol_id = @xmlMapperObject.lead_protocol_id
+    lead_org_id = $mapperObject.leadOrganization.existingOrganization.id
+    @trial = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id)
+
+    if @trial.present?
+      val_errors.push("A trial has already been existed with given Lead Org Trial ID and Lead organization ID");
+    else
+      val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
+    end
+
+    render xml:val_errors.to_xml, status: '404'  if val_errors.any?
+
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"create","")
-
-     ## TODO Responsible Party should not be specified if clinicalTrialsDotGovXmlRequired is false.
-     ## TODO Regulatory Information is required if clinicalTrialsDotGovXmlRequired is true and should not be specified otherwise.
-     ## TODO Sponsor should not be specified if clinicalTrialsDotGovXmlRequired is false.
-     ## TODO validate_clinicalTrialsDotGovXmlRequired_dependencies
-     ## TODO Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
-
-
-
 
     if !@paramsLoader.errors.empty?
       render xml: @paramsLoader.errors, status: :bad_request
     end
   end # end of before_create
 
+  before_filter only:[:update,:amend] do
 
-  before_filter only: [:update,:amend] do
-
-    if params.has_key?("idType")
-      if params[:idType] == "nci"
-        @trial = Trial.find_by_nci_id(params[:id])
-      else
-        render xml: "Expected id types are nci,pa,dcp,ctep but currently accepting nci only", status: :bad_request
-      end
+    if params[:idType] == "nci"
+      @trial = Trial.find_by_nci_id(params[:id])
     else
-      @trial = Trial.find_by_id(params[:id])
+      render xml: "Expected id types are nci,pa,dcp,ctep but currently trial is being identifed", status: :bad_request
     end
+    render xml:  "Given trial with NCI_ID does not exist in CTRP ", status: :not_found unless @trial.present?
 
-    render nothing: true, status: :not_found unless @trial.present?
+  end
+
+  before_filter only: [:update] do
 
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+    @paramsLoader = ApiTrialParamsLoader.new()
+    @paramsLoader.load_params(@xmlMapperObject,"update","")
+
+    if !@paramsLoader.errors.empty?
+      render xml: @paramsLoader.errors, status: :bad_request
+    end
+
+  end #end of before_update
+
+  before_filter only: [:amend] do
+
+
+    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+
+    val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
+    render xml:val_errors.to_xml, status: '404'  if val_errors.any?
+
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"update","")
 
@@ -76,7 +100,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   def update
     @rest_params = @paramsLoader.get_rest_params
-    p @rest_params
     if @trial.update(@rest_params)
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
     else
@@ -87,7 +110,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   def amend
     @rest_params = @paramsLoader.get_rest_params
-
     if @trial.update(@rest_params)
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
     else
@@ -100,7 +122,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   private
 
   def validate_rest_request
-
 
 
     ##Get action from request header
@@ -153,6 +174,40 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       @trial = Trial.find_by_id(params[:id])
     end
     render nothing: true, status: :not_found unless @trial.present?
+
+  end
+
+  ## Responsible Party should not be specified if clinicalTrialsDotGovXmlRequired is false.
+  ## Regulatory Information is required if clinicalTrialsDotGovXmlRequired is true and should not be specified otherwise.
+  ## Sponsor should not be specified if clinicalTrialsDotGovXmlRequired is false.
+
+  def validate_clinicalTrialsDotGovXmlRequired_dependencies(xmlMapperObject)
+
+    val_errors =Array.new()
+
+    if xmlMapperObject.clinical_trial_dot_xml_required == "Yes"
+
+       if xmlMapperObject.regulatoryInformation.nil?
+         val_errors.push("Regulatory Information is required if clinicalTrialsDotGovXmlRequired is true")
+       end
+
+   end
+
+    if xmlMapperObject.clinical_trial_dot_xml_required == "No"
+       if !xmlMapperObject.responsible_party.nil?
+         val_errors.push("Responsible Party should not be specified if clinicalTrialsDotGovXmlRequired is false")
+       end
+       if !xmlMapperObject.sponsor.nil?
+         val_errors.push("Sponsor should not be specified if clinicalTrialsDotGovXmlRequired is false")
+       end
+
+       if !xmlMapperObject.regulatoryInformation.nil?
+         val_errors.push("Regulatory Information should not be specified if clinicalTrialsDotGovXmlRequired is false")
+       end
+    end
+
+    return val_errors
+
 
   end
 

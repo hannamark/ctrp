@@ -260,7 +260,7 @@ class Trial < TrialBase
         if self.ps_orgs.include?(self.current_user.organization)
           # Associated org has been added as participating site
           actions.append('update-my-site')
-        else
+        elsif self.current_user.organization.present?
           # Associated org hasn't been added as participating site
           actions.append('add-my-site')
         end
@@ -274,7 +274,7 @@ class Trial < TrialBase
   def my_site_id
     if self.current_user.present? && self.current_user.role != 'ROLE_SITE-SU'
       self.participating_sites.each do |e|
-        if e.organization.id == self.current_user.organization.id
+        if self.current_user.organization.present? && e.organization.id == self.current_user.organization.id
           return e.id
         end
       end
