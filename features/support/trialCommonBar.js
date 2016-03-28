@@ -21,6 +21,7 @@ var trialCommonBar = function(){
     this.registerNationalTrial = element(by.css('a[href="#/main/new-trial/nat"]'));//by.linkText('National')
     this.registerExternallyPeerReviewedTrial = element(by.css('a[href="#/main/new-trial/epr"]'));
     this.registerInstitutional = element(by.css('a[href="#/main/new-trial/ins"]'));
+    this.pageHeaderTextTrial = element(by.css('div.row > h4'));
     var pageHeaderText = element(by.css('div.row > h4'));
 
     var helper = new helperFunctions();

@@ -150,6 +150,7 @@ var registerTrial = function(){
     this.addTrialDateClickClear = element(by.buttonText('Clear'));
     this.addTrialDateClickPreviousMonth = element(by.css('.glyphicon.glyphicon-chevron-left'));
     this.addTrialDateClickNextMonth = element(by.css('.glyphicon.glyphicon-chevron-right'));
+    this.addTrialDateClickYearMonthDate =element(by.css('button[role="heading"]'));
 
     var helper = new helperFunctions();
 
@@ -599,6 +600,20 @@ var registerTrial = function(){
     this.clickAddTrialDateFieldPreviousMonth = function(dateofPreviousMonth){
         helper.clickButtonNoHeader(this.addTrialDateClickPreviousMonth, "Previous Month button on Add Date field");
         element(by.buttonText(dateofPreviousMonth)).click();
+    };
+
+    this.clickAddTrialDateFieldDifferentYear = function(year, month, date){
+        helper.clickButtonNoHeader(this.addTrialDateClickYearMonthDate, "Month on Add Date field");
+        helper.clickButtonNoHeader(this.addTrialDateClickYearMonthDate, "Year on Add Date field");
+        element(by.buttonText(year)).click();
+        element(by.buttonText(month)).click();
+        element(by.buttonText(date)).click();
+    };
+
+    this.clickAddTrialDateFieldDifferentMonth = function(month, date ){
+        helper.clickButtonNoHeader(this.addTrialDateClickYearMonthDate, "Month on Add Date field");
+        element(by.buttonText(month)).click();
+        element(by.buttonText(date)).click();
     };
 
     this.clickAddTrialDateFieldNextMonth = function(dateofNextMonth){
