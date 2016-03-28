@@ -138,7 +138,7 @@ var helper = function() {
 
     this.setUploadedFile = function (fieldName, fieldValue, getFileNm, errorMessage) {
         this.wait(fieldName, errorMessage);
-        fieldName.clear();
+        //fieldName.clear();
         fieldName.sendKeys(fieldValue);
         if(fieldValue == '[object Object]'){
             var store = fieldName.getAttribute('value');

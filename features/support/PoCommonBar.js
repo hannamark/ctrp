@@ -13,6 +13,7 @@ var PoCommonBar = function(){
     this.home = element(by.css('a[href="#/main/welcome"]'));
     this.homeEnterOrganizations = element(by.css('a[href="#/main/organizations"]'));
     this.organizations = element(by.linkText('Organizations & Families'));
+    this.justOrganization = element(by.linkText('Organizations'));
     this.listOrganizations = element(by.css('a[ui-sref="main.organizations"]')); //element(by.css('a[href="#/main/organizations"]'));
     this.addOrganizations = element(by.css('a[href="#/main/new_organization"]'));
     this.people = element(by.linkText('Persons'));
@@ -71,7 +72,11 @@ var PoCommonBar = function(){
     };
 
     this.clickOrganizations = function(){
-        helper.clickLink(this.organizations, "Organization link");
+        helper.clickLink(this.organizations, "Organization & Family link");
+    };
+
+    this.clickJustOrganizations = function(){
+        helper.clickLink(this.justOrganization, "Just Organization link");
     };
 
     this.clickListOrganizations = function(){

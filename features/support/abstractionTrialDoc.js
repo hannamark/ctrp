@@ -186,6 +186,17 @@ var abstractionTrialDoc = function(){
         helper.wait_for(25);
     };
 
+    this.selectAll = function(){
+        this.waitForElement(this.collaboratorsTableTBodyRowAColA, "List of Collaborators Table");
+        this.collaboratorsTableListAll.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                console.log('i:['+i+']');
+                element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(03) input')).click();
+            };
+        });
+    };
+
     this.findTrialDocAndDeleteOrVerify = function(getAuthoCountryName, getAuthoOrgName, getDeleteConf, getVerify){
         this.waitForRegulatoryInfoElement(this.tblColARwAExists, "Table");
         this.trialTableRw.then(function(rows){
