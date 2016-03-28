@@ -78,7 +78,7 @@ Feature: Reg F10 Register Trial Grant Information
       |Serial Number  |
       |NCI Division/Program Code  |
     When I have clicked on the ADD button to add a grant
-    Then A message will be displayed "Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code"
+    Then A message will be displayed "Funding Mechanism, Institute Code,Serial Number and NCI Division/Program Code are required"
 
     Examples:
       |trialType                 |
