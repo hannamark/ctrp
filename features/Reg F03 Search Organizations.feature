@@ -1,4 +1,4 @@
-﻿@Global @Reg
+@Global @Reg
 Feature: Reg F03 Search Organizations
 
 As a CTRP User, I am able to Search Organizations by various criteria
@@ -11,7 +11,7 @@ As a CTRP User, I am able to Search Organizations by various criteria
     |Name|Alias |FamilyName |SourceStatus| City| State|Country |PostalCode |Phone |Email|
     |SopNameCancer |SopAlias |sopFName| Active | SopCity| Ifrane| Morocco |22306 |420-999-8906 |SopPercukeTrial@pr.com|
     
-    And I have selected the option "Search Organizations"
+    And I have selected the option Search Organizations
    When I provide the name <Name> of the organization
    And I have checked the condition for Search Alias <Alias> of the organization
    And I provide the Family Name <Family Name> of the organization
@@ -45,6 +45,7 @@ As a CTRP User, I am able to Search Organizations by various criteria
 Examples:
 |Source ID|Organization Name|SearchAlias |Family Name|City   |State |Country|PostalCode|Phone        |Email                  |ExactMatch|Result |                                                                |
 |         |                 | Checked    |           |       |      |       |           |            |                       | Checked  |At least one selection value must be entered prior to running the search|
+|         |                 | Unchecked  |           |       |      |       |           |            |                       | Checked  |At least one selection value must be entered prior to running the search|       | |
 |23654    |                 | Checked    |           |       |      |       |           |            |                       | Checked  |true   | |
 |         |SopNameCancer    | Checked    |           |       |      |       |           |            |                       | Checked  |true   | |
 |         |SopAlias         | Checked    |           |       |      |       |           |            |                       | Checked  |true   | |
@@ -55,10 +56,12 @@ Examples:
 |         |                 | Checked    |           |       |      |Morocco|           |            |                       | Checked  |true   | |
 |         |                 | Checked    |           |       |      |       |22306      |            |                       | Checked  |true   | |
 |         |                 | Checked    |           |       |      |       |           |420-999-8906|                       | Checked  |true   | |
+|         |                 | Checked    |           |       |      |       |           |            |                       | Unchecked|At least one selection value must be entered prior to running the search|
 |         |                 | Checked    |           |       |      |       |           |            |SopPercukeTrial@pr.com | Checked  |true   | |
 |23654    |                 | Unchecked  |           |       |      |       |           |            |                       | Unchecked|At least one selection value must be entered prior to running the search|
 |         |SopNameCancer    | Unchecked  |           |       |      |       |           |            |                       | Unchecked|true   | |
 |         |SopAlias         | Unchecked  |           |       |      |       |           |            |                       | Unchecked|false  | |
+|         |SopAlias         | Checked    |           |       |      |       |           |            |                       | Unchecked|true   | |      
 |         |                 | Unchecked  |SopFName   |       |      |       |           |            |                       | Unchecked|true   | |
 |         |                 | Unchecked  |           |SopCity|      |       |           |            |                       | Unchecked|true   | |
 |         |                 | Unchecked  |           |       |Ifrane|       |           |            |                       | Unchecked|true   | |
@@ -66,6 +69,32 @@ Examples:
 |         |                 | Unchecked  |           |       |      |       |22306      |            |                       | Unchecked|true   | |
 |         |                 | Unchecked  |           |       |      |       |           |420-999-8906|                       | Unchecked|true   | |
 |         |                 |            |           |       |      |       |           |            |SopPercukeTrial@pr.com | Unchecked|true   | |
+|236      |                 | Unchecked  |           |       |      |       |           |            |                       | Checked|false   |
+|         |SopNameCan       | Unchecked  |           |       |      |       |           |            |                       | Checked|false   |
+|         |SopAl            | Checked    |           |       |      |       |           |            |                       | Checked|false  |
+|         |SopAl            | Unchecked  |           |       |      |       |           |            |                       | Checked|false  |
+|         |                 | Unchecked  |SopFNa     |       |      |       |           |            |                       | Checked|false   |
+|         |                 | Unchecked  |           |SopCi  |      |       |           |            |                       | Checked|false   |
+|         |                 | Unchecked  |           |       |      |       |223        |            |                       | Checked|false   |
+|         |                 | Unchecked  |           |       |      |       |           |420-999-89  |                       | Checked|false   |
+|         |                 |            |           |       |      |       |           |            |SopPercukeTrial@pr     | Checked|false   |
+|236*     |                 | Unchecked  |           |       |      |       |           |            |                       | Checked|true   |
+|         |SopNameCan*      | Unchecked  |           |       |      |       |           |            |                       | Checked|true   |
+|         |SopAl*           | Checked    |           |       |      |       |           |            |                       | Checked|true  |
+|         |SopAl*           | Unchecked  |           |       |      |       |           |            |                       | Checked|false  |
+|         |                 | Unchecked  |SopFNa*    |       |      |       |           |            |                       | Checked|true   |
+|         |                 | Unchecked  |           |SopCi* |      |       |           |            |                       | Checked|true   |
+|         |                 | Unchecked  |           |       |      |       |223*       |            |                       | Checked|true   |
+|         |                 | Unchecked  |           |       |      |       |           |420-999-8*  |                       | Checked|true   |
+|         |                 |            |           |       |      |       |           |            |SopPercukeTrial*       | Checked|true   |
+|23654    |SopNameCancer    | Checked    |SopFName   |SopCity|Ifrane|Morocco|22306      |420-999-8906|SopPercukeTrial@pr.com | Checked|true   |
+|2365     |SopNameCan       | Checked    |SopFNa     |SopCi  |Ifrane|Morocco|223        |420-999-89  |SopPercukeTrial@pr     | UnChecked|true   |
+|2365     |SopNameCan*      | Checked    |SopFNa*    |SopCi  |Ifrane|Morocco|223        |420-999-89  |SopPercukeTrial@pr     | Checked|true   |
+|2365     |xyzzz            | Checked    |           |       |Ifrane|Morocco|           |420-999-89  |SopPercukeTrial@pr     | UnChecked|false   |
+|2365     |xyzzz            | Checked    |           |       |      |       |           |420-999-89  |SopPercukeTrial@pr     | Checked|false   |
+
+
+
 
 
 
