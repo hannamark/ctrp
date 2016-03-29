@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
         <link rel="stylesheet" href="styles/override.css" />
+        <link rel="stylesheet" href="styles/ctrp-ui.css" />
 
         <!-- build:css styles/app.css-->
         <!-- inject:css -->
@@ -39,11 +40,15 @@
     </head>
     <body>
         <div ng-include src="'app/layout/header.html'"></div>
-        <div class="container top-offset-lg">
-            <div class="row">
-                <div class="col-md-12" ui-view></div>
+        <div class="clear"></div>
+        <div class="main-content-wrapper">
+            <div class="main-content top-offset-lg">
+                <div class="row">
+                    <div ui-view></div>
+                </div>
             </div>
         </div>
+        </body>
         <div ng-include src="'app/layout/footer.html'"></div>
 
         <!-- build:js js/lib.js -->
