@@ -500,7 +500,7 @@
                 vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
                 if (vm.currentParticipatingSite.contact_type == "PI") {
                     // refreshing the current participating site person
-                    if(vm.persisted_contact &&  vm.persisted_contact.persisted_person) {
+                    if(vm.persisted_contact && vm.persisted_contact.persisted_person) {
                         vm.currentParticipatingSite.person = vm.persisted_contact.persisted_person;
                         vm.currentParticipatingSite.person_id = vm.persisted_contact.persisted_person.id;
                     }
@@ -578,6 +578,8 @@
         function commitEditInvestigator() {
             console.log("in commitEditInvestigator");
             var primary_contact_set = false;
+
+            vm.current_investigator.uiEdit = false;
            // if (vm.current_investigator.edit) {
                 for (var i = 0; i < vm.investigatorGrid.length; i++) {
                     console.log("in commitEditInvestigator vm.current_investigator="+JSON.stringify(vm.current_investigator));
