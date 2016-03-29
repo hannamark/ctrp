@@ -86,6 +86,10 @@
         };
 
         function deleteSelected() {
+            if (_.findIndex(vm.selectedDeleteAnatomicSiteList, {_destroy: true}) === -1) {
+                // do nothing when nothing is selected for deletion
+                return
+            }
             vm.curTrial.anatomic_site_wrappers_attributes = [];
             //console.log(vm.selectedDeleteAnatomicSiteList);
             for (var i = 0; i < vm.selectedDeleteAnatomicSiteList.length; i++) {
