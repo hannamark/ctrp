@@ -16,7 +16,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |STATUSZERO	                                    |Active	                                        |			        |yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing	                                                                                                                                                                             |   
       |STATUSZERO	                                    |Enrolling by Invitation	                    |			        |yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing	                                                                                                                                                                             |   
       |STATUSZERO                                       |Closed to Accrual	                            |			        |yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing	                                                                                                                             |
-      |STATUSZERO	                                    |Temporarily Closed to Accrual  	            |Add Stopped Reason	|yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing	                                                                                                                             |       
+      |STATUSZERO	                                    |Closed to Accrual and Intervention	            |			        |yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing	                                                                     |
+      |STATUSZERO	                                    |Temporarily Closed to Accrual  	            |Add Stopped Reason	|yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing	                                                                                                                             |
       |STATUSZERO	                                    |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing	                                                         |      
       |STATUSZERO	                                    |Complete	                                    |			        |yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing|	
       |STATUSZERO	                                    |Administratively Complete	                    |Add Stopped Reason	|yes    | WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing|	
@@ -110,7 +111,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
   
   
-  
+
   Scenario Outline: #1d Trial Status Transition Rules for Active status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
@@ -125,10 +126,10 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Active	                                        |Withdrawn	                                    |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
       |Active	                                        |Active	                                        |			        |yes    | ERROR: Duplicate [Active] status is not allowed	                                                                                                                                                                                                                            |
       |Active	                                        |Enrolling by Invitation	                    |			        |yes    | ERROR: Invalid status transition from [Active] to [Enrolling by Invitation]	                                                                                                                                                                                                |
-      |Active	                                        |Closed to Accrual	                            |			        |no     | Warning: Invalid status transition from [Active] to [Closed to Accrual] on the same day                                                                                                                                                                                        |
-      |Active	                                        |Closed to Accrual and Intervention             |			        |no     | WARNING: Interim status [Closed to Accrual] is missing\n Warning: Invalid status transition from [Active] to [Closed to Accrual and Intervention] on the same day	                                                                                                            |
-      |Active	                                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|no     | Warning: Invalid status transition from [Active] to [Temporarily Closed to Accrual] on the same day	                                                                                                                                                                        |
-      |Active	                                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no     | Warning: Invalid status transition from [Active] to [Temporarily Closed to Accrual and Intervention] on the same day	                                                                                                                                                        |
+      |Active	                                        |Closed to Accrual	                            |			        |no     | WARNING: Statuses [Active] and [Closed to Accrual] have the same date                                                                                                                                                                                      |
+      |Active	                                        |Closed to Accrual and Intervention             |			        |no     | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Statuses [Active] and [Closed to Accrual and Intervention] have the same date                                                                                                                |
+      |Active	                                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|no     | WARNING: Statuses [Active] and [Temporarily Closed to Accrual] have the same date  	                                                                                                                                                                        |
+      |Active	                                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no     | WARNING: Statuses [Active] and [Temporarily Closed to Accrual and Intervention] have the same date                                                                                                                                                         |
       |Active	                                        |Complete	                                    |			        |yes    | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                                                                |
       |Active	                                        |Administratively Complete	                    |Add Stopped Reason	|yes    | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
      
@@ -137,7 +138,7 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |National                 |
       |Externally Peer-Reviewed |
       |Institutional            |
-  
+
        Scenario Outline: #1e Trial Status Transition Rules for Enrolling by Invitation Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
@@ -154,18 +155,18 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Enrolling by Invitation	                        |Withdrawn	                                    |Add Stopped Reason	|yes       |                                                                                                                                                                                                                                                                        |
       |Enrolling by Invitation	                        |Active	                                        |			        |yes       | ERROR: Invalid status transition from [Enrolling by Invitation] to [Active]                                                                                                                                                                                                    |                  
       |Enrolling by Invitation	                        |Enrolling by Invitation	                    |			        |yes       | ERROR: Duplicate [Enrolling by Invitation] status is not allowed	                                                                                                                                                                                                            |
-      |Enrolling by Invitation	                        |Closed to Accrual	                            |			        |yes       |                                                                                                                                                                                                                                                                        |
-      |Enrolling by Invitation	                        |Closed to Accrual and Intervention             |			        |yes       |  WARNING: Interim status [Closed to Accrual] is missing	                                                                                                                                                                                                                        |
-      |Enrolling by Invitation	                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|yes       |                                                                                                                                                                                                                                                                        |
-      |Enrolling by Invitation	                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes       |                                                                                                                                                                                                                                                                        |
-      |Enrolling by Invitation	                        |Complete	                                    |			        |yes       |  WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
-      |Enrolling by Invitation	                        |Administratively Complete	                    |Add Stopped Reason	|yes       |  WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
+      |Enrolling by Invitation	                        |Closed to Accrual	                            |			        |no        | WARNING: Statuses [Enrolling by Invitation] and [Closed to Accrual] have the same date                                                                                                                                                                                                                                                                        |
+      |Enrolling by Invitation	                        |Closed to Accrual and Intervention             |			        |no        | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Statuses [Enrolling by Invitation] and [Closed to Accrual and Intervention] have the same date 	                                                                                                                                                                                                                        |
+      |Enrolling by Invitation	                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|no        | WARNING: Statuses [Enrolling by Invitation] and [Temporarily Closed to Accrual] have the same date                                                                                                                                                                                                                                                                       |
+      |Enrolling by Invitation	                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no        | WARNING: Statuses [Enrolling by Invitation] and [Temporarily Closed to Accrual and Intervention] have the same date                                                                                                                                                                                                                                                                       |
+      |Enrolling by Invitation	                        |Complete	                                    |			        |yes       | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
+      |Enrolling by Invitation	                        |Administratively Complete	                    |Add Stopped Reason	|yes       | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
      Examples:
       |trialType  |
       |National                 |
       |Externally Peer-Reviewed |
       |Institutional            |
-   
+
       
  Scenario Outline: #1f Trial Status Transition Rules for Closed to Accrual Status
     Given I have selected the option to register a trial <trialType>
@@ -382,20 +383,23 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Status screen
     When I add a trial date <statusDateFrom> and trial status from <statusFrom> to trial date <statusDateTo> trial status <statusTo> with the <condition> then the respective checks <errorsWarnings> will be there
-      |statusDateFrom   |statusFrom	                                    |statusDateTo                 |statusTo	                                      |condition                                                                                                                  |errorsWarnings	                                                |
-      |Date Entered Now |Approved                                       |Same Date entered later      |In Review                                      |                                                                                                                           |Warning: Invalid Transition from [Approved] to [In Review]       |
-      |Date Entered Now |In Review                                      |Same Date entered later      |Approved                                       |                                                                                                                           |                                                                 |
-      |Date Entered Now |Approved                                       |Date entered Now             |In Review                                      |                                                                                                                           |Warning: Invalid Transition from [Approved] to [In Review]       |
-      |Date Entered past|In Review                                      |Date entered Now             |Approved                                       |                                                                                                                           |Warning: Invalid Transition from [In Review] to [Approved]       |
-      |Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual                  |all the previous Status before Active has been added                                                                       |                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual has been added                 |                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
-      |Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual and Intervention |all the previous Status before Active has been added                                                                       |                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual and Intervention has been added|                                                                 |
-      |Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
-      |Date Entered Now |Active                                         |Same Date entered later      |Closed to Accrual                              |all the previous Status before Active has been added                                                                       |                                                                 |
-      |Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Closed to Accrual has been added                             |Warning: Invalid Transition from [Closed to Accrual] to [Active] |
-      |Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
+      |statusDateFrom   |statusFrom                                       |statusDateTo                 |statusTo                                          |condition                                                                                                                  |errorsWarnings                                                  |
+|Date Entered Now |Approved                                       |Same Date entered later      |In Review                                      |                                                                                                                           |ERROR: Invalid status transition from [Approved] to [In Review]       |
+|Date Entered Now |In Review                                      |Same Date entered later      |Approved                                       |                                                                                                                           |                                                                 |
+|Date Entered past|Approved                                       |Date entered Now             |In Review                                      |                                                                                                                           |ERROR: Invalid status transition from [Approved] to [In Review]       |
+|Date Entered past|In Review                                      |Date entered Now             |Approved                                       |                                                                                                                           |                                                                   |
+|Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual                  |all the previous Status before Active has been added                                                                       |WARNING: Status [Active] and [Temporarily Closed to Accrual] have the same date  |
+|Date Entered past|Active                                         |Date Entered Now             |Temporarily Closed to Accrual                  |all the previous Status before Active has been added                                                                       |                                                                 |
+|Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual has been added                 |                                                                 |
+|Date Entered Now |Temporarily Closed to Accrual                  |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing                      |
+|Date Entered Now |Active                                         |Same Date entered later      |Temporarily Closed to Accrual and Intervention |all the previous Status before Active has been added                                                                       |WARNING: Status [Active] and [Temporarily Closed to Accrual and Intervention] have the same date |
+|Date Entered past|Active                                         |Date Entered Now             |Temporarily Closed to Accrual and Intervention |all the previous Status before Active has been added                                                                       |                                                                 |
+|Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Temporarily Closed to Accrual and Intervention has been added|                                                                 |
+|Date Entered Now |Temporarily Closed to Accrual and Intervention |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |WARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual]|
+|Date Entered Now |Active                                         |Same Date entered later      |Closed to Accrual                              |all the previous Status before Active has been added                                                                       |WARNING: Status [Active] and [Closed to Accrual] have the same date                     |
+|Date Entered past|Active                                         |Date Entered Now             |Closed to Accrual                              |all the previous Status before Active has been added                                                                       |                                                                 |
+|Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active including Active before Closed to Accrual has been added                             |ERROR: Invalid status transition from [Closed to Accrual] to [Active] |
+|Date Entered Now |Closed to Accrual                              |Same Date entered later      |Active                                         |all the previous Status before Active has been added                                                                       |ERROR: Invalid status transition from [Closed to Accrual] to [Active]                     |
 
     Examples:
       |trialType  |
@@ -431,15 +435,17 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     And I am on the Register Trial Status screen
     When I click on Review Trial without any Trial Status
     Then I should get an error message as "Trial Status is required"
-    And On Add Trial Status if Status Date or Status is missing
-    Then I should get an error message as "Please provide a Status Date, select a Status"
-    And On Add Trial Status when the Status selected is
+    When I didn't enter a Status Date 
+    And I didn't select a Trial Status type
+    And I click on the Add button
+    Then I should get an error message as "Status Date,Trial Status are required"
+    When I click the Status selected is
       |Temporarily Closed to Accrual                  |
       |Temporarily Closed to Accrual and Intervention |
       |Withdrawn                                      |
       |Administratively Complete                      |
     And Why Study Stopped reason is not provided
-    Then I should get an error message as "Please provide a Status Date, select a Status and enter Why Study Stopped"
+    Then I should get an error message as "Trial Status Date, Trial Status and  Why Study Stopped are required"
 
     Examples:
       |trialType  |
@@ -540,142 +546,117 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Institutional            |
 
 
-  Scenario Outline: #7 Rules for Status/Dates relationships
+  Scenario Outline: #7a Rules for Status/Dates relationships for "Trial Start Date"
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Section
-    When Current Trial Status is <TrialStatusType> then the Trial date Type must be <DateType>
-      |TrialStatusType                          |DateType                                         |
-      |Active                                   |Trial Start Date must be Actual                  |
-      |Enrolling by Invitation                  |Trial Start Date must be Actual                  |
-      |Closed to Accrual                        |Trial Start Date must be Actual                  |
-      |Closed to Accrual and Intervention       |Trial Start Date must be Actual                  |
-      |Temp Closed to Accrual                   |Trial Start Date must be Actual                  |
-      |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual                  |
-      |Complete                                 |All date types must be Actual                    |
-      |Administratively Complete                |Trial Start Date must be Actual                  |
-      |In Review                                |Trial Start Date could be Actual or Anticipated  |
-      |Approved                                 |Trial Start Date could be Actual or Anticipated  |
+    When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there
+      |TrialStatusType                                  |DateTypeActual                       | DateTypeActualError       |
+      |In Review                                        |allowed                              |                           |
+      |Approved                                         |allowed                              |                           |
+      |Active                                           |allowed                              |                           |
+      |Enrolling by Invitation                          |allowed                              |                           |
+      |Closed to Accrual                                |allowed                              |                           |
+      |Closed to Accrual and Intervention               |allowed                              |                           |
+      |Temporarily Closed to Accrual                    |allowed                              |                           |
+      |Temporarily Closed to Accrual and Intervention   |allowed                              |                           |
+      |Withdrawn                                        |allowed                              |                           |
+      |Administratively Complete                        |allowed                              |                           |
+      |Complete                                         |allowed                              |                           |
+    When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Anticipated" <DateTypeAnticipated> along with the error <DateTypeAnticipatedError> should be there
+      |TrialStatusType                                  |DateTypeAnticipated                | DateTypeAnticipatedError|
+      |In Review                                        |allowed                            |                           |
+      |Approved                                         |allowed                            |                           |
+      |Active                                           |not allowed                        |If current Trial Status is Active, Trial Start Date must be Actual                          |
+      |Enrolling by Invitation                          |not allowed                        |If current Trial Status is Enrolling by Invitation, Trial Start Date must be Actual                            |
+      |Closed to Accrual                                |not allowed                        |If current Trial Status is Closed to Accrual, Trial Start Date must be Actual                            |
+      |Closed to Accrual and Intervention               |not allowed                        |If current Trial Status is Closed to Accrual and Intervention, Trial Start Date must be Actual                             |
+      |Temporarily Closed to Accrual                    |not allowed                        |If current Trial Status is Temporarily Closed to Accrual, Trial Start Date must be Actual                            |
+      |Temporarily Closed to Accrual and Intervention   |not allowed                        |If current Trial Status is Temporarily Closed to Accrual and Intervention, Trial Start Date must be Actual                             |
+      |Withdrawn                                        |allowed                            |                             |
+      |Administratively Complete                        |not allowed                        |If current Trial Status is Administratively Complete, Trial Start Date must be Actual                             |
+      |Complete                                         |not allowed                        |If current Trial Status is Complete, Trial Start Date must be Actual                             |
 
     Examples:
       |trialType  |
       |National                 |
       |Externally Peer-Reviewed |
       |Institutional            |
-  
-  Scenario Outline: #7a Rules for Status/Dates relationships for "Trial Start Date"
-  Given I have selected the option to register a trial <trialType>
-  And I am on the Trial Dates Section
-  When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Actual" <DateTypeActual> along with warning <DateTypeActualWarning> should be there
-    |TrialStatusType                                  |DateTypeActual                       | DateTypeActualWarning     |
-    |In Review                                        |allowed                              |                           |
-    |Approved                                         |allowed                              |                           |
-    |Active                                           |allowed                              |                           |
-    |Enrolling by Invitation                          |allowed                              |                           |
-    |Closed to Accrual                                |allowed                              |                           |
-    |Closed to Accrual and Intervention               |allowed                              |                           |
-    |Temporarily Closed to Accrual                    |allowed                              |                           |
-    |Temporarily Closed to Accrual and Intervention   |allowed                              |                           |
-    |Withdrawn                                        |allowed                              |                           |
-    |Administratively Complete                        |allowed                              |                           |
-    |Complete                                         |allowed                              |                           |
-  When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
-    |TrialStatusType                                  |DateTypeAnticipated                | DateTypeAnticipatedWarning|
-    |In Review                                        |allowed                            |                           |
-    |Approved                                         |allowed                            |                           |
-    |Active                                           |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                           |
-    |Enrolling by Invitation                          |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
-    |Closed to Accrual                                |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
-    |Closed to Accrual and Intervention               |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
-    |Temporarily Closed to Accrual                    |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
-    |Temporarily Closed to Accrual and Intervention   |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
-    |Withdrawn                                        |allowed                            |                             |
-    |Administratively Complete                        |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                             |
-    |Complete                                         |not allowed                        |Trial Start Date must be actual for any current Trial Status besides approved                            |
-
-  Examples:
-    |trialType  |
-    |National                 |
-    |Externally Peer-Reviewed |
-    |Institutional            |
 
 
-Scenario Outline: #7b Rules for Status/Dates relationships for "Primary Completion Date"
-  Given I have selected the option to register a trial <trialType>
-  And I am on the Trial Dates Section
-  When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Actual" <DateTypeActual> along with warning <DateTypeActualWarning> should be there
-    |TrialStatusType                                |DateTypeActual                       | DateTypeActualWarning     |
-    |In Review                                      |allowed                              |                           |
-    |Approved                                       |allowed                              |                           |
-    |Active                                         |allowed                              |                           |
-    |Enrolling by Invitation                        |allowed                              |                           |
-    |Closed to Accrual                              |allowed                              |                           |
-    |Closed to Accrual and Intervention             |allowed                              |                           |
-    |Temporarily Closed to Accrual                  |allowed                              |                           |
-    |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
-    |Withdrawn                                      |allowed                              |                           |
-    |Administratively Complete                      |allowed                              |                           |
-    |Complete                                       |allowed                              |                           |
-  When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
-    |TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedWarning|
-    |In Review                                      |allowed                           |                           |
-    |Approved                                       |allowed                           |                           |
-    |Active                                         |allowed                           |                           |
-    |Enrolling by Invitation                        |allowed                           |                           |
-    |Closed to Accrual                              |allowed                           |                           |
-    |Closed to Accrual and Intervention             |allowed                           |                           |
-    |Temporarily Closed to Accrual                  |allowed                           |                           |
-    |Temporarily Closed to Accrual and Intervention |allowed                           |                           |
-    |Withdrawn                                      |allowed                           |                           |
-    |Administratively Complete                      |not allowed                       |if current Trial Status is Administratively Complete, Primary Completion Date must be Actual                           |
-    |Complete                                       |not allowed                       |if current Trial Status is Complete, Primary Completion Date must be Actual                           |
+  Scenario Outline: #7b Rules for Status/Dates relationships for "Primary Completion Date"
+    Given I have selected the option to register a trial <trialType>
+    And I am on the Trial Dates Section
+    When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there
+      |TrialStatusType                                |DateTypeActual                       | DateTypeActualError     |
+      |In Review                                      |allowed                              |                           |
+      |Approved                                       |allowed                              |                           |
+      |Active                                         |allowed                              |                           |
+      |Enrolling by Invitation                        |allowed                              |                           |
+      |Closed to Accrual                              |allowed                              |                           |
+      |Closed to Accrual and Intervention             |allowed                              |                           |
+      |Temporarily Closed to Accrual                  |allowed                              |                           |
+      |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
+      |Withdrawn                                      |allowed                              |                           |
+      |Administratively Complete                      |allowed                              |                           |
+      |Complete                                       |allowed                              |                           |
+    When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with the error <DateTypeAnticipatedError> should be there
+      |TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedError|
+      |In Review                                      |allowed                           |                           |
+      |Approved                                       |allowed                           |                           |
+      |Active                                         |allowed                           |                           |
+      |Enrolling by Invitation                        |allowed                           |                           |
+      |Closed to Accrual                              |allowed                           |                           |
+      |Closed to Accrual and Intervention             |allowed                           |                           |
+      |Temporarily Closed to Accrual                  |allowed                           |                           |
+      |Temporarily Closed to Accrual and Intervention |allowed                           |                           |
+      |Withdrawn                                      |allowed                           |                           |
+      |Administratively Complete                      |not allowed                       |If current Trial Status is Administratively Complete, Primary Completion Date must be Actual                             |
+      |Complete                                       |not allowed                       |If current Trial Status is Complete, Primary Completion Date must be Actual                             |
 
-  Examples:
-    |trialType  |
-    |National                 |
-    |Externally Peer-Reviewed |
-    |Institutional            |
-
-
-Scenario Outline: #7c Rules for Status/Dates relationships for "Completion Date"
-  Given I have selected the option to register a trial <trialType>
-  And I am on the Trial Dates Section
-  When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual> along with warning <DateTypeActualWarning> should be there
-    |TrialStatusType                                |DateTypeActual                       | DateTypeActualWarning     |
-    |In Review                                      |not allowed                          |if current Trial Status is In Review, Primary Completion Date must be Actual                           |
-    |Approved                                       |not allowed                          |if current Trial Status is Approved , Primary Completion Date must be Anticipated                           |
-    |Active                                         |not allowed                          |if current Trial Status is Active , Primary Completion Date must be Anticipated                          |
-    |Enrolling by Invitation                        |not allowed                          |if current Trial Status is Enrolling by Invitation , Primary Completion Date must be Anticipated                      |
-    |Closed to Accrual                              |not allowed                          |if current Trial Status is Closed to Accrual , Primary Completion Date must be Anticipated                          |
-    |Closed to Accrual and Intervention             |not allowed                          |if current Trial Status is Closed to Accrual and Intervention, Primary Completion Date must be Anticipated                          |
-    |Temporarily Closed to Accrual                  |not allowed                          |if current Trial Status is Temporarily Closed to Accrual , Primary Completion Date must be Anticipated                           |
-    |Temporarily Closed to Accrual and Intervention |not allowed                          |if current Trial Status is Temporarily Closed to Accrual and Intervention , Primary Completion Date must be Anticipated                      |
-    |Withdrawn                                      |not allowed                          |if current Trial Status is Withdrawn , Primary Completion Date must be Anticipated                           |
-    |Administratively Complete                      |allowed                              |                           |
-    |Complete                                       |allowed                              |                           |
-  When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with warning <DateTypeAnticipatedWarning> should be there
-    |TrialStatusType                                |DateTypeAnticipated                  | DateTypeAnticipatedWarning|
-    |In Review                                      |allowed                              |                           |
-    |Approved                                       |allowed                              |                           |
-    |Active                                         |allowed                              |                           |
-    |Enrolling by Invitation                        |allowed                              |                           |
-    |Closed to Accrual                              |allowed                              |                           |
-    |Closed to Accrual and Intervention             |allowed                              |                           |
-    |Temporarily Closed to Accrual                  |allowed                              |                           |
-    |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
-    |Withdrawn                                      |allowed                              |                           |
-    |Administratively Complete                      |not allowed                          |if current Trial Status is Administratively Complete, Completion Date must be Actual                           |
-    |Complete                                       |not allowed                          |if current Trial Status is Complete, Completion Date must be Actual                           |
-
-  Examples:
-    |trialType  |
-    |National                 |
-    |Externally Peer-Reviewed |
-    |Institutional            |
+    Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
 
 
+  Scenario Outline: #7c Rules for Status/Dates relationships for "Completion Date"
+    Given I have selected the option to register a trial <trialType>
+    And I am on the Trial Dates Section
+    When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there
+      |TrialStatusType                                |DateTypeActual                       | DateTypeActualError    |
+      |In Review                                      |not allowed                          |If current Trial Status is In Review, Completion Date must be Anticipated                           |
+      |Approved                                       |not allowed                          |If current Trial Status is Approved, Completion Date must be Anticipated                           |
+      |Active                                         |not allowed                          |If current Trial Status is Active, Completion Date must be Anticipated                          |
+      |Enrolling by Invitation                        |not allowed                          |If current Trial Status is Enrolling by Invitation, Completion Date must be Anticipated                      |
+      |Closed to Accrual                              |not allowed                          |If current Trial Status is Closed to Accrual, Completion Date must be Anticipated                          |
+      |Closed to Accrual and Intervention             |not allowed                          |If current Trial Status is Closed to Accrual and Intervention, Completion Date must be Anticipated                          |
+      |Temporarily Closed to Accrual                  |not allowed                          |If current Trial Status is Temporarily Closed to Accrual, Completion Date must be Anticipated                           |
+      |Temporarily Closed to Accrual and Intervention |not allowed                          |If current Trial Status is Temporarily Closed to Accrual and Intervention, Completion Date must be Anticipated                      |
+      |Withdrawn                                      |not allowed                          |If current Trial Status is Withdrawn, Completion Date must be Anticipated                           |
+      |Administratively Complete                      |allowed                              |                           |
+      |Complete                                       |allowed                              |                           |
+    When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with the error <DateTypeAnticipatedError> should be there
+      |TrialStatusType                                |DateTypeAnticipated                  | DateTypeAnticipatedError|
+      |In Review                                      |allowed                              |                           |
+      |Approved                                       |allowed                              |                           |
+      |Active                                         |allowed                              |                           |
+      |Enrolling by Invitation                        |allowed                              |                           |
+      |Closed to Accrual                              |allowed                              |                           |
+      |Closed to Accrual and Intervention             |allowed                              |                           |
+      |Temporarily Closed to Accrual                  |allowed                              |                           |
+      |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
+      |Withdrawn                                      |allowed                              |                           |
+      |Administratively Complete                      |not allowed                          |If current Trial Status is Administratively Complete, Completion Date must be Actual                           |
+      |Complete                                       |not allowed                          |If current Trial Status is Complete, Completion Date must be Actual                           |
 
-  
- Scenario Outline: #8 Rules for Study Date types
+    Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+Scenario Outline: #8 Rules for Study Date types
     Given I have selected the option to register a trial <trialType>
     And I am on the Trial Dates Screen
     When the Trial date is in the past
@@ -693,17 +674,12 @@ Scenario Outline: #7c Rules for Status/Dates relationships for "Completion Date"
       |Institutional            |
 
   Scenario Outline: #9 general rules for Study Date values are as follows
-    Given I have selected the option to register a trial <trialType>
-    And I am on the trial date section
+  Given I have selected the option to register a trial <trialType>
+    And I am on the Trial Dates Screen
     And The Trial Start Date can be in the past, present, or future
-    And The Trial Start Date can be in the past, present, or future
-    And The Completion Date is always the same as, or later than, the Primary Completion Date
     And The Primary Completion Date is always the same as, or later than, the Trial Start Date
-    And The Primary Completion Date can be earlier than the Current Trial Status Dates Complete
-    When the Primary Completion Date is Actual
-    Then the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete
     And The Completion Date is always the same as, or later than, the Primary Completion Date
-
+    
     Examples:
       |trialType  |
       |National                 |

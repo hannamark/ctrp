@@ -1215,6 +1215,7 @@
             return latestDocId;
         }
 
+        // Update the current status code and name
         function updateCurrentStatus() {
             for (var i = vm.addedStatuses.length - 1; i >= 0; i--) {
                 if (!vm.addedStatuses[i]._destroy) {

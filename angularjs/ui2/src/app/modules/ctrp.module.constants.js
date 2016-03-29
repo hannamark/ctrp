@@ -70,8 +70,14 @@
             'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
+            'ASSAY_TYPES': '/ctrp/assay_types.json',
+            'EVALUATION_TYPES': '/ctrp/evaluation_types.json',
+            'SPECIMEN_TYPES': '/ctrp/specimen_types.json',
+            'BIOMARKER_USES': '/ctrp/biomarker_uses.json',
+            'BIOMARKER_PURPOSES': '/ctrp/biomarker_purposes',
             'SUB_GROUP_LIST' : '/ctrp/registry/sub_groups.json',
             'A_SUB_GROUP' : '/ctrp/registry/sub_groups/',
+            'CADSR_SEARCH': '/ctrp/cadsr_markers/search',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
                 'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
@@ -106,7 +112,10 @@
                 'BIOSPECIMEN_RETENTIONS': '/ctrp/registry/trials/biospecimen_rententions.json',
                 'GENDERS': '/ctrp/registry/trials/genders.json',
                 'AGE_UNITS': '/ctrp/registry/trials/age_units.json',
-                'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json'
+                'SAMPLING_METHODS': '/ctrp/registry/sampling_methods.json',
+                'TRIAL_ID_TYPES': '/ctrp/registry/trials/trial_identifier_types.json',
+                'SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS': '/ctrp/registry/trials/search_clinical_trials_gov_ignore_exists.json',
+                'SEARCH_NCI_TRIAL': '/ctrp/registry/trials/search_trial_with_nci_id.json'
             }
         })
         .constant('MESSAGES', {

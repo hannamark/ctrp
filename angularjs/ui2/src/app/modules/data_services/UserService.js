@@ -8,13 +8,21 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope', 'uiGridConstants'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope, uiGridConstants) {
 
+        var service = this;
         var appVersion = '';
         var appRelMilestone = '';
+        var statusArr = [
+            {id: 1, name: 'In Review'},
+            {id: 2, name: 'Active'},
+            {id: 3, name: 'Inactive'},
+            {id: 4, name: 'Deleted'}
+        ];
+        var rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
 
         // Initial User Search Parameters
         var initUserSearchParams = {
@@ -25,6 +33,7 @@
             email: '',
             phone: '',
             approved: '',
+            user_status_id: '',
             // affiliated_org_name: '',
 
             //for pagination and sorting
@@ -112,16 +121,22 @@
                 },
                 {
                     name: 'approved',
-                    displayName: 'Approval',
+                    displayName: 'Approve',
+                    enableSorting: true,
+                    minWidth: '25',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved" ng-click="grid.appScope.changeUserApproval(row)"></label></div>'
+                },
+                {
+                    name: 'user_status',
+                    displayName: 'Status',
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status.name}}">{{row.entity.user_status.name}}</div>'
                 }
             ]
         };
-
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -255,6 +270,10 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         }; //getUserByName
 
+        this.getCurrentUserDetails = function () {
+            var username = LocalCacheService.getCacheWithKey('username');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
+        };
 
         /**
          * Get the user role of the logged in user
@@ -309,7 +328,9 @@
         this.upsertUser = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
+
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
+
         }; //upsertUser
 
         this.upsertUserSignup = function (userObj) {
@@ -397,9 +418,15 @@
             LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
+        this.getStatusArray = function() {
+            return statusArr;
+        };
+
+        this.getRolesArray = function() {
+            return rolesArr;
+        };
 
         /******* helper functions *********/
-
         function _setAppVersion(version) {
             if (!version) {
                 //if null or empty value

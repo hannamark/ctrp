@@ -23,33 +23,51 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
-        vm.rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
+        vm.statusArr = UserService.getStatusArray();
+        vm.rolesArr = UserService.getRolesArray();
+
+        vm.checkUserStatus = function() {
+            if (!vm.userDetails.user_status.id) {
+                vm.userDetails.user_status.id = null;
+            }
+            console.log('status is: ', vm.userDetails.user_status);
+        }
 
         vm.updateUser = function () {
+            // Selected Orgs is required but not really a validated form field (it is wrapped in a directive)
+            // So check selectedOrgs length and do nothing if array.length < 1
+            if (!vm.selectedOrgsArray.length) {
+                return;
+            }
 
-            console.log('hello email changed ? ' +vm.userDetails.email);
-            console.log('IN UPDATEUSER');
+            console.log('vm.userDetails is:', vm.userDetails.user_status);
+            //console.log('hello email changed ? ' +vm.userDetails.email);
+            //console.log('IN UPDATEUSER');
             var newUser = {};
-            newUser.new = vm.userDetails.new || '';
+            //newUser.new = vm.userDetails.new || '';
             newUser.id = vm.userDetails.id || '';
+            //console.log("newUser="+JSON.stringify(newUser));
             if(vm.selectedOrgsArray.length >0) {
                 /* Only updates using the first item in the org. array */
                 if (vm.selectedOrgsArray[0]._destroy) {
                     vm.userDetails.organization_id = null;
+                    vm.selectedOrgsArray = [];
                 } else {
                     vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
                 }
             }
             newUser.user = vm.userDetails;
+            newUser.user.user_status_id = vm.userDetails.user_status.id;
+            //console.log("22newUser="+JSON.stringify(newUser));
            //newUser.org_id=watch.org[o];
 
             if (vm.selectedOrgsArray[0] != null){
                 console.log('orgs id is ' + vm.selectedOrgsArray[0].id);
             }
-            console.log('newUser is: ' + JSON.stringify(newUser));
+            //console.log('newUser is: ' + JSON.stringify(newUser));
             UserService.upsertUser(newUser).then(function(response) {
                 toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
-                console.log('response is:', response);
+                //console.log('response is:', response);
                 vm.userDetails.username = response.username;
                 vm.userDetails.email = response.email;
                 vm.userDetails.role = response.role;
@@ -89,6 +107,10 @@
 
         vm.reset = function() {
             vm.userDetails = angular.copy(userDetailObj);
+
+            if (vm.selectedOrgsArray.length && vm.selectedOrgsArray[0]._destroy) {
+                vm.selectedOrgsArray[0]._destroy = false;
+            }
         };
 
         $scope.$watch(function() {return vm.selectedOrgsArray;}, function(newVal) {

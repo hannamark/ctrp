@@ -10,14 +10,14 @@ Then I am on the Add Associated Trial screen
 And I must select <Identifier Type>
 |Identifier Type|
 |NCI |
-|CTEP|
+|NCT|
 And I must enter the Trial Identifier
 When I click the Look Up Trial button
 Then the Requested Trial is retrieved
 
       |Identifier type  |Retrieved from  |
-      |CTEP  |CTRP  |
-      |NCI  |ClinicalTrials.gov  |
+      |NCI  |CTRP  |
+      |NCT  |ClinicalTrials.gov  |
       
 And the Clinical Research Category populates
 And the Official Title populates
@@ -40,8 +40,8 @@ Then the <AssociatedTrialFields> on the Associated Trials screen of the Associat
       Example:
       
       |CTRPstudyID|Title | ClinRschCat|AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory  | AssociatedTrial_Official Title| 
-      |111  |Root study  |Interventional  |555 |  Ancillary Correlative|Assoc study  |
-      |555  |Assoc Study | Ancillary Correlative  |111  |Inteventional  | Root Study|
+      |NCI111  |Root study  |Interventional  |NCI555 |  Ancillary Correlative|Assoc study  |
+      |NCI555  |Assoc Study | Ancillary Correlative  |NCI111  |Inteventional  | Root Study|
 
 
 Scenario: #3 Associated Trial is not found
@@ -56,13 +56,13 @@ Scenario:  #4 Trial Identifier information not null
 Given I am I am on the Add Associated Trial screen
 When I click on 'Look Up Trial' button 
 And the Trial Identifier is Null
-Then an error message will appear "Trial Identifier is required” 
+Then an error message will appear "Trial Identifier is Required” 
 
 Scenario:  #5 Identifier Type not null   
 Given I am I am on the Add Associated Trial screen
 When I click on 'Look Up Trial' button 
 And the Identifier Type is Null
-Then an error message will appear "Identifier Type is required” 
+Then an error message will appear "Identifier Type is Required” 
 
 
 Scenario: #6 Deleted Associated Trials

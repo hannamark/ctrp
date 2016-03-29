@@ -65,7 +65,6 @@
 #  min_age                       :integer
 #  max_age                       :integer
 #  assigned_to_id                :integer
-#  owner_id                      :integer
 #  board_approval_status_id      :integer
 #  intervention_model_id         :integer
 #  masking_id                    :integer
@@ -111,7 +110,6 @@
 #  index_trials_on_masking_id                (masking_id)
 #  index_trials_on_max_age_unit_id           (max_age_unit_id)
 #  index_trials_on_min_age_unit_id           (min_age_unit_id)
-#  index_trials_on_owner_id                  (owner_id)
 #  index_trials_on_phase_id                  (phase_id)
 #  index_trials_on_pi_id                     (pi_id)
 #  index_trials_on_primary_purpose_id        (primary_purpose_id)
@@ -154,7 +152,6 @@ class Trial < TrialBase
 
   # PA fields
   belongs_to :assigned_to, class_name: "User"
-  belongs_to :owner, class_name: "User"
   belongs_to :board_approval_status
   belongs_to :board_affiliation, class_name: "Organization"
   belongs_to :intervention_model
@@ -195,6 +192,7 @@ class Trial < TrialBase
   attr_accessor :coming_from
   attr_accessor :current_user
 
+  accepts_nested_attributes_for :associated_trials, allow_destroy: true
   accepts_nested_attributes_for :arms_groups, allow_destroy: true
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
@@ -213,6 +211,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :anatomic_site_wrappers, allow_destroy: true
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
   accepts_nested_attributes_for :sub_groups, allow_destroy: true
+  accepts_nested_attributes_for :markers, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
@@ -261,7 +260,7 @@ class Trial < TrialBase
         if self.ps_orgs.include?(self.current_user.organization)
           # Associated org has been added as participating site
           actions.append('update-my-site')
-        else
+        elsif self.current_user.organization.present?
           # Associated org hasn't been added as participating site
           actions.append('add-my-site')
         end
@@ -275,7 +274,7 @@ class Trial < TrialBase
   def my_site_id
     if self.current_user.present? && self.current_user.role != 'ROLE_SITE-SU'
       self.participating_sites.each do |e|
-        if e.organization.id == self.current_user.organization.id
+        if self.current_user.organization.present? && e.organization.present? && e.organization.id == self.current_user.organization.id
           return e.id
         end
       end
@@ -490,6 +489,7 @@ class Trial < TrialBase
         # Populate the trial data in the email body
         mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
         mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
 
         table = '<table border="0">'
@@ -507,7 +507,11 @@ class Trial < TrialBase
         mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
         mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
 
-        CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+        begin
+          CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+        rescue  Exception => e
+          logger.warn "email delivery error = #{e}"
+        end
       end
     end
   end
@@ -546,6 +550,8 @@ class Trial < TrialBase
 
     joins(join_clause).where(where_clause, value_exp, value_exp, value_exp)
   }
+
+  scope :with_nci_id, -> (nci_id) { where(nci_id: nci_id) }
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 

@@ -179,7 +179,7 @@ SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registry')
 SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
 SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
-SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
+SubmissionMethod.find_or_create_by(code: 'RSV', name: 'REST Service')
 SubmissionMethod.find_or_create_by(code: 'OTHER', name: 'Other')
 
 SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
@@ -217,7 +217,7 @@ StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
 
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
-OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Pre-specified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
 Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
@@ -232,17 +232,17 @@ Masking.find_or_create_by(code: 'OP', name: 'Open')
 Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
 Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
 
-AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
+# AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
 AgeUnit.find_or_create_by(code: 'YRS', name: 'Years')
-AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
+# AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
 AgeUnit.find_or_create_by(code: 'MOS', name: 'Months')
-AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
+# AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
 AgeUnit.find_or_create_by(code: 'WKS', name: 'Weeks')
-AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
+# AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
 AgeUnit.find_or_create_by(code: 'DYS', name: 'Days')
-AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
+# AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
 AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
-AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
+# AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
 
 AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
@@ -302,70 +302,218 @@ UserStatus.find_or_create_by(code: 'DEL', name: 'Deleted')
 
 
 ### MARKER STATIC DATA
-AssayType.find_or_create_by(code:  'Other' , name:'Other')
-AssayType.find_or_create_by(code:  'HPLC' , name:'High Performance Liquid Chromatography')
-AssayType.find_or_create_by(code:  'Immunohistochemistry (IHC)' , name:'Immunohistochemistry Staining Method')
-AssayType.find_or_create_by(code:  'Western Blot (Immunoblot)' , name:'Western Blotting')
-AssayType.find_or_create_by(code:  'ELISPOT' , name:'Enzyme-linked Immunosorbent Spot Assay')
-AssayType.find_or_create_by(code:  'RT-PCR' , name:'RT-PCR')
-AssayType.find_or_create_by(code:  'Cytotoxicity Assay' , name:'Cytotoxicity Assay')
-AssayType.find_or_create_by(code:  'Sequencing' , name:'Nucleic Acid Sequencing')
-AssayType.find_or_create_by(code:  'Multiplex Immunoassay' , name:'Multiple Immunologic Technique')
-AssayType.find_or_create_by(code:  'Proliferation Assay' , name:'Proliferation Assay')
-AssayType.find_or_create_by(code:  'Unspecified' , name:'Unspecified')
-AssayType.find_or_create_by(code:  'Mass Spectrometry' , name:'Mass Spectrometry')
-AssayType.find_or_create_by(code:  'Real-Time PCR (quantitative PCR)' , name:'Real Time PCR')
-AssayType.find_or_create_by(code:  'Microarray' , name:'Microarray')
-AssayType.find_or_create_by(code:  'ELISA' , name:'ELISA')
-AssayType.find_or_create_by(code:  'Flow Cytometry' , name:'Flow Cytometry')
-AssayType.find_or_create_by(code:  'in situ Hybridization' , name:'in situ Hybridization')
-AssayType.find_or_create_by(code:  'TUNEL assay' , name:'TdT-Mediated dUTP Nick End Labeling Assay')
-AssayType.find_or_create_by(code:  'PCR' , name:'Polymerase Chain Reaction')
-AssayType.find_or_create_by(code:  'Microscopy/Imaging' , name:'Microscopy Imaging Technique')
-AssayType.find_or_create_by(code:  'Real-Time RT-PCR (qRT-PCR)' , name:'Quantitative Reverse Transcriptase PCR')
 
-EvaluationType.find_or_create_by(code:  'Other', name:  'Other')
-EvaluationType.find_or_create_by(code: 'Acetylation', name:  'Acetylation')
-EvaluationType.find_or_create_by(code: 'Loss of Heterozygosity (LOH)', name:  'Loss of Heterozygosity')
-EvaluationType.find_or_create_by(code: 'Phosphorylation', name:  'Phosphorylation Process')
-EvaluationType.find_or_create_by(code: 'Proteolytic Cleavage', name:  'Protein Cleavage')
-EvaluationType.find_or_create_by(code: 'Protein Activity', name:  'Protein or Enzyme Activity')
-EvaluationType.find_or_create_by(code: 'Subtyping', name:  'Subtype')
-EvaluationType.find_or_create_by(code: 'Cell Functionality', name:  'Cell Function')
-EvaluationType.find_or_create_by(code: 'Genetic Analysis', name:  'Genetic Testing')
-EvaluationType.find_or_create_by(code: 'Level/Quantity', name:  'Level Quantity Value')
-EvaluationType.find_or_create_by(code: 'Germline Variant', name:  'Germline Mutation')
-EvaluationType.find_or_create_by(code: 'Somatic Variant', name:  'Somatic Mutation')
-EvaluationType.find_or_create_by(code: 'Chromosomal Amplification', name:  'Chromosomal Duplication')
-EvaluationType.find_or_create_by(code: 'Chromosomal Deletion', name:  'Chromosomal Deletion')
-EvaluationType.find_or_create_by(code: 'Activation Status', name:  'Protein Activation Status')
-EvaluationType.find_or_create_by(code: 'Methylation', name:  'Methylation')
+CadsrMarkerStatus.find_or_create_by(code: 'ACT', name: 'Active')
+CadsrMarkerStatus.find_or_create_by(code: 'INA', name: 'Inactive')
 
-SpecimenType.find_or_create_by(code: 'Other', name:'Other')
-SpecimenType.find_or_create_by(code: 'Saliva', name:'Saliva')
-SpecimenType.find_or_create_by(code: 'Feces', name:'Feces')
-SpecimenType.find_or_create_by(code: 'Serum', name:'Serum')
-SpecimenType.find_or_create_by(code: 'Buccal Mucosa', name:'Buccal Mucosa')
-SpecimenType.find_or_create_by(code: 'Tissue', name:'Tissue')
-SpecimenType.find_or_create_by(code: 'Unspecified', name:'Unspecified')
-SpecimenType.find_or_create_by(code: 'CSF', name:'Cerebrospinal Fluid')
-SpecimenType.find_or_create_by(code: 'Plasma', name:'Plasma')
-SpecimenType.find_or_create_by(code: 'Blood', name:'Blood')
-SpecimenType.find_or_create_by(code: 'Urine', name:'Urine')
-SpecimenType.find_or_create_by(code: 'PBMCs', name:'Peripheral Blood Mononuclear Cell')
-SpecimenType.find_or_create_by(code: 'Cryopreserved Cells', name:'Cryopreserved Cell')
-SpecimenType.find_or_create_by(code: 'Bone Marrow', name:'Bone Marrow (biopsy/aspirate)')
+##### Here ids are important to given statically to display codes in a specific order on front end
+AssayType.find_or_create_by(id:21,  code:  'Other' , name:'Other')
+AssayType.find_or_create_by(id:16,  code:  'HPLC' , name:'High Performance Liquid Chromatography')
+AssayType.find_or_create_by(id:5,   code:  'Immunohistochemistry (IHC)' , name:'Immunohistochemistry Staining Method')
+AssayType.find_or_create_by(id:6,   code:  'Western Blot (Immunoblot)' , name:'Western Blotting')
+AssayType.find_or_create_by(id:10,  code:  'ELISPOT' , name:'Enzyme-linked Immunosorbent Spot Assay')
+AssayType.find_or_create_by(id:17,  code:  'RT-PCR' , name:'RT-PCR')
+AssayType.find_or_create_by(id:12,  code:  'Cytotoxicity Assay' , name:'Cytotoxicity Assay')
+AssayType.find_or_create_by(id:8,   code:  'Sequencing' , name:'Nucleic Acid Sequencing')
+AssayType.find_or_create_by(id:18,  code:  'Multiplex Immunoassay' , name:'Multiple Immunologic Technique')
+AssayType.find_or_create_by(id:11,  code:  'Proliferation Assay' , name:'Proliferation Assay')
+AssayType.find_or_create_by(id:20,  code:  'Unspecified' , name:'Unspecified')
+AssayType.find_or_create_by(id:13,  code:  'Mass Spectrometry' , name:'Mass Spectrometry')
+AssayType.find_or_create_by(id:19,  code:  'Real-Time PCR (quantitative PCR)' , name:'Real Time PCR')
+AssayType.find_or_create_by(id:3,   code:  'Microarray' , name:'Microarray')
+AssayType.find_or_create_by(id:4,   code:  'ELISA' , name:'ELISA')
+AssayType.find_or_create_by(id:7,   code:  'Flow Cytometry' , name:'Flow Cytometry')
+AssayType.find_or_create_by(id:2,   code:  'In Situ Hybridization' , name:'in situ Hybridization')
+AssayType.find_or_create_by(id:14,  code:  'TUNEL assay' , name:'TdT-Mediated dUTP Nick End Labeling Assay')
+AssayType.find_or_create_by(id:1,   code:  'PCR' , name:'Polymerase Chain Reaction')
+AssayType.find_or_create_by(id:9,   code:  'Microscopy/Imaging' , name:'Microscopy Imaging Technique')
+AssayType.find_or_create_by(id:15,  code:  'Real-Time RT-PCR (qRT-PCR)' , name:'Quantitative Reverse Transcriptase PCR')
 
-BiomarkerUse.find_or_create_by(code:'Integrated', name:'Integrated')
-BiomarkerUse.find_or_create_by(code:'Integral', name:'Integral')
+EvaluationType.find_or_create_by(id:16, code:  'Other', name:  'Other')
+EvaluationType.find_or_create_by(id:9,  code: 'Acetylation', name:  'Acetylation')
+EvaluationType.find_or_create_by(id:11,  code: 'Loss of Heterozygosity (LOH)', name:  'Loss of Heterozygosity')
+EvaluationType.find_or_create_by(id:7,  code: 'Phosphorylation', name:  'Phosphorylation Process')
+EvaluationType.find_or_create_by(id:6,  code: 'Proteolytic Cleavage', name:  'Protein Cleavage')
+EvaluationType.find_or_create_by(id:5,  code: 'Protein Activity', name:  'Protein or Enzyme Activity')
+EvaluationType.find_or_create_by(id:4,  code: 'Subtyping', name:  'Subtype')
+EvaluationType.find_or_create_by(id:3,  code: 'Cell Functionality', name:  'Cell Function')
+EvaluationType.find_or_create_by(id:2,  code: 'Genetic Analysis', name:  'Genetic Testing')
+EvaluationType.find_or_create_by(id:1,  code: 'Level/Quantity', name:  'Level Quantity Value')
+EvaluationType.find_or_create_by(id:12, code: 'Germline Variant', name:  'Germline Mutation')
+EvaluationType.find_or_create_by(id:13, code: 'Somatic Variant', name:  'Somatic Mutation')
+EvaluationType.find_or_create_by(id:14, code: 'Chromosomal Amplification', name:  'Chromosomal Duplication')
+EvaluationType.find_or_create_by(id:15, code: 'Chromosomal Deletion', name:  'Chromosomal Deletion')
+EvaluationType.find_or_create_by(id:10,  code: 'Activation Status', name:  'Protein Activation Status')
+EvaluationType.find_or_create_by(id:8,  code: 'Methylation', name:  'Methylation')
 
-BiomarkerPurpose.find_or_create_by(code: 'Stratification Factor', name:'Stratification Factor')
-BiomarkerPurpose.find_or_create_by(code: 'Treatment Assignment', name:'Therapy Assignment')
-BiomarkerPurpose.find_or_create_by(code: 'Eligibility Criterion', name:'Eligibility Determination')
-BiomarkerPurpose.find_or_create_by(code: 'Research', name:'Research')
-BiomarkerPurpose.find_or_create_by(code: 'Response Assessment', name:'Response Assessment')
+SpecimenType.find_or_create_by(id:14, code: 'Other', name:'Other')
+SpecimenType.find_or_create_by(id:9,  code: 'Saliva', name:'Saliva')
+SpecimenType.find_or_create_by(id:12, code: 'Feces', name:'Feces')
+SpecimenType.find_or_create_by(id:1,  code: 'Serum', name:'Serum')
+SpecimenType.find_or_create_by(id:11, code: 'Buccal Mucosa', name:'Buccal Mucosa')
+SpecimenType.find_or_create_by(id:4,  code: 'Tissue', name:'Tissue')
+SpecimenType.find_or_create_by(id:13, code: 'Unspecified', name:'Unspecified')
+SpecimenType.find_or_create_by(id:7,  code: 'CSF', name:'Cerebrospinal Fluid')
+SpecimenType.find_or_create_by(id:2,  code: 'Plasma', name:'Plasma')
+SpecimenType.find_or_create_by(id:3,  code: 'Blood', name:'Blood')
+SpecimenType.find_or_create_by(id:5,  code: 'Urine', name:'Urine')
+SpecimenType.find_or_create_by(id:6,  code: 'PBMCs', name:'Peripheral Blood Mononuclear Cell')
+SpecimenType.find_or_create_by(id:10, code: 'Cryopreserved Cells', name:'Cryopreserved Cell')
+SpecimenType.find_or_create_by(id:8,  code: 'Bone Marrow', name:'Bone Marrow (biopsy/aspirate)')
+
+BiomarkerUse.find_or_create_by(id:2, code:'Integrated', name:'Integrated')
+BiomarkerUse.find_or_create_by(id:1, code:'Integral', name:'Integral')
+
+BiomarkerPurpose.find_or_create_by(id:3, code: 'Stratification Factor', name:'Stratification Factor')
+BiomarkerPurpose.find_or_create_by(id:2, code: 'Treatment Assignment', name:'Therapy Assignment')
+BiomarkerPurpose.find_or_create_by(id:1, code: 'Eligibility Criterion', name:'Eligibility Determination')
+BiomarkerPurpose.find_or_create_by(id:4, code: 'Research', name:'Research')
+BiomarkerPurpose.find_or_create_by(id:5, code: 'Response Assessment', name:'Response Assessment')
+
+IdentifierType.find_or_create_by(code: 'NCI', name: 'NCI')
+IdentifierType.find_or_create_by(code: 'NCT', name: 'NCT')
+
+CadsrMarker.find_or_create_by(id:659,
+                              name: 'SLC2A4 (GLUT4, name:  solute carrier family 2 (facilitated glucose transporter), member 4)',
+                              meaning: 'SLC2A4 Gene',
+                              description: 'This gene plays a role in glucose transport regulation.',
+                              cadsr_id: 3335290,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+                              nv_term_identifier: 'C89034',
+                              pv_name: 'SLC2A4')
+
+CadsrMarker.find_or_create_by(id:47,
+                              name: 'AFP (FETA, name:  alpha-fetoprotein)',
+                              meaning: 'Alpha-Fetoprotein',
+                              description: 'This gene plays a role in glucose transport regulation.',
+                              cadsr_id: 3335290,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+                              nv_term_identifier: 'C89034',
+                              pv_name: 'SLC2A4')
 
 
+
+
+CadsrMarker.find_or_create_by(id:3543,
+                              name: 'Citrate',
+                              meaning: 'Citrate',
+                              description: 'A salt or ester of citric acid.',
+                              cadsr_id: 3192535,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C63374', pv_name: 'Citrate')
+
+CadsrMarker.find_or_create_by(id:169,
+                              name: 'PDE5A (PDE5, name:  CN5A, name:  phosphodiesterase 5A (cGMP-specific), name:  CGB-PDE)',
+                              meaning: 'cGMP-Specific 3,5-Cyclic Phosphodiesterase',
+                              description: 'cGMP-specific 3,5-cyclic phosphodiesterase (875 aa, ~100 kDa) is encoded by the human PDE5A gene. This protein plays a role in the mediation of cyclic GMP metabolism.',
+                              cadsr_id: 3243311, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C96469', pv_name: 'PDE5A')
+
+CadsrMarker.find_or_create_by(id:375,
+                              name: 'ITGAM (integrin, alpha M, name:  CR3A, name:  MAC-1, name:  CD11b)',
+                              meaning: 'ITGAM gene',
+                              description: 'This gene plays a role in extracellular matrix interactions and cellular adhesion.',
+                              cadsr_id: 3279303, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1366562', pv_name: 'ITGAM')
+
+
+CadsrMarker.find_or_create_by(id:394,
+                              name: 'CD24 (CD24 antigen (small cell lung carcinoma cluster 4 antigen), name:  CD24A)',
+                              meaning: 'CD24 gene',
+                              description: 'This gene is involved in the immune responsiveness of B-cells.',
+                              cadsr_id: 3281849, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1413212', pv_name: 'CD24')
+
+CadsrMarker.find_or_create_by(id:494,
+                              name: 'TNFAIP3 (A20, name:  OTUD7C, name:  tumor necrosis factor alpha-induced protein 3)',
+                              meaning: 'TNFAIP3 gene',
+                              description: 'This gene may play a role in the regulation of apoptosis.',
+                              cadsr_id: 3288476, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1420799', pv_name: 'TNFAIP3');
+
+CadsrMarker.find_or_create_by(id:568,
+                              name: 'tumor protein p53 binding protein 1 (TP53BP1, name:  53BP1)',
+                              meaning: 'TP53BP1 Gene',
+                              description: 'This gene may play a role in the modulation of the response to DNA damage.',
+                              cadsr_id: 3302801,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C88925', pv_name: 'tumor protein p53 binding protein 1')
+
+CadsrMarker.find_or_create_by(id:702,
+                              name: 'BCL2A1 (BCL2-related protein A1, name:  ACC-1, name:  GRS, name:  BCL2L5, name:  BFL1, name:  HBPA1, name:  ACC-2)',
+                              meaning: 'BCL2A1 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3351678,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1412761', pv_name: 'BCL2A1')
+
+CadsrMarker.find_or_create_by(id:724,
+                              name: 'MIR382 (MIRN382, name:  microRNA 382, name:  hsa-mir-382)',
+                              meaning: 'MIR382 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3359747,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1537903', pv_name: 'MIR382')
+
+CadsrMarker.find_or_create_by(id:374,
+                              name: 'CD33 (SIGLEC3, name:  CD33 antigen (gp67), name:  sialic acid binding Ig-like lectin 3, name:  FLJ00391, name:  SIGLEC-3, name:  p67)',
+                              meaning: 'CD33 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3279301,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1439292', pv_name: 'CD33')
+
+CadsrMarker.find_or_create_by(id:856,
+                              name: 'AKT2',
+                              meaning: 'AKT2 Gene',
+                              description: 'This gene plays a role in glucose homeostasis and the inhibition of apoptosis.',
+                              cadsr_id: 3412274,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C18352', pv_name: 'AKT2')
+
+CadsrMarker.find_or_create_by(id:924,
+                              name: 'IGHV3-21 (immunoglobulin heavy variable 3-21)',
+                              meaning: 'IGHV3-21 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3430847, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+                              nv_term_identifier: 'C1416035', pv_name: 'IGHV3-21')
+CadsrMarker.find_or_create_by(id:1781,
+                              name: 'SPIB (SPI-B, name:  Transcription Factor Spi-B, name:  Spi-B Transcription Factor (Spi-1/PU.1 Related))',
+                              meaning: 'SPIB Gene',
+                              description: 'This gene is involved in the modulation of gene transcription.',
+                              cadsr_id: 3684777,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C99651', pv_name: 'SPIB')
+
+
+
+CadsrMarkerSynonym.find_or_create_by(id: 678,alternate_name:  'CGB-PDE',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 677,alternate_name:  'phosphodiesterase 5A (cGMP-specific)',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 676,alternate_name:  'CN5A',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 675,alternate_name:  'PDE5',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+
+CadsrMarkerSynonym.find_or_create_by(id: 1914,alternate_name:  'tumor necrosis factor alpha-induced protein 3',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1912,alternate_name:  'A20',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1913,alternate_name:  'OTUD7C',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+CadsrMarkerSynonym.find_or_create_by(id: 1563,alternate_name:  'CD24 antigen (small cell lung carcinoma cluster 4 antigen)',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1564,alternate_name:  'CD24A',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+CadsrMarkerSynonym.find_or_create_by(id: 2740,alternate_name:  'BCL2L5',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2737,alternate_name:  'BCL2-related protein A1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2739,alternate_name:  'GRS',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2742,alternate_name:  'HBPA1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2738,alternate_name:  'ACC-1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2743,alternate_name:  'ACC-2',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2741,alternate_name:  'BFL1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1431,alternate_name:  'sialic acid binding Ig-like lectin 3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1432,alternate_name:  'FLJ00391',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1429,alternate_name:  'SIGLEC3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1430,alternate_name:  'CD33 antigen (gp67)',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1434,alternate_name:  'SIGLEC-3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1433,alternate_name:  'p67',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2800,alternate_name:  'microRNA 382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2801,alternate_name:  'hsa-mir-382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2799,alternate_name:  'MIRN382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 3554,alternate_name:  'immunoglobulin heavy variable 3-21',cadsr_marker_id:  924,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2296,alternate_name:  '53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2295,alternate_name:  'TP53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7725,alternate_name:  'Spi-B Transcription Factor (Spi-1/PU.1 Related)',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7723,alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7724,alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+NcitStatus.find_or_create_by(code:'ACT',name:'Active')
+NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -451,7 +599,7 @@ trial_status_transition = '{
                                "ACT": {"errors": [{"message": "Duplicate"}]},
                                "EBI": {"errors": [{"message": "Invalid Transition"}]},
                                "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
                                "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
@@ -464,7 +612,7 @@ trial_status_transition = '{
                                "ACT": {"errors": [{"message": "Invalid Transition"}]},
                                "EBI": {"errors": [{"message": "Duplicate"}]},
                                "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
                                "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
@@ -612,7 +760,7 @@ sr_status_transition = '{
                                "ACT": {"errors": [{"message": "Duplicate"}]},
                                "EBI": {"errors": [{"message": "Invalid Transition"}]},
                                "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
                                "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
@@ -625,7 +773,7 @@ sr_status_transition = '{
                                "ACT": {"errors": [{"message": "Invalid Transition"}]},
                                "EBI": {"errors": [{"message": "Duplicate"}]},
                                "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
                                "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
@@ -714,6 +862,10 @@ sr_status_transition = '{
 AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitment Status Transition Matrix', value: 'see big value', big_value: sr_status_transition)
 
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
 ########## SEEDING APP SETTINGS ENDS ##########
 

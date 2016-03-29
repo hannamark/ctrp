@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: biomarker_purposes
+# Table name: ncit_statuses
 #
 #  id           :integer          not null, primary key
 #  code         :string(255)
@@ -11,10 +11,6 @@
 #  lock_version :integer          default(0)
 #
 
-require 'test_helper'
-
-class BiomarkerPurposeTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class NcitStatus < ActiveRecord::Base
+  include BasicConcerns
 end

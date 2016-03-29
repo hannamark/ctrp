@@ -9,10 +9,10 @@
         .factory('TrialService', TrialService);
 
     TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
-        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http'];
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http','PromiseService'];
 
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
-            PromiseTimeoutService, Upload, HOST, DateService, $http) {
+            PromiseTimeoutService, Upload, HOST, DateService, $http,PromiseService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -126,7 +126,13 @@
             deleteParticipatingSite: deleteParticipatingSite,
             upsertOutcomeMeasure: upsertOutcomeMeasure,
             deleteOutcomeMeasure: deleteOutcomeMeasure,
-            getOutcomeMeasureTypes:getOutcomeMeasureTypes
+            getOutcomeMeasureTypes:getOutcomeMeasureTypes,
+            getAssayTypes:getAssayTypes,
+            getEvaluationTypes:getEvaluationTypes,
+            getSpecimenTypes:getSpecimenTypes,
+            getBiomarkerPurposes:getBiomarkerPurposes,
+            getBiomarkerUses:getBiomarkerUses,
+
         };
 
         return services;
@@ -1056,6 +1062,25 @@
         function getOutcomeMeasureTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURE_TYPES);
         } //getSourceStatuses
+
+        function getAssayTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ASSAY_TYPES);
+        }
+
+        function getEvaluationTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.EVALUATION_TYPES);
+        }
+
+        function getSpecimenTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SPECIMEN_TYPES);
+        }
+        function getBiomarkerPurposes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.BIOMARKER_PURPOSES);
+        }
+        function getBiomarkerUses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.BIOMARKER_USES);
+        }
+
 
     }
 })();

@@ -300,6 +300,9 @@ header img {
 .top-offset-tiny {
     margin-top: 5px;
 }
+.top-offset-xss {
+    margin-top: 15px;
+}
 .top-offset-xs {
 	margin-top: 25px;
 }
@@ -558,7 +561,7 @@ h5 {
     font-size: 13px;
 }
 .panel-title {
-    font-size: 14px;
+    font-size: 13px;
 }
 .panel-heading {
     padding: 6px 15px;
@@ -674,6 +677,10 @@ h5 {
   font-size: 0;
 }
 
+div.ui-grid-cell input[type="checkbox"] {
+    margin-top: 0;
+}
+
 .form-text {
     padding-top: 7px;
 }
@@ -737,7 +744,7 @@ input[type=radio] {
     border-radius: 6px;
 }
 
-.no-bottom-margin {
+.no-bottom-margin, .form-group.no-bottom-margin {
     margin-bottom: 0;
 }
 
@@ -812,7 +819,7 @@ fieldset.sub-bordered {
             box-shadow:  0px 0px 0px 0px #000;
 }
 legend.sub-bordered {
-    font-size: 1.2em !important;
+    font-size: 1em !important;
     font-weight: bold !important;
     text-align: left !important;
     width:auto;
@@ -832,7 +839,7 @@ a.editable-click:hover {
 }
 
 .search-calendar-grid-sm {
-    min-height: 155px;
+    min-height: 210px;
 }
 
 .select2-results-absolute .select2-results {
@@ -874,4 +881,10 @@ md-checkbox.md-default-theme.md-checked .md-icon {
 .text-vmiddle {
     display: inline-block;
     vertical-align: middle;
+}
+
+/* Angular Material Overrides */
+.md-tab {
+    font-size: 13px;
+    text-transform:capitalize;
 }

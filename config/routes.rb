@@ -2,15 +2,11 @@ Rails.application.routes.draw do
 
 
 
-  resources :trial_versions
+  resources :marker_biomarker_purpose_associations
 
   resources :accrual_disease_terms
 
   resources :trial_documents
-
-
-
-
 
   scope "/ctrp" do
 
@@ -20,14 +16,19 @@ Rails.application.routes.draw do
           scope '/trials' do
             scope '/complete' do
               post '/' => 'api_trials#create'
-              post '/:idType/:id' => 'api_trials#update'
-              put '/:idType/:id' => 'api_trials#amend'
+              post '/:idType/:id' => 'api_trials#update',constraints: {
+                                                            idType:  'nci'
+                                                        }
+              put '/:idType/:id' => 'api_trials#amend',constraints: {
+                                                          idType:  'nci'
+                                                      }
               #put  '/:id/status' =>  'api_trials#change_status'
             end
           end
         end
       end
     end
+
 
 
     devise_for :users
@@ -115,11 +116,31 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :cadsr_markers do
+      collection do
+        get 'index'
+        post 'search'
+      end
+    end
 
 
     resources :outcome_measure_types
     resources :po_affiliations
     resources :po_affiliation_statuses
+
+    resources :assay_types
+    resources :evaluation_types
+    resources :specimen_types
+    resources :biomarker_uses
+    resources :biomarker_purposes
+
+    resources :marker_spec_type_associations
+
+    resources :marker_eval_type_associations
+
+    resources :marker_assay_type_associations
+
+
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
@@ -174,6 +195,8 @@ Rails.application.routes.draw do
           post 'get_grants_serialnumber'
           get  'get_central_contact_types'
           get  'search_clinical_trials_gov'
+          get  'search_trial_with_nci_id'
+          get  'search_clinical_trials_gov_ignore_exists'
           post 'import_clinical_trials_gov'
           get  'get_board_approval_statuses'
           get  'get_intervention_models'
@@ -185,6 +208,7 @@ Rails.application.routes.draw do
           get  'biospecimen_rententions'
           get  'genders'
           get  'age_units'
+          get  'trial_identifier_types'
         end
       end
 

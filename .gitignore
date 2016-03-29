@@ -36,7 +36,7 @@ config/secrets.yml
 config/database.yml
 config/ldap.yml
 config/environments/ci.rb
-config/environments/qa.rb
+#config/environments/qa.rb
 config/environments/demo.rb
 config/environments/stage.rb
 config/environments/production.rb
@@ -61,7 +61,7 @@ config/environments/production.rb
 /node_modules
 
 # Ignore cucumber tests dir
-/tests
+/tests/features/output
 
 # Ignore local config document
 /config_ahmed.js

@@ -65,6 +65,7 @@
 
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
+
             var fromStateName = $state.fromState.name || '';
             $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
             $scope.searchParams = PersonService.getInitialPersonSearchParams();

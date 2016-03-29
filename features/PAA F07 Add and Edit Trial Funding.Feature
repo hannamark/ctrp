@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F07 Add and Edit Trial Funding
 
 As any CTRP PA User, I can add and edit a grant and its information
@@ -66,7 +66,7 @@ And any of the following are Null
 |Institute Code|
 |NCI Division/Program Code|
 |Grant Serial Number|
-Then a warning message will appear for the null values with the message �Please enter the Missing Grant Information�
+Then a warning message will appear for the null values with the message �Grant Information is Required�
 
 Scenario: #8 Is this trial funded by a NCI Grant? Update
 Given I am logged into the CTRP Protocol Abstraction application to abstract
@@ -82,7 +82,7 @@ And I am on the Trial Funding screen
 When select Save
 And the Trial is Funded by an NCI Grant
 And no grant is listed
-Then a message will appear �Please add the grant information for this trial�
+Then a message will appear �Grant Information is Required�
 
 Scenario: #10 I must enter a comment when I delete a grant
 Given I am logged into the CTRP Protocol Abstraction application to abstract
@@ -91,4 +91,4 @@ And I am on the Trial Funding Screen
 When I have selected one or more grants 
 And selected delete
 And have not entered a comment for why the grant(s) were deleted
-Then the system will display a warning �Please enter a reason for deleting the grant�
+Then the system will display a warning �Reason for Deleting the Grant is Required�

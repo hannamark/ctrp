@@ -136,6 +136,22 @@ var helper = function() {
         }
     };
 
+    this.setUploadedFile = function (fieldName, fieldValue, getFileNm, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        //fieldName.clear();
+        fieldName.sendKeys(fieldValue);
+        if(fieldValue == '[object Object]'){
+            var store = fieldName.getAttribute('value');
+            getFileNm.then(function(value){
+                console.log(errorMessage + ' ' + value + " Value entered");
+                expect(store).to.eventually.equal(value);});
+        }
+        else {
+            console.log(errorMessage + ' ' + fieldValue + " Value entered");
+            expect(fieldName.getAttribute('value')).to.eventually.equal((getFileNm));
+        }
+    };
+
     this.getValue = function (fieldName, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.getAttribute('value');

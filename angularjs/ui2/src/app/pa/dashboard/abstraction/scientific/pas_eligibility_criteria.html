@@ -35,7 +35,7 @@
                         </label>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol) &&
                                             criteria_form.accept_vol.$error">
-                            <span class="help-block" ng-message="required"><br />A choice for Accepts Healthy Volunteers is required</span>
+                            <span class="help-block" ng-message="required"><br />Accepts Healthy Volunteers is required</span>
                        </span>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <input type="number" min="0" name="min_age" id="min_age" ng-model="criteriaView.trialDetailObj.min_age" class="form-control input-sm" placeholder="" required>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.min_age) &&
                                             criteria_form.min_age.$error">
-                            <span class="help-block" ng-message="required">Minimum Age is required</span>
+                            <span class="help-block" ng-message="required">Enter 0 if no min age is indicated and select 'Years' as Unit</span>
                        </span>
                     </div>
                     <label for="min_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
@@ -89,7 +89,7 @@
                         <input type="number" min="0" name="max_age" id="max_age" ng-model="criteriaView.trialDetailObj.max_age" class="form-control input-sm" placeholder="" required>
                         <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.max_age) &&
                                             criteria_form.max_age.$error">
-                            <span class="help-block" ng-message="required">Maximum Age is required</span>
+                            <span class="help-block" ng-message="required">Enter 999 if no max age is indicated and select 'Years' as Unit</span>
                        </span>
                     </div>
                     <label for="max_age_unit" class="control-label col-xs-12 col-sm-2">Unit</label>
@@ -165,12 +165,12 @@
                         <div class="col-sm-10">
                             <textarea class="form-control input-sm" rows="1"
                                 name="other_criteria_desc" id="other_criteria_desc"
-                                maxlength="5000" ng-maxlength="5000"
+                                maxlength="criteriaView.descCharsRemaining" ng-maxlength="criteriaView.descCharsRemaining"
                                 ng-model="criteriaView.otherCriterion.criteria_desc" placeholder="Criteria Description">
                             </textarea>
                         </div>
                         <span ng-show="criteria_form.other_criteria_desc.$viewValue.length > 0">
-                            {{5000 - criteria_form.other_criteria_desc.$viewValue.length}} characters left
+                            {{criteriaView.descCharsRemaining - criteria_form.other_criteria_desc.$viewValue.length}} characters left. Total characters for all Other Criteria Description is {{5000 - criteriaView.descCharsRemaining}}.
                         </span>
                     </div>
                     <div class="col-xs-12 col-sm-2">
@@ -179,7 +179,8 @@
                             <button type="button" class="btn btn-warning" ng-click="criteriaView.cancelEditOtherCriterion()">Cancel</button>
                             <button type="button" class="btn btn-danger" ng-click="criteriaView.upsertOtherCriterion(criteriaView.otherCriterion)"
                                 ng-disabled="criteriaView.otherCriterion.criteria_desc==''">
-                                Add
+                                    <span ng-show="criteriaView.otherCriterion.edit">Update</span>
+                                    <span ng-show="!criteriaView.otherCriterion.edit">Add</span>
                             </button>
                         </div>
                     </div>
@@ -187,18 +188,11 @@
                 <div class="row top-buffer" ng-hide="criteriaView.trialDetailObj.other_criteria.length == 0">
                     <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover">
                 		<thead>
-                        <!-- <tr>
-                			<th>
-                				<input st-search="'firstName'" placeholder="search for firstname" class="input-sm form-control" type="search"/>
-                			</th>
-                			<th colspan="4">
-                				<input st-search placeholder="global search" class="input-sm form-control" type="search"/>
-                			</th>
-                		</tr> -->
                 		<tr>
-                			<th st-sort="criteria_type" class="col-sm-3">Eligibility Criterion Type</th>
-                			<th class="col-sm-9">Eligibility Criterion Description</th>
-                			<th class="text-center col-sm-1">Delete</th>
+                			<th st-sort="criteria_type" class="col-sm-4">Eligibility Criterion Type</th>
+                			<th class="col-sm-6">Eligibility Criterion Description</th>
+                			<th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
+                            <th class="text-center col-sm-1">Edit</th>
                 		</tr>
                 		</thead>
                 		<tbody>
@@ -209,17 +203,19 @@
                                       {{row.criteria_type}}
                                 </span>
                             </td>
-                			<td>
-                                <span in-place-edit="row.criteria_desc" on-save="criteriaView.updateOtherCriteriaDesc(row.criteria_desc, $index)"
-                                      template="app/pa/dashboard/abstraction/scientific/_other_criteria_desc_edit.html" id="other_criteria_desc_edit">
-                                      {{row.criteria_desc}}
-                                </span>
+                			<td>                                
+                                {{row.criteria_desc}}
                             </td>
                 			<td class="text-center">
                                 <label class="btn btn-default" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)">
                                     <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                 </label>
                 			</td>
+                            <td >
+                                <label class="btn btn-default" restriction-field ng-disabled="row._destroy" ng-click="criteriaView.editOtherCriterion($index)">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </label>
+                            </td>
                 		</tr>
                 		</tbody>
                 		<tfoot>

@@ -79,7 +79,7 @@ And I have selected a trial
 And I am on the Arms/Group screen
 When I select Save 
 And Label is Null
-Then a warning message will appear 'Label is required' 
+Then an error message will appear 'Label is Required' 
 
 Scenario:  #6 Type is not null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -87,7 +87,7 @@ And I have selected a trial with clinical research category = interventional
 And I am on the Arm/Group screen
 When I select Save 
 And Type is Null
-Then a warning message will appear 'Type is required' 
+Then an error message will appear 'Type is Required' 
 
 Scenario:  #7 Description is not null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -95,7 +95,7 @@ And I have selected a trial
 And I am on the Arms/Group screen
 When I select Save 
 And Description is Null
-Then a warning message will appear 'Description is required' 
+Then an error message will appear 'Description is Required' 
 
 Scenario: #8 Label field character count
 Given I am logged into the CTRP Protocol Abstraction application

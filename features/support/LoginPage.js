@@ -18,6 +18,7 @@ var LoginPage = function(){
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
     this.rejectButton = element(by.buttonText('Reject'));
     this.acceptButton = element(by.buttonText('Accept'));
+    this.loginUser = element(by.binding('headerView.username'));
     this.loginPageVerification = element(by.css('.ng-binding.ng-scope'));
     this.loginVerifyText = element(by.css('.panel-title'));
     this.loginNewUsrSign = element(by.css('.pad-height'));

@@ -97,30 +97,61 @@
                 vm.searchWarningMessage = '';
             };
 
+            var pageSize = 10; // 10 items per page
             function getGridOptions() {
 
                 var options = {
+                     enableServerSideSorting: true,
+                     enableServerSideFilter: true,
+                     rowModelType: 'pagination',
                      columnDefs: getColumnDefs(),
-                     rowData: [
-                         {'ctrp_id': 1232, 'ctep_id': 321},
-                         {'ctrp_id': 12322, 'ctep_id': 3212},
-                     ],
                      rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
+                     onSelectionChanged: onRowSelectionChanged, // for all rows
+                     onRowSelected: rowSelectedCallback, // current selected row (single row)
                      enableColResize: true,
                      enableSorting: true,
                      enableFilter: true,
-                     groupHeaders: true,
+                     // groupHeaders: true,
                      rowHeight: 25,
                      onModelUpdated: onModelUpdated,
-                     suppressRowClickSelection: true
+                     suppressRowClickSelection: false
                  };
                  // options.datasource = tableDataSource;
                  return options;
             }
 
+            function onRowSelectionChanged() {
+                var selectedRows = vm.gridOptions.api.getSelectedRows();
+                var selectedNodes = vm.gridOptions.api.getSelectedNodes();
+                var selectionCounts = vm.gridOptions.api.getSelectedNodes().length;
+
+                if (selectionCounts > $scope.maxRowSelectable) {
+                    var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
+                    // vm.gridOptions.api.deselectNode(oldestNode, false); // deselect
+                    vm.gridOptions.api.deselectIndex(0, true);
+                }
+
+                console.info('selectedRows: ', selectedRows);
+                console.info('selectedNodes: ', selectedNodes); // row object is nested in the 'data' field of node
+            } // onRowSelectionChanged
+
+            function rowSelectedCallback(event) {
+                console.info('is node selected? ', vm.gridOptions.api.isNodeSelected(event.node), event.node.id);
+                var curSelectedNode = event.node;
+                console.log('node props: ', curSelectedNode);
+                var curSelectedRowObj = curSelectedNode.data;
+                // var selectionCounts = vm.gridOptions.api.getSelectedNodes().length;
+                var selectedRows = vm.gridOptions.api.getSelectedRows();
+                // if (selectionCounts > $scope.maxRowSelectable) {
+                //     var oldestNode = vm.gridOptions.api.getSelectedNodes()[0];
+                //     // vm.gridOptions.api.deselectNode(oldestNode, false); // deselect
+                //     vm.gridOptions.api.deselectIndex(0, true);
+                // }
+            }
+
             function onModelUpdated() {
                 console.info('on model updated triggered!');
-            }
+            } // onModelUpdated
 
             function getColumnDefs() {
                 // {headerCellTemplate: '<strong>Head</strong>'}
