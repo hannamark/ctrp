@@ -34,21 +34,24 @@ class AssociatedTrial < ActiveRecord::Base
   def create_reverse
 
     @parent_trial = Trial.find_by_nci_id(self.trial_identifier) # reverse child to this parent
+    # @parent_trial = Trial.with_nci_id(self.trial_identifier)
     @child_trial = Trial.find_by_id(self.trial_id) # reverse parent to this child
 
 
     if (!@parent_trial.nil? and !@child_trial.nil?)
-      Rails.logger.info "parent_trial nci_id: #{@parent_trial.nci_id}"
-      Rails.logger.info "child_trial.id: #{@child_trial.id}"
+      # Rails.logger.info "parent_trial nci_id: #{@parent_trial.nci_id}"
+      # Rails.logger.info "child_trial.id: #{@child_trial.id}"
 
-      identifier_type_id = IdentifierType.find_by_name('CTRP').id
+      identifier_type_id = IdentifierType.find_by_name('NCI').id
       isExisted = AssociatedTrial.search_trial_associations(@child_trial.nci_id, identifier_type_id, @parent_trial.id).count > 0
 
       if (!isExisted)
-        Rails.logger.info "creating a reverse trial association"
-        Rails.logger.info "parent_trial.id: #{@parent_trial.id}, child_trial.nci_id: #{@child_trial.nci_id}"
-        research_category_name = ResearchCategory.find_by_id(@child_trial.research_category_id).name
-        at = AssociatedTrial.new(trial_identifier: @child_trial.nci_id, identifier_type_id: identifier_type_id, trial_id: @parent_trial.id, official_title: @child_trial.official_title, research_category_name: research_category_name)
+        # Rails.logger.info "creating a reverse trial association"
+        # Rails.logger.info "parent_trial.id: #{@parent_trial.id}, child_trial.nci_id: #{@child_trial.nci_id}"
+
+        @research_category = ResearchCategory.find_by_id(@child_trial.research_category_id)
+
+        at = AssociatedTrial.new(trial_identifier: @child_trial.nci_id, identifier_type_id: identifier_type_id, trial_id: @parent_trial.id, official_title: @child_trial.official_title, research_category_name: @research_category.nil? ? '' : @research_category.name)
         at.save!
       else
         Rails.logger.error "reverse trial already exists!"

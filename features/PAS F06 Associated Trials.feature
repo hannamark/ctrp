@@ -56,13 +56,13 @@ Scenario:  #4 Trial Identifier information not null
 Given I am I am on the Add Associated Trial screen
 When I click on 'Look Up Trial' button 
 And the Trial Identifier is Null
-Then an error message will appear "Trial Identifier is required” 
+Then an error message will appear "Trial Identifier is Required” 
 
 Scenario:  #5 Identifier Type not null   
 Given I am I am on the Add Associated Trial screen
 When I click on 'Look Up Trial' button 
 And the Identifier Type is Null
-Then an error message will appear "Identifier Type is required” 
+Then an error message will appear "Identifier Type is Required” 
 
 
 Scenario: #6 Deleted Associated Trials

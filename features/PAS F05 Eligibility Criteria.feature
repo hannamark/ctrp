@@ -96,7 +96,7 @@ And I have selected a trial
 And I am on the Eligibility Criteria screen
 And Min age and Unit is Null
 When I select Save 
-Then a warning message will appear for the null values with the message “Enter 0 if no min age is indicated and select ‘Years’ as Unit" 
+Then an error message will appear for the null values with the message “Age and Unit are Required.  Enter 0 if no min age is indicated and select ‘Years’ as Unit" 
  
 Scenario:  #5 Maximum Age is not null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -104,15 +104,15 @@ And I have selected a trial
 And I am on the Eligibility Criteria screen
 And Maximum Age and Unit is Null
 When I select Save 
-Then a warning message will appear for the null values with the message “Enter 999 if no max age is indicated and select ‘Years’ as Unit 
+Then an error message will appear for the null values with the message “ Age and Unit are Required.  Enter 999 if no max age is indicated and select ‘Years’ as Unit 
 
-Scenario:  #6 Accept Healthy Volunteers, Gender not Null   
+Scenario:  #6 Accept Healthy Volunteers not Null   
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Eligibility Criteria screen
 And Accepts Healthy Volunteers is Null
 When I select Save 
-Then a warning message will appear 'Accepts Healthy Volunteers is required'
+Then an error message will appear "'Accepts Healthy Volunteers' is Required"
 
 Scenario:  #7 Gender not Null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -120,7 +120,7 @@ And I have selected a trial
 And I am on the Eligibility Criteria screen
 And Gender is Null
 When I select Save 
-Then a warning message will appear 'Gender is required'
+Then an error message will appear 'Gender is Required'
 
 Scenario:  #8 Sampling Method for observational or ancillary correlative trial not Null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -128,7 +128,7 @@ And I have selected a observational or ancillary correlative trial
 And I am on the Eligibility Criteria screen
 And Sampling Method is Null
 When I select Save 
-Then a warning message will appear “Sampling Method is required”
+Then an error message will appear “Sampling Method is Required”
 
 Scenario:  #9 Study Population Description for observational or ancillary correlative trial not Null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -136,7 +136,7 @@ And I have selected a observational or ancillary correlative trial
 And I am on the Eligibility Criteria screen
 And Study Population Description is Null
 When I select Save 
-Then a warning message will appear “Study Population is required”
+Then an error message will appear “Study Population is Required”
 
 Scenario: #10  Add Inclusion Criteria
 Given I am logged into the CTRP Protocol Abstraction application

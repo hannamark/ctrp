@@ -84,7 +84,7 @@ And I am on the Trial Regulatory Information screen
 And the Responsible Party Type is �Sponsor Investigator�
 And the Investigator is Null
 When I select save to verify warning message
-Then a warning message will appear �Please enter the Investigator�
+Then a warning message will appear �Investigator is Required�
 
 Scenario: #11 Investigator Title is not null
 Given I have selected a trial to abstract 
@@ -92,7 +92,7 @@ And I am on the Trial Regulatory Information screen
 And the Responsible Party Type is �Sponsor Investigator�
 And the Investigator Title is Null
 When I select save to verify warning message
-Then a warning message will appear �Please enter the Investigator Title�
+Then a warning message will appear �Investigator Title is Required�
 
 Scenario: #12 Investigator Affiliation is not null
 Given I have selected a trial to abstract 
@@ -100,7 +100,7 @@ And I am on the Trial Regulatory Information screen
 And the Responsible Party Type is �Principal Investigator�
 And the Investigator Affiliation is Null
 When I select save to verify warning message
-Then a warning message will appear �Please enter the Investigator Affiliation�
+Then a warning message will appear �Investigator Affiliation is Required�
 
 Scenario: #13 "Upload from NCI CTRP" Note
 Given I have selected a trial to abstract 
