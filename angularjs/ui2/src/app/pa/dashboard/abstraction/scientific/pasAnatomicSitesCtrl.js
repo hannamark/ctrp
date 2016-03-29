@@ -86,7 +86,7 @@
         };
 
         function deleteSelected() {
-            if (_.findIndex(vm.selectedDeleteAnatomicSiteList, {_destroy: true}) === -1) {
+            if (vm.selectedDeleteAnatomicSiteList.length === 0) {
                 // do nothing when nothing is selected for deletion
                 return
             }
