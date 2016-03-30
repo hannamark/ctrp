@@ -47,6 +47,7 @@
                     .then(function(res) {
                     console.info('res in looking up trial', res);
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
+                    vm.foundTrialObj.associated_trial_id = res.id || ''; // for hyperlink only
                     vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
                     vm.foundTrialObj.official_title = res.official_title || '';
