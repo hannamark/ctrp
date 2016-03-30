@@ -55,33 +55,36 @@ module.exports = function() {
                 console.log('Person Source ID is:' + value);
                 searchPerson.setPersonSourceId(value);
             });
+            browser.sleep(25).then(callback);
         }
             else if(sourceID === '23880') {
             perSourceId.then(function (value) {
                 console.log('Person Source ID is:' + value);
                 searchPerson.setPersonSourceId(value.slice(0, 5));
             });
+            browser.sleep(25).then(callback);
         }
         else if(sourceID === '23880*'){
                 perSourceId.then(function (value) {
                     console.log('Person Source ID is:' + value);
                     searchPerson.setPersonSourceId(value.slice(0,5) + '*');
                 });
-
+            browser.sleep(25).then(callback);
             }
         else if(sourceID === '238809') {
             perSourceId.then(function (value) {
                 console.log('Person Source ID is:' + value);
                 searchPerson.setPersonSourceId(value.slice(0, 6));
             });
+            browser.sleep(25).then(callback);
         }
         else if (sourceID === '') {
             searchPerson.setPersonSourceId(sourceID);
+            browser.sleep(25).then(callback);
         }
         else {
             callback(new Error(" ***** No Source ID found ***** "));
         }
-        browser.sleep(25).then(callback);
     });
 
     this.When(/^I provide the First Name (.*) of the Person$/, function (firstName, callback) {
@@ -132,14 +135,15 @@ module.exports = function() {
     this.When(/^I provide the Exact Match condition (.*)$/, function (exactMatch, callback) {
         if(exactMatch === 'checked'){
             searchOrg.clickExactSearch('true');
+            browser.sleep(25).then(callback);
         }
         else if(exactMatch === 'unchecked'){
             searchOrg.clickExactSearch('false');
+            browser.sleep(25).then(callback);
         }
         else {
             callback(new Error(" ***** No match found ***** "));
         }
-        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the system should display Active Person records in the CTRP context matching the search criteria$/, function (callback) {
@@ -176,7 +180,7 @@ module.exports = function() {
                             personSearchResultColumn = table.raw();
                             console.log('value of Person Search Result from Table');
                             console.log(personSearchResultColumn.toString().split(","));
-                            //   expect(searchResultCombine).to.eql(personSearchResultColumn.toString().split(","));
+                            expect(searchResultCombine).to.eql(personSearchResultColumn.toString().split(","));
                             element(by.xpath('//*[@id="menuitem-5"]/button')).click();
                             element(by.xpath('//*[@id="menuitem-7"]/button')).click();
                             element(by.xpath('//*[@id="menuitem-9"]/button')).click();
@@ -248,13 +252,37 @@ module.exports = function() {
     });
 
     this.Given(/^the source context will be "([^"]*)"$/, function (arg1, callback) {
-        searchPerson.trialPersonSearchSrcContext.getText().should.eventually.equal(arg1);
-        browser.sleep(25).then(callback);
+        menuItem.search_Page.getText().then(function(value){
+            console.log('value of Search Page' + value);
+            if (value === 'Search Organizations * for wild card (e.g. university* for any university)'){
+                searchOrg.trialOrgSearchSrcContext.getText().should.eventually.equal(arg1);
+                browser.sleep(25).then(callback);
+            }
+            else if (value === 'Search Persons * for wild card (e.g. John*)') {
+                searchPerson.trialPersonSearchSrcContext.getText().should.eventually.equal(arg1);
+                browser.sleep(25).then(callback);
+            }
+            else {
+                callback(new Error(" ***** No match found for the Title ***** "));
+            }
+        });
     });
 
     this.Given(/^the source status will be "([^"]*)"$/, function (arg1, callback) {
-        searchPerson.trialPersonSearchSrcStatus.getText().should.eventually.equal(arg1);
-        browser.sleep(25).then(callback);
+        menuItem.search_Page.getText().then(function(value){
+            console.log('value of Search Page' + value);
+            if (value === 'Search Organizations * for wild card (e.g. university* for any university)'){
+                searchOrg.trialOrgSearchSrcStatus.getText().should.eventually.equal(arg1);
+                browser.sleep(25).then(callback);
+            }
+            else if (value === 'Search Persons * for wild card (e.g. John*)') {
+                searchPerson.trialPersonSearchSrcStatus.getText().should.eventually.equal(arg1);
+                browser.sleep(25).then(callback);
+            }
+            else {
+                callback(new Error(" ***** No match found for the Title ***** "));
+            }
+        });
     });
 
 
