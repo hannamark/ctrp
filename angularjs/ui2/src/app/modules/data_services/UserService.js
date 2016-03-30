@@ -166,8 +166,10 @@
                 .then(function (data) {
                     console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
+                        console.info('user id: ', data);
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
+                        LocalCacheService.cacheItem('user_id', data.user_id); // cache user id
                         _setAppVersion(data.app_version);
                         // LocalCacheService.cacheItem('app_version', data.application_version);
                         LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
@@ -255,6 +257,10 @@
          */
         this.getLoggedInUsername = function () {
             return LocalCacheService.getCacheWithKey('username') || '';
+        };
+
+        this.getCurrentUserId = function() {
+            return LocalCacheService.getCacheWithKey('user_id') || null;
         };
 
         /**
