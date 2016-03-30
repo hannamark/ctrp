@@ -218,14 +218,16 @@ var projectMethods = function() {
                     if (filteredElements.length > 0) {
                         return 'true';
                     } else {
-                        element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                     //   element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                        searchOrg.searchResultMenu.click();
                         element(by.xpath('//*[@id="menuitem-10"]/button')).click();
                         element(by.xpath('//*[@id="menuitem-12"]/button')).click();
                         element(by.xpath('//*[@id="menuitem-16"]/button')).click();
                         element(by.xpath('//*[@id="menuitem-18"]/button')).click();
                         element(by.xpath('//*[@id="menuitem-20"]/button')).click();
                         element(by.xpath('//*[@id="menuitem-24"]/button')).click();
-                        element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                        searchOrg.searchResultMenu.click();
+                     //   element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
                          return menuItem.orgSearchResult.filter(function(name) {
                             return name.getText().then(function(text) {
                             //    console.log('value of text : ' + text + 'and value of searched string' + searchString);
@@ -233,14 +235,16 @@ var projectMethods = function() {
                             });
                         }).then(function(filteredElements) {
                          //   console.log('value of filteredElements' + filteredElements);
-                             element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                         //    element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                             searchOrg.searchResultMenu.click();
                             element(by.xpath('//*[@id="menuitem-11"]/button')).click();
                             element(by.xpath('//*[@id="menuitem-13"]/button')).click();
                             element(by.xpath('//*[@id="menuitem-17"]/button')).click();
                             element(by.xpath('//*[@id="menuitem-19"]/button')).click();
                              element(by.xpath('//*[@id="menuitem-21"]/button')).click();
                              element(by.xpath('//*[@id="menuitem-25"]/button')).click();
-                             element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                          //   element(by.xpath('/html/body/div[2]/div/div/div[2]/div[1]/div/div/div/div/div/div[2]/ctrp-advanced-org-search-form2/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/i')).click();
+                             searchOrg.searchResultMenu.click();
                             // Only the elements that passed the filter will be here. This is an array.
                             if (filteredElements.length > 0) {
                                 return 'true';

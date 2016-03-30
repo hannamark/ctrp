@@ -17,8 +17,8 @@ Feature: Reg F03 Search Organizations
     And I provide the Family Name <Family Name> of the organization
     And I provide the Source ID <Source ID> of the organization
     And I provide the City <City> of the organization
-    And I provide the State <State> of the organization
     And I provide the Country <Country> of the organization where the default is "All Countries"
+    And I provide the State <State> of the organization
     And I provide the Postal Code <Postal Code> of the organization
     And I provide the Phone <phone> of the organization
     And I provide the Email <email> of the organization
@@ -52,7 +52,7 @@ Feature: Reg F03 Search Organizations
       |         |SopAlias         | Unchecked  |           |       |      |       |           |            |                       | Checked  |false  |
       |         |                 | Checked    |SopFName   |       |      |       |           |            |                       | Checked  |true   |
       |         |                 | Checked    |           |SopCity|      |       |           |            |                       | Checked  |true   |
-      |         |                 | Checked    |           |       |Ifrane|       |           |            |                       | Checked  |true   |
+      |         |                 | Checked    |           |       |Ifrane|Morocco|           |            |                       | Checked  |true   |
       |         |                 | Checked    |           |       |      |Morocco|           |            |                       | Checked  |true   |
       |         |                 | Checked    |           |       |      |       |22306      |            |                       | Checked  |true   |
       |         |                 | Checked    |           |       |      |       |           |420-999-8906|                       | Checked  |true   |
@@ -65,11 +65,11 @@ Feature: Reg F03 Search Organizations
       |         |SopAl            | Unchecked  |           |       |      |       |           |            |                       | Unchecked|false  |
       |         |                 | Unchecked  |SopFNa     |       |      |       |           |            |                       | Unchecked|true   |
       |         |                 | Unchecked  |           |SopCi  |      |       |           |            |                       | Unchecked|true   |
-      |         |                 | Unchecked  |           |       |Ifrane|       |           |            |                       | Unchecked|true   |
+      |         |                 | Unchecked  |           |       |Ifrane|Morocco|           |            |                       | Unchecked|true   |
       |         |                 | Unchecked  |           |       |      |Morocco|           |            |                       | Unchecked|true   |
       |         |                 | Unchecked  |           |       |      |       |223        |            |                       | Unchecked|true   |
       |         |                 | Unchecked  |           |       |      |       |           |420-999-89  |                       | Unchecked|true   |
-      |         |                 |            |           |       |      |       |           |            |SopPercukeTrial@pr     | Unchecked|true   |
+      |         |                 | Unchecked  |           |       |      |       |           |            |SopPercukeTrial@pr     | Unchecked|true   |
       |236      |                 | Unchecked  |           |       |      |       |           |            |                       | Checked|false   |
       |         |SopNameCan       | Unchecked  |           |       |      |       |           |            |                       | Checked|false   |
       |         |SopAl            | Checked    |           |       |      |       |           |            |                       | Checked|false  |
@@ -78,7 +78,7 @@ Feature: Reg F03 Search Organizations
       |         |                 | Unchecked  |           |SopCi  |      |       |           |            |                       | Checked|false   |
       |         |                 | Unchecked  |           |       |      |       |223        |            |                       | Checked|false   |
       |         |                 | Unchecked  |           |       |      |       |           |420-999-89  |                       | Checked|false   |
-      |         |                 |            |           |       |      |       |           |            |SopPercukeTrial@pr     | Checked|false   |
+      |         |                 | Unchecked  |           |       |      |       |           |            |SopPercukeTrial@pr     | Checked|false   |
       |236*     |                 | Unchecked  |           |       |      |       |           |            |                       | Checked|true   |
       |         |SopNameCan*      | Unchecked  |           |       |      |       |           |            |                       | Checked|true   |
       |         |SopAl*           | Checked    |           |       |      |       |           |            |                       | Checked|true  |
@@ -87,10 +87,10 @@ Feature: Reg F03 Search Organizations
       |         |                 | Unchecked  |           |SopCi* |      |       |           |            |                       | Checked|true   |
       |         |                 | Unchecked  |           |       |      |       |223*       |            |                       | Checked|true   |
       |         |                 | Unchecked  |           |       |      |       |           |420-999-8*  |                       | Checked|true   |
-      |         |                 |            |           |       |      |       |           |            |SopPercukeTrial*       | Checked|true   |
+      |         |                 | Unchecked  |           |       |      |       |           |            |SopPercukeTrial*       | Checked|true   |
       |23654    |SopNameCancer    | Checked    |SopFName   |SopCity|Ifrane|Morocco|22306      |420-999-8906|SopPercukeTrial@pr.com | Checked|true   |
       |2365     |SopNameCan       | Checked    |SopFNa     |SopCi  |Ifrane|Morocco|223        |420-999-89  |SopPercukeTrial@pr     | UnChecked|true   |
-      |2365     |SopNameCan*      | Checked    |SopFNa*    |SopCi  |Ifrane|Morocco|223        |420-999-89  |SopPercukeTrial@pr     | Checked|true   |
+      |236*     |SopNameCan*      | Checked    |SopFNa*    |SopCi* |Ifrane|Morocco|223*       |420-999-89  |SopPercukeTrial@pr     | Checked|true   |
       |2365     |xyzzz            | Checked    |           |       |Ifrane|Morocco|           |420-999-89  |SopPercukeTrial@pr     | UnChecked|false   |
       |2365     |xyzzz            | Checked    |           |       |      |       |           |420-999-89  |SopPercukeTrial@pr     | Checked|false   |
 
