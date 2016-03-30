@@ -205,6 +205,9 @@
                                         <div class="text-warning" ng-repeat="warning in psDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Duplicate'">
                                             WARNING: Duplicate [{{warning.dupStatus}}] status is not allowed
                                         </div>
+                                        <div class="text-warning" ng-repeat="warning in psDetailView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Same Day' && warning.sameDate">
+                                            WARNING: Statuses [{{warning.from}}] and [{{warning.to}}] have the same date
+                                        </div>
                                     </td>
                                     <td class="col-md-1" style="vertical-align: middle">
                                         <label restriction-field class="btn btn-default" ng-click="psDetailView.toggleSelection($index, 'sr_status')">
