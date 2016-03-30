@@ -107,6 +107,7 @@
                     file: '', // File to be uploaded
                     document_subtype: '',
                     added_by: {},
+                    added_by_id: null,
                     created_at: '',
                     edit: false,
                     index: null,
@@ -167,6 +168,7 @@
                         } // check document type for new document
                         vm.curDoc.created_at = new Date();
                         vm.curDoc.added_by = {username: UserService.getLoggedInUsername()};
+                        vm.curDoc.added_by_id = UserService.getCurrentUserId();
                         vm.curTrialDetailObj.trial_documents.push(vm.curDoc);
                     }
                 }
