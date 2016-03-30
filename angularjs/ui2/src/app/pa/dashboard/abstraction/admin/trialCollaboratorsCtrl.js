@@ -191,6 +191,10 @@
         };
 
         function deleteSelected(){
+            if (vm.selectedDeleteCollaboratorsList.length === 0) {
+                // do nothing when nothing is selected for deletion 
+                return;
+            }
             vm.curTrial.collaborators_attributes=[];
             //console.log(vm.selectedDeleteCollaboratorsList);
             for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {

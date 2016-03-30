@@ -82,7 +82,7 @@ And the document is not one of the valid extensions listed below
 |xlsb|
 |Rtf|
 |Txt|
-|Then the system will display a Error message that "The selected document is not a valid document type"
+Then the system will display a Error message that "The selected document is not a valid document type"
 
 Scenario: #9 Protocol and IRB Approval Documents are required
 Given I am logged into the CTRP Protocol Abstraction application
