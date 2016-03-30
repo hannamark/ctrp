@@ -31,10 +31,6 @@
         width: 1470px;
     }
 
-    .drop-shadow form {
-        width: 75%;
-        margin: 0 auto;
-    }
 }
 
 @media screen and (min-width: 1600px) {
@@ -504,29 +500,17 @@ form {
     padding-left: 10px;
 }
 
-h4, h5, .panel-title {
-    color: #2A71A5;
-}
 h4 {
     font-size: 16px;
 }
 h5 {
     font-size: 13px;
 }
-.panel-title {
-    font-size: 13px;
-}
+
 .panel-heading {
-    padding: 6px 15px;
+    padding: 6px 7px 6px 6px;
 }
 
-.panel-heading.white-heading {
-    color: #FFF;
-}
-
-.glyphicon {
-    font-size: 12px;
-}
 
 .form-horizontal .form-group {
     margin-right: -5px;
@@ -556,21 +540,14 @@ h5 {
 }
 
 .btn {
-    padding: 3px 6px;
     font-size: 12px;
     font-weight: bold;
-    height: 22px;
 }
 
 .btn-default {
     font-weight: normal;
 }
 
-.btn-toolbar {
-    margin-top: 2px;
-    margin-left: 0px;
-    margin-bottom: 2px;
-}
 
 .btn-toolbar span.pad-height {
     line-height: 2.5em;
@@ -764,13 +741,16 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     margin-bottom: 10px;
 }
 
+fieldset.sub-bordered {
+    border: none;
+    padding: 0 0.4em 1.4em 0 !important;
+}
 legend.sub-bordered {
     font-size: 1em !important;
     font-weight: bold !important;
     text-align: left !important;
-    width:auto;
-    padding:0 10px;
-    border-bottom:none;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
 }
 
 .editable-click,

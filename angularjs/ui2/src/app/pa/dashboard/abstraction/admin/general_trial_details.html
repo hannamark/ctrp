@@ -98,11 +98,13 @@
           <!-- fieldset for Keywords -->
           <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Keywords</legend>
-            <label for="keywords" class="control-label col-xs-12 col-sm-2">Keywords:</label>
-            <div class="col-xs-12 col-sm-10">
-              <textarea name="keywords" id="keywords" rows="5" class="form-control" ng-maxlength="4000"
-                  ng-model="generalTrialDetailView.generalTrialDetailsObj.keywords">
-              </textarea>
+            <div class="form-group">
+              <label for="keywords" class="control-label col-xs-12 col-sm-2">Keywords:</label>
+              <div class="col-xs-12 col-sm-10">
+                <textarea name="keywords" id="keywords" rows="5" class="form-control" ng-maxlength="4000"
+                    ng-model="generalTrialDetailView.generalTrialDetailsObj.keywords">
+                </textarea>
+              </div>
             </div>
           </fieldset>
 
@@ -130,7 +132,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <!-- otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''}; -->
-                  <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                  <button type="button" class="btn btn-primary" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id"><i class="glyphicon glyphicon-plus"></i> Add</button>
                 </div>
               </div>
             </div>
@@ -141,7 +143,7 @@
                 <thead style="background-color: #d9edf7">
                   <th>Identifier Type</th>
                   <th>Value (Click for editing)</th>
-                  <th class="text-center">Deletion</th>
+                  <th class="text-center td-icon">Delete</th>
                 </thead>
                 <tbody>
                       <tr>
@@ -163,10 +165,10 @@
                               {{otherId.protocol_id}}
                         </span>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center td-icon">
                         <!-- <button type="button" class="btn btn-default">Edit</button> -->
                         <!-- <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button> -->
-                        <label class="btn btn-default" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
+                        <label class="btn btn-warning" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
                             <i class="glyphicon" ng-class="otherId._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                         </label>
                     </td>

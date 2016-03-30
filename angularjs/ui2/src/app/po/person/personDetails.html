@@ -153,11 +153,11 @@
                                     <input type="text" ng-model="personDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
-                                        <th width="6%">CTRP ID</th>
-                                        <th width="49%">Organization</th>
-                                        <th width="22%">Effective Date</th>
-                                        <th width="22%">Expiration Date</th>
-                                        <th width="1%"></th>
+                                        <th>CTRP ID</th>
+                                        <th>Organization</th>
+                                        <th class="td-date">Effective Date</th>
+                                        <th class="td-date">Expiration Date</th>
+                                        <th class="td-icon"></th>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
@@ -207,7 +207,7 @@
                         </div>
                         <div class="form-group no-bottom-margin" ng-show="personDetailView.curPersonEditable">
                             <div class="col-xs-12 col-sm-3"></div>
-                            <div class="btn-toolbar col-xs-12 col-sm-9">
+                            <div class="btn-toolbar col-xs-12 col-sm-6">
                                 <div class="btn-toolbar">
                                     <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
                                         Save
@@ -218,9 +218,7 @@
                                     <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()">
                                         <i class="glyphicon glyphicon-remove"></i>  Reset
                                     </button>
-                                </div>
-                                <div class="btn-toolbar pull-left">
-                                    <button ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger btn-no-left-margin" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
+                                    <button ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
                                         <i class="glyphicon glyphicon-remove"></i> Delete This Person
                                     </button>
                                 </div>

@@ -65,17 +65,17 @@
                 {name: 'Nullify', displayName: 'Nullify',
                     enableSorting: false,
                     enableFiltering: false,
-                    minWidth: '75', width: '*',
+                    minWidth: '100', width: '*',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"' +
                     ' ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
                 {name: 'ctrp_id', displayName: 'CTRP ID',
                     enableSorting: true,
-                    minWidth: '80',
+                    minWidth: '100',
                     width: '*'},
 
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '100', width: '*'},
 
                 {
                     name: 'name', enableSorting: true, minWidth: '300', width: '*', sort: { direction: 'asc', priority: 1},
@@ -87,11 +87,11 @@
 
                 },
                 {name: 'source_status', displayName: 'Source Status',
-                    enableSorting: true, minWidth: '75', width: '*'},
+                    enableSorting: true, minWidth: '175', width: '*'},
                 {name: 'source_context', displayName: 'Source Context',
-                    enableSorting: true, minWidth: '75', width: '*'},
+                    enableSorting: true, minWidth: '175', width: '*'},
                 {name: 'source_id', displayName: 'Source ID',
-                    enableSorting: true, minWidth: '75', width: '*'},
+                    enableSorting: true, minWidth: '175', width: '*'},
 
                 {name: 'aff_families_names', displayName: 'Families',
                     enableSorting: true, minWidth: '100', width: '*',height: '50%',
@@ -111,7 +111,7 @@
                 {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '100', width:'*'}
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '120', width:'*'}
 
 
             ]
