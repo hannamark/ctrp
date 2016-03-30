@@ -67,6 +67,8 @@ Then The Trial Related Documents section will not indicate any errors during Tri
       |xlsx|
       |xlsm|
       |xlsb|
+      |Rtf|
+      |Txt|
       
 
 
