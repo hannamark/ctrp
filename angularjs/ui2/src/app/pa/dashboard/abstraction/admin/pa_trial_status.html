@@ -28,7 +28,7 @@
                                                     datepicker-options="trialStatusView.dateOptions"
                                                     close-text="Close" readonly />
                                                 <span class="input-group-btn">
-                                                    <button type="button" restriction-field class="btn btn-default" ng-click="trialStatusView.openCalendar($event, 'status_date')">
+                                                    <button type="button" restriction-field class="btn btn-primary" ng-click="trialStatusView.openCalendar($event, 'status_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
@@ -71,7 +71,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div ng-hide="trialStatusView.statusObj.edit">
-                                                <button class="btn btn-default" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"
+                                                <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"
                                                     ng-disabled="trialStatusView.statusObj.status_date == '' ||
                                                     trialStatusView.statusObj.trial_status_id == '' ||
                                                     trial_status_form.why_stopped.$viewValue.length > 160 ||
@@ -79,14 +79,14 @@
                                                     "><i class="glyphicon glyphicon-plus"></i> Add</button>
                                             </div>
 
-                                            <div class="btn-group inline" ng-show="trialStatusView.statusObj.edit">
+                                            <div class="" ng-show="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()"
+                                                <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.commitEdit()"
                                                     ng-disabled="trialStatusView.statusObj.status_date == '' ||
                                                     trialStatusView.statusObj.trial_status_id == '' ||
                                                     trial_status_form.why_stopped.$viewValue.length > 160 ||
                                                     trial_status_form.status_comment.$viewValue.length > 160">
-                                                    Commit
+                                                    Save
                                                 </button>
                                             </div>
                                         </td>
@@ -105,14 +105,14 @@
                         </div>
                         <div class="row" ng-show="trialStatusView.tempTrialStatuses.length > 0">
                             <table class="table table-bordered table-striped table-hover">
-                              <thead style="background-color: #d9edf7">
+                              <thead>
                                 <th>Status Date</th>
                                 <th>Status</th>
                                 <th>Comment</th>
                                 <th>Why Study Stopped</th>
                                 <th>Errors/Warnings</th>
                                 <th class="text-center td-icon">Edit</th>
-                                <th class="text-center td-icon">Delete</th>
+                                <th class="text-center td-icon">Remove</th>
                               </thead>
                               <tbody>
                                 <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="status._destroy ? 'deleted-text' : ''">

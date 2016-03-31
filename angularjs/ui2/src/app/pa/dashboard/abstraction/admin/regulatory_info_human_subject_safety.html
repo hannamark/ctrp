@@ -9,7 +9,7 @@
                 <form class="form-horizontal" role="form" name="human_safety_form" novalidate ctrp-submit="regInfoSafetyView.updateHumanSafetyInfo()">
                     <!-- board approval status -->
                     <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.approvalStatusRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_status)}">
-                        <label for="board_approval_status" class="control-label col-xs-12 col-sm-4">Board Approval Status</label>
+                        <label for="board_approval_status" class="control-label col-xs-12 col-sm-4">Board Approval Status:</label>
                         <div class="col-xs-12 col-sm-4">
                             <select name="approval_status" id="board_approval_status"
                                 class="form-control input-sm"
@@ -34,7 +34,7 @@
 
                     <!-- board approval number -->
                     <div class="form-group" ng-show="regInfoSafetyView.approvalNumRequired" ng-class="{'has-feedback required': regInfoSafetyView.approvalNumRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_number)}">
-                        <label for="approval_number" class="control-label col-xs-12 col-sm-4">Board Approval Number</label>
+                        <label for="approval_number" class="control-label col-xs-12 col-sm-4">Board Approval Number:</label>
                         <div class="col-xs-12 col-sm-4">
                             <input type="text" name="approval_number" id="approval_number"
                                 restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
@@ -55,7 +55,7 @@
                     <!-- Board Affiliation -->
                     <div ng-show="regInfoSafetyView.boardAffShown">
                         <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardAffRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation)}">
-                            <label for="board_affiliation" class="control-label col-xs-12 col-sm-4">Board Affiliation</label>
+                            <label for="board_affiliation" class="control-label col-xs-12 col-sm-4">Board Affiliation:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation" name="board_affiliation"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.name"
@@ -82,7 +82,7 @@
 
                         <!-- Board address -->
                         <div class="form-group">
-                            <label for="board_affiliation_address" class="control-label col-xs-12 col-sm-4">Board Contact Address</label>
+                            <label for="board_affiliation_address" class="control-label col-xs-12 col-sm-4">Board Contact Address:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation_address" name="board_aff_address" class="form-control input-sm"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.address"
@@ -93,7 +93,7 @@
 
                         <!-- Board city -->
                         <div class="form-group">
-                            <label for="board_affiliation_city" class="control-label col-xs-12 col-sm-4">Board Contact City</label>
+                            <label for="board_affiliation_city" class="control-label col-xs-12 col-sm-4">Board Contact City:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation_city" class="form-control input-sm" name="board_aff_city"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.city"
@@ -104,7 +104,7 @@
 
                         <!-- Board state/province -->
                         <div class="form-group">
-                            <label for="board_affiliation_state" class="control-label col-xs-12 col-sm-4">Board Contact State/Province</label>
+                            <label for="board_affiliation_state" class="control-label col-xs-12 col-sm-4">Board Contact State/Province:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation_state" name="board_aff_state" class="form-control input-sm"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.state_province"
@@ -115,7 +115,7 @@
 
                         <!-- Board zipcode -->
                         <div class="form-group">
-                            <label for="board_affiliation_zipcode" class="control-label col-xs-12 col-sm-4">Board Contact Zip/Postal Code</label>
+                            <label for="board_affiliation_zipcode" class="control-label col-xs-12 col-sm-4">Board Contact Zip/Postal Code:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation_zipcode" name="board_affiliation_zipcode" class="form-control input-sm"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.postal_code"
@@ -126,7 +126,7 @@
 
                         <!-- Board country -->
                         <div class="form-group">
-                            <label for="board_affiliation_country" class="control-label col-xs-12 col-sm-4">Board Contact Country</label>
+                            <label for="board_affiliation_country" class="control-label col-xs-12 col-sm-4">Board Contact Country:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation_country" name="board_affiliation_country" class="form-control input-sm"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.country"
@@ -137,7 +137,7 @@
 
                         <!-- Board phone: required if board email is not set -->
                         <div class="form-group">
-                            <label for="board_affiliation_phone" class="control-label col-xs-12 col-sm-4">Board Contact Phone</label>
+                            <label for="board_affiliation_phone" class="control-label col-xs-12 col-sm-4">Board Contact Phone:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_affiliation_phone" name="board_affiliation_phone" class="form-control input-sm"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.phone"
@@ -148,7 +148,7 @@
 
                         <!-- Board email: required if board phone is not set -->
                         <div class="form-group">
-                            <label for="board_affiliation_email" class="control-label col-xs-12 col-sm-4">Board Contact Email Address</label>
+                            <label for="board_affiliation_email" class="control-label col-xs-12 col-sm-4">Board Contact Email Address:</label>
                             <div class="col-sm-4">
                                 <input type="email" id="board_affiliation_email" name="board_affiliation_email" class="form-control input-sm"
                                     ng-model="regInfoSafetyView.trialDetailsObj.board_affiliated_org.email"
@@ -159,7 +159,7 @@
 
                         <!-- Board name -->
                         <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.boardNameRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name)}">
-                            <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name</label>
+                            <label for="board_name" class="control-label col-xs-12 col-sm-4">Board Name:</label>
                             <div class="col-sm-4">
                                 <input type="text" id="board_name" name="board_name" class="form-control input-sm"
                                         restriction-field
