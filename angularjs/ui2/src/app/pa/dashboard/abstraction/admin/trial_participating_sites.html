@@ -66,7 +66,7 @@
 
                                             <!-- Postal Code -->
                                             <div class="form-group">
-                                                <label for="country" class="control-label col-xs-12 col-sm-3">Zip/Postal Code(US/Canada/Australia):</label>
+                                                <label for="country" class="control-label col-xs-12 col-sm-3">Zip/Postal Code:<br><small>(US/Canada/Australia)</small></label>
                                                 <div class="col-sm-4">
                                                     <input type="text" id="postal_code" class="form-control input-sm" name="postal_code" ng-model="psView.postal_code" disabled>
                                                 </div>
@@ -115,7 +115,7 @@
                                                                    datepicker-options="psView.dateOptions"
                                                                    close-text="Close" readonly />
                                                             <span class="input-group-btn">
-                                                                <button type="button" restriction-field class="btn btn-default" ng-click="psView.openCalendar($event, 'status_date')">
+                                                                <button type="button" restriction-field class="btn btn-primary" ng-click="psView.openCalendar($event, 'status_date')">
                                                                     <i class="glyphicon glyphicon-calendar"></i>
                                                                 </button>
                                                             </span>
@@ -474,8 +474,8 @@
 
 <!-- Grid the shows all the Participating Sites -->
 <div class="row">
-    <uib-accordion close-others="false" ng-hide="psView.addEditMode">
-        <uib-accordion-group is-open="paTrialOverview.accordionOpen" >
+    <uib-accordion close-others="false">
+        <uib-accordion-group is-open="true" >
             <uib-accordion-heading>
                 List of Participating Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
@@ -491,8 +491,8 @@
                 <th>Site Recruitment Status</th>
                 <th>Site Recruitment Status Date</th>
                 <th>Primary Contact</th>
-                <th class="text-center">Edit</th>
-                <th class="text-center">Deletion</th>
+                <th class="text-center td-icon">Edit</th>
+                <th class="text-center td-icon">Select</th>
                 </thead>
                 <tbody>
 
@@ -514,12 +514,12 @@
                     <td>
                         {{participating_site.contact_name}}
                     </td>
-                    <td>
-                        <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
+                    <td class="text-center td-icon">
+                        <button class="btn btn-warning" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
                             <i class="glyphicon glyphicon-edit"></i>
                         </button>
                     </td>
-                    <td>
+                    <td class="text-center td-icon">
                         <input type="checkbox" ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" />
                     </td>
                 </tr>
@@ -529,17 +529,12 @@
             <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                 <button type="submit" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add Participating Site</button>
                 <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="psView.deleteSelected()" ng-disabled="!psView.selectedDeleteParticipatingSitesList.length">
-                    <i class="glyphicon glyphicon-remove"></i> Delete Participating Sites
+                    <i class="glyphicon glyphicon-remove"></i> Delete Selected
                 </button>
             </div>
         </div>
     </fieldset>
         </uib-accordion-group>
     </uib-accordion>
-    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable"  ng-show="psView.addEditMode">
-        <button type="submit" class="btn btn-warning pull-right" id="participating_site_list" restriction-field ng-click="psView.setAddMode(false)">
-            <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
-        </button>
-    </div>
     <div class="top-offset-xs" ng-show="psView.addEditMode"></div>
 </div>

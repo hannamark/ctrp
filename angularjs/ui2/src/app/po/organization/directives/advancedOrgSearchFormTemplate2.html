@@ -11,7 +11,7 @@
 
             <div class="form-group">
                 <label for="organization_name" class="col-xs-12 col-sm-3 control-label">Name:</label>
-                <div class="col-xs-12 col-sm-5">
+                <div class="col-xs-12 col-sm-6">
                     <!-- <input type="text" id="organization_name" class="form-control"
                            placeholder="Organization Name" ng-model="searchParams.name" auto-focus/> -->
 
@@ -24,7 +24,7 @@
                         <i class="glyphicon glyphicon-remove has-error">No organizations name matched</i>
                     </div>-->
                 </div>
-                <div class="col-xs-12 col-sm-4">
+                <div class="col-xs-12 col-sm-3">
                     <div ng-class="searchParams.alias == true ? 'checkbox checkbox-info' : 'checkbox checkbox-circle'">
                         <label for="alias_search">
                             <input type="checkbox" id="alias_search" ng-model="searchParams.alias"/> Search Alias
@@ -193,7 +193,7 @@
                                datepicker-options="dateOptions" ng-click="openCalendar($event, 'start')"
                                ng-required="false" close-text="Close" placeholder="Start Date" />
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
+                            <button type="button" class="btn btn-primary btn-calendar" ng-click="openCalendar($event, 'start')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -210,7 +210,7 @@
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date" />
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
+                            <button type="button" class="btn btn-primary btn-calendar" ng-click="openCalendar($event, 'end')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -239,7 +239,7 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <span us-spinner="{radius: 20, length: 15}" spinner-on="searching"></span>
+        <span us-spinner="{radius: 10, length: 5}" spinner-on="searching"></span>
     </div>
 </div>
 

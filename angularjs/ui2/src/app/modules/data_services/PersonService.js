@@ -85,10 +85,10 @@
                 },
 
                 {name: 'source_context', displayName: 'Source Context',
-                    enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '65', width: '*'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '65', width: '*'},
-                {name: 'email', enableSorting: true, minWidth: '150', width: '*',
+                    enableSorting: true, minWidth: '135', width: '*'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '135', width: '*'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '105', width: '*'},
+                {name: 'email', enableSorting: true, minWidth: '105', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },

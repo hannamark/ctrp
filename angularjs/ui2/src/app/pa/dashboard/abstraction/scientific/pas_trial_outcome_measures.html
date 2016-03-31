@@ -1,4 +1,4 @@
-<div ng-show="omView.editMode || omView.addMode || omView.copyMode" id="outcomeMeasure">
+<div ng-show="omView.editMode || omView.addMode || omView.copyMode" id="outcomeMeasure" class="ctrp-ui">
 <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()">
     <!-- first row in the accordion body -->
     <div class="row">
@@ -143,7 +143,7 @@
 </div>
 
 <!-- Grid the shows all the Outcome Measures -->
-<div class="row">
+<div class="row ctrp-ui">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
@@ -151,8 +151,8 @@
             </uib-accordion-heading>
 
             <fieldset>
-                <legend class="sub-bordered">List of Outcome Measures:</legend>
-                <div class="form-group table-responsive">
+                <legend class="sub-bordered hide">List of Outcome Measures:</legend>
+                <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <th>Outcome Measure Type</th>
@@ -160,9 +160,9 @@
                         <th>Time Frame</th>
                         <th>Description</th>
                         <th>Safety Issue</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Copy</th>
-                        <th class="text-center">Delete</th>
+                        <th class="text-center td-icon">Edit</th>
+                        <th class="text-center td-icon">Copy</th>
+                        <th class="text-center td-icon">Delete</th>
                         </thead>
                         <tbody>
 

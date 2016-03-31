@@ -77,7 +77,7 @@
                                datepicker-options="dateOptions"
                                ng-required="false" close-text="Close" placeholder="Start Date"  ng-click="openCalendar($event, 'start')" />
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'start')">
+                            <button type="button" class="btn btn-primary btn-calendar" ng-click="openCalendar($event, 'start')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -94,7 +94,7 @@
                                datepicker-options="dateOptions" date-later-than="{{searchParams.startDate| date: 'short'}}"
                                ng-required="false" close-text="Close" placeholder="End Date" ng-click="openCalendar($event, 'end')" />
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-calendar" ng-click="openCalendar($event, 'end')">
+                            <button type="button" class="btn btn-primary btn-calendar" ng-click="openCalendar($event, 'end')">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -188,7 +188,7 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <span us-spinner="{radius: 20, length: 15}" spinner-on="searching"></span>
+        <span us-spinner="{radius: 10, length: 5}" spinner-on="searching"></span>
     </div>
 </div>
 
