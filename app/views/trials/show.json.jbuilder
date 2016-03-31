@@ -140,6 +140,9 @@ json.participating_sites do
     json.person participating_site.person
     json.person_id participating_site.person.nil? ? nil:participating_site.person.id
 
+    json.current_status_name participating_site.current_status_name
+    json.site_pi participating_site.site_pi
+
 
     json.organization participating_site.organization
     json.site_rec_status_wrappers do
