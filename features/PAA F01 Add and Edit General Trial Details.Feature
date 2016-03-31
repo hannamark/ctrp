@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F01 Add and Edit General Trial Details
 
 As any CTRP PA User, I can enter general trial details
@@ -92,35 +92,35 @@ Given I have selected a trial to abstract
 And I am on the General Trial Details screen
 And the protocol ID is Null
 When I select save
-Then a warning message will appear �Please enter the Protocol Identifier�
+Then a warning message will appear "Protocol Identifier is Reqiured"
 
 Scenario: #13 Official Title not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And the Official Title is Null
 When I select save
-Then a warning message will appear �Please enter the Official Title�
+Then a warning message will appear �Official Title is Required�
 
 Scenario: #14 Lead Organization is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And the Lead Organization is Null
 When I select save
-Then a warning message will appear �Please enter the Lead Organization�
+Then a warning message will appear �Lead Organization is Required�
 
 Scenario: #15 Principal Investigator is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And the Principal Investigator is Null
 When I select save
-Then a warning message will appear �Please enter the Principal Investigator�
+Then a warning message will appear �Principal Investigator is Required�
 
 Scenario: #16 Sponsor is not null
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And the Sponsor is Null
 When I select save
-Then a warning message will appear �Please enter the Sponsor�
+Then a warning message will appear �Sponsor is Required�
 
 Scenario: # 17 e-mail address format
 Given I know which e-mail address I want to edit

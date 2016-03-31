@@ -180,6 +180,7 @@ class ApplicationController < ActionController::Base
           app_version: app_version,
           token: token,
           role: user.role,
+          user_id: user.id,
           privileges: user.get_write_mode,
           user_type: user.type,
           env: Rails.env

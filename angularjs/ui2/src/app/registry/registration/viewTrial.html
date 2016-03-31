@@ -391,6 +391,31 @@
                         <br>{{document.document_subtype}}
                     </div>
                 </div>
+
+                <h5 ng-if="viewTrialView.curTrial.participating_sites.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">Participating Sites:</h5>
+
+                <div ng-if="viewTrialView.curTrial.participating_sites.length > 0 && viewTrialView.curTrial.is_owner" class="form-group">
+                    <div class=" col-xs-12 col-sm-12">
+                        <table class="table table-bordered table-striped table-condensed">
+                            <thead>
+                                <th>Organization Name</th>
+                                <th>Local Trial Identifier</th>
+                                <th>Site Principal Investigator</th>
+                                <th>Site Specific Program Code</th>
+                                <th>Current Status</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index">
+                                <td class="col-md-4">{{ps.organization.name}}</td>
+                                <td class="col-md-2">{{ps.protocol_id}}</td>
+                                <td class="col-md-2">{{ps.site_pi.lname + (ps.site_pi.lname ? ', ' : ' ') + ps.site_pi.fname}}</td>
+                                <td class="col-md-2">{{ps.program_code}}</td>
+                                <td class="col-md-2">{{ps.current_status_name}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

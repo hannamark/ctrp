@@ -80,9 +80,9 @@ class ApiTrialParamsLoader
     lead_org_id=$mapperObject.leadOrganization.existingOrganization.id if $mapperObject.leadOrganization
     sponsor_id=$mapperObject.sponsor.existingOrganization.id           if $mapperObject.sponsor
     pi_id = $mapperObject.pi.existingPerson.id                         if $mapperObject.pi
-    $rest_params[:lead_org_id] = lead_org_id   if lead_org_id && valid_org("leadOrganization",lead_org_id)
-    $rest_params[:sponsor_id]  = sponsor_id    if sponsor_id && valid_org("Sponsor",sponsor_id)
-    $rest_params[:pi_id]       = pi_id         if pi_id && valid_person("pi",pi_id)
+    $rest_params[:lead_org_id] = Organization.find_by_ctrp_id(lead_org_id).id    if lead_org_id && valid_org("leadOrganization",lead_org_id)
+    $rest_params[:sponsor_id]  = Organization.find_by_ctrp_id(sponsor_id).id     if sponsor_id && valid_org("Sponsor",sponsor_id)
+    $rest_params[:pi_id]       = Person.find_by_ctrp_id(pi_id).id                if pi_id && valid_person("pi",pi_id)
 
     ###Funding Sources
     $rest_params[:trial_funding_sources_attributes] = []

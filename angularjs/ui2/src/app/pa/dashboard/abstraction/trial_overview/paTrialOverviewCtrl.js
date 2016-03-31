@@ -65,11 +65,16 @@
 
         function checkoutTrial(checkoutType) {
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                console.log('checkout result: ', res.result);
-                updateTrialDetailObj(res.result);
-                vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout);
-                vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout);
-                showToastr(checkoutType + ' checkout was successful!', 'top right');
+                // console.log('checkout result: ', res.result);
+                // console.log('checkout message: ', res.checkout_message);
+                var checkout_message = res.checkout_message || 'Checkout was not successful, other user may have checked it out ';
+                if (res.checkout_message !== null) {
+                    updateTrialDetailObj(res.result);
+                    vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout);
+                    vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout);
+                }
+
+                showToastr(checkoutType + ' ' + checkout_message, 'top right');
             });
         }
 

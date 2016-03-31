@@ -89,6 +89,7 @@ Then the Biomarkers list will be displayed
 
       |Name|
       |Evaluation Type|
+      |Assay Type|
       |Biomarker Use                    |
       |Biomarker Purpose  |
       |Specimen Type                   |
