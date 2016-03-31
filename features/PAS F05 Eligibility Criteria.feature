@@ -243,3 +243,10 @@ When I select the Reset button
 Then the Eligibility Criteria that was entered or updated will not be saved to the trial record
 And the screen will be refreshed with data since the last save
 And the Add/Edit Eligibility Criteria screen displays
+
+Scenario:  #18  Reorder Eligibility Criteria
+Given I am on the Eligibility Criteria screen
+And I am viewing the Eligibility Criteria  table
+When I click on a record 
+And drag it to a new sequence location in the table
+Then the order of the Eligibility Criteria changes
