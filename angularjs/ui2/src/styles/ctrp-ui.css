@@ -3130,6 +3130,15 @@ input[type="text"].ui-grid-filter-input:hover{border:1px solid #eeeeee}
     width: 45px;
 }
 
+.td-date {
+    width: 85px;
+}
+.td-time {
+    width: 120px;
+}
+.td-name {
+    width: 175px;
+}
 .panel-body .btn-toolbar {
     margin-right: 0;
 }
@@ -3234,8 +3243,17 @@ header {
     background: #2A71A5;
 }
 
+td md-input-container textarea {
+    border: 1px dashed #ddd;
+    border-width: 1px !important;
+    padding: 0 5px !important;
+    border-radius: 5px 5px 5px 5px !important;
+    -moz-border-radius: 5px 5px 5px 5px !important;
+    -webkit-border-radius: 5px 5px 5px 5px !important;
+}
+
 .table-striped.table-condensed textarea.form-control {
-    height: 100px;
+    height: 50px;
 }
 
 @media screen and (min-width: 641px) {
@@ -3259,7 +3277,7 @@ md-tab-item{
 }
 
 .login .panel-body {
-    padding: 15px 23px 3px 10px;
+    padding: 15px 23px 13px 10px;
 }
 
 .login {
@@ -3282,7 +3300,12 @@ md-tab-item{
 }
 
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
-    border: 1px solid #fff;
+    border: 1px solid #eee;
+}
+
+
+.table-bordered {
+    border: 1px solid #eee;
 }
 
 ctrp-org-adv-search-modal-button div.row {
@@ -3328,3 +3351,41 @@ md-tab-content {}
 }
 
 .nowrap {white-space: nowrap;}
+p {margin-left: 5px;}
+.md-body-1 > div > span > span.ng-binding {
+    width: 95%;
+    display: inline-block;
+}
+
+md-input-container {
+    padding-bottom: 2px !important;
+}
+.md-body-1, .md-body-1 textarea, .md-body-1 .md-button{
+    font-size: inherit !important;
+    line-height: 1.5 !important;
+    margin: 0;
+}
+
+a.btn-file {
+    color: #fff;
+    width: 110px;
+
+}
+a.btn-file:hover {
+    text-decoration:none;
+    cursor: pointer;
+}
+.label-info {
+    background: #fff;
+    color: #aaa;
+
+    background: #fff;
+    color: #777;
+    height: 38px;
+    font-size: 12px;
+    border-left-width: 0;
+    padding: 9px 8px 7px 3px;
+    background-color: white;
+    background: #eee;
+    font-weight: normal;
+}
