@@ -50,7 +50,7 @@ Feature: Reg F12 Register Trial IND IDE
       |Externally Peer-Reviewed  |
       |Institutional             |
 
-  @runthis
+
 Scenario Outline:#3 FDA IND/IDE Information Validation check rule
   Given I have selected the option to register a trial <trialType>
   And I am on the Register Trial IND/IDE Information screen
@@ -60,7 +60,7 @@ Scenario Outline:#3 FDA IND/IDE Information Validation check rule
       |IND/IDE Grantor  |
       |IND/IDE Holder Type  |
     And I have clicked on the Add IND/IDE Button
-     Then A message will be displayed"IND/IDE Type,IND/IDE Number,IND/IDE Grantor and IND/IDE Holder Type are required"
+     Then A message will be displayed "IND/IDE Type,IND/IDE Number,IND/IDE Grantor and IND/IDE Holder Type are required"
 
   Examples:
     |trialType                 |
@@ -68,7 +68,7 @@ Scenario Outline:#3 FDA IND/IDE Information Validation check rule
     |Externally Peer-Reviewed  |
     |Institutional             |
 
-  @runthis
+
 Scenario Outline: #4 I must enter FDA IND/IDE Information for applicable trials
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial IND/IDE Information screen

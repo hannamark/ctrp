@@ -51,6 +51,8 @@ exports.config = {
         'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature',
 
         /************* Registry Features ************/
+        'features/Reg\ F02\ Search\ Persons.feature',
+        'features/Reg\ F03\ Search\ Organizations.feature',
         'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
         'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
         'features/Reg\ F06\ Register\ Trial\ Details.feature',
@@ -60,6 +62,7 @@ exports.config = {
         'features/Reg\ F10\ Register\ Trial\ Grant\ Information.feature',
         'features/Reg\ F11\ Register\ Trial\ Dates\ and\ Trial\ Status.feature',
         'features/Reg\ F12\ Register\ Trial\ IND\ IDE.feature',
+        'features/Reg\ F13\ Register\ Trial\ Documents.feature',
 
         /************* PO F2-F15 ************/
         'features/PO\ F2\ Search\ for\ Organizations.feature',
