@@ -888,3 +888,43 @@ md-checkbox.md-default-theme.md-checked .md-icon {
     font-size: 13px;
     text-transform:capitalize;
 }
+
+a.btn-file {
+    color: #fff;
+    width: 110px;
+
+}
+a.btn-file:hover {
+    text-decoration:none;
+    cursor: pointer;
+}
+.label-info {
+    color: #555;
+    background: #eee;
+    font-weight: normal;
+    display: inline-flex;
+    width: 150px;
+    text-align: left;
+    border-radius: 0px 5px 5px 0px;
+    -moz-border-radius: 0px 5px 5px 0px;
+    -webkit-border-radius: 0px 5px 5px 0px;
+    border-left-width: 0;
+    padding: 4px 8px 6px 3px;
+    font-size: 12px;
+    overflow-y: hidden;
+}
+
+
+.td-icon {
+    width: 45px;
+}
+
+.td-date {
+    width: 85px;
+}
+.td-time {
+    width: 140px;
+}
+.td-name {
+    width: 175px;
+}

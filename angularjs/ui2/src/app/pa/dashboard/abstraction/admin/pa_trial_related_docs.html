@@ -28,7 +28,7 @@
                                             placeholder="Subtype"
                                             ng-required="trialRelatedDocsView.docSubtypeShown">
                                     </div>
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-6">
                                             <a class='btn btn-primary btn-file' href='javascript:;'>
                                                 Choose File...
 
@@ -37,13 +37,14 @@
                                                        name="current_doc" ngf-max-size="10MB"
                                                 style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"
                                                        onchange='$("#upload-file-info").html($(this).val());' />
-                                            </a><span class='label label-info' id="upload-file-info"></span>
+                                            </a><span class='label label-info' id="upload-file-info">No file chosen</span>
                                         <button type="button" class="btn btn-primary" ng-hide="trialRelatedDocsView.curDoc.edit"
                                             ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
                                             ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
-                                            trialRelatedDocsView.curDoc.file == '' || trial_docs_form.current_doc.$invalid">Add</button>
+                                            trialRelatedDocsView.curDoc.file == '' || trial_docs_form.current_doc.$invalid">
+                                            <i class="glyphicon glyphicon-plus"></i> Add</button>
                                     </div>
-                                    <div class="col-sm-3" ng-show="trialRelatedDocsView.curDoc.edit">
+                                    <div class="col-sm-2" ng-show="trialRelatedDocsView.curDoc.edit">
                                         <label for="" class="control-label"></label>
                                         <div class="btn-group inline">
                                             <button type="button" class="btn btn-warning" ng-click="trialRelatedDocsView.cancelEdit()">Cancel</button>
