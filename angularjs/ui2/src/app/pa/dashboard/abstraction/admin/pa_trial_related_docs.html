@@ -106,7 +106,7 @@
                                                      <button type="button" class="btn btn-warning" restriction-field
                                                          uib-popover-template="trialRelatedDocsView.commentPopOverOptions.templateUrl"
                                                          tooltip-trigger="click"
-                                                         tooltip-enable="doc_destroy"
+                                                         tooltip-enable="doc.status == 'deleted'"
                                                          popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}"
                                                          popover-title="{{doc.file_name}}"
                                                          tooltip-is-open="{{trialRelatedDocsView.commentPopOverOptions.isOpen}}"
