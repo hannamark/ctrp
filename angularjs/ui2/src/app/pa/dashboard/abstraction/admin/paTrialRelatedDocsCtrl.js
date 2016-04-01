@@ -33,6 +33,18 @@
             vm.docSubtypeShown = false;
             vm.docTypeError = '';
             vm.formError = '';
+            // vm.commentPopoverTemplate = 'comment_for_deletion.html';
+            vm.commentPopOverOptions = {
+                templateUrl: 'comment_for_deletion.html',
+                placement: 'left',
+                isOpen: false
+            };
+            vm.closePopover = function() {
+                vm.commentPopOverOptions.isOpen = false;
+            };
+            $scope.$watch(function() {return vm.commentPopOverOptions.isOpen;}, function(newVal) {
+                console.info('isOpen? ', newVal);
+            });
             vm.documentTypes = documentTypes.types.split(',').sort();
             var requiredDocTypes = _.filter(vm.documentTypes, function(type) {
                 return type.indexOf('IRB') > -1 || type.indexOf('Protocol Doc') > -1;
@@ -105,14 +117,15 @@
                     document_type: '',
                     file_name: '',
                     file: '', // File to be uploaded
-                    document_subtype: '',
+                    document_subtype: null,
                     added_by: {},
                     added_by_id: null,
                     created_at: '',
                     edit: false,
                     index: null,
                     _destroy: false,
-                    status: 'active'
+                    status: 'active',
+                    why_deleted: null
                 };
                 return doc;
             }
