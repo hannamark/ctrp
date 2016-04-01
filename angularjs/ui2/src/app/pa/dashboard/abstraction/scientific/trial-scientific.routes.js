@@ -198,6 +198,23 @@
                     parent: 'main.pa.trialOverview',
                     label: 'Bio Markers'
                 }
+            })
+
+            .state('main.pa.trialOverview.disease', {
+                url: '/disease',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_disease.html',
+                controller: 'pasDiseaseCtrl as diseaseView',
+                resolve: {
+                    DiseaseService: 'DiseaseService',
+                    diseaseObj: function(DiseaseService) {
+                        return DiseaseService.getAllNcitDiseaseCodes();
+                    }
+                },
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Disease/Condition'
+                }
             });
     }
 })();

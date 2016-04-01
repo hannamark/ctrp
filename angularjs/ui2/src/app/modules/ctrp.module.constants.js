@@ -78,6 +78,8 @@
             'SUB_GROUP_LIST' : '/ctrp/registry/sub_groups.json',
             'A_SUB_GROUP' : '/ctrp/registry/sub_groups/',
             'CADSR_SEARCH': '/ctrp/cadsr_markers/search',
+            'NCIT_DISEASE_CODE_LIST': '/ctrp/ncit_disease_codes.json',
+
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
                 'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',
