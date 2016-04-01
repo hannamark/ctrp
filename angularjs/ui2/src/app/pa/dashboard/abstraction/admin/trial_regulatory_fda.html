@@ -5,13 +5,13 @@
                 Regulatory Information – FDAAA  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
 
-            <h4>The information in this section is REQUIRED to enable "Upload from NCI CTRP" in ClinicalTrials.gov:</h4>
+            <h5>The information in this section is REQUIRED to enable "Upload from NCI CTRP" in ClinicalTrials.gov.</h5>
 
             <div class="row">
                 <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial">
 
                     <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                        <legend class="sub-bordered">Responsible Party:</legend>
+                        <legend class="sub-bordered">Responsible Party</legend>
 
                         <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.responsible_party_id)}">
                             <label class="control-label col-xs-12 col-sm-4">Responsible Party:</label>
@@ -82,7 +82,7 @@
                     <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Oversight Authority</legend>
 
-                                <div class="form-group">
+                                <div class="form-group col-sm-9">
                                   <table class="table table-striped table-condensed" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
                                     <thead>
                                     <th>Country</th>
@@ -143,7 +143,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
                     </fieldset>
                     <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Indicators</legend>

@@ -12,7 +12,7 @@
                         <legend class="sub-bordered">FDA IND/IDE</legend>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_question)}">
-                            <label class="control-label col-xs-12 col-sm-6">Does this trial have an associated IND/IDE?</label>
+                            <label class="control-label col-xs-12 col-sm-6">Does this trial have an associated IND/IDE?:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <label class="radio-inline">
                                     <input type="radio" restriction-field ng-model="trialDetailView.curTrial.ind_ide_question" value="Yes" name="ind_ide_question"
@@ -29,7 +29,7 @@
                         </div>
                     </fieldset>
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                        <legend class="sub-bordered">IND/IDE Information:</legend>
+                        <legend class="sub-bordered">IND/IDE Information</legend>
 
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)}">
                         <div class="col-sm-12">
