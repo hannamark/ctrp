@@ -45,7 +45,7 @@
                 vm.associationErrorMsg = '';
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
-                    console.info('res in looking up trial', res);
+                    // console.info('res in looking up trial', res);
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
                     vm.foundTrialObj.associated_trial_id = res.id || ''; // for hyperlink only
                     vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
@@ -95,7 +95,9 @@
 
             function showTrialLookupForm(form) {
                 vm.showLookupForm = true;
-                resetTrialLookupForm(form);
+                vm.foundTrialObj.researchCategory = '';
+                vm.foundTrialObj.official_title = '';
+                // resetTrialLookupForm(form);
                 // form.trial_identifier.$error = null;
                 // form.identifier_type.$error = null;
             }
@@ -165,8 +167,6 @@
                     console.info('trial associations have been updated');
                 });
             }
-
-
         }
 
     })();
