@@ -41,6 +41,12 @@
                 if (!vm.trialQueryObj.identifierTypeId || !vm.trialQueryObj.trialIdentifier || vm.trialQueryObj.trialIdentifier.trim().length === 0) {
                     return;
                 }
+                var selectedIdentifier = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId});
+                if (!selectedIdentifier || !vm.trialQueryObj.trialIdentifier.startsWith(selectedIdentifier.name)) {
+                    vm.foundTrialObj.errorMsg = 'Trial identifier must match its identifier type';
+                    return;
+                }
+
                 vm.lookupBtnDisabled = true;
                 vm.associationErrorMsg = '';
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
@@ -53,7 +59,7 @@
                     vm.foundTrialObj.official_title = res.official_title || '';
                     vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
                     vm.foundTrialObj.research_category_name = res.research_category;
-                    vm.foundTrialObj.errorMsg = !!res.error_msg ? res.error_msg : '';
+                    vm.foundTrialObj.errorMsg = res.error_msg || '';
                 }).catch(function(err) {
                     console.error('err in looking up the trial: ', vm.trialQueryObj);
                 }).finally(function() {
