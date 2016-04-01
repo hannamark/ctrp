@@ -31,6 +31,10 @@
         width: 1470px;
     }
 
+    .drop-shadow form {
+        width: 75%;
+        margin: 0 auto;
+    }
 }
 
 @media screen and (min-width: 1600px) {
@@ -125,6 +129,7 @@
 .ui-grid-header-cell .ui-grid-cell-contents {
     line-height: 1em;
     padding: 6px 5px;
+    height: 32px;
     white-space: normal;
     -ms-text-overflow: clip;
     -o-text-overflow: clip;
@@ -134,6 +139,49 @@
 
 .tooltip-uigrid {
     word-wrap: normal;
+}
+
+/* Overriding default table classes */
+.table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
+    border-bottom-width: 1px;
+    background: #f3f3f3;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(1, #ffffff));
+    background: -ms-linear-gradient(bottom, #eeeeee, #ffffff);
+    background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+    background: -o-linear-gradient(#ffffff, #eeeeee);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
+    -webkit-border-top-right-radius: -1px;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+    line-height: 1em;
+    padding: 3px 5px;
+    height: 22px;
+    white-space: normal;
+    -ms-text-overflow: clip;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    overflow: visible;
+    border: 1px solid #D4D4D4;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td,
+.table-bordered > thead > tr > td {
+    vertical-align: middle;
+}
+
+.table .btn, .input-group-btn .btn {
+    line-height: 1em;
+}
+
+.table-striped > tbody > tr.edit-selected {
+    background-color: #DDEBF7;
 }
 
 .animated-item {
@@ -229,6 +277,9 @@
     /*margin-bottom: 0;*/
 }
 
+header {
+    margin: 21px 0;
+}
 header img {
     width: 60%;
 }
@@ -500,17 +551,29 @@ form {
     padding-left: 10px;
 }
 
+h4, h5, .panel-title {
+    color: #2A71A5;
+}
 h4 {
     font-size: 16px;
 }
 h5 {
     font-size: 13px;
 }
-
+.panel-title {
+    font-size: 13px;
+}
 .panel-heading {
-    padding: 6px 7px 6px 6px;
+    padding: 6px 15px;
 }
 
+.panel-heading.white-heading {
+    color: #FFF;
+}
+
+.glyphicon {
+    font-size: 12px;
+}
 
 .form-horizontal .form-group {
     margin-right: -5px;
@@ -540,14 +603,21 @@ h5 {
 }
 
 .btn {
+    padding: 3px 6px;
     font-size: 12px;
     font-weight: bold;
+    height: 22px;
 }
 
 .btn-default {
     font-weight: normal;
 }
 
+.btn-toolbar {
+    margin-top: 2px;
+    margin-left: 0px;
+    margin-bottom: 2px;
+}
 
 .btn-toolbar span.pad-height {
     line-height: 2.5em;
@@ -742,15 +812,19 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 fieldset.sub-bordered {
-    border: none;
-    padding: 0 0.4em 1.4em 0 !important;
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
 }
 legend.sub-bordered {
     font-size: 1em !important;
     font-weight: bold !important;
     text-align: left !important;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+    width:auto;
+    padding:0 10px;
+    border-bottom:none;
 }
 
 .editable-click,
