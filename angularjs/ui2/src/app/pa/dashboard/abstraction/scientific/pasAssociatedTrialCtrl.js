@@ -134,6 +134,9 @@
              * @return {Void}
              */
             function updateTrialAssociations() {
+                if (vm.trialDetailObj.associated_trials.length === 0) {
+                    return;
+                }
                 vm.trialDetailObj.associated_trials_attributes = vm.trialDetailObj.associated_trials;
                 var outerTrial = {};
                 outerTrial.new = false;
