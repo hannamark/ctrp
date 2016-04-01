@@ -37,10 +37,14 @@
             vm.commentPopOverOptions = {
                 templateUrl: 'comment_for_deletion.html',
                 placement: 'left',
-                isOpen: false
+                isOpen: true
             };
             vm.closePopover = function() {
-                vm.commentPopOverOptions.isOpen = false;
+                console.info('closing popover now!');
+
+                $timeout(function() {
+                    vm.commentPopOverOptions.isOpen = !vm.commentPopOverOptions.isOpen;
+                }, 0);
             };
             $scope.$watch(function() {return vm.commentPopOverOptions.isOpen;}, function(newVal) {
                 console.info('isOpen? ', newVal);

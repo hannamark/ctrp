@@ -105,11 +105,11 @@
                                                      <!-- popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}" -->
                                                      <button type="button" class="btn btn-warning" restriction-field
                                                          uib-popover-template="trialRelatedDocsView.commentPopOverOptions.templateUrl"
-                                                         tooltip-trigger="none"
+                                                         tooltip-trigger="click"
                                                          tooltip-enable="doc_destroy"
                                                          popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}"
                                                          popover-title="{{doc.file_name}}"
-                                                         tooltip-is-open="trialRelatedDocsView.commentPopOverOptions.isOpen"
+                                                         tooltip-is-open="{{trialRelatedDocsView.commentPopOverOptions.isOpen}}"
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
                                                          ng-click="trialRelatedDocsView.deleteDoc($index)">
                                                          <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
