@@ -184,7 +184,8 @@
                                                     <th width="10%" class="text-center">Status</th>
                                                     <th width="30%" class="text-center">Comment</th>
                                                     <th width="35%" class="text-center">Errors/Warnings</th>
-                                                    <th width="15%" class="text-center">Delete/Edit</th>
+                                                    <th class="text-center td-icon">Edit</th>
+                                                    <th class="text-center td-icon">Delete</th>
                                                 </thead>
                                                 <tbody>
                                                 <tr ng-repeat="site_rec in psView.siteRecruitmentGrid track by $index" class="animated-item text-center" ng-class="{'deleted-text' : site_rec._destroy, 'edit-selected': site_rec.uiEdit}">
@@ -206,11 +207,13 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteSiteRecruitment($index)" ng-disabled="psView.current_site_recruitment.edit">
-                                                            <i class="glyphicon" ng-class="site_rec._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                        </button>
                                                         <button type="button" class="btn btn-default" restriction-field ng-disabled="site_rec._destroy || psView.current_site_recruitment.edit" ng-click="psView.editSiteRecruitment($index)">
                                                             <i class="glyphicon glyphicon-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteSiteRecruitment($index)" ng-disabled="psView.current_site_recruitment.edit">
+                                                            <i class="glyphicon" ng-class="site_rec._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
