@@ -61,6 +61,19 @@ class NcitDiseaseCodesController < ApplicationController
     end
   end
 
+  def get_tree
+    root_node = NcitDiseaseCode.first
+    while root_node.parents.length > 0 do
+      root_node = root_node.parents.first
+    end
+
+    #@ncit_tree = build_tree(root_node)
+    @ncit_tree = {id: root_node.id, nt_term_id: root_node.nt_term_id, preferred_name: root_node.preferred_name, children: []}
+    root_node.children.each do |child|
+      @ncit_tree[:children].append({id: child.id, nt_term_id: child.nt_term_id, preferred_name: child.preferred_name})
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ncit_disease_code
@@ -71,4 +84,22 @@ class NcitDiseaseCodesController < ApplicationController
     def ncit_disease_code_params
       params.require(:ncit_disease_code).permit(:disease_code, :nt_term_id, :preferred_name, :menu_display_name)
     end
+
+  def build_tree(root_node)
+    tree = {id: root_node.id, nt_term_id: root_node.nt_term_id, preferred_name: root_node.preferred_name, children: []}
+    queue = Queue.new
+    queue.push(tree)
+
+    while !queue.empty? do
+      current_node = queue.pop
+      current_instance = NcitDiseaseCode.find(current_node[:id])
+      current_instance.children.each do |child|
+        child_node = {id: child.id, nt_term_id: child.nt_term_id, preferred_name: child.preferred_name, children: []}
+        current_node[:children].append(child_node)
+        queue.push(child_node)
+      end
+    end
+
+    return tree
+  end
 end

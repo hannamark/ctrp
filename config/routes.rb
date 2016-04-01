@@ -244,7 +244,11 @@ Rails.application.routes.draw do
       get 'sampling_methods' => 'util#get_sampling_methods'
     end
 
-    resources :ncit_disease_codes
+    resources :ncit_disease_codes do
+      collection do
+        get 'get_tree'
+      end
+    end
   end
   # Devise related routes
 

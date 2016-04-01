@@ -1,3 +1,6 @@
 <div class="row">
-    disease code
+    <treecontrol class="tree-light" tree-model="ncitTree" options="treeOptions"
+                 on-selection="showSelected(node)" selected-node="node1" expanded-nodes="node1">
+        {{node.preferred_name}} ({{node.nt_term_id}})
+    </treecontrol>
 </div>

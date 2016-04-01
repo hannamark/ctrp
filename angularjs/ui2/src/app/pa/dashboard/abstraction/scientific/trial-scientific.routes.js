@@ -206,8 +206,8 @@
                 controller: 'pasDiseaseCtrl as diseaseView',
                 resolve: {
                     DiseaseService: 'DiseaseService',
-                    diseaseObj: function(DiseaseService) {
-                        return DiseaseService.getAllNcitDiseaseCodes();
+                    ncitTreeObj: function(DiseaseService) {
+                        return DiseaseService.getNcitTree();
                     }
                 },
                 section: 'pa',

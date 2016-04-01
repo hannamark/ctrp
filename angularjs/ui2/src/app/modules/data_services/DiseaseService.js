@@ -15,7 +15,8 @@
                             UserService, Common) {
 
         var services = {
-            getAllNcitDiseaseCodes : getAllNcitDiseaseCodes
+            getAllNcitDiseaseCodes: getAllNcitDiseaseCodes,
+            getNcitTree: getNcitTree
         };
 
         return services;
@@ -24,6 +25,10 @@
 
         function getAllNcitDiseaseCodes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.NCIT_DISEASE_CODE_LIST);
+        }
+
+        function getNcitTree() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.NCIT_TREE);
         }
 
     }
