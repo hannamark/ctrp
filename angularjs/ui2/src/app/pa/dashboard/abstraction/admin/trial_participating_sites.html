@@ -477,7 +477,7 @@
 
 <!-- Grid the shows all the Participating Sites -->
 <div class="row">
-    <uib-accordion close-others="false">
+    <uib-accordion close-others="false" ng-hide="psView.addEditMode">
         <uib-accordion-group is-open="true" >
             <uib-accordion-heading>
                 List of Participating Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
@@ -539,5 +539,10 @@
     </fieldset>
         </uib-accordion-group>
     </uib-accordion>
+    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable"  ng-show="psView.addEditMode">
+        <button type="submit" class="btn btn-warning pull-right" id="participating_site_list" restriction-field ng-click="psView.setAddMode(false)">
+            <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
+        </button>
+    </div>
     <div class="top-offset-xs" ng-show="psView.addEditMode"></div>
 </div>
