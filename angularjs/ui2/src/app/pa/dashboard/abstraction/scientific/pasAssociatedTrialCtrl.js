@@ -65,7 +65,7 @@
 
                 // form.trial_identifier.$error = null;
                 // form.identifier_type.$error = null;
-                vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''};
+                vm.trialQueryObj = {identifierTypeId: 1, trialIdentifier: 'NCI-'};
                 vm.foundTrialObj = _initFoundTrialObj();
                 form.$setPristine();
                 form.$dirty = false;
@@ -95,9 +95,7 @@
 
             function showTrialLookupForm(form) {
                 vm.showLookupForm = true;
-                vm.foundTrialObj.researchCategory = '';
-                vm.foundTrialObj.official_title = '';
-                // resetTrialLookupForm(form);
+                resetTrialLookupForm(form);
                 // form.trial_identifier.$error = null;
                 // form.identifier_type.$error = null;
             }
