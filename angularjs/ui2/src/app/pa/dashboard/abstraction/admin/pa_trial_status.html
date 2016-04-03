@@ -112,7 +112,7 @@
                                 <th>Why Study Stopped</th>
                                 <th>Errors/Warnings</th>
                                 <th class="text-center td-icon">Edit</th>
-                                <th class="text-center td-icon">Remove</th>
+                                <th class="text-center td-icon">Delete</th>
                               </thead>
                               <tbody>
                                 <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="status._destroy ? 'deleted-text' : ''">
@@ -120,30 +120,30 @@
                                   <td>{{status.trial_status_name}}</td>
                                   <td>{{status.comment}}</td>
                                   <td>{{status.why_stopped}}</td>
-                                  <td><ul>
-                                      <li class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
+                                  <td>
+                                      <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                           ERROR: Interim status [{{error.status}}] is missing
-                                      </li>
-                                      <li class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
+                                      </div>
+                                      <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
                                           ERROR: {{error.message}}
-                                      </li>
-                                      <li class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
+                                      </div>
+                                      <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
                                           WARNING: Interim status [{{warning.status}}] is missing
-                                      </li>
-                                      <li class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
+                                      </div>
+                                      <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
                                           WARNING: {{warning.message}}
-                                      </li>
-                                      <li class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Same Day' && warning.sameDate">
+                                      </div>
+                                      <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Same Day' && warning.sameDate">
                                           WARNING: Statuses [{{warning.from}}] and [{{warning.to}}] have the same date
-                                      </li></ul>
+                                      </div>
                                   </td>
                                   <td class="text-center td-icon">
-                                      <label class="btn btn-warning" restriction-field ng-disabled="status._destroy" ng-click="trialStatusView.editTrialStatus($index)">
+                                      <label class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="trialStatusView.editTrialStatus($index)">
                                           <i class="glyphicon glyphicon-edit"></i>
                                       </label>
                                   </td>
                                     <td class="text-center td-icon">
-                                        <label class="btn btn-warning" restriction-field ng-click="trialStatusView.deleteTrialStatus($index)">
+                                        <label class="btn btn-default" restriction-field ng-click="trialStatusView.deleteTrialStatus($index)">
                                             <i class="glyphicon" ng-class="status._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                         </label>
                                     </td>
@@ -153,58 +153,6 @@
                         </div>
                     </fieldset>
                     <!-- end of fieldset for trial statuses -->
-
-                    <!-- fieldset for trial comment -->
-                    <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                        <legend class="sub-bordered">Trial Comments</legend>
-                        <div class = "col-md-7">
-                        <table class="table table-striped table-condensed">
-                            <thead>
-                            <th>Your Comment</th>
-                            <th class="td-icon"></th>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="col-md-10">
-                                    <div>
-                                        <textarea class="form-control input-sm ng-pristine ng-untouched ng-valid ng-valid-maxlength" id="status_comment" name="trial_status_comment" rows="1" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment..."></textarea>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.createComment()"><i class="glyphicon glyphicon-plus"></i> Add</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        </div>
-
-
-
-
-                        <div class="row">
-                            <span ng-show="trialStatusView.commentList.length == 0">
-                                <h5>No comments yet</h5>
-                            </span>
-                            <table class="table table-bordered table-striped table-hover" ng-show="trialStatusView.commentList.length > 0">
-                                <thead>
-                                <th class="td-time">Time</th>
-                                <th class="td-name">Commented by</th>
-                                <th>Comment</th>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="comment in trialStatusView.commentList">
-                                    <td>{{comment.updated_at | date: "dd-MMM-yyyy H:mm"}}</td>
-                                    <td><strong>{{comment.username}}</strong></td>
-                                    <td>
-                                        <span class="md-body-1" in-place-edit="comment.content" on-save="trialStatusView.updateComment(comment.content, $index)"
-                                            template="app/modules/widgets/comment/comment-in-place-edit.html" is-editable="{{comment.isEditable}}">{{comment.content}}, {{comment.isEditable}}</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                    <!-- end of fieldset for trial comment -->
 
                     <!-- fieldset for trial dates -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
@@ -329,6 +277,50 @@
                         </div>
                     </fieldset>
                     <!-- end of fieldset for trial dates -->
+
+                    <!-- fieldset for trial comment -->
+                    <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Trial Comments</legend>
+                        <div class = "row">
+                            <div class="col-md-7">
+                                <table class="table table-striped table-condensed">
+                                    <thead>
+                                    <th>Your Comment</th>
+                                    <th class="td-icon"></th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <textarea class="form-control input-sm ng-pristine ng-untouched ng-valid ng-valid-maxlength" id="status_comment" name="trial_status_comment" rows="1" ng-model="trialStatusView.commentObj.content" restriction-field placeholder="Your comment..."></textarea>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.createComment()"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+                        <div class="row" style="max-height: 230px; overflow-y: scroll">
+                            <div style="width: 98%;">
+                                <span ng-show="trialStatusView.commentList.length == 0">
+                                    <h5>No comments yet</h5>
+                                </span>
+                                <ul class="trial-comments">
+                                    <li ng-repeat="comment in trialStatusView.commentList">
+                                        <p><strong>{{comment.username}}</strong> <i>({{comment.updated_at | date: "dd-MMM-yyyy H:mm"}})</i>:</p>
+                                        <h5 class="md-body-1" in-place-edit="comment.content" on-save="trialStatusView.updateComment(comment.content, $index)"
+                                            template="app/modules/widgets/comment/comment-in-place-edit.html" is-editable="{{comment.isEditable}}">{{comment.content}}, {{comment.isEditable}}</h5>
+                                        <md-divider ng-if="!$last"></md-divider>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- end of fieldset for trial comment -->
 
                     <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                       <div class="col-sm-3"></div>
