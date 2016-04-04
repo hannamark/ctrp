@@ -54,7 +54,7 @@
                 errorMsg += '\nCause(s): ' + (rejection.error || '');
 
                 Object.keys(rejection.data).forEach(function(field, index) {
-                    if (ignoredFields.indexOf(field) === -1) {
+                    if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
                         errorMsg += '\n ' + field + ' field: ' + rejection.data[field];
                     }
                 });
