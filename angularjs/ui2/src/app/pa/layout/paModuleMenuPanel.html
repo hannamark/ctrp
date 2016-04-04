@@ -11,14 +11,14 @@
               <strong>Trial Overview</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialOverviewOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialOverviewOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
-              <li><a ui-sref="main.pa.trialOverview.trialIdentification">Trial Identification</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialHistory">Trial History</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialMilestones">Trial Milestones</a></li>
-              <li><a ui-sref="main.pa.trialOverview.onHoldInfo">On Hold Info</a></li>
-              <li><a ui-sref="main.pa.trialOverview.viewTSR">View TSR <i class="glyphicon glyphicon-new-window" style="padding-left: 10px"></i></a></li>
-              <li><a ui-sref="main.pa.trialOverview.assignOwnership">Assign Ownership</a></li>
-              <li><a ui-sref="main.pa.trialOverview.checkoutHistory">Check Out History</a></li>
-              <li><a ui-sref="main.pa.trialOverview.jsonRawData">Raw JSON Data</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialIdentification" class="menu-identification">Trial Identification</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialHistory" class="menu-history">Trial History</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialMilestones" class="menu-milestones">Trial Milestones</a></li>
+              <li><a ui-sref="main.pa.trialOverview.onHoldInfo" class="menu-on-hold-info">On Hold Info</a></li>
+              <li><a ui-sref="main.pa.trialOverview.viewTSR" class="menu-view-tsr">View TSR <i class="glyphicon glyphicon-new-window" style="padding-left: 10px"></i></a></li>
+              <li><a ui-sref="main.pa.trialOverview.assignOwnership" class="menu-assign-ownership">Assign Ownership</a></li>
+              <li><a ui-sref="main.pa.trialOverview.checkoutHistory" class="menu-check-out-history">Check Out History</a></li>
+              <li><a ui-sref="main.pa.trialOverview.jsonRawData" class="menu-raw-json-trial-data">Raw JSON Data</a></li>
           </ul>
       </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
@@ -26,16 +26,16 @@
               <strong>Admin Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
-              <li><a ui-sref="main.pa.trialOverview.generalTrialDetails">General Trial Details</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryFda">Regulatory Information - FDAAA</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryInfoHumanSafety">Regulatory Information - Human Subject Safety</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryInd">Regulatory Information - IND/IDE</a></li>
-              <li><a ui-sref="main.pa.trialOverview.paTrialStatus">Trial Status</a></li>
-              <li><a ui-sref="main.pa.trialOverview.funding">Trial Funding</a></li>
-              <li><a ui-sref="main.pa.trialOverview.participatingSites">Participating Sites</a></li>
-              <li><a ui-sref="main.pa.trialOverview.collaborators">Collaborators</a></li>
-              <li><a ui-sref="main.pa.trialOverview.paTrialRelatedDocs">Trial Related Documents</a></li>
-              <li><a ui-sref="main.pa.trialOverview.nciInfo">NCI Specific Information</a></li>
+              <li><a ui-sref="main.pa.trialOverview.generalTrialDetails" class="menu-general-trial-details">General Trial Details</a></li>
+              <li><a ui-sref="main.pa.trialOverview.regulatoryFda" class="menu-reg-fda">Regulatory Information - FDAAA</a></li>
+              <li><a ui-sref="main.pa.trialOverview.regulatoryInfoHumanSafety" class="menu-regulatory-info-human-subject-safety">Regulatory Information - Human Subject Safety</a></li>
+              <li><a ui-sref="main.pa.trialOverview.regulatoryInd" class="menu-reg-ind">Regulatory Information - IND/IDE</a></li>
+              <li><a ui-sref="main.pa.trialOverview.paTrialStatus" class="menu-trial-status">Trial Status</a></li>
+              <li><a ui-sref="main.pa.trialOverview.funding" class="menu-funding">Trial Funding</a></li>
+              <li><a ui-sref="main.pa.trialOverview.participatingSites" class="menu-participating-sites">Participating Sites</a></li>
+              <li><a ui-sref="main.pa.trialOverview.collaborators" class="menu-collaborators">Collaborators</a></li>
+              <li><a ui-sref="main.pa.trialOverview.paTrialRelatedDocs" class="menu-trial-related-documents">Trial Related Documents</a></li>
+              <li><a ui-sref="main.pa.trialOverview.nciInfo" class="menu-nci-info">NCI Specific Information</a></li>
           </ul>
       </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
@@ -43,18 +43,17 @@
               <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
           </uib-accordion-heading>
           <ul class="nav nav-pills nav-stacked">
-              <li><a ui-sref="main.pa.trialOverview.trialDesign">Trial Design</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialDescription">Trial Description</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialDesign" class="menu-trial-design">Trial Design</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialDescription" class="menu-trial-description">Trial Description</a></li>
               <li><a href="">Design Details</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialOutcomeMeasures">Outcome Measures</a></li>
-              <li><a ui-sref="main.pa.trialOverview.eligibilityCriteria">Eligibility Criteria</a></li>
-              <li><a ui-sref="main.pa.trialOverview.associatedTrials">Associated Trials</a></li>
-              <li><a ui-sref="main.pa.trialOverview.disease">Disease/Condition</a></li>
-              <li><a ui-sref="main.pa.trialOverview.anatomicSites">Data Table 4 Anatomic Sites</a></li>
-              <li><a ui-sref="main.pa.trialOverview.bioMarkers">Bio Markers</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialOutcomeMeasures" class="menu-trial-outcome-measures">Outcome Measures</a></li>
+              <li><a ui-sref="main.pa.trialOverview.eligibilityCriteria" class="menu-eligibility-critiera">Eligibility Criteria</a></li>
+              <li><a ui-sref="main.pa.trialOverview.associatedTrials" class="menu-associated-trials">Associated Trials</a></li>
+              <li><a ui-sref="main.pa.trialOverview.disease" class="menu-disease">Disease/Condition</a></li>
+              <li><a ui-sref="main.pa.trialOverview.anatomicSites" class="menu-anatomic-sites">Data Table 4 Anatomic Sites</a></li>
               <li><a href="">Interventions</a></li>
-              <li><a ui-sref="main.pa.trialOverview.armsGroups">Arms</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialSubGroups">Sub-Groups</a></li>
+              <li><a ui-sref="main.pa.trialOverview.armsGroups" class="menu-arms-groups">Arms</a></li>
+              <li><a ui-sref="main.pa.trialOverview.trialSubGroups" class="menu-trial-sub-groups">Sub-Groups</a></li>
           </ul>
       </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">

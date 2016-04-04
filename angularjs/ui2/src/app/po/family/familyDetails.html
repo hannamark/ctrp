@@ -118,7 +118,7 @@
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" />
                                            <span class="input-group-btn">
-                                               <button type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
+                                               <button type="button" restriction-field class="btn btn-primary" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
                                                </button>
                                            </span>
@@ -132,14 +132,14 @@
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" />
                                            <span class="input-group-btn">
-                                               <button type="button" restriction-field class="btn btn-default" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
+                                               <button type="button" restriction-field class="btn btn-primary" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" ng-disabled="org._destroy">
                                                    <i class="glyphicon glyphicon-calendar"></i>
                                                </button>
                                            </span>
                                        </div>
                                    </td>
                                    <td>
-                                       <label class="btn btn-default" restriction-field ng-click="familyDetailView.toggleSelection($index)">
+                                       <label class="btn btn-warning" restriction-field ng-click="familyDetailView.toggleSelection($index)">
                                            <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                        </label>
                                    </td>
@@ -153,7 +153,7 @@
 
                 <div class="form-group no-bottom-margin">
                     <div class="col-xs-12 col-sm-3"></div>
-                    <div class="btn-toolbar col-xs-12 col-sm-9">
+                    <div class="btn-toolbar col-xs-12 col-sm-6">
                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
                             Save
                         </button>

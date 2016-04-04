@@ -13,7 +13,7 @@ Then the CTRP application will check that all required fields have been entered
 |Lead Organization Trial Identifier|
 |Title|
 |Phase|
-|Is this a Pilot?|
+|Pilot|
 |Research Category|
 |Primary Purpose|
 |Accrual Disease Terminology|
@@ -28,18 +28,14 @@ Then the CTRP application will check that all required fields have been entered
 |Trial Start Date Actual or Anticipated qualifier|
 |Primary Completion Date|
 |Primary Completion Date Actual or Anticipated qualifier|
-|Completion Date|
+|Completion Date Actual|
 |Completion Date Actual or Anticipated qualifier|
 |Does this Trial have an associate IND/IDE|
-|Trial Oversight Authority Country|
-|Trial Oversight Authority Organization Name|
-|FDA Regulated Intervention Indicator|
-|Section 801 Indicator|
-|Data Monitoring Committee Appointed Indicator|
 |Protocol Document|
 |IRB Approval Document|
 And the CTRP application will check that all conditional fields have been entered
 |Condition : Conditional Field|
+|Describe "Other" Secondary Purpose|
 |Principal Investigator as Responsible Party :Investigator, Investigator Title, Investigator Affiliation|
 |Sponsor-Investigator as Responsible Party : Investigator, Investigator Title, Investigator Affiliation|
 |Funded by NCI Grant : Funding Mechanism, Institute Code, Serial Number, NCI Division/Program Code|
@@ -48,11 +44,9 @@ And the CTRP application will check that all conditional fields have been entere
 |Administratively Complete, Withdrawn, Temporarily Closed Trial Status : Why Study Stopped|
 And the CTRP application will check if any optional fields have been entered
 |Optional Fields|
-|Other Protocol Identifiers|
+|Other Identifiers: Protocol ID Type and Protocol ID|
 |Secondary Purpose|
 |Program Code|
-|Completion Date|
-|Completion Date Anticipated or Actual qualifier|
 |List of Participating Site Documents|
 |Other Documents|
 And the CTRP application will check that all registration sections have been completed

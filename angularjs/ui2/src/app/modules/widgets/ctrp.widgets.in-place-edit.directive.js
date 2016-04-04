@@ -32,7 +32,7 @@
             $scope.$watch('model', function(newVal, oldVal) {
                 // console.info('newVal model: ', newVal, oldVal);
                 if (!newVal) {
-                    $scope.errorMsg = 'Please enter a value';
+                    $scope.errorMsg = 'Enter a value';
                 } else {
                     $scope.errorMsg = '';
                 }

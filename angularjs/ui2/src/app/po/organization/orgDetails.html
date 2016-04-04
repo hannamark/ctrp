@@ -119,8 +119,8 @@
                                             </thead>
                                             <tr ng-repeat="nameAlias in orgDetailView.addedNameAliases track by $index" ng-class="nameAlias._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                                 <td class="col-md-7">{{nameAlias.name}}</td>
-                                                <td class="col-md-1" style="vertical-align: middle" ng-show="orgDetailView.curOrgEditable">
-                                                    <label class="btn btn-default" restriction-field ng-click="orgDetailView.toggleSelection($index, 'other_id')">
+                                                <td class="text-center td-icon" ng-show="orgDetailView.curOrgEditable">
+                                                    <label class="btn btn-warning" restriction-field ng-click="orgDetailView.toggleSelection($index, 'other_id')">
                                                         <i ng-class="nameAlias._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                     </label>
                                                 </td>
@@ -256,7 +256,10 @@
 
                                 <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
                                     <div class="col-xs-12 col-sm-3"></div>
-                                    <div class="btn-toolbar col-xs-12 col-sm-9">
+                                    <div class="btn-toolbar col-xs-12 col-sm-6">
+                                        <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-danger btn-no-left-margin" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
+                                            <i class="glyphicon glyphicon-remove"></i> Delete This Organization
+                                        </button>
                                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
                                             Save
                                         </button>
@@ -265,9 +268,6 @@
                                         </button>
                                         <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()">
                                             <i class="glyphicon glyphicon-remove"></i>  Reset
-                                        </button>
-                                        <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-danger btn-no-left-margin pull-left" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')">
-                                            <i class="glyphicon glyphicon-remove"></i> Delete This Organization
                                         </button>
                                     </div>
                                 </div>
