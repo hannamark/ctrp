@@ -37,8 +37,6 @@
         'ngFileSaver',
         'angularSpinner',
         'ui.select',
-        'treeControl',
-        'angularBootstrapNavTree',
         'ntt.TreeDnD'
     ]);
 })();
