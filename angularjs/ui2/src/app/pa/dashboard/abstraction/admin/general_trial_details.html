@@ -51,8 +51,8 @@
                   </thead>
                   <tbody>
                   <tr>
-                    <td>
-                        <select ng-init="generalTrialDetailView.otherIdentifier.protocol_id_origin_id" class="form-control input-sm" id="other_identifier"
+                    <td><span ng-show="generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead">Lead Organization Trial ID:</span>
+                        <select ng-show="!(generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead)" ng-init="generalTrialDetailView.otherIdentifier.protocol_id_origin_id" class="form-control input-sm" id="other_identifier"
                           ng-model="generalTrialDetailView.otherIdentifier.protocol_id_origin_id"
                           ng-options="identifier.id as identifier.name for identifier in generalTrialDetailView.protocolIdOriginArr" name="other_ids">
                           <option value="">Select an identifier</option>
@@ -67,8 +67,22 @@
                         <input type="text" id="identifier_name" class="form-control input-sm" ng-model="generalTrialDetailView.otherIdentifier.protocol_id">
                       </td>
                       <td>
-                          <!-- otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''}; -->
-                        <button type="button" class="btn btn-primary" ng-click="generalTrialDetailView.addOtherIdentifier()" ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id"><i class="glyphicon glyphicon-plus"></i> Add</button>
+
+                        <div ng-show="generalTrialDetailView.otherIdentifierUpdate">
+                          <button class="btn btn-warning" restriction-field type="button" ng-click="generalTrialDetailView.escapeEditTrialIdentifier()">Cancel</button>
+                          <button class="btn btn-primary" restriction-field type="button" ng-click="generalTrialDetailView.updateTrialIdentifier()"
+                                  ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id">
+                            Save
+                          </button>
+                        </div>
+
+                        <div ng-show="!generalTrialDetailView.otherIdentifierUpdate">
+
+                          <button type="button" class="btn btn-primary"
+                                  ng-click="generalTrialDetailView.addOtherIdentifier()"
+                                  ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id">
+                            <i class="glyphicon glyphicon-plus"></i> Add</button>
+                        </div>
                       </td>
                     </tr>
                   <tbody>
@@ -88,24 +102,25 @@
                       <tr>
                           <td>Lead Organization Trial ID</td>
                           <td>
-                              <span in-place-edit="generalTrialDetailView.leadProtocolId" on-save="generalTrialDetailView.updateLeadProtocolId(general_trial_details_form)"
-                                    template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
-                                    {{generalTrialDetailView.leadProtocolId}}
-                              </span>
-                              <div class="help-block" ng-show="general_trial_details_form.$invalid && generalTrialDetailView.leadProtocolId.length === 0">Protocol Identifier is required</div>
+                            {{generalTrialDetailView.leadProtocolId}}
                           </td>
-                          <td class="text-center td-icon">--</td>
+                          <td class="text-center td-icon">
+                            <label class="btn btn-default" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
+                              <i class="glyphicon glyphicon-edit"></i>
+                            </label>
+                          </td>
                           <td class="text-center">--</td>
                       </tr>
                   <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
                     <td>{{otherId.identifierName}}</td>
                     <td>
-                        <span in-place-edit="otherId.protocol_id" on-save="generalTrialDetailView.updateOtherId(otherId.protocol_id, $index)"
-                              template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
-                              {{otherId.protocol_id}}
-                        </span>
+                      {{otherId.protocol_id}}
+
                     </td>
                     <td class="text-center td-icon">
+                      <label class="btn btn-default" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
+                        <i class="glyphicon glyphicon-edit"></i>
+                      </label>
                     </td>
                     <td class="text-center td-icon">
                         <!-- <button type="button" class="btn btn-default">Edit</button> -->
