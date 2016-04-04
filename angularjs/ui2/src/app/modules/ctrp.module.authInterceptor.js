@@ -4,7 +4,7 @@
         .factory('AuthInterceptor', AuthInterceptor);
     AuthInterceptor.$inject = ['LocalCacheService', '$injector', 'ErrorHandlingService'];
     //function AuthInterceptor(AuthTokenService) {
-    function AuthInterceptor(LocalCacheService, $injector) {
+    function AuthInterceptor(LocalCacheService, $injector, ErrorHandlingService) {
 
         //var uService = $injector.get('UserService');
         var methodObj = {
@@ -50,8 +50,9 @@
             } else if (rejection.status > 226 && errorCount < 2) {
                 $injector.get('toastr').clear();
                 var errorMsg = 'Error Code: ' + rejection.status;
-                errorMsg += 'Error Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
-                errorMsg += !!rejection.error ? ' Reason: ' + rejection.error : '';
+                errorMsg += ' Error Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
+                errorMsg += ' Cause(s): ' + rejection.errors || 'Unknown';
+                errorMsg += ' ' + rejection.error || '';
                 $injector.get('toastr').error(errorMsg);
                 // $injector.get('UserService').logout();
                 errorCount++;
