@@ -69,8 +69,8 @@
                     ' ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
-                {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '80', width: '*'},
-                {name: 'ctep_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '80', width: '*'},
+                {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '100', width: '*'},
+                {name: 'ctep_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
                 {name: 'fname', displayName: 'First', enableSorting: true,  minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -85,10 +85,10 @@
                 },
 
                 {name: 'source_context', displayName: 'Source Context',
-                    enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '65', width: '*'},
-                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '65', width: '*'},
-                {name: 'email', enableSorting: true, minWidth: '150', width: '*',
+                    enableSorting: true, minWidth: '135', width: '*'},
+                {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '135', width: '*'},
+                {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '105', width: '*'},
+                {name: 'email', enableSorting: true, minWidth: '105', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },

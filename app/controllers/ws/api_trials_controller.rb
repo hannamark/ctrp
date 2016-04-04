@@ -19,7 +19,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   before_action :validate_rest_request
 
   before_filter only: [:create] do
-
+ p "############"
+ p @current_user
     val_errors = Array.new()
 
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
@@ -93,7 +94,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   def create
     @rest_params = @paramsLoader.get_rest_params
-    p @rest_params
+    @rest_params[:current_user] = @current_user
     @trial =Trial.new(@rest_params)
     if @trial.save!
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)

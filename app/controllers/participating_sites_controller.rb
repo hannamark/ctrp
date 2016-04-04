@@ -77,7 +77,15 @@ class ParticipatingSitesController < ApplicationController
           from_status_code = statuses[i - 1]['sr_status_code']
         end
         to_status_code = statuses[i]['sr_status_code']
-        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code)
+
+        # Flag that indicates if the two status dates are the same
+        if from_status_code == 'STATUSZERO'
+          same_date = false
+        else
+          same_date = statuses[i - 1]['status_date'] == statuses[i]['status_date']
+        end
+
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code, same_date)
         @validation_msgs.append(validation_msg)
       end
     end
@@ -97,7 +105,7 @@ class ParticipatingSitesController < ApplicationController
     end
 
   # Convert status code to name in validation messages
-  def convert_validation_msg (msg, from_status_code, to_status_code)
+  def convert_validation_msg (msg, from_status_code, to_status_code, same_date)
     if msg.has_key?('warnings')
       msg['warnings'].each do |warning|
         statusObj = SiteRecruitmentStatus.find_by_code(warning['status']) if warning.has_key?('status')
@@ -112,6 +120,12 @@ class ParticipatingSitesController < ApplicationController
           elsif warning['message'] == 'Duplicate'
             dupStatusObj = TrialStatus.find_by_code(from_status_code)
             warning['dupStatus'] = dupStatusObj.name if dupStatusObj.present?
+          elsif warning['message'] == 'Same Day'
+            fromStatusObj = TrialStatus.find_by_code(from_status_code)
+            warning['from'] = fromStatusObj.name if fromStatusObj.present?
+            toStatusObj = TrialStatus.find_by_code(to_status_code)
+            warning['to'] = toStatusObj.name if toStatusObj.present?
+            warning['sameDate'] = same_date
           end
         end
       end

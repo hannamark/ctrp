@@ -40,6 +40,9 @@
         function activate() {
             // getTrialDetailObj();
             //_getProcessingInfo();
+            vm.gridOptions = AuditService.getGridOptions();
+            vm.gridOptions.data =null;
+            vm.gridOptions.totalItems = null;
         }
 
         /**
@@ -106,7 +109,6 @@
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             var startDate = vm.start_date;
             var endDate = vm.end_date;
-            console.log(startDate);
             vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate};
             if (startDate != null && endDate != null) {
                 vm.searchWarningMessage=''

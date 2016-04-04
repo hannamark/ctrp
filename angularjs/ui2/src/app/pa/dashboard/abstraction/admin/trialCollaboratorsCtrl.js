@@ -56,6 +56,19 @@
             vm.addedCollaborators = [];
         } // updateTrial
 
+        vm.checkAllCos = function () {
+            if (vm.selectedAllSites) {
+                vm.selectedAllSites = true;
+            } else {
+                vm.selectedAllSites = false;
+            }
+
+            angular.forEach(vm.curTrial.collaborators, function (item) {
+                item.selected = vm.selectedAllCos;
+                vm.deleteListHandler(vm.curTrial.collaborators);
+            });
+
+        };
 
         vm.saveTrial = function(){
             vm.disableBtn = true;

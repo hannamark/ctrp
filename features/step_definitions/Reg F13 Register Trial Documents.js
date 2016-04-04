@@ -14,6 +14,7 @@ var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 var helperFunctions = require('../support/helper');
+var moment = require('moment');
 
 
 module.exports = function() {
@@ -23,6 +24,23 @@ module.exports = function() {
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
     var trialDoc = new abstractionTrialRelatedDocument();
     var helper = new helperFunctions();
+
+    var testSampleDocFile = 'testSampleDocFile1997_2004v.doc';
+    var testSampleDocxFile = 'testSampleDocFile.docx';
+    var testSampleDocFile_IRB = 'testSampleDocFile_IRB.docx';
+    var testSampleDocmFile = 'testSampleDocmFile.docm';
+    var testSampleEXCELFile = 'testSampleEXCELFile.xlsx';
+    var testSampleXlsFile = 'testSampleXlsFile.xls';
+    var testSampleXlsmFile = 'testSampleXlsmFile.xlsm';
+    var testSampleXlsbFile = 'testSampleXlsbFile.xlsb';
+    var testSamplePDFFile = 'testSamplePDFFile.pdf';
+    var testSampleRichTextFile = 'testSampleRichTextFile.rtf';
+    var testSampleTxtFile = 'testSampleTextFile.txt';
+    var testSampleCSVFile = 'testSampleCSVFile.csv';
+    var testSampleMSGFile = 'testSampleMSGFile.msg';
+    var testSampleHtmlFile = 'testSampleHtmlFile.html';
+    var testSampleXMLFile = 'testSampleXMLFile.xml';
+
 
     /*
      Scenario Outline: #1 I can attach Trial Related Documents to a trial registration
@@ -43,58 +61,205 @@ module.exports = function() {
      */
 
     this.Given(/^I am on the Register Trial Related Documents screen$/, function (callback) {
-        addTrial.setAddTrialLeadProtocolIdentifier('test final 17xxx');
+        addTrial.setAddTrialLeadProtocolIdentifier('shiTrialDocUpload ' +  typeOfTrial + moment().format('MMMDoYY h m'));
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected a file to attach as the Protocol Document$/, function (callback) {
-              trialDoc.trialRelatedFileUpload('reg', '1', 'testSampleDocFile.docx');
-    //    addTrial.clickAddTrialSaveDraftButton();
+        trialDoc.trialRelatedFileUpload('reg', '1', testSampleDocxFile);
+        expect(trialDoc.trailFileUploadProtocol.getAttribute('value')).to.eventually.equal(testSampleDocxFile);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected a file to attach as the IRB Approval$/, function (callback) {
-        trialDoc.trialRelatedFileUpload('reg', '2', 'testSampleDocFile.docx');
-     //   addTrial.clickAddTrialSaveDraftButton();
+        trialDoc.trialRelatedFileUpload('reg', '2', testSampleDocFile_IRB);
+        expect(trialDoc.trailFileUploadIRB.getAttribute('value')).to.eventually.equal(testSampleDocFile_IRB);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected a file to attach as the list of Participating Sites$/, function (callback) {
-        trialDoc.trialRelatedFileUpload('reg', '3', 'testSampleDocFile.docx');
-     //   addTrial.clickAddTrialSaveDraftButton();
+        trialDoc.trialRelatedFileUpload('reg', '3', testSampleEXCELFile);
+        expect(trialDoc.trailFileUploadParticipating.getAttribute('value')).to.eventually.equal(testSampleEXCELFile);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected a file to attach as the Informed Consent Document$/, function (callback) {
-        trialDoc.trialRelatedFileUpload('reg', '4', 'testSampleDocFile.docx');
-    //    addTrial.clickAddTrialSaveDraftButton();
+        trialDoc.trialRelatedFileUpload('reg', '4', testSamplePDFFile);
+        expect(trialDoc.trailFileUploadInformed.getAttribute('value')).to.eventually.equal(testSamplePDFFile);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected one or more files to attach as Other file and entered the description of the file$/, function (callback) {
-        trialDoc.trialRelatedFileUpload('reg', '5', 'testSampleDocFile.docx');
-      //  addTrial.clickAddTrialSaveDraftButton();
+        trialDoc.trialRelatedFileUpload('reg', '5', testSampleRichTextFile);
+        expect(trialDoc.trailFileUploadOther.getAttribute('value')).to.eventually.equal(testSampleRichTextFile);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Register Trial Related Document for the trial registration will not indicate an errors during Trial Review$/, function (callback) {
-   //     helper.wait(trialMenuItem.pageHeaderTextTrial, 'not loaded');
         addTrial.clickAddTrialSaveDraftButton();
         browser.wait(function () {
-            return element(by.linkText('testSampleDocFile.docx')).isPresent().then(function (state) {
+            return element(by.linkText(testSampleDocxFile)).isPresent().then(function (state) {
                 if (state === true) {
-                    return element(by.linkText('testSampleDocFile.docx')).isDisplayed().then(function (state2) {
+                    return element(by.linkText(testSampleDocxFile)).isDisplayed().then(function (state2) {
                         return state2 === true;
                     });
                 } else {
                     return false;
                 }
             });
-        }, 10000, " did not appear");
-        //trialMenuItem.pageHeaderTextTrial.getText.then(function(value){
-        //
-        //});
+        }, 10000, "Save draft page with Uploaded documents did not appear");
+        expect(addTrial.addTrialVerifyAddedDocs.getText()).to.eventually.eql([ testSampleDocxFile, testSampleDocFile_IRB, testSampleEXCELFile, testSamplePDFFile, testSampleRichTextFile ]);
+        browser.sleep(25).then(callback);
+    });
 
+    this.When(/^I have not attached a file as the Protocol Document$/, function (callback) {
+        expect(trialDoc.trailFileUploadProtocol.getAttribute('value')).to.eventually.equal('').and.notify(callback);
+    });
+
+    this.Given(/^I have not attached a file as the IRB Approval$/, function (callback) {
+        expect(trialDoc.trailFileUploadIRB.getAttribute('value')).to.eventually.equal('').and.notify(callback);
+    });
+
+    this.Then(/^Trial Related Documents section will indicate an error$/, function (table, callback) {
+        errorTableDoc = table.raw();
+        for (var i = 0; i < errorTableDoc.length; i++) {
+            console.log(errorTableDoc[i].toString());
+            expect(projectFunctions.verifyWarningMessage(errorTableDoc[i].toString())).to.become('true');
+        }
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have selected a file to attach from the list below as a trial document$/, function (table, callback) {
+        tableFileList = table.raw();
+                browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^The Trial Related Documents section will not indicate any errors during Trial Review$/, function (callback) {
+        for (var i = 0; i < tableFileList.length; i++) {
+            addTrial.clickAddTrialResetButton();
+            console.log(tableFileList[i].toString());
+          //  if (tableFileList[i].toString() !== ''){
+            if (tableFileList[i].toString() === 'Pdf'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSamplePDFFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSamplePDFFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSamplePDFFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSamplePDFFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSamplePDFFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'Doc'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleDocFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleDocFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleDocFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleDocFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleDocFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'docx'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleDocxFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleDocxFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleDocxFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleDocxFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleDocxFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'docm'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleDocmFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleDocmFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleDocmFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleDocmFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleDocmFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'Xls'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleXlsFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleXlsFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleXlsFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleXlsFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleXlsFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'xlsx'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleEXCELFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleEXCELFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleEXCELFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleEXCELFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleEXCELFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'xlsm'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleXlsmFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleXlsmFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleXlsmFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleXlsmFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleXlsmFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'xlsb'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleXlsbFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleXlsbFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleXlsbFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleXlsbFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleXlsbFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'Rtf'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleRichTextFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleRichTextFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleRichTextFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleRichTextFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleRichTextFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+            }
+            else if (tableFileList[i].toString() === 'Txt'){
+                trialDoc.trialRelatedFileUpload('reg', '1', testSampleTxtFile);
+                trialDoc.trialRelatedFileUpload('reg', '2', testSampleTxtFile);
+                trialDoc.trialRelatedFileUpload('reg', '3', testSampleTxtFile);
+                trialDoc.trialRelatedFileUpload('reg', '4', testSampleTxtFile);
+                trialDoc.trialRelatedFileUpload('reg', '5', testSampleTxtFile);
+                expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ '', '', '', '', '' ]);
+
+            }
+            else {
+                throw new Error(" ***** No match found for the given file Type in Test Script ***** ");
+            }
+        }
+        browser.sleep(25).then(callback);
+            });
+
+    this.When(/^the file selected is not from the file list$/, function (callback) {
+        callback();
+    });
+
+    this.Then(/^an error will be displayed "([^"]*)"$/, function (arg1, callback) {
+        addTrial.clickAddTrialResetButton();
+        trialDoc.trialRelatedFileUpload('reg', '1', testSampleCSVFile);
+        trialDoc.trialRelatedFileUpload('reg', '2', testSampleCSVFile);
+        trialDoc.trialRelatedFileUpload('reg', '3', testSampleCSVFile);
+        trialDoc.trialRelatedFileUpload('reg', '4', testSampleCSVFile);
+        trialDoc.trialRelatedFileUpload('reg', '5', testSampleCSVFile);
+        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
+        addTrial.clickAddTrialResetButton();
+        trialDoc.trialRelatedFileUpload('reg', '1', testSampleMSGFile);
+        trialDoc.trialRelatedFileUpload('reg', '2', testSampleMSGFile);
+        trialDoc.trialRelatedFileUpload('reg', '3', testSampleMSGFile);
+        trialDoc.trialRelatedFileUpload('reg', '4', testSampleMSGFile);
+        trialDoc.trialRelatedFileUpload('reg', '5', testSampleMSGFile);
+        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
+        addTrial.clickAddTrialResetButton();
+        trialDoc.trialRelatedFileUpload('reg', '1', testSampleHtmlFile);
+        trialDoc.trialRelatedFileUpload('reg', '2', testSampleHtmlFile);
+        trialDoc.trialRelatedFileUpload('reg', '3', testSampleHtmlFile);
+        trialDoc.trialRelatedFileUpload('reg', '4', testSampleHtmlFile);
+        trialDoc.trialRelatedFileUpload('reg', '5', testSampleHtmlFile);
+        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
+        addTrial.clickAddTrialResetButton();
+        trialDoc.trialRelatedFileUpload('reg', '1', testSampleXMLFile);
+        trialDoc.trialRelatedFileUpload('reg', '2', testSampleXMLFile);
+        trialDoc.trialRelatedFileUpload('reg', '3', testSampleXMLFile);
+        trialDoc.trialRelatedFileUpload('reg', '4', testSampleXMLFile);
+        trialDoc.trialRelatedFileUpload('reg', '5', testSampleXMLFile);
+        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
         browser.sleep(25).then(callback);
     });
 

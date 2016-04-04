@@ -86,6 +86,20 @@
             watchInvestigatorSelection();
         }
 
+        vm.checkAllSites = function () {
+            if (vm.selectedAllSites) {
+                vm.selectedAllSites = true;
+            } else {
+                vm.selectedAllSites = false;
+            }
+
+            angular.forEach(vm.curTrial.participating_sites, function (item) {
+                item.selected = vm.selectedAllSites;
+                vm.deleteListHandler(vm.curTrial.participating_sites);
+            });
+
+        };
+
         vm.saveContact = function(){
             //console.log("In saveContact vm.currentParticipatingSite =" + JSON.stringify(vm.currentParticipatingSite));
             //if ()
