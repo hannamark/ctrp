@@ -119,8 +119,8 @@
                                             </thead>
                                             <tr ng-repeat="nameAlias in orgDetailView.addedNameAliases track by $index" ng-class="nameAlias._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                                 <td class="col-md-7">{{nameAlias.name}}</td>
-                                                <td class="col-md-1" style="vertical-align: middle" ng-show="orgDetailView.curOrgEditable">
-                                                    <label class="btn btn-default" restriction-field ng-click="orgDetailView.toggleSelection($index, 'other_id')">
+                                                <td class="text-center td-icon" ng-show="orgDetailView.curOrgEditable">
+                                                    <label class="btn btn-warning" restriction-field ng-click="orgDetailView.toggleSelection($index, 'other_id')">
                                                         <i ng-class="nameAlias._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                     </label>
                                                 </td>

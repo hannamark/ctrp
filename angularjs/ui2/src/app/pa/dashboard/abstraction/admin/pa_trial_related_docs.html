@@ -84,12 +84,12 @@
                                                  <td>{{doc.created_at | date: "dd-MMM-yyyy H:mm"}}</td>
                                                  <td>{{doc.added_by.username}} <!-- to be replaced with full name when available --></td>
                                                  <td class="text-center td-icon">
-                                                     <label class="btn btn-default" restriction-field ng-disabled="doc.status == 'deleted'" ng-click="trialRelatedDocsView.editDoc($index)">
+                                                     <label class="btn btn-primary" restriction-field ng-disabled="doc.status == 'deleted'" ng-click="trialRelatedDocsView.editDoc($index)">
                                                          <i class="glyphicon glyphicon-edit"></i>
                                                      </label>
                                                  </td>
                                                  <td class="text-center td-icon">
-                                                     <label class="btn btn-default" restriction-field
+                                                     <label class="btn btn-warning" restriction-field
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
                                                          ng-click="trialRelatedDocsView.deleteDoc($index)">
                                                          <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>

@@ -206,12 +206,12 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-center td-icon">
-                                                        <button type="button" class="btn btn-default" restriction-field ng-disabled="site_rec._destroy || psView.current_site_recruitment.edit" ng-click="psView.editSiteRecruitment($index)">
+                                                        <button type="button" class="btn btn-primary" restriction-field ng-disabled="site_rec._destroy || psView.current_site_recruitment.edit" ng-click="psView.editSiteRecruitment($index)">
                                                             <i class="glyphicon glyphicon-edit"></i>
                                                         </button>
                                                     </td>
                                                     <td class="text-center td-icon">
-                                                        <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteSiteRecruitment($index)" ng-disabled="psView.current_site_recruitment.edit">
+                                                        <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteSiteRecruitment($index)" ng-disabled="psView.current_site_recruitment.edit">
                                                             <i class="glyphicon" ng-class="site_rec._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                         </button>
                                                     </td>
@@ -346,12 +346,12 @@
                                                 <td>{{inv.status_code}}</td>
                                                 <td ng-bind="inv.set_as_contact ? 'Yes' : 'No'"></td>
                                                 <td class="text-center td-icon">
-                                                    <button type="button" class="btn btn-default" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit || psView.current_investigator.uiEdit" ng-click="psView.editInvestigator($index)">
+                                                    <button type="button" class="btn btn-primary" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit || psView.current_investigator.uiEdit" ng-click="psView.editInvestigator($index)">
                                                         <i class="glyphicon glyphicon-edit"></i>
                                                     </button>
                                                 </td>
                                                 <td class="text-center td-icon">
-                                                    <button type="button" class="btn btn-default" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
+                                                    <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
                                                         <i class="glyphicon" ng-class="inv._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                     </button>
                                                 </td>
@@ -522,7 +522,7 @@
                         {{participating_site.contact_name}}
                     </td>
                     <td class="text-center td-icon">
-                        <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
+                        <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
                             <i class="glyphicon glyphicon-edit"></i>
                         </button>
                     </td>

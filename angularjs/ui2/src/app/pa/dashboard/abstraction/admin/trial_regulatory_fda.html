@@ -137,7 +137,7 @@
                                         <td>{{authority.country}}</td>
                                         <td>{{authority.organization}}</td>
                                         <td class="text-center td-icon" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
-                                            <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'authority')">
+                                            <label restriction-field class="btn btn-warning" ng-click="trialDetailView.toggleSelection($index, 'authority')">
                                                 <i ng-class="authority._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                             </label>
                                         </td>

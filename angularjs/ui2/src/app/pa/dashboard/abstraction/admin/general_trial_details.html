@@ -105,7 +105,7 @@
                             {{generalTrialDetailView.leadProtocolId}}
                           </td>
                           <td class="text-center td-icon">
-                            <label class="btn btn-default" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
+                            <label class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
                               <i class="glyphicon glyphicon-edit"></i>
                             </label>
                           </td>
@@ -118,14 +118,14 @@
 
                     </td>
                     <td class="text-center td-icon">
-                      <label class="btn btn-default" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
+                      <label class="btn btn-primary" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
                         <i class="glyphicon glyphicon-edit"></i>
                       </label>
                     </td>
                     <td class="text-center td-icon">
                         <!-- <button type="button" class="btn btn-default">Edit</button> -->
                         <!-- <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button> -->
-                        <label class="btn btn-default" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
+                        <label class="btn btn-warning" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
                             <i class="glyphicon" ng-class="otherId._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                         </label>
                     </td>
