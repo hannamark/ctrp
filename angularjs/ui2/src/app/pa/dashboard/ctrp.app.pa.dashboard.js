@@ -38,6 +38,7 @@
         'angularSpinner',
         'ui.select',
         'treeControl',
-        'angularBootstrapNavTree'
+        'angularBootstrapNavTree',
+        'ntt.TreeDnD'
     ]);
 })();
