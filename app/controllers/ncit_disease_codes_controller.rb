@@ -68,9 +68,9 @@ class NcitDiseaseCodesController < ApplicationController
     end
 
     #@ncit_tree = build_tree(root_node)
-    @ncit_tree = {id: root_node.id, nt_term_id: root_node.nt_term_id, preferred_name: root_node.preferred_name, children: []}
+    @ncit_tree = {id: root_node.id, nt_term_id: root_node.nt_term_id, label: root_node.menu_display_name, children: []}
     root_node.children.each do |child|
-      @ncit_tree[:children].append({id: child.id, nt_term_id: child.nt_term_id, preferred_name: child.preferred_name})
+      @ncit_tree[:children].append({id: child.id, nt_term_id: child.nt_term_id, label: child.menu_display_name})
     end
   end
 
@@ -86,7 +86,7 @@ class NcitDiseaseCodesController < ApplicationController
     end
 
   def build_tree(root_node)
-    tree = {id: root_node.id, nt_term_id: root_node.nt_term_id, preferred_name: root_node.preferred_name, children: []}
+    tree = {id: root_node.id, nt_term_id: root_node.nt_term_id, label: root_node.menu_display_name, children: []}
     queue = Queue.new
     queue.push(tree)
 
@@ -94,7 +94,7 @@ class NcitDiseaseCodesController < ApplicationController
       current_node = queue.pop
       current_instance = NcitDiseaseCode.find(current_node[:id])
       current_instance.children.each do |child|
-        child_node = {id: child.id, nt_term_id: child.nt_term_id, preferred_name: child.preferred_name, children: []}
+        child_node = {id: child.id, nt_term_id: child.nt_term_id, label: child.menu_display_name, children: []}
         current_node[:children].append(child_node)
         queue.push(child_node)
       end

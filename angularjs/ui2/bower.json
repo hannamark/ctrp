@@ -58,7 +58,8 @@
     "angular-smart-table": "~2.1.7",
     "angular-formly": "~7.3.9",
     "angular-formly-templates-bootstrap": "~6.2.0",
-    "angular-tree-control": "~0.2.23"
+    "angular-tree-control": "~0.2.23",
+    "angular-bootstrap-nav-tree": "*"
   },
   "devDependencies": {
     "bardjs": "~0.1.8",
