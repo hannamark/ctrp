@@ -252,18 +252,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+
   ### ActionController
   ### \----------------------------/ Big Basket for ActionController
-  rescue_from   ActionController::ActionControllerError do |e|
-    respond_with do |format|
-      format.json { render json: { message: "ActionController::ActionControllerError to save/update your record" }, status: :bad_request }
+  rescue_from  ActionView::ActionViewError do |e|
+    respond_to do |format|
+      format.json { render json: { message: "  ActionView::ActionViewError " }, status: 504 }
     end
   end
 
 
-
-
-
+  ### ActionController
+  ### \----------------------------/ Big Basket for ActionController
+  rescue_from   ActionController::ActionControllerError do |e|
+   render :show, status: 500
+  end
 
   protected
 
