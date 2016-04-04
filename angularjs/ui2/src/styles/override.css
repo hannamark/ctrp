@@ -1047,10 +1047,18 @@ input[type="file"] {
     display: inline;
 }
 
-.trial-status uib-accordion form.form-horizontal  {
+uib-accordion form.form-horizontal {
     width: 95%;
     margin-left: auto;
     margin-right: auto;
+    max-width: 1300px;
+}
+
+md-tabs.md-dynamic-height md-tab-content.md-active {
+    padding-top: 20px;
+}
+md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
+    color: blue;
 }
 
 div.datepicker {width: 146px;}

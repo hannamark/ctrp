@@ -190,7 +190,7 @@
             angular.forEach(vm.tempTrialStatuses, function (item) {
                 item._destroy = vm.deleteStatusesAll;
             });
-        };
+        }
 
         function deleteTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
