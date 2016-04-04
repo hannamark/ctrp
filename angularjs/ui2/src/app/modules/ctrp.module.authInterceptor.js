@@ -4,7 +4,7 @@
         .factory('AuthInterceptor', AuthInterceptor);
     AuthInterceptor.$inject = ['LocalCacheService', '$injector', 'ErrorHandlingService'];
     //function AuthInterceptor(AuthTokenService) {
-    function AuthInterceptor(LocalCacheService, $injector,ErrorHandlingService) {
+    function AuthInterceptor(LocalCacheService, $injector, ErrorHandlingService) {
 
         //var uService = $injector.get('UserService');
         var methodObj = {
@@ -38,31 +38,31 @@
          * @returns {*}
          */
         function response(res) {
-
             return res;
         } //response
 
-
         function responseError(rejection) {
-            console.log("Rejection Status is "+ rejection.status);
-            console.log("Rejection Status is "+ rejection.error);
-            console.log("Rejection Status is "+ rejection.errors);
-            console.info('rejection is: ', rejection);
-
+            var ignoredFields = ['new', 'id', 'server_response']; // fields ignored in the response body
             if(rejection.status === 401) {
               //if unauthenticated or unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
               $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue');
-            } else if (rejection.status > 226 && errorCount < 2) {
+            } else if (rejection.status > 226 && errorCount < 3) {
                 $injector.get('toastr').clear();
-                var errorMsg = 'Error Code: ' + rejection.status;
-                errorMsg += 'Error Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
-                errorMsg += !!rejection.error ? ' Reason: ' + rejection.error : '';
-                console.info('rejection.data: ', rejection.data);
-                Object.keys(rejection.data, function(field, index) {
-                    errorMsg += ' ' + field + ' errors: ' + rejection.data[field];
+                var errorMsg = '<u>Error Code</u>: ' + rejection.status;
+                errorMsg += '\nError Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
+                errorMsg += '\nCause(s): ' + (rejection.error || '');
+
+                Object.keys(rejection.data).forEach(function(field, index) {
+                    if (ignoredFields.indexOf(field) === -1) {
+                        errorMsg += '\n ' + field + ' field: ' + rejection.data[field];
+                    }
                 });
-                $injector.get('toastr').error(errorMsg);
+
+                $injector.get('toastr').error(errorMsg, {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
                 // $injector.get('UserService').logout();
                 errorCount++;
             }

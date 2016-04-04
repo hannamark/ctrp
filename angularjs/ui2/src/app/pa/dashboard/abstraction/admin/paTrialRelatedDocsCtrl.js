@@ -208,7 +208,7 @@
                 // cancelEdit();
                 if (vm.curDoc.edit === true) {
                     // _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
-                    vm.formError = 'Please cancel or commit the edited document first';
+                    vm.formError = 'Cancel or commit the edited document first';
                     return;
                 }
                 if (!_isFormValid()) {
