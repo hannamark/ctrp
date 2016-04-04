@@ -201,8 +201,8 @@
                var colDefs = [
                    {headerName: '', width: 30, checkboxSelection: true,
                         suppressSorting: true, suppressMenu: true, pinned: true},
-                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 100, cellHeight: 20},
-                   {headerName: 'CTEP ID', field: 'ctep_id', width: 100, cellHeight: 20}
+                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 120, cellHeight: 20},
+                   {headerName: 'CTEP ID', field: 'ctep_id', width: 10, cellHeight: 20}
                 ];
 
                var options = {
@@ -233,8 +233,8 @@
                var colDefs = [
                    {headerName: '', width: 30, checkboxSelection: true,
                         suppressSorting: true, suppressMenu: true, pinned: true},
-                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 100, cellHeight: 20, unSortIcon: true, editable: true},
-                   {headerName: 'CTEP ID', field: 'ctep_id', width: 100, cellHeight: 20},
+                   {headerName: 'CTRP ID', field: 'ctrp_id', width: 120, cellHeight: 20, unSortIcon: true, editable: true},
+                   {headerName: 'CTEP ID', field: 'ctep_id', width: 120, cellHeight: 20},
                    {headerName: 'First', field: 'fname', width: 100, cellHeight: 20},
                    {headerName: 'Last', field: 'lname', width: 100, cellHeight: 20},
                    {headerName: 'Source Context', field: 'source_context', width: 100, cellHeight: 20},

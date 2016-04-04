@@ -6,7 +6,7 @@ As any CTRP User, I am able to Search for Persons by various criteria
 
 Scenario Outline: #1 I am able to search for person in CTRP as a Registry user
   Given I am logged into the CTRP Registration application
-  And I have selected the option "Search Persons” 
+  And I have selected the option "Search Persons"
   And the following parameters of a Person exist:
     |PersonFirstName| |PersonLastName| |Affiliation| |SourceStatus| |email| |phone|
     |shiFNameTrial         | |shiLNameTrial        | |shiPerOrgAffTrial| |Active      | |shiPercukeTrial@pr.com| |420-999-8906|
@@ -17,7 +17,7 @@ Scenario Outline: #1 I am able to search for person in CTRP as a Registry user
   And I provide the Source ID <sourceID> of the Person
   And I provide the Email <email> of the Person
   And I provide the Phone <phone> of the Person
-  And I provide the exact match condition <ExactMatch>
+  And I provide the Exact Match condition <exactMatch>
   And I submit my search request
   Then the system should display Active Person records in the CTRP context matching the search criteria
   And the Person Search Results <result> will display the following sorted by Person Last Name:

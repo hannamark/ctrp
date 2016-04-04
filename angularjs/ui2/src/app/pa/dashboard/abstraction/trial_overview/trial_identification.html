@@ -6,66 +6,56 @@
             </uib-accordion-heading>
             <!-- first row in the accordion body -->
             <div class="row">
-                <!-- <p>
-                    <s><strong>Clinical Research Category:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.research_category.name}}</span></s>
-                </p> -->
+                <div class="col-xs-12">
+                        <label class="control-label col-xs-12 col-sm-3">PNCI ID:</label>
+                        <div class="col-xs-12 col-sm-9">
+                            {{paTrialOverview.trialDetailObj.nci_id}}
+                        </div>
+                </div>
+                <div class="col-xs-12">
+                    <label class="control-label col-xs-12 col-sm-3">Lead Organization Trial ID:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        {{paTrialOverview.trialDetailObj.lead_protocol_id}}
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <label class="control-label col-xs-12 col-sm-3">Trial Identifiers:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <ul>
+                            <li ng-repeat="id in paTrialOverview.trialDetailObj.other_ids_hash track by $index">
+                                {{id.name}}: {{id.other_id_obj.protocol_id}}
+                                <!-- <span ng-show="!$last">;</span> -->
+                            </li>
 
-                <p>
-                    <strong>NCI ID: </strong>
-                    <!-- get data from parent controller view -->
-                    <span>{{paTrialOverview.trialDetailObj.nci_id}}</span>
-                </p>
+                        </ul>
+                    </div>
+                </div>
 
-                <!-- <p>
-                    <strong>NCT ID:</strong>
-                    <span><a href="https://clinicaltrials.gov/ct2/show/{{paTrialOverview.trialDetailObj.nct_trial_id}}" target="_blank">{{paTrialOverview.trialDetailObj.nct_trial_id}}<i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a></span>
-                </p> -->
 
-                <p>
-                    <strong>Lead Organization Trial ID: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.lead_protocol_id}}</span>
-                </p>
+                <div class="col-xs-12">
+                    <label class="control-label col-xs-12 col-sm-3">Last Verification Date:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        {{paTrialOverview.trialDetailObj.verification_date | date: "dd-MMM-yyyy H:mm"}}
+                    </div>
+                </div>
 
-                <p>
-                    <strong>Trial Identifiers: </strong>
-                    <ul>
-                        <li ng-repeat="id in paTrialOverview.trialDetailObj.other_ids_hash track by $index">
-                            {{id.name}}: {{id.other_id_obj.protocol_id}}
-                            <!-- <span ng-show="!$last">;</span> -->
-                        </li>
+                <div class="col-xs-12">
+                    <label class="control-label col-xs-12 col-sm-3">Official Title:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        {{paTrialOverview.trialDetailObj.official_title}}
+                    </div>
+                </div>
 
-                    </ul>
-                </p>
-
-                <!-- <p>
-                    <strong>Abbreviated Trial?</strong>
-                    <span></span>
-                </p> -->
-
-                <p>
-                    <strong>Last Verification Date: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.verification_date | date: "dd-MMM-yyyy H:mm"}}</span>
-                </p>
-
-                <p>
-                    <strong>Official Title: </strong>
-                    <span>{{paTrialOverview.trialDetailObj.official_title}}</span>
-                </p>
-
-                <!-- <p>
-                    <strong>Study Source:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.study_source.name}}</span>
-                </p> -->
-
-                <p>
-                    <strong>Submission Source:</strong>
-                    <span>{{paTrialOverview.trialDetailObj.last_submission_source.code}}</span>
-                </p>
-
-                <hr />
+                <div class="col-xs-12">
+                    <label class="control-label col-xs-12 col-sm-3">Submission Source:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        {{paTrialOverview.trialDetailObj.last_submission_source.code}}
+                    </div>
+                </div>
             </div>
             <!-- end of first row in the accordion body -->
+
+            <hr />
 
             <!-- second row in the accordion body -->
             <div class="row">
@@ -91,21 +81,17 @@
                         <!-- end of first form-group -->
 
                         <!-- second form-group -->
-                        <div class="form-group pull-left">
-                            <label for="trial_processing_comment" class="control-label col-xs-12">Trial Processing Comments <small>(maximum: 4,000 characters)</small>:</label>
-                        </div>
-                        <!-- end of second form-group -->
-
-                        <!-- third row in the form -->
                         <div class="form-group">
-                            <div class="col-xs-12">
+                            <label for="trial_processing_comment" class="control-label col-xs-12 col-sm-3">Trial Processing Comments:<br> <small>(maximum: 4,000 characters)</small></label>
+
+                            <div class="col-xs-9">
                                 <textarea class="form-control" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" restriction-field
-                                    name="processing_comment" id="trial_processing_comment" rows="5" ng-maxlength="4000"
+                                    name="processing_comment" id="trial_processing_comment" rows="6" ng-maxlength="4000"
                                     ng-model="trialIdView.trialProcessingObj.comment">
                                 </textarea>
                             </div>
                         </div>
-                        <!-- end of third row -->
+                        <!-- end of second row -->
 
                         <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                             <div class="btn-toolbar">

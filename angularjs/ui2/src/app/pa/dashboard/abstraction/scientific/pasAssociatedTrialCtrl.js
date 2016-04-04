@@ -41,11 +41,17 @@
                 if (!vm.trialQueryObj.identifierTypeId || !vm.trialQueryObj.trialIdentifier || vm.trialQueryObj.trialIdentifier.trim().length === 0) {
                     return;
                 }
+                var selectedIdentifier = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId});
+                if (!selectedIdentifier || !vm.trialQueryObj.trialIdentifier.startsWith(selectedIdentifier.name)) {
+                    vm.foundTrialObj.errorMsg = 'Trial identifier must match its identifier type';
+                    return;
+                }
+
                 vm.lookupBtnDisabled = true;
                 vm.associationErrorMsg = '';
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
-                    console.info('res in looking up trial', res);
+                    // console.info('res in looking up trial', res);
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
                     vm.foundTrialObj.associated_trial_id = res.id || ''; // for hyperlink only
                     vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
@@ -53,7 +59,7 @@
                     vm.foundTrialObj.official_title = res.official_title || '';
                     vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
                     vm.foundTrialObj.research_category_name = res.research_category;
-                    vm.foundTrialObj.errorMsg = !!res.error_msg ? res.error_msg : '';
+                    vm.foundTrialObj.errorMsg = res.error_msg || '';
                 }).catch(function(err) {
                     console.error('err in looking up the trial: ', vm.trialQueryObj);
                 }).finally(function() {
@@ -65,7 +71,7 @@
 
                 // form.trial_identifier.$error = null;
                 // form.identifier_type.$error = null;
-                vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''};
+                vm.trialQueryObj = {identifierTypeId: 1, trialIdentifier: 'NCI-'};
                 vm.foundTrialObj = _initFoundTrialObj();
                 form.$setPristine();
                 form.$dirty = false;
@@ -134,6 +140,9 @@
              * @return {Void}
              */
             function updateTrialAssociations() {
+                if (vm.trialDetailObj.associated_trials.length === 0) {
+                    return;
+                }
                 vm.trialDetailObj.associated_trials_attributes = vm.trialDetailObj.associated_trials;
                 var outerTrial = {};
                 outerTrial.new = false;
@@ -162,8 +171,6 @@
                     console.info('trial associations have been updated');
                 });
             }
-
-
         }
 
     })();

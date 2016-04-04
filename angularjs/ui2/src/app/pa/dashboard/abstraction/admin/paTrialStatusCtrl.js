@@ -54,6 +54,7 @@
         vm.updateComment = updateComment;
         vm.updateTrialStatuses = updateTrialStatuses;
         vm.resetForm = resetForm;
+        vm.deleteAllStatuses = deleteAllStatuses;
 
         activate();
         function activate() {
@@ -142,6 +143,7 @@
                 validateStatuses();
                 // re-initialize the vm.statusObj
                 vm.statusObj = _initStatusObj();
+                vm.deleteStatusesAll = false;
             } else {
                 vm.statusErrorMsg = 'Both status date and trial status are required';
             }
@@ -178,6 +180,18 @@
             });
         } // _validateStatusesDelegate
 
+
+        function deleteAllStatuses() {
+            if (vm.deleteStatusesAll) {
+                vm.deleteStatusesAll = false;
+            } else {
+                vm.deleteStatusesAll = true;
+            }
+            angular.forEach(vm.tempTrialStatuses, function (item) {
+                item._destroy = vm.deleteStatusesAll;
+            });
+        };
+
         function deleteTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
                 vm.tempTrialStatuses[index]._destroy = !vm.tempTrialStatuses[index]._destroy;
@@ -186,6 +200,7 @@
                     vm.statusObj = _initStatusObj();
                 }
             }
+            vm.deleteStatusesAll = false;
         } // deleteTrialStatus
 
         function editTrialStatus(index) {

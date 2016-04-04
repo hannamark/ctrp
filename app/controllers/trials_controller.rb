@@ -222,25 +222,29 @@ class TrialsController < ApplicationController
 
     available_checkout_types = ["admin", "scientific", "scientificadmin"]
     checkout_type = params[:type].downcase
+    checkout_message = nil
 
     if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type)
 
       @trial = Trial.find(params[:trial_id])
       checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
 
-      if checkout_type == "admin"
+      if checkout_type == "admin" and @trial.admin_checkout.nil?
         @trial.update_attribute('admin_checkout', checkout_json)
+        checkout_message = 'Admin checkout was successful'
 
-      elsif checkout_type == "scientificadmin"
+      elsif checkout_type == "scientificadmin" and  @trial.admin_checkout.nil? and @trial.scientific_checkout.nil?
         @trial.update_attributes('admin_checkout': checkout_json, 'scientific_checkout': checkout_json)
+        checkout_message = 'Admin and Scientific checkout was successful'
 
-      elsif checkout_type == "scientific"
+      elsif checkout_type == "scientific" and @trial.scientific_checkout.nil?
         @trial.update_attribute('scientific_checkout', checkout_json)
+        checkout_message = 'Scientific checkout was successful'
       end
     end
 
     respond_to do |format|
-      format.json { render :json => {:result => @trial} }
+      format.json { render :json => {:result => @trial, :checkout_message => checkout_message} }
     end
   end
 
@@ -585,7 +589,7 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
-                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status, :added_by_id],
+                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status, :added_by_id, :why_deleted],
                                   other_criteria_attributes: [:id, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:label,:description,:_destroy],
