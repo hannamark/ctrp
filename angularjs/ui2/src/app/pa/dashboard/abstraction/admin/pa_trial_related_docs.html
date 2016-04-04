@@ -1,3 +1,11 @@
+<script type="text/ng-template" id="comment_for_deletion.html">
+    <div class="form-group">
+      <label>Comment for deletion:</label>
+      <input type="text" ng-model="dynamicPopover.title" class="form-control">
+      <button type="button" class="btn btn-default" ng-click="trialRelatedDocsView.closePopover()">Close</button>
+    </div>
+</script>
+
 <div class="row">
     <uib-accordion close-others="false">
          <uib-accordion-group is-open="paTrialOverview.accordionOpen">
@@ -89,11 +97,23 @@
                                                      </label>
                                                  </td>
                                                  <td class="text-center td-icon">
-                                                     <label class="btn btn-warning" restriction-field
+                                                     <!-- <label class="btn btn-warning" restriction-field
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
                                                          ng-click="trialRelatedDocsView.deleteDoc($index)">
                                                          <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                     </label>
+                                                     </label> -->
+                                                     <!-- popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}" -->
+                                                     <button type="button" class="btn btn-warning" restriction-field
+                                                         uib-popover-template="trialRelatedDocsView.commentPopOverOptions.templateUrl"
+                                                         tooltip-trigger="click"
+                                                         tooltip-enable="doc.status == 'deleted'"
+                                                         popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}"
+                                                         popover-title="{{doc.file_name}}"
+                                                         tooltip-is-open="{{trialRelatedDocsView.commentPopOverOptions.isOpen}}"
+                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
+                                                         ng-click="trialRelatedDocsView.deleteDoc($index)">
+                                                         <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                                     </button>
                                                  </td>
                                              </tr>
                                          </tbody>
