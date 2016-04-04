@@ -44,10 +44,10 @@
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"> 
                             <legend class="sub-bordered">List of Collaborators</legend> 
                             <table class="table table-bordered table-striped table-hover">
-                                <thead style="background-color: #d9edf7">
+                                <thead>
                                 <th>PO ID</th>
                                 <th>Name</th>
-                                <th class="text-center">Deletion</th>
+                                <th class="text-center td-icon">Delete</th>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators | orderBy:'org_name' track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
