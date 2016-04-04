@@ -52,7 +52,7 @@
                   <tbody>
                   <tr>
                     <td><span ng-show="generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead">Lead Organization Trial ID:</span>
-                        <select ng-show="!(generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead)" ng-init="generalTrialDetailView.otherIdentifier.protocol_id_origin_id" class="form-control input-sm" id="other_identifier"
+                        <select ng-disabled="generalTrialDetailView.otherIdentifierUpdate" ng-show="!(generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead)" ng-init="generalTrialDetailView.otherIdentifier.protocol_id_origin_id" class="form-control input-sm" id="other_identifier"
                           ng-model="generalTrialDetailView.otherIdentifier.protocol_id_origin_id"
                           ng-options="identifier.id as identifier.name for identifier in generalTrialDetailView.protocolIdOriginArr" name="other_ids">
                           <option value="">Select an identifier</option>
