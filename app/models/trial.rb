@@ -469,11 +469,11 @@ class Trial < TrialBase
 
   def create_ownership
     # New Trial Ownership
-    if self.coming_from == 'rest'
-      TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
-    else
+    #if self.coming_from == 'rest'
+     # TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
+    #else
       TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
-    end
+    #end
   end
 
   def send_email
