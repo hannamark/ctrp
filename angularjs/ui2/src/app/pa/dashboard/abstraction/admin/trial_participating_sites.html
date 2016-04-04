@@ -1,12 +1,12 @@
 <div class="row" id="section_top">
     <div class="row">
         <p>
-            <h4 ng-show="!psView.currentParticipatingSite.organization.name && psView.addEditMode">Add Participating Site</h4>
+            <h4 ng-show="!psView.currentParticipatingSite.organization.name && psView.addEditMode || psView.curTrial.participating_sites.length == 0">Add Participating Site</h4>
             <h4 ng-show="psView.currentParticipatingSite.organization.name && psView.addEditMode">Edit Participating Site: {{psView.currentParticipatingSite.organization.name}}</h4>
         </p>
     </div>
     <section>
-        <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
+        <md-tabs ng-show="psView.addEditMode || psView.curTrial.participating_sites.length == 0" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
             <md-tab>
                 <md-tab-label>Participating Site</md-tab-label>
                 <md-tab-body>
@@ -478,7 +478,7 @@
 </div>
 
 <!-- Grid the shows all the Participating Sites -->
-<div class="row">
+<div class="row" ng-show="psView.curTrial.participating_sites.length > 0">
     <uib-accordion close-others="false" ng-hide="psView.addEditMode">
         <uib-accordion-group is-open="true" >
             <uib-accordion-heading>
@@ -497,7 +497,9 @@
                 <th>Site Recruitment Status Date</th>
                 <th>Primary Contact</th>
                 <th class="text-center td-icon">Edit</th>
-                <th class="text-center td-icon">Select</th>
+                <th class="text-center td-icon">
+                    <input type="checkbox" ng-model="psView.selectedAllSites" ng-click="psView.checkAllSites()" />
+                </th>
                 </thead>
                 <tbody>
 
