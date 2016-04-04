@@ -105,7 +105,7 @@
                                                     </span>
 
                             <div class="add-association-error" ng-show="trialDetailView.showAddIndIdeError">
-                                Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type
+                                IND/IDE Type, IND/IDE Number, IND/IDE Grantor and IND/IDE Holder Type are required
                             </div>
 
                             <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
@@ -124,8 +124,8 @@
                                     <td>{{indIde.grantor}}</td>
                                     <td>{{indIde.holder_type_name}}</td>
                                     <td>{{indIde.nih_nci}}</td>
-                                    <td class="text-center td-icon" style="vertical-align: middle" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
-                                        <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
+                                    <td class="text-center td-icon"  ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                                        <label restriction-field class="btn btn-warning" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
                                             <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                         </label>
                                     </td>

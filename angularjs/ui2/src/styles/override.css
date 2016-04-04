@@ -141,6 +141,11 @@
 }
 
 /* Overriding default table classes */
+
+.table-bordered {
+    margin-bottom: 13px;
+    color: #003f59;
+}
 .table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
     border-bottom-width: 1px;
     background: #f3f3f3;
@@ -173,6 +178,10 @@
 .table-bordered > tfoot > tr > td,
 .table-bordered > thead > tr > td {
     vertical-align: middle;
+}
+
+.table-bordered > thead > tr > td {
+    height: 22px;
 }
 .table > thead > tr > th  {
     vertical-align:top;
@@ -933,57 +942,42 @@ a.btn-file:hover {
     width: 175px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/****************** NCI COMPONENTS SECTION ********************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.table-bordered {
-    margin-bottom: 13px;
-    color: #003f59;
+body.identification  a.menu-identification,
+body.history a.menu-history,
+body.milestones a.menu-milestones,
+body.on-hold-info a.menu-on-hold-info,
+body.view-tsr a.menu-view-tsr,
+body.assign-ownership a.menu-assign-ownership,
+body.check-out-history a.menu-check-out-history,
+body.raw-json-trial-data a.menu-raw-json-trial-data,
+body.general-trial-details a.menu-general-trial-details,
+body.reg-fda a.menu-reg-fda,
+body.regulatory-info-human-subject-safety a.menu-regulatory-info-human-subject-safety,
+body.reg-ind a.menu-reg-ind,
+body.trial-status a.menu-trial-status,
+body.funding a.menu-funding,
+body.participating-sites a.menu-participating-sites,
+body.collaborators a.menu-collaborators,
+body.trial-related-documents a.menu-trial-related-documents,
+body.nci-info a.menu-nci-info,
+body.trial-design a.menu-trial-design,
+body.trial-description a.menu-trial-description,
+body.trial-outcome-measures a.menu-trial-outcome-measures,
+body.eligibility-critiera a.menu-eligibility-critiera,
+body.associated-trials a.menu-associated-trials,
+body.anatomic-sites a.menu-anatomic-sites,
+body.arms-groups a.menu-arms-groups,
+body.trial-sub-groups a.menu-trial-sub-groups {
+    background: #eee;
+    color: #555;
+    font-weight:bold;
+    border-radius: 0px 0px 0px 0px;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+    cursor: default;
 }
 
-.table-bordered > tbody > tr > td,
-.table-bordered > tbody > tr > th,
-.table-bordered > tfoot > tr > td,
-.table-bordered > tfoot > tr > th,
-.table-bordered > thead > tr > td,
-.table-bordered > thead > tr > th {
-    padding: 3px 5px;
-}
-.table-bordered > thead > tr > td {
-    height: 22px;
-}
+
 .td-icon  .btn {
     height: 20px;
     padding: 2px 5px;
