@@ -59,7 +59,10 @@
                     }
                 });
 
-                $injector.get('toastr').error(errorMsg);
+                $injector.get('toastr').error(errorMsg, {
+                    extendedTimeOut: 1000,
+                    timeOut: 0
+                });
                 // $injector.get('UserService').logout();
                 errorCount++;
             }
