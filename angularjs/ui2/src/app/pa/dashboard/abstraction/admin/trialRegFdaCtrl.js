@@ -143,6 +143,7 @@
                      vm.selectedAuthority = false;
                  }
             }
+            vm.authoritiesDestroyAll = false;
         };// toggleSelection
 
 
@@ -162,6 +163,7 @@
                 vm.authorityOrgArr = [];
                 vm.addAuthorityError = '';
                 vm.showAddAuthorityError = false;
+                vm.authoritiesDestroyAll = false;
                 //vm.selectedAuthority = true;
             } else {
                 vm.addAuthorityError = errorMsg;

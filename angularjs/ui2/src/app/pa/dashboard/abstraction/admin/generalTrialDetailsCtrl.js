@@ -199,6 +199,7 @@
               vm.otherIdentifier.protocol_id = ''; // empty it
               vm.otherIdentifier.identifierName = '';
               vm.otherIdErrorMsg = '';
+              vm.otherIdDestroyAll = false;
           } else {
               vm.otherIdErrorMsg = errorMsg;
           }
@@ -217,6 +218,7 @@
           if (idx < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[idx]._destroy = !vm.generalTrialDetailsObj.other_ids[idx]._destroy;
           }
+          vm.otherIdDestroyAll = false;
       }
 
       function deleteAllOtherIdentifiers() {
