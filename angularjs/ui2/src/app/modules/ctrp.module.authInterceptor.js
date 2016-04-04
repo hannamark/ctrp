@@ -50,9 +50,9 @@
             } else if (rejection.status > 226 && errorCount < 2) {
                 $injector.get('toastr').clear();
                 var errorMsg = 'Error Code: ' + rejection.status;
-                errorMsg += ' Error Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
-                errorMsg += ' Cause(s): ' + rejection.errors || 'Unknown';
-                errorMsg += ' ' + rejection.error || '';
+                errorMsg += ' - ' + ErrorHandlingService.getErrorMsg(rejection.status);
+                errorMsg += '\nCause(s): ' + (rejection.errors || 'Unknown');
+                errorMsg += ' ' + (rejection.error || '');
                 $injector.get('toastr').error(errorMsg);
                 // $injector.get('UserService').logout();
                 errorCount++;
