@@ -29,6 +29,7 @@
       vm.escapeEditTrialIdentifier = escapeEditTrialIdentifier;
       vm.updateTrialIdentifier = updateTrialIdentifier;
       vm.editLeadProtocolId = editLeadProtocolId;
+      vm.deleteAllOtherIdentifiers = deleteAllOtherIdentifiers;
 
       vm.leadOrg = {name: '', array: []};
       vm.principalInvestigator = {name: '', array: []};
@@ -117,6 +118,7 @@
           vm.leadOrg = {name: '', array: []};
           vm.principalInvestigator = {name: '', array: []};
           vm.sponsor = {name: '', array: []};
+          vm.otherIdDestroyAll = false;
          // vm.centralContact = [];
           $timeout(function() {
              getTrialDetailCopy();
@@ -216,6 +218,17 @@
               vm.generalTrialDetailsObj.other_ids[idx]._destroy = !vm.generalTrialDetailsObj.other_ids[idx]._destroy;
           }
       }
+
+      function deleteAllOtherIdentifiers() {
+          if (vm.otherIdDestroyAll) {
+              vm.otherIdDestroyAll = false;
+          } else {
+              vm.otherIdDestroyAll = true;
+          }
+          angular.forEach(vm.generalTrialDetailsObj.other_ids, function (item) {
+              item._destroy = vm.otherIdDestroyAll;
+          });
+       };
 
       function updateOtherId(protocolIdVal, index) {
 

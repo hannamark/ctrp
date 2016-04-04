@@ -48,6 +48,18 @@
             $state.go($state.$current, null, { reload: true });
         };
 
+
+
+        vm.deleteAllAuthorities  = function () {
+            if (vm.authoritiesDestroyAll) {
+                vm.authoritiesDestroyAll = false;
+            } else {
+                vm.authoritiesDestroyAll = true;
+            }
+            angular.forEach(vm.addedAuthorities, function (item) {
+                item._destroy = vm.authoritiesDestroyAll;
+            });
+        };
         vm.updateTrial = function() {
             // Prevent multiple submissions
             vm.disableBtn = true;

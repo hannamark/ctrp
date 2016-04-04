@@ -981,8 +981,14 @@ body.trial-sub-groups a.menu-trial-sub-groups {
 .td-icon  .btn {
     height: 20px;
     padding: 2px 5px;
+    margin-bottom: 0;
 }
-
+th.td-icon .btn {
+    height: 15px;
+    padding: 0px 2px 5px 2px;
+    margin-bottom: 0;
+    font-size: .8em;
+}
 .input-sm, select.input-sm, input[type="text"].form-control {
     height: 24px;
 }
