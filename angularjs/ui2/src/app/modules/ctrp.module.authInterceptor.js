@@ -4,7 +4,7 @@
         .factory('AuthInterceptor', AuthInterceptor);
     AuthInterceptor.$inject = ['LocalCacheService', '$injector', 'ErrorHandlingService'];
     //function AuthInterceptor(AuthTokenService) {
-    function AuthInterceptor(LocalCacheService, $injector) {
+    function AuthInterceptor(LocalCacheService, $injector,ErrorHandlingService) {
 
         //var uService = $injector.get('UserService');
         var methodObj = {
@@ -38,11 +38,17 @@
          * @returns {*}
          */
         function response(res) {
+
             return res;
         } //response
 
 
         function responseError(rejection) {
+            console.log("Rejection Status is "+ rejection.status);
+            console.log("Rejection Status is "+ rejection.error);
+            console.log("Rejection Status is "+ rejection.errors);
+            console.info('rejection is: ', rejection);
+
             if(rejection.status === 401) {
               //if unauthenticated or unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
@@ -52,6 +58,10 @@
                 var errorMsg = 'Error Code: ' + rejection.status;
                 errorMsg += 'Error Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
                 errorMsg += !!rejection.error ? ' Reason: ' + rejection.error : '';
+                console.info('rejection.data: ', rejection.data);
+                Object.keys(rejection.data, function(field, index) {
+                    errorMsg += ' ' + field + ' errors: ' + rejection.data[field];
+                });
                 $injector.get('toastr').error(errorMsg);
                 // $injector.get('UserService').logout();
                 errorCount++;

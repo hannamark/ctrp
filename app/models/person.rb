@@ -48,6 +48,8 @@ class Person < ActiveRecord::Base
   validates :fname, presence: true
   validates :lname, presence: true
 
+
+
   before_validation :check_phone_or_email
   before_destroy :check_for_organization
   after_create   :save_id_to_ctrp_id
