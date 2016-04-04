@@ -106,7 +106,11 @@
                                 <th>Why Study Stopped</th>
                                 <th>Errors/Warnings</th>
                                 <th class="text-center td-icon">Edit</th>
-                                <th class="text-center td-icon">Delete</th>
+                                <th class="text-center td-icon">
+                                    <label class="btn btn-warning" ng-click="trialStatusView.deleteAllStatuses()">
+                                        <i class="glyphicon" ng-class="trialStatusView.deleteStatusesAll == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                    </label>
+                                </th>
                               </thead>
                               <tbody>
                                 <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="status._destroy ? 'deleted-text' : ''">

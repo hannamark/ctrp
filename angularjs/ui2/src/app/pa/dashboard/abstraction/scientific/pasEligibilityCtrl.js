@@ -12,6 +12,7 @@
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods) {
         var vm = this;
+        var MAX_CHARS = 5000; // maximal character counts for the description field in ALL other criterion
         vm.trialDetailObj = {};
         vm.genderList = genderList;
         vm.ageUnits = ageUnits;
@@ -42,6 +43,7 @@
 
         function _getTrialDetailCopy() {
             vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+            vm.numCharsUsedInOC = OCDescCharCount(vm.trialDetailObj.other_criteria);
         }
 
         function resetForm() {
@@ -149,7 +151,10 @@
             vm.otherCriterion = angular.copy(vm.trialDetailObj.other_criteria[index]);
             vm.otherCriterion.edit = true;
             vm.otherCriterion.index = index;
-            vm.descCharsRemaining += vm.otherCriterion.criteria_desc.length; // recalculate the characters remaining
+            vm.numCharsUsedInOC = OCDescCharCount(vm.trialDetailObj.other_criteria);
+            vm.numCharsUsedInOC -= vm.otherCriterion.criteria_desc.length;
+            vm.descCharsRemaining = MAX_CHARS - vm.numCharsUsedInOC;
+            // vm.descCharsRemaining += vm.otherCriterion.criteria_desc.length; // recalculate the characters remaining
             vm.addOtherCriterionFormShown = true;
         }
 
@@ -187,15 +192,27 @@
             $scope.$watchCollection(function() {return vm.trialDetailObj.other_criteria;}, function(
                 newVal, oldVal) {
                     // number of characters for other criterion description (cumulative)
-                    vm.descCharsRemaining = 5000;
+
                     console.info('newVal for other_criteria', newVal);
                     if (angular.isArray(newVal) && newVal.length > 0) {
-                        _.each(newVal, function(oc, idx) {
-                            vm.descCharsRemaining -= oc.criteria_desc.length;
-                        });
+                        vm.numCharsUsedInOC = OCDescCharCount(newVal);
+                        vm.descCharsRemaining = MAX_CHARS - vm.numCharsUsedInOC;
                     }
                 });
         } // watchOtherCriteriaDesc
+
+        /**
+         * Count the characters in other criteria's description field
+         * @param:  {array of other_criteria} ocArray
+         * @return {Integer}
+         */
+        function OCDescCharCount(ocArray) {
+            var totalCounts = 0;
+            _.each(ocArray, function(oc, idx) {
+                totalCounts += oc.criteria_desc.length;
+            });
+            return totalCounts;
+        }
 
     } // pasEligibilityCtrl
 

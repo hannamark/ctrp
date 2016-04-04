@@ -74,13 +74,13 @@
                     vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout);
                 }
 
-                showToastr(checkoutType + ' ' + checkout_message, 'top right');
+                showToastr(checkout_message, 'top right');
             });
         }
 
         function checkinTrial(checkinType) {
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                console.log('checkin result: ', res.result);
+                // console.log('checkin result: ', res.result);
                 updateTrialDetailObj(res.result);
                 vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout); // null
                 vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout); // null
