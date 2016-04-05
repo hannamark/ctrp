@@ -6,19 +6,12 @@
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
     .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl)
-    .controller('warningToastrCtrl', warningToastrCtrl);
-    warningToastrCtrl.$inject = ['$scope', '$mdToast'];
-    function warningToastrCtrl($scope, $mdToast) {
-        $scope.closeWarning = function() {
-            $mdToast.hide();
-        };
-    }
 
-    paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService',
+    paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService', '$popover',
         'Common', 'DateService', '$timeout', 'CommentService', 'documentTypes', '$mdToast',
         '$document', 'UserService', 'toastr', 'HOST', 'URL_CONFIGS', 'acceptedFileTypesObj', 'Upload'];
 
-        function paTrialRelatedDocsCtrl($scope, _, PATrialService, TrialService,
+        function paTrialRelatedDocsCtrl($scope, _, PATrialService, TrialService, $popover,
             Common, DateService, $timeout, CommentService, documentTypes, $mdToast,
             $document, UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
 
@@ -33,22 +26,6 @@
             vm.docSubtypeShown = false;
             vm.docTypeError = '';
             vm.formError = '';
-            // vm.commentPopoverTemplate = 'comment_for_deletion.html';
-            vm.commentPopOverOptions = {
-                templateUrl: 'comment_for_deletion.html',
-                placement: 'left',
-                isOpen: true
-            };
-            vm.closePopover = function() {
-                console.info('closing popover now!');
-
-                $timeout(function() {
-                    vm.commentPopOverOptions.isOpen = !vm.commentPopOverOptions.isOpen;
-                }, 0);
-            };
-            $scope.$watch(function() {return vm.commentPopOverOptions.isOpen;}, function(newVal) {
-                console.info('isOpen? ', newVal);
-            });
             vm.documentTypes = documentTypes.types.split(',').sort();
             var requiredDocTypes = _.filter(vm.documentTypes, function(type) {
                 return type.indexOf('IRB') > -1 || type.indexOf('Protocol Doc') > -1;
@@ -94,6 +71,8 @@
                         cancelEdit();
                     }
                     vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+                    vm.curTrialDetailObj.trial_documents[index].isPopoverOpen = vm.curTrialDetailObj.trial_documents[index].status === 'deleted'; // open popover if the status is 'deleted'
+
 
                 }
             }
@@ -129,7 +108,8 @@
                     index: null,
                     _destroy: false,
                     status: 'active',
-                    why_deleted: null
+                    why_deleted: null,
+                    isPopoverOpen: false
                 };
                 return doc;
             }
