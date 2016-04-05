@@ -140,13 +140,13 @@
     word-wrap: normal;
 }
 
-/* Overriding default table classes */
+/* Overriding default table classes
 
 .table-bordered {
     margin-bottom: 13px;
     color: #003f59;
 }
-/*
+
 .table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
     border-bottom-width: 1px;
     background: #f3f3f3;
@@ -156,7 +156,7 @@
     background: -o-linear-gradient(#ffffff, #eeeeee);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
     -webkit-border-top-right-radius: -1px;
-} commented out by peter temporaririly for table over-ride */
+}
 
 .table-bordered > tbody > tr > td,
 .table-bordered > tbody > tr > th,
@@ -200,6 +200,7 @@
 .table-striped.table-condensed textarea.form-control {
     height: 50px;
 }
+commented out by peter temporaririly for table over-ride */
 .animated-item {
     -webkit-transition: all linear 0.5s;
     -o-transition: all linear 0.5s;
