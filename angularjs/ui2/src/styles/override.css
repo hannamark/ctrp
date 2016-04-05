@@ -332,6 +332,16 @@ header img {
 .top-offset-lg {
 	margin-top: 185px;
 }
+.bottom-offset-xs {
+	margin-bottom: 25px;
+}
+.bottom-offset-sm {
+	margin-bottom: 50px;
+}
+.bottom-offset-md {
+	margin-bottom: 100px;
+}
+
 .min-width-xs {
     min-width: 50px;
 }
@@ -850,7 +860,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .add-association-error {
-    color: #a94442;
+    color: #C53531;
     margin-bottom: 10px;
 }
 
@@ -1091,7 +1101,9 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
     color: blue;
 }
 
-div.datepicker {width: 146px;}
+div.datepicker {
+    max-width: 150px;
+}
 
 .sign_in .panel-body {
     padding-bottom: 0;
