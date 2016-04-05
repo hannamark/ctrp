@@ -200,6 +200,7 @@
 .table-striped.table-condensed textarea.form-control {
     height: 50px;
 }
+
 .animated-item {
     -webkit-transition: all linear 0.5s;
     -o-transition: all linear 0.5s;
@@ -497,9 +498,9 @@ header .sub-title {
 }
 
 body {
+    font-family: verdana, arial, helvetica, sans-serif;
     font-size: 12px;
     color: #444;
-    font-family: 'Noto Sans', Arial, sans-serif;
 }
 
 .nav {
