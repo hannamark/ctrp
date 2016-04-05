@@ -162,7 +162,7 @@
                         <th class="text-center td-icon">Edit</th>
                         <th class="text-center td-icon">Copy</th>
                         <th class="text-center td-icon">
-                            <input type="checkbox" ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()" />
+                            <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()" />
                         </th>
                         </thead>
                         <tbody>
@@ -185,18 +185,18 @@
                                 {{outcome_measure.safety_issue}}
                             </td>
                             
-                            <td class="text-center">
+                            <td class="text-center td-icon">
                                 <button  data-toggle="modal" class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="omView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center td-icon">
                                 <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="omView.setCopyMode($index)">
                                     <i class="glyphicon glyphicon-copy"></i>
                                 </button>
                             </td>
-                            <td class="text-center">
-                                <input type="checkbox" ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"/>
+                            <td class="text-center td-icon">
+                                <input type="checkbox" restriction-field ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"/>
                             </td>
                         </tr>
                         </tbody>

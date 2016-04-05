@@ -513,7 +513,7 @@
                 <th>Primary Contact</th>
                 <th class="text-center td-icon">Edit</th>
                 <th class="text-center td-icon">
-                    <input type="checkbox" ng-model="psView.selectedAllSites" ng-click="psView.checkAllSites()" />
+                    <input type="checkbox" restriction-field ng-model="psView.selectedAllSites" ng-click="psView.checkAllSites()" />
                 </th>
                 </thead>
                 <tbody>
@@ -542,7 +542,7 @@
                         </button>
                     </td>
                     <td class="text-center td-icon">
-                        <input type="checkbox" ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" />
+                        <input type="checkbox" restriction-field ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" />
                     </td>
                 </tr>
                 </tbody>
