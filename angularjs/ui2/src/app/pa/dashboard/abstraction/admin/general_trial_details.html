@@ -94,9 +94,13 @@
               <table class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #d9edf7">
                   <th class="col-xs-12 col-sm-5">Identifier Type</th>
-                  <th>Value (Click to edit)</th>
+                  <th>Value</th>
                   <th class="text-center td-icon">Edit</th>
-                  <th class="text-center td-icon">Delete</th>
+                  <th class="text-center td-icon">
+                    <label class="btn btn-warning" ng-click="generalTrialDetailView.deleteAllOtherIdentifiers()">
+                      <i class="glyphicon" ng-class="generalTrialDetailView.otherIdDestroyAll == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                    </label>
+                  </th>
                 </thead>
                 <tbody>
                       <tr>
@@ -115,7 +119,6 @@
                     <td>{{otherId.identifierName}}</td>
                     <td>
                       {{otherId.protocol_id}}
-
                     </td>
                     <td class="text-center td-icon">
                       <label class="btn btn-primary" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
@@ -123,8 +126,6 @@
                       </label>
                     </td>
                     <td class="text-center td-icon">
-                        <!-- <button type="button" class="btn btn-default">Edit</button> -->
-                        <!-- <button type="button" class="btn btn-default" ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">Delete</button> -->
                         <label class="btn btn-warning" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
                             <i class="glyphicon" ng-class="otherId._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                         </label>

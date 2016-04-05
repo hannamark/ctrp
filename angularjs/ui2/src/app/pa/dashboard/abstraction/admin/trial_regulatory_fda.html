@@ -130,7 +130,11 @@
                                     <thead>
                                     <th class="col-md-5">Country</th>
                                     <th>Organization</th>
-                                    <th class="text-center td-icon" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">Delete</th>
+                                    <th class="text-center td-icon" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                                        <label class="btn btn-warning" ng-click="trialDetailView.deleteAllAuthorities()">
+                                            <i class="glyphicon" ng-class="trialDetailView.authoritiesDestroyAll == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                        </label>
+                                    </th>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="authority in trialDetailView.addedAuthorities track by $index" ng-class="authority._destroy == true ? 'deleted-text animated-item' : 'animated-item'">

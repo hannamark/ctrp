@@ -83,6 +83,11 @@ module.exports = function() {
     var leadProtocolIDB = 'CTRP_01_1778';
     var leadProtocolIDC = 'CTRP_01_17'+randNmbr;
     var leadProtocolIDD = 'CTRP_01_1781';
+    var leadProtocolIDE = 'CTRP_01_1782';
+    var leadProtocolIDF = 'CTRP_01_1783';
+    var leadProtocolIDG = 'CTRP_01_1784';
+    var leadProtocolIDH = 'CTRP_01_1785';
+    var leadProtocolIDI = 'CTRP_01_1786';
     var searchResultCountText = 'Trial Search Results';
     var indIDEAssociatedQueVal = '';
     var indTypVal = 'IND';
@@ -125,6 +130,8 @@ module.exports = function() {
     var tblOptionG = '';
     var tblOptionH = '';
     var tblOptionI = '';
+    var tblOptionJ = '';
+    var tblOptionK = '';
     var selectOptionSelect = '- Please select a document type ...';
     var selectOptionChangeMemo = 'Change Memo Document';
     var selectOptionComplete = 'Complete Sheet';
@@ -137,6 +144,16 @@ module.exports = function() {
     var selectOptionTSR = 'TSR';
     var randomDocSelection = '';
     var randomDocTypSelection = '';
+    var getMemCrntUsrNm = '';
+    var trialDocHdrs = new Array("File Name", "Document Type", "Document Subtype", "Date Added", "Added By", "Edit", "Delete");
+    var getExpectedDate = '';
+    var getReplacedFile = 'testSampleDocTest_Replace.docx';
+    var getTestUploadFileA = 'testSampleDocTestAFile.docx';
+    var getTestUploadFileB = 'testSampleDocTestBFile.docx';
+    var getIRBUploadFile = 'testSampleDocFile_IRB.docx';
+    var getProtocolUploadFile = 'testSampleDocFile_Protocol.docx';
+    var getChangeMemoUploadFile = 'testSampleDocFile_ChangeMemo.docx';
+    var getNonSupportedUploadFile = 'testSampleDocFile_invalidExt.log';
 
     /*
      Scenario: #1 I can add Trial Related Documents
@@ -172,17 +189,24 @@ module.exports = function() {
         commonFunctions.adminCheckOut();
         trialDoc.clickAdminDataTrialRelatedDocument();
         trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
-        helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
-        helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
-        helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
-        helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
-        browser.sleep(25).then(callback);
+        //helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
+        //helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
+        //helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
+        //helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
+        trialDoc.trialTable.isDisplayed().then(function(condition) {
+            if (condition){
+                console.log("Condition: "+condition);
+                trialDoc.findDocumentAndClickWhereDeleteExists();
+                trialDoc.clickSave();
+            }
+        });
+        browser.sleep(2500).then(callback);
     });
 
     this.When(/^I select add a document$/, function (callback) {
         randomDocSelection = '';
         var randomDoc = '';
-        var randNmbr = Math.floor(Math.random()*(1-4+1)+4).toString();
+        var randNmbr = Math.floor(Math.random()*(1-8+1)+9).toString();
         console.log("Random NM: "+randNmbr);
         if (randNmbr === '1'){
             randomDoc = 'testSampleEXCELFile.xlsx';
@@ -202,6 +226,22 @@ module.exports = function() {
             console.log("Current Selected File Name:["+randomDocSelection+"]");
         } else if(randNmbr === '5'){
             randomDoc = 'testSampleRichTextFile.rtf';
+            randomDocSelection = ''+randomDoc+'';
+            console.log("Current Selected File Name:["+randomDocSelection+"]");
+        } else if(randNmbr === '6'){
+            randomDoc = 'testSampleDocTestFile.docx';
+            randomDocSelection = ''+randomDoc+'';
+            console.log("Current Selected File Name:["+randomDocSelection+"]");
+        } else if(randNmbr === '7'){
+            randomDoc = 'testSampleDocTestAFile.docx';
+            randomDocSelection = ''+randomDoc+'';
+            console.log("Current Selected File Name:["+randomDocSelection+"]");
+        } else if(randNmbr === '8'){
+            randomDoc = 'testSampleDocTestBFile.docx';
+            randomDocSelection = ''+randomDoc+'';
+            console.log("Current Selected File Name:["+randomDocSelection+"]");
+        } else if(randNmbr === '9'){
+            randomDoc = 'testSampleDocTestCFile.docx';
             randomDocSelection = ''+randomDoc+'';
             console.log("Current Selected File Name:["+randomDocSelection+"]");
         }
@@ -249,7 +289,7 @@ module.exports = function() {
             randomDocTypSelection = ''+randomDocTyp+'';
             console.log("Document Type:["+randomDocTypSelection+"]");
         } else if(randNb === '4'){
-            randomDocTyp = ''+tblOptionD+'';
+            randomDocTyp = ''+tblOptionC+'';
             randomDocTypSelection = ''+randomDocTyp+'';
             console.log("Document Type:["+randomDocTypSelection+"]");
         } else if(randNb === '5'){
@@ -261,11 +301,11 @@ module.exports = function() {
             randomDocTypSelection = ''+randomDocTyp+'';
             console.log("Document Type:["+randomDocTypSelection+"]");
         } else if(randNb === '7'){
-            randomDocTyp = ''+tblOptionG+'';
+            randomDocTyp = ''+tblOptionI+'';
             randomDocTypSelection = ''+randomDocTyp+'';
             console.log("Document Type:["+randomDocTypSelection+"]");
         } else if(randNb === '8'){
-            randomDocTyp = ''+tblOptionH+'';
+            randomDocTyp = ''+tblOptionC+'';
             randomDocTypSelection = ''+randomDocTyp+'';
             console.log("Document Type:["+randomDocTypSelection+"]");
         } else if(randNb === '9'){
@@ -297,20 +337,398 @@ module.exports = function() {
         trialDoc.trialRelatedFileUpload('PA', '1', 'testSampleDocFile_Protocol.docx');
         trialDoc.selectADocument(selectOptionProtocolDoc);
         trialDoc.clickAddButton();
-        browser.sleep(2500).then(callback);
+        getExpectedDate = trialDoc.getCurrentDate();
+        console.log("getExpectedDate: "+getExpectedDate);
+        trialDoc.findDocumentAndVerifyDateAdded(randomDocSelection, getExpectedDate);
+        element(by.binding('headerView.username')).getText().then(function(userNameValue){
+            var crntUsrNm = userNameValue;
+            function getUsrNm(){
+                return crntUsrNm;
+            };
+            getMemCrntUsrNm = getUsrNm();
+            console.log('Current User Name : ' + getMemCrntUsrNm);
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the users name that added the document will be listed with the document$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var getCurrentUserName = getMemCrntUsrNm;
+        console.log("getCurrentUserName: "+getCurrentUserName);
+        trialDoc.findDocumentAndVerifyUserAdded(randomDocSelection, getCurrentUserName);
+        trialDoc.clickSave();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the document will be ordered by date with the newest document first$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        trialDoc.verifyTrialDocTblHeaders(trialDocHdrs[0], trialDocHdrs[1], trialDocHdrs[2], trialDocHdrs[3], trialDocHdrs[4], trialDocHdrs[5], trialDocHdrs[6]);
+        trialDoc.findDocumentAndVerifyFileName(randomDocSelection);
+        trialDoc.findDocumentAndVerifyDocumentType(randomDocSelection, randomDocTypSelection);
+        if (randomDocTypSelection === selectOptionOther){
+            trialDoc.findDocumentAndVerifyDocumentSubType(randomDocSelection, 'Test Subtype');
+        }
+        trialDoc.findDocumentAndVerifyDateAdded(randomDocSelection, getExpectedDate);
+        trialDoc.findDocumentAndVerifyUserAdded(randomDocSelection, getMemCrntUsrNm);
+        browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario: #2 I can Edit(revise) the file name for a Trial Related Document
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     When I select add a document
+     And have browsed and selected file to attach
+     And have selected the Document type from the list of:
+     |- Please select a document type ...|
+     |Change Memo Document|
+     |Complete Sheet|
+     |IRB Approval|
+     |Informed Consent|
+     |List of Participating Sites|
+     |Other|
+     |Protocol Document|
+     |Protocol Highlighted Document|
+     |TSR|
+     And have entered a Description of the Document when the document type is Other
+     Then the Trial Related Document will be associated with the trail
+     And the date the document was will be listed with the document
+     And the users name that added the document will be listed with the document
+     When I select Edit a Trial Related Document
+     And have browsed and selected a new file to attach
+     And have entered a Description of the Document when the document type is Other
+     Then the Trial Related edited Document will be associated with the trail
+     And the date the document was will be listed with the document
+     And the users name that added the document will be listed with the document
+     And the prior file will be annotated as Revised
+     */
 
+    this.When(/^I select Edit a Trial Related Document$/, function (callback) {
+        console.log('Current Document to Edit : ' + randomDocSelection);
+        trialDoc.findDocumentAndClickEdit(randomDocSelection);
+        browser.sleep(2500).then(callback);
+    });
+
+    this.When(/^have browsed and selected a new file to attach$/, function (callback) {
+        trialDoc.trialRelatedFileUpload('PA', '1', getReplacedFile);
+        trialDoc.clickUpdate();
+        browser.sleep(250).then(callback);
+    });
+
+    this.Then(/^the Trial Related edited Document will be associated with the trail$/, function (callback) {
+        trialDoc.findDocumentAndVerifyFileName(getReplacedFile);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the prior file will be annotated as Revised$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #3 I can Delete Trial Related Documents
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     And I select one or more documents to delete
+     And enter a comment for why the document is deleted
+     Then the Trial Related Document will not be visible on the Trial Related Documents screen
+     And the file will be annotated as Deleted
+     */
+
+    this.Given(/^I select one or more documents to delete$/, function (callback) {
+        trialDoc.trialTable.isDisplayed().then(function(condition) {
+            if (condition){
+                console.log("Condition: "+condition);
+                trialDoc.findDocumentAndClickWhereDeleteExists();
+                trialDoc.clickSave();
+            }
+        });
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Given(/^enter a comment for why the document is deleted$/, function (callback) {
+        console.log("- enter a comment for why the document is deleted - dev team need to develop comment feature (it's not developed yet as 03252016)");
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Trial Related Document will not be visible on the Trial Related Documents screen$/, function (callback) {
+        trialDoc.findDocumentDoesNotExists(randomDocSelection);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the file will be annotated as Deleted$/, function (callback) {
+        console.log("- the file will be annotated as Deleted - dev team need to develop comment feature (it's not developed yet as 03252016)");
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #4 Save Trial Related Documents
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     When select save documents
+     Then the information entered or edited on the Trial Related Documents screen will be saved to the trial record
+     */
+
+    this.When(/^select save documents$/, function (callback) {
+        trialDoc.trialRelatedFileUpload('PA', '1', getTestUploadFileA);
+        trialDoc.selectADocument(selectOptionComplete);
+        trialDoc.clickAddButton();
+        trialDoc.trialRelatedFileUpload('PA', '1', getIRBUploadFile);
+        trialDoc.selectADocument(selectOptionIRB);
+        trialDoc.clickAddButton();
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolUploadFile);
+        trialDoc.selectADocument(selectOptionProtocolDoc);
+        trialDoc.clickAddButton();
+        element(by.binding('headerView.username')).getText().then(function(userNameValue){
+            var crntUsrNm = userNameValue;
+            function getUsrNm(){
+                return crntUsrNm;
+            };
+            getMemCrntUsrNm = getUsrNm();
+            console.log('Current User Name : ' + getMemCrntUsrNm);
+        });
+        trialDoc.clickSave();
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Then(/^the information entered or edited on the Trial Related Documents screen will be saved to the trial record$/, function (callback) {
+        trialDoc.verifyTrialDocTblHeaders(trialDocHdrs[0], trialDocHdrs[1], trialDocHdrs[2], trialDocHdrs[3], trialDocHdrs[4], trialDocHdrs[5]);
+        trialDoc.findDocumentAndVerifyFileName(getTestUploadFileA);
+        trialDoc.findDocumentAndVerifyDocumentType(getTestUploadFileA, selectOptionComplete);
+        getExpectedDate = trialDoc.getCurrentDate();
+        console.log("getExpectedDate: "+getExpectedDate);
+        trialDoc.findDocumentAndVerifyDateAdded(getTestUploadFileA, getExpectedDate);
+        var getCurrentUserName = getMemCrntUsrNm;
+        console.log("getCurrentUserName: "+getCurrentUserName);
+        trialDoc.findDocumentAndVerifyUserAdded(getTestUploadFileA, getCurrentUserName);
+        trialDoc.findDocumentAndVerifyDateAdded(getTestUploadFileA, getExpectedDate);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #6 Cancel Regulatory Information
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Register Trial Related Documents screen
+     When I select Reset documents
+     Then the information entered or edited on the Trial Related Documents screen will not be saved to the trial record
+     And the Trial Related Document screen will be refreshed with the existing data
+     */
+
+    this.When(/^I select Reset documents$/, function (callback) {
+        trialDoc.trialRelatedFileUpload('PA', '1', getIRBUploadFile);
+        trialDoc.selectADocument(selectOptionIRB);
+        trialDoc.clickAddButton();
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolUploadFile);
+        trialDoc.selectADocument(selectOptionProtocolDoc);
+        trialDoc.clickAddButton();
+        trialDoc.clickSave();
+        helper.wait_for(2500);
+        trialDoc.trialRelatedFileUpload('PA', '1', getTestUploadFileB);
+        trialDoc.selectADocument(selectOptionComplete);
+        trialDoc.clickAddButton();
+        trialDoc.clickReset();
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Then(/^the information entered or edited on the Trial Related Documents screen will not be saved to the trial record$/, function (callback) {
+        trialDoc.findDocumentDoesNotExists(getTestUploadFileB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Trial Related Document screen will be refreshed with the existing data$/, function (callback) {
+        trialDoc.findDocumentAndVerifyFileName(getIRBUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getProtocolUploadFile);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #7 I can Not Delete the Protocol, IRB Approval Documents and Change Memo Documents
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     When I select Delete one or more documents
+     And have selected a document with a type of :
+     |Protocol Document|
+     |IRB Approval|
+     |Change Memo Document|
+     Then the system will display a Error message that the Protocol Document and or IRB Approval Document cannot be deleted
+     */
+
+    this.When(/^I select Delete one or more documents$/, function (callback) {
+        trialDoc.clickBackToSearchResultsButton();
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDB);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolIDB);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataTrialRelatedDocument();
+        trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
+        helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
+        trialDoc.trialTable.isDisplayed().then(function(condition) {
+            if (condition){
+                console.log("Condition: "+condition);
+                trialDoc.findDocumentAndClickWhereDeleteExists();
+                trialDoc.clickSave();
+            }
+        });
+        trialDoc.trialRelatedFileUpload('PA', '1', getIRBUploadFile);
+        trialDoc.selectADocument(selectOptionIRB);
+        trialDoc.clickAddButton();
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolUploadFile);
+        trialDoc.selectADocument(selectOptionProtocolDoc);
+        trialDoc.clickAddButton();
+        trialDoc.trialRelatedFileUpload('PA', '1', getChangeMemoUploadFile);
+        trialDoc.selectADocument(selectOptionChangeMemo);
+        trialDoc.clickAddButton();
+        trialDoc.clickSave();
+        browser.sleep(2500).then(callback);
+    });
+
+    this.When(/^have selected a document with a type of :$/, function (table, callback) {
+        var strVal = '';
+        selectDcoumentTableVal = table.raw();
+        strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
+        console.log('Select Document Type value(s) in the data table:[' + strVal +']');
+        trialDoc.trialDocSelectADocList.getText().then(function(items) {
+            console.log('Trial Document Type value(s) in the list object:['+ items +']');
+            //expect(items.toString().split("\n")).to.eql(strVal.toString().split("\n"));
+        });
+        var tableDataSplt = strVal.toString().split("\n");
+        tblOptionA = tableDataSplt[0];
+        tblOptionB = tableDataSplt[1];
+        tblOptionC = tableDataSplt[2];
+        console.log('tblOptionA:[' + tblOptionA +']');
+        console.log('tblOptionB:[' + tblOptionB +']');
+        console.log('tblOptionC:[' + tblOptionC +']');
+        //trialDoc.findDocumentAndVerifyDocumentType(getIRBUploadFile, tblOptionB);
+        //trialDoc.findDocumentAndVerifyDocumentType(getProtocolUploadFile, tblOptionA);
+        //trialDoc.findDocumentAndVerifyDocumentType(getChangeMemoUploadFile, tblOptionC);
+        trialDoc.trialTable.isDisplayed().then(function(condition) {
+            if (condition){
+                console.log("Condition: "+condition);
+                trialDoc.findDocumentAndClickWhereDeleteExists();
+                trialDoc.clickSave();
+            }
+        });
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Then(/^the system will display a Error message that the Protocol Document and or IRB Approval Document cannot be deleted$/, function (callback) {
+        trialDoc.findDocumentAndVerifyFileName(getProtocolUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getIRBUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getChangeMemoUploadFile);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #8 Valid Document Formats
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     When I select a document to add
+     And the document is not one of the valid extensions listed below
+     |Pdf|
+     |Doc|
+     |docx|
+     |docm|
+     |Xls|
+     |xlsx|
+     |xlsm|
+     |xlsb|
+     |Rtf|
+     |Txt|
+     Then the system will display a Error message that "The selected document is not a valid document type"
+     */
+
+    this.When(/^I select a document to add$/, function (callback) {
+        trialDoc.clickBackToSearchResultsButton();
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDI);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolIDI);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataTrialRelatedDocument();
+        trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
+        helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
+        trialDoc.selectADocument(selectOptionComplete);
+        trialDoc.trialRelatedFileUpload('PA', '1', getNonSupportedUploadFile);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^the document is not one of the valid extensions listed below$/, function (table, callback) {
+        var extSplt = getNonSupportedUploadFile.split(".");
+        var extSpltVal = extSplt[1];
+        var strVal = '';
+        selectDcoumentTableVal = table.raw();
+        strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
+        console.log('Select Document Type value(s) in the data table:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        tblOptionA = tableDataSplt[0];
+        tblOptionB = tableDataSplt[1];
+        tblOptionC = tableDataSplt[2];
+        tblOptionD = tableDataSplt[3];
+        tblOptionE = tableDataSplt[4];
+        tblOptionF = tableDataSplt[5];
+        tblOptionG = tableDataSplt[6];
+        tblOptionH = tableDataSplt[7];
+        tblOptionI = tableDataSplt[8];
+        tblOptionJ = tableDataSplt[9];
+        tblOptionK = tableDataSplt[10];
+        expect(tblOptionA).to.not.equal(extSpltVal);
+        expect(tblOptionB).to.not.equal(extSpltVal);
+        expect(tblOptionC).to.not.equal(extSpltVal);
+        expect(tblOptionD).to.not.equal(extSpltVal);
+        expect(tblOptionE).to.not.equal(extSpltVal);
+        expect(tblOptionF).to.not.equal(extSpltVal);
+        expect(tblOptionG).to.not.equal(extSpltVal);
+        expect(tblOptionH).to.not.equal(extSpltVal);
+        expect(tblOptionI).to.not.equal(extSpltVal);
+        expect(tblOptionJ).to.not.equal(extSpltVal);
+        expect(tblOptionK).to.not.equal(extSpltVal);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the system will display a Error message that "([^"]*)"$/, function (arg1, callback) {
+        var bldErrorMsg = "Error: "+arg1+". Allowed file types: pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt";
+        trialDoc.verifyErrorMsg(bldErrorMsg);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #9 Protocol and IRB Approval Documents are required
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     Then the following docuuments will be required
+     |Protocol Document|
+     |IRB Approval|
+     */
+
+    this.Then(/^the following docuuments will be required$/, function (table, callback) {
+        trialDoc.clickBackToSearchResultsButton();
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataTrialRelatedDocument();
+        trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
+        helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
+        trialDoc.trialRelatedFileUpload('PA', '1', getChangeMemoUploadFile);
+        trialDoc.selectADocument(selectOptionChangeMemo);
+        trialDoc.clickAddButton();
+        trialDoc.clickSave();
+        var buildRequiredErrorMsg = "Error: Both Protocol Document and IRB Approval Document are required";
+        trialDoc.verifyRequiredErrorMsg(buildRequiredErrorMsg);
+        browser.sleep(25).then(callback);
+    });
 
 
 

@@ -4,11 +4,11 @@
             <uib-accordion-heading>
                 Trial Status <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
-                <form class="form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialStatusView.updateTrialStatuses()">
+                <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialStatusView.updateTrialStatuses()">
                     <!-- fieldset for trial statuses -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Statuses</legend>
-                        <div class="row">
+                        <div class="row table-responsive">
                             <table class="table table-striped table-condensed">
                                 <thead>
                                     <th>Status Date</th>
@@ -19,7 +19,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="col-md-2">
+                                        <td class="col-sm-2">
                                             <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                                 <input type="text" id="status_date" name="status_date" class="form-control input-sm"
                                                     uib-datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.statusObj.status_date"
@@ -34,46 +34,40 @@
                                                 </span>
                                             </div>
                                         </td>
-                                        <td class="col-md-2">
-                                            <div>
-                                                <select name="status" id="status_select"
-                                                    class="form-control input-sm"
-                                                    restriction-field
-                                                    ng-model="trialStatusView.statusObj.trial_status_id"
-                                                    ng-options="status.id as status.name disable when status.disabled for status in trialStatusView.trialStatuses">
-                                                    <option value="">Select a status</option>
-                                                </select>
-                                            </div>
+                                        <td class="col-sm-2">
+                                            <select name="status" id="status_select"
+                                                class="form-control input-sm"
+                                                restriction-field
+                                                ng-model="trialStatusView.statusObj.trial_status_id"
+                                                ng-options="status.id as status.name disable when status.disabled for status in trialStatusView.trialStatuses">
+                                                <option value="">Select a status</option>
+                                            </select>
                                         </td>
-                                        <td class="col-md-3">
-                                            <div>
-                                                <textarea class="form-control input-sm" id="comment" name="status_comment"
-                                                    rows="1"
-                                                    ng-maxlength="160" maxlength="160"
-                                                    ng-model="trialStatusView.statusObj.comment">
-                                                </textarea>
-                                                <span ng-show="trial_status_form.status_comment.$dirty">
-                                                    {{160 - trial_status_form.status_comment.$viewValue.length}} characters left
-                                                </span>
-                                            </div>
+                                        <td class="col-sm-3">
+                                            <textarea class="form-control input-sm" id="comment" name="status_comment"
+                                                rows="1"
+                                                ng-maxlength="160" maxlength="160"
+                                                ng-model="trialStatusView.statusObj.comment">
+                                            </textarea>
+                                            <span ng-show="trial_status_form.status_comment.$dirty">
+                                                {{160 - trial_status_form.status_comment.$viewValue.length}} characters left
+                                            </span>
                                         </td>
-                                        <td class="col-md-3">
-                                            <div>
-                                                <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm"
-                                                    ng-model="trialStatusView.statusObj.why_stopped"
-                                                    ng-maxlength="160" maxlength="160"
-                                                    ng-disabled="!trialStatusView.showWhyStoppedField">
-                                                </textarea>
-                                                <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">
-                                                    {{160 - trial_status_form.why_stopped.$viewValue.length}} characters left
-                                                </span>
-                                            </div>
+                                        <td class="col-sm-3">
+                                            <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm"
+                                                ng-model="trialStatusView.statusObj.why_stopped"
+                                                ng-maxlength="160" maxlength="160"
+                                                ng-disabled="!trialStatusView.showWhyStoppedField">
+                                            </textarea>
+                                            <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">
+                                                {{160 - trial_status_form.why_stopped.$viewValue.length}} characters left
+                                            </span>
                                         </td>
-                                        <td class="col-md-2">
+                                        <td class="col-sm-2">
                                             <div ng-hide="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"
-                                                    ng-disabled="trialStatusView.statusObj.status_date == '' ||
-                                                    trialStatusView.statusObj.trial_status_id == '' ||
+                                                    ng-disabled="!trialStatusView.statusObj.status_date ||
+                                                    !trialStatusView.statusObj.trial_status_id ||
                                                     trial_status_form.why_stopped.$viewValue.length > 160 ||
                                                     trial_status_form.status_comment.$viewValue.length > 160
                                                     "><i class="glyphicon glyphicon-plus"></i> Add</button>
@@ -112,7 +106,11 @@
                                 <th>Why Study Stopped</th>
                                 <th>Errors/Warnings</th>
                                 <th class="text-center td-icon">Edit</th>
-                                <th class="text-center td-icon">Delete</th>
+                                <th class="text-center td-icon">
+                                    <label class="btn btn-warning" ng-click="trialStatusView.deleteAllStatuses()">
+                                        <i class="glyphicon" ng-class="trialStatusView.deleteStatusesAll == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                    </label>
+                                </th>
                               </thead>
                               <tbody>
                                 <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="status._destroy ? 'deleted-text' : ''">
@@ -153,11 +151,10 @@
                         </div>
                     </fieldset>
                     <!-- end of fieldset for trial statuses -->
-
                     <!-- fieldset for trial dates -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Dates</legend>
-                        <div class="form-group top-buffer" ng-class="{'has-feedback required': trialStatusView.startDateRequired, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date_qual)}">
+                        <div class="form-group" ng-class="{'has-feedback required': trialStatusView.startDateRequired, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Trial Start Date</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
@@ -200,7 +197,7 @@
                         </div>
                         <!-- end of trial start date -->
                         <!-- trial primary completion date -->
-                        <div class="form-group top-buffer" ng-class="{'has-feedback required': !trialStatusView.isDCPTrial, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.primary_comp_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.primary_comp_date_qual)}">
+                        <div class="form-group" ng-class="{'has-feedback required': !trialStatusView.isDCPTrial, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.primary_comp_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.primary_comp_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Primary Completion Date</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
@@ -235,7 +232,7 @@
 
                         <!--end of trial primary completion date -->
                         <!-- completion date -->
-                        <div class="row top-buffer">
+                        <div class="row ">
                             <label class="control-label col-xs-12 col-sm-3">Completion Date</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
@@ -271,7 +268,7 @@
                             </div>
                         </div>
                         <!-- end of completion date -->
-                        <div class="row top-buffer">
+                        <div class="row top-offset-xs">
                             <mark>Please refer to the Trial Status Rules for Start and Completion Dates Rules:</mark><br>
                             <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates" target="_blank">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
                         </div>
@@ -296,7 +293,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.createComment()"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                                            <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.createComment()" ng-disabled="!trialStatusView.commentObj.content"><i class="glyphicon glyphicon-plus"></i> Add</button>
                                         </td>
                                     </tr>
                                     </tbody>

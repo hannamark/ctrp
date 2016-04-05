@@ -26,6 +26,7 @@ var LoginPage = function(){
     var writeMode =  element(by.css('.md-thumb'));
     var params = browser.params;
     var login = new helper();
+    var getMemCrntUsrNm = '';
 
     this.setUsername = function(){
         login.setValue(this.username,params.login.user,"Username field");
@@ -94,6 +95,17 @@ var LoginPage = function(){
             if (retVal === true) {
                 element(by.buttonText('Accept')).click();// element(by.css('.container.ng-scope>button:nth-child(2)')).click();
             }
+        });
+    };
+
+    this.getUserName = function(){
+        element(by.binding('headerView.username')).getText().then(function(userNameValue){
+            var crntUsrNm = userNameValue;
+            function getUsrNm(){
+                return crntUsrNm;
+            };
+            return getMemCrntUsrNm = getUsrNm();
+            //console.log('Current User Name : ' + getMemCrntUsrNm);
         });
     };
     //{

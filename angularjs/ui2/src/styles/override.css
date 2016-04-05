@@ -173,6 +173,9 @@
     overflow: visible;
     border: 1px solid #D4D4D4;
 }
+.table-bordered > thead > tr > th.nowrap {
+    white-space: nowrap;
+}
 
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td,
@@ -326,6 +329,18 @@ header img {
 }
 .top-offset-lg {
 	margin-top: 185px;
+}
+.min-width-xs {
+    min-width: 50px;
+}
+.min-width-sm {
+    min-width: 100px;
+}
+.min-width-md {
+    min-width: 150px;
+}
+.min-width-lg {
+    min-width: 200px;
 }
 
 .row-blue {
@@ -930,16 +945,17 @@ a.btn-file:hover {
 
 .td-icon {
     width: 45px;
+    vertical-align: middle !important;
 }
 
 .td-date {
-    width: 85px;
+    min-width: 130px;
 }
 .td-time {
-    width: 140px;
+    min-width: 140px;
 }
 .td-name {
-    width: 175px;
+    min-width: 175px;
 }
 
 body.identification  a.menu-identification,
@@ -981,8 +997,14 @@ body.trial-sub-groups a.menu-trial-sub-groups {
 .td-icon  .btn {
     height: 20px;
     padding: 2px 5px;
+    margin-bottom: 0;
 }
-
+th.td-icon .btn {
+    height: 15px;
+    padding: 0px 2px 5px 2px;
+    margin-bottom: 0;
+    font-size: .8em;
+}
 .input-sm, select.input-sm, input[type="text"].form-control {
     height: 24px;
 }
@@ -1014,7 +1036,44 @@ ul.trial-comments li .md-button.btn {
     min-height: 24px;
     min-width: 70px;
 }
+ul.trial-comments li:hover{
+    background: transparent;
+}
+
+ul.trial-comments li .md-button.btn-primary:hover {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
+    background: #1e5799; /* Old browsers */
+    background: -moz-linear-gradient(top,  #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+}
+
+ul.trial-comments li .md-button.btn-warning:hover {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffaf4b+0,ff920a+100;Orange+3D+%231 */
+    background: #ffaf4b; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffaf4b 0%, #ff920a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #ffaf4b 0%,#ff920a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
+}
 
 input[type="file"] {
     display: inline;
 }
+
+uib-accordion form.form-horizontal {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1300px;
+}
+
+md-tabs.md-dynamic-height md-tab-content.md-active {
+    padding-top: 20px;
+}
+md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
+    color: blue;
+}
+
+div.datepicker {width: 146px;}
