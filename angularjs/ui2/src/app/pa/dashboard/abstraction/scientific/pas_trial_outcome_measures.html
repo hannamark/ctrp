@@ -1,4 +1,4 @@
-<div ng-show="omView.editMode || omView.addMode || omView.copyMode || omView.curTrial.outcome_measures.length == 0" id="outcomeMeasure" class="ctrp-ui">
+<div ng-show="omView.editMode || omView.addMode || omView.copyMode" id="outcomeMeasure" class="ctrp-ui">
 <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()">
     <!-- first row in the accordion body -->
     <div class="row">
@@ -142,7 +142,7 @@
 </div>
 
 <!-- Grid the shows all the Outcome Measures -->
-<div class="row ctrp-ui" ng-show="omView.curTrial.outcome_measures.length > 0">
+<div class="row ctrp-ui">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
@@ -152,7 +152,7 @@
             <fieldset>
                 <legend class="sub-bordered hide">List of Outcome Measures:</legend>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover">
+                    <table class="table table-bordered table-striped table-hover" ng-show="omView.curTrial.outcome_measures.length">
                         <thead>
                         <th>Outcome Measure Type</th>
                         <th>Title</th>
@@ -204,7 +204,9 @@
 
                     <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
                         <button type="submit" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">Add Outcome Measure</button>
-                        <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()" ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length">Delete Selected</button>
+                        <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()"
+                                ng-show="omView.curTrial.outcome_measures.length"
+                                ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length">Delete Outcome Measures</button>
                     </div>
 
                 </div>
