@@ -344,6 +344,15 @@ header img {
 .min-width-lg {
     min-width: 200px;
 }
+.min-width-xl {
+    min-width: 225px;
+}
+.min-width-xxl {
+    min-width: 250px;
+}
+.min-width-xxxl {
+    min-width: 275px;
+}
 
 .row-blue {
     background-color: #2A71A5;
@@ -713,6 +722,10 @@ div.ui-grid-cell input[type="checkbox"] {
 
 .form-text {
     padding-top: 7px;
+}
+
+td > .form-text {
+    padding-top: 5px;
 }
 
 .form-file-upload {
