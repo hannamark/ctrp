@@ -1078,7 +1078,9 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 
 div.datepicker {width: 146px;}
 
-
+.sign_in .panel-body {
+    padding-bottom: 0;
+}
 /* table css */
 
 #ui-grid-twbs #ui-grid-twbs .form-horizontal .form-group:after,
