@@ -1106,7 +1106,11 @@ div.datepicker {width: 146px;}
     border-color: #fff;
     border-bottom-width: 3px;
 }
-.modal-header .modal-title {color: #fff;}
+
+.panel-title, .md-default-theme h3, .panel-heading h4.panel-title a,  .panel-heading h4.panel-title, .modal-header .modal-title  {
+    color: #fff !important;
+}
+
 .ui-grid-header-viewport{overflow:hidden}
 .ui-grid-header-canvas:before,.ui-grid-header-canvas:after{content:"";display:table;line-height:0}
 .ui-grid-header-canvas:after{clear:both}.ui-grid-header-cell-wrapper{position:relative;display:table;box-sizing:border-box;height:100%}
