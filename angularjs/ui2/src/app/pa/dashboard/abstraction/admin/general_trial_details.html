@@ -53,7 +53,8 @@
                       </thead>
                       <tbody>
                       <tr>
-                        <td><span ng-show="generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead">Lead Organization Trial ID:</span>
+                        <td>
+                            <div ng-show="generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead" class="form-text">Lead Organization Trial ID:</div>
                             <select ng-disabled="generalTrialDetailView.otherIdentifierUpdate" ng-show="!(generalTrialDetailView.otherIdentifierUpdate && generalTrialDetailView.otherIdentifierUpdate.lead)" ng-init="generalTrialDetailView.otherIdentifier.protocol_id_origin_id" class="form-control input-sm" id="other_identifier"
                               ng-model="generalTrialDetailView.otherIdentifier.protocol_id_origin_id"
                               ng-options="identifier.id as identifier.name for identifier in generalTrialDetailView.protocolIdOriginArr" name="other_ids">
@@ -101,9 +102,9 @@
                       <th>Value</th>
                       <th class="text-center td-icon">Edit</th>
                       <th class="text-center td-icon">
-                        <label class="btn btn-warning" ng-click="generalTrialDetailView.deleteAllOtherIdentifiers()">
+                        <button type="button" class="btn btn-warning" ng-click="generalTrialDetailView.deleteAllOtherIdentifiers()">
                           <i class="glyphicon" ng-class="generalTrialDetailView.otherIdDestroyAll == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                        </label>
+                        </button>
                       </th>
                     </thead>
                     <tbody>
@@ -113,9 +114,9 @@
                                 {{generalTrialDetailView.leadProtocolId}}
                               </td>
                               <td class="text-center td-icon">
-                                <label class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
+                                <button type="button" class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
                                   <i class="glyphicon glyphicon-edit"></i>
-                                </label>
+                                </button>
                               </td>
                               <td class="text-center">--</td>
                           </tr>
@@ -125,14 +126,14 @@
                           {{otherId.protocol_id}}
                         </td>
                         <td class="text-center td-icon">
-                          <label class="btn btn-primary" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
+                          <button type="button" class="btn btn-primary" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
                             <i class="glyphicon glyphicon-edit"></i>
-                          </label>
+                          </button>
                         </td>
                         <td class="text-center td-icon">
-                            <label class="btn btn-warning" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
+                            <button type="button" class="btn btn-warning" restriction-field ng-click="generalTrialDetailView.deleteOtherIdentifier($index)">
                                 <i class="glyphicon" ng-class="otherId._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                            </label>
+                            </button>
                         </td>
                       </tr>
                     </tbody>

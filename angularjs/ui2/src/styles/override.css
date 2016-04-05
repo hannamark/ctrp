@@ -724,6 +724,10 @@ div.ui-grid-cell input[type="checkbox"] {
     padding-top: 7px;
 }
 
+td > .form-text {
+    padding-top: 5px;
+}
+
 .form-file-upload {
     padding-top: 5px;
 }
