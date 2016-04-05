@@ -18,6 +18,8 @@
         vm.holderTypeArr = holderTypeObj;
         vm.nihNciArr = [];
         vm.addedIndIdes = [];
+        vm.showAddIndIdeError = false;
+
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
 
         vm.reload = function() {
