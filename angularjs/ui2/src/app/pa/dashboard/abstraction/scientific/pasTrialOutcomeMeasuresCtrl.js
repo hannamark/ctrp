@@ -43,6 +43,20 @@
             vm.copyOM = {};
         }
 
+        vm.checkAllOM = function () {
+            if (vm.selectedAllOM) {
+                vm.selectedAllOM = true;
+            } else {
+                vm.selectedAllOM = false;
+            }
+
+            angular.forEach(vm.curTrial.outcome_measures, function (item) {
+                item.selected = vm.selectedAllOM;
+                vm.deleteListHandler(vm.curTrial.outcome_measures);
+            });
+
+        };
+
         vm.saveOutcomeMeasure = function(){
             vm.disableBtn = true;
 

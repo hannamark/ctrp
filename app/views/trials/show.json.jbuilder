@@ -48,7 +48,7 @@ end
 
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
-    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status, :why_deleted
     json.set! :added_by, document.added_by_id.nil? ? '' : User.find(document.added_by_id)   #document.added_by_id
   end
 end
@@ -139,6 +139,9 @@ json.participating_sites do
     json.program_code participating_site.program_code
     json.person participating_site.person
     json.person_id participating_site.person.nil? ? nil:participating_site.person.id
+
+    json.current_status_name participating_site.current_status_name
+    json.site_pi participating_site.site_pi
 
 
     json.organization participating_site.organization

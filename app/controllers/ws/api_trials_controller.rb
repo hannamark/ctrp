@@ -19,7 +19,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   before_action :validate_rest_request
 
   before_filter only: [:create] do
-
+ p "############"
+ p @current_user
     val_errors = Array.new()
 
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
@@ -28,7 +29,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
      ##
     lead_protocol_id = @xmlMapperObject.lead_protocol_id
     lead_org_id = @xmlMapperObject.leadOrganization.existingOrganization.id
-    @trial = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id)
+    lead_org_id_pk= Organization.find_by_ctrp_id(lead_org_id).id if Organization.find_by_ctrp_id(lead_org_id)
+
+    @trial = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id_pk)
+
 
     if @trial.present?
       val_errors.push("A trial has already been existed with given Lead Org Trial ID and Lead organization ID");
@@ -39,7 +43,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     render xml:val_errors.to_xml, status: '404'  if val_errors.any?
   end
   before_filter only: [:create] do
-    
+
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"create","")
 
@@ -90,7 +94,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   def create
     @rest_params = @paramsLoader.get_rest_params
-    p @rest_params
+    @rest_params[:current_user] = @current_user
     @trial =Trial.new(@rest_params)
     if @trial.save!
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)

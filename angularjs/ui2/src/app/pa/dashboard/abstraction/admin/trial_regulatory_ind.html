@@ -12,7 +12,7 @@
                         <legend class="sub-bordered">FDA IND/IDE</legend>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_question)}">
-                            <label class="control-label col-xs-12 col-sm-6">Does this trial have an associated IND/IDE?</label>
+                            <label class="control-label col-xs-12 col-sm-6">Does this trial have an associated IND/IDE?:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <label class="radio-inline">
                                     <input type="radio" restriction-field ng-model="trialDetailView.curTrial.ind_ide_question" value="Yes" name="ind_ide_question"
@@ -29,7 +29,7 @@
                         </div>
                     </fieldset>
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                        <legend class="sub-bordered">IND/IDE Information:</legend>
+                        <legend class="sub-bordered">IND/IDE Information</legend>
 
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)}">
                         <div class="col-sm-12">
@@ -44,7 +44,7 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td class="col-md-2">
+                                    <td>
                                         <div>
                                             <select restriction-field class="form-control input-sm" id="ind_ide_type" ng-model="trialDetailView.ind_ide_type" ng-change="trialDetailView.watchOption('ind_ide_type')">
                                                 <option value="">-Select-</option>
@@ -53,12 +53,12 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td class="col-md-2">
+                                    <td>
                                         <div>
                                             <input restriction-field class="form-control input-sm" id="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
                                         </div>
                                     </td>
-                                    <td class="col-md-2">
+                                    <td>
                                         <div>
                                             <select restriction-field class="form-control input-sm" id="grantor" ng-model="trialDetailView.grantor">
                                                 <option value="">-Select-</option>
@@ -68,7 +68,7 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td class="col-md-2">
+                                    <td>
                                         <div>
                                             <select restriction-field class="form-control input-sm" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
                                                 <option value="">-Select-</option>
@@ -78,7 +78,7 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td class="col-md-3">
+                                    <td>
                                         <div>
                                             <select restriction-field class="form-control input-sm" id="nih_nci" ng-model="trialDetailView.nih_nci">
                                                 <option value="">-Select-</option>
@@ -105,7 +105,7 @@
                                                     </span>
 
                             <div class="add-association-error" ng-show="trialDetailView.showAddIndIdeError">
-                                Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type
+                                IND/IDE Type, IND/IDE Number, IND/IDE Grantor and IND/IDE Holder Type are required
                             </div>
 
                             <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
@@ -114,18 +114,22 @@
                                 <th>IND/IDE Number</th>
                                 <th>IND/IDE Grantor</th>
                                 <th>IND/IDE Holder Type</th>
-                                <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
-                                <th ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"></th>
+                                <th class="nowrap">NIH Institution, NCI Division/Program Code (if applicable)</th>
+                                <th class="text-center td-icon" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                                    <label class="btn btn-warning" ng-click="trialDetailView.deleteAllAddedIndIdes()">
+                                        <i class="glyphicon" ng-class="trialDetailView.addedIndIdesAll == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                    </label>
+                                </th>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="indIde in trialDetailView.addedIndIdes track by $index" ng-class="indIde._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                    <td class="col-md-2">{{indIde.ind_ide_type}}</td>
-                                    <td class="col-md-2">{{indIde.ind_ide_number}}</td>
-                                    <td class="col-md-2">{{indIde.grantor}}</td>
-                                    <td class="col-md-2">{{indIde.holder_type_name}}</td>
-                                    <td class="col-md-3">{{indIde.nih_nci}}</td>
-                                    <td class="col-md-1" style="vertical-align: middle" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
-                                        <label restriction-field class="btn btn-default" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
+                                    <td>{{indIde.ind_ide_type}}</td>
+                                    <td>{{indIde.ind_ide_number}}</td>
+                                    <td>{{indIde.grantor}}</td>
+                                    <td>{{indIde.holder_type_name}}</td>
+                                    <td>{{indIde.nih_nci}}</td>
+                                    <td class="text-center td-icon"  ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                                        <label restriction-field class="btn btn-warning" ng-click="trialDetailView.toggleSelection($index, 'ind_ide')">
                                             <i ng-class="indIde._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                         </label>
                                     </td>

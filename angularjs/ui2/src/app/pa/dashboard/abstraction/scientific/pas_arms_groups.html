@@ -21,7 +21,7 @@
                                     <input type="text" id="label" name="label" class="form-control" maxlength="62" ng-required="true" ng-model="armView.currentArmsGroup.label" placeholder="label">
                                 </div>
                                 <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.label) && arm_form.label.$error">
-                                    <span class="help-block" ng-message="required">Please enter label</span>
+                                    <span class="help-block" ng-message="required">Label is required</span>
                                 </span>
                             </div>
                             <span ng-show="arm_form.label.$dirty">
@@ -127,7 +127,7 @@
                             <td>{{arms_group.description}}</td>
 
                             <td>
-                                <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="armView.setEditMode($index)">
+                                <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="armView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>

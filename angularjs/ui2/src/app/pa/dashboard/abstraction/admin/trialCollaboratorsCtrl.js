@@ -56,6 +56,19 @@
             vm.addedCollaborators = [];
         } // updateTrial
 
+        vm.checkAllCos = function () {
+            if (vm.selectedAllSites) {
+                vm.selectedAllSites = true;
+            } else {
+                vm.selectedAllSites = false;
+            }
+
+            angular.forEach(vm.curTrial.collaborators, function (item) {
+                item.selected = vm.selectedAllCos;
+                vm.deleteListHandler(vm.curTrial.collaborators);
+            });
+
+        };
 
         vm.saveTrial = function(){
             vm.disableBtn = true;
@@ -191,6 +204,10 @@
         };
 
         function deleteSelected(){
+            if (vm.selectedDeleteCollaboratorsList.length === 0) {
+                // do nothing when nothing is selected for deletion 
+                return;
+            }
             vm.curTrial.collaborators_attributes=[];
             //console.log(vm.selectedDeleteCollaboratorsList);
             for (var i = 0; i < vm.selectedDeleteCollaboratorsList.length; i++) {
