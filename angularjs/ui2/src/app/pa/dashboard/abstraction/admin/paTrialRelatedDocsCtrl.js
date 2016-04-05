@@ -223,6 +223,7 @@
             function saveDocuments(showToastr, formName) {
                 // warning toastr for edited document
                 // cancelEdit();
+                console.info('saving documents....');
                 if (vm.curDoc.edit === true) {
                     // _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
                     vm.formError = 'Cancel or commit the edited document first';
