@@ -116,8 +116,8 @@
                         <th>Type</th>
                         <th>Interventions</th>
                         <th>Description</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Deletion</th>
+                        <th class="text-center td-icon"">Edit</th>
+                        <th class="text-center td-icon">Delete</th>
                         </thead>
                         <tbody>
                         <tr ng-repeat="arms_group in armView.curTrial.arms_groups track by $index" class="animated-item">
@@ -126,12 +126,12 @@
                             <td>{{arms_group.display_interventions}}</td>
                             <td>{{arms_group.description}}</td>
 
-                            <td>
+                            <td class="text-center td-icon">
                                 <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="armView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
-                            <td>
+                            <td class="text-center td-icon">
                                 <input type="checkbox" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" />
                             </td>
                         </tr>

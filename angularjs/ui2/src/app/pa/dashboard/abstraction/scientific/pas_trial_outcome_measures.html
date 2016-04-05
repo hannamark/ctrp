@@ -49,11 +49,10 @@
                                     {{255 - om_form.title.$viewValue.length}} characters left
                                 </span>
 
-                        </div>
-
                             <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.title) && om_form.title.$error">
                               <span class="help-block" ng-message="required">Title must be Entered</span>
                             </span>
+                        </div>
                     </div>
                 <!--/fieldset-->
                 <!-- fieldset for Time Frame -->
@@ -73,11 +72,11 @@
                                 <span ng-show="om_form.time_frame.$dirty">
                                     {{255 - om_form.time_frame.$viewValue.length}} characters left
                                 </span>
-                        </div>
 
                             <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.time_frame) && om_form.time_frame.$error">
                               <span class="help-block" ng-message="required">Time Frame must be Entered</span>
                             </span>
+                        </div>
                     </div>
                 <!--/fieldset-->
 
@@ -118,11 +117,11 @@
                                 >
                             <option value="">- Please select a safety issue type...</option>
                         </select>
-                    </div>
                      <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.safety_issue) &&
-                                    om_form.safety_issue.$error">
-                    <span class="help-block" ng-message="required">Safety Issue must be Entered</span>
-               </span>
+                                            om_form.safety_issue.$error">
+                            <span class="help-block" ng-message="required">Safety Issue must be Entered</span>
+                       </span>
+                    </div>
                 </div>
                 </fieldset>
                 <!-- safety issue -->
@@ -197,7 +196,7 @@
                                 </button>
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" />
+                                <input type="checkbox" ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"/>
                             </td>
                         </tr>
                         </tbody>

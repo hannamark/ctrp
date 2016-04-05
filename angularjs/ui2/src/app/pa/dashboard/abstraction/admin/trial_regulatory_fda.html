@@ -8,7 +8,7 @@
             <h5>The information in this section is REQUIRED to enable "Upload from NCI CTRP" in ClinicalTrials.gov.</h5>
 
             <div class="row">
-                <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial">
+                <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
 
                     <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Responsible Party:</legend>
@@ -207,7 +207,9 @@
                     </fieldset>
                     <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="trialDetailView.updateTrial()">Save</button>
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
                             <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field>
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
