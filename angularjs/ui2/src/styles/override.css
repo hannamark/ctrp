@@ -1179,3 +1179,20 @@ input[type="text"].ui-grid-filter-input:hover{border:1px solid #eeeeee}
 .ui-grid[dir=rtl] .ui-grid-cell{float:right !important}
 .ui-grid[dir=rtl] .ui-grid-column-menu-button{position:absolute;left:1px;top:0;right:inherit}.ui-grid[dir=rtl] .ui-grid-cell:first-child,.ui-grid[dir=rtl] .ui-grid-header-cell:first-child,.ui-grid[dir=rtl] .ui-grid-footer-cell:first-child{border-right:0}.ui-grid[dir=rtl] .ui-grid-cell:last-child,.ui-grid[dir=rtl] .ui-grid-header-cell:last-child{border-right:1px solid #eeeeee;border-left:0}.ui-grid[dir=rtl] .ui-grid-header-cell:first-child .ui-grid-vertical-bar,.ui-grid[dir=rtl] .ui-grid-footer-cell:first-child .ui-grid-vertical-bar,.ui-grid[dir=rtl] .ui-grid-cell:first-child .ui-grid-vertical-bar{width:0}.ui-grid[dir=rtl] .ui-grid-menu-button{z-index:2;position:absolute;left:0;right:auto;background:#daecf4;border:1px solid #eeeeee;cursor:pointer;min-height:27px;font-weight:normal}.ui-grid[dir=rtl] .ui-grid-menu-button .ui-grid-menu{left:0;right:auto}.ui-grid[dir=rtl] .ui-grid-filter-container .ui-grid-filter-button{right:initial;left:0}.ui-grid[dir=rtl] .ui-grid-filter-container .ui-grid-filter-button [class^="ui-grid-icon"]{right:initial;left:10px}.ui-grid-animate-spin{-moz-animation:ui-grid-spin 2s infinite linear;-o-animation:ui-grid-spin 2s infinite linear;-webkit-animation:ui-grid-spin 2s infinite linear;animation:ui-grid-spin 2s infinite linear;display:inline-block}@-moz-keyframes ui-grid-spin{0%{-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-moz-transform:rotate(359deg);-o-transform:rotate(359deg);-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@-webkit-keyframes ui-grid-spin{0%{-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-moz-transform:rotate(359deg);-o-transform:rotate(359deg);-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@-o-keyframes ui-grid-spin{0%{-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-moz-transform:rotate(359deg);-o-transform:rotate(359deg);-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@-ms-keyframes ui-grid-spin{0%{-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-moz-transform:rotate(359deg);-o-transform:rotate(359deg);-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@keyframes ui-grid-spin{0%{-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-moz-transform:rotate(359deg);-o-transform:rotate(359deg);-webkit-transform:rotate(359deg);transform:rotate(359deg)}}.ui-grid{color:#003f59}
 
+
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+    line-height: 1em;
+    padding: 3px 5px;
+    height: 22px;
+    white-space: normal;
+    -ms-text-overflow: clip;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    overflow: visible;
+}
