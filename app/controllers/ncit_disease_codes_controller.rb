@@ -62,14 +62,10 @@ class NcitDiseaseCodesController < ApplicationController
   end
 
   def get_tree
-    root_node = NcitDiseaseCode.first
-    while root_node.parents.length > 0 do
-      root_node = root_node.parents.first
-    end
-
-    @ncit_tree = {id: root_node.id, nt_term_id: root_node.nt_term_id, name: root_node.menu_display_name, __children__: [], __expanded__: false,}
-    root_node.children.each do |child|
-      @ncit_tree[:__children__].append({id: child.id, nt_term_id: child.nt_term_id, name: child.menu_display_name})
+    if NcitDiseaseCode.exists?(params[:disease_id])
+      @ncit_tree = generate_tree(NcitDiseaseCode.find(params[:disease_id]))
+    else
+      @ncit_tree = {}
     end
   end
 
@@ -83,4 +79,17 @@ class NcitDiseaseCodesController < ApplicationController
     def ncit_disease_code_params
       params.require(:ncit_disease_code).permit(:disease_code, :nt_term_id, :preferred_name, :menu_display_name)
     end
+
+  def generate_tree (current_disease)
+    current_node = {id: current_disease.id, Name: current_disease.menu_display_name, nt_term_id: current_disease.nt_term_id}
+
+    while current_disease.parents.length > 0 do
+      current_disease = current_disease.parents.first
+      child_node = current_node
+      current_node = {id: current_disease.id, Name: current_disease.menu_display_name, nt_term_id: current_disease.nt_term_id, __children__: []}
+      current_node[:__children__].append(child_node)
+    end
+
+    return current_node
+  end
 end

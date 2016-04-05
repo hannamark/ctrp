@@ -1,8 +1,22 @@
 <div class="row">
-    <form>
+    <form class="form form-horizontal">
         <fieldset class="sub-bordered">
             <legend class="sub-bordered">Disease Tree</legend>
+
+            <div class="form-group">
+                <label for="disease_id" class="control-label col-xs-12 col-sm-3">Disease ID:</label>
+                <div class="col-xs-12 col-sm-5">
+                    <input name="disease_id" id="disease_id" ng-model="diseaseView.disease_id" class="form-control input-sm">
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <button type="button" restriction-field class="btn btn-primary" id="search_btn" ng-click="diseaseView.getTree()">
+                        Get Tree
+                    </button>
+                </div>
+            </div>
+
             <tree-dnd tree-data="ncitTree" icon-leaf="none"></tree-dnd>
         </fieldset>
     </form>
 </div>
+

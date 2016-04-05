@@ -247,6 +247,7 @@ Rails.application.routes.draw do
     resources :ncit_disease_codes do
       collection do
         get 'get_tree'
+        post 'get_tree'
       end
     end
   end

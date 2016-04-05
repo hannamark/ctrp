@@ -205,10 +205,7 @@
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_disease.html',
                 controller: 'pasDiseaseCtrl as diseaseView',
                 resolve: {
-                    DiseaseService: 'DiseaseService',
-                    ncitTreeObj: function(DiseaseService) {
-                        return DiseaseService.getNcitTree();
-                    }
+                    DiseaseService: 'DiseaseService'
                 },
                 section: 'pa',
                 ncyBreadcrumb: {

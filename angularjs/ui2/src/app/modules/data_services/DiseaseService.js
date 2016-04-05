@@ -27,8 +27,8 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.NCIT_DISEASE_CODE_LIST);
         }
 
-        function getNcitTree() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.NCIT_TREE);
+        function getNcitTree(treeParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.NCIT_TREE, treeParams);
         }
 
     }
