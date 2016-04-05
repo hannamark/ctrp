@@ -13,7 +13,7 @@
                 Trial Related Documents <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
               </uib-accordion-heading>
                   <div class="row">
-                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
+                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments('true', 'trial_docs_form')">
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                             <legend class="sub-bordered">Trial Related Documents</legend>
                                 <div class="row top-buffer">
@@ -130,7 +130,9 @@
                                 <div class="row">
                                    <div class="col-sm-3"></div>
                                    <div class="btn-toolbar col-xs-12 col-sm-9">
-                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="trialRelatedDocsView.saveBtnDisabled">
+                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field
+                                         ng-disabled="trialRelatedDocsView.saveBtnDisabled"
+                                         ng-click="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
                                        <i class="glyphicon glyphicon-ok"></i>  Save
                                      </button>
                                      <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>
