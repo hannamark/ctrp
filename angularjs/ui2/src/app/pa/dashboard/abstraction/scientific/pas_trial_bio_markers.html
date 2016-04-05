@@ -271,8 +271,8 @@
                             <th>Specimen Type</th>
                             <th>Record Status</th>
 
-                            <th class="text-center">Edit</th>
-                            <th class="text-center">Deletion</th>
+                            <th class="text-center td-icon">Edit</th>
+                            <th class="text-center td-icon">Delete</th>
                             </thead>
                             <tbody>
 
@@ -297,7 +297,7 @@
                                 <td>
                                     {{bio_marker.record_status}}
                                 </td>
-                                <td>
+                                <td class="text-center td-icon">
                                     <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="markersView.setEditMode($index)">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </button>
