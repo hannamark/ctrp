@@ -43,7 +43,7 @@
                         <thead>
                         <th>Anatomic Site Name</th>
                         <th class="text-center td-icon">
-                            <input type="checkbox" ng-model="anatomicView.selectedAllAS" ng-click="anatomicView.checkAllAS()" />
+                            <input type="checkbox" restriction-field ng-model="anatomicView.selectedAllAS" ng-click="anatomicView.checkAllAS()" />
                         </th>
                         </thead>
                         <tbody>
@@ -51,7 +51,7 @@
                             <!--<tr ng-repeat="participating_site in anatomicViewView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                             <td>{{anatomic_site.anatomic_site.name}}</td>
                             <td class="text-center td-icon">
-                                <input type="checkbox" ng-model="anatomic_site.selected" ng-change="anatomicView.deleteListHandler(anatomicView.curTrial.anatomic_site_wrappers)"  ng-click="anatomicView.selectedAllAS = false"/>
+                                <input type="checkbox" restriction-field ng-model="anatomic_site.selected" ng-change="anatomicView.deleteListHandler(anatomicView.curTrial.anatomic_site_wrappers)"  ng-click="anatomicView.selectedAllAS = false"/>
                             </td>
                         </tr>
                         </tbody>
