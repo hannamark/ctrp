@@ -43,12 +43,11 @@
 
             // callback for the click event
             element.bind('click', function() {
-                 console.log('isDeleted? ', attrs.isDeleted);
-                 if (scope.model._destroy === false || scope.model.status !== 'deleted') {
+                 if (scope.$eval(attrs.isDeleted) === false) {
                     // show the popover only when the item is not deleted yet
-                    // attrs.$observe?
                     popover.show();
                 } else {
+                    // if deleted, toggle its status
                     scope.statusToggler();
                 }
             });
@@ -58,13 +57,11 @@
             scope.cancelComment = cancelComment;
 
             function saveComment(comment) {
-                console.info('saving comment: ', comment);
                 scope.saveHandler({why_deleted: comment});
                 popover.hide();
             }
 
             function cancelComment() {
-                console.info('canceled comment');
                 popover.hide();
             }
 
