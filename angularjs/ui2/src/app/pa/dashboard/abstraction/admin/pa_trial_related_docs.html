@@ -1,25 +1,3 @@
-<!-- <script type="text/ng-template" id="comment_for_deletion.html">
-    <div class="popover" tabindex="-1" ng-show="content">
-    <div class="arrow"></div>
-    <h3 class="popover-title" ng-bind-html="title" ng-show="title"></h3>
-    <div class="popover-content">
-    <form name="popoverForm">
-      <p ng-bind-html="content" style="min-width:300px;"></p>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-addon">Comment</div>
-          <input class="form-control" type="text" placeholder="why deleted?">
-        </div>
-      </div>
-      <div class="form-actions">
-        <button type="button" class="btn btn-danger" ng-click="$hide()">Cancel</button>
-        <button type="button" class="btn btn-primary" ng-click="popover.saved=true;$hide()">Save Comment</button>
-      </div>
-    </form>
-    </div>
-    </div>
-</script> -->
-
 <div class="row">
     <uib-accordion close-others="false">
          <uib-accordion-group is-open="paTrialOverview.accordionOpen">
@@ -111,34 +89,6 @@
                                                      </label>
                                                  </td>
                                                  <td class="text-center td-icon">
-                                                     <!-- <label class="btn btn-warning" restriction-field
-                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
-                                                         ng-click="trialRelatedDocsView.deleteDoc($index)">
-                                                         <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                     </label> -->
-                                                     <!-- popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}" -->
-                                                     <!-- <button type="button" class="btn btn-warning"
-                                                         restriction-field
-                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
-                                                         data-title="{{doc.document_type}}: {{doc.file_name}}"
-                                                         data-content="{{doc.file_name}}"
-                                                         data-template-url="comment_for_deletion.html"
-                                                         data-animation="am-flip-x"
-                                                         data-delay="50"
-                                                         data-placement="auto left"
-                                                         ng-click="trialRelatedDocsView.deleteDoc($index)" bs-popover>
-                                                         <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                     </button> -->
-                                                     <!-- ng-click="trialRelatedDocsView.deleteDoc($index)" -->
-                                                     <!-- <button type="button" class="btn btn-warning"
-                                                         restriction-field
-                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
-
-                                                         comment-popover="doc.why_deleted"
-                                                         on-save="trialRelatedDocsView.addDeleteComment(doc.why_deleted, $index)"
-                                                         >
-                                                         <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                     </button> -->
                                                      <label class="btn btn-warning" restriction-field
                                                          comment-popover="doc"
                                                          on-save="trialRelatedDocsView.deleteDoc(why_deleted, $index)"
