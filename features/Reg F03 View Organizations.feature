@@ -34,7 +34,12 @@ As a CTRP User, I am able to View Organizations
       
   And I should not be allowed to edit person parameters
 And I should not view, edit or delete comments added by curators
-When I click on Family Link
+And the following button type should also be invisible to the user
+
+      |Delete This Organization |
+      |Reset Button  |
+      |Save Button  |
+When I click on Families Link
 Then I will view family details type
 
       |Family Name  |
