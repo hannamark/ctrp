@@ -21,7 +21,9 @@
     'ctrp.module.dataservices',
     'ctrp.module.common',
     'ctrp.module.constants',
-    'ctrp.module.PromiseTimeoutService'
+    'ctrp.module.PromiseTimeoutService',
+    'mgcrea.ngStrap.tooltip',
+    'mgcrea.ngStrap.popover'
   ]);
 
 })();
