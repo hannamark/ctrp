@@ -106,18 +106,18 @@
                       </th>
                     </thead>
                     <tbody>
-                          <tr>
-                              <td>Lead Organization Trial ID</td>
-                              <td>
-                                {{generalTrialDetailView.leadProtocolId}}
-                              </td>
-                              <td class="text-center td-icon">
-                                <button type="button" class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
-                                  <i class="glyphicon glyphicon-edit"></i>
-                                </button>
-                              </td>
-                              <td class="text-center">--</td>
-                          </tr>
+                      <tr>
+                          <td>Lead Organization Trial ID</td>
+                          <td>
+                            {{generalTrialDetailView.leadProtocolId}}
+                          </td>
+                          <td class="text-center td-icon">
+                            <button type="button" class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
+                              <i class="glyphicon glyphicon-edit"></i>
+                            </button>
+                          </td>
+                          <td class="text-center">--</td>
+                      </tr>
                       <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
                         <td>{{otherId.identifierName}}</td>
                         <td>

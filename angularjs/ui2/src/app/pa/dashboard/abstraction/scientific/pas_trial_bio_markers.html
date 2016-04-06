@@ -21,7 +21,6 @@
                                            ng-maxlength="300"
                                            maxlength="300"
                                            ng-required="true">
-                                    </input>
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.name) && marker_form.name.$error">
                                         <span class="help-block" ng-message="required">Name must be entered</span>
                                     </span>
@@ -54,7 +53,7 @@
                                            ng-model="markersView.currentBioMarker.protocol_marker_name"
                                            ng-maxlength="300"
                                            maxlength="300">
-                                    </input>
+
                                 </div>
                             </div>
                             <!-- Protocol Marker Name Ends -->
@@ -88,14 +87,14 @@
                                                    ng-maxlength="300"
                                                    maxlength="300"
                                                    ng-required="markersView.isEvalTypeOtherChecked" placeholder="Other Evaluation Type">
-                                            </input>
+
                                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.evaluation_type_other) && marker_form.evaluation_type_other.$error">
                                                 <span class="help-block" ng-message="required">Other Evaluation Type is Required</span>
                                             </span>
                                         </div>
                                     </div>
 
-                                    <span class="help-block top-offset-xss" ng-show="required" class="required" ng-hide="!markersView.show_eval_type_alert">Evaluation Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_eval_type_alert">Evaluation Type must be entered</span>
                                 </div>
                             </div>
                         </fieldset>
@@ -129,13 +128,13 @@
                                                    ng-maxlength="300"
                                                    maxlength="300"
                                                    ng-required="markersView.isAssayTypeOtherChecked" placeholder="Other Assay Type">
-                                            </input>
+
                                             <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.assay_type_other) && marker_form.assay_type_other.$error">
                                                 <span class="help-block" ng-message="required">Other Assay Type is Required</span>
                                             </span>
                                         </div>
                                     </div>
-                                    <span class="help-block top-offset-xss" ng-show="required" class="required" ng-hide="!markersView.show_assay_type_alert">Assay Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_assay_type_alert">Assay Type must be entered</span>
                                 </div>
                             </div>
                         </fieldset>
@@ -177,7 +176,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <span class="help-block top-offset-xss" ng-show="required" class="required" ng-hide="!markersView.show_biomarker_purpose_alert">Biomarker Purpose must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_biomarker_purpose_alert">Biomarker Purpose must be entered</span>
                                     <!--
                                         <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_purpose) && marker_form.biomarker_purpose.$error">
                                             <span class="help-block" ng-message="required">Biomarker Purpose must be entered</span>
@@ -217,14 +216,14 @@
                                                    ng-maxlength="300"
                                                    maxlength="300"
                                                    ng-required="markersView.isSpecTypeOtherChecked" placeholder="Other Specimen Type">
-                                            </input>
+
                                             <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.specimen_type_other) && marker_form.specimen_type_other.$error">
                                                 <span class="help-block" ng-message="required">Other Specimen Type is Required</span>
                                             </span>
                                         </div>
                                     </div>
 
-                                    <span class="help-block top-offset-xss" ng-show="required" class="required" ng-hide="!markersView.show_spec_type_alert">Specimen Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_spec_type_alert">Specimen Type must be entered</span>
 
                                 </div>
                             </div>
@@ -243,14 +242,8 @@
                         </div>
                     </uib-accordion-group>
                 </uib-accordion>
-            </div>
         </form>
     </div>
-
-
-
-
-
 
     <!-- Grid the shows all the Bio MarkerS -->
     <div class="row">

@@ -4,10 +4,10 @@
         .controller('pasTrialOutcomeMeasuresCtrl', pasTrialOutcomeMeasuresCtrl);
 
     pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', '$filter', 'TrialService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
-        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj'];
+        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj', '$location','$anchorScroll'];
 
     function pasTrialOutcomeMeasuresCtrl($scope, $filter, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
-                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
+                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentOutcomeMeasure= {};
@@ -41,6 +41,9 @@
         vm.setToDefaultMode = function() {
             vm.addMode = vm.editMode = vm.copyMode = false;
             vm.copyOM = {};
+
+            $location.hash('section_top');
+            $anchorScroll();
         }
 
         vm.checkAllOM = function () {
