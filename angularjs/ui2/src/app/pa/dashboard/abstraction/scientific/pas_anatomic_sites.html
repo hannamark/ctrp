@@ -59,7 +59,7 @@
 
                     <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                         <button type="submit" class="btn btn-primary pull-right" id="add_anatomic_site" restriction-field ng-click="anatomicView.setAddMode()">Add Anatomic Site</button>
-                        <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="anatomicView.deleteSelected()" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0" ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length">Delete Anatomic Sites</button>
+                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="anatomicView.deleteSelected()" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0" ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length">Delete Anatomic Sites</button>
                     </div>
 
                 </div>
