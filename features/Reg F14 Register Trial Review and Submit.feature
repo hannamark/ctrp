@@ -64,13 +64,11 @@ Scenario Outline: #2 I can review my registration with errors
 Given I have selected the option to Register a trial <TrialType>
 And I have completed the registration sections but with errors
 When I have selected Review Trial
-Then the CTRP application will check that all required fields have been entered
-And the CTRP application will check that all registration sections have been completed
-And the registration errors will be displayed
+Then the registration errors will be displayed
 And the option to Register Trial will be not available
 
 Examples:
-  |trialType                |
+  |TrialType                |
   |National                 |
   |Externally Peer-Reviewed |
   |Institutional            |
