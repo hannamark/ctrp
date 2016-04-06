@@ -72,8 +72,14 @@
                         // cancel editing the doc that is to be deleted
                         cancelEdit();
                     }
-                    vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
-                    console.info('new status: ', vm.curTrialDetailObj.trial_documents[index].status);
+                    $timeout(function() {
+                        // apply the changes to the scope
+                        vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+                        if (vm.curTrialDetailObj.trial_documents[index].status === 'active') {
+                            vm.curTrialDetailObj.trial_documents[index].why_deleted = null;
+                        }
+                        console.info('new status: ', vm.curTrialDetailObj.trial_documents[index].status);
+                    }, 0);
                 }
             }
 

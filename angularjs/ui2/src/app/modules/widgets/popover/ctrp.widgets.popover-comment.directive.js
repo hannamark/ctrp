@@ -16,7 +16,7 @@
             restrict: 'A',
             transclude: true,
             scope: {
-                model: '=commentPopover', // data object or string
+                model: '=commentPopover', // data object (a reference) or string
                 saveHandler: '&onSave',
                 statusToggler: '&toggleStatus',
                 isDeleted: '@'
@@ -63,7 +63,6 @@
             }
             function cancelComment() {
                 console.info('canceled comment');
-                scope.model = null; // save null?
                 popover.hide();
             }
         }
