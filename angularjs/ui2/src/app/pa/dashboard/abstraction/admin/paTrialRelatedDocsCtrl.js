@@ -41,7 +41,7 @@
             // actions
             vm.saveDocuments = saveDocuments;
             vm.deleteDoc = deleteDoc;
-            vm.toggleDeleteFlag = toggleDeleteFlag;
+            vm.toggleDeleteStatus = toggleDeleteStatus;
             vm.editDoc = editDoc;
             vm.cancelEdit = cancelEdit;
             vm.upsertDoc = upsertDoc; //upsertDoc;
@@ -64,7 +64,7 @@
                 }, 0);
             } //getTrialDetailCopy
 
-            function toggleDeleteFlag(index) {
+            function toggleDeleteStatus(index) {
                 console.info('toggling status: ', index);
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
@@ -88,7 +88,7 @@
                 if (deletionComment === null || deletionComment.trim().length === 0) {
                     return;
                 }
-                toggleDeleteFlag(index);
+                toggleDeleteStatus(index);
             }
 
             var prevFile = '';

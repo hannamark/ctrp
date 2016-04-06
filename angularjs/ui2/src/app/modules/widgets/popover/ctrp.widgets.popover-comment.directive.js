@@ -29,7 +29,7 @@
         function linkerFn(scope, element, attrs) {
 
             var popover = $popover(element, {
-                title: 'Comment for the deletion',
+                title: 'Add Comment on Deletion',
                 // contentTemplate: attrs.template || defaultTemplateUrl,
                 templateUrl: attrs.template || defaultTemplateUrl,
                 html: true,
@@ -53,6 +53,7 @@
                 }
             });
 
+            scope.$on('$destroy', cleanupPopover); // clean up the popover
             scope.saveComment = saveComment;
             scope.cancelComment = cancelComment;
 
@@ -61,9 +62,14 @@
                 scope.saveHandler({why_deleted: comment});
                 popover.hide();
             }
+
             function cancelComment() {
                 console.info('canceled comment');
                 popover.hide();
+            }
+
+            function cleanupPopover() {
+                popover.$destroy();
             }
         }
     }

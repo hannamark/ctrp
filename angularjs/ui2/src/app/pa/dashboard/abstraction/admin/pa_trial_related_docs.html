@@ -143,7 +143,7 @@
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
                                                          comment-popover="doc"
                                                          on-save="trialRelatedDocsView.deleteDoc(why_deleted, $index)"
-                                                         toggle-status="trialRelatedDocsView.toggleDeleteFlag($index)"
+                                                         toggle-status="trialRelatedDocsView.toggleDeleteStatus($index)"
                                                          is-deleted="{{doc.status == 'deleted'}}"
                                                          >
                                                          <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
