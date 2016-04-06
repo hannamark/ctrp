@@ -1,4 +1,4 @@
-<strong>Arms Groups</strong><!-- Grid the shows all the Anatomic Sites -->
+<!-- Grid the shows all the Anatomic Sites -->
 <div class="row">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
@@ -9,24 +9,24 @@
             <div class="form-group no-bottom-margin" ng-if="armView.addEditMode">
 
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
-                    <legend class="sub-bordered">Add/Edit Arms Groups:</legend>
+                    <legend class="sub-bordered">Add/Edit Arms Groups</legend>
                     <form name="arm_form" role="form" class="form-horizontal" novalidate ctrp-submit="armView.updateTrial()">
 
                         <fieldset class="sub-bordered" restriction-field>
                             <legend class="sub-bordered">Label:</legend>
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.label)}">
                             <!--div class="form-group"-->
-                                <label for="label" class="control-label col-xs-12 col-sm-3">Label</label>
+                                <label for="label" class="control-label col-xs-12 col-sm-3">Label:</label>
                                 <div class="col-xs-6 col-sm-9">
                                     <input type="text" id="label" name="label" class="form-control" maxlength="62" ng-required="true" ng-model="armView.currentArmsGroup.label" placeholder="label">
                                 </div>
                                 <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.label) && arm_form.label.$error">
-                                    <span class="help-block" ng-message="required">Label is required</span>
+                                    <span class="help-block" ng-message="required">Label is Required</span>
+                                </span>
+                                <span ng-show="arm_form.label.$dirty">
+                                        {{62 - arm_form.label.$viewValue.length}} characters left
                                 </span>
                             </div>
-                            <span ng-show="arm_form.label.$dirty">
-                                    {{62 - arm_form.label.$viewValue.length}} characters left
-                            </span>
                         </fieldset>
                         <fieldset class="sub-bordered" restriction-field ng-show="armView.interventional">
                             <div class="form-group">
@@ -66,7 +66,7 @@
                                 </div>
                             </fieldset>
                             <fieldset  class="sub-bordered" restriction-field>
-                                <legend class="sub-bordered">Intervention Assignment:</legend>
+                                <legend class="sub-bordered">Intervention Assignment</legend>
                                 <div >
                                     <table class="table table-bordered table-striped table-hover" >
                                         <thead>
@@ -108,16 +108,18 @@
                 </fieldset>
             </div>
             <fieldset ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-                <legend class="sub-bordered">List of Arms Groups:</legend>
+                <legend class="sub-bordered" ng-show="markersView.selectedDeleteBioMarkersList.length">List of Arms Groups:</legend>
                 <div class="form-group table-responsive">
-                    <table class="table table-bordered table-striped table-hover">
+                    <table class="table table-bordered table-striped table-hover" ng-show="armView.curTrial.arms_groups.length">
                         <thead>
                         <th>Label</th>
                         <th>Type</th>
                         <th>Interventions</th>
                         <th>Description</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Deletion</th>
+                        <th class="text-center td-icon"">Edit</th>
+                        <th class="text-center td-icon">
+                            <input type="checkbox" restriction-field ng-model="armView.selectedAllAG" ng-click="armView.checkAllAG()" />
+                        </th>
                         </thead>
                         <tbody>
                         <tr ng-repeat="arms_group in armView.curTrial.arms_groups track by $index" class="animated-item">
@@ -126,13 +128,13 @@
                             <td>{{arms_group.display_interventions}}</td>
                             <td>{{arms_group.description}}</td>
 
-                            <td>
+                            <td class="text-center td-icon">
                                 <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="armView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
-                            <td>
-                                <input type="checkbox" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" />
+                            <td class="text-center td-icon">
+                                <input type="checkbox" restriction-field ng-click="armView.selectedAllAG = false" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" />
                             </td>
                         </tr>
                         </tbody>
@@ -140,7 +142,7 @@
 
                     <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                         <button type="submit" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field ng-click="armView.setAddMode()">Add Arms Groups</button>
-                        <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()">Delete Arms Groups</button>
+                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()" ng-disabled="!armView.selectedDeleteArmsGroupsList.length" ng-show="armView.curTrial.arms_groups.length">Delete Arms Groups</button>
                     </div>
 
                 </div>

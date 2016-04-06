@@ -8,10 +8,10 @@
             <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialHistoryView.updateTrialStatuses()">
 
                 <div class="row">
-                    <div class="form-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                        <label for="start_date" class="control-label col-xs-12 col-sm-2">Start Date:</label>
-                        <div class="col-xs-12 col-sm-3">
-                            <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                    <div class="form-group" date-date-format="yyyy-mm-dd">
+                        <label for="start_date" class="control-label col-xs-12 col-sm-3">Start Date:</label>
+                        <div class="col-xs-12 col-sm-2">
+                            <div class="input-group add-on date datepicker min-width-md" date-date-format="yyyy-mm-dd">
                                 <input type="text" id="start_date" name="status_date" class="form-control input-sm"
                                        uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
                                        ng-click="trialHistoryView.openCalendar($event, 'start_date')"
@@ -26,8 +26,8 @@
                             </div>
                         </div>
                         <label for="end_date" class="control-label col-xs-12 col-sm-1">End Date:</label>
-                        <div class="col-xs-12 col-sm-3">
-                            <div class="input-group add-on date datepicker">
+                        <div class="col-xs-12 col-sm-2">
+                            <div class="input-group add-on date datepicker min-width-md">
                                 <input type="text" id="end_date" name="end_date" class="form-control input-sm"
                                        uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
                                        ng-click="trialHistoryView.openCalendar($event, 'end_date')"
@@ -42,13 +42,13 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-3"></div>
+                        <div class="col-xs-12 col-sm-4"></div>
                     </div>
                     <div class="form-group no-bottom-margin" >
                         <div class="col-sm-3"></div>
                         <div class="btn-toolbar col-xs-12 col-sm-9">
                             <button type="button" class="btn btn-primary pull-right" id="submit_btn" ng-click="trialHistoryView.submit()" restriction-field>
-                                Submit
+                                <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
                         </div>
                     </div>

@@ -4,10 +4,10 @@
         .controller('pasTrialOutcomeMeasuresCtrl', pasTrialOutcomeMeasuresCtrl);
 
     pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', '$filter', 'TrialService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
-        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj'];
+        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj', '$location','$anchorScroll'];
 
     function pasTrialOutcomeMeasuresCtrl($scope, $filter, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
-                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
+                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentOutcomeMeasure= {};
@@ -41,6 +41,9 @@
         vm.setToDefaultMode = function() {
             vm.addMode = vm.editMode = vm.copyMode = false;
             vm.copyOM = {};
+
+            $location.hash('section_top');
+            $anchorScroll();
         }
 
         vm.checkAllOM = function () {
@@ -104,6 +107,7 @@
                     vm.setToDefaultMode();
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 }
+                vm.selectedAllOM = false;
             }).catch(function(err) {
                 console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
             });
@@ -128,6 +132,7 @@
             for (var i = 0; i < vm.selectedDeleteOutcomeMeasuresList.length; i++) {
                 vm.deleteOutcomeMeasure( vm.selectedDeleteOutcomeMeasuresList[i].id);
             }
+            resetOutcomeMeasure();
         };
 
         vm.deleteOutcomeMeasure = function(psId){

@@ -33,6 +33,20 @@
             $state.go($state.$current, null, { reload: true });
         };
 
+        vm.checkAllAG = function () {
+            if (vm.selectedAllAG) {
+                vm.selectedAllAG = true;
+            } else {
+                vm.selectedAllAG = false;
+            }
+
+            angular.forEach(vm.curTrial.arms_groups, function (item) {
+                item.selected = vm.selectedAllAG;
+                vm.deleteListHandler(vm.curTrial.arms_groups);
+            });
+
+        };
+
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
                 vm.curTrial.arms_groups_attributes = [];
@@ -86,6 +100,7 @@
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
+                vm.selectedAllAG = false;
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
@@ -175,6 +190,7 @@
                 vm.curTrial.arms_groups_attributes.push(armsGroupsToBeDeletedFromDb);
             }
             vm.saveTrial();
+            vm.selectedAllAG = false;
 
         };
 

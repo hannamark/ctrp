@@ -1,11 +1,3 @@
-<script type="text/ng-template" id="comment_for_deletion.html">
-    <div class="form-group">
-      <label>Comment for deletion:</label>
-      <textarea type="text" ng-model="dynamicPopover.title" class="form-control" rows="4" cols="4"/>
-      <button type="button" class="btn btn-warning" ng-click="trialRelatedDocsView.closePopover()">Close</button>
-    </div>
-</script>
-
 <div class="row">
     <uib-accordion close-others="false">
          <uib-accordion-group is-open="paTrialOverview.accordionOpen">
@@ -13,7 +5,7 @@
                 Trial Related Documents <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
               </uib-accordion-heading>
                   <div class="row">
-                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
+                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments('true', 'trial_docs_form')">
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                             <legend class="sub-bordered">Trial Related Documents</legend>
                                 <div class="row top-buffer">
@@ -97,23 +89,15 @@
                                                      </label>
                                                  </td>
                                                  <td class="text-center td-icon">
-                                                     <!-- <label class="btn btn-warning" restriction-field
+                                                     <label class="btn btn-warning" restriction-field
+                                                         comment-popover="doc"
+                                                         on-save="trialRelatedDocsView.deleteDoc(why_deleted, $index)"
+                                                         toggle-status="trialRelatedDocsView.toggleDeleteStatus($index)"
+                                                         is-deleted="{{doc.status == 'deleted'}}"
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
-                                                         ng-click="trialRelatedDocsView.deleteDoc($index)">
+                                                         >
                                                          <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                     </label> -->
-                                                     <!-- popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}" -->
-                                                     <button type="button" class="btn btn-warning" restriction-field
-                                                         uib-popover-template="trialRelatedDocsView.commentPopOverOptions.templateUrl"
-                                                         tooltip-trigger="click"
-                                                         tooltip-enable="doc.status == 'deleted'"
-                                                         popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}"
-                                                         popover-title="{{doc.file_name}}"
-                                                         tooltip-is-open="{{trialRelatedDocsView.commentPopOverOptions.isOpen}}"
-                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
-                                                         ng-click="trialRelatedDocsView.deleteDoc($index)">
-                                                         <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                     </button>
+                                                     </label>
                                                  </td>
                                              </tr>
                                          </tbody>
@@ -130,7 +114,9 @@
                                 <div class="row">
                                    <div class="col-sm-3"></div>
                                    <div class="btn-toolbar col-xs-12 col-sm-9">
-                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="trialRelatedDocsView.saveBtnDisabled">
+                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field
+                                         ng-disabled="trialRelatedDocsView.saveBtnDisabled"
+                                         ng-click="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
                                        <i class="glyphicon glyphicon-ok"></i>  Save
                                      </button>
                                      <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>

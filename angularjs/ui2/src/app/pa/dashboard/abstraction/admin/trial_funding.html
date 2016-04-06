@@ -22,7 +22,7 @@
                                    ng-required="!trialDetailView.curTrial.grant_question"> No
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.grant_question)">
-                                    Grant question is required
+                                    Grant question is Required
                                 </span>
                             </div>
                         </div>
@@ -113,11 +113,11 @@
 
                                 <input type="hidden" name="grant_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.grant_question === 'Yes' && trialDetailView.grantNum === 0">
                                                         <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.grant_dummy)">
-                                                            Grant is required
+                                                            Grant is Required
                                                         </span>
 
                                 <div class="add-association-error" ng-show="trialDetailView.showAddGrantError">
-                                    Funding Mechanism, Institute Code, Serial Number and select a NCI Division/Program Code are required
+                                    Funding Mechanism, Institute Code, Serial Number and select a NCI Division/Program Code are Required
                                 </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedGrants.length > 0">
@@ -147,7 +147,9 @@
                     </fieldset>
                     <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field >Save</button>
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field >
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
                             <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field ng-disabled="trialDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
