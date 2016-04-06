@@ -80,16 +80,92 @@ class NcitDiseaseCodesController < ApplicationController
       params.require(:ncit_disease_code).permit(:disease_code, :nt_term_id, :preferred_name, :menu_display_name)
     end
 
+  # Generate tree given a node
   def generate_tree (current_disease)
-    current_node = {id: current_disease.id, Name: current_disease.menu_display_name, nt_term_id: current_disease.nt_term_id}
+    current_node = {id: current_disease.id, Name: current_disease.menu_display_name, nt_term_id: current_disease.nt_term_id, __children__: [], __expanded__: true}
+    queue = Queue.new
+    queue.push(current_node)
+    path_arr = []
 
-    while current_disease.parents.length > 0 do
-      current_disease = current_disease.parents.first
-      child_node = current_node
-      current_node = {id: current_disease.id, Name: current_disease.menu_display_name, nt_term_id: current_disease.nt_term_id, __children__: []}
-      current_node[:__children__].append(child_node)
+    while !queue.empty? do
+      current_node = queue.pop
+      current_disease = NcitDiseaseCode.find(current_node[:id])
+
+      if current_disease.parents.length == 0
+        # A complete path
+        path_arr.append(current_node)
+      else
+        # For each parent, create a new path
+        current_disease.parents.each do |parent|
+          parent_node = {id: parent.id, Name: parent.menu_display_name, nt_term_id: parent.nt_term_id, __children__: [], __expanded__: true}
+          # Make a deep copy before appending the child
+          parent_node[:__children__].append(current_node.deep_dup)
+          queue.push(parent_node)
+        end
+      end
     end
 
-    return current_node
+    # Get unique set of root nodes
+    set = Set.new
+    path_arr.each do |path|
+      set.add(path[:id])
+    end
+
+    tree_arr = []
+    set.each do |root_id|
+      merged_path = {}
+      path_arr.each do |path|
+        if path[:id] == root_id
+          merged_path = merge_two_path(merged_path, path)
+        end
+      end
+      tree_arr.append(merged_path)
+    end
+
+    return tree_arr
+  end
+
+  # Merge two tree path with same root
+  def merge_two_path (path1, path2)
+    if path1.empty?
+      return path2
+    else
+      # Save the root
+      root_node = path1
+
+      parent_node = path1
+      path2 = get_first_child(path2)
+      path1 = find_same_child(path1, path2)
+      # Find the node where two paths diverge
+      while path1.present? && path2.present? && path1[:id] == path2[:id]
+        parent_node = path1
+        path2 = get_first_child(path2)
+        path1 = find_same_child(path1, path2)
+      end
+      # Two children diverge from the same parent
+      parent_node[:__children__].append(path2)
+
+      return root_node
+    end
+  end
+
+  # Find the first child
+  def get_first_child (node)
+    if node[:__children__].length > 0
+      return node[:__children__][0]
+    else
+      return nil
+    end
+  end
+
+  # Find node2 in node1's children
+  def find_same_child (node1, node2)
+    node1[:__children__].each do |child|
+      if child.present? && node2.present? && child[:id] == node2[:id]
+        return child
+      end
+    end
+
+    return nil
   end
 end
