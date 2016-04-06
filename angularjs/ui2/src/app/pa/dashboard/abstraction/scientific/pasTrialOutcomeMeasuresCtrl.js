@@ -43,6 +43,20 @@
             vm.copyOM = {};
         }
 
+        vm.checkAllOM = function () {
+            if (vm.selectedAllOM) {
+                vm.selectedAllOM = true;
+            } else {
+                vm.selectedAllOM = false;
+            }
+
+            angular.forEach(vm.curTrial.outcome_measures, function (item) {
+                item.selected = vm.selectedAllOM;
+                vm.deleteListHandler(vm.curTrial.outcome_measures);
+            });
+
+        };
+
         vm.saveOutcomeMeasure = function(){
             vm.disableBtn = true;
 
@@ -90,6 +104,7 @@
                     vm.setToDefaultMode();
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 }
+                vm.selectedAllOM = false;
             }).catch(function(err) {
                 console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
             });
@@ -114,6 +129,7 @@
             for (var i = 0; i < vm.selectedDeleteOutcomeMeasuresList.length; i++) {
                 vm.deleteOutcomeMeasure( vm.selectedDeleteOutcomeMeasuresList[i].id);
             }
+            resetOutcomeMeasure();
         };
 
         vm.deleteOutcomeMeasure = function(psId){

@@ -1,3 +1,11 @@
+<script type="text/ng-template" id="comment_for_deletion.html">
+    <div class="form-group">
+      <label>Comment for deletion:</label>
+      <textarea type="text" ng-model="dynamicPopover.title" class="form-control" rows="4" cols="4"/>
+      <button type="button" class="btn btn-warning" ng-click="trialRelatedDocsView.closePopover()">Close</button>
+    </div>
+</script>
+
 <div class="row">
     <uib-accordion close-others="false">
          <uib-accordion-group is-open="paTrialOverview.accordionOpen">
@@ -5,11 +13,11 @@
                 Trial Related Documents <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
               </uib-accordion-heading>
                   <div class="row">
-                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
+                    <form name="trial_docs_form" role="form" class="form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments('true', 'trial_docs_form')">
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                             <legend class="sub-bordered">Trial Related Documents</legend>
                                 <div class="row top-buffer">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <!-- <label class="control-label">Document Type</label> -->
                                         <select name="doc_type" id="doc_type"
                                             class="form-control input-sm"
@@ -28,30 +36,26 @@
                                             placeholder="Subtype"
                                             ng-required="trialRelatedDocsView.docSubtypeShown">
                                     </div>
-                                    <div class="col-sm-7">
-                                            <a class='btn btn-primary btn-file' href='javascript:;'>
-                                                Choose File...
-
-                                                <input type="file" restriction-field class="button" ngf-select=""
-                                                       ng-model="trialRelatedDocsView.curDoc.file"
-                                                       name="current_doc" ngf-max-size="10MB"
-                                                style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"
-                                                       onchange='$("#upload-file-info").html($(this).val());' />
-                                            </a><span class='label label-info' id="upload-file-info"></span>
-                                        <button type="button" class="btn btn-primary" ng-hide="trialRelatedDocsView.curDoc.edit"
-                                            ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
-                                            ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
-                                            trialRelatedDocsView.curDoc.file == '' || trial_docs_form.current_doc.$invalid">Add</button>
-                                    </div>
-                                    <div class="col-sm-3" ng-show="trialRelatedDocsView.curDoc.edit">
-                                        <label for="" class="control-label"></label>
-                                        <div class="btn-group inline">
-                                            <button type="button" class="btn btn-warning" ng-click="trialRelatedDocsView.cancelEdit()">Cancel</button>
-                                            <button type="button" class="btn btn-danger" ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
-                                                ng-disabled="trialRelatedDocsView.curDoc.document_type==''">
-                                                Update
-                                            </button>
-                                        </div>
+                                    <span class="col-sm-6">
+                                        <!-- <label for="" class="control-label"></label> -->
+                                        <input type="file" restriction-field class="button btn btn-default" ngf-select=""
+                                               ng-model="trialRelatedDocsView.curDoc.file"
+                                               name="current_doc" ngf-max-size="10MB"
+                                               validate-file-type="{{trialRelatedDocsView.acceptedFileExtensions}}">
+                                        <span ng-hide="trialRelatedDocsView.curDoc.edit">
+                                            <button type="button" class="btn btn-primary"
+                                                    ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
+                                                    ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
+                                            trialRelatedDocsView.curDoc.file == '' || trial_docs_form.current_doc.$invalid">
+                                                <i class="glyphicon glyphicon-plus"></i> Add</button>
+                                        </span>
+                                        <span ng-show="trialRelatedDocsView.curDoc.edit">
+                                                <button type="button" class="btn btn-warning" ng-click="trialRelatedDocsView.cancelEdit()">Cancel</button>
+                                                <button type="button" class="btn btn-primary" ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
+                                                        ng-disabled="trialRelatedDocsView.curDoc.document_type==''">
+                                                    Update
+                                                </button>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row"></div>
@@ -75,8 +79,8 @@
                                                 <th>Document Subtype</th>
                                                 <th class="td-time">Date Added</th>
                                                 <th class="td-name">Added By</th>
-                                                <th>Edit</th>
-                                                <th>Remove</th>
+                                                <th class="text-center td-icon">Edit</th>
+                                                <th class="text-center td-icon">Delete</th>
                                             </tr>
                                          </thead>
                                          <tbody>
@@ -88,16 +92,28 @@
                                                  <td>{{doc.created_at | date: "dd-MMM-yyyy H:mm"}}</td>
                                                  <td>{{doc.added_by.username}} <!-- to be replaced with full name when available --></td>
                                                  <td class="text-center td-icon">
-                                                     <label class="btn btn-warning" restriction-field ng-disabled="doc.status == 'deleted'" ng-click="trialRelatedDocsView.editDoc($index)">
+                                                     <label class="btn btn-primary" restriction-field ng-disabled="doc.status == 'deleted'" ng-click="trialRelatedDocsView.editDoc($index)">
                                                          <i class="glyphicon glyphicon-edit"></i>
                                                      </label>
                                                  </td>
                                                  <td class="text-center td-icon">
-                                                     <label class="btn btn-warning" restriction-field
+                                                     <!-- <label class="btn btn-warning" restriction-field
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
                                                          ng-click="trialRelatedDocsView.deleteDoc($index)">
                                                          <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                     </label>
+                                                     </label> -->
+                                                     <!-- popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}" -->
+                                                     <button type="button" class="btn btn-warning" restriction-field
+                                                         uib-popover-template="trialRelatedDocsView.commentPopOverOptions.templateUrl"
+                                                         tooltip-trigger="click"
+                                                         tooltip-enable="doc.status == 'deleted'"
+                                                         popover-placement="{{trialRelatedDocsView.commentPopOverOptions.placement}}"
+                                                         popover-title="{{doc.file_name}}"
+                                                         tooltip-is-open="{{trialRelatedDocsView.commentPopOverOptions.isOpen}}"
+                                                         ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
+                                                         ng-click="trialRelatedDocsView.deleteDoc($index)">
+                                                         <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                                     </button>
                                                  </td>
                                              </tr>
                                          </tbody>
@@ -114,7 +130,9 @@
                                 <div class="row">
                                    <div class="col-sm-3"></div>
                                    <div class="btn-toolbar col-xs-12 col-sm-9">
-                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="trialRelatedDocsView.saveBtnDisabled">
+                                     <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field
+                                         ng-disabled="trialRelatedDocsView.saveBtnDisabled"
+                                         ng-click="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
                                        <i class="glyphicon glyphicon-ok"></i>  Save
                                      </button>
                                      <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>

@@ -48,13 +48,24 @@ var abstractionTrialDoc = function(){
      */
     this.trialDocSelectADocList = element(by.model('trialRelatedDocsView.curDoc.document_type'));
     this.trialDocSelectADocListAll = element.all(by.model('trialRelatedDocsView.curDoc.document_type'));
-    this.trialDocBrowse = element(by.model('trialRelatedDocsView.curDoc.file'));
+    this.trialDocBrowse = element(by.model('trialRelatedDocsView.curDoc.file')); //by.model('trialRelatedDocsView.curDoc.file')
     this.trialDocAddButton = element(by.buttonText('Add')); // by.css('div[ng-hide="trialRelatedDocsView.curDoc.edit"]')
     this.trialDocSubType = element(by.model('trialRelatedDocsView.curDoc.document_subtype'));
+
+    //Warning Message
+    this.trialDocErrorMsg = element(by.css('.help-block.alert.alert-warning.ng-binding'));
+    this.trialDocRequiredErrorMsg = element(by.binding('trialRelatedDocsView.formError')); //by.css('div[ng-show="trialRelatedDocsView.formError.length > 0"]')
 
     //Save and Reset
     this.trialDocSave = element(by.id('save_btn'));
     this.trialDocReset = element(by.css('button[ng-click="trialRelatedDocsView.resetForm()"]')); //.btn.btn-warning.pull-right
+
+    //Back To Search Result
+    this.backToSearchResult = element(by.id('back_to_search'));
+
+    //Update and Cancel
+    this.trialDocUpdate = element(by.css('.col-sm-6 span:nth-child(3) button:nth-child(2)'));  //button[ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"] //.col-sm-6 .btn.btn-primary  //button.btn.btn-danger
+    this.trialDocCancel = element(by.css('.col-sm-6 span:nth-child(3) button:nth-child(1)'));  //button[ng-click="trialRelatedDocsView.cancelEdit()"]  //.col-sm-6 .btn.btn-warning
 
     //page Header
     this.trialDocHeader = element(by.css('h4.panel-title'));
@@ -72,6 +83,7 @@ var abstractionTrialDoc = function(){
     this.trialTHeadD = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(4)'));
     this.trialTHeadE = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(5)'));
     this.trialTHeadF = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(6)'));
+    this.trialTHeadG = element(by.css('.table.table-bordered.table-striped.table-hover thead th:nth-child(7)'));
 
 
     this.authorityTable = element.all(by.css('.table.table-bordered.table-striped.table-condensed tbody tr'));
@@ -79,14 +91,23 @@ var abstractionTrialDoc = function(){
     this.authorityTableHeaderB = element(by.css('.table.table-bordered.table-striped.table-condensed thead tr th:nth-child(02)'));
     this.tblColARwAExists = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(01) td:nth-child(01)'));
 
-    var deleteA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(06) label'));
-    var deleteB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(06) label'));
-    var deleteC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(06) label'));
-    var deleteD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(06) label'));
-    var deleteE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(06) label'));
-    var deleteF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(06) label'));
-    var deleteG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(06) label'));
-    var deleteH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(06) label'));
+    var deleteA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(07) button'));
+    var deleteB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(07) button'));
+    var deleteC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(07) button'));
+    var deleteD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(07) button'));
+    var deleteE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(07) button'));
+    var deleteF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(07) button'));
+    var deleteG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(07) button'));
+    var deleteH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(07) button'));
+
+    var editA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(06) label:nth-child(1)'));
+    var editB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(06) label:nth-child(1)'));
+    var editC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(06) label:nth-child(1)'));
+    var editD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(06) label:nth-child(1)'));
+    var editE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(06) label:nth-child(1)'));
+    var editF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(06) label:nth-child(1)'));
+    var editG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(06) label:nth-child(1)'));
+    var editH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(06) label:nth-child(1)'));
 
     var tblColARwA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(1)'));
     var tblColARwB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(1)'));
@@ -151,6 +172,24 @@ var abstractionTrialDoc = function(){
 
     var helper = new helperFunctions();
 
+    this.verifyErrorMsg = function (expErrorMsg) {
+        helper.getVerifyRequired(this.trialDocErrorMsg, expErrorMsg, "Error Message");
+    };
+
+    this.verifyRequiredErrorMsg = function (expReqErrorMsg) {
+        helper.getVerifyRequired(this.trialDocRequiredErrorMsg, expReqErrorMsg, "Required Error Message");
+    };
+
+    this.verifyTrialDocTblHeaders = function (getThdA, getThdB, getThdC, getThdD, getThdE, getThdF, getThdG){
+        helper.getVerifyheader(this.trialTHeadA, getThdA, "Verifying Table - File Name - Column");
+        helper.getVerifyheader(this.trialTHeadB, getThdB, "Verifying Table - Document Type - Column");
+        helper.getVerifyheader(this.trialTHeadC, getThdC, "Verifying Table - Socument Subtype - Column");
+        helper.getVerifyheader(this.trialTHeadD, getThdD, "Verifying Table - Date Added - Column");
+        helper.getVerifyheader(this.trialTHeadE, getThdE, "Verifying Table - Added By - Column");
+        helper.getVerifyheader(this.trialTHeadF, getThdF, "Verifying Table - Edit - Column");
+        helper.getVerifyheader(this.trialTHeadG, getThdG, "Verifying Table - Delete - Column");
+    };
+
     this.selectADocument = function(getDocVal){
         helper.selectValueFromList(this.trialDocSelectADocList, getDocVal,"Please select a document - drop down field selected as:["+getDocVal+"]");
     };
@@ -184,6 +223,399 @@ var abstractionTrialDoc = function(){
     this.clickAddButton = function(){
         helper.clickButton(this.trialDocAddButton,"Add - button");
         helper.wait_for(25);
+    };
+
+    this.findDocumentAndVerifyDateAdded = function(expFileName, getDate){
+        //this.waitForElement(tblColARwA, "Table");
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                console.log('i:['+i+']');
+                var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(1)'));
+                var tableDateStamp = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(4)'));
+                getFileName = tableFileName.getText('value');
+                getFileName.then(function(Test1){
+                    console.log("File Name:["+Test1+"]");
+                    if(expFileName === Test1){
+                        getDateAddedVal = tableDateStamp.getText('value');
+                        getDateAddedVal.then(function(Date1){
+                            var spltDate = Date1.split(" ");
+                            console.log("Split Val:["+spltDate[0]+"]");
+                            expect(getDate.toString()).to.eql(spltDate[0].toString());
+                        });
+                    }
+                });
+            }
+        });
+    };
+
+    this.getCurrentDate = function (){
+        var curr_date = ''
+        var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+        var d = new Date();
+        var convCurr_date = d.getDate();
+        var gCurr_date = convCurr_date.toString();
+        if (gCurr_date === '1'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '2'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '3'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '4'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '5'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '6'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '7'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '8'){
+            curr_date = '0'+gCurr_date+'';
+        } else if (gCurr_date === '9'){
+            curr_date = '0'+gCurr_date+'';
+        } else {
+            curr_date = ''+gCurr_date+'';
+        }
+        var curr_month = d.getMonth();
+        var curr_year = d.getFullYear();
+        var getExpectedDate = curr_date + "-" + m_names[curr_month]+ "-" + curr_year;
+        return getExpectedDate;
+    };
+
+    this.findDocumentAndVerifyUserAdded = function(expFileName, getUserName){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                console.log('i:['+i+']');
+                var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(1)'));
+                var tableUserName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(5)'));
+                getFileName = tableFileName.getText('value');
+                getFileName.then(function(Test1){
+                    console.log("File Name:["+Test1+"]");
+                    if(expFileName === Test1){
+                        getDateAddedVal = tableUserName.getText('value');
+                        getDateAddedVal.then(function(UsrNm1){
+                            expect(getUserName.toString()).to.eql(UsrNm1.toString());
+                        });
+                    }
+                });
+            }
+        });
+    };
+
+    this.findDocumentAndVerifyDocumentType = function(exFName, exDocumentType){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                if (i === 1){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('1', exFName, exDocumentType);
+                } else if (i === 2){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('2', exFName, exDocumentType);
+                } else if (i === 3){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('3', exFName, exDocumentType);
+                } else if (i === 4){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('4', exFName, exDocumentType);
+                } else if (i === 5){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('5', exFName, exDocumentType);
+                } else if (i === 6){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('6', exFName, exDocumentType);
+                } else if (i === 7){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('7', exFName, exDocumentType);
+                } else if (i === 8){
+                    console.log('i:['+i+']');
+                    filnam_docTyp('8', exFName, exDocumentType);
+                }
+            }
+        });
+        function filnam_docTyp(iVal, expFileName, getDocumentType ){
+            var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(1)'));
+            var tableDocumentType = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(2)'));
+            getFileName = tableFileName.getText('value');
+            getFileName.then(function(Test1){
+                if(expFileName === Test1){
+                    console.log("Actual File Name:["+Test1+"]");
+                    console.log("Expected File Name:["+expFileName+"]");
+                    getDateAddedVal = tableDocumentType.getText('value');
+                    getDateAddedVal.then(function(docTyp1){
+                        expect(getDocumentType.toString()).to.eql(docTyp1.toString());
+                    });
+                }
+            });
+        };
+    };
+
+    this.findDocumentAndClickEdit = function(exFName){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                if (i === 1){
+                    console.log('i:['+i+']');
+                    fileNm('1', exFName);
+                } else if (i === 2){
+                    console.log('i:['+i+']');
+                    fileNm('2', exFName);
+                } else if (i === 3){
+                    console.log('i:['+i+']');
+                    fileNm('3', exFName);
+                } else if (i === 4){
+                    console.log('i:['+i+']');
+                    fileNm('4', exFName);
+                } else if (i === 5){
+                    console.log('i:['+i+']');
+                    fileNm('5', exFName);
+                } else if (i === 6){
+                    console.log('i:['+i+']');
+                    fileNm('6', exFName);
+                } else if (i === 7){
+                    console.log('i:['+i+']');
+                    fileNm('7', exFName);
+                } else if (i === 8){
+                    console.log('i:['+i+']');
+                    fileNm('8', exFName);
+                }
+            }
+        });
+        function fileNm(iVal, expFileName){
+            var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(1)'));
+            var tableDocumentEdit = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(06) label:nth-child(1)'));
+            getFileName = tableFileName.getText('value');
+            getFileName.then(function(Test1){
+                console.log("File Name:["+Test1+"]");
+                if(expFileName === Test1){
+                    console.log("Actual File Name to be Edited:["+Test1+"]");
+                    console.log("Expected File Name to be Edited:["+expFileName+"]");
+                    helper.clickButton(tableDocumentEdit, "Editing File:["+expFileName+"] by clicking Edit Button");
+                }
+            });
+        }
+    };
+
+    this.findDocumentAndVerifyFileName = function(exFName){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                if (i === 1){
+                    console.log('i:['+i+']');
+                    fileNm('1', exFName);
+                } else if (i === 2){
+                    console.log('i:['+i+']');
+                    fileNm('2', exFName);
+                } else if (i === 3){
+                    console.log('i:['+i+']');
+                    fileNm('3', exFName);
+                } else if (i === 4){
+                    console.log('i:['+i+']');
+                    fileNm('4', exFName);
+                } else if (i === 5){
+                    console.log('i:['+i+']');
+                    fileNm('5', exFName);
+                } else if (i === 6){
+                    console.log('i:['+i+']');
+                    fileNm('6', exFName);
+                } else if (i === 7){
+                    console.log('i:['+i+']');
+                    fileNm('7', exFName);
+                } else if (i === 8){
+                    console.log('i:['+i+']');
+                    fileNm('8', exFName);
+                }
+            }
+        });
+        function fileNm(iVal, expFileName){
+            var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(1)'));
+            getFileName = tableFileName.getText('value');
+            getFileName.then(function(Test1){
+                console.log("File Name:["+Test1+"]");
+                if(expFileName === Test1){
+                    expect(expFileName.toString()).to.eql(Test1.toString());
+                }
+            });
+        }
+    };
+
+    this.findBackup = function(expFileName, getDocumentType){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                console.log('i:['+i+']');
+                var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(1)'));
+                var tableDocumentType = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(2)'));
+                getFileName = tableFileName.getText('value');
+                getFileName.then(function(Test1){
+                    console.log("Actual File Name:["+Test1+"]");
+                    console.log("Expected File Name:["+expFileName+"]");
+                    if(expFileName === Test1){
+                        getDateAddedVal = tableDocumentType.getText('value');
+                        getDateAddedVal.then(function(docTyp1){
+                            expect(getDocumentType.toString()).to.eql(docTyp1.toString());
+                        });
+                    }
+                });
+            }
+        });
+    };
+
+    this.findDocumentAndVerifyDocumentSubType = function(expFileName, getDocumentSubType){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                console.log('i:['+i+']');
+                var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(1)'));
+                var tableDocumentSubType = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(3)'));
+                getFileName = tableFileName.getText('value');
+                getFileName.then(function(Test1){
+                    console.log("File Name:["+Test1+"]");
+                    if(expFileName === Test1){
+                        getDateAddedVal = tableDocumentSubType.getText('value');
+                        getDateAddedVal.then(function(docSubTyp1){
+                            expect(getDocumentSubType.toString()).to.eql(docSubTyp1.toString());
+                        });
+                    }
+                });
+            }
+        });
+    };
+
+
+
+
+
+    this.findDocumentDoesNotExists = function(expFileName){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                console.log('i:['+i+']');
+                var tableFileName = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(1)'));
+                getFileName = tableFileName.getText('value');
+                getFileName.then(function(Test1){
+                    console.log("File Name:["+Test1+"]");
+                    if(expFileName === Test1){
+                        var getFNT = 'True';
+                        var getFNF = 'False';
+                        expect(getFNT.toString()).to.eql(getFNF.toString());
+                    }
+                });
+            }
+        });
+    };
+
+    this.findDocumentAndClickWhereDeleteExists = function(){
+        this.trialTableRw.then(function(rows){
+            console.log('total Row Count:['+(rows.length)+']');
+            tblColARwA.isDisplayed().then(function(result) {
+                if (result) {
+                    console.log('result:['+result+']');
+                    for (var i=1; i<(rows.length+1); i++){
+                        //RW A
+                        if (i === 1){
+                            deleteA.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteA, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                        //RW B
+                        if (i === 2){
+                            deleteB.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteB, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                        //RW C
+                        if (i === 3){
+                            deleteC.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteC, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                        //RW D
+                        if (i === 4){
+                            deleteD.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteD, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                        //RW E
+                        if (i === 5){
+                            deleteE.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteE, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                        //RW F
+                        if (i === 6){
+                            deleteF.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteF, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                        //RW G
+                        if (i === 7){
+                            deleteG.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteG, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                        //RW H
+                        if (i === 8){
+                            deleteH.isDisplayed().then(function(ret) {
+                                if (ret) {
+                                    console.log('ret:['+ret+'] i val:['+i+']');
+                                    helper.clickButton(deleteH, "Deleting File");
+                                    ret = '';
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        });
+    };
+
+    this.DeleteExists = function(){
+        tblColARwA.isDisplayed().then(function(result) {
+            if (result) {
+                this.trialTableRw.then(function(rows){
+                    console.log('total Row Count:['+(rows.length)+']');
+                    for (var i=1; i<(rows.length+1); i++){
+                        console.log('i:['+i+']');
+                        var tableDocumentDel = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+i+') td:nth-child(06) label:nth-child(2)'));
+                        tableDocumentDel.isDisplayed().then(function(ret) {
+                            if (ret) {
+                                helper.clickButton(tableDocumentDel, "Deleting File");
+                            }
+                        });
+                    }
+                });
+            }
+        });
     };
 
     this.selectAll = function(){
@@ -580,11 +1012,26 @@ var abstractionTrialDoc = function(){
         helper.clickButton(this.trialDocSave,"Save - button");
     };
 
-    //Cancel : Button
+    //Reset : Button
     this.clickReset = function(){
         helper.clickButton(this.trialDocReset,"Reset - button");
     };
 
+    //*********Update and Cancel*************
+    //Update : Button
+    this.clickUpdate = function(){
+        helper.clickButton(this.trialDocUpdate,"Update - button");
+    };
+
+    //Cancel : Button
+    this.clickCancel = function(){
+        helper.clickButton(this.trialDocCancel,"Cancel - button");
+    };
+
+    //Back To Search Results : Button
+    this.clickBackToSearchResultsButton = function(){
+        helper.clickButton(this.backToSearchResult,"Back to search results - button");
+    };
 
     //***********************************
     //Verification

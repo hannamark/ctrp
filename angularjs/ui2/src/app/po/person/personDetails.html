@@ -153,18 +153,18 @@
                                     <input type="text" ng-model="personDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
-                                        <th>CTRP ID</th>
+                                        <th width="6%" class="nowrap">CTRP ID</th>
                                         <th>Organization</th>
-                                        <th class="td-date">Effective Date</th>
-                                        <th class="td-date">Expiration Date</th>
-                                        <th class="td-icon"></th>
+                                        <th width="14%" class="min-width-md">Effective Date</th>
+                                        <th width="14%" class="min-width-md">Expiration Date</th>
+                                        <th width="1%" class="td-icon"></th>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                             <td>{{org.id}}</td>
                                             <td>{{org.name}}</td>
                                             <td>
-                                                <div class="input-group add-on col-sm-12 date datepicker">
+                                                <div class="input-group add-on date datepicker">
                                                     <input type="text" class="form-control input-sm" restriction-field
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.effective_date" is-open="org.opened_effective"
@@ -178,7 +178,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="input-group add-on col-sm-12 date datepicker">
+                                                <div class="input-group add-on date datepicker">
                                                     <input type="text" class="form-control input-sm" restriction-field
                                                            uib-datepicker-popup="{{personDetailView.dateFormat}}" show-weeks="false"
                                                            ng-model="org.expiration_date" is-open="org.opened_expiration"
@@ -191,10 +191,10 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <label restriction-field class="btn btn-default" ng-click="personDetailView.toggleSelection($index)">
+                                            <td class="text-center td-icon">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.toggleSelection($index)" title="Mark for deletion">
                                                     <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                                </label>
+                                                </button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -203,20 +203,19 @@
                                 <!-- row for the table ends -->
                                 <!--</div>-->
                             </div>
-                            <div class="col-xs-12 col-sm-1"></div>
                         </div>
                         <div class="form-group no-bottom-margin" ng-show="personDetailView.curPersonEditable">
                             <div class="col-xs-12 col-sm-3"></div>
-                            <div class="btn-toolbar col-xs-12 col-sm-6">
+                            <div class="btn-toolbar col-xs-12 col-sm-8">
                                 <div class="btn-toolbar">
                                     <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
-                                        Save
+                                        <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
                                     <button type="button" restriction-field  ng-hide="!personDetailView.curPerson.new"class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.clearForm()">
-                                        <i class="glyphicon glyphicon-remove"></i> Reset
+                                        Reset
                                     </button>
                                     <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()">
-                                        <i class="glyphicon glyphicon-remove"></i>  Reset
+                                        Reset
                                     </button>
                                     <button ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
                                         <i class="glyphicon glyphicon-remove"></i> Delete This Person

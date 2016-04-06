@@ -310,7 +310,7 @@
             var errorMsg = '';
 
             if (!protocolIdOriginId || !protocolId) {
-                errorMsg = 'Please select a Protocol ID Origin and enter a Protocol ID';
+                errorMsg = 'Select a Protocol ID Origin and enter a Protocol ID';
                 return errorMsg;
             }
             for (var i = 0; i < addedOtherIds.length; i++) {

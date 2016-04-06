@@ -18,6 +18,8 @@
         vm.holderTypeArr = holderTypeObj;
         vm.nihNciArr = [];
         vm.addedIndIdes = [];
+        vm.showAddIndIdeError = false;
+
         console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
 
         vm.reload = function() {
@@ -58,6 +60,18 @@
 
         }
 
+
+        vm.deleteAllAddedIndIdes = function () {
+            if (vm.addedIndIdesAll) {
+                vm.addedIndIdesAll = false;
+            } else {
+                vm.addedIndIdesAll = true;
+            }
+            angular.forEach(vm.addedIndIdes, function (item) {
+                item._destroy = vm.addedIndIdesAll;
+            });
+        };
+
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
             //console.log("In addIndIde vm.addedIndIdes=" + JSON.stringify(vm.addedIndIdes));
@@ -94,6 +108,7 @@
                 vm.grantorArr = [];
                 vm.nihNciArr = [];
                 vm.showAddIndIdeError = false;
+                vm.addedIndIdesAll = false;
             } else {
                 vm.showAddIndIdeError = true;
             }
@@ -111,6 +126,7 @@
                     }
                 }
             }
+            vm.addedIndIdesAll = false;
         };// toggleSelection
 
 

@@ -129,6 +129,9 @@ var registerTrial = function(){
     this.addTrialDataMonitoringCommitteeAppointedIndicator = element.all(by.model('trialDetailView.curTrial.data_monitor_indicator'));
     this.addTrialDuplicateCountryOrganizationMessage = element(by.binding('trialDetailView.addAuthorityError'));
 
+    /** Trial Related Documents **/
+    this.addTrialVerifyAddedDocs = element.all(by.binding('document.file_name'));
+    this.addTrialAcceptedFileExtensionMsg = element.all(by.binding('trialDetailView.acceptedFileExtensions'));
 
     /**buttons**/
     this.addTrialResetButton = element(by.css('button[ng-click="trialDetailView.reload()"]'));

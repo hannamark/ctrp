@@ -24,8 +24,12 @@
       vm.isValidPhoneNumber = isValidPhoneNumber;
       vm.addAltTitle = addAltTitle;
       vm.updateAlternateTitle = updateAlternateTitle;
-      vm.updateLeadProtocolId = updateLeadProtocolId;
       vm.deleteAltTitle = deleteAltTitle;
+      vm.editTrialIdentifiers = editTrialIdentifiers;
+      vm.escapeEditTrialIdentifier = escapeEditTrialIdentifier;
+      vm.updateTrialIdentifier = updateTrialIdentifier;
+      vm.editLeadProtocolId = editLeadProtocolId;
+      vm.deleteAllOtherIdentifiers = deleteAllOtherIdentifiers;
 
       vm.leadOrg = {name: '', array: []};
       vm.principalInvestigator = {name: '', array: []};
@@ -114,6 +118,7 @@
           vm.leadOrg = {name: '', array: []};
           vm.principalInvestigator = {name: '', array: []};
           vm.sponsor = {name: '', array: []};
+          vm.otherIdDestroyAll = false;
          // vm.centralContact = [];
           $timeout(function() {
              getTrialDetailCopy();
@@ -194,6 +199,7 @@
               vm.otherIdentifier.protocol_id = ''; // empty it
               vm.otherIdentifier.identifierName = '';
               vm.otherIdErrorMsg = '';
+              vm.otherIdDestroyAll = false;
           } else {
               vm.otherIdErrorMsg = errorMsg;
           }
@@ -208,10 +214,23 @@
        * @return {Void}
        */
       function deleteOtherIdentifier(idx) {
+          escapeEditTrialIdentifier();
           if (idx < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[idx]._destroy = !vm.generalTrialDetailsObj.other_ids[idx]._destroy;
           }
+          vm.otherIdDestroyAll = false;
       }
+
+      function deleteAllOtherIdentifiers() {
+          if (vm.otherIdDestroyAll) {
+              vm.otherIdDestroyAll = false;
+          } else {
+              vm.otherIdDestroyAll = true;
+          }
+          angular.forEach(vm.generalTrialDetailsObj.other_ids, function (item) {
+              item._destroy = vm.otherIdDestroyAll;
+          });
+       };
 
       function updateOtherId(protocolIdVal, index) {
 
@@ -223,6 +242,38 @@
           if (index < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[index].protocol_id = protocolIdVal;
           }
+      }
+      function editTrialIdentifiers(index) {
+          vm.otherIdentifierUpdate = angular.copy(vm.generalTrialDetailsObj.other_ids[index]);
+          vm.otherIdentifierEditIndex = index;
+          vm.otherIdentifier = vm.otherIdentifierUpdate;
+      }
+
+      function editLeadProtocolId() {
+          vm.otherIdentifierUpdate = {
+             lead: true,
+             protocol_id_origin_id: -1,
+             protocol_id: vm.generalTrialDetailsObj.lead_protocol_id
+          };
+          vm.otherIdentifier = vm.otherIdentifierUpdate;
+      }
+
+      function updateTrialIdentifier() {
+        if (vm.otherIdentifierUpdate) {
+            if (!vm.otherIdentifierUpdate.lead) {
+                vm.generalTrialDetailsObj.other_ids[vm.otherIdentifierEditIndex] = vm.otherIdentifierUpdate;
+            } else {
+                vm.leadProtocolId = vm.otherIdentifierUpdate.protocol_id;
+                vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
+            }
+        }
+        vm.escapeEditTrialIdentifier();
+      }
+
+      function escapeEditTrialIdentifier(){
+         vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
+         vm.otherIdentifierUpdate = null;
+         vm.otherIdentifierEditIndex = null;
       }
 
       function watchLeadOrg() {
@@ -361,17 +412,6 @@
       function deleteAltTitle(idx) {
           if (idx < vm.generalTrialDetailsObj.alternate_titles.length) {
               vm.generalTrialDetailsObj.alternate_titles[idx]._destroy = !vm.generalTrialDetailsObj.alternate_titles[idx]._destroy;
-          }
-      }
-
-      function updateLeadProtocolId(formName) {
-          if (!vm.leadProtocolId || vm.leadProtocolId.trim() === '') {
-              formName.$valid = false;
-              formName.$invalid = true;
-              vm.leadProtocolId = vm.generalTrialDetailsObj.lead_protocol_id;
-              return;
-          } else {
-              vm.generalTrialDetailsObj.lead_protocol_id = vm.leadProtocolId.trim();
           }
       }
 

@@ -7,7 +7,7 @@
                 Trial Lookup
             </legend>
             <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type)}">
-                <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type</label>
+                <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type:</label>
                 <div class="col-xs-12 col-sm-4">
                     <select name="identifier_type" id="identifier_type" class="form-control input-sm"
                         ng-model="assoTrialsView.trialQueryObj.identifierTypeId"
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.trial_identifier)}">
-                <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Trial Identifier</label>
+                <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Trial Identifier:</label>
                 <div class="col-xs-12 col-sm-4">
                     <input type="text" name="trial_identifier" id="trial_identifier"
                         class="form-control input-sm"
@@ -79,7 +79,7 @@
             <div class="row">
                 <span ng-show="assoTrialsView.trialDetailObj.associated_trials.length === 0">Nothing found to display</span>
 
-                <button type="button" class="btn btn-default" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
+                <button type="button" class="btn btn-primary" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
                     <i class="glyphicon glyphicon-plus"></i> Add a Trial
                 </button>
             </div>
@@ -113,8 +113,8 @@
                             <td>
                                 {{t.official_title}}
                             </td>
-                            <td class="text-center">
-                                <label class="btn btn-default" restriction-field ng-click="assoTrialsView.deleteAssociation($index)">
+                            <td class="text-center td-icon">
+                                <label class="btn btn-warning" restriction-field ng-click="assoTrialsView.deleteAssociation($index)">
                                     <i class="glyphicon" ng-class="t._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                 </label>
                             </td>

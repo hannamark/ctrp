@@ -8,7 +8,7 @@
                 <!-- first row in the accordion body -->
                 <div class="row">
 
-                    <div class="form-group no-bottom-margin" ng-if="trialDetailView.addMode">
+                    <div class="form-group no-bottom-margin" ng-if="trialDetailView.addMode || trialDetailView.curTrial.collaborators.length == 0">
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"> 
                             <legend class="sub-bordered">Add Collaborators:</legend>
                             <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
@@ -26,7 +26,7 @@
                                 <div class="col-xs-12 col-sm-6">
                                     <input type="text" class="form-control input-sm" ng-class="collaborator._destroy == true ? 'deleted-text animated-item' : 'animated-item'" disabled value="{{collaborator.org_name}}"/>
                                 </div>
-                                <label restriction-field class="col-xs-12 col-sm-1 btn btn-default" ng-click="trialDetailView.toggleSelection($index)">
+                                <label restriction-field class="col-xs-12 col-sm-1 btn btn-warning" ng-click="trialDetailView.toggleSelection($index)">
                                     <i ng-class="collaborator._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                 </label>
                             </div>
@@ -40,14 +40,16 @@
                             </div>
                         </fieldset>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-show="trialDetailView.curTrial.collaborators.length > 0">
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"> 
                             <legend class="sub-bordered">List of Collaborators</legend> 
                             <table class="table table-bordered table-striped table-hover">
-                                <thead style="background-color: #d9edf7">
+                                <thead>
                                 <th>PO ID</th>
                                 <th>Name</th>
-                                <th class="text-center">Deletion</th>
+                                <th class="text-center td-icon">
+                                    <input type="checkbox" restriction-field ng-model="trialDetailView.selectedAllCos" ng-click="trialDetailView.checkAllCos()" />
+                                </th>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators | orderBy:'org_name' track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
@@ -66,8 +68,8 @@
                                         </div>
 
                                     </td>
-                                    <td class="text-center">
-                                        <input type="checkbox" ng-model="collaborator.selected" ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" /></td>
+                                    <td class="text-center td-icon">
+                                        <input type="checkbox" ng-model="collaborator.selected" restriction-field ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" /></td>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -76,11 +78,11 @@
                     </div>
 
 
-                    <fieldset>
+                    <fieldset ng-show="trialDetailView.curTrial.collaborators.length > 0">
                         <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                             <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="trialDetailView.deleteSelected()">Delete Collaborators</button>
                                 <button type="submit" class="btn btn-primary pull-right" id="add" restriction-field ng-click="trialDetailView.setAddMode()">Add Collaborator</button>
+                                <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length">Delete Selected</button>
                             </div>
                         </div>
                     </fieldset>

@@ -33,6 +33,22 @@
             vm.docSubtypeShown = false;
             vm.docTypeError = '';
             vm.formError = '';
+            // vm.commentPopoverTemplate = 'comment_for_deletion.html';
+            vm.commentPopOverOptions = {
+                templateUrl: 'comment_for_deletion.html',
+                placement: 'left',
+                isOpen: true
+            };
+            vm.closePopover = function() {
+                console.info('closing popover now!');
+
+                $timeout(function() {
+                    vm.commentPopOverOptions.isOpen = !vm.commentPopOverOptions.isOpen;
+                }, 0);
+            };
+            $scope.$watch(function() {return vm.commentPopOverOptions.isOpen;}, function(newVal) {
+                console.info('isOpen? ', newVal);
+            });
             vm.documentTypes = documentTypes.types.split(',').sort();
             var requiredDocTypes = _.filter(vm.documentTypes, function(type) {
                 return type.indexOf('IRB') > -1 || type.indexOf('Protocol Doc') > -1;
@@ -105,14 +121,15 @@
                     document_type: '',
                     file_name: '',
                     file: '', // File to be uploaded
-                    document_subtype: '',
+                    document_subtype: null,
                     added_by: {},
                     added_by_id: null,
                     created_at: '',
                     edit: false,
                     index: null,
                     _destroy: false,
-                    status: 'active'
+                    status: 'active',
+                    why_deleted: null
                 };
                 return doc;
             }
@@ -206,9 +223,10 @@
             function saveDocuments(showToastr, formName) {
                 // warning toastr for edited document
                 // cancelEdit();
+                console.info('saving documents....');
                 if (vm.curDoc.edit === true) {
                     // _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
-                    vm.formError = 'Please cancel or commit the edited document first';
+                    vm.formError = 'Cancel or commit the edited document first';
                     return;
                 }
                 if (!_isFormValid()) {

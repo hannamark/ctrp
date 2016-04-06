@@ -6,7 +6,7 @@
             </legend>
             <!-- research categories -->
             <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.research_category)}">
-                <label for="research_category" class="control-label col-xs-12 col-sm-3">Research Category</label>
+                <label for="research_category" class="control-label col-xs-12 col-sm-4">Research Category:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="research_category" id="research_category"
                         class="form-control input-sm"
@@ -32,7 +32,7 @@
 
             <!-- primary purposes -->
             <div class="form-group" ng-class="{'has-feedback required': designView.isInfoSourceImport || designView.isInfoSourceProtocol, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.primary_purpose)}">
-                <label for="primary_purpose" class="control-label col-xs-12 col-sm-3">Primary Purpose</label>
+                <label for="primary_purpose" class="control-label col-xs-12 col-sm-4">Primary Purpose:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="primary_purpose" id="primary_purpose"
                         class="form-control input-sm"
@@ -52,7 +52,7 @@
 
             <!-- description if primary purpose is Other -->
             <div class="form-group" ng-show="designView.isOtherPrimaryPurpose" ng-class="{'has-feedback required': designView.isOtherPrimaryPurpose, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.description_other)}">
-                <label for="description_other" class="control-label col-xs-12 col-sm-3">Description of Other Primary Purpose</label>
+                <label for="description_other" class="control-label col-xs-12 col-sm-4">Description of Other Primary Purpose</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
                         name="description_other" id="description_other"
@@ -73,7 +73,7 @@
 
             <!-- secondary purpose -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
-                <label for="secondary_purpose" class="control-label col-xs-12 col-sm-3">Secondary Purpose</label>
+                <label for="secondary_purpose" class="control-label col-xs-12 col-sm-4">Secondary Purpose:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="secondary_purpose" id="secondary_purpose"
                         class="form-control input-sm"
@@ -88,7 +88,7 @@
 
             <!-- description if primary purpose is Other -->
             <div class="form-group" ng-show="designView.isOtherSecondaryPurpose && (designView.isInterventional || designView.isExpandedAccess)">
-                <label for="description_other2" class="control-label col-xs-12 col-sm-3">Description of Other Secondary Purpose</label>
+                <label for="description_other2" class="control-label col-xs-12 col-sm-4">Description of Other Secondary Purpose:</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
                         name="description_other2" id="description_other2"
@@ -104,7 +104,7 @@
 
             <!-- trial phase -->
             <div class="form-group" ng-class="{'has-feedback required': designView.isInfoSourceImport || designView.isInfoSourceProtocol, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.trial_phase)}">
-                <label for="trial_phase" class="control-label col-xs-12 col-sm-3">Trial Phase</label>
+                <label for="trial_phase" class="control-label col-xs-12 col-sm-4">Trial Phase:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="trial_phase" id="trial_phase"
                         class="form-control input-sm"
@@ -124,7 +124,7 @@
 
             <!-- pilot or not -->
             <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3">Is this a pilot?</label>
+                <label class="control-label col-xs-12 col-sm-4">Is this a pilot?:</label>
                 <div class="col-xs-12 col-sm-5">
                     <label class="radio-inline">
                       <input type="radio" name="optradio" ng-model="designView.trialDetailObj.pilot" value="Yes">Yes
@@ -139,7 +139,7 @@
             <!-- intervention models -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess"
                 ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.intervention_model)}">
-                <label for="intervention_model" class="control-label col-xs-12 col-sm-3">Intervention Model</label>
+                <label for="intervention_model" class="control-label col-xs-12 col-sm-4">Intervention Model:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="intervention_model" id="intervention_model"
                         class="form-control input-sm"
@@ -160,7 +160,7 @@
             <!-- maskings -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess"
                 ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.masking)}">
-                <label for="masking" class="control-label col-xs-12 col-sm-3">Masking</label>
+                <label for="masking" class="control-label col-xs-12 col-sm-4">Masking:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="masking" id="masking"
                         class="form-control input-sm"
@@ -180,7 +180,7 @@
 
             <!-- masking roles -->
             <div class="form-group" ng-show="designView.showMaskingRoles && (designView.isInterventional || designView.isExpandedAccess)">
-                <label class="control-label col-xs-12 col-sm-3">Masking Role(s)</label>
+                <label class="control-label col-xs-12 col-sm-4">Masking Role(s):</label>
                 <div class="col-xs-12 col-sm-9" layout="row" layout-wrap flex-xs="100">
                     <md-checkbox ng-model="designView.trialDetailObj.masking_role_subject" restriction-field aria-label="Subject" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Subject</md-checkbox>
                     <md-checkbox ng-model="designView.trialDetailObj.masking_role_investigator" restriction-field aria-label="Investigator" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Investigator</md-checkbox>
@@ -196,7 +196,7 @@
 
             <!-- Study models -->
             <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
-                <label for="study_model" class="control-label col-xs-12 col-sm-3">Study Model</label>
+                <label for="study_model" class="control-label col-xs-12 col-sm-4">Study Model:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="study_model" id="study_model"
                         class="form-control input-sm"
@@ -211,7 +211,7 @@
 
             <!-- description if study model is Other -->
             <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.isOtherStudyModel">
-                <label for="study_model_other" class="control-label col-xs-12 col-sm-3">Description of Other Study Model</label>
+                <label for="study_model_other" class="control-label col-xs-12 col-sm-4">Description of Other Study Model:</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
                         name="study_model_other" id="study_model_other"
@@ -227,7 +227,7 @@
 
             <!-- Time Perspectives -->
             <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
-                <label for="time_perspective" class="control-label col-xs-12 col-sm-3">Time Perspective</label>
+                <label for="time_perspective" class="control-label col-xs-12 col-sm-4">Time Perspective:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="time_perspective" id="time_perspective"
                         class="form-control input-sm"
@@ -242,7 +242,7 @@
 
             <!-- description if study model is Other -->
             <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.isOtherTimePerspective">
-                <label for="time_perspective_other" class="control-label col-xs-12 col-sm-3">Description of Other time perspective</label>
+                <label for="time_perspective_other" class="control-label col-xs-12 col-sm-4">Description of Other time perspective:</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
                         name="time_perspective_other" id="time_perspective_other"
@@ -259,7 +259,7 @@
             <!-- allocations -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess"
                 ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.allocation)}">
-                <label for="allocation" class="control-label col-xs-12 col-sm-3">Allocation</label>
+                <label for="allocation" class="control-label col-xs-12 col-sm-4">Allocation:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="allocation" id="allocation"
                         class="form-control input-sm"
@@ -275,7 +275,7 @@
 
             <!-- Study classification -->
             <div class="form-group" ng-show="designView.isInterventional || designView.isExpandedAccess">
-                <label for="study_classification" class="control-label col-xs-12 col-sm-3">Study Classification</label>
+                <label for="study_classification" class="control-label col-xs-12 col-sm-4">Study Classification:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="study_classification" id="study_classification"
                         class="form-control input-sm"
@@ -290,7 +290,7 @@
 
             <!-- Biospecimen Retention -->
             <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
-                <label for="biospecimen_retention" class="control-label col-xs-12 col-sm-3">Bio-specimen Retention</label>
+                <label for="biospecimen_retention" class="control-label col-xs-12 col-sm-4">Bio-specimen Retention:</label>
                 <div class="col-xs-12 col-sm-5">
                     <select name="biospecimen_retention" id="biospecimen_retention"
                         class="form-control input-sm"
@@ -305,7 +305,7 @@
 
             <!-- description biospecimenRetention -->
             <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.trialDetailObj.biospecimen_retention_id">
-                <label for="biospecimen_desc" class="control-label col-xs-12 col-sm-3">Bio-specimen Description</label>
+                <label for="biospecimen_desc" class="control-label col-xs-12 col-sm-4">Bio-specimen Description:</label>
                 <div class="col-xs-12 col-sm-5">
                     <textarea class="form-control"
                         name="biospecimen_desc" id="biospecimen_desc"
@@ -321,7 +321,7 @@
 
             <!-- num of arms -->
             <div class="form-group" ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.num_arms)}">
-                <label for="num_arms" class="control-label col-xs-12 col-sm-3">Number of Arms/Groups</label>
+                <label for="num_arms" class="control-label col-xs-12 col-sm-4">Number of Arms/Groups:</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="num_arms" id="num_arms"
                         class="form-control input-sm"
@@ -333,7 +333,7 @@
 
             <!-- target enrollment -->
             <div class="form-group" ng-class="{'has-feedback required': designView.isInfoSourceProtocol, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.target_enrollment)}">
-                <label for="target_enrollment" class="control-label col-xs-12 col-sm-3">Target Enrollment</label>
+                <label for="target_enrollment" class="control-label col-xs-12 col-sm-4">Target Enrollment:</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="target_enrollment" id="target_enrollment"
                         class="form-control input-sm"
@@ -345,7 +345,7 @@
 
             <!-- final enrollment -->
             <div class="form-group">
-                <label for="final_enrollment" class="control-label col-xs-12 col-sm-3">Final Enrollment for CT.gov</label>
+                <label for="final_enrollment" class="control-label col-xs-12 col-sm-4">Final Enrollment for CT.gov:</label>
                 <div class="col-xs-12 col-sm-2">
                     <input type="number" min="0" name="final_enrollment" id="final_enrollment" class="form-control input-sm" ng-model="designView.trialDetailObj.final_enrollment" placeholder="">
                 </div>
@@ -354,7 +354,7 @@
 
             <!-- Accruals -->
             <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3">Accruals</label>
+                <label class="control-label col-xs-12 col-sm-4">Accruals:</label>
                 <div class="col-xs-12 col-sm-2 form-text">
                     {{designView.trialDetailObj.accruals || 0}} <!-- if null, set it to 0 -->
                 </div>
@@ -364,7 +364,7 @@
         <!-- end of fieldset -->
         <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
            <div class="row">
-              <div class="col-sm-3"></div>
+              <div class="col-sm-4"></div>
               <div class="btn-toolbar col-xs-12 col-sm-9">
                 <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field>
                   <i class="glyphicon glyphicon-ok"></i>  Save
