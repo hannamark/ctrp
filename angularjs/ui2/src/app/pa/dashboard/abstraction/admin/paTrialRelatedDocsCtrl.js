@@ -45,6 +45,7 @@
             vm.cancelEdit = cancelEdit;
             vm.upsertDoc = upsertDoc; //upsertDoc;
             vm.resetForm = resetForm;
+            vm.addDeleteComment = addDeleteComment;
 
             activate();
             function activate() {
@@ -71,10 +72,15 @@
                         cancelEdit();
                     }
                     vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
-                    vm.curTrialDetailObj.trial_documents[index].isPopoverOpen = vm.curTrialDetailObj.trial_documents[index].status === 'deleted'; // open popover if the status is 'deleted'
+                    // vm.curTrialDetailObj.trial_documents[index].isPopoverOpen = vm.curTrialDetailObj.trial_documents[index].status === 'deleted'; // open popover if the status is 'deleted'
 
 
                 }
+            }
+
+            function addDeleteComment(deletionComment, index) {
+                console.info('add delete comment: ', deletionComment, index);
+                vm.curTrialDetailObj.trial_documents[index].why_deleted = deletionComment;
             }
 
             var prevFile = '';

@@ -36,13 +36,6 @@
         'smart-table',
         'ngFileSaver',
         'angularSpinner',
-        'ui.select',
-        'mgcrea.ngStrap'
-    ])
-    // configure the popover to allow HTML inputs
-    .config(function($popoverProvider) {
-          angular.extend($popoverProvider.defaults, {
-            html: true
-          });
-        });
+        'ui.select'
+    ]);
 })();

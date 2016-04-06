@@ -1,0 +1,20 @@
+<div class="popover" tabindex="-1" ng-show="content">
+    <div class="arrow"></div>
+    <h3 class="popover-title" ng-bind-html="title" ng-show="title"></h3>
+    <div class="popover-content">
+        <form name="popoverForm">
+          <p ng-bind-html="content" style="min-width:300px;"></p>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">Comment</div>
+              <input class="form-control" type="text" ng-model="model"
+                  placeholder="why deleted?" maxlength="255" auto-focus>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-danger" ng-click="cancelComment()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="saveComment()">Save Comment</button>
+          </div>
+        </form>
+    </div>
+</div>
