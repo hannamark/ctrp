@@ -22,7 +22,7 @@
                                            ng-required="!trialDetailView.curTrial.ind_ide_question" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> No
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_question)">
-                                    IND/IDE question is required
+                                    IND/IDE question is Required
                                 </span>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                 <tr>
                                     <td>
                                         <div class="has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_type)}">
-                                            <select restriction-field class="form-control input-sm" id="ind_ide_type" name="ind_ide_type" ng-model="trialDetailView.ind_ide_type" ng-change="trialDetailView.watchOption('ind_ide_type')" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes'">
+                                            <select restriction-field class="form-control input-sm" id="ind_ide_type" name="ind_ide_type" ng-model="trialDetailView.ind_ide_type" ng-change="trialDetailView.watchOption('ind_ide_type')">
                                                 <option value="">-Select-</option>
                                                 <option value="IND">IND</option>
                                                 <option value="IDE">IDE</option>
@@ -54,12 +54,12 @@
                                     </td>
                                     <td>
                                         <div class="has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_number)}">
-                                            <input restriction-field class="form-control input-sm" id="ind_ide_number" name="ind_ide_number" ng-model="trialDetailView.ind_ide_number" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes'" />
+                                            <input restriction-field class="form-control input-sm" id="ind_ide_number" name="ind_ide_number" ng-model="trialDetailView.ind_ide_number" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grantor)}">
-                                            <select restriction-field class="form-control input-sm" id="grantor" name="grantor" ng-model="trialDetailView.grantor" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes'">
+                                            <select restriction-field class="form-control input-sm" id="grantor" name="grantor" ng-model="trialDetailView.grantor">
                                                 <option value="">-Select-</option>
                                                 <option ng-repeat="grantor in trialDetailView.grantorArr" value="{{grantor}}">
                                                     {{grantor}}
@@ -69,7 +69,7 @@
                                     </td>
                                     <td>
                                         <div class="has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.holder_type)}">
-                                            <select restriction-field class="form-control input-sm" name="holder_type" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes'">
+                                            <select restriction-field class="form-control input-sm" name="holder_type" id="holder_type" ng-model="trialDetailView.holder_type_id" ng-change="trialDetailView.watchOption('holder_type')">
                                                 <option value="">-Select-</option>
                                                 <option ng-repeat="holderType in trialDetailView.holderTypeArr" value="{{holderType.id}}">
                                                     {{holderType.name}}
@@ -98,27 +98,27 @@
                                 </tbody>
                             </table>
 
-                            <input type="hidden" name="ind_ide_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes' && trialDetailView.indIdeNum === 0">
+                            <input type="hidden" name="ind_ide_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes' && !trialDetailView.addedIndIdes.length">
                             <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)">
-                                IND/IDE is required
+                                At least one IND/IDE is Required
                             </span>
 
                             <div ng-if="trialDetailView.curTrial.ind_ide_question === 'Yes'" class="bottom-offset-xs">
-                                <span class="add-association-error " ng-show="ctrpbtn.trial_form.needsAttention(trial_form.holder_type) || (trialDetailView.showAddIndIdeError && !trialDetailView.holder_type_id)">
+                                <span class="add-association-error" ng-show="trialDetailView.showAddIndIdeError && !trialDetailView.holder_type_id">
                                     IND/IDE Holder Type is Required<br>
                                 </span>
-                                <span class="add-association-error " ng-show="ctrpbtn.trial_form.needsAttention(trial_form.grantor) || (trialDetailView.showAddIndIdeError && !trialDetailView.grantor)">
+                                <span class="add-association-error " ng-show="trialDetailView.showAddIndIdeError && !trialDetailView.grantor">
                                     IND/IDE Grantor Type is Required<br>
                                 </span>
-                                <span class="add-association-error " ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_number) || (trialDetailView.showAddIndIdeError && !trialDetailView.ind_ide_number)">
+                                <span class="add-association-error" ng-show="trialDetailView.showAddIndIdeError && !trialDetailView.ind_ide_number">
                                     IND/IDE Number is Required<br>
                                 </span>
-                                <span class="add-association-error " ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_type) || (trialDetailView.showAddIndIdeError && !trialDetailView.ind_ide_type)">
+                                <span class="add-association-error" ng-show="trialDetailView.showAddIndIdeError && !trialDetailView.ind_ide_type">
                                     IND/IDE Type is Required<br>
                                 </span>
                             </div>
 
-                            <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
+                            <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length">
                                 <thead>
                                 <th>IND/IDE Types</th>
                                 <th>IND/IDE Number</th>
