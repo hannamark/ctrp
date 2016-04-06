@@ -11,7 +11,8 @@ Scenario Outline: #1 I am able to view existing person in CTRP as a Registry use
     |Ms|shiFNameTrial|shiMNameTrial |shiLNameTrial |Suffix|CTRP|shiSID|Active |shiPercukeTrial@pr.com| 420-999-8906|ShiOrg|
   And I have completed a person search 
   When I have cliked on the name of the person I want to view
-  Then I will view person details type
+  Then the View Person screen opens
+  And I will view person details type
       |Prefix  | Ms|
       |First Name  | shiFNameTrial|
       |Middle Name  | shiMNameTrial|
@@ -27,3 +28,10 @@ Scenario Outline: #1 I am able to view existing person in CTRP as a Registry use
 And I should not be allowed to edit organization parameters
 And I should not be allowed to delete an organization
 And I should not view, edit or delete comments added by curators
+And the "Add Affiliated Organization: Search Organizations" button should be invisible to the user
+And the following button type should also be invisible to the user
+
+      |Delete This Person Button  |
+      |Reset Button  |
+      |Save Button  |
+
