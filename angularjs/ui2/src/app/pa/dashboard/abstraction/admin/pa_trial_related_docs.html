@@ -141,9 +141,10 @@
                                                      </button> -->
                                                      <label class="btn btn-warning" restriction-field
                                                          ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1"
-                                                         comment-popover="doc.why_deleted"
-                                                         on-save="trialRelatedDocsView.addDeleteComment(doc.why_deleted, $index)"
-                                                         is-deleted="doc.status == 'deleted'"
+                                                         comment-popover="doc"
+                                                         on-save="trialRelatedDocsView.deleteDoc(why_deleted, $index)"
+                                                         toggle-status="trialRelatedDocsView.toggleDeleteFlag($index)"
+                                                         is-deleted="{{doc.status == 'deleted'}}"
                                                          >
                                                          <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                      </label>

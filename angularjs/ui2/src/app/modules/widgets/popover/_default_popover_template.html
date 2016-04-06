@@ -6,14 +6,15 @@
           <p ng-bind-html="content" style="min-width:300px;"></p>
           <div class="form-group">
             <div class="input-group">
-              <div class="input-group-addon">Comment</div>
-              <input class="form-control" type="text" ng-model="model"
+              <!-- <div class="input-group-addon">Comment</div> -->
+              <textarea class="form-control" rows="2" ng-model="model.why_deleted"
                   placeholder="why deleted?" maxlength="255" auto-focus>
+              </textarea>
             </div>
           </div>
           <div class="form-actions">
             <button type="button" class="btn btn-danger" ng-click="cancelComment()">Cancel</button>
-            <button type="button" class="btn btn-primary" ng-click="saveComment()">Save Comment</button>
+            <button type="button" class="btn btn-primary" ng-click="saveComment(model.why_deleted)">Save Comment</button>
           </div>
         </form>
     </div>

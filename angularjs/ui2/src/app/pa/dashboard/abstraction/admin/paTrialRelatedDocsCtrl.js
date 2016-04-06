@@ -41,11 +41,11 @@
             // actions
             vm.saveDocuments = saveDocuments;
             vm.deleteDoc = deleteDoc;
+            vm.toggleDeleteFlag = toggleDeleteFlag;
             vm.editDoc = editDoc;
             vm.cancelEdit = cancelEdit;
             vm.upsertDoc = upsertDoc; //upsertDoc;
             vm.resetForm = resetForm;
-            vm.addDeleteComment = addDeleteComment;
 
             activate();
             function activate() {
@@ -64,7 +64,8 @@
                 }, 0);
             } //getTrialDetailCopy
 
-            function deleteDoc(index) {
+            function toggleDeleteFlag(index) {
+                console.info('toggling status: ', index);
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
                     if (curStatus === 'active' && index === vm.curDoc.index) {
@@ -72,15 +73,16 @@
                         cancelEdit();
                     }
                     vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
-                    // vm.curTrialDetailObj.trial_documents[index].isPopoverOpen = vm.curTrialDetailObj.trial_documents[index].status === 'deleted'; // open popover if the status is 'deleted'
-
-
+                    console.info('new status: ', vm.curTrialDetailObj.trial_documents[index].status);
                 }
             }
 
-            function addDeleteComment(deletionComment, index) {
-                console.info('add delete comment: ', deletionComment, index);
-                vm.curTrialDetailObj.trial_documents[index].why_deleted = deletionComment;
+            function deleteDoc(deletionComment, index) {
+                console.info('delete doc: ', deletionComment, index);
+                if (deletionComment === null || deletionComment.trim().length === 0) {
+                    return;
+                }
+                toggleDeleteFlag(index);
             }
 
             var prevFile = '';
@@ -276,6 +278,10 @@
             function _filterActiveDocs() {
                 vm.curTrialDetailObj.trial_documents = _.filter(vm.curTrialDetailObj.trial_documents, function(doc) {
                     return doc.status === 'active'; // do not show soft deleted or inactive document
+                }).map(function(filteredDoc) {
+                    delete filteredDoc._destroy;
+                    filteredDoc.why_deleted = filteredDoc.why_deleted || null; // initialize why_deleted field if not present
+                    return filteredDoc;
                 });
             }
 

@@ -16,8 +16,9 @@
             restrict: 'A',
             transclude: true,
             scope: {
-                model: '=commentPopover', // comment field
+                model: '=commentPopover', // data object or string
                 saveHandler: '&onSave',
+                statusToggler: '&toggleStatus',
                 isDeleted: '@'
             },
             link: linkerFn
@@ -40,23 +41,24 @@
                 scope: scope
             });
 
-            console.log('isDeleted? ', scope.$eval(attrs.isDeleted));
-
-            // console.dir('popover obj: ', popover);
+            // callback for the click event
             element.bind('click', function() {
-                 if (scope.$eval(attrs.isDeleted) === false) {
+                 console.log('isDeleted? ', attrs.isDeleted);
+                 if (scope.model._destroy === false || scope.model.status !== 'deleted') {
                     // show the popover only when the item is not deleted yet
                     // attrs.$observe?
                     popover.show();
-                 }
+                } else {
+                    scope.statusToggler();
+                }
             });
 
             scope.saveComment = saveComment;
             scope.cancelComment = cancelComment;
 
-            function saveComment() {
-                console.info('saving comment');
-                scope.saveHandler({value: scope.model});
+            function saveComment(comment) {
+                console.info('saving comment: ', comment);
+                scope.saveHandler({why_deleted: comment});
                 popover.hide();
             }
             function cancelComment() {
