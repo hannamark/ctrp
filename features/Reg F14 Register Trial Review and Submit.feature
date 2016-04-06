@@ -50,7 +50,17 @@ And the CTRP application will check if any optional fields have been entered
 |List of Participating Site Documents|
 |Other Documents|
 And the CTRP application will check that all registration sections have been completed
-And the option to Register Trial will be available
+And the option to submit trial will be available
+And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN 
+And an email entitled "Trial Registration" will be sent to the trial submitter (Email list in the shared drive under Functional/Registration: CTRP System Generated Emails)
+And the created by field will be displayed with the created date and time in format username (dd-mmm-yyyy hh:mm)
+And the updated by field will be displayed with the updated date and time in format username (dd-mmm-yyyy hh:mm)
+ Examples:
+  |trialType                |
+  |National                 |
+  |Externally Peer-Reviewed |
+  |Institutional            |
+
 
 
  Examples:
