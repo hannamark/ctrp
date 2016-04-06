@@ -14,7 +14,6 @@
         var defaultTemplateUrl = 'app/modules/widgets/popover/_default_popover_template.html';
         var directiveObj = {
             restrict: 'A',
-            transclude: true,
             scope: {
                 model: '=commentPopover', // data object (a reference) or string
                 saveHandler: '&onSave',

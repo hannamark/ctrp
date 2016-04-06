@@ -64,8 +64,12 @@
                 }, 0);
             } //getTrialDetailCopy
 
+            /**
+             * Toggle the deletion status on the document
+             * @param  {Integer} index - index in the trial_documents array
+             * @return {Void}
+             */
             function toggleDeleteStatus(index) {
-                console.info('toggling status: ', index);
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
                     if (curStatus === 'active' && index === vm.curDoc.index) {
@@ -84,7 +88,6 @@
             }
 
             function deleteDoc(deletionComment, index) {
-                console.info('delete doc: ', deletionComment, index);
                 if (deletionComment === null || deletionComment.trim().length === 0) {
                     return;
                 }
