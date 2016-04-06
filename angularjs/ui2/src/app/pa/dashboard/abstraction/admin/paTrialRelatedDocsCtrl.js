@@ -82,7 +82,6 @@
                         if (vm.curTrialDetailObj.trial_documents[index].status === 'active') {
                             vm.curTrialDetailObj.trial_documents[index].why_deleted = null;
                         }
-                        console.info('new status: ', vm.curTrialDetailObj.trial_documents[index].status);
                     }, 0);
                 }
             }
