@@ -21,7 +21,7 @@
                                     <input type="text" id="label" name="label" class="form-control" maxlength="62" ng-required="true" ng-model="armView.currentArmsGroup.label" placeholder="label">
                                 </div>
                                 <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.label) && arm_form.label.$error">
-                                    <span class="help-block" ng-message="required">Label is required</span>
+                                    <span class="help-block" ng-message="required">Label is Required</span>
                                 </span>
                                 <span ng-show="arm_form.label.$dirty">
                                         {{62 - arm_form.label.$viewValue.length}} characters left

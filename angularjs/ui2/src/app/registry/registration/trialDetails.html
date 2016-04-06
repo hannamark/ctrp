@@ -48,7 +48,7 @@
                                     </span>
                                 </div>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.amendment_date)">
-                                    Amendment Date is required
+                                    Amendment Date is Required
                                 </span>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                        ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required autofocus>
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.lead_protocol_id.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) || (trial_form.lead_protocol_id.$error.required && trialDetailView.showLpiError)">
-                                    Lead Organization Trial Identifier is required
+                                    Lead Organization Trial Identifier is Required
                                 </span>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                                           ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required ></textarea>
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.official_title.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.official_title) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.official_title)">
-                                    Official Title is required
+                                    Official Title is Required
                                 </span>
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                                     <option value="">-Select a Phase-</option>
                                 </select>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.phase)">
-                                    Phase is required
+                                    Phase is Required
                                 </span>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                                            ng-required="!trialDetailView.curTrial.pilot" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> Yes
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pilot)">
-                                    Pilot is required
+                                    Pilot is Required
                                 </span>
                             </div>
                         </div>
@@ -204,7 +204,7 @@
                                     <option value="">-Select a Research Category-</option>
                                 </select>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.research_category)">
-                                    Research Category is required
+                                    Research Category is Required
                                 </span>
                             </div>
                         </div>
@@ -218,7 +218,7 @@
                                     <option value="">-Select a Primary Purpose-</option>
                                 </select>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose)">
-                                    Primary Purpose is required
+                                    Primary Purpose is Required
                                 </span>
                             </div>
                         </div>
@@ -230,7 +230,7 @@
                                           ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required></textarea>
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.primary_purpose_other.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_purpose_other)">
-                                    Other Primary Purpose is required
+                                    Other Primary Purpose is Required
                                 </span>
                             </div>
                         </div>
@@ -253,7 +253,7 @@
                                           ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required></textarea>
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.secondary_purpose_other.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other)">
-                                    Other Secondary Purpose is required
+                                    Other Secondary Purpose is Required
                                 </span>
                             </div>
                         </div>
@@ -266,7 +266,7 @@
                                     <option value="">-Select an Accrual Disease Terminology-</option>
                                 </select>
                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.accrual_disease_term)">
-                                    Accrual Disease Terminology is required
+                                    Accrual Disease Terminology is Required
                                 </span>
                             </div>
                         </div>
@@ -283,7 +283,7 @@
                                 <input type="text" class="form-control input-sm" name="lead_org_name" disabled ng-model="trialDetailView.selectedLoArray[0].name" required>
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedLoArray[0].name.length" ng-class="!ctrpbtn.ctrpbtn.trial_form.needsAttention(trial_form.lead_org_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.lead_org_name)">
-                                    Lead Organization is required
+                                    Lead Organization is Required
                                 </span>
                             </div>
                             <div class="col-xs-12 col-xs-3" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
@@ -298,7 +298,7 @@
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedPiArray[0].lname.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.pi_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="pi_name" ng-model="trialDetailView.selectedPiArray[0]" required>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pi_name)">
-                                    Principal Investigator is required
+                                    Principal Investigator is Required
                                 </span>
                             </div>
                             <div class="col-xs-12 col-xs-3" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
@@ -318,7 +318,7 @@
                                 <input type="text" class="form-control input-sm" name="sponsor_name" disabled ng-model="trialDetailView.selectedSponsorArray[0].name" required>
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedSponsorArray[0].name.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.sponsor_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.sponsor_name)">
-                                    Sponsor is required
+                                    Sponsor is Required
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
@@ -339,7 +339,7 @@
                                 <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
                                 <input type="hidden" name="fs_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.fsNum === 0">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)">
-                                    Funding Source is required
+                                    Funding Source is Required
                                 </span>
                             </div>
                         </div>
@@ -380,7 +380,7 @@
                                            ng-required="!trialDetailView.curTrial.grant_question"> No
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.grant_question)">
-                                    Grant question is required
+                                    Grant question is Required
                                 </span>
                             </div>
                         </div>
@@ -463,11 +463,11 @@
 
                                 <input type="hidden" name="grant_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.grant_question === 'Yes' && trialDetailView.grantNum === 0">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.grant_dummy)">
-                                    Grant is required
+                                    Grant is Required
                                 </span>
 
                                 <div class="add-association-error" ng-show="trialDetailView.showAddGrantError">
-                                    Funding Mechanism, Institute Code, Serial Number and NCI Division/Program Code are required
+                                    Funding Mechanism, Institute Code, Serial Number and NCI Division/Program Code are Required
                                 </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedGrants.length > 0">
@@ -556,14 +556,14 @@
                                 <input type="hidden" name="ts_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.tsNum === 0">
                                 <input type="hidden" name="ts_dummy2" ng-model="trialDetailView.statusValidationMsgs" validate-trial-status>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ts_dummy)">
-                                    Trial Status is required
+                                    Trial Status is Required
                                 </span>
 
                                 <div class="add-association-error" ng-show="trialDetailView.showAddStatusError && trialDetailView.why_stopped_disabled">
                                     Status Date and Status are required
                                 </div>
                                 <div class="add-association-error" ng-show="trialDetailView.showAddStatusError && !trialDetailView.why_stopped_disabled">
-                                    Status Date, Status and Why Study Stopped are required
+                                    Status Date, Status and Why Study Stopped are Required
                                 </div>
                                 <div class="add-association-error" ng-show="trialDetailView.showAddStatusDateError">
                                     The Status Date should not be in the future
@@ -637,7 +637,7 @@
                                     </span>
                                 </div>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date)">
-                                    Trial Start Date is required
+                                    Trial Start Date is Required
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-6">
@@ -650,7 +650,7 @@
                                            value="Anticipated" ng-required="!trialDetailView.curTrial.start_date_qual"> Anticipated
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual)">
-                                    Trial Start Date Type is required
+                                    Trial Start Date Type is Required
                                 </span>
                                 <input type="hidden" name="sdq_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.validateStartDateQual()">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.sdq_dummy)">
@@ -676,7 +676,7 @@
                                     </span>
                                 </div>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date)">
-                                    Primary Completion Date is required
+                                    Primary Completion Date is Required
                                 </span>
                                 <input type="hidden" name="pcd_dummy3" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.validatePrimaryCompDate()">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy3)">
@@ -693,8 +693,7 @@
                                            value="Anticipated" ng-required="!trialDetailView.curTrial.primary_comp_date_qual"> Anticipated
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual)">
-                                    Primary Completion Date Type is required
-                                </span>
+                                    Primary Completion Date Type is Required</span>
                                 <input type="hidden" name="pcd_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.validatePrimaryCompDateQual()">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy)">
                                     If current Trial Status is {{trialDetailView.currentStatusName}}, Primary Completion Date must be Actual
@@ -719,7 +718,7 @@
                                     </span>
                                 </div>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date)">
-                                    Completion Date is required
+                                    Completion Date is Required
                                 </span>
                                 <input type="hidden" name="cd_dummy3" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.validateCompDate()">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy3)">
@@ -736,7 +735,7 @@
                                            value="Anticipated" ng-required="!trialDetailView.curTrial.comp_date_qual"> Anticipated
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual)">
-                                    Completion Date Type is required
+                                    Completion Date Type is Required
                                 </span>
                                 <input type="hidden" name="cd_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.validateCompDateQual()">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy)">
@@ -767,7 +766,7 @@
                                            ng-required="!trialDetailView.curTrial.ind_ide_question" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> No
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_question)">
-                                    IND/IDE question is required
+                                    IND/IDE question is Required
                                 </span>
                             </div>
                         </div>
@@ -836,11 +835,11 @@
 
                                 <input type="hidden" name="ind_ide_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes' && trialDetailView.indIdeNum === 0">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)">
-                                    IND/IDE is required
+                                    IND/IDE is Required
                                 </span>
 
                                 <div class="add-association-error" ng-show="trialDetailView.showAddIndIdeError">
-                                    IND/IDE Type, ND/IDE Number, IND/IDE Grantor and IND/IDE Holder Type are required
+                                    IND/IDE Type, ND/IDE Number, IND/IDE Grantor and IND/IDE Holder Type are Required
                                 </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedIndIdes.length > 0">
@@ -898,7 +897,7 @@
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedInvArray[0].lname.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.investigator_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="investigator_name" ng-model="trialDetailView.selectedInvArray[0]" ng-required="trialDetailView.showInvestigator">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_name)">
-                                    Investigator is required
+                                    Investigator is Required
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-show="trialDetailView.showInvSearchBtn && ['update'].indexOf(trialDetailView.curTrial.edit_type) < 0">
@@ -913,7 +912,7 @@
                                        ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" ng-required="trialDetailView.showInvestigator">
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.investigator_title.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.investigator_title) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)">
-                                    Investigator Title is required
+                                    Investigator Title is Required
                                 </span>
                             </div>
                         </div>
@@ -925,7 +924,7 @@
                                 <span class="form-control-feedback" ng-show="trialDetailView.selectedIaArray[0].name.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <input type="hidden" name="inv_aff_name" ng-model="trialDetailView.selectedIaArray[0]" ng-required="trialDetailView.showInvestigator">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.inv_aff_name)">
-                                    Investigator Affiliation is required
+                                    Investigator Affiliation is Required
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-show="!trialDetailView.showInvSearchBtn && ['update'].indexOf(trialDetailView.curTrial.edit_type) < 0">
@@ -1063,10 +1062,10 @@
                                        validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                        ng-required="['update', 'complete'].indexOf(trialDetailView.curTrial.edit_type) < 0 || trialDetailView.protocolDocNum === 0">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_document) && trial_form.protocol_document.$error.required">
-                                    Protocol Document is required
+                                    Protocol Document is Required
                                 </span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_document) && trial_form.protocol_document.$error.validateFileType">
-                                    Valid file is required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                    Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
                             </div>
                         </div>
@@ -1087,10 +1086,10 @@
                                            validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                            ng-required="!trialDetailView.protocol_highlighted">
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo) && trial_form.change_memo.$error.required">
-                                        Either Change Memo Document or Protocol Highlighted Document  is required
+                                        Either Change Memo Document or Protocol Highlighted Document  is Required
                                     </span>
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.change_memo) && trial_form.change_memo.$error.validateFileType">
-                                        Valid file is required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                        Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                     </span>
                                 </div>
                             </div>
@@ -1110,10 +1109,10 @@
                                            validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                            ng-required="!trialDetailView.change_memo">
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted) && trial_form.protocol_highlighted.$error.required">
-                                        Either Change Memo Document or Protocol Highlighted Document  is required
+                                        Either Change Memo Document or Protocol Highlighted Document  is Required
                                     </span>
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.protocol_highlighted) && trial_form.protocol_highlighted.$error.validateFileType">
-                                        Valid file is required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                        Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                     </span>
                                 </div>
                             </div>
@@ -1134,10 +1133,10 @@
                                        validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                        ng-required="['update', 'complete'].indexOf(trialDetailView.curTrial.edit_type) < 0 || trialDetailView.irbApprovalNum === 0">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.irb_approval) && trial_form.irb_approval.$error.required">
-                                    IRB Approval is required
+                                    IRB Approval is Required
                                 </span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.irb_approval) && trial_form.irb_approval.$error.validateFileType">
-                                    Valid file is required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                    Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
                             </div>
                         </div>
@@ -1156,7 +1155,7 @@
                                 <input type="file" restriction-field ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB"
                                        validate-file-type="{{trialDetailView.acceptedFileExtensions}}">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.participating_sites) && trial_form.participating_sites.$error.validateFileType">
-                                    Valid file is required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                    Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
                             </div>
                         </div>
@@ -1176,10 +1175,10 @@
                                        validate-file-type="{{trialDetailView.acceptedFileExtensions}}"
                                        ng-required="trialDetailView.isInterventional && (['update', 'complete'].indexOf(trialDetailView.curTrial.edit_type) < 0 || trialDetailView.informedConsentNum === 0)">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.informed_consent) && trial_form.informed_consent.$error.required">
-                                    Informed Consent Document is required for Interventional Trial
+                                    Informed Consent Document is Required for Interventional Trial
                                 </span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.informed_consent) && trial_form.informed_consent.$error.validateFileType">
-                                    Valid file is required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                    Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
                             </div>
                         </div>
@@ -1199,7 +1198,7 @@
                                     <input type="file" restriction-field ngf-select ng-model="trialDetailView.other_documents[$index]" name="other_documents{{$index}}" ngf-max-size="10MB"
                                            validate-file-type="{{trialDetailView.acceptedFileExtensions}}">
                                     <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.other_documents{{$index}}) && trial_form.other_documents{{$index}}.$error.validateFileType">
-                                        Valid file is required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
+                                        Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                     </span>
                                 </div>
                             </div>

@@ -22,7 +22,7 @@
                                    ng-required="!trialDetailView.curTrial.grant_question"> No
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.grant_question)">
-                                    Grant question is required
+                                    Grant question is Required
                                 </span>
                             </div>
                         </div>
@@ -113,11 +113,11 @@
 
                                 <input type="hidden" name="grant_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.grant_question === 'Yes' && trialDetailView.grantNum === 0">
                                                         <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.grant_dummy)">
-                                                            Grant is required
+                                                            Grant is Required
                                                         </span>
 
                                 <div class="add-association-error" ng-show="trialDetailView.showAddGrantError">
-                                    Funding Mechanism, Institute Code, Serial Number and select a NCI Division/Program Code are required
+                                    Funding Mechanism, Institute Code, Serial Number and select a NCI Division/Program Code are Required
                                 </div>
 
                                 <table class="table table-bordered table-striped table-condensed" ng-show="trialDetailView.addedGrants.length > 0">

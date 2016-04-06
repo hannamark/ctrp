@@ -22,7 +22,7 @@
                                            ng-required="!trialDetailView.curTrial.ind_ide_question" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1"> No
                                 </label>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_question)">
-                                    IND/IDE question is required
+                                    IND/IDE question is Required
                                 </span>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
 
                             <input type="hidden" name="ind_ide_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes' && trialDetailView.indIdeNum === 0">
                             <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)">
-                                IND/IDE is required
+                                IND/IDE is Required
                             </span>
 
                             <div ng-if="trialDetailView.curTrial.ind_ide_question === 'Yes'" class="bottom-offset-xs">

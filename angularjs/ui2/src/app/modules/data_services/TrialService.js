@@ -883,7 +883,7 @@
             var errorMsg = '';
 
             if (!protocolIdOriginId || !protocolId) {
-                errorMsg = 'Protocol ID Origin and enter a Protocol ID is required';
+                errorMsg = 'Protocol ID Origin and enter a Protocol ID is Required';
                 return errorMsg;
             }
             for (var i = 0; i < addedOtherIds.length; i++) {
@@ -914,7 +914,7 @@
             var errorMsg = '';
 
             if (!authorityCountry || !authorityOrg) {
-                errorMsg = 'Country and Organization is required';
+                errorMsg = 'Country and Organization is Required';
                 return errorMsg;
             }
             for (var i = 0; i < addedAuthorities.length; i++) {

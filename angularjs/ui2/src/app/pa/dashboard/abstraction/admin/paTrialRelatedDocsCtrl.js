@@ -320,7 +320,7 @@
                         return;
                     }
                 });
-                vm.formError = valid ? '' : 'Both Protocol Document and IRB Approval Document are required';
+                vm.formError = valid ? '' : 'Both Protocol Document and IRB Approval Document are Required';
                 return valid;
             }
 
