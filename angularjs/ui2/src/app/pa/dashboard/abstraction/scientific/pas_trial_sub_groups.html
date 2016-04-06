@@ -1,4 +1,4 @@
-<div ng-show="sgView.addEditMode || sgView.curTrial.sub_groups.length == 0">
+<div ng-show="sgView.addEditMode">
     <form class="form form-horizontal" role="form" name="sg_form" novalidate ctrp-submit="sgView.saveSubGroup()">
         <!-- first row in the accordion body -->
         <div class="row">
@@ -27,7 +27,7 @@
                                     {{200 - sg_form.label.$viewValue.length}} characters left
                                 </span>
                                 <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.label) && sg_form.label.$error">
-                                  <span class="help-block" ng-message="required">Label is required</span>
+                                  <span class="help-block" ng-message="required">Label is Required</span>
                                 </span>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                     {{200 - sg_form.description.$viewValue.length}} characters left
                                 </span>
                                 <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.description) && sg_form.description.$error">
-                                  <span class="help-block" ng-message="required">Description is required</span>
+                                  <span class="help-block" ng-message="required">Description is Required</span>
                                 </span>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
 </div>
 
 <!-- Grid the shows all the SUB GROUPS -->
-<div class="row" ng-show="sgView.curTrial.sub_groups.length > 0">
+<div class="row">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
@@ -79,14 +79,15 @@
             </uib-accordion-heading>
 
             <fieldset>
-                <legend class="sub-bordered" ng-show="sgView.curTrial.sub_groups.length > 0">List of Sub Groups:</legend>
                 <div class="form-group table-responsive">
-                    <table class="table table-bordered table-striped table-hover" ng-show="sgView.curTrial.sub_groups.length > 0">
+                    <table class="table table-bordered table-striped table-hover" ng-show="sgView.curTrial.sub_groups.length">
                         <thead>
                         <th>Label</th>
                         <th>Description</th>
                         <th class="text-center td-icon">Edit</th>
-                        <th class="text-center td-icon">Delete</th>
+                        <th class="text-center td-icon">
+                            <input type="checkbox" restriction-field ng-model="sgView.selectedAllSG" ng-click="sgView.checkAllSG()" />
+                        </th>
                         </thead>
                         <tbody>
 
@@ -107,7 +108,7 @@
                             </td>
 
                             <td class="text-center td-icon">
-                                <input type="checkbox" ng-model="sub_group.selected" ng-change="sgView.deleteListHandler(sgView.curTrial.sub_groups)" />
+                                <input type="checkbox" ng-model="sub_group.selected" restriction-field ng-click="sgView.selectedAllSG = false" ng-change="sgView.deleteListHandler(sgView.curTrial.sub_groups)" />
                             </td>
                         </tr>
                         </tbody>
@@ -115,7 +116,9 @@
 
                     <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
                         <button type="submit" class="btn btn-primary pull-right" id="add_sub_group" restriction-field ng-click="sgView.setAddMode()">Add Sub Group</button>
-                        <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="sgView.deleteSelected()">Delete Sub Groups</button>
+                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="sgView.deleteSelected()"
+                                ng-disabled="!sgView.selectedDeleteSubGroupsList.length" ng-show="sgView.curTrial.sub_groups.length"
+                        >Delete Sub Groups</button>
                     </div>
 
                 </div>

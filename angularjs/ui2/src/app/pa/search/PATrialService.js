@@ -42,7 +42,7 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '3%', sort: { direction: 'asc', priority: 1},
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '3%', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
@@ -53,7 +53,7 @@
                 {name: 'purpose', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
                 {name: 'pilot', enableSorting: true, minWidth: '75', width: '6%'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '170', width: '5%',
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '190', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '5%',
@@ -65,7 +65,7 @@
                 {name: 'study_source', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_trial_status', enableSorting: true, minWidth: '160', width: '7%',
+                {name: 'current_trial_status', enableSorting: true, minWidth: '190', width: '7%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_milestone', enableSorting: true, minWidth: '200', width: '7%',

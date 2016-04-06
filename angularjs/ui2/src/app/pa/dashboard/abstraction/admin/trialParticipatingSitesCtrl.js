@@ -859,6 +859,8 @@
 
 
         function resetParticipatingSite() {
+            vm.selectedAllSites = false;
+            vm.selectedDeleteParticipatingSitesList = [];
             console.log("resetParticipatingSiteTab vm.currentParticipatingSite="+ JSON.stringify(vm.currentParticipatingSite));
             if(vm.currentParticipatingSite.id > 0){
                 for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {

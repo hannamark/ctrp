@@ -6,9 +6,9 @@
                 List of Anatomic Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
 
-            <div class="form-group no-bottom-margin" ng-if="anatomicView.addMode || anatomicView.curTrial.anatomic_site_wrappers.length == 0">
+            <div class="form-group no-bottom-margin" ng-if="anatomicView.addMode">
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
-                    <legend class="sub-bordered">Select Anatomic Sites:</legend>
+                    <legend class="sub-bordered">Select Anatomic Sites</legend>
                     <form class="form form-horizontal" role="form">
 
                     <div class="form-group">
@@ -37,9 +37,9 @@
                 </fieldset>
             </div>
             <fieldset>
-                <legend class="sub-bordered" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">List of Anatomic Sites:</legend>
-                <div class="form-group table-responsive" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">
-                    <table class="table table-bordered table-striped table-hover">
+                <legend class="sub-bordered" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">List of Anatomic Sites</legend>
+                <div class="form-group table-responsive">
+                    <table class="table table-bordered table-striped table-hover" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">
                         <thead>
                         <th>Anatomic Site Name</th>
                         <th class="text-center td-icon">
@@ -59,7 +59,7 @@
 
                     <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                         <button type="submit" class="btn btn-primary pull-right" id="add_anatomic_site" restriction-field ng-click="anatomicView.setAddMode()">Add Anatomic Site</button>
-                        <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="anatomicView.deleteSelected()" ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length">Delete Selected</button>
+                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="anatomicView.deleteSelected()" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0" ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length">Delete Anatomic Sites</button>
                     </div>
 
                 </div>
