@@ -243,6 +243,13 @@ Rails.application.routes.draw do
       get 'accepted_file_types' => 'util#get_accepted_file_types'
       get 'sampling_methods' => 'util#get_sampling_methods'
     end
+
+    resources :ncit_disease_codes do
+      collection do
+        get 'get_tree'
+        post 'get_tree'
+      end
+    end
   end
   # Devise related routes
 

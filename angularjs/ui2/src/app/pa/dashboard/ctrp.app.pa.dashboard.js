@@ -42,6 +42,7 @@
         'smart-table',
         'ngFileSaver',
         'angularSpinner',
-        'ui.select'
+        'ui.select',
+        'ntt.TreeDnD'
     ]);
 })();
