@@ -148,7 +148,7 @@ And the screen will be refreshed with the data since the last save.
 
 Scenario:  #13 I can enter duplicateArm/Group for a Trial
 Given I am on the Arm/Group screen for a trial
-When I have entered a duplicate Arm/Group
+When I have entered a duplicate Arm/Group Label or Description
 And have clicked the Save button
 Then  the message displays ‘Click OK to add a duplicate Arm/Group  Click Cancel to abort’ 
 When I select OK button

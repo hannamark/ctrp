@@ -193,6 +193,16 @@
         });
 
 
+        // Scenario 6: I have selected "No" for FDA Regulated Intervention Indicator
+        // And the number of Authorities > 0
+        // Then the required Regulatory Information for the trial will be associated
+        // And the Section 801 Indicator will be set to "No"
+        vm.checkIndicatorValue = function(value) {
+            if(value == "No" && (vm.addedAuthorities.length > 0)){
+                vm.curTrial.sec801_indicator = "No";
+            }
+        }
+
         vm.watchOption = function(type) {
             if (type == 'responsible_party') {
                 var piOption = vm.responsiblePartyArr.filter(findPiOption);

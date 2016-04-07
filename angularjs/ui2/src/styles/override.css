@@ -146,6 +146,7 @@
     margin-bottom: 13px;
     color: #003f59;
 }
+
 .table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
     border-bottom-width: 1px;
     background: #f3f3f3;
@@ -173,6 +174,9 @@
     overflow: visible;
     border: 1px solid #D4D4D4;
 }
+.table-bordered > thead > tr > th.nowrap {
+    white-space: nowrap;
+}
 
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td,
@@ -196,6 +200,7 @@
 .table-striped.table-condensed textarea.form-control {
     height: 50px;
 }
+
 .animated-item {
     -webkit-transition: all linear 0.5s;
     -o-transition: all linear 0.5s;
@@ -326,6 +331,37 @@ header img {
 }
 .top-offset-lg {
 	margin-top: 185px;
+}
+.bottom-offset-xs {
+	margin-bottom: 25px;
+}
+.bottom-offset-sm {
+	margin-bottom: 50px;
+}
+.bottom-offset-md {
+	margin-bottom: 100px;
+}
+
+.min-width-xs {
+    min-width: 50px;
+}
+.min-width-sm {
+    min-width: 100px;
+}
+.min-width-md {
+    min-width: 150px;
+}
+.min-width-lg {
+    min-width: 200px;
+}
+.min-width-xl {
+    min-width: 225px;
+}
+.min-width-xxl {
+    min-width: 250px;
+}
+.min-width-xxxl {
+    min-width: 275px;
 }
 
 .row-blue {
@@ -481,9 +517,9 @@ header .sub-title {
 }
 
 body {
+    font-family: verdana, arial, helvetica, sans-serif;
     font-size: 12px;
     color: #444;
-    font-family: 'Noto Sans', Arial, sans-serif;
 }
 
 .nav {
@@ -698,6 +734,10 @@ div.ui-grid-cell input[type="checkbox"] {
     padding-top: 7px;
 }
 
+td > .form-text {
+    padding-top: 5px;
+}
+
 .form-file-upload {
     padding-top: 5px;
 }
@@ -820,7 +860,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .add-association-error {
-    color: #a94442;
+    color: #C53531;
     margin-bottom: 10px;
 }
 
@@ -934,13 +974,13 @@ a.btn-file:hover {
 }
 
 .td-date {
-    width: 85px;
+    min-width: 130px;
 }
 .td-time {
-    width: 140px;
+    min-width: 140px;
 }
 .td-name {
-    width: 175px;
+    min-width: 175px;
 }
 
 body.identification  a.menu-identification,
@@ -966,7 +1006,9 @@ body.trial-description a.menu-trial-description,
 body.trial-outcome-measures a.menu-trial-outcome-measures,
 body.eligibility-critiera a.menu-eligibility-critiera,
 body.associated-trials a.menu-associated-trials,
+body.disease a.menu-disease,
 body.anatomic-sites a.menu-anatomic-sites,
+body.bio-markers a.menu-bio-markers,
 body.arms-groups a.menu-arms-groups,
 body.trial-sub-groups a.menu-trial-sub-groups {
     background: #eee;
@@ -1047,10 +1089,24 @@ input[type="file"] {
     display: inline;
 }
 
-.trial-status uib-accordion form.form-horizontal  {
+uib-accordion form.form-horizontal {
     width: 95%;
     margin-left: auto;
     margin-right: auto;
+    max-width: 1300px;
 }
 
-div.datepicker {width: 146px;}
+md-tabs.md-dynamic-height md-tab-content.md-active {
+    padding-top: 20px;
+}
+md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
+    color: blue;
+}
+
+div.datepicker {
+    max-width: 150px;
+}
+
+.sign_in .panel-body {
+    padding-bottom: 0;
+}

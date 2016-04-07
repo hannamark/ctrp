@@ -436,6 +436,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     When I click on Review Trial without any Trial Status
     Then I should get an error message as "Trial Status is required"
     And On Add Trial Status if Status Date or Status is missing
+    Then I should get an error message as "Status Date, Trial Status are required"
+    And On Add Trial Status when the Status selected is
     Then I should get an error message as "Trial Status Date and Trial Status are required"
     And On Add Trial Status when the Status selected is
       |Temporarily Closed to Accrual                  |

@@ -42,6 +42,21 @@
         }
 
 
+
+        vm.checkAllAS = function () {
+            if (vm.selectedAllAS) {
+                vm.selectedAllAS = true;
+            } else {
+                vm.selectedAllAS = false;
+            }
+
+            angular.forEach(vm.curTrial.anatomic_site_wrappers, function (item) {
+                item.selected = vm.selectedAllAS;
+                vm.deleteListHandler(vm.curTrial.anatomic_site_wrappers);
+            });
+
+        };
+
         vm.saveTrial = function(){
             vm.disableBtn = true;
 
@@ -122,6 +137,7 @@
                         vm.curTrial.anatomic_site_wrappers_attributes.push(anatomicSiteToBeAddedToDb);
                     }
                 });
+                vm.selectedAllAS = false;
             }
             //console.log(" vm.curTrial.anatomic_site_wrappers_attributes="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers_attributes));
             vm.anatomic_sites_selected = [];
@@ -130,6 +146,7 @@
         function reset() {
             //console.log("IN RESET");
             $scope.anatomic_sites_selected = [];
+            vm.selectedAllAS = false;
         }
 
     } //pasAnatomicSitesCtrl

@@ -370,6 +370,17 @@ class Trial < TrialBase
     pa_editable
   end
 
+  def checked_out_by_current_user(user)
+    return false if user.nil?
+    checked_out = false
+    Rails.logger.info "user = #{user.inspect}"
+    if ((self.admin_checkout && eval(self.admin_checkout)[:by] == user)  ||
+        (self.scientific_checkout && eval(self.scientific_checkout)[:by] == user))
+      checked_out = true
+    end
+    checked_out
+  end
+
   private
 
   def save_history
