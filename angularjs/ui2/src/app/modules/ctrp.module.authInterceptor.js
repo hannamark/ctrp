@@ -42,6 +42,7 @@
         } //response
 
         function responseError(rejection) {
+            console.log('rejection is: ', rejection);
             var ignoredFields = ['new', 'id', 'server_response']; // fields ignored in the response body
             if(rejection.status === 401) {
               //if unauthenticated or unauthorized, kick the user back to sign_in
@@ -51,11 +52,11 @@
                 $injector.get('toastr').clear();
                 var errorMsg = '<u>Error Code</u>: ' + rejection.status;
                 errorMsg += '\nError Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
-                errorMsg += '\nCause(s): ' + (rejection.error || '');
+                errorMsg += '\nCause(s): ' + (rejection.errors || '') + '.';
 
                 Object.keys(rejection.data).forEach(function(field, index) {
                     if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
-                        errorMsg += '\n ' + field + ' field: ' + rejection.data[field];
+                        errorMsg += '\n ' + field + ': ' + rejection.data[field];
                     }
                 });
 
