@@ -53,15 +53,11 @@
             }
 
             function confirm() {
-                scope.ngClick(); // trigger the click action
-                popover.hide();
-                /*
                 var buttonAction = $parse(attrs.ctrpClick);
                 console.info('buttonAction: ', buttonAction);
-                scope.$apply(function() {
-                    buttonAction(scope, {$event: popover.event});
-                });
-                */
+                buttonAction(scope, {$event: popover.event}); // trigger the click action
+                // scope.ngClick(); // trigger the click action, also works
+                popover.hide();
             }
 
             function cleanupPopover() {
