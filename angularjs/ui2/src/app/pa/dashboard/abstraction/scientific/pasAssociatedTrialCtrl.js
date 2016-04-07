@@ -115,14 +115,25 @@
              * @param  {Object}  trialLookUpResult [description]
              * @return {Void}                   [description]
              */
+            vm.associateTrialBtnDisabled = false;
             function associateTrial(trialLookUpResult) {
                 if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
                         vm.associationErrorMsg = 'Error: Trial association already exists';
                     // no duplicate
                     return;
                 }
-                vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
-                closeLookupForm();
+                vm.associateTrialBtnDisabled = true; // disable the button
+                PATrialService.associateTrial(trialLookUpResult).then(function(res) {
+                    console.info('associated trial result: ', res);
+                    // vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
+                    closeLookupForm();
+                }).catch(function(err) {
+                    console.error('error in associating the trial: ', err);
+                }).finally(function(done) {
+                    vm.associateTrialBtnDisabled = false;
+                });
+
+
             } // associateTrial
 
             function deleteAllAssociations(booleanFlag) {

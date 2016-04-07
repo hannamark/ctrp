@@ -85,10 +85,6 @@
                         <legend class="sub-bordered">Associated Trials</legend>
                         <div class="row">
                             <span ng-show="assoTrialsView.trialDetailObj.associated_trials.length === 0">Nothing found to display</span>
-
-                            <button type="button" class="btn btn-primary" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
-                                <i class="glyphicon glyphicon-plus"></i> Add a Trial
-                            </button>
                         </div>
                         <div class="row top-buffer">
                             <table st-table="assoTrialsView.trialDetailObj.associated_trials" class="table table-striped table-hover table-bordered" ng-hide="assoTrialsView.trialDetailObj.associated_trials.length === 0">
@@ -98,7 +94,7 @@
                                     <th class="col-sm-1 text-center">Identifier Type</th>
                                     <th class="text-center col-sm-1">Trial Type</th>
                                     <th class="text-center col-sm-4">Official Title</th>
-                                    <th class="text-center col-sm-2">Delete All <input type="checkbox" name="delete_all_asso" id="delete_all_asso" ng-model="assoTrialsView.deleteAllAssoCheckbox" ng-change="assoTrialsView.deleteAllAssociations(assoTrialsView.deleteAllAssoCheckbox)"></th>
+                                    <th class="text-center col-sm-2"><input type="checkbox" name="delete_all_asso" id="delete_all_asso" ng-model="assoTrialsView.deleteAllAssoCheckbox" ng-change="assoTrialsView.deleteAllAssociations(assoTrialsView.deleteAllAssoCheckbox)"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -135,11 +131,17 @@
             <div class="row top-buffer" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                 <div class="col-sm-3"></div>
                 <div class="btn-toolbar col-xs-12 col-sm-9">
-                  <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-click="assoTrialsView.updateTrialAssociations()">
+                  <!-- <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-click="assoTrialsView.updateTrialAssociations()">
                     <i class="glyphicon glyphicon-ok"></i>  Save
+                  </button> -->
+                  <button type="button" class="btn btn-primary pull-right" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
+                      <i class="glyphicon glyphicon-plus"></i> Add a Trial
                   </button>
-                  <button type="button" class="btn btn-warning pull-right" id="cancel_btn" restriction-field ng-click="assoTrialsView.resetAssociations()">
-                   <i class="glyphicon glyphicon-remove"></i>  Reset
+                  <button type="button" class="btn btn-danger pull-right" id="cancel_btn"
+                      restriction-field
+                      ng-click="assoTrialsView.resetAssociations()"
+                      ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0">
+                   <i class="glyphicon glyphicon-remove"></i>  Delete Associated Trials
                   </button>
                 </div>
             </div>
