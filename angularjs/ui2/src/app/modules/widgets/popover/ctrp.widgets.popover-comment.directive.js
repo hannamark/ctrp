@@ -28,7 +28,7 @@
         function linkerFn(scope, element, attrs) {
 
             var popover = $popover(element, {
-                title: 'Save Comment on Deletion',
+                title: 'Reason for Deletion',
                 // contentTemplate: attrs.template || defaultTemplateUrl,
                 templateUrl: attrs.template || defaultTemplateUrl,
                 html: true,
