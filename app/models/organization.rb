@@ -59,7 +59,7 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :name_aliases, allow_destroy: true
 
   validates :name, presence: true
-  validates_length_of :name, :in => 5..255
+  ##validates_length_of :name, :in => 5..255
 
   validates :address, presence: true
   validates :city, presence: true

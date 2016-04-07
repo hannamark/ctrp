@@ -20,13 +20,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
-
-
-
-
-
-
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   #@@current_user = current_user
@@ -206,42 +199,61 @@ class ApplicationController < ActionController::Base
 
 
 
-
-
-
-
-
   #############
   ###This section will take care of catching up all general exceptions thrown by rails 4.x app.
   ###RAILS 4 Exception Handling
   ###
   ## STOP STOP STOP, READ FOLLOWING -------->>>>>>>>>>>>>
-  # Before placing your code, please know that specific/child exceptions should be followed by general/parent exceptions
-  # THUMB RULE is place Big Basket first and then small baskets. In Rails Exception class is the BIG BASKET.
+  # Before placing your code, please aware that specific/child exceptions should be followed by general/parent exceptions
+  # THUMB RULE is place Big-Basket first and then Small-Baskets. In Rails Exception class is the BIG BASKET.
   ############
 
 
-  ### ActiveRecord
+  ### StandardError
   ### \----------------------------/ Big Basket for Active Record
-  rescue_from ActiveRecord::ActiveRecordError do |e|
+  rescue_from StandardError do |e|
     respond_with do |format|
-      format.json { render json: { message: "Active Record Error is restricting to save/update your record" }, status: :bad_request }
+      format.json { render json: { errors: "Standard eroors may be restricting to save your form data" }, status:500 }
     end
   end
 
 
-  ##ActiveRecord::StatementInvalid
+  ### ActiveRecord ####
+  ### \----------------------------/ Big Basket for Active Record
+  rescue_from ActiveRecord::ActiveRecordError do |e|
+    respond_with do |format|
+      format.json { render json: { errors: "Currently, Object-relation mapping issues may be restricting to save your form data" }, status:500 }
+    end
+  end
+
+
+  ##ActiveRecord::NoDatabaseError
   ##\---/ Small Basket
 
+  rescue_from  ActiveRecord::NoDatabaseError do |exception|
+    respond_to do |format|
+      format.json { render json: { errors: "Database does not exist" }, status: 500 }
+    end
+  end
+
+  ##ActiveRecord::ConnectionNotEstablished
+  ##\---/ Small Basket
+  rescue_from    ActiveRecord::ConnectionNotEstablished do |exception|
+    respond_to do |format|
+      format.json { render json: { errors: "Connection to the database could not been established" }, status: 500 }
+    end
+  end
+
+  ##ActiveRecord::StatementInvalid
+  ##\---/ Small Basket
   rescue_from   ActiveRecord::StatementInvalid do |exception|
     respond_to do |format|
-      format.json { render json: { "error": "ActiveRecord::StatementInvalid" }, status: 504 }
+      format.json { render json: { errors: "The form data is not in a valid state to be saved" }, status: 422 }
     end
   end
 
   ##ActiveRecord::StaleObjectError
   ##\---/ Small Basket
-
   rescue_from ActiveRecord::StaleObjectError do |exception|
     respond_to do |format|
       format.html {
@@ -252,22 +264,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+ ###Active Record End ####
 
-
-  ### ActionController
-  ### \----------------------------/ Big Basket for ActionController
+  ### ActionView
+  ### \----------------------------/ Big Basket for ActionView
   rescue_from  ActionView::ActionViewError do |e|
     respond_to do |format|
-      format.json { render json: { message: "  ActionView::ActionViewError " }, status: 504 }
+      format.json { render json: { errors: "The form data is not in a valid state to be saved" }, status: 500 }
     end
   end
 
 
-  ### ActionController
-  ### \----------------------------/ Big Basket for ActionController
-  rescue_from   ActionController::ActionControllerError do |e|
-   render :show, status: 500
-  end
+
+
 
   protected
 
