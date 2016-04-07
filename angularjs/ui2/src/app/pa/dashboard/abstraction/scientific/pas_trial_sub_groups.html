@@ -71,59 +71,55 @@
 </div>
 
 <!-- Grid the shows all the SUB GROUPS -->
-<div class="row">
+<div class="row" ng-if="!sgView.addEditMode">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
                 List of Sub Groups  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover" ng-show="sgView.curTrial.sub_groups.length">
+                    <thead>
+                    <th>Label</th>
+                    <th>Description</th>
+                    <th class="text-center td-icon">Edit</th>
+                    <th class="text-center td-icon">
+                        <input type="checkbox" restriction-field ng-model="sgView.selectedAllSG" ng-click="sgView.checkAllSG()" />
+                    </th>
+                    </thead>
+                    <tbody>
 
-            <fieldset>
-                <div class="form-group table-responsive">
-                    <table class="table table-bordered table-striped table-hover" ng-show="sgView.curTrial.sub_groups.length">
-                        <thead>
-                        <th>Label</th>
-                        <th>Description</th>
-                        <th class="text-center td-icon">Edit</th>
-                        <th class="text-center td-icon">
-                            <input type="checkbox" restriction-field ng-model="sgView.selectedAllSG" ng-click="sgView.checkAllSG()" />
-                        </th>
-                        </thead>
-                        <tbody>
+                    <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
 
-                        <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
+                        <td>
+                            {{sub_group.label}}
+                        </td>
 
-                            <td>
-                                {{sub_group.label}}
-                            </td>
+                        <td>
+                            {{sub_group.description}}
+                        </td>
 
-                            <td>
-                                {{sub_group.description}}
-                            </td>
+                        <td class="text-center td-icon">
+                            <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="sgView.setEditMode($index)">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </button>
+                        </td>
 
-                            <td class="text-center td-icon">
-                                <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="sgView.setEditMode($index)">
-                                    <i class="glyphicon glyphicon-edit"></i>
-                                </button>
-                            </td>
+                        <td class="text-center td-icon">
+                            <input type="checkbox" ng-model="sub_group.selected" restriction-field ng-click="sgView.selectedAllSG = false" ng-change="sgView.deleteListHandler(sgView.curTrial.sub_groups)" />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-                            <td class="text-center td-icon">
-                                <input type="checkbox" ng-model="sub_group.selected" restriction-field ng-click="sgView.selectedAllSG = false" ng-change="sgView.deleteListHandler(sgView.curTrial.sub_groups)" />
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="btn-toolbar">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_sub_group" restriction-field  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="sgView.setAddMode()">Add Sub Group</button>
-                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="sgView.deleteSelected()"
-                                ng-disabled="!sgView.selectedDeleteSubGroupsList.length" ng-show="sgView.curTrial.sub_groups.length"
-                        >Delete Selected</button>
-                    </div>
-
+                <div class="btn-toolbar">
+                    <button type="submit" class="btn btn-primary pull-right" id="add_sub_group" restriction-field  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="sgView.setAddMode()">Add Sub Group</button>
+                    <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="sgView.deleteSelected()"
+                            ng-disabled="!sgView.selectedDeleteSubGroupsList.length" ng-show="sgView.curTrial.sub_groups.length"
+                    >Delete Selected</button>
                 </div>
 
-            </fieldset>
+            </div>
         </uib-accordion-group>
     </uib-accordion>
 </div>

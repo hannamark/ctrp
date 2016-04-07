@@ -110,10 +110,9 @@
 
                 </fieldset>
             </div>
-            <fieldset ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-                <legend class="sub-bordered" ng-show="markersView.selectedDeleteBioMarkersList.length">List of Arms Groups:</legend>
-                <div class="form-group table-responsive">
-                    <table class="table table-bordered table-striped table-hover" ng-show="armView.curTrial.arms_groups.length">
+            <fieldset>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover" ng-show="armView.curTrial.arms_groups.length" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <thead>
                         <th>Label</th>
                         <th>Type</th>
