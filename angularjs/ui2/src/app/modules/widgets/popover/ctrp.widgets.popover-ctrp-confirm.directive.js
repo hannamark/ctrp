@@ -55,8 +55,8 @@
             function confirm() {
                 var buttonAction = $parse(attrs.ctrpClick);
                 console.info('buttonAction: ', buttonAction);
-                buttonAction(scope, {$event: popover.event}); // trigger the click action
-                // scope.ngClick(); // trigger the click action, also works
+                // buttonAction(scope, {$event: popover.event}); // trigger the click action, !not working!
+                scope.ngClick(); // trigger the click action
                 popover.hide();
             }
 
