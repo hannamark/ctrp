@@ -19,6 +19,7 @@
             vm.lookupBtnDisabled = false;
             vm.showLookupForm = false;
             vm.deleteAllAssoCheckbox = false;
+            vm.deleteBtnDisabled = true; // delete associated trials
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
@@ -26,15 +27,15 @@
             vm.lookupTrial = lookupTrial;
             vm.showTrialLookupForm = showTrialLookupForm;
             vm.closeLookupForm = closeLookupForm;
-            vm.updateTrialAssociations = updateTrialAssociations;
-            vm.resetAssociations = _getTrialDetailCopy;
-            vm.deleteAssociation = deleteAssociation;
+            vm.deleteTrialAssociations = deleteTrialAssociations;
+            // vm.resetAssociations = _getTrialDetailCopy;
             vm.deleteAllAssociations = deleteAllAssociations;
 
             activate();
             function activate() {
                 _getTrialDetailCopy();
                 vm.foundTrialObj = _initFoundTrialObj();
+                watchDeletionCheckbox();
             }
 
             function lookupTrial() {
@@ -140,15 +141,23 @@
                 });
             }
 
-            function deleteAssociation(index) {
-                vm.trialDetailObj.associated_trials[index]._destroy = !vm.trialDetailObj.associated_trials[index]._destroy;
+            function watchDeletionCheckbox() {
+                $scope.$watch(function() {return vm.trialDetailObj.associated_trials;},
+                    function(newVal, oldVal) {
+                        if (angular.isDefined(newVal) && angular.isArray(newVal)) {
+                            console.info('newVal is: ', newVal);
+                            vm.deleteBtnDisabled = _.findIndex(newVal, {_destroy: true}) === -1;
+                        }
+                }, true);
             }
 
             /**
              * Update associated trials at the backend
              * @return {Void}
              */
-            function updateTrialAssociations() {
+
+            function deleteTrialAssociations() {
+                console.info('deleteTrialAssociations');
                 if (vm.trialDetailObj.associated_trials.length === 0) {
                     return;
                 }
@@ -158,7 +167,7 @@
                 outerTrial.id = vm.trialDetailObj.id;
                 outerTrial.trial = vm.trialDetailObj;
                 outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-
+                vm.deleteBtnDisabled = true;
                 PATrialService.upsertTrial(outerTrial).then(function(res) {
                     if (res.server_response.status === 200) {
                         vm.trialDetailObj = res;
@@ -178,6 +187,7 @@
                     console.error('trial association error: ', err);
                 }).finally(function() {
                     console.info('trial associations have been updated');
+                    vm.deleteBtnDisabled = true;
                 });
             }
         }

@@ -117,9 +117,7 @@
                                             {{t.official_title}}
                                         </td>
                                         <td class="text-center td-icon">
-                                            <label class="btn btn-warning" restriction-field ng-click="assoTrialsView.deleteAssociation($index)">
-                                                <i class="glyphicon" ng-class="t._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                            </label>
+                                            <input type="checkbox" ng-model="t._destroy" ng-change="!t._destroy" />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -139,8 +137,9 @@
                   </button>
                   <button type="button" class="btn btn-danger pull-right" id="cancel_btn"
                       restriction-field
-                      ng-click="assoTrialsView.resetAssociations()"
-                      ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0">
+                      ng-click="assoTrialsView.deleteTrialAssociations()"
+                      ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0"
+                      ng-disabled="assoTrialsView.deleteBtnDisabled">
                    <i class="glyphicon glyphicon-remove"></i>  Delete Associated Trials
                   </button>
                 </div>
