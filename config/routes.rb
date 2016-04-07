@@ -47,6 +47,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :associated_trials
+
     resources :source_statuses
 
     resources :source_contexts

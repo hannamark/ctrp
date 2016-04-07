@@ -68,7 +68,6 @@
             } // lookupTrial
 
             function resetTrialLookupForm(form) {
-
                 // form.trial_identifier.$error = null;
                 // form.identifier_type.$error = null;
                 vm.trialQueryObj = {identifierTypeId: 1, trialIdentifier: 'NCI-'};
@@ -124,15 +123,14 @@
                 }
                 vm.associateTrialBtnDisabled = true; // disable the button
                 PATrialService.associateTrial(trialLookUpResult).then(function(res) {
-                    console.info('associated trial result: ', res);
-                    // vm.trialDetailObj.associated_trials.unshift(angular.copy(trialLookUpResult));
+                    res.server_response = null;
+                    vm.trialDetailObj.associated_trials.unshift(res);
                     closeLookupForm();
                 }).catch(function(err) {
                     console.error('error in associating the trial: ', err);
                 }).finally(function(done) {
                     vm.associateTrialBtnDisabled = false;
                 });
-
 
             } // associateTrial
 
