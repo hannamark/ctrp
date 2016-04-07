@@ -143,9 +143,9 @@
                         </tbody>
                     </table>
 
-                    <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field ng-click="armView.setAddMode()">Add Arms Groups</button>
-                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()" ng-disabled="!armView.selectedDeleteArmsGroupsList.length" ng-show="armView.curTrial.arms_groups.length">Delete Arms Groups</button>
+                    <div class="btn-toolbar">
+                        <button type="submit" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setAddMode()">Add Arms Group</button>
+                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()" ng-disabled="!armView.selectedDeleteArmsGroupsList.length" ng-show="armView.curTrial.arms_groups.length">Delete Selected</button>
                     </div>
 
                 </div>

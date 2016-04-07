@@ -169,6 +169,7 @@
 
                             <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
                                 <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
+                                <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                                 <td>
                                     {{(omView.om_types  | findObjByAttribute:'id':outcome_measure.outcome_measure_type_id)[0].name}}
                                 </td>
@@ -209,7 +210,7 @@
                             <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()"
                                     ng-show="omView.curTrial.outcome_measures.length"
                                     ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length">
-                                <i class="glyphicon glyphicon-trash"></i> Delete Outcome Measures
+                                <i class="glyphicon glyphicon-trash"></i> Delete Selected
                             </button>
                         </div>
 

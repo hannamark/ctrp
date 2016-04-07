@@ -234,7 +234,7 @@
     opacity: 0;
 }
 
-.deleted-text {
+.deleted-text, .deleted-text a{
     color:red;
     text-decoration:line-through;
 }

@@ -68,7 +68,7 @@
                                         </div>
                                     </td>
                                     <td class="text-center td-icon">
-                                        <input type="checkbox" ng-model="collaborator.selected" restriction-field ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" />
+                                        <input type="checkbox" ng-model="collaborator.selected" restriction-field ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" ng-click="trialDetailView.selectedAllCos = false"/>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -6,10 +6,10 @@
                 Associated Trials <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <!-- add associated trial -->
-            <div class="row top-buffer">
+            <div class="row">
                 <form name="associated_trials_form" role="form" class="form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()">
                     <!-- fieldset for eligibility criteria -->
-                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm">
+                    <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm">
                         <legend class="sub-bordered">
                             Trial Lookup
                         </legend>
@@ -79,27 +79,23 @@
             </div>
             <!-- end of adding associated trial -->
             <!-- associated trials -->
-            <div class="row top-buffer">
+            <div class="row ">
                 <form>
-                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <legend class="sub-bordered">Associated Trials</legend>
+                    <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <div class="row">
-                            <span ng-show="assoTrialsView.trialDetailObj.associated_trials.length === 0">Nothing found to display</span>
-                        </div>
-                        <div class="row top-buffer">
                             <table st-table="assoTrialsView.trialDetailObj.associated_trials" class="table table-striped table-hover table-bordered" ng-hide="assoTrialsView.trialDetailObj.associated_trials.length === 0">
                                 <thead>
                                 <tr>
-                                    <th class="col-sm-2 text-center">Trial Identifier</th>
-                                    <th class="col-sm-1 text-center">Identifier Type</th>
-                                    <th class="text-center col-sm-1">Trial Type</th>
-                                    <th class="text-center col-sm-4">Official Title</th>
-                                    <th class="text-center col-sm-2"><input type="checkbox" name="delete_all_asso" id="delete_all_asso" ng-model="assoTrialsView.deleteAllAssoCheckbox" ng-change="assoTrialsView.deleteAllAssociations(assoTrialsView.deleteAllAssoCheckbox)"></th>
+                                    <th class="col-sm-2">Trial Identifier</th>
+                                    <th class="col-sm-2">Identifier Type</th>
+                                    <th class="col-sm-1">Trial Type</th>
+                                    <th>Official Title</th>
+                                    <th class="text-center td-icon"><input type="checkbox" name="delete_all_asso" id="delete_all_asso" ng-model="assoTrialsView.deleteAllAssoCheckbox" ng-change="assoTrialsView.deleteAllAssociations(assoTrialsView.deleteAllAssoCheckbox)"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="t in assoTrialsView.trialDetailObj.associated_trials track by $index" ng-class="t._destroy ? 'deleted-text' : ''">
-                                        <td class="text-center">
+                                    <tr ng-repeat="t in assoTrialsView.trialDetailObj.associated_trials track by $index" >
+                                        <td>
                                             <span ng-show="t.trial_identifier.indexOf('NCI') > -1">
                                                 <a ui-sref="main.viewTrial({trialId: t.associated_trial_id})">{{t.trial_identifier}}</a>
                                             </span>
@@ -107,17 +103,17 @@
                                                 <a href="https://clinicaltrials.gov/ct2/show/{{t.trial_identifier}}" target="_blank">{{t.trial_identifier}}</a>
                                             </span>
                                         </td>
-                                        <td class="text-center">
+                                        <td>
                                             {{t.identifierTypeStr}}
                                         </td>
-                                        <td class="text-center">
+                                        <td>
                                             {{t.research_category_name}}
                                         </td>
                                         <td>
                                             {{t.official_title}}
                                         </td>
                                         <td class="text-center td-icon">
-                                            <input type="checkbox" ng-model="t._destroy" ng-change="!t._destroy" />
+                                            <input type="checkbox" ng-model="t._destroy" ng-change="!t._destroy" ng-click="assoTrialsView.deleteAllAssoCheckbox = false"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -126,14 +122,14 @@
                     </fieldset>
                 </form>
             </div>
-            <div class="row top-buffer" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
+            <div class="row top-buffer">
                 <div class="col-sm-3"></div>
                 <div class="btn-toolbar col-xs-12 col-sm-9">
                   <!-- <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-click="assoTrialsView.updateTrialAssociations()">
                     <i class="glyphicon glyphicon-ok"></i>  Save
                   </button> -->
-                  <button type="button" class="btn btn-primary pull-right" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
-                      <i class="glyphicon glyphicon-plus"></i> Add a Trial
+                  <button type="button" ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
+                      <i class="glyphicon glyphicon-plus"></i> Add Associated Trial
                   </button>
                   <button type="button" class="btn btn-danger pull-right" id="cancel_btn"
                       restriction-field
@@ -142,7 +138,7 @@
                       ctrp-click="assoTrialsView.deleteTrialAssociations()"
                       ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0"
                       ng-disabled="assoTrialsView.deleteBtnDisabled">
-                   <i class="glyphicon glyphicon-remove"></i>  Delete Associated Trials
+                   <i class="glyphicon glyphicon-remove"></i>  Delete Selected
                   </button>
                 </div>
             </div>

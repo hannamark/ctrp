@@ -129,6 +129,7 @@
                         vm.trialDetailObj.associated_trials.unshift(res);
                         closeLookupForm();
                     }
+                    vm.deleteAllAssoCheckbox = false;
                 }).catch(function(err) {
                     console.error('error in associating the trial: ', err);
                 }).finally(function(done) {
