@@ -25,11 +25,11 @@
 
         function linkerFn(scope, element, attrs) {
             var popover = $popover(element, {
-                title: 'Please Confirm',
+                title: 'Are you sure you want to delete?',
                 templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
                 html: true,
                 trigger: 'manual',
-                placement: 'bottom',
+                placement: 'top',
                 animation: 'am-flip-x',
                 content: 'Please confirm this operation',
                 autoClose: true,
@@ -39,7 +39,7 @@
             element.bind('click', function(event) {
                 popover.event = event;
                 if (!popover.$isShown) {
-                    console.info('popover: ', popover);
+                    // console.info('popover: ', popover);
                     popover.show();
                 }
             });
