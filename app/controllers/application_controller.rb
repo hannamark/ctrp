@@ -248,7 +248,7 @@ class ApplicationController < ActionController::Base
   ##\---/ Small Basket
   rescue_from   ActiveRecord::StatementInvalid do |exception|
     respond_to do |format|
-      format.json { render json: { error: "The form data is not in a valid state to be saved" }, status: 422 }
+      format.json { render json: { errors: "The form data is not in a valid state to be saved" }, status: 422 }
     end
   end
 
@@ -270,7 +270,7 @@ class ApplicationController < ActionController::Base
   ### \----------------------------/ Big Basket for ActionView
   rescue_from  ActionView::ActionViewError do |e|
     respond_to do |format|
-      format.json { render json: { error: "The form data is not in a valid state to be saved" }, status: 500 }
+      format.json { render json: { errors: "The form data is not in a valid state to be saved" }, status: 500 }
     end
   end
 
