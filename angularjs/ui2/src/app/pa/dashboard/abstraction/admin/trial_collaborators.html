@@ -9,7 +9,7 @@
             <uib-accordion close-others="false">
                 <uib-accordion-group is-open="paTrialOverview.accordionOpen">
                     <uib-accordion-heading>
-                        Collaborator Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+                        Trial Collaborator Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
                     </uib-accordion-heading>
 
 
@@ -51,7 +51,7 @@
     </form>
 </div>
 
-<div class="row" >
+<div class="row" ng-hide="trialDetailView.addMode && (trialDetailView.curTrial.collaborators.length === 0)">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
