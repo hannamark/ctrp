@@ -29,10 +29,10 @@
                             </div>
                         </fieldset>
                         <fieldset class="sub-bordered" restriction-field ng-show="armView.interventional">
-                            <div class="form-group">
-                                <label for="org_type" class="control-label col-xs-12 col-sm-3">Type: </label>
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.arms_groups_type)}">
+                                <label for="arms_groups_type" class="control-label col-xs-12 col-sm-3">Type: </label>
                                 <div class="col-xs-12 col-sm-9">
-                                    <select class="form-control input-sm" id="type" ng-model="armView.currentArmsGroup.arms_groups_type">
+                                    <select class="form-control input-sm" name="arms_groups_type" id="arms_groups_type" ng-model="armView.currentArmsGroup.arms_groups_type" ng-required="true">
                                         <option value="">-Select Type-</option>
                                         <option value="Experimental">Experimental</option>
                                         <option value="Active Comparator">Active Comparator</option>
@@ -41,6 +41,9 @@
                                         <option value="No intervention">No intervention</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                    <span ng-messages="ctrpbtn.arm_form.needsAttention(arm_form.arms_groups_type) && arm_form.arms_groups_type.$error">
+                                        <span class="help-block" ng-message="required">Type is Required</span>
+                                    </span>
                                 </div>
                             </div>
                         </fieldset>

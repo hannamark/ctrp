@@ -831,7 +831,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .form-group.required .control-label:after{
-    color: #C53531;
+    color: #a94442;
     content: "*";
     position: absolute;
     margin-right: -13px;
@@ -860,7 +860,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .add-association-error {
-    color: #C53531;
+    color: #a94442;
     margin-bottom: 10px;
 }
 
