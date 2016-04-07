@@ -124,9 +124,11 @@
                 }
                 vm.associateTrialBtnDisabled = true; // disable the button
                 PATrialService.associateTrial(trialLookUpResult).then(function(res) {
-                    res.server_response = null;
-                    vm.trialDetailObj.associated_trials.unshift(res);
-                    closeLookupForm();
+                    if (res.server_response.status === 201) {
+                        delete res.server_response;
+                        vm.trialDetailObj.associated_trials.unshift(res);
+                        closeLookupForm();
+                    }
                 }).catch(function(err) {
                     console.error('error in associating the trial: ', err);
                 }).finally(function(done) {
@@ -145,7 +147,6 @@
                 $scope.$watch(function() {return vm.trialDetailObj.associated_trials;},
                     function(newVal, oldVal) {
                         if (angular.isDefined(newVal) && angular.isArray(newVal)) {
-                            console.info('newVal is: ', newVal);
                             vm.deleteBtnDisabled = _.findIndex(newVal, {_destroy: true}) === -1;
                         }
                 }, true);

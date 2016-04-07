@@ -116,7 +116,7 @@
 
                             <div class="form-group" ng-show="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"
                                 ng-class="{'has-feedback required': criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.sampling_method)}">
-                                    <label for="sampling_method" class="control-label col-xs-12 col-sm-3">Sampling Method</label>
+                                    <label for="sampling_method" class="control-label col-xs-12 col-sm-3">Sampling Method:</label>
                                     <div class="col-xs-12 col-sm-4">
                                         <select name="sampling_method" id="sampling_method"
                                             class="form-control input-sm"
@@ -174,10 +174,10 @@
                                             maxlength="criteriaView.descCharsRemaining" ng-maxlength="criteriaView.descCharsRemaining"
                                             ng-model="criteriaView.otherCriterion.criteria_desc" placeholder="Criteria Description">
                                         </textarea>
+                                        <span ng-show="criteria_form.other_criteria_desc.$viewValue.length > 0">
+                                            {{criteriaView.descCharsRemaining - criteria_form.other_criteria_desc.$viewValue.length}} characters left. Total characters for all Other Criteria Description is {{criteriaView.numCharsUsedInOC}}.
+                                        </span>
                                     </div>
-                                    <span ng-show="criteria_form.other_criteria_desc.$viewValue.length > 0">
-                                        {{criteriaView.descCharsRemaining - criteria_form.other_criteria_desc.$viewValue.length}} characters left. Total characters for all Other Criteria Description is {{criteriaView.numCharsUsedInOC}}.
-                                    </span>
                                 </div>
                                 <div class="col-xs-12 col-sm-2">
                                     <label class="control-label"></label>
