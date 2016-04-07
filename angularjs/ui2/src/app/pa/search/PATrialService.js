@@ -155,7 +155,8 @@
             getTrialIdentifierTypes: getTrialIdentifierTypes,
             searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists,
             searchNCITrial: searchNCITrial,
-            lookupTrial: lookupTrial
+            lookupTrial: lookupTrial,
+            associateTrial: associateTrial
         };
 
         return services;
@@ -491,6 +492,17 @@
             } else {
                 return searchNCITrial(trialIdentifier);
             }
+        }
+
+        /**
+         * Associate a Trial with another trial
+         * @param  {JSON object} associatedTrialObj: fields include 'trial_identifier', 'associated_trial_id',
+         *                       'identifier_type_id', 'official_title', 'research_category_name'
+         * @return {[type]}                    [description]
+         */
+        function associateTrial(associatedTrialObj) {
+            console.info('associating trial: ', associatedTrialObj);
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.ASSOCIATE_TRIAL, associatedTrialObj);
         }
 
         /**
