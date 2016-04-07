@@ -137,7 +137,9 @@
                   </button>
                   <button type="button" class="btn btn-danger pull-right" id="cancel_btn"
                       restriction-field
-                      ng-click="assoTrialsView.deleteTrialAssociations()"
+                      ctrp-confirm
+                      confirm-template=""
+                      ctrp-click="assoTrialsView.deleteTrialAssociations()"
                       ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0"
                       ng-disabled="assoTrialsView.deleteBtnDisabled">
                    <i class="glyphicon glyphicon-remove"></i>  Delete Associated Trials
