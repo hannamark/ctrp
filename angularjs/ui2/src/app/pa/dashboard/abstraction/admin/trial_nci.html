@@ -42,12 +42,7 @@
                     <div ng-repeat="fs in trialNciView.addedFses track by $index" class="form-group">
                         <div class="col-xs-12 col-sm-4"></div>
                         <div class="col-xs-12 col-sm-5">
-                            <label ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'">{{fs.organization_name}}</label>
-                        </div>
-                        <div class="col-xs-12 col-sm-1 td-icon">
-                            <label restriction-field class="btn btn-warning" ng-click="trialNciView.toggleSelection($index, 'funding_source')" ng-hide="['update'].indexOf(trialNciView.curTrial.edit_type) > -1">
-                                <i ng-class="fs._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                            </label>
+                            <span ng-class="fs._destroy == true ? 'deleted-text animated-item' : 'animated-item'">{{fs.organization_name}}</span>
                         </div>
                     </div>
                 </fieldset>
