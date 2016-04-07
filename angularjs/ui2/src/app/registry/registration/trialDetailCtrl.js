@@ -385,14 +385,44 @@
 
             if (type == 'status_date') {
                 vm.status_date_opened = !vm.status_date_opened;
+                if (vm.status_date_opened) {
+                    vm.start_date_opened = false;
+                    vm.primary_comp_date_opened = false;
+                    vm.comp_date_opened = false;
+                    vm.amendment_date_opened = false;
+                }
             } else if (type == 'start_date') {
                 vm.start_date_opened = !vm.start_date_opened;
+                if (vm.start_date_opened) {
+                    vm.status_date_opened = false;
+                    vm.primary_comp_date_opened = false;
+                    vm.comp_date_opened = false;
+                    vm.amendment_date_opened = false;
+                }
             } else if (type == 'primary_comp_date') {
                 vm.primary_comp_date_opened = !vm.primary_comp_date_opened;
+                if (vm.primary_comp_date_opened) {
+                    vm.status_date_opened = false;
+                    vm.start_date_opened = false;
+                    vm.comp_date_opened = false;
+                    vm.amendment_date_opened = false;
+                }
             } else if (type == 'comp_date') {
                 vm.comp_date_opened = !vm.comp_date_opened;
+                if (vm.comp_date_opened) {
+                    vm.status_date_opened = false;
+                    vm.start_date_opened = false;
+                    vm.primary_comp_date_opened = false;
+                    vm.amendment_date_opened = false;
+                }
             } else if (type == 'amendment_date') {
                 vm.amendment_date_opened = !vm.amendment_date_opened;
+                if (vm.amendment_date_opened) {
+                    vm.status_date_opened = false;
+                    vm.start_date_opened = false;
+                    vm.primary_comp_date_opened = false;
+                    vm.comp_date_opened = false;
+                }
             }
         }; //openCalendar
 
