@@ -33,8 +33,8 @@
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
             vm.disableBtn = true;
-            console.log("vm.addedGrants" + JSON.stringify(vm.addedGrants));
-            console.log("vm.grantNum=" + JSON.stringify(vm.grantNum));
+            //console.log("vm.addedGrants" + JSON.stringify(vm.addedGrants));
+            //console.log("vm.grantNum=" + JSON.stringify(vm.grantNum));
             if (vm.grantNum <= 0){
                 console.log("vm.grantNum = 0");
                 return;
