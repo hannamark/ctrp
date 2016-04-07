@@ -33,14 +33,19 @@
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
             vm.disableBtn = true;
-
+            //console.log("vm.addedGrants" + JSON.stringify(vm.addedGrants));
+            //console.log("vm.grantNum=" + JSON.stringify(vm.grantNum));
+            if (vm.grantNum <= 0){
+                console.log("vm.grantNum = 0");
+                return;
+            }
             if (vm.addedGrants.length > 0) {
                 vm.curTrial.grants_attributes = [];
                 _.each(vm.addedGrants, function (grant) {
                     vm.curTrial.grants_attributes.push(grant);
                 });
             }
-
+            //console.log("vm.curTrial.grants_attributes" + JSON.stringify(vm.curTrial.grants_attributes));
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -54,6 +59,9 @@
                 vm.curTrial.lock_version = response.lock_version || '';
                 vm.curTrial.grants = response["grants"];
                 console.log("vm.grants="+JSON.stringify(vm.curTrial.grants));
+                vm.addedGrants = [];
+                vm.grantNum = 0;
+                appendGrants();
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 $scope.$emit('updatedInChildScope', {});
 
@@ -135,6 +143,7 @@
                     } else {
                         vm.grantNum++;
                     }
+                    //console.log("in vm.toggleSelection, vm.grantNum="+JSON.stringify(vm.grantNum));
                 }
             }
         };// toggleSelection
