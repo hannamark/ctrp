@@ -24,18 +24,15 @@
         return directiveObj;
 
         function linkerFn(scope, element, attrs) {
-            console.info('in ctrpConfirm directive');
-
             var popover = $popover(element, {
                 title: 'Please Confirm',
-                // contentTemplate: attrs.template || defaultTemplateUrl,
                 templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
                 html: true,
                 trigger: 'manual',
                 placement: 'bottom',
                 animation: 'am-flip-x',
                 content: 'Please confirm this operation',
-                autoClose: false,
+                autoClose: true,
                 scope: scope
             });
 
