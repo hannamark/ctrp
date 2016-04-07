@@ -13,19 +13,18 @@
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.desc_form.needsAttention(desc_form.brief_title)}">
                             <label for="brief_title" class="control-label col-xs-12 col-sm-3">Brief Title:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input name="brief_title"
+                                <textarea name="brief_title"
                                           id="brief_title"
-                                          rows="5"
-                                          class="form-control"
+                                          rows="2"
+                                          class="form-control input-sm"
                                           ng-model="descView.curTrial.brief_title"
                                           ng-maxlength="300"
                                           maxlength="300"
                                           ng-required="true">
-                                </input>
-                                <span ng-show="desc_form.brief_title.$dirty">
+                                </textarea>
+                                <span class="help-block" ng-show="desc_form.brief_title.$dirty">
                                     {{300 - desc_form.brief_title.$viewValue.length}} characters left
                                 </span>
-
                                 <span ng-messages="ctrpbtn.desc_form.needsAttention(desc_form.brief_title) && desc_form.brief_title.$error">
                                   <span class="help-block" ng-message="required">Brief Title is Required</span>
                                 </span>
@@ -48,7 +47,7 @@
                                           ng-maxlength="5000"
                                           ng-required="true">
                                 </textarea>
-                                <span ng-show="desc_form.brief_summary.$dirty">
+                                <span class="help-block" ng-show="desc_form.brief_summary.$dirty">
                                     {{5000 - desc_form.brief_summary.$viewValue.length}} characters left
                                 </span>
 
@@ -71,7 +70,7 @@
                                           class="form-control"
                                           ng-model="descView.curTrial.objective">
                                 </textarea>
-                                <span ng-show="desc_form.objective.$dirty">
+                                <span class="help-block" ng-show="desc_form.objective.$dirty">
                                     {{32000 - desc_form.objective.$viewValue.length}} characters left
                                 </span>
                             </div>
@@ -92,7 +91,7 @@
                                           maxlength="32000"
                                           ng-maxlength="32000">
                                 </textarea>
-                                <span ng-show="desc_form.detailed_description.$dirty">
+                                <span class="help-block" ng-show="desc_form.detailed_description.$dirty">
                                     {{32000 - desc_form.detailed_description.$viewValue.length}} characters left
                                 </span>
                             </div>
@@ -100,8 +99,10 @@
                     </fieldset>
                     <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>Save</button>
-                            <button type="button"class="btn btn-warning pull-right" ng-click="descView.reload()" restriction-field>
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" ng-click="descView.reload()" restriction-field>
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                         </div>

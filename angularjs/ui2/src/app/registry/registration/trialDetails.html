@@ -626,7 +626,7 @@
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.start_date) || ctrpbtn.trial_form.needsAttention(trial_form.start_date_qual) || ctrpbtn.trial_form.needsAttention(trial_form.sdq_dummy) || ctrpbtn.trial_form.needsAttention(trial_form.sdq_dummy2)}">
                             <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-2">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" name="start_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.start_date"
                                            ng-click="trialDetailView.openCalendar($event, 'start_date')" is-open="trialDetailView.start_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required>
@@ -665,7 +665,7 @@
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date) || ctrpbtn.trial_form.needsAttention(trial_form.primary_comp_date_qual) || ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy) || ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy2) || ctrpbtn.trial_form.needsAttention(trial_form.pcd_dummy3)}">
                             <label class="control-label col-xs-12 col-sm-3">Primary Completion Date:</label>
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-2">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" name="primary_comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.primary_comp_date"
                                            ng-click="trialDetailView.openCalendar($event, 'primary_comp_date')" is-open="trialDetailView.primary_comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required>
@@ -707,7 +707,7 @@
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.comp_date) || ctrpbtn.trial_form.needsAttention(trial_form.comp_date_qual) || ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy) || ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy2) || ctrpbtn.trial_form.needsAttention(trial_form.cd_dummy3)}">
                             <label class="control-label col-xs-12 col-sm-3">Completion Date:</label>
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-2">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" name="comp_date" datepicker-popup="{{trialDetailView.dateFormat}}" ng-model="trialDetailView.curTrial.comp_date"
                                            ng-click="trialDetailView.openCalendar($event, 'comp_date')" is-open="trialDetailView.comp_date_opened" datepicker-options="trialDetailView.dateOptions" close-text="Close" required>

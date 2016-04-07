@@ -6,8 +6,8 @@
         </p>
     </div>
     <section>
-        <md-tabs ng-show="psView.addEditMode || psView.curTrial.participating_sites.length == 0" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
-            <md-tab ng-click="psView.saveParticipatingSite()">
+        <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
+            <md-tab>
                 <md-tab-label>Participating Site</md-tab-label>
                 <md-tab-body>
                     <form class="form form-horizontal" role="form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
@@ -146,7 +146,7 @@
                                                             </span>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td>
                                                         <div ng-hide="psView.current_site_recruitment.edit">
                                                             <button class="btn btn-primary" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
                                                                     ng-disabled="!psView.current_site_recruitment.status_date ||
@@ -239,7 +239,7 @@
                 </form>
             </md-tab-body>
         </md-tab>
-        <md-tab ng-click="psView.saveParticipatingSite()" ng-disabled="!psView.currentParticipatingSite.organization.name">
+        <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
             <md-tab-label>Investigators</md-tab-label>
             <md-tab-body>
                 <form class="form form-horizontal" role="form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
@@ -285,7 +285,7 @@
                                                 <th width="20%">First Name</th>
                                                 <th width="20%" class="min-width-lg">Role</th>
                                                 <th width="20%">Set as Primary Contact</th>
-                                                <th width="10%">Delete/Confirm</th>
+                                                <th width="10%">Cancel/Confirm</th>
                                             </thead>
                                             <tbody>
                                             <tr>
@@ -314,7 +314,7 @@
                                                         <input type="checkbox" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact" ng-value="{{psView.current_investigator.set_as_contact}}">
                                                     </label>
                                                 </td>
-                                                 <td class="text-center">
+                                                 <td>
                                                      <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
                                                         <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
                                                             <i class="glyphicon glyphicon-remove"></i>
@@ -387,7 +387,7 @@
                 </form>
             </md-tab-body>
         </md-tab>
-        <md-tab ng-click="psView.saveParticipatingSite()" ng-disabled="!psView.currentParticipatingSite.organization.name">
+        <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
             <md-tab-label>Contact</md-tab-label>
             <md-tab-body>
                 <!-- General Contact Begin -->
@@ -439,7 +439,7 @@
                                 </div>
 
                                 <div ng-hide="psView.currentParticipatingSite.contact_type == 'None' || psView.currentParticipatingSite.contact_type == ''">
-                                    <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}">
+                                    <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}" ng-hide="psView.selectedContactTypePI">
                                         <label for="contact_type" class="control-label col-xs-12 col-sm-3">Contact:</label>
                                         <div class="col-xs-12 col-sm-4">
                                             <input type="text" id="contact_name" name="contact_name" class="form-control input-sm" placeholder="Central Contact"
@@ -499,7 +499,7 @@
 </div>
 
 <!-- Grid the shows all the Participating Sites -->
-<div class="row" ng-show="psView.curTrial.participating_sites.length > 0">
+<div class="row">
     <uib-accordion close-others="false" ng-hide="psView.addEditMode">
         <uib-accordion-group is-open="true" >
             <uib-accordion-heading>

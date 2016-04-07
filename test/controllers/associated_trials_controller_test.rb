@@ -16,13 +16,13 @@ class AssociatedTrialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create associated_trial" do
-    assert_difference('AssociatedTrial.count') do
-      post :create, associated_trial: {  }
-    end
-
-    assert_redirected_to associated_trial_path(assigns(:associated_trial))
-  end
+  # test "should create associated_trial" do
+  #   assert_difference('AssociatedTrial.count') do
+  #     post :create, associated_trial: {  }
+  #   end
+  #
+  #   assert_redirected_to associated_trial_path(assigns(:associated_trial))
+  # end
 
   test "should show associated_trial" do
     get :show, id: @associated_trial
@@ -34,10 +34,10 @@ class AssociatedTrialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should update associated_trial" do
-    patch :update, id: @associated_trial, associated_trial: {  }
-    assert_redirected_to associated_trial_path(assigns(:associated_trial))
-  end
+  # test "should update associated_trial" do
+  #   patch :update, id: @associated_trial, associated_trial: {  }
+  #   assert_redirected_to associated_trial_path(assigns(:associated_trial))
+  # end
 
   test "should destroy associated_trial" do
     assert_difference('AssociatedTrial.count', -1) do

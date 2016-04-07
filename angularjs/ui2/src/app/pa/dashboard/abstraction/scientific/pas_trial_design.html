@@ -18,8 +18,7 @@
                                     class="form-control input-sm"
                                     ng-required="true"
                                     ng-model="designView.trialDetailObj.research_category_id"
-                                    ng-options="cat.id as cat.name for cat in designView.researchCategories"
-                                    >
+                                    ng-options="cat.id as cat.name for cat in designView.researchCategories">
                                     <option value="">- Please select a research category...</option>
                                 </select>
                                 <!-- <label ng-repeat="cat in designView.researchCategories" class="radio-inline">
@@ -28,11 +27,10 @@
                                 <!-- <md-radio-group ng-model="designView.trialDetailObj.research_category_id" layout="row">
                                     <md-radio-button ng-repeat="cat in designView.researchCategories" value="{{cat.id}}" class="md-primary">{{cat.name}}</md-radio-button>
                                 </md-radio-group> -->
+                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.research_category) && trial_design_form.research_category.$error">
+                                    <span class="help-block" ng-message="required">Research Category is Required</span>
+                               </span>
                             </div>
-                            <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.research_category) &&
-                                                trial_design_form.research_category.$error">
-                                <span class="help-block" ng-message="required">Research Category is Required</span>
-                           </span>
                         </div>
                         <!-- end of research categories -->
 
@@ -48,11 +46,10 @@
                                     >
                                     <option value="">- Please select a primary purpose...</option>
                                 </select>
+                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.primary_purpose) && trial_design_form.primary_purpose.$error">
+                                    <span class="help-block" ng-message="required">Primary Purpose is Required</span>
+                               </span>
                             </div>
-                            <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.primary_purpose) &&
-                                                trial_design_form.primary_purpose.$error">
-                                <span class="help-block" ng-message="required">Primary Purpose is Required</span>
-                           </span>
                         </div>
                         <!-- end of primary purposes -->
 
@@ -66,11 +63,10 @@
                                     ng-required="designView.isOtherPrimaryPurpose"
                                     ng-model="designView.trialDetailObj.primary_purpose_other" rows="3">
                                 </textarea>
-                                <span ng-show="trial_design_form.description_other.$viewValue.length > 0">
+                                <span class="help-block" ng-show="trial_design_form.description_other.$viewValue.length > 0">
                                     {{200 - trial_design_form.description_other.$viewValue.length}} characters left
                                 </span>
-                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.description_other) &&
-                                                    trial_design_form.description_other.$error">
+                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.description_other) && trial_design_form.description_other.$error">
                                     <span class="help-block" ng-message="required">Primary Purpose Of Other text is Required</span>
                                 </span>
                             </div>
@@ -101,7 +97,7 @@
                                     ng-maxlength="1000" maxlength="1000"
                                     ng-model="designView.trialDetailObj.secondary_purpose_other" rows="3">
                                 </textarea>
-                                <span ng-show="trial_design_form.description_other2.$viewValue.length > 0">
+                                <span class="help-block" ng-show="trial_design_form.description_other2.$viewValue.length > 0">
                                     {{1000 - trial_design_form.description_other2.$viewValue.length}} characters left
                                 </span>
                             </div>
@@ -120,11 +116,10 @@
                                     >
                                     <option value="">- Please select a trial phase...</option>
                                 </select>
+                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.trial_phase) && trial_design_form.trial_phase.$error">
+                                    <span class="help-block" ng-message="required">Trial Phase is Required</span>
+                               </span>
                             </div>
-                            <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.trial_phase) &&
-                                                trial_design_form.trial_phase.$error">
-                                <span class="help-block" ng-message="required">Trial Phase is Required</span>
-                           </span>
                         </div>
                         <!-- end of trial phase -->
 
@@ -155,11 +150,11 @@
                                     >
                                     <option value="">- Please select an intervention model...</option>
                                 </select>
+                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.intervention_model) &&
+                                                    trial_design_form.intervention_model.$error">
+                                    <span class="help-block" ng-message="required">Intervention Model is Required</span>
+                               </span>
                             </div>
-                            <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.intervention_model) &&
-                                                trial_design_form.intervention_model.$error">
-                                <span class="help-block" ng-message="required">Intervention Model is Required</span>
-                           </span>
                         </div>
                         <!-- end of intervention models -->
 
