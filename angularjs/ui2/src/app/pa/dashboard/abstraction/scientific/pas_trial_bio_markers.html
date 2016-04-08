@@ -22,7 +22,7 @@
                                            maxlength="300"
                                            ng-required="true">
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.name) && marker_form.name.$error">
-                                        <span class="help-block" ng-message="required">Name must be entered</span>
+                                        <span class="help-block" ng-message="required">Name is Required</span>
                                     </span>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
@@ -94,7 +94,7 @@
                                         </div>
                                     </div>
 
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_eval_type_alert">Evaluation Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_eval_type_alert">Evaluation Type is Required</span>
                                 </div>
                             </div>
                         </fieldset>
@@ -134,7 +134,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_assay_type_alert">Assay Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_assay_type_alert">Assay Type is Required</span>
                                 </div>
                             </div>
                         </fieldset>
@@ -156,7 +156,7 @@
                                         <option value="">- Please select a bio marker use...</option>
                                     </select>
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) && marker_form.biomarker_use.$error">
-                                        <span class="help-block" ng-message="required">Biomarker Use must be entered</span>
+                                        <span class="help-block" ng-message="required">Biomarker Use is Required</span>
                                     </span>
                                 </div>
                             </div>
@@ -176,10 +176,10 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_biomarker_purpose_alert">Biomarker Purpose must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_biomarker_purpose_alert">Biomarker Purpose is Required</span>
                                     <!--
                                         <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_purpose) && marker_form.biomarker_purpose.$error">
-                                            <span class="help-block" ng-message="required">Biomarker Purpose must be entered</span>
+                                            <span class="help-block" ng-message="required">Biomarker Purpose is Required</span>
                                         </span>
                                     -->
                                 </div>
@@ -223,7 +223,7 @@
                                         </div>
                                     </div>
 
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_spec_type_alert">Specimen Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_spec_type_alert">Specimen Type is Required</span>
 
                                 </div>
                             </div>

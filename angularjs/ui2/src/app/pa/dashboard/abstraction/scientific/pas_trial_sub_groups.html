@@ -73,8 +73,8 @@
 </div>
 
 <!-- Grid the shows all the SUB GROUPS -->
-<div class="row" ng-if="!sgView.addEditMode">
-    <uib-accordion close-others="false">
+<div class="row">
+    <uib-accordion close-others="false" ng-if="!sgView.addEditMode">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
                 List of Sub Groups  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
@@ -127,4 +127,10 @@
             </div>
         </uib-accordion-group>
     </uib-accordion>
+    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="sgView.addEditMode">
+        <button type="button" class="btn btn-warning pull-right" id="oc_site_list" restriction-field ng-click="sgView.addEditMode = false">
+            <i class="glyphicon glyphicon-arrow-left"></i> Back to Sub Groups List
+        </button>
+    </div>
+    <div class="top-offset-xs" ng-show="sgView.addEditMode"></div>
 </div>
