@@ -65,7 +65,7 @@
             }
 
             function cleanupPopover() {
-                popover.$destroy();
+                popover.destroy();
             }
         }
     }
