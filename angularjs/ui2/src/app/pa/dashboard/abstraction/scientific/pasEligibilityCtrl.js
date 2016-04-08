@@ -177,6 +177,7 @@
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
 
             vm.addOtherCriterionFormShown = false;
+            vm.criteriaView.otherCriterion.edit = false;
         }
 
         function updateOtherCriteriaDesc(otherCriterionDesc, index) {

@@ -230,12 +230,12 @@
                                             {{row.criteria_desc}}
                                         </td>
                                         <td class="text-center td-icon">
-                                            <button type="button" class="btn btn-primary" restriction-field ng-disabled="row._destroy || criteriaView.otherCriterion.edit" ng-click="criteriaView.editOtherCriterion($index)">
+                                            <button type="button" class="btn btn-primary" restriction-field ng-disabled="row._destroy || criteriaView.addOtherCriterionFormShown" ng-click="criteriaView.editOtherCriterion($index)">
                                                 <i class="glyphicon glyphicon-edit"></i>
                                             </button>
                                         </td>
                                         <td  class="text-center td-icon">
-                                            <button type="button" class="btn btn-warning" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)" ng-disabled="criteriaView.otherCriterion.edit">
+                                            <button type="button" class="btn btn-warning" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)" ng-disabled="criteriaView.addOtherCriterionFormShown">
                                                 <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                             </button>
                                         </td>
