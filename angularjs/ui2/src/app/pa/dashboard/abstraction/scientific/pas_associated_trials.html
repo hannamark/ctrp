@@ -150,7 +150,7 @@
                       confirm-template=""
                       ctrp-click="assoTrialsView.deleteTrialAssociations()"
                       ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0"
-                      ng-disabled="assoTrialsView.deleteBtnDisabled">
+                      ng-disabled="assoTrialsView.deleteBtnDisabled || !paTrialOverview.trialDetailObj.pa_editable">
                    <i class="glyphicon glyphicon-remove"></i>  Delete Selected
                   </button>
                 </div>

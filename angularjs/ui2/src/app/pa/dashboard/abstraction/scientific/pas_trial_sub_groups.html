@@ -119,7 +119,7 @@
                         <i class="glyphicon glyphicon-plus"></i> Add Sub Group
                     </button>
                     <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="sgView.deleteSelected()"
-                            ng-disabled="!sgView.selectedDeleteSubGroupsList.length" ng-show="sgView.curTrial.sub_groups.length">
+                            ng-disabled="!sgView.selectedDeleteSubGroupsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="sgView.curTrial.sub_groups.length">
                         <i class="glyphicon glyphicon-trash"></i> Delete Selected
                 </button>
                 </div>
