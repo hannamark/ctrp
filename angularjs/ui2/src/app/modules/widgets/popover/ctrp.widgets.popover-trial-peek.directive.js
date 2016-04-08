@@ -1,5 +1,5 @@
 /**
- * Created by wangg5 on 04/07/16.
+ * Created by wangg5 on 04/08/16.
  *
  */
 
@@ -24,7 +24,7 @@
         return directiveObj;
 
         function linkerFn(scope, element, attrs) {
-            console.info('in linkerFn of peek, identifier: ', scope.trialIdentifier);
+            // console.info('in linkerFn of peek, identifier: ', scope.trialIdentifier);
             var popover = $popover(element, {
                 title: 'Trial Information',
                 templateUrl: attrs.peekTemplate || defaultTemplateUrl,
