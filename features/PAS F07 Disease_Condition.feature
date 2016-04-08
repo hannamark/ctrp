@@ -70,7 +70,7 @@ And I Click the search icon or click Enter
 Then only exact term will be displayed 
 And a message displays with the number of results for the entered term
 
-Scenario: #6 Add All, Link to NCIt, Reset button on Find a Disease/Condition
+Scenario: #6 Add All, Link to NCIt, Reset button on Find a Disease/Condition page
 Given I am on the Find a Disease/Condition screen
 When I click NCIt button
 Then the NCIt system displays
@@ -131,13 +131,7 @@ When I have clicked on the cancel button
 Then the selected Disease/Condition criteria is not removed 
 And no message displays
 
-  Scenario: #10 NCIt terms details info button
-    Given I am on the Find a Disease/Condition screen
-    And I have a list of terms
-    When I click on the NCIt terms details info button
-    Then NCIthesaurus new screen opens
-
-Scenario:  #11 I must select Primary designation  
+Scenario:  #10 I must select Primary designation  
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
@@ -150,7 +144,7 @@ And I select the Save button
 Then an error message displays 
 |Only one disease can be selected as primary |
 
-Scenario:  #12 I can select one secondary disease designation  
+Scenario:  #11 I can select one secondary disease designation  
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
