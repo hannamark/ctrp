@@ -268,7 +268,7 @@ var projectMethodsRegistry = function() {
     this.createOrgforTrial = function(trialOrgName,trialType,indexOfOrgModel){
        addTrial.clickAddTrialOrgSearchModel(indexOfOrgModel);
         searchOrg.clickExactSearch('true');
-            searchOrg.setOrgName(trialOrgName + moment().format('MMMDoYY h'));
+            searchOrg.setOrgName(trialOrgName + moment().format('MMMDoYY'));
             cukeOrganization = searchOrg.orgName.getAttribute('value');
             searchOrg.clickSearchButton();
             return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
@@ -343,9 +343,9 @@ var projectMethodsRegistry = function() {
     this.createPersonforTrial = function(trialPersonName, trialType,indexOfPersonModel){
         addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);
         searchOrg.clickExactSearch('true');
-        searchPeople.setPersonFirstName(trialPersonName + moment().format('MMMDoYY h'));
+        searchPeople.setPersonFirstName(trialPersonName + moment().format('MMMDoYY'));
         cukePerson = searchPeople.personFirstName.getAttribute('value');
-        searchPeople.setPersonOrgAffiliation('trialPerAffOrg' + moment().format('MMMDoYY h'));
+        searchPeople.setPersonOrgAffiliation('trialPerAffOrg' + moment().format('MMMDoYY'));
         cukeOrganization = searchPeople.personOrgAffiliation.getAttribute('value');
         searchPeople.clickSearch();
         /** This will check if Person exists or not **/
@@ -356,7 +356,7 @@ var projectMethodsRegistry = function() {
                 searchOrg.clickOrgModelConfirm();
             }
             else {
-                searchOrg.clickOrgModelClose();
+                searchOrg.clickOrgPersonModelClose();
                 login.login('ctrpcurator', 'Welcome01');
                 login.accept();
                 browser.driver.wait(function () {
@@ -566,7 +566,7 @@ var projectMethodsRegistry = function() {
             commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
             self.selectTrials(trialType);
             login.clickWriteMode('On');
-            addTrial.setAddTrialLeadProtocolIdentifier(leadOrgIdentifier + moment().format('MMMDoYY h'));
+            addTrial.setAddTrialLeadProtocolIdentifier(leadOrgIdentifier + moment().format('MMMDoYY'));
             addTrial.setAddTrialOfficialTitle('Trial Shi created by Cuke Test script');
             addTrial.selectAddTrialPhase('IV');
             addTrial.selectAddTrialPilotOption('1');
@@ -633,7 +633,7 @@ var projectMethodsRegistry = function() {
             login.clickWriteMode('On');
             menuItem.clickOrganizations();
             menuItem.clickListOrganizations();
-            searchOrg.setOrgName(orgName + moment().format('MMMDoYY h'));
+            searchOrg.setOrgName(orgName + moment().format('MMMDoYY'));
             cukeOrganization = searchOrg.orgName.getAttribute('value');
             searchOrg.clickSearchButton();
             return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
@@ -689,7 +689,7 @@ var projectMethodsRegistry = function() {
             login.clickWriteMode('On');
             menuItem.clickPeople();
             menuItem.clickListPeople();
-            searchPeople.setPersonFirstName(perName + moment().format('MMMDoYY h'));
+            searchPeople.setPersonFirstName(perName + moment().format('MMMDoYY'));
             per4 = searchPeople.personFirstName.getAttribute('value');
             searchPeople.clickSearch();
             return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {

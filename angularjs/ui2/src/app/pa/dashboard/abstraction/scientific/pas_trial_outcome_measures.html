@@ -166,7 +166,7 @@
                             <th class="text-center td-icon">Edit</th>
                             <th class="text-center td-icon">Copy</th>
                             <th class="text-center td-icon">
-                                <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()" />
+                                <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </th>
                             </thead>
                             <tbody ui-sortable="sortableListener" ng-model="omView.curTrial.outcome_measures">
@@ -193,24 +193,24 @@
                                 </td>
 
                                 <td class="text-center td-icon">
-                                    <button  data-toggle="modal" class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="omView.setEditMode($index)">
+                                    <button  data-toggle="modal" class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="omView.setEditMode($index)">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </button>
                                 </td>
                                 <td class="text-center td-icon">
-                                    <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="omView.setCopyMode($index)">
+                                    <button class="btn btn-default" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="omView.setCopyMode($index)" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                                         <i class="glyphicon glyphicon-copy"></i>
                                     </button>
                                 </td>
                                 <td class="text-center td-icon">
-                                    <input type="checkbox" restriction-field ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"/>
+                                    <input type="checkbox" restriction-field ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
                         <div class="btn-toolbar">
-                            <button type="button"  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">
+                            <button type="button"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">
                                 <i class="glyphicon glyphicon-plus"></i> Add Outcome Measure
                             </button>
                             <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()"

@@ -176,7 +176,7 @@
                         // new document
                         if (isDocTypeExistent(vm.curDoc.document_type)) {
                             console.error('doctype exists already: ', vm.curDoc.document_type);
-                            vm.docTypeError = 'The selected document type already exists.';
+                            vm.docTypeError = 'The selected document type has already been selected.';
                             return;
                         } // check document type for new document
                         vm.curDoc.created_at = new Date();

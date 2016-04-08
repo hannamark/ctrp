@@ -21,8 +21,8 @@
                                 </div>
                             </div> -->
                             <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol)}">
-                                <label for="volunteer" class="control-label col-xs-12 col-sm-3 vertical-align">Accepts Healthy Volunteers?:</label>
-                                <div class="col-xs-12 col-sm-9" layout="row" layout-wrap layout-sm="100">
+                                <label for="volunteer" class="control-label col-xs-12 col-sm-3">Accepts Healthy Volunteers?:</label>
+                                <div class="col-xs-12 col-sm-9">
                                     <!-- <md-radio-group ng-model="criteriaView.trialDetailObj.accept_vol" class="md-primary" layout="row">
                                         <md-radio-button value="Yes"> Yes </md-radio-button>
                                         <md-radio-button value="No"> No </md-radio-button>
@@ -39,9 +39,10 @@
                                         value="No"
                                         ng-required="!criteriaView.trialDetailObj.accept_vol"> No
                                     </label>
-                                    <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol) &&
-                                                        criteria_form.accept_vol.$error">
-                                        <span class="help-block" ng-message="required"><br />Accepts Healthy Volunteers is Required</span>
+                                    <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.accept_vol) && criteria_form.accept_vol.$error">
+                                        <span class="help-block" ng-message="required">
+                                            Accepts Healthy Volunteers is Required
+                                        </span>
                                    </span>
                                 </div>
                             </div>
@@ -72,10 +73,10 @@
                                         <span class="help-block" ng-message="required">Enter 0 if no min age is indicated and select 'Years' as Unit</span>
                                    </span>
                                 </div>
-                                <label for="min_age_unit" class="control-label col-xs-12 col-sm-2">Unit:</label>
+                                <label for="min_age_unit" class="control-label col-xs-12 col-sm-1">Unit:</label>
                                 <div class="col-xs-12 col-sm-2">
                                     <select name="min_age_unit" id="min_age_unit"
-                                        class="form-control input-sm"
+                                        class="form-control input-sm min-width-lg"
                                         ng-model="criteriaView.trialDetailObj.min_age_unit_id"
                                         ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
                                         required>
@@ -86,6 +87,7 @@
                                         <span class="help-block" ng-message="required">Minimum Age Unit is Required</span>
                                    </span>
                                 </div>
+                                <div class="col-sm-4"></div>
                             </div>
 
                             <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.max_age) ||
@@ -98,10 +100,10 @@
                                         <span class="help-block" ng-message="required">Enter 999 if no max age is indicated and select 'Years' as Unit</span>
                                    </span>
                                 </div>
-                                <label for="max_age_unit" class="control-label col-xs-12 col-sm-2">Unit:</label>
+                                <label for="max_age_unit" class="control-label col-xs-12 col-sm-1">Unit:</label>
                                 <div class="col-xs-12 col-sm-2">
                                     <select name="max_age_unit" id="max_age_unit"
-                                        class="form-control input-sm"
+                                        class="form-control input-sm min-width-lg"
                                         ng-model="criteriaView.trialDetailObj.max_age_unit_id"
                                         ng-options="unit.id as unit.name for unit in criteriaView.ageUnits"
                                         required>
@@ -112,6 +114,7 @@
                                         <span class="help-block" ng-message="required">Maximum Age Unit is Required</span>
                                    </span>
                                 </div>
+                                <div class="col-sm-4"></div>
                             </div>
 
                             <div class="form-group" ng-show="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"

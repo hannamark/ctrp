@@ -518,7 +518,7 @@
                 <th>Primary Contact</th>
                 <th class="text-center td-icon">Edit</th>
                 <th class="text-center td-icon">
-                    <input type="checkbox" restriction-field ng-model="psView.selectedAllSites" ng-click="psView.checkAllSites()" />
+                    <input type="checkbox" restriction-field ng-model="psView.selectedAllSites" ng-click="psView.checkAllSites()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
                 </th>
                 </thead>
                 <tbody>
@@ -542,12 +542,12 @@
                         {{participating_site.contact_name}}
                     </td>
                     <td class="text-center td-icon">
-                        <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
+                        <button class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_editable" ng-click="psView.setEditMode($index)">
                             <i class="glyphicon glyphicon-edit"></i>
                         </button>
                     </td>
                     <td class="text-center td-icon">
-                        <input type="checkbox" restriction-field ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" ng-click="psView.selectedAllSites = false"/>
+                        <input type="checkbox" restriction-field ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" ng-click="psView.selectedAllSites = false" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"/>
                     </td>
                 </tr>
                 </tbody>
@@ -555,7 +555,8 @@
 
 
             <div class="btn-toolbar">
-                <button type="submit" ng-disable="!paTrialOverview.trialDetailObj.pa_editable" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add Participating Site</button>
+                <button type="submit" ng-disable="!paTrialOverview.trialDetailObj.pa_editable" class="btn btn-primary pull-right" id="add_participating_site" restriction-field
+                        ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-click="psView.setAddMode()">Add Participating Site</button>
                 <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="psView.deleteSelected()"
                         ng-show="psView.curTrial.participating_sites.length"
                         ng-disabled="!psView.selectedDeleteParticipatingSitesList.length">
