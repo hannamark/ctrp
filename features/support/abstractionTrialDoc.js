@@ -169,6 +169,8 @@ var abstractionTrialDoc = function(){
     this.trailFileUploadParticipating = element(by.model('trialDetailView.participating_sites'));
     this.trailFileUploadInformed = element(by.model('trialDetailView.informed_consent'));
     this.trailFileUploadOther = element(by.model('trialDetailView.other_documents[$index]'));
+    this.trailFileUploadOtherNext = element(by.css('input[name="other_documents1"]'));
+
 
     var helper = new helperFunctions();
 
@@ -212,6 +214,8 @@ var abstractionTrialDoc = function(){
                 helper.setUploadedFile(this.trailFileUploadInformed,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
             } else if(browsIndx === '5'){
                 helper.setUploadedFile(this.trailFileUploadOther,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
+            } else if(browsIndx === '6'){
+                helper.setUploadedFile(this.trailFileUploadOtherNext,buildFilePath, getFileName, "Browse or Choose File:["+buildFilePath+"]");
             }
         }
     };
