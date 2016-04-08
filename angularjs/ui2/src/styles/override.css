@@ -1128,8 +1128,9 @@ div.datepicker {
     top: 0;
     left: 0;
     z-index: 1060;
+    overflow: auto;
     display: none;
-    max-width: 450px;
+    max-width: 550px;
     padding: 1px;
     font-family: Helvetica Neue, Helvetica, Aria, sans-serif;
     font-size:14px;

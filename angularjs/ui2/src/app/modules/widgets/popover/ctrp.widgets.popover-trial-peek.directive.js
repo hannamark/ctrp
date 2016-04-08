@@ -8,15 +8,15 @@
     angular.module('ctrpApp.widgets')
     .directive('ctrpTrialPeek', ctrpTrialPeek);
 
-    ctrpTrialPeek.$inject = ['$timeout', '$compile', '$popover'];
+    ctrpTrialPeek.$inject = ['$timeout', '$compile', '$popover', 'TrialService'];
 
-    function ctrpTrialPeek($timeout, $compile, $popover) {
+    function ctrpTrialPeek($timeout, $compile, $popover, TrialService) {
         var defaultTemplateUrl = 'app/modules/widgets/popover/_default_popover_trial_peek.tpl.html';
         var directiveObj = {
             restrict: 'A',
             priority: 100,
             scope: {
-                trialIdentifier: '=' // trial identifier, e.g. NCI-2009-01258/NCT01534637
+                trialId: '=' // trial id
             },
             link: linkerFn
         };
@@ -24,9 +24,8 @@
         return directiveObj;
 
         function linkerFn(scope, element, attrs) {
-            // console.info('in linkerFn of peek, identifier: ', scope.trialIdentifier);
             var popover = $popover(element, {
-                title: 'Trial Information',
+                title: 'View Trial',
                 templateUrl: attrs.peekTemplate || defaultTemplateUrl,
                 html: true,
                 trigger: 'manual',
@@ -37,18 +36,34 @@
                 scope: scope
             });
 
+            scope.curTrial = null;
+            scope.loadingTrial = false;
             element.bind('click', function(event) {
                 event.preventDefault();
                 if (popover.$isShown) {
                     popover.hide();
                 } else {
-                    // resolve promise of fetching trial
-                    scope.trialName = 'hello world!'
+                    if (scope.curTrial === null) {
+                        fetchTrial(scope.trialId);
+                    }
                     popover.show();
                 }
             });
 
             scope.$on('$destroy', function() {popover.destroy();}); // clean up
+
+            function fetchTrial(trialId) {
+                scope.loadingTrial = true;
+                TrialService.getTrialById(trialId).then(function(res) {
+                    console.info('res is: ', res);
+                    scope.curTrial = res;
+                }).catch(function(err) {
+                    console.error('error: ', err);
+                }).finally(function() {
+                    console.info('done!');
+                    scope.loadingTrial = false;
+                });
+            }
         }
     }
 
