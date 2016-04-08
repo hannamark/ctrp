@@ -116,7 +116,7 @@
 
                             <div class="form-group" ng-show="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"
                                 ng-class="{'has-feedback required': criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.sampling_method)}">
-                                    <label for="sampling_method" class="control-label col-xs-12 col-sm-3">Sampling Method</label>
+                                    <label for="sampling_method" class="control-label col-xs-12 col-sm-3">Sampling Method:</label>
                                     <div class="col-xs-12 col-sm-4">
                                         <select name="sampling_method" id="sampling_method"
                                             class="form-control input-sm"
@@ -145,8 +145,7 @@
                                     <span ng-show="criteria_form.study_pop_desc.$viewValue.length > 0">
                                         {{800 - criteria_form.study_pop_desc.$viewValue.length}} characters left
                                     </span>
-                                    <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.study_pop_desc) &&
-                                                        criteria_form.study_pop_desc.$error">
+                                    <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.study_pop_desc) && criteria_form.study_pop_desc.$error">
                                         <span class="help-block" ng-message="required">Study Population Description is Required</span>
                                     </span>
                                 </div>
@@ -158,67 +157,87 @@
                     <!-- fieldset for other criteria -->
                         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                             <legend class="sub-bordered">Other Criteria</legend>
-                            <div class="row">
-                                <button type="button" class="btn btn-primary" ng-click="criteriaView.prepareOtherCriterion('Inclusion')"><i class="glyphicon glyphicon-plus"></i> Add Inclusion Criterion</button>
-                                <button type="button" class="btn btn-primary" ng-click="criteriaView.prepareOtherCriterion('Exclusion')"><i class="glyphicon glyphicon-plus"></i> Add Exclusion Criterion</button>
+                            <div class="form-group table-responsive" ng-show="criteriaView.addOtherCriterionFormShown">
+                                <table class="table table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Type</th>
+                                            <th>Description</th>
+                                            <th width="15%" ng-if="!criteriaView.otherCriterion.edit"></th>
+                                            <th width="15%" ng-if="criteriaView.otherCriterion.edit">Cancel/Confirm</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span ng-if="!criteriaView.otherCriterion.edit">
+                                                    {{criteriaView.otherCriterion.criteria_type}}
+                                                </span>
+                                                <select class="form-control input-sm" name="criterion_type" id="criterion_type" ng-model="criteriaView.otherCriterion.criteria_type" ng-if="criteriaView.otherCriterion.edit">
+                                                    <option value="Inclusion" selected="selected">Inclusion</option>
+                                                    <option value="Exclusion" ng-selected="criteriaView.otherCriterion.criteria_type === 'Exclusion'">Exclusion</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control input-sm" rows="2"
+                                                    name="other_criteria_desc" id="other_criteria_desc"
+                                                    maxlength="criteriaView.descCharsRemaining" ng-maxlength="criteriaView.descCharsRemaining"
+                                                    ng-model="criteriaView.otherCriterion.criteria_desc" placeholder="Criteria Description">
+                                                </textarea>
+                                                <span class="help-block" ng-show="criteria_form.other_criteria_desc.$viewValue.length > 0">
+                                                    {{criteriaView.descCharsRemaining - criteria_form.other_criteria_desc.$viewValue.length}} characters left.<br>
+                                                    Total characters for all Other Criteria Description is {{criteriaView.numCharsUsedInOC}}.
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div ng-hide="!criteriaView.otherCriterion.edit">
+                                                    <button type="button" class="btn btn-warning" ng-click="criteriaView.cancelEditOtherCriterion()">
+                                                        <i class="glyphicon glyphicon-remove"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary" ng-click="criteriaView.updateOtherCriteria(criteriaView.otherCriterion)"
+                                                        ng-disabled="criteriaView.otherCriterion.criteria_desc==''">
+                                                            <i class="glyphicon glyphicon-ok"></i>
+                                                    </button>
+                                                </div>
+                                                <div ng-hide="criteriaView.otherCriterion.edit">
+                                                    <button type="button" class="btn btn-primary" ng-click="criteriaView.upsertOtherCriterion(criteriaView.otherCriterion)"
+                                                        ng-disabled="criteriaView.otherCriterion.criteria_desc==''">
+                                                            <i class="glyphicon glyphicon-ok" ng-show="criteriaView.otherCriterion.edit"></i>
+                                                            <span ng-show="!criteriaView.otherCriterion.edit"><i class="glyphicon glyphicon-plus"></i> Add</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="row top-buffer" ng-show="criteriaView.addOtherCriterionFormShown">
-                                <div class="col-xs-12 col-sm-2">
-                                    <label class="control-label col-sm-12">Type: {{criteriaView.otherCriterion.criteria_type}}:</label>
-                                </div>
-                                <div class="col-xs-12 col-sm-8">
-                                    <label for="other_criteria_desc" class="control-label col-sm-2">Description:</label>
-                                    <div class="col-sm-10">
-                                        <textarea class="form-control input-sm" rows="5"
-                                            name="other_criteria_desc" id="other_criteria_desc"
-                                            maxlength="criteriaView.descCharsRemaining" ng-maxlength="criteriaView.descCharsRemaining"
-                                            ng-model="criteriaView.otherCriterion.criteria_desc" placeholder="Criteria Description">
-                                        </textarea>
-                                    </div>
-                                    <span ng-show="criteria_form.other_criteria_desc.$viewValue.length > 0">
-                                        {{criteriaView.descCharsRemaining - criteria_form.other_criteria_desc.$viewValue.length}} characters left. Total characters for all Other Criteria Description is {{criteriaView.numCharsUsedInOC}}.
-                                    </span>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <label class="control-label"></label>
-                                    <button type="button" class="btn btn-warning" ng-click="criteriaView.cancelEditOtherCriterion()">Cancel</button>
-                                    <button type="button" class="btn btn-primary" ng-click="criteriaView.upsertOtherCriterion(criteriaView.otherCriterion)"
-                                        ng-disabled="criteriaView.otherCriterion.criteria_desc==''">
-                                            <span ng-show="criteriaView.otherCriterion.edit">Update</span>
-                                            <span ng-show="!criteriaView.otherCriterion.edit"><i class="glyphicon glyphicon-plus"></i> Add</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row top-buffer" ng-hide="criteriaView.trialDetailObj.other_criteria.length == 0">
-                                <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-striped table-hover">
+                            <div class="form-group" ng-hide="!criteriaView.trialDetailObj.other_criteria.length">
+                                <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-bordered table-striped table-hover">
                                     <thead>
                                     <tr>
                                         <th st-sort="criteria_type" class="col-sm-4">Eligibility Criterion Type</th>
                                         <th class="col-sm-6">Eligibility Criterion Description</th>
                                         <th class="text-center td-icon">Edit</th>
-                                        <th class="text-center td-icon">Delete All <input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
+                                        <th class="text-center td-icon"><input type="checkbox" name="delete_allOC" id="delete_allOC" ng-model="criteriaView.deleteAllOCCheckbox" ng-change="criteriaView.deleteAllOC(criteriaView.deleteAllOCCheckbox)"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="row._destroy ? 'deleted-text' : ''">
+                                    <tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="{'deleted-text': row._destroy, 'row-blow': criteriaView.otherCriterion.id === row.id}">
                                         <td>
-                                            <span in-place-edit="row.criteria_type" on-save="criteriaView.updateOtherCriteriaType(row.criteria_type, $index)"
-                                                  template="app/pa/dashboard/abstraction/scientific/_other_criteria_type_edit.html" id="other_criteria_type_edit">
-                                                  {{row.criteria_type}}
-                                            </span>
+                                            {{row.criteria_type}}
                                         </td>
                                         <td>
                                             {{row.criteria_desc}}
                                         </td>
-                                        <td  class="text-center td-icon">
-                                            <label class="btn btn-warning" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)">
-                                                <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                            </label>
-                                        </td>
                                         <td class="text-center td-icon">
-                                            <label class="btn btn-primary" restriction-field ng-disabled="row._destroy" ng-click="criteriaView.editOtherCriterion($index)">
+                                            <button type="button" class="btn btn-primary" restriction-field ng-disabled="row._destroy || criteriaView.addOtherCriterionFormShown" ng-click="criteriaView.editOtherCriterion($index)">
                                                 <i class="glyphicon glyphicon-edit"></i>
-                                            </label>
+                                            </button>
+                                        </td>
+                                        <td  class="text-center td-icon">
+                                            <button type="button" class="btn btn-warning" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)" ng-disabled="criteriaView.addOtherCriterionFormShown">
+                                                <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -230,6 +249,16 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                            </div>
+                            <div class="form-group no-bottom-margin">
+                                <div class="btn-toolbar">
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="criteriaView.prepareOtherCriterion('Inclusion')">
+                                        <i class="glyphicon glyphicon-plus"></i> Add Inclusion Criterion
+                                    </button>
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="criteriaView.prepareOtherCriterion('Exclusion')">
+                                        <i class="glyphicon glyphicon-plus"></i> Add Exclusion Criterion
+                                    </button>
+                                </div>
                             </div>
                         </fieldset>
                     <!-- end of fieldset for other criteria -->

@@ -29,10 +29,10 @@
                             </div>
                         </fieldset>
                         <fieldset class="sub-bordered" restriction-field ng-show="armView.interventional">
-                            <div class="form-group">
-                                <label for="org_type" class="control-label col-xs-12 col-sm-3">Type: </label>
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.arms_groups_type)}">
+                                <label for="arms_groups_type" class="control-label col-xs-12 col-sm-3">Type: </label>
                                 <div class="col-xs-12 col-sm-9">
-                                    <select class="form-control input-sm" id="type" ng-model="armView.currentArmsGroup.arms_groups_type">
+                                    <select class="form-control input-sm" name="arms_groups_type" id="arms_groups_type" ng-model="armView.currentArmsGroup.arms_groups_type" ng-required="true">
                                         <option value="">-Select Type-</option>
                                         <option value="Experimental">Experimental</option>
                                         <option value="Active Comparator">Active Comparator</option>
@@ -41,6 +41,9 @@
                                         <option value="No intervention">No intervention</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                    <span ng-messages="ctrpbtn.arm_form.needsAttention(arm_form.arms_groups_type) && arm_form.arms_groups_type.$error">
+                                        <span class="help-block" ng-message="required">Type is Required</span>
+                                    </span>
                                 </div>
                             </div>
                         </fieldset>
@@ -110,10 +113,9 @@
 
                 </fieldset>
             </div>
-            <fieldset ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-                <legend class="sub-bordered" ng-show="markersView.selectedDeleteBioMarkersList.length">List of Arms Groups:</legend>
-                <div class="form-group table-responsive">
-                    <table class="table table-bordered table-striped table-hover" ng-show="armView.curTrial.arms_groups.length">
+            <fieldset>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover" ng-show="armView.curTrial.arms_groups.length" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <thead>
                         <th>Label</th>
                         <th>Type</th>
@@ -143,9 +145,9 @@
                         </tbody>
                     </table>
 
-                    <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field ng-click="armView.setAddMode()">Add Arms Groups</button>
-                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()" ng-disabled="!armView.selectedDeleteArmsGroupsList.length" ng-show="armView.curTrial.arms_groups.length">Delete Arms Groups</button>
+                    <div class="btn-toolbar">
+                        <button type="submit" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setAddMode()">Add Arms Group</button>
+                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()" ng-disabled="!armView.selectedDeleteArmsGroupsList.length" ng-show="armView.curTrial.arms_groups.length">Delete Selected</button>
                     </div>
 
                 </div>
