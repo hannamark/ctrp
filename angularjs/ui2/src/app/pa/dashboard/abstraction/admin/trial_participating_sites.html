@@ -559,7 +559,7 @@
                         ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-click="psView.setAddMode()">Add Participating Site</button>
                 <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="psView.deleteSelected()"
                         ng-show="psView.curTrial.participating_sites.length"
-                        ng-disabled="!psView.selectedDeleteParticipatingSitesList.length">
+                        ng-disabled="!psView.selectedDeleteParticipatingSitesList.length || !paTrialOverview.trialDetailObj.pa_editable">
                     <i class="glyphicon glyphicon-trash"></i> Delete Selected
                 </button>
             </div>

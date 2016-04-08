@@ -99,6 +99,10 @@
                                                     <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                                 </select>
                                             </div>
+
+                                            <span class="help-block" ng-show="!trialDetailView.authority_country  && trialDetailView.toaNum <=0">
+                                                Trial Oversight Authority Country is required for Upload to ClinicalTrials.gov
+                                            </span>
                                         </td>
                                         <td>
                                             <div>
@@ -107,6 +111,10 @@
                                                     <option ng-repeat="org in trialDetailView.authorityOrgArr track by $index" value="{{org}}" ng-selected="trialDetailView.curTrial.authority_org == org">{{org}}</option>
                                                 </select>
                                             </div>
+                                            <span class="help-block" ng-show="!trialDetailView.authority_org && trialDetailView.toaNum <=0">
+                                               Trial Oversight Authority is required for Upload to ClinicalTrials.gov
+                                            </span>
+
                                         </td>
                                         <td>
                                             <div ng-if="paTrialOverview.trialDetailObj.pa_editable">

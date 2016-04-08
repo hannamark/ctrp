@@ -215,7 +215,7 @@
                             </button>
                             <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()"
                                     ng-show="omView.curTrial.outcome_measures.length"
-                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length">
+                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length || !paTrialOverview.trialDetailObj.pa_editable">
                                 <i class="glyphicon glyphicon-trash"></i> Delete Selected
                             </button>
                         </div>
