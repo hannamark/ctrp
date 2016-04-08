@@ -152,8 +152,6 @@
             }
 
             function upsertDoc(index) {
-                console.info('index: ', index);
-                console.info('vm.curDoc: ', vm.curDoc);
                 if (index === null && vm.curDoc.file === '') {
                     console.error('null document object');
                     return;
@@ -257,7 +255,7 @@
                             console.log('in trial related documents, res: ', res);
                             vm.curTrialDetailObj.lock_version = res.lock_version;
                             PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
-                            $scope.$emit('updatedInChildScope', {});
+                            // $scope.$emit('updatedInChildScope', {});
                             _filterActiveDocs();
                             vm.curDoc = _initCurDoc();
                             vm.docTypeError = '';
