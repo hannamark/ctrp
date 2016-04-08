@@ -1,49 +1,50 @@
 <!-- Grid the shows all the Anatomic Sites -->
-<div class="row">
-    <uib-accordion close-others="false">
+<div class="row" id="section_top">
+    <uib-accordion close-others="false" ng-if="anatomicView.addMode">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                Add Anatomic Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+
+            <div class="form-group no-bottom-margin">
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
+                    <legend class="sub-bordered">Select Anatomic Sites</legend>
+                    <form class="form form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="anatomic_sites" class="control-label col-xs-12 col-sm-3">Anatomic Sites: </label>
+                            <div class="col-xs-12 col-sm-6">
+                                <ui-select multiple id="anatomic_sites" ng-model="anatomicView.anatomic_sites_selected">
+                                    <ui-select-match placeholder="-Select  Anatomic Sites -">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="anatomicSite in anatomicView.anatomicSitesArr">{{anatomicSite.name}}</ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="btn-toolbar no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="anatomicView.saveSelection()">
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
+                            <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
+                                <i class="glyphicon glyphicon-remove"></i> Clear
+                            </button-->
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+
+    <uib-accordion close-others="false" ng-hide="anatomicView.curTrial.anatomic_site_wrappers.length === 0 && anatomicView.addMode">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
                 List of Anatomic Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
-
-            <div class="form-group no-bottom-margin" ng-if="anatomicView.addMode">
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
-                    <legend class="sub-bordered">Select Anatomic Sites</legend>
-                    <form class="form form-horizontal" role="form">
-
-                    <div class="form-group">
-                        <label for="anatomic_sites" class="control-label col-xs-12 col-sm-3">Anatomic Sites: </label>
-                        <div class="col-xs-12 col-sm-9">
-                            <ui-select multiple id="anatomic_sites" ng-model="anatomicView.anatomic_sites_selected">
-                                <ui-select-match placeholder="-Select  Anatomic Sites -">{{$item.name}}</ui-select-match>
-                                <ui-select-choices repeat="anatomicSite in anatomicView.anatomicSitesArr">{{anatomicSite.name}}</ui-select-choices>
-                            </ui-select>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                                        <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="anatomicView.saveSelection()">
-                                            <i class="glyphicon glyphicon-search"></i> Save
-                                        </button>
-                                        <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
-                                            <i class="glyphicon glyphicon-remove"></i> Clear
-                                        </button-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </form>
-
-                </fieldset>
-            </div>
             <fieldset>
-                <legend class="sub-bordered" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">List of Anatomic Sites</legend>
-                <div class="form-group table-responsive">
+                <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">
                         <thead>
                         <th>Anatomic Site Name</th>
                         <th class="text-center td-icon">
-                            <input type="checkbox" restriction-field ng-model="anatomicView.selectedAllAS" ng-click="anatomicView.checkAllAS()" />
+                            <input type="checkbox" restriction-field ng-model="anatomicView.selectedAllAS" ng-click="anatomicView.checkAllAS()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" />
                         </th>
                         </thead>
                         <tbody>
@@ -51,15 +52,20 @@
                             <!--<tr ng-repeat="participating_site in anatomicViewView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                             <td>{{anatomic_site.anatomic_site.name}}</td>
                             <td class="text-center td-icon">
-                                <input type="checkbox" restriction-field ng-model="anatomic_site.selected" ng-change="anatomicView.deleteListHandler(anatomicView.curTrial.anatomic_site_wrappers)"  ng-click="anatomicView.selectedAllAS = false"/>
+                                <input type="checkbox" restriction-field ng-model="anatomic_site.selected" ng-change="anatomicView.deleteListHandler(anatomicView.curTrial.anatomic_site_wrappers)"  ng-click="anatomicView.selectedAllAS = false" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
-                    <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_anatomic_site" restriction-field ng-click="anatomicView.setAddMode()">Add Anatomic Site</button>
-                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="anatomicView.deleteSelected()" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0" ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length">Delete Anatomic Sites</button>
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-primary pull-right" id="add_anatomic_site" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="anatomicView.setAddMode()">
+                            <i class="glyphicon glyphicon-plus"></i> Add Anatomic Site
+                        </button>
+                        <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="anatomicView.deleteSelected()" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0"
+                                ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length || !paTrialOverview.trialDetailObj.pa_editable">
+                            <i class="glyphicon glyphicon-trash"></i> Delete Selected
+                        </button>
                     </div>
 
                 </div>

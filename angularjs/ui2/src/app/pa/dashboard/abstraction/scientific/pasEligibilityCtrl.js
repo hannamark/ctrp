@@ -33,6 +33,7 @@
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
         vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
         vm.updateOtherCriteriaType = updateOtherCriteriaType;
+        vm.updateOtherCriteria = updateOtherCriteria;
 
         activate();
         function activate() {
@@ -161,6 +162,22 @@
         function cancelEditOtherCriterion() {
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion = newOtherCriterion('');
+        }
+
+        function updateOtherCriteria(otherCriterion) {
+            var otherCriterionDesc = otherCriterion.criteria_desc;
+            var otherCriterionType = otherCriterion.criteria_type;
+            var otherCriterionIndex = vm.otherCriterion.index;
+
+            if (otherCriterionDesc.length === 0) {
+                return;
+            }
+
+            vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_type = otherCriterionType;
+            vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
+
+            vm.addOtherCriterionFormShown = false;
+            vm.criteriaView.otherCriterion.edit = false;
         }
 
         function updateOtherCriteriaDesc(otherCriterionDesc, index) {

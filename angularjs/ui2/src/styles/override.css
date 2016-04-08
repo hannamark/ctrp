@@ -234,7 +234,7 @@
     opacity: 0;
 }
 
-.deleted-text {
+.deleted-text, .deleted-text a{
     color:red;
     text-decoration:line-through;
 }
@@ -1109,4 +1109,65 @@ div.datepicker {
 
 .sign_in .panel-body {
     padding-bottom: 0;
+}
+
+.item, .placeholder {
+    padding: 2px;
+    width: 50px;
+    height: 20px;
+    border: 1px solid #333;
+    background: #EEE;
+}
+.placeholder {
+    background: #AEF;
+}
+
+.popover-wide {
+    color: #444;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1060;
+    overflow: auto;
+    display: none;
+    max-width: 550px;
+    padding: 1px;
+    font-family: Helvetica Neue, Helvetica, Aria, sans-serif;
+    font-size:14px;
+    font-weight: normal;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popover-wide .top {
+    margin-top: -10px;
+}
+
+.popover-wide > .arrow {
+    border-width: 11px;
+}
+
+.popover-wide > .arrow, .popover-wide >
+.arrow:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+
+}
+
+.popover-wide .top > .arrow {
+    bottom: -11px;
+    left: 50%;
+    margin-left: -11px;
+    border-top-color: #999;
+    border-top-color: rgba(0, 0, 0, 0.25);
+    border-bottom-width: 0;
 }

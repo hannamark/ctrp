@@ -126,9 +126,12 @@
                 PATrialService.associateTrial(trialLookUpResult).then(function(res) {
                     if (res.server_response.status === 201) {
                         delete res.server_response;
+                        console.info('id: ', res.id);
+                        res.associated_trial_id = res.id;
                         vm.trialDetailObj.associated_trials.unshift(res);
                         closeLookupForm();
                     }
+                    vm.deleteAllAssoCheckbox = false;
                 }).catch(function(err) {
                     console.error('error in associating the trial: ', err);
                 }).finally(function(done) {

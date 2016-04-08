@@ -153,9 +153,11 @@
                 </uib-accordion-heading>
 
                 <fieldset>
-                    <div class="table-responsive">
+
+                            <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" ng-show="omView.curTrial.outcome_measures.length">
                             <thead>
+                            <th>Index</th>
                             <th>Outcome Measure Type</th>
                             <th>Title</th>
                             <th>Time Frame</th>
@@ -164,13 +166,16 @@
                             <th class="text-center td-icon">Edit</th>
                             <th class="text-center td-icon">Copy</th>
                             <th class="text-center td-icon">
-                                <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()" />
+                                <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </th>
                             </thead>
-                            <tbody>
+                            <tbody ui-sortable="sortableListener" ng-model="omView.curTrial.outcome_measures">
 
-                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
+                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" style="cursor: move;" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
                                 <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
+                               <td>
+                                 {{$index+1}}
+                               </td>
                                 <td>
                                     {{(omView.om_types  | findObjByAttribute:'id':outcome_measure.outcome_measure_type_id)[0].name}}
                                 </td>
@@ -188,29 +193,29 @@
                                 </td>
 
                                 <td class="text-center td-icon">
-                                    <button  data-toggle="modal" class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="omView.setEditMode($index)">
+                                    <button  data-toggle="modal" class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="omView.setEditMode($index)">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </button>
                                 </td>
                                 <td class="text-center td-icon">
-                                    <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="omView.setCopyMode($index)">
+                                    <button class="btn btn-default" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="omView.setCopyMode($index)" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                                         <i class="glyphicon glyphicon-copy"></i>
                                     </button>
                                 </td>
                                 <td class="text-center td-icon">
-                                    <input type="checkbox" restriction-field ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"/>
+                                    <input type="checkbox" restriction-field ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
                         <div class="btn-toolbar">
-                            <button type="button"  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">
+                            <button type="button"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">
                                 <i class="glyphicon glyphicon-plus"></i> Add Outcome Measure
                             </button>
                             <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()"
                                     ng-show="omView.curTrial.outcome_measures.length"
-                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length">
+                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length || !paTrialOverview.trialDetailObj.pa_editable">
                                 <i class="glyphicon glyphicon-trash"></i> Delete Selected
                             </button>
                         </div>
