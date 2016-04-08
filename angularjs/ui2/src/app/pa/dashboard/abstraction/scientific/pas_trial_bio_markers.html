@@ -268,7 +268,7 @@
 
                             <th class="text-center td-icon">Edit</th>
                             <th class="text-center td-icon">
-                                <input type="checkbox" restriction-field ng-model="markersView.selectedAllBM" ng-click="markersView.checkAllBM()" />
+                                <input type="checkbox" restriction-field ng-model="markersView.selectedAllBM" ng-click="markersView.checkAllBM()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </th>
                             </thead>
                             <tbody>
@@ -295,20 +295,20 @@
                                     {{bio_marker.record_status}}
                                 </td>
                                 <td class="text-center td-icon">
-                                    <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="markersView.setEditMode($index)">
+                                    <button class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="markersView.setEditMode($index)">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </button>
                                 </td>
 
                                 <td class="text-center td-icon">
-                                    <input type="checkbox" ng-model="bio_marker.selected" restriction-field ng-click="markersView.selectedAllBM = false" ng-change="markersView.deleteListHandler(markersView.curTrial.bio_markers)" />
+                                    <input type="checkbox" ng-model="bio_marker.selected" restriction-field ng-click="markersView.selectedAllBM = false" ng-change="markersView.deleteListHandler(markersView.curTrial.bio_markers)" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="markersView.setAddMode()">
+                            <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="markersView.setAddMode()">
                                 <i class="glyphicon glyphicon-plus"></i> Add Bio Marker
                             </button>
                             <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="markersView.deleteSelected()" ng-disabled="!markersView.selectedDeleteBioMarkersList.length" ng-show="markersView.curTrial.bio_markers.length">

@@ -58,12 +58,12 @@
                 List of Trial Collaborators <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <div ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" class="table-responsive">
-                <table class="table table-bordered table-striped table-hover" ng-show="trialDetailView.curTrial.collaborators.length">
+                <table class="table table-bordered table-striped table-hover" ng-show="trialDetailView.curTrial.collaborators.length" >
                     <thead>
                     <th>PO ID</th>
                     <th>Name</th>
                     <th class="text-center td-icon">
-                        <input type="checkbox" restriction-field ng-model="trialDetailView.selectedAllCos" ng-click="trialDetailView.checkAllCos()" />
+                        <input type="checkbox" restriction-field ng-model="trialDetailView.selectedAllCos" ng-click="trialDetailView.checkAllCos()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
                     </th>
                     </thead>
                     <tbody>
@@ -82,7 +82,7 @@
                             </div>
                         </td>
                         <td class="text-center td-icon">
-                            <input type="checkbox" ng-model="collaborator.selected" restriction-field ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" ng-click="trialDetailView.selectedAllCos = false"/>
+                            <input type="checkbox" ng-model="collaborator.selected" restriction-field ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" ng-click="trialDetailView.selectedAllCos = false" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
                         </td>
                     </tr>
                     </tbody>
