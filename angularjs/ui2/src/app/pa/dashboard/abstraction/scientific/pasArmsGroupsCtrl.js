@@ -8,10 +8,10 @@
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
     pasArmsGroupsCtrl.$inject = ['$scope', '$state', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll'];
+        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location'];
 
     function pasArmsGroupsCtrl($scope, $state, TrialService, PATrialService, toastr,
-                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll) {
+                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.setAddMode = setAddMode;
