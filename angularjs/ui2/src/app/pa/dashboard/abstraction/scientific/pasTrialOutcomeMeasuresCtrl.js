@@ -28,6 +28,34 @@
         vm.om_types = outcomeTypesObj;
         vm.safety_issues=['Yes','No']
 
+        $scope.list = ["one", "two", "thre", "four", "five", "six"];
+
+        $scope.sortableListener = {
+            stop : function(e, ui) {
+                var item = ui.item.scope().item;
+                var fromIndex = ui.item.sortable.index;
+                var toIndex = ui.item.sortable.dropindex;
+                console.log('moved', item, fromIndex, toIndex);
+            }
+        };
+
+        $scope.$on("$destroy", function() {
+            for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
+                    if(vm.curTrial.outcome_measures[i].index !=i) {
+                        vm.curTrial.outcome_measures[i].index=i;
+                        var currentOM= vm.curTrial.outcome_measures[i];
+                         TrialService.upsertOutcomeMeasure(currentOM).then(function (response) {
+
+                             PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                            vm.selectedAllOM = false;
+                        }).catch(function (err) {
+                         console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
+                        });
+                    }
+            }
+
+        });
+
         activate();
         function activate() {
             //submit();
@@ -158,6 +186,7 @@
             });
 
         }//saveTrial
+
 
 
         /**

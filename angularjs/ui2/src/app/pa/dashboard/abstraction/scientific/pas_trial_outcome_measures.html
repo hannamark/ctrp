@@ -151,9 +151,11 @@
                 </uib-accordion-heading>
 
                 <fieldset>
-                    <div class="table-responsive">
+
+                            <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" ng-show="omView.curTrial.outcome_measures.length">
                             <thead>
+                            <th>Index</th>
                             <th>Outcome Measure Type</th>
                             <th>Title</th>
                             <th>Time Frame</th>
@@ -165,10 +167,13 @@
                                 <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()" />
                             </th>
                             </thead>
-                            <tbody>
+                            <tbody ui-sortable="sortableListener" ng-model="omView.curTrial.outcome_measures">
 
-                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
+                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" style="cursor: move;" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
                                 <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
+                               <td>
+                                 {{$index}}
+                               </td>
                                 <td>
                                     {{(omView.om_types  | findObjByAttribute:'id':outcome_measure.outcome_measure_type_id)[0].name}}
                                 </td>
