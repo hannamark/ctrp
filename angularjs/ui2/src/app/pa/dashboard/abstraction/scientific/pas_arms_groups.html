@@ -1,5 +1,5 @@
 <!-- Grid the shows all the Anatomic Sites -->
-<div class="row">
+<div class="row" id="section_top">
     <uib-accordion close-others="false" ng-if="armView.addEditMode">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
@@ -18,7 +18,7 @@
                                 <span ng-messages="ctrpbtn.arm_form.needsAttention(arm_form.label) && arm_form.label.$error">
                                     <span class="help-block" ng-message="required">Label is Required</span>
                                 </span>
-                                <span ng-show="arm_form.label.$dirty">
+                                <span class="help-block" ng-show="arm_form.label.$dirty">
                                         {{62 - arm_form.label.$viewValue.length}} characters left
                                 </span>
                             </div>
@@ -139,7 +139,7 @@
                     </table>
 
                     <div class="btn-toolbar">
-                        <button type="button" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setAddMode()">
+                        <button type="button" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disable="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setAddMode(true)">
                             <i class="glyphicon glyphicon-plus"></i> Add Arms Group
                         </button>
                         <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()" ng-disabled="!armView.selectedDeleteArmsGroupsList.length" ng-show="armView.curTrial.arms_groups.length">
@@ -152,7 +152,7 @@
         </uib-accordion-group>
     </uib-accordion>
     <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="armView.addEditMode">
-        <button type="button" class="btn btn-warning pull-right" id="arms_groups_list" restriction-field ng-click="">
+        <button type="button" class="btn btn-warning pull-right" id="arms_groups_list" restriction-field ng-click="armView.setAddMode(false)">
             <i class="glyphicon glyphicon-arrow-left"></i> Back to Arms Groups List
         </button>
     </div>

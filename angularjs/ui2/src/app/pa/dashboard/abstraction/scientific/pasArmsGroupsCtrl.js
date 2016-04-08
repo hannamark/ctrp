@@ -8,10 +8,10 @@
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
     pasArmsGroupsCtrl.$inject = ['$scope', '$state', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'trialDetailObj'];
+        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll'];
 
     function pasArmsGroupsCtrl($scope, $state, TrialService, PATrialService, toastr,
-                                     MESSAGES, _, $timeout, trialDetailObj) {
+                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.setAddMode = setAddMode;
@@ -109,24 +109,30 @@
 
 
 
-        function setAddMode() {
-            vm.addEditMode = true;
+        function setAddMode(isAddMode) {
             vm.currentArmsGroup = {};
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
-            var tempIntervention = {};
-            for (var i = 0; i < vm.curTrial.interventions.length; i++) {
-                tempIntervention.id = vm.curTrial.interventions[i].id;
-                tempIntervention.name = vm.curTrial.interventions[i].name;
-                tempIntervention.description = vm.curTrial.interventions[i].description;
-                tempIntervention.selected = false;
-                vm.trial_interventions.push(tempIntervention);
-                console.log("vm.trial_interventions="+JSON.stringify(vm.trial_interventions));
-                tempIntervention = {};
+
+            if (isAddMode) {
+                vm.addEditMode = true;
+                var tempIntervention = {};
+                for (var i = 0; i < vm.curTrial.interventions.length; i++) {
+                    tempIntervention.id = vm.curTrial.interventions[i].id;
+                    tempIntervention.name = vm.curTrial.interventions[i].name;
+                    tempIntervention.description = vm.curTrial.interventions[i].description;
+                    tempIntervention.selected = false;
+                    vm.trial_interventions.push(tempIntervention);
+                    console.log("vm.trial_interventions="+JSON.stringify(vm.trial_interventions));
+                    tempIntervention = {};
+                }
+            } else {
+                vm.addEditMode = false;
+                $location.hash('section_top');
+                $anchorScroll();
             }
         }
-
 
         /**
          *  Set Edit Mode.
