@@ -88,7 +88,31 @@ And I can change the privileges for the CTRP User to
 |Trial Submitter|
 And the CTRP User will not have access the Site Administrative features in CTRP
 
-Scenario: #5 Change site affilition 
+Scenario: #5 I can disable Site user for CTRP Site Administrators with the same site affilition
+Given I am logged into CTRP 
+And I have Site Administrator privileges
+When I select the Site Administation feature
+And I will see a list of all CTRP Users with the same Site Affiliation as I have listing:
+|Username|
+|Last Name |
+|First Name |
+|Email |
+|Organization|
+|Family|
+And the list will display an indicator if the CTRP Users have Site Administrator privileges
+And Status
+When I select a site user
+Then the CTRP system will display the user profile for the CTRP User
+And I can change the status to disabled
+And the system will display a warning message that "The User will no longer be able to Access CTRP"
+And the system will determine if the user is an owner of any trials 
+When the user is the owner of at least 1 trial
+Then the system will also display a warning message that "The trial(s) owned by this user will need to be reassigned to a new owner"
+And I Select OK
+Then the CTRP User will not have access to CTRP
+And the system will open the trial management screen to allow the admin to reassign the trials (Feature Admin F06)
+
+Scenario: #6 Change site affilition 
 Given I am logged into CTRP 
 And I have Site Administrator privileges
 When I select the Site Administation feature (User Portal)
