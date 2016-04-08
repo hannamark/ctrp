@@ -43,6 +43,7 @@
         'ngFileSaver',
         'angularSpinner',
         'ui.select',
+        'ui.sortable',
         'ntt.TreeDnD'
     ]);
 })();
