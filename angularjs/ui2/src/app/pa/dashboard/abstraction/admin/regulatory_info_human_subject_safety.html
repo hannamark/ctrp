@@ -24,7 +24,7 @@
                             </select>
                             <span ng-messages="regInfoSafetyView.approvalStatusRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_status) &&
                                                 human_safety_form.approval_status.$error">
-                                <span class="help-block" ng-message="required">Board approval status is required for trials registered through CTRP</span>
+                                <span class="help-block" ng-message="required">Board approval status is Required for trials registered through CTRP</span>
                            </span>
                         </div>
                         <!-- offset below -->
@@ -46,7 +46,7 @@
                                     'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span ng-messages="regInfoSafetyView.approvalNumRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_number) &&
                                                     human_safety_form.approval_number.$error">
-                                    <span class="help-block" ng-message="required">Board approval number is required</span>
+                                    <span class="help-block" ng-message="required">Board approval number is Required</span>
                                </span>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                                 </span>
                                 <span ng-messages="regInfoSafetyView.boardAffRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation) &&
                                                     human_safety_form.board_affiliation.$error">
-                                    <span class="help-block" ng-message="required">Board affiliation is required</span>
+                                    <span class="help-block" ng-message="required">Board affiliation is Required</span>
                                </span>
 
 
@@ -172,7 +172,7 @@
                                     ng-class="human_safety_form.board_name.$dirty && !ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) ?
                                     'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span ng-messages="regInfoSafetyView.boardNameRequired && ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_name) && human_safety_form.board_name.$error" role="alert" multiple>
-                                    <span class="help-block" ng-message="required">Board name is required</span>
+                                    <span class="help-block" ng-message="required">Board name is Required</span>
                                     <span class="help-block" ng-message="maxlength"> Board name exceeds 255 characters limit</span>
                                </span>
                             </div>
@@ -182,7 +182,7 @@
 
                     <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_editable">
                       <div class="col-sm-3"></div>
-                      <div class="btn-toolbar col-xs-12 col-sm-9">
+                      <div class="btn-toolbar col-xs-12 col-sm-5">
                         <button type="submit" class="btn btn-primary pull-right" id="save_btn">
                             <!-- ng-disabled="human_safety_form.$pristine" -->
                             <!--  ng-disabled="!human_safety_form.$valid" -->

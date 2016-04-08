@@ -85,7 +85,7 @@
                 },
 
                 {name: 'source_context', displayName: 'Source Context',
-                    enableSorting: true, minWidth: '135', width: '*'},
+                    enableSorting: true, minWidth: '160', width: '*'},
                 {name: 'source_status', displayName: 'Source Status', enableSorting: true, minWidth: '135', width: '*'},
                 {name: 'source_id', displayName: 'Source ID', enableSorting: true, minWidth: '105', width: '*'},
                 {name: 'email', enableSorting: true, minWidth: '105', width: '*',

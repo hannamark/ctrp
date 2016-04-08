@@ -31,6 +31,20 @@
         };
 
 
+        vm.checkAllSG = function () {
+            if (vm.selectedAllSG) {
+                vm.selectedAllSG = true;
+            } else {
+                vm.selectedAllSG = false;
+            }
+
+            angular.forEach(vm.curTrial.sub_groups, function (item) {
+                item.selected = vm.selectedAllSG;
+                vm.deleteListHandler(vm.curTrial.sub_groups);
+            });
+
+        };
+
         vm.saveSubGroup = function(){
             // Prevent multiple submissions
             vm.disableBtn = true;
@@ -49,6 +63,7 @@
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
+            vm.selectedDeleteSubGroupsList = [];
             TrialService.upsertTrial(outerTrial).then(function(response) {
 
                 vm.curTrial.lock_version = response.lock_version || '';
@@ -62,6 +77,7 @@
                     timeOut: 0
                 })
                 vm.addEditMode=false;
+                vm.selectedAllSG = false;
 
             }).catch(function(err) {
                 console.log("error in creating or updating sub group " + JSON.stringify(outerTrial));
@@ -115,6 +131,7 @@
             }).catch(function(err) {
                 console.log("error in creating or updating Trial sub group " + JSON.stringify(outerTrial));
             });
+            vm.selectedAllSG = false;
         };
 
 
@@ -136,6 +153,7 @@
 
 
         function resetSubGroup() {
+            vm.selectedAllSG = false;
             if(vm.currentSubGroup.id > 0){
                 var cachedTrial = PATrialService.getCurrentTrialFromCache();
               for (var i = 0; i < cachedTrial.sub_groups.length; i++) {

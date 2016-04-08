@@ -370,6 +370,17 @@ class Trial < TrialBase
     pa_editable
   end
 
+  def checked_out_by_current_user(user)
+    return false if user.nil?
+    checked_out = false
+    Rails.logger.info "user = #{user.inspect}"
+    if ((self.admin_checkout && eval(self.admin_checkout)[:by] == user)  ||
+        (self.scientific_checkout && eval(self.scientific_checkout)[:by] == user))
+      checked_out = true
+    end
+    checked_out
+  end
+
   private
 
   def save_history
@@ -484,7 +495,7 @@ class Trial < TrialBase
     if last_sub_type.present? && last_sub_type.code == 'ORI' && last_sub_method.present? && last_sub_method.code == 'REG' && self.edit_type != 'verify'
       mail_template = MailTemplate.find_by_code('TRIAL_REG')
       if mail_template.present?
-        mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present?
+        mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
 
         # Populate the trial data in the email body
         mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?

@@ -17,7 +17,7 @@
             404: 'Requested resource not found',
             405: 'Request method is not allowed',
             406: 'Request is not acceptable',
-            407: 'Proxy authentication is required',
+            407: 'Proxy authentication is Required',
             408: 'Request has timed out',
             409: 'Submitted data have conflicted with existing resources',
             410: 'Requested resources are no longer available',

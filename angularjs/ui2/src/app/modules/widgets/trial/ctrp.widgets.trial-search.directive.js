@@ -159,7 +159,7 @@
                     {headerName: '', width: 30, checkboxSelection: true,
                          suppressSorting: true, suppressMenu: true, pinned: true},
                     {headerName: 'NCI ID', field: 'nci_id', width: 150, unSortIcon: false, editable: false},
-                    {headerName: 'Lead Protocol ID', field: 'lead_protocol_id', width: 160},
+                    {headerName: 'Lead Protocol ID', field: 'lead_protocol_id', width: 170},
                     {headerName: 'Official Title', field: 'official_title', width: 240},
                     {headerName: 'Phase', field: 'phase', width: 70},
                     {headerName: 'Purpose', field: 'purpose', width: 100},

@@ -34,7 +34,7 @@ And a message displays with the number of results for the term entered
       |NCI Thesaurus Concept ID  |
       |Menu Display Name  |
       |Parent Preferred Name(s)  |
-      |Rank  |
+      |Disease Code  |
       |Edit Link  |
       |Delete Box  |
 
@@ -66,7 +66,7 @@ Then only exact term will be displayed
 And a message displays with the number of results for the entered term
 
 
-Scenario: #5 Edit Disease/Condition for a trial- Only the Rank field can be edited
+Scenario: #5 Edit Disease/Condition for a trial- Only the Disease Code field can be edited
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
@@ -77,9 +77,9 @@ And Code is prefilled with the NCIt Code
 And the NCI Thesaurus Concept ID is prefilled
 And Menu Display Name is prefilled with the NCIt Menu Display Name
 And Parent Name is prefilled with the NCIt Parent Name
-And The field "Rank"  will be defaulted to "None" value
-And I can change the defaulted value to Rank Type
-|Rank|
+And The field "Disease Code"  will be defaulted to "None" value
+And I can change the defaulted value to Disease Code
+|Disease Code|
 |Primary|
 |Secondary|
 

@@ -29,6 +29,7 @@
       vm.escapeEditTrialIdentifier = escapeEditTrialIdentifier;
       vm.updateTrialIdentifier = updateTrialIdentifier;
       vm.editLeadProtocolId = editLeadProtocolId;
+      vm.deleteAllOtherIdentifiers = deleteAllOtherIdentifiers;
 
       vm.leadOrg = {name: '', array: []};
       vm.principalInvestigator = {name: '', array: []};
@@ -117,6 +118,7 @@
           vm.leadOrg = {name: '', array: []};
           vm.principalInvestigator = {name: '', array: []};
           vm.sponsor = {name: '', array: []};
+          vm.otherIdDestroyAll = false;
          // vm.centralContact = [];
           $timeout(function() {
              getTrialDetailCopy();
@@ -197,6 +199,7 @@
               vm.otherIdentifier.protocol_id = ''; // empty it
               vm.otherIdentifier.identifierName = '';
               vm.otherIdErrorMsg = '';
+              vm.otherIdDestroyAll = false;
           } else {
               vm.otherIdErrorMsg = errorMsg;
           }
@@ -215,7 +218,19 @@
           if (idx < vm.generalTrialDetailsObj.other_ids.length) {
               vm.generalTrialDetailsObj.other_ids[idx]._destroy = !vm.generalTrialDetailsObj.other_ids[idx]._destroy;
           }
+          vm.otherIdDestroyAll = false;
       }
+
+      function deleteAllOtherIdentifiers() {
+          if (vm.otherIdDestroyAll) {
+              vm.otherIdDestroyAll = false;
+          } else {
+              vm.otherIdDestroyAll = true;
+          }
+          angular.forEach(vm.generalTrialDetailsObj.other_ids, function (item) {
+              item._destroy = vm.otherIdDestroyAll;
+          });
+       };
 
       function updateOtherId(protocolIdVal, index) {
 

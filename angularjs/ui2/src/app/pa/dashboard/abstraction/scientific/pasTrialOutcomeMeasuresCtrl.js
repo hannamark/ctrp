@@ -4,10 +4,10 @@
         .controller('pasTrialOutcomeMeasuresCtrl', pasTrialOutcomeMeasuresCtrl);
 
     pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', '$filter', 'TrialService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
-        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj'];
+        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj', '$location','$anchorScroll'];
 
     function pasTrialOutcomeMeasuresCtrl($scope, $filter, TrialService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
-                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj) {
+                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentOutcomeMeasure= {};
@@ -28,6 +28,34 @@
         vm.om_types = outcomeTypesObj;
         vm.safety_issues=['Yes','No']
 
+        $scope.list = ["one", "two", "thre", "four", "five", "six"];
+
+        $scope.sortableListener = {
+            stop : function(e, ui) {
+                var item = ui.item.scope().item;
+                var fromIndex = ui.item.sortable.index;
+                var toIndex = ui.item.sortable.dropindex;
+                console.log('moved', item, fromIndex, toIndex);
+            }
+        };
+
+        $scope.$on("$destroy", function() {
+            for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
+                    if(vm.curTrial.outcome_measures[i].index !=i) {
+                        vm.curTrial.outcome_measures[i].index=i;
+                        var currentOM= vm.curTrial.outcome_measures[i];
+                         TrialService.upsertOutcomeMeasure(currentOM).then(function (response) {
+
+                             PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                            vm.selectedAllOM = false;
+                        }).catch(function (err) {
+                         console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
+                        });
+                    }
+            }
+
+        });
+
         activate();
         function activate() {
             //submit();
@@ -41,6 +69,9 @@
         vm.setToDefaultMode = function() {
             vm.addMode = vm.editMode = vm.copyMode = false;
             vm.copyOM = {};
+
+            $location.hash('section_top');
+            $anchorScroll();
         }
 
         vm.checkAllOM = function () {
@@ -104,6 +135,7 @@
                     vm.setToDefaultMode();
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 }
+                vm.selectedAllOM = false;
             }).catch(function(err) {
                 console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
             });
@@ -128,6 +160,7 @@
             for (var i = 0; i < vm.selectedDeleteOutcomeMeasuresList.length; i++) {
                 vm.deleteOutcomeMeasure( vm.selectedDeleteOutcomeMeasuresList[i].id);
             }
+            resetOutcomeMeasure();
         };
 
         vm.deleteOutcomeMeasure = function(psId){
@@ -153,6 +186,7 @@
             });
 
         }//saveTrial
+
 
 
         /**

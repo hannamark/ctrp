@@ -6,19 +6,12 @@
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
     .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl)
-    .controller('warningToastrCtrl', warningToastrCtrl);
-    warningToastrCtrl.$inject = ['$scope', '$mdToast'];
-    function warningToastrCtrl($scope, $mdToast) {
-        $scope.closeWarning = function() {
-            $mdToast.hide();
-        };
-    }
 
-    paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService',
+    paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService', '$popover',
         'Common', 'DateService', '$timeout', 'CommentService', 'documentTypes', '$mdToast',
         '$document', 'UserService', 'toastr', 'HOST', 'URL_CONFIGS', 'acceptedFileTypesObj', 'Upload'];
 
-        function paTrialRelatedDocsCtrl($scope, _, PATrialService, TrialService,
+        function paTrialRelatedDocsCtrl($scope, _, PATrialService, TrialService, $popover,
             Common, DateService, $timeout, CommentService, documentTypes, $mdToast,
             $document, UserService, toastr, HOST, URL_CONFIGS, acceptedFileTypesObj, Upload) {
 
@@ -48,6 +41,7 @@
             // actions
             vm.saveDocuments = saveDocuments;
             vm.deleteDoc = deleteDoc;
+            vm.toggleDeleteStatus = toggleDeleteStatus;
             vm.editDoc = editDoc;
             vm.cancelEdit = cancelEdit;
             vm.upsertDoc = upsertDoc; //upsertDoc;
@@ -70,16 +64,33 @@
                 }, 0);
             } //getTrialDetailCopy
 
-            function deleteDoc(index) {
+            /**
+             * Toggle the deletion status on the document
+             * @param  {Integer} index - index in the trial_documents array
+             * @return {Void}
+             */
+            function toggleDeleteStatus(index) {
                 if (index < vm.curTrialDetailObj.trial_documents.length) {
                     var curStatus = vm.curTrialDetailObj.trial_documents[index].status || 'deleted';
                     if (curStatus === 'active' && index === vm.curDoc.index) {
                         // cancel editing the doc that is to be deleted
                         cancelEdit();
                     }
-                    vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
-
+                    $timeout(function() {
+                        // apply the changes to the scope
+                        vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+                        if (vm.curTrialDetailObj.trial_documents[index].status === 'active') {
+                            vm.curTrialDetailObj.trial_documents[index].why_deleted = null;
+                        }
+                    }, 0);
                 }
+            }
+
+            function deleteDoc(deletionComment, index) {
+                if (deletionComment === null || deletionComment.trim().length === 0) {
+                    return;
+                }
+                toggleDeleteStatus(index);
             }
 
             var prevFile = '';
@@ -105,14 +116,16 @@
                     document_type: '',
                     file_name: '',
                     file: '', // File to be uploaded
-                    document_subtype: '',
+                    document_subtype: null,
                     added_by: {},
                     added_by_id: null,
                     created_at: '',
                     edit: false,
                     index: null,
                     _destroy: false,
-                    status: 'active'
+                    status: 'active',
+                    why_deleted: null,
+                    isPopoverOpen: false
                 };
                 return doc;
             }
@@ -163,7 +176,7 @@
                         // new document
                         if (isDocTypeExistent(vm.curDoc.document_type)) {
                             console.error('doctype exists already: ', vm.curDoc.document_type);
-                            vm.docTypeError = 'The selected document type already exists.';
+                            vm.docTypeError = 'The selected document type has already been selected.';
                             return;
                         } // check document type for new document
                         vm.curDoc.created_at = new Date();
@@ -206,6 +219,7 @@
             function saveDocuments(showToastr, formName) {
                 // warning toastr for edited document
                 // cancelEdit();
+                console.info('saving documents....');
                 if (vm.curDoc.edit === true) {
                     // _showWarningToastr('Please cancel or commit the edited document first', 'bottom right');
                     vm.formError = 'Cancel or commit the edited document first';
@@ -272,6 +286,10 @@
             function _filterActiveDocs() {
                 vm.curTrialDetailObj.trial_documents = _.filter(vm.curTrialDetailObj.trial_documents, function(doc) {
                     return doc.status === 'active'; // do not show soft deleted or inactive document
+                }).map(function(filteredDoc) {
+                    delete filteredDoc._destroy;
+                    filteredDoc.why_deleted = filteredDoc.why_deleted || null; // initialize why_deleted field if not present
+                    return filteredDoc;
                 });
             }
 
@@ -302,7 +320,7 @@
                         return;
                     }
                 });
-                vm.formError = valid ? '' : 'Both Protocol Document and IRB Approval Document are required';
+                vm.formError = valid ? '' : 'Both Protocol Document and IRB Approval Document are Required';
                 return valid;
             }
 
