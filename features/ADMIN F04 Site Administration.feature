@@ -87,3 +87,22 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Trial Submitter|
 And the CTRP User will not have access the Site Administrative features in CTRP
+
+Scenario: #5 Change site affilition 
+Given I am logged into CTRP 
+And I have Site Administrator privileges
+When I select the Site Administation feature (User Portal)
+Then I will see a list of all CTRP Users with the same Site Affiliation as I have listing:
+|Username|
+| First Name |
+| Last Name |
+| Email |
+| Organizational Affiliation |
+| Organization Family|
+And the list will display an indicator if the CTRP Users have Site Administrator privileges 
+And Status
+When I select a user that has site administrator privileges
+Then the CTRP system will display the user profile for the CTRP User
+And I can change the organization affilliation for the CTRP User to a different organization by selecting organization look up
+Then the system will display a warning message that "The User will no longer have site Administrative privileges"
+And I can select OK to continue
