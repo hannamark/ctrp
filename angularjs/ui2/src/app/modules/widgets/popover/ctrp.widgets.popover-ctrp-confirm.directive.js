@@ -1,5 +1,18 @@
 /**
  * Created by wangg5 on 04/07/16.
+ * Usage example:
+ * <button
+ * 	ctrp-confirm
+ * 	confirm-template="path/to/custom/template.html"
+ * 	ctrp-click="deleteAll()"
+ * > Delete
+ * </button>
+ *
+ * <b>Note: </b> DO NOT use Angular's ng-click in the button that
+ * uses ctrp-confirm directive, instead attach your delete action to
+ * the ctrp-click attributes (like above)
+ *
+ * <b>confirm-template is optional, use it only when you need a custom template<b>
  *
  */
 
@@ -36,7 +49,7 @@
                 scope: scope
             });
 
-            element.bind('click', function(event) {
+            element.bind('click', function(event) {                
                 popover.event = event;
                 if (!popover.$isShown) {
                     // console.info('popover: ', popover);
