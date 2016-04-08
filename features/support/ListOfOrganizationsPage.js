@@ -35,8 +35,9 @@ ListOfOrganizationsPage = function () {
     this.orgModelSearch = element(by.id('org_search_modal'));
     this.orgModelSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
     this.orgModelConfirm = element(by.buttonText('Confirm Selection'));
-    this.orgModelCloseButton = element(by.css('.btn.btn-danger.pull-right')); //element(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]'));
-      this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
+    this.orgModelCloseButton = element(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]')); //element(by.css('.btn.btn-danger.pull-right'));
+    this.orgPersonModelCloseButton = element(by.css('button[ng-click="advPersonSearchModalView.cancel()"]'));
+    this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
     //  this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedExpirationDate = element(by.model('org.expiration_date'));
@@ -228,6 +229,10 @@ ListOfOrganizationsPage = function () {
 
     this.clickOrgModelClose = function(){
         search.clickButton(this.orgModelCloseButton,"Organization Model Close button");
+    };
+
+    this.clickOrgPersonModelClose = function(){
+        search.clickButton(this.orgPersonModelCloseButton,"Organization Person Model Close button on Person Model Search");
     };
 
     this.setAffiliatedOrgEffectiveDate = function(orgEffectiveDate){
