@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
   end
+
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.debug "Access denied onn #{exception.action} #{exception.subject.inspect}"
     Rails.logger.debug "Access denied onn #{exception.subject.inspect}"
@@ -19,6 +20,7 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   #@@current_user = current_user
@@ -196,6 +198,63 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+
+  #############
+  ###This section will take care of catching up all general exceptions thrown by rails 4.x app.
+  ###RAILS 4 Exception Handling
+  ###
+  ## STOP STOP STOP, READ FOLLOWING -------->>>>>>>>>>>>>
+  # Before placing your code, please aware that specific/child exceptions should be followed by general/parent exceptions
+  # THUMB RULE is place Big-Basket first and then Small-Baskets. In Rails Exception class is the BIG BASKET.
+  ############
+
+
+  ### StandardError
+  ### \----------------------------/ Big Basket for Active Record
+  rescue_from StandardError do |e|
+    respond_with do |format|
+      format.json { render json: { errors: "Standard eroors may be restricting to save your form data" }, status:500 }
+    end
+  end
+
+
+  ### ActiveRecord ####
+  ### \----------------------------/ Big Basket for Active Record
+  rescue_from ActiveRecord::ActiveRecordError do |e|
+    respond_with do |format|
+      format.json { render json: { errors: "Currently, Object-relation mapping issues may be restricting to save your form data" }, status:500 }
+    end
+  end
+
+
+  ##ActiveRecord::NoDatabaseError
+  ##\---/ Small Basket
+
+  rescue_from  ActiveRecord::NoDatabaseError do |exception|
+    respond_to do |format|
+      format.json { render json: { errors: "Database does not exist" }, status: 500 }
+    end
+  end
+
+  ##ActiveRecord::ConnectionNotEstablished
+  ##\---/ Small Basket
+  rescue_from    ActiveRecord::ConnectionNotEstablished do |exception|
+    respond_to do |format|
+      format.json { render json: { errors: "Connection to the database could not been established" }, status: 500 }
+    end
+  end
+
+  ##ActiveRecord::StatementInvalid
+  ##\---/ Small Basket
+  rescue_from   ActiveRecord::StatementInvalid do |exception|
+    respond_to do |format|
+      format.json { render json: { errors: "The form data is not in a valid state to be saved" }, status: 422 }
+    end
+  end
+
+  ##ActiveRecord::StaleObjectError
+  ##\---/ Small Basket
   rescue_from ActiveRecord::StaleObjectError do |exception|
     respond_to do |format|
       format.html {
@@ -205,6 +264,20 @@ class ApplicationController < ActionController::Base
       format.json { render json: { "error": "Another user has updated this record while you were editing" }, status: :conflict }
     end
   end
+
+ ###Active Record End ####
+
+  ### ActionView
+  ### \----------------------------/ Big Basket for ActionView
+  rescue_from  ActionView::ActionViewError do |e|
+    respond_to do |format|
+      format.json { render json: { errors: "The form data is not in a valid state to be saved" }, status: 500 }
+    end
+  end
+
+
+
+
 
   protected
 
