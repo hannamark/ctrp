@@ -19,6 +19,7 @@
         delete samplingMethods.server_response;
         vm.samplingMethods = samplingMethods; // array
         vm.otherCriterion = {};
+        vm.descCharsRemaining = MAX_CHARS;
         vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
         vm.deleteAllOCCheckbox = false;
@@ -130,35 +131,29 @@
             var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
             if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria)) {
+                // if OC exists already
                 Common.alertConfirm(confirmMsg).then(function(ok) {
                     isConfirmed = ok;
                 }).catch(function(cancel) {
-                    isConfirmed = cancel;
+                    // isConfirmed = cancel;
                 }).finally(function() {
                     if (isConfirmed === true) {
                         // user confirmed
-                        if (otherCriterionObj.id === undefined) {
-                            otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
-                            vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
-                        } else {
-                            vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
-                        }
-                        cancelEditOtherCriterion();
+                        _insertOC(otherCriterionObj);
                     } // isConfirmed
                 });
-            } // if exists
-
-
-
-
-
-            /*
-            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
-                    !confirm(confirmMsg)) {
-                    // if duplicate other criterion description and user cancels, return;
-                    return;
+            } else {
+                _insertOC(otherCriterionObj);
             }
 
+        } // upsertOtherCriterion
+
+        /**
+         * Interner function called by upsertOtherCriterion
+         * @param  {JSON Object} otherCriterionObj [description]
+         * @return {Void}                   [description]
+         */
+        function _insertOC(otherCriterionObj) {
             if (otherCriterionObj.id === undefined) {
                 otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
@@ -166,10 +161,7 @@
                 vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
             }
             cancelEditOtherCriterion();
-
-             */
-
-        } // upsertOtherCriterion
+        }
 
         /**
          * Edit other criterion
