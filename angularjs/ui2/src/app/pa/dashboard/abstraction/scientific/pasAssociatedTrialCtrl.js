@@ -126,6 +126,8 @@
                 PATrialService.associateTrial(trialLookUpResult).then(function(res) {
                     if (res.server_response.status === 201) {
                         delete res.server_response;
+                        console.info('id: ', res.id);
+                        res.associated_trial_id = res.id;
                         vm.trialDetailObj.associated_trials.unshift(res);
                         closeLookupForm();
                     }

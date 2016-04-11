@@ -414,6 +414,18 @@ class Trial < TrialBase
       else
         ori = SubmissionType.find_by_code('ORI')
         if self.coming_from == 'rest'
+          user = self.current_user
+          case user.organization.name
+            when "CTEP"
+              sub_source = SubmissionSource.find_by_code('CTEP')
+            when "CCR"
+              sub_source = SubmissionSource.find_by_code('CCR')
+            when "DCP"
+              sub_source = SubmissionSource.find_by_code('DCP')
+            else
+              sub_source = SubmissionSource.find_by_code('CCT')
+          end
+
           sub_method = SubmissionMethod.find_by_code('RSV')
         else
           sub_source = SubmissionSource.find_by_code('CCT')
@@ -441,6 +453,17 @@ class Trial < TrialBase
       new_sub_number = largest_sub_num.present? ? largest_sub_num : 1
       upd = SubmissionType.find_by_code('UPD')
       if self.coming_from == 'rest'
+        user = self.current_user
+        case user.organization.name
+          when "CTEP"
+            sub_source = SubmissionSource.find_by_code('CTEP')
+          when "CCR"
+            sub_source = SubmissionSource.find_by_code('CCR')
+          when "DCP"
+            sub_source = SubmissionSource.find_by_code('DCP')
+          else
+            sub_source = SubmissionSource.find_by_code('CCT')
+        end
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
         sub_source = SubmissionSource.find_by_code('CCT')
@@ -452,6 +475,17 @@ class Trial < TrialBase
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       amd = SubmissionType.find_by_code('AMD')
       if self.coming_from == 'rest'
+        user = self.current_user
+        case user.organization.name
+          when "CTEP"
+            sub_source = SubmissionSource.find_by_code('CTEP')
+          when "CCR"
+            sub_source = SubmissionSource.find_by_code('CCR')
+          when "DCP"
+            sub_source = SubmissionSource.find_by_code('DCP')
+          else
+            sub_source = SubmissionSource.find_by_code('CCT')
+        end
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
         sub_source = SubmissionSource.find_by_code('CCT')

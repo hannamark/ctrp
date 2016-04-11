@@ -865,7 +865,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 fieldset.sub-bordered {
-    border: 1px groove #eee !important;
+    border: 1px groove #ddd !important;
     padding: 0 1.4em 1.4em 1.4em !important;
     margin: 0 0 1.5em 0 !important;
     -webkit-box-shadow:  0px 0px 0px 0px #000;
@@ -1132,3 +1132,53 @@ div.datepicker {
 }
 
 .panel-title .glyphicon-chevron-down {display:none;}
+
+.popover-wide {
+    color: #444;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1060;
+    overflow: auto;
+    display: none;
+    max-width: 550px;
+    padding: 1px;
+    font-family: Helvetica Neue, Helvetica, Aria, sans-serif;
+    font-size:14px;
+    font-weight: normal;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popover-wide .top {
+    margin-top: -10px;
+}
+
+.popover-wide > .arrow {
+    border-width: 11px;
+}
+
+.popover-wide > .arrow, .popover-wide >
+.arrow:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+
+}
+
+.popover-wide .top > .arrow {
+    bottom: -11px;
+    left: 50%;
+    margin-left: -11px;
+    border-top-color: #999;
+    border-top-color: rgba(0, 0, 0, 0.25);
+    border-bottom-width: 0;
+}
