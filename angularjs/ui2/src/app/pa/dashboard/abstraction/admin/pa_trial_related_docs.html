@@ -9,15 +9,14 @@
                         <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                             <legend class="sub-bordered">Trial Related Documents</legend>
                             <div class="form-group">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-9 table-responsive">
+                                <div class="table-responsive">
                                     <table class="table table-condensed table-striped">
                                         <thead>
-                                            <th class="min-width-xl">Document Type</th>
-                                            <th width="40%"></th>
+                                            <th>Document Type</th>
+                                            <th></th>
                                             <th ng-show="trialRelatedDocsView.docSubtypeShown"></th>
-                                            <th width="5%" ng-if="!trialRelatedDocsView.curDoc.edit"></th>
-                                            <th width="20%" ng-if="trialRelatedDocsView.curDoc.edit">Cancel/Confirm</th>
+                                            <th ng-if="!trialRelatedDocsView.curDoc.edit"></th>
+                                            <th ng-if="trialRelatedDocsView.curDoc.edit">Cancel/Confirm</th>
                                         </thead>
                                         <tbody>
                                             <tr>
@@ -41,7 +40,7 @@
                                                 </td>
                                                 <td>
                                                     <!-- <label for="" class="control-label"></label> -->
-                                                    <input type="file" restriction-field class="button btn btn-default" ngf-select=""
+                                                    <input id="trial-doc-upload" type="file" restriction-field class="button btn btn-default" ngf-select=""
                                                            ng-model="trialRelatedDocsView.curDoc.file"
                                                            name="current_doc" ngf-max-size="10MB"
                                                            validate-file-type="{{trialRelatedDocsView.acceptedFileExtensions}}">
