@@ -1034,6 +1034,11 @@ body.trial-sub-groups a.menu-trial-sub-groups {
 }
 
 
+body.trial-related-documents #trial-doc-upload {
+    width: 100%;
+}
+
+
 .td-icon  .btn {
     height: 20px;
     padding: 2px 5px;
