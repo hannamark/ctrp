@@ -8,6 +8,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+var moment = require ('moment');
 
 var helperFunctions = require('../support/helper');
 //File System
@@ -53,8 +54,9 @@ var abstractionTrialDoc = function(){
     this.trialDocSubType = element(by.model('trialRelatedDocsView.curDoc.document_subtype'));
 
     //Warning Message
-    this.trialDocErrorMsg = element(by.css('.help-block.alert.alert-warning.ng-binding'));
+    this.trialDocErrorMsg = element(by.css('.help-block.alert.alert-warning.ng-binding')); //.help-block.alert.alert-warning.ng-binding
     this.trialDocRequiredErrorMsg = element(by.binding('trialRelatedDocsView.formError')); //by.css('div[ng-show="trialRelatedDocsView.formError.length > 0"]')
+    this.trailDocDupErrorMsg = element(by.binding('trialRelatedDocsView.docTypeError'));
 
     //Save and Reset
     this.trialDocSave = element(by.id('save_btn'));
@@ -66,6 +68,11 @@ var abstractionTrialDoc = function(){
     //Update and Cancel
     this.trialDocUpdate = element(by.css('.col-sm-6 span:nth-child(3) button:nth-child(2)'));  //button[ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"] //.col-sm-6 .btn.btn-primary  //button.btn.btn-danger
     this.trialDocCancel = element(by.css('.col-sm-6 span:nth-child(3) button:nth-child(1)'));  //button[ng-click="trialRelatedDocsView.cancelEdit()"]  //.col-sm-6 .btn.btn-warning
+
+    //Delete - Comment - Save - Cancel
+    this.trialDeleteCommentBox = element(by.css('.ng-pristine.ng-valid.ng-valid-maxlength .form-control.ng-pristine.ng-untouched.ng-valid.ng-valid-maxlength')); //by.css('.form-control.ng-pristine.ng-untouched.ng-valid.ng-valid-maxlength') //by.model('model.why_deleted')
+    this.trialDeleteCommitButton = element(by.id('commit_deletion_comment'));
+    this.trailDeleteCancelButton = element(by.id('cancel_comment'));
 
     //page Header
     this.trialDocHeader = element(by.css('h4.panel-title'));
@@ -91,14 +98,14 @@ var abstractionTrialDoc = function(){
     this.authorityTableHeaderB = element(by.css('.table.table-bordered.table-striped.table-condensed thead tr th:nth-child(02)'));
     this.tblColARwAExists = element(by.css('.table.table-bordered.table-striped.table-condensed tbody tr:nth-child(01) td:nth-child(01)'));
 
-    var deleteA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(07) button'));
-    var deleteB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(07) button'));
-    var deleteC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(07) button'));
-    var deleteD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(07) button'));
-    var deleteE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(07) button'));
-    var deleteF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(07) button'));
-    var deleteG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(07) button'));
-    var deleteH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(07) button'));
+    var deleteA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(07) label'));
+    var deleteB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(07) label'));
+    var deleteC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(07) label'));
+    var deleteD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(07) label'));
+    var deleteE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(07) label'));
+    var deleteF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(07) label'));
+    var deleteG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(07) label'));
+    var deleteH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(07) label'));
 
     var editA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(06) label:nth-child(1)'));
     var editB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(06) label:nth-child(1)'));
@@ -180,6 +187,10 @@ var abstractionTrialDoc = function(){
         helper.getVerifyRequired(this.trialDocRequiredErrorMsg, expReqErrorMsg, "Required Error Message");
     };
 
+    this.verifyDocErrorMsg = function (expErrorMsg) {
+        helper.getVerifyRequired(this.trailDocDupErrorMsg, expErrorMsg, "Document Exists Error Message");
+    };
+
     this.verifyTrialDocTblHeaders = function (getThdA, getThdB, getThdC, getThdD, getThdE, getThdF, getThdG){
         helper.getVerifyheader(this.trialTHeadA, getThdA, "Verifying Table - File Name - Column");
         helper.getVerifyheader(this.trialTHeadB, getThdB, "Verifying Table - Document Type - Column");
@@ -222,6 +233,20 @@ var abstractionTrialDoc = function(){
 
     this.clickAddButton = function(){
         helper.clickButton(this.trialDocAddButton,"Add - button");
+        helper.wait_for(25);
+    };
+
+    this.setDeleteComment = function(getComment){
+        helper.setValue(this.trialDeleteCommentBox, getComment, "Comment - on Delete Action - field");
+    };
+
+    this.clickCommitCommentButton = function(){
+        helper.clickButton(this.trialDeleteCommitButton,"Commit - Comment - button");
+        helper.wait_for(25);
+    };
+
+    this.clickCancelCommentButton = function(){
+        helper.clickButton(this.trailDeleteCancelButton,"Cancel - Comment - button");
         helper.wait_for(25);
     };
 
@@ -483,10 +508,6 @@ var abstractionTrialDoc = function(){
         });
     };
 
-
-
-
-
     this.findDocumentDoesNotExists = function(expFileName){
         this.trialTableRw.then(function(rows){
             console.log('total Row Count:['+(rows.length)+']');
@@ -504,6 +525,41 @@ var abstractionTrialDoc = function(){
                 });
             }
         });
+    };
+
+    this.setComment = function (){
+        var datTm = new Date();
+        helper.setCommentValue(this.trialDeleteCommentBox, "Test Delete Comment - "+ moment().format('MMMDoYY hmmss'), "Comment - on Delete Action - field");
+    };
+
+    this.findDeleteIconsWhereExists = function(){
+        deleteE.isDisplayed().then(function(retA) {
+            if (retA) {
+                console.log('ret:['+retA+'] Row val:[1]');
+                helper.clickButton(deleteE, "Deleting File");
+                helper.wait_for(2500);
+            }
+        });
+    };
+
+    this.setCommentOnDel = function () {
+        this.trialDeleteCommentBox.isDisplayed().then(function (retA) {
+            if (retA) {
+                var datTm = new Date();
+                helper.setCommentValue(this.trialDeleteCommentBox, "Test Delete Comment - " + moment().format('MMMDoYY hmmss'), "Comment - on Delete Action - field");
+                helper.wait_for(9000);
+            }
+        });
+    };
+
+    this.setCommentOnDeletion = function () {
+        var datTm = new Date();
+        helper.setCommentValue(this.trialDeleteCommentBox, "Test Delete Comment - " + moment().format('MMMDoYY hmmss'), "Comment - on Delete Action - field");
+    };
+
+    this.commitCommentButton = function () {
+        helper.clickButtonNoHeader(this.trialDeleteCommitButton, "Commit - Comment - button");
+        helper.wait_for(250);
     };
 
     this.findDocumentAndClickWhereDeleteExists = function(){
@@ -579,6 +635,7 @@ var abstractionTrialDoc = function(){
                                 if (ret) {
                                     console.log('ret:['+ret+'] i val:['+i+']');
                                     helper.clickButton(deleteG, "Deleting File");
+                                    //this.setDeleteComment('Test Comment 7');
                                     ret = '';
                                 }
                             });
@@ -1060,6 +1117,17 @@ var abstractionTrialDoc = function(){
     };
 
 
+    this.errorHandaler = function (expVal, actVal){
+        try {
+            if (expVal === actVal) {
+                //do nothing
+            } else {
+                throw new Error('Expected assertion: (' + expVal + ') has no match with Actual value: (' + actVal + ')');
+            }
+        } catch (err) {
+            callback(err.message);
+        }
+    };
 
 
 };
