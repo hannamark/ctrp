@@ -987,13 +987,13 @@ a.btn-file:hover {
 }
 
 .td-date {
-    min-width: 130px;
+    min-width: 5%;
 }
 .td-time {
-    min-width: 140px;
+    min-width: 6%;
 }
 .td-name {
-    min-width: 175px;
+    min-width: 5%;
 }
 
 body.identification  a.menu-identification,
