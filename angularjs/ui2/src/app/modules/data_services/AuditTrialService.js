@@ -9,11 +9,11 @@
         .factory('AuditService', AuditService);
 
     AuditService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants'];
 
     function AuditService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService,UserService) {
+                        PromiseTimeoutService,UserService,uiGridConstants) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -61,6 +61,8 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
+            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
                 {name: 'created_at', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'event', enableSorting: true, minWidth: '100', width: '*'},
