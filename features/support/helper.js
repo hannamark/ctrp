@@ -152,6 +152,24 @@ var helper = function() {
         }
     };
 
+    this.setCommentValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.clear();
+        fieldName.sendKeys(fieldValue);
+        //if(fieldValue == '[object Object]'){
+        //    var store = fieldName.getAttribute('value');
+        //    fieldValue.then(function(value){
+        //        console.log(errorMessage + ' ' + value + " Value entered");
+        //        expect(store).to.eventually.equal(value);});
+        //}
+        //else {
+        //    console.log(errorMessage + ' ' + fieldValue + " Value entered");
+        //    expect(fieldName.getAttribute('value')).to.eventually.equal((fieldValue));
+        //}
+    };
+
+
+
     this.getValue = function (fieldName, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.getAttribute('value');
@@ -393,6 +411,35 @@ var helper = function() {
                 };
             });
         };
+    };
+
+    this.waitNonAngularPage = function (element, label) {
+        browser.driver.wait(function () {
+            return browser.driver.isElementPresent(element).then(function (state) {
+                if (state === true) {
+                    return  browser.driver.findElement(element).isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, label + " did not appear");
+        browser.sleep(250);
+    };
+
+    this.setValueNonAngularPage = function (fieldName, fieldValue, errorMessage) {
+        this.waitNonAngularPage(fieldName, errorMessage);
+        browser.driver.findElement(fieldName).clear();
+        browser.driver.findElement(fieldName).sendKeys(fieldValue);
+        console.log(errorMessage + ' ' + fieldValue + " Value entered");
+        expect(browser.driver.findElement(fieldName).getAttribute('value')).to.eventually.equal((fieldValue));
+    };
+
+    this.clickButtonNonAngularPage = function (button, errorMessage) {
+        this.waitNonAngularPage(button, errorMessage);
+        browser.driver.findElement(button).click();
+        console.log(errorMessage + " was clicked");
     };
 
 

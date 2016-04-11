@@ -23,7 +23,7 @@
                                           ng-maxlength="200"
                                           ng-required="true">
                                 </textarea>
-                                <span ng-show="sg_form.label.$dirty">
+                                <span class="help-block" ng-show="sg_form.label.$dirty">
                                     {{200 - sg_form.label.$viewValue.length}} characters left
                                 </span>
                                 <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.label) && sg_form.label.$error">
@@ -44,7 +44,7 @@
                                           ng-maxlength="200"
                                           ng-required="true">
                                 </textarea>
-                                <span ng-show="sg_form.description.$dirty">
+                                <span class="help-block" ng-show="sg_form.description.$dirty">
                                     {{200 - sg_form.description.$viewValue.length}} characters left
                                 </span>
                                 <span ng-messages="ctrpbtn.sg_form.needsAttention(sg_form.description) && sg_form.description.$error">
@@ -58,7 +58,9 @@
                     <!-- Saving the form for the Outcome Measure" -->
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing">
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
                             <button type="button" class="btn btn-warning pull-right" ng-click="sgView.resetSubGroup()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
@@ -72,59 +74,62 @@
 
 <!-- Grid the shows all the SUB GROUPS -->
 <div class="row">
-    <uib-accordion close-others="false">
+    <uib-accordion close-others="false" ng-if="!sgView.addEditMode">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
                 List of Sub Groups  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover" ng-show="sgView.curTrial.sub_groups.length">
+                    <thead>
+                    <th>Label</th>
+                    <th>Description</th>
+                    <th class="text-center td-icon">Edit</th>
+                    <th class="text-center td-icon">
+                        <input type="checkbox" restriction-field ng-model="sgView.selectedAllSG" ng-click="sgView.checkAllSG()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
+                    </th>
+                    </thead>
+                    <tbody>
 
-            <fieldset>
-                <div class="form-group table-responsive">
-                    <table class="table table-bordered table-striped table-hover" ng-show="sgView.curTrial.sub_groups.length">
-                        <thead>
-                        <th>Label</th>
-                        <th>Description</th>
-                        <th class="text-center td-icon">Edit</th>
-                        <th class="text-center td-icon">
-                            <input type="checkbox" restriction-field ng-model="sgView.selectedAllSG" ng-click="sgView.checkAllSG()" />
-                        </th>
-                        </thead>
-                        <tbody>
+                    <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
 
-                        <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
+                        <td>
+                            {{sub_group.label}}
+                        </td>
 
-                            <td>
-                                {{sub_group.label}}
-                            </td>
+                        <td>
+                            {{sub_group.description}}
+                        </td>
 
-                            <td>
-                                {{sub_group.description}}
-                            </td>
+                        <td class="text-center td-icon">
+                            <button class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="sgView.setEditMode($index)">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </button>
+                        </td>
 
-                            <td class="text-center td-icon">
-                                <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="sgView.setEditMode($index)">
-                                    <i class="glyphicon glyphicon-edit"></i>
-                                </button>
-                            </td>
+                        <td class="text-center td-icon">
+                            <input type="checkbox" ng-model="sub_group.selected" restriction-field ng-click="sgView.selectedAllSG = false" ng-change="sgView.deleteListHandler(sgView.curTrial.sub_groups)" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-                            <td class="text-center td-icon">
-                                <input type="checkbox" ng-model="sub_group.selected" restriction-field ng-click="sgView.selectedAllSG = false" ng-change="sgView.deleteListHandler(sgView.curTrial.sub_groups)" />
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_sub_group" restriction-field ng-click="sgView.setAddMode()">Add Sub Group</button>
-                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="sgView.deleteSelected()"
-                                ng-disabled="!sgView.selectedDeleteSubGroupsList.length" ng-show="sgView.curTrial.sub_groups.length"
-                        >Delete Sub Groups</button>
-                    </div>
-
+                <div class="btn-toolbar">
+                    <button type="submit" class="btn btn-primary pull-right" id="add_sub_group" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="sgView.setAddMode()">
+                        <i class="glyphicon glyphicon-plus"></i> Add Sub Group
+                    </button>
+                    <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="sgView.deleteSelected()"
+                            ng-disabled="!sgView.selectedDeleteSubGroupsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="sgView.curTrial.sub_groups.length">
+                        <i class="glyphicon glyphicon-trash"></i> Delete Selected
+                </button>
                 </div>
 
-            </fieldset>
+            </div>
         </uib-accordion-group>
     </uib-accordion>
 </div>
-
+<div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="sgView.addEditMode">
+    <button type="button" class="btn btn-warning pull-right" id="oc_site_list" restriction-field ng-click="sgView.addEditMode = false">
+        <i class="glyphicon glyphicon-arrow-left"></i> Back to Sub Groups List
+    </button>
+</div>

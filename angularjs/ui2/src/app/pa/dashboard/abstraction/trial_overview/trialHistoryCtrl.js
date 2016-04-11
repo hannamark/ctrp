@@ -31,8 +31,8 @@
 
         //ui-grid plugin options
         vm.gridOptions = AuditService.getGridOptions();
-        vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-        vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
 
 
         activate();

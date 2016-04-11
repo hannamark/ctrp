@@ -85,7 +85,10 @@
             });
 
         }//saveTrial
-
+        
+        vm.reset = function() {
+            vm.anatomic_sites_selected = [];
+        };
 
         function deleteListHandler(anatomicSitesSelectedInCheckboxes){
             //console.log("In deleteListHandler anatomicSitesSelectedInCheckboxes" + JSON.stringify(anatomicSitesSelectedInCheckboxes));
@@ -142,6 +145,7 @@
             //console.log(" vm.curTrial.anatomic_site_wrappers_attributes="+ JSON.stringify(vm.curTrial.anatomic_site_wrappers_attributes));
             vm.anatomic_sites_selected = [];
             vm.saveTrial();
+            vm.addMode = false;
         }
         function reset() {
             //console.log("IN RESET");

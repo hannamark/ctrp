@@ -25,4 +25,18 @@ class OutcomeMeasure < ActiveRecord::Base
 
   belongs_to :outcome_measure_type
   belongs_to :trial
+
+  after_create :save_index
+  private
+  def save_index
+    max=OutcomeMeasure.maximum('index')
+    if max.nil?
+      p "max"
+      new_index=0
+    else
+      new_index=max.next
+    end
+    self.index=new_index
+    self.save!
+  end
 end

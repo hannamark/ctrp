@@ -22,7 +22,7 @@
                                            maxlength="300"
                                            ng-required="true">
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.name) && marker_form.name.$error">
-                                        <span class="help-block" ng-message="required">Name must be entered</span>
+                                        <span class="help-block" ng-message="required">Name is Required</span>
                                     </span>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
@@ -94,7 +94,7 @@
                                         </div>
                                     </div>
 
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_eval_type_alert">Evaluation Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_eval_type_alert">Evaluation Type is Required</span>
                                 </div>
                             </div>
                         </fieldset>
@@ -134,7 +134,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_assay_type_alert">Assay Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_assay_type_alert">Assay Type is Required</span>
                                 </div>
                             </div>
                         </fieldset>
@@ -156,7 +156,7 @@
                                         <option value="">- Please select a bio marker use...</option>
                                     </select>
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) && marker_form.biomarker_use.$error">
-                                        <span class="help-block" ng-message="required">Biomarker Use must be entered</span>
+                                        <span class="help-block" ng-message="required">Biomarker Use is Required</span>
                                     </span>
                                 </div>
                             </div>
@@ -176,10 +176,10 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_biomarker_purpose_alert">Biomarker Purpose must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_biomarker_purpose_alert">Biomarker Purpose is Required</span>
                                     <!--
                                         <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_purpose) && marker_form.biomarker_purpose.$error">
-                                            <span class="help-block" ng-message="required">Biomarker Purpose must be entered</span>
+                                            <span class="help-block" ng-message="required">Biomarker Purpose is Required</span>
                                         </span>
                                     -->
                                 </div>
@@ -223,7 +223,7 @@
                                         </div>
                                     </div>
 
-                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_spec_type_alert">Specimen Type must be entered</span>
+                                    <span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_spec_type_alert">Specimen Type is Required</span>
 
                                 </div>
                             </div>
@@ -234,7 +234,9 @@
                         <!-- Saving the form for the Bio Marker" -->
                         <div class="form-group no-bottom-margin">
                             <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
-                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="markersView.disableBtn">Save</button>
+                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="markersView.disableBtn">
+                                    <i class="glyphicon glyphicon-ok"></i> Save
+                                </button>
                                 <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="markersView.resetBioMarker()">
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
@@ -266,7 +268,7 @@
 
                             <th class="text-center td-icon">Edit</th>
                             <th class="text-center td-icon">
-                                <input type="checkbox" restriction-field ng-model="markersView.selectedAllBM" ng-click="markersView.checkAllBM()" />
+                                <input type="checkbox" restriction-field ng-model="markersView.selectedAllBM" ng-click="markersView.checkAllBM()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </th>
                             </thead>
                             <tbody>
@@ -293,22 +295,25 @@
                                     {{bio_marker.record_status}}
                                 </td>
                                 <td class="text-center td-icon">
-                                    <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="markersView.setEditMode($index)">
+                                    <button class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="markersView.setEditMode($index)">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </button>
                                 </td>
 
                                 <td class="text-center td-icon">
-                                    <input type="checkbox" ng-model="bio_marker.selected" restriction-field ng-click="markersView.selectedAllBM = false" ng-change="markersView.deleteListHandler(markersView.curTrial.bio_markers)" />
+                                    <input type="checkbox" ng-model="bio_marker.selected" restriction-field ng-click="markersView.selectedAllBM = false" ng-change="markersView.deleteListHandler(markersView.curTrial.bio_markers)" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
-                        <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field ng-click="markersView.setAddMode()">Add Bio Marker</button>
-                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="markersView.deleteSelected()" ng-disabled="!markersView.selectedDeleteBioMarkersList.length" ng-show="markersView.curTrial.bio_markers.length">
-                                <i class="glyphicon glyphicon-trash"></i> Delete Bio Markers
+                        <div class="btn-toolbar">
+                            <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="markersView.setAddMode()">
+                                <i class="glyphicon glyphicon-plus"></i> Add Bio Marker
+                            </button>
+                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="markersView.deleteSelected()"
+                                    ng-disabled="!markersView.selectedDeleteBioMarkersList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="markersView.curTrial.bio_markers.length">
+                                <i class="glyphicon glyphicon-trash"></i> Delete Selected
                             </button>
                         </div>
                     </div>
@@ -317,7 +322,7 @@
             </uib-accordion-group>
         </uib-accordion>
         <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable" ng-show="markersView.addEditMode">
-            <button type="submit" class="btn btn-warning pull-right" id="participating_site_list" restriction-field ng-click="markersView.setAddMode(false)">
+            <button type="button" class="btn btn-warning pull-right" id="participating_site_list" restriction-field ng-click="markersView.setAddMode(false)">
                 <i class="glyphicon glyphicon-arrow-left"></i> Back to Bio Markers List
             </button>
         </div>

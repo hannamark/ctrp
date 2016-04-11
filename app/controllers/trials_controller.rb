@@ -594,7 +594,7 @@ class TrialsController < ApplicationController
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
-                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
+                                  outcome_measures_attributes: [:id, :index,:title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
                                   markers_attributes: [:id,:name,:protocol_marker_name,:biomarker_use_id,:evaluation_type_other,:assay_type_other,:_destroy,:record_status,
                                                        :specimen_type_other,:cadsr_marker_id,
                                                        marker_eval_type_associations_attributes:[:id,:evaluation_type_id,:_destroy],
