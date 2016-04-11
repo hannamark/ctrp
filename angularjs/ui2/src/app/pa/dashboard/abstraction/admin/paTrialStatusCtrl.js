@@ -145,7 +145,7 @@
                 vm.statusObj = _initStatusObj();
                 vm.deleteStatusesAll = false;
             } else {
-                vm.statusErrorMsg = 'Both status date and trial status are required';
+                vm.statusErrorMsg = 'Both status date and trial status are Required';
             }
         }
 
@@ -215,7 +215,7 @@
         function commitEdit() {
             vm.statusErrorMsg = '';
             if (!vm.statusObj.status_date || !vm.statusObj.trial_status_id) {
-                vm.statusErrorMsg = 'Both status date and trial status are required';
+                vm.statusErrorMsg = 'Both status date and trial status are Required';
                 return;
             }
             if (vm.statusObj.edit) {

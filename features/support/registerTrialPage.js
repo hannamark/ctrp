@@ -131,12 +131,17 @@ var registerTrial = function(){
 
     /** Trial Related Documents **/
     this.addTrialVerifyAddedDocs = element.all(by.binding('document.file_name'));
+    this.addTrialVerifyAddedOtherDocsDescription = element.all(by.binding('document.document_subtype'));
     this.addTrialAcceptedFileExtensionMsg = element.all(by.binding('trialDetailView.acceptedFileExtensions'));
+    this.addTrialAddMoreDocsButton = element(by.css('button[ng-click="trialDetailView.addOtherDoc()"]'));
+    this.addTrialOtherDocsDescription = element.all(by.model('trialDetailView.other_document_subtypes[$index]'));
 
     /**buttons**/
     this.addTrialResetButton = element(by.css('button[ng-click="trialDetailView.reload()"]'));
-    this.addTrialReviewButton = element(by.css('button[type="submit"]'));
+    this.addTrialReviewSubmitButton = element(by.css('button[type="submit"]'));
     this.addTrialSaveDraftButton = element(by.css('button[ng-click="trialDetailView.saveDraft()"]'));
+    this.addTrialReviewButton = element(by.buttonText('Review'));
+    this.addTrialSubmitButton = element(by.buttonText('Submit'));
 
     /**Org Search Model**/
     this.addTrialOrgSearchModel = element.all(by.id('org_search_modal'));//.get(2).click()
@@ -153,7 +158,7 @@ var registerTrial = function(){
     this.addTrialDateClickClear = element(by.buttonText('Clear'));
     this.addTrialDateClickPreviousMonth = element(by.css('.glyphicon.glyphicon-chevron-left'));
     this.addTrialDateClickNextMonth = element(by.css('.glyphicon.glyphicon-chevron-right'));
-    this.addTrialDateClickYearMonthDate =element(by.css('button[role="heading"]'));
+    this.addTrialDateClickYearMonthDate = element(by.css('button[role="heading"]'));
 
     var helper = new helperFunctions();
 
@@ -560,6 +565,18 @@ var registerTrial = function(){
             expect(this.addTrialDuplicateCountryOrganizationMessage.getText()).to.eventually.equal(duplicateCountryOrgName + ' already exists');
         };
 
+    /*************** Trial Related Documents ****************/
+
+    this.clickAddTrialAddOtherDocButton = function(){
+        helper.clickButton(this.addTrialAddMoreDocsButton,"Add Trial Add More Docs button");
+    };
+
+    this.setAddTrialOtherDocsDescription= function(indexOfDescriptionField, descriptionText)  {
+        this.addTrialOtherDocsDescription.get(indexOfDescriptionField).sendKeys(descriptionText);
+        expect(this.addTrialOtherDocsDescription.get(indexOfDescriptionField).getAttribute('value')).to.eventually.equal(descriptionText);
+           };
+
+
     /*************** Buttons ****************/
 
     this.clickAddTrialResetButton = function(){
@@ -567,7 +584,7 @@ var registerTrial = function(){
     };
 
     this.clickAddTrialReviewButton = function(){
-        helper.clickButton(this.addTrialReviewButton,"Add Trial Review button");
+        helper.clickButton(this.addTrialReviewSubmitButton,"Add Trial Review button");
     };
 
     this.clickAddTrialSaveDraftButton = function(){

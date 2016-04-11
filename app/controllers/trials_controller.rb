@@ -284,7 +284,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if  params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
+    if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
@@ -303,9 +303,9 @@ class TrialsController < ApplicationController
           @trials = @trials.with_sponsor(params[:org])
         elsif params[:org_type] == 'Participating Sites'
           # TODO handle wildcard
-          if params[:org] != "*"
-            @trials = @trials.select{|trial| trial.participating_sites.by_value(params[:org])}
-          end
+          #if params[:org] != "*"
+          #  @trials = @trials.select{|trial| trial.participating_sites.by_value(params[:org])}
+          #end
         else
           @trials = @trials.with_any_org(params[:org])
         end
@@ -373,8 +373,8 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.scientific_checkout.nil?}
       end
       if params[:checkout].present?
-        Rails.logger.info "Trial checkout by me selected"
-        @trials = @trials.select{|trial| !trial.admin_checkout.nil? || !trial.scientific_checkout.nil?}
+        Rails.logger.info "Trial checked out by me selected"
+        @trials = @trials.select{|trial| trial.checked_out_by_current_user(@current_user.username)}
       end
       if  params[:nih_nci_div].present?
         Rails.logger.debug " Before params[:nih_nci_div] = #{params[:nih_nci_div].inspect}"
@@ -594,7 +594,7 @@ class TrialsController < ApplicationController
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
-                                  outcome_measures_attributes: [:id, :title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
+                                  outcome_measures_attributes: [:id, :index,:title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
                                   markers_attributes: [:id,:name,:protocol_marker_name,:biomarker_use_id,:evaluation_type_other,:assay_type_other,:_destroy,:record_status,
                                                        :specimen_type_other,:cadsr_marker_id,
                                                        marker_eval_type_associations_attributes:[:id,:evaluation_type_id,:_destroy],

@@ -161,6 +161,20 @@
         }
 
 
+        vm.checkAllBM = function () {
+            if (vm.selectedAllBM) {
+                vm.selectedAllBM = true;
+            } else {
+                vm.selectedAllBM = false;
+            }
+
+            angular.forEach(vm.curTrial.bio_markers, function (item) {
+                item.selected = vm.selectedAllBM;
+                vm.deleteListHandler(vm.curTrial.bio_markers);
+            });
+
+        };
+
         vm.saveBioMarker = function(){
             // Prevent multiple submissions
             vm.disableBtn = true;
@@ -293,7 +307,7 @@
                 })
                 vm.addEditMode=false;
                 vm.disableBtn = false;
-
+                vm.selectedAllBM = false;
             }).catch(function(err) {
                 vm.disableBtn = false;
                 console.log("error in creating or updating sub group " + JSON.stringify(outerTrial));
@@ -423,6 +437,7 @@
                 vm.isSpecTypeOtherChecked = false;
                 vm.isAssayTypeOtherChecked = false
                 vm.isEvalTypeOtherChecked = false;
+                vm.disableBtn = false;
                 
 
             }
@@ -469,6 +484,7 @@
         }
 
         function resetBioMarker() {
+            vm.selectedAllBM = false;
             if(vm.currentBioMarker.id > 0){
                 var cachedTrial = PATrialService.getCurrentTrialFromCache();
 

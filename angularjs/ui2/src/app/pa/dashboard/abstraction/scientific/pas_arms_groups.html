@@ -1,99 +1,92 @@
-<strong>Arms Groups</strong><!-- Grid the shows all the Anatomic Sites -->
-<div class="row">
-    <uib-accordion close-others="false">
+<!-- Grid the shows all the Anatomic Sites -->
+<div class="row" id="section_top">
+    <uib-accordion close-others="false" ng-if="armView.addEditMode">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
-                List of Arms Groups<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+                Arms Group Details<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
 
-            <div class="form-group no-bottom-margin" ng-if="armView.addEditMode">
-
+            <div class="form-group no-bottom-margin">
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
-                    <legend class="sub-bordered">Add/Edit Arms Groups:</legend>
+                    <legend class="sub-bordered">Arms Group</legend>
                     <form name="arm_form" role="form" class="form-horizontal" novalidate ctrp-submit="armView.updateTrial()">
-
-                        <fieldset class="sub-bordered" restriction-field>
-                            <legend class="sub-bordered">Label:</legend>
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.label)}">
-                            <!--div class="form-group"-->
-                                <label for="label" class="control-label col-xs-12 col-sm-3">Label</label>
-                                <div class="col-xs-6 col-sm-9">
-                                    <input type="text" id="label" name="label" class="form-control" maxlength="62" ng-required="true" ng-model="armView.currentArmsGroup.label" placeholder="label">
-                                </div>
-                                <span ng-messages="ctrpbtn.desc_form.needsAttention(arm_form.label) && arm_form.label.$error">
-                                    <span class="help-block" ng-message="required">Label is required</span>
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.label)}">
+                        <!--div class="form-group"-->
+                            <label for="label" class="control-label col-sm-3">Label:</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="label" name="label" class="form-control input-sm" maxlength="62" ng-required="true" ng-model="armView.currentArmsGroup.label" placeholder="label">
+                                <span ng-messages="ctrpbtn.arm_form.needsAttention(arm_form.label) && arm_form.label.$error">
+                                    <span class="help-block" ng-message="required">Label is Required</span>
+                                </span>
+                                <span class="help-block" ng-show="arm_form.label.$dirty">
+                                        {{62 - arm_form.label.$viewValue.length}} characters left
                                 </span>
                             </div>
-                            <span ng-show="arm_form.label.$dirty">
-                                    {{62 - arm_form.label.$viewValue.length}} characters left
-                            </span>
-                        </fieldset>
-                        <fieldset class="sub-bordered" restriction-field ng-show="armView.interventional">
-                            <div class="form-group">
-                                <label for="org_type" class="control-label col-xs-12 col-sm-3">Type: </label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <select class="form-control input-sm" id="type" ng-model="armView.currentArmsGroup.arms_groups_type">
-                                        <option value="">-Select Type-</option>
-                                        <option value="Experimental">Experimental</option>
-                                        <option value="Active Comparator">Active Comparator</option>
-                                        <option value="Placebo Comparator">Placebo Comparator</option>
-                                        <option value="Sham Comparator">Sham Comparator</option>
-                                        <option value="No intervention">No intervention</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.arms_groups_type)}" ng-show="armView.interventional">
+                            <label for="arms_groups_type" class="control-label col-xs-12 col-sm-3">Type:</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <select class="form-control input-sm min-width-md" name="arms_groups_type" id="arms_groups_type" ng-model="armView.currentArmsGroup.arms_groups_type" ng-required="true" restriction-field>
+                                    <option value="">-Select Type-</option>
+                                    <option value="Experimental">Experimental</option>
+                                    <option value="Active Comparator">Active Comparator</option>
+                                    <option value="Placebo Comparator">Placebo Comparator</option>
+                                    <option value="Sham Comparator">Sham Comparator</option>
+                                    <option value="No intervention">No intervention</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span ng-messages="ctrpbtn.arm_form.needsAttention(arm_form.arms_groups_type) && arm_form.arms_groups_type.$error">
+                                    <span class="help-block" ng-message="required">Type is Required</span>
+                                </span>
                             </div>
+                        </div>
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.description)}">
+                            <label for="description" class="control-label col-xs-12 col-sm-3">Description</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <textarea name="description"
+                                          id="description"
+                                          rows="5"
+                                          class="form-control"
+                                          ng-model="armView.currentArmsGroup.description"
+                                          maxlength="1000"
+                                          ng-maxlength="1000"
+                                          ng-required="true" restriction-field>
+                                </textarea>
+                                <span class="help-block" ng-show="arm_form.description.$dirty">
+                                    {{1000 - arm_form.description.$viewValue.length}} characters left
+                                </span>
+                                <span ng-messages="ctrpbtn.arm_form.needsAttention(arm_form.description) && arm_form.description.$error">
+                                    <span class="help-block" ng-message="required">Description is Required</span>
+                                </span>
+                            </div>
+                        </div>
+                        <fieldset class="sub-bordered" >
+                            <legend class="sub-bordered">Intervention Assignment</legend>
+                                <table class="table table-bordered table-striped table-hover" ng-show="armView.trial_interventions.length">
+                                    <thead>
+                                        <th>Assignment</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="intervention in armView.trial_interventions track by $index" class="animated-item">
+                                        <td>
+                                            <input type="checkbox" ng-model="intervention.selected" ng-change="armView.selectListHandler(armView.trial_interventions)"
+                                                   ng-checked="intervention.selected" restriction-field>
+                                        </td>
+                                        <td>{{intervention.name}}</td>
+                                        <td>{{intervention.description}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <span class="help-block" ng-show="!armView.trial_interventions.length">
+                                    There are currently no Interventions that have been submitted
+                                </span>
                         </fieldset>
-
-
-                            <fieldset class="sub-bordered" restriction-field>
-                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.description)}">
-                                    <label for="description" class="control-label col-xs-12 col-sm-2">Description</label>
-                                    <div class="col-xs-12 col-sm-10">
-                                        <textarea name="description"
-                                                  id="description"
-                                                  rows="5"
-                                                  class="form-control"
-                                                  ng-model="armView.currentArmsGroup.description"
-                                                  maxlength="1000"
-                                                  ng-maxlength="1000"
-                                                  ng-required="true">
-                                        </textarea>
-                                        <span ng-show="arm_form.description.$dirty">
-                                            {{1000 - arm_form.description.$viewValue.length}} characters left
-                                        </span>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset  class="sub-bordered" restriction-field>
-                                <legend class="sub-bordered">Intervention Assignment:</legend>
-                                <div >
-                                    <table class="table table-bordered table-striped table-hover" >
-                                        <thead>
-                                            <th>Assignment</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="intervention in armView.trial_interventions track by $index" class="animated-item">
-                                            <td>
-                                                <input type="checkbox" ng-model="intervention.selected" ng-change="armView.selectListHandler(armView.trial_interventions)"
-                                                       ng-checked="intervention.selected"/>
-                                            </td>
-                                            <td>{{intervention.name}}</td>
-                                            <td>{{intervention.description}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-
-
-                                </div>
-
-                            </fieldset>
 
                         <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                             <button type="submit" class="btn btn-primary pull-right" id="submission_btn">
-                                <i class="glyphicon glyphicon-search"></i> Save
+                                <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
                             <button type="button"class="btn btn-warning pull-right" ng-click="armView.reload()" restriction-field>
                                 <i class="glyphicon glyphicon-remove"></i> Reset
@@ -102,22 +95,29 @@
                                  <i class="glyphicon glyphicon-remove"></i> Clear
                              </button-->
                         </div>
-
                     </form>
-
                 </fieldset>
             </div>
-            <fieldset ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
-                <legend class="sub-bordered">List of Arms Groups:</legend>
-                <div class="form-group table-responsive">
-                    <table class="table table-bordered table-striped table-hover">
+        </uib-accordion-group>
+    </uib-accordion>
+
+    <uib-accordion close-others="false" ng-if="!armView.addEditMode">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                List of Arms Groups<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+            <fieldset>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover" ng-show="armView.curTrial.arms_groups.length" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <thead>
                         <th>Label</th>
                         <th>Type</th>
                         <th>Interventions</th>
                         <th>Description</th>
-                        <th class="text-center">Edit</th>
-                        <th class="text-center">Deletion</th>
+                        <th class="text-center td-icon">Edit</th>
+                        <th class="text-center td-icon">
+                            <input type="checkbox" restriction-field ng-model="armView.selectedAllAG" ng-click="armView.checkAllAG()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
+                        </th>
                         </thead>
                         <tbody>
                         <tr ng-repeat="arms_group in armView.curTrial.arms_groups track by $index" class="animated-item">
@@ -126,26 +126,36 @@
                             <td>{{arms_group.display_interventions}}</td>
                             <td>{{arms_group.description}}</td>
 
-                            <td>
-                                <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="armView.setEditMode($index)">
+                            <td class="text-center td-icon">
+                                <button class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
-                            <td>
-                                <input type="checkbox" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" />
+                            <td class="text-center td-icon">
+                                <input type="checkbox" restriction-field ng-click="armView.selectedAllAG = false" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
-                    <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field ng-click="armView.setAddMode()">Add Arms Groups</button>
-                        <button type="submit" class="btn btn-primary pull-right" id="delete" restriction-field ng-click="armView.deleteSelected()">Delete Arms Groups</button>
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setAddMode(true)">
+                            <i class="glyphicon glyphicon-plus"></i> Add Arms Group
+                        </button>
+                        <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="armView.deleteSelected()"
+                                ng-disabled="!armView.selectedDeleteArmsGroupsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="armView.curTrial.arms_groups.length">
+                            <i class="glyphicon glyphicon-trash"></i> Delete Selected
+                        </button>
                     </div>
 
                 </div>
-
             </fieldset>
         </uib-accordion-group>
     </uib-accordion>
+    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="armView.addEditMode">
+        <button type="button" class="btn btn-warning pull-right" id="arms_groups_list" restriction-field ng-click="armView.setAddMode(false)">
+            <i class="glyphicon glyphicon-arrow-left"></i> Back to Arms Groups List
+        </button>
     </div>
+    <div class="top-offset-xs" ng-show="armView.addEditMode"></div>
+</div>

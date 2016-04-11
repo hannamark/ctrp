@@ -6,5 +6,7 @@
   "abstractorUID" : "ctrpabstractor",
   "abstractorPWD" : "Welcome01",
   "trialSubmitterUID" : "ctrptrialsubmitter",
-  "trialSubmitterPWD" : "Welcome01"
+  "trialSubmitterPWD" : "Welcome01",
+  "trialSubmitterEmail" : "ctrptrialsubmitter@gmail.com",
+  "trialSubmitterEmailPwd" : "Welcome0!"
 }

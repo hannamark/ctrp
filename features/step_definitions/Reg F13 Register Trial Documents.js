@@ -40,6 +40,8 @@ module.exports = function() {
     var testSampleMSGFile = 'testSampleMSGFile.msg';
     var testSampleHtmlFile = 'testSampleHtmlFile.html';
     var testSampleXMLFile = 'testSampleXMLFile.xml';
+    var DescriptionFirstDoc = 'Description for first doc';
+    var DescriptionSecondDoc = 'Description for second doc';
 
 
     /*
@@ -91,7 +93,12 @@ module.exports = function() {
 
     this.Given(/^I have selected one or more files to attach as Other file and entered the description of the file$/, function (callback) {
         trialDoc.trialRelatedFileUpload('reg', '5', testSampleRichTextFile);
+        addTrial.setAddTrialOtherDocsDescription(0, DescriptionFirstDoc);
         expect(trialDoc.trailFileUploadOther.getAttribute('value')).to.eventually.equal(testSampleRichTextFile);
+        addTrial.clickAddTrialAddOtherDocButton();
+        trialDoc.trialRelatedFileUpload('reg', '6', testSampleXlsmFile);
+        expect(trialDoc.trailFileUploadOtherNext.getAttribute('value')).to.eventually.equal(testSampleXlsmFile);
+        addTrial.setAddTrialOtherDocsDescription(1, DescriptionSecondDoc);
         browser.sleep(25).then(callback);
     });
 
@@ -108,7 +115,12 @@ module.exports = function() {
                 }
             });
         }, 10000, "Save draft page with Uploaded documents did not appear");
-        expect(addTrial.addTrialVerifyAddedDocs.getText()).to.eventually.eql([ testSampleDocxFile, testSampleDocFile_IRB, testSampleEXCELFile, testSamplePDFFile, testSampleRichTextFile ]);
+        addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function(value){
+            console.log('value of added docs array');
+            console.log(value);
+        });
+        expect(addTrial.addTrialVerifyAddedDocs.getText()).to.eventually.eql([ testSampleDocxFile, testSampleDocFile_IRB, testSampleEXCELFile, testSamplePDFFile, testSampleXlsmFile, testSampleRichTextFile ]);
+        expect(addTrial.addTrialVerifyAddedOtherDocsDescription.getText()).to.eventually.eql([ testSampleRichTextFile + '\n' + DescriptionFirstDoc, testSampleXlsmFile + '\n' + DescriptionSecondDoc ]);
         browser.sleep(25).then(callback);
     });
 

@@ -48,21 +48,32 @@
             outerOrg.id = vm.curOrg.id;
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
-                if (vm.curOrg.new) {
+                console.info('response: ', response);
+                var statusCode = response.status || response.server_response.status;
+                console.log('statusCode: ', statusCode);
+                if (vm.curOrg.new && statusCode === 201) {
+                    // created
+                    showToastr(vm.curOrg.name);
+                    vm.curOrg.new = false;
                     $state.go('main.orgDetail', {orgId: response.id});
-                } else {
+                } else if (statusCode === 200) {
+                    // updated
                     vm.curOrg = response;
+                    showToastr(vm.curOrg.name);
+                    vm.curOrg.new = false;
                 }
-                vm.curOrg.new = false;
-                toastr.clear();
-                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
             });
         }; // updateOrg
+
+        function showToastr(orgName) {
+            toastr.clear();
+            toastr.success('Organization ' + orgName + ' has been recorded', 'Operation Successful!', {
+                extendedTimeOut: 1000,
+                timeOut: 0
+            });
+        }
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy,vm.curOrg);

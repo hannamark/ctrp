@@ -41,7 +41,7 @@ class Ability
         can :access, :rails_admin   # grant access to rails_admin
         can :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_CURATOR' && user.approved?
-      can :manage, [Organization, Person, Family, Comment]
+      can :manage, [Organization, Person, Family, Comment, AssociatedTrial]
       can :read, :all
       can :search, :all
       can :search_pa, Trial
@@ -55,7 +55,7 @@ class Ability
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_TRIAL-SUBMITTER' && user.approved?
-      can :manage, [Trial]
+      can :manage, [Trial, AssociatedTrial]
       can :unique, Organization
       can :read, :all
       can :search, :all
@@ -69,14 +69,14 @@ class Ability
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard
     elsif user.role == 'ROLE_SITE-SU' && user.approved?
-      can :manage, [Trial]
+      can :manage, [Trial, AssociatedTrial]
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard
     elsif user.role == 'ROLE_ABSTRACTOR' && user.approved?
-      can :manage, [Trial, Comment]
+      can :manage, [Trial, Comment, AssociatedTrial]
       can :unique, Organization
       can :read, :all
       can :search, :all
@@ -84,7 +84,7 @@ class Ability
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_ABSTRACTOR-SU' && user.approved?
-      can :manage, [Trial, Comment]
+      can :manage, [Trial, Comment, AssociatedTrial]
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice

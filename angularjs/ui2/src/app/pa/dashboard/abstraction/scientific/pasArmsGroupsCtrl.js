@@ -8,10 +8,10 @@
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
     pasArmsGroupsCtrl.$inject = ['$scope', '$state', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'trialDetailObj'];
+        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location'];
 
     function pasArmsGroupsCtrl($scope, $state, TrialService, PATrialService, toastr,
-                                     MESSAGES, _, $timeout, trialDetailObj) {
+                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.setAddMode = setAddMode;
@@ -31,6 +31,20 @@
         vm.reload = function() {
             console.log("RELOAD");
             $state.go($state.$current, null, { reload: true });
+        };
+
+        vm.checkAllAG = function () {
+            if (vm.selectedAllAG) {
+                vm.selectedAllAG = true;
+            } else {
+                vm.selectedAllAG = false;
+            }
+
+            angular.forEach(vm.curTrial.arms_groups, function (item) {
+                item.selected = vm.selectedAllAG;
+                vm.deleteListHandler(vm.curTrial.arms_groups);
+            });
+
         };
 
         vm.updateTrial = function() {
@@ -86,6 +100,7 @@
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
+                vm.selectedAllAG = false;
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
@@ -94,24 +109,30 @@
 
 
 
-        function setAddMode() {
-            vm.addEditMode = true;
+        function setAddMode(isAddMode) {
             vm.currentArmsGroup = {};
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
-            var tempIntervention = {};
-            for (var i = 0; i < vm.curTrial.interventions.length; i++) {
-                tempIntervention.id = vm.curTrial.interventions[i].id;
-                tempIntervention.name = vm.curTrial.interventions[i].name;
-                tempIntervention.description = vm.curTrial.interventions[i].description;
-                tempIntervention.selected = false;
-                vm.trial_interventions.push(tempIntervention);
-                console.log("vm.trial_interventions="+JSON.stringify(vm.trial_interventions));
-                tempIntervention = {};
+
+            if (isAddMode) {
+                vm.addEditMode = true;
+                var tempIntervention = {};
+                for (var i = 0; i < vm.curTrial.interventions.length; i++) {
+                    tempIntervention.id = vm.curTrial.interventions[i].id;
+                    tempIntervention.name = vm.curTrial.interventions[i].name;
+                    tempIntervention.description = vm.curTrial.interventions[i].description;
+                    tempIntervention.selected = false;
+                    vm.trial_interventions.push(tempIntervention);
+                    console.log("vm.trial_interventions="+JSON.stringify(vm.trial_interventions));
+                    tempIntervention = {};
+                }
+            } else {
+                vm.addEditMode = false;
+                $location.hash('section_top');
+                $anchorScroll();
             }
         }
-
 
         /**
          *  Set Edit Mode.
@@ -175,6 +196,7 @@
                 vm.curTrial.arms_groups_attributes.push(armsGroupsToBeDeletedFromDb);
             }
             vm.saveTrial();
+            vm.selectedAllAG = false;
 
         };
 

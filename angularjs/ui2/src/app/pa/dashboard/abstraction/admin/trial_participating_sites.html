@@ -1,13 +1,13 @@
 <div class="row" id="section_top">
     <div class="row">
         <p>
-            <h4 ng-show="!psView.currentParticipatingSite.organization.name && psView.addEditMode || psView.curTrial.participating_sites.length == 0">Add Participating Site</h4>
+            <h4 ng-show="!psView.currentParticipatingSite.organization.name && psView.addEditMode">Add Participating Site</h4>
             <h4 ng-show="psView.currentParticipatingSite.organization.name && psView.addEditMode">Edit Participating Site: {{psView.currentParticipatingSite.organization.name}}</h4>
         </p>
     </div>
     <section>
-        <md-tabs ng-show="psView.addEditMode || psView.curTrial.participating_sites.length == 0" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
-            <md-tab ng-click="psView.saveParticipatingSite()">
+        <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
+            <md-tab>
                 <md-tab-label>Participating Site</md-tab-label>
                 <md-tab-body>
                     <form class="form form-horizontal" role="form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
@@ -98,10 +98,11 @@
                                         <div class="row search-calendar-grid-sm">
                                             <table class="table table-striped table-condensed">
                                                 <thead>
-                                                    <th width="15%">Status Date</th>
-                                                    <th width="35">Status</th>
-                                                    <th width="25%">Comment</th>
-                                                    <th width="25%"></th>
+                                                    <th width="15%" class="min-width-md">Status Date</th>
+                                                    <th width="15%" class="min-width-lg">Status</th>
+                                                    <th>Comment</th>
+                                                    <th width="10%" ng-if="psView.current_site_recruitment.edit">Cance/Confirm</th>
+                                                    <th width="10%" ng-if="!psView.current_site_recruitment.edit"></th>
                                                 </thead>
                                                 <tbody>
                                                 <tr>
@@ -159,13 +160,13 @@
                                                         </div> -->
                                                         <div class="btn-toolbar" ng-show="psView.current_site_recruitment.edit">
                                                             <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelSiteRecruitmentEdit()">
-                                                                Cancel
+                                                                <i class="glyphicon glyphicon-remove"></i>
                                                             </button>
                                                             <button class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditSiteRecruitment()"
                                                                     ng-disabled="psView.current_site_recruitment.status_date == '' ||
                                                                 psView.current_site_recruitment.site_recruitment_status == '' ||
                                                                 ps_sites_form.comments.$viewValue.length > 160">
-                                                                <i class="glyphicon glyphicon-ok"></i> Save
+                                                                <i class="glyphicon glyphicon-ok"></i>
                                                             </button>
                                                         </div>
                                                     </td>
@@ -224,7 +225,9 @@
                                     <!-- Saving the form for the Participating site tab" -->
                                     <div class="form-group no-bottom-margin">
                                         <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="psView.current_site_recruitment.edit">Save</button>
+                                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="psView.current_site_recruitment.edit">
+                                                <i class="glyphicon glyphicon-ok"></i> Save
+                                            </button>
                                             <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit">
                                                 <i class="glyphicon glyphicon-remove"></i> Reset
                                             </button>
@@ -236,10 +239,10 @@
                 </form>
             </md-tab-body>
         </md-tab>
-        <md-tab ng-click="psView.saveParticipatingSite()" ng-disabled="!psView.currentParticipatingSite.organization.name">
+        <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
             <md-tab-label>Investigators</md-tab-label>
             <md-tab-body>
-                <form class="form form-horizontal" role="form" name="ps_inv_form" novalidate> <!--ctrp-submit="psView.saveParticipatingSite">
+                <form class="form form-horizontal" role="form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                     <!-- first row in the accordion body -->
                     <div class="row">
                         <uib-accordion close-others="false">
@@ -278,11 +281,11 @@
                                         <table class="table table-striped table-condensed">
                                             <thead>
                                                 <th width="10%">PO ID</th>
-                                                <th width="15%">Last Name</th>
-                                                <th width="15%">First Name</th>
-                                                <th width="20%">Role</th>
+                                                <th width="20%">Last Name</th>
+                                                <th width="20%">First Name</th>
+                                                <th width="20%" class="min-width-lg">Role</th>
                                                 <th width="20%">Set as Primary Contact</th>
-                                                <th width="20%"></th>
+                                                <th width="10%">Cancel/Confirm</th>
                                             </thead>
                                             <tbody>
                                             <tr>
@@ -314,10 +317,10 @@
                                                  <td>
                                                      <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
                                                         <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
-                                                            Cancel
+                                                            <i class="glyphicon glyphicon-remove"></i>
                                                         </button>
                                                         <button class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditInvestigator()" ng-disabled="psView.current_investigator.person.id == null">
-                                                            Save
+                                                            <i class="glyphicon glyphicon-ok"></i>
                                                         </button>
                                                     </div>
                                                 </td>
@@ -330,7 +333,6 @@
                                     </div>
 
                                     <div class="row table-responsive" ng-show="psView.investigatorGrid.length" ng-class="{'top-offset-xs': !psView.current_investigator.edit }">
-                                        <h5>List of Investigators</h5>
                                         <table class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <th width="10%">PO ID</th>
@@ -370,7 +372,9 @@
                                 <!-- Saving the form for the Investigator tab" -->
                                 <div class="form-group no-bottom-margin">
                                     <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="psView.saveParticipatingSite()" ng-disabled="psView.current_investigator.uiEdit">Save</button>
+                                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="psView.current_investigator.uiEdit">
+                                            <i class="glyphicon glyphicon-ok"></i> Save
+                                        </button>
                                         <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit">
                                             <i class="glyphicon glyphicon-remove"></i> Reset
                                         </button>
@@ -382,7 +386,7 @@
                 </form>
             </md-tab-body>
         </md-tab>
-        <md-tab ng-click="psView.saveParticipatingSite()" ng-disabled="!psView.currentParticipatingSite.organization.name">
+        <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
             <md-tab-label>Contact</md-tab-label>
             <md-tab-body>
                 <!-- General Contact Begin -->
@@ -410,7 +414,7 @@
 
                                 <div class="form-group" ng-show="psView.selectedContactTypePI && psView.investigatorArray.length">
                                     <label for="investigator" class="control-label col-xs-12 col-sm-3">Primary Contact:</label>
-                                    <div class="col-xs-12 col-sm-6">
+                                    <div class="col-xs-12 col-sm-4">
                                         <!--
                                             <ui-select id="investigator" ng-model="psView.selectedInvestigator">
                                                 <ui-select-match placeholder="-Select Investigator-"></ui-select-match>
@@ -434,7 +438,7 @@
                                 </div>
 
                                 <div ng-hide="psView.currentParticipatingSite.contact_type == 'None' || psView.currentParticipatingSite.contact_type == ''">
-                                    <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}">
+                                    <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}" ng-hide="psView.selectedContactTypePI">
                                         <label for="contact_type" class="control-label col-xs-12 col-sm-3">Contact:</label>
                                         <div class="col-xs-12 col-sm-4">
                                             <input type="text" id="contact_name" name="contact_name" class="form-control input-sm" placeholder="Central Contact"
@@ -446,15 +450,14 @@
                                             <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button>
                                         </div>
                                       <span ng-messages="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name) && pps_contact_form.contact_name.$error">
-                                          <span class="help-block" ng-message="required">Central contact name is required</span>
+                                          <span class="help-block" ng-message="required">Central contact name is Required</span>
                                       </span>
                                     </div>
 
                                     <!-- Email Address -->
                                     <div class="form-group">
                                         <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
-                                        <div class="col-xs-12 col-sm-9">
-
+                                        <div class="col-xs-12 col-sm-5">
                                             <input type="email" id="email" name="email" ng-model="psView.currentParticipatingSite.contact_email" class="form-control input-sm" placeholder="Email">
                                             <span class="form-control-feedback" ng-show="ps_contact_form.email.$dirty" ng-class="!ps_contact_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         </div>
@@ -463,11 +466,11 @@
                                     <!-- Phone Number -->
                                     <div class="form-group">
                                         <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
-                                        <div class="col-xs-12 col-sm-6">
+                                        <div class="col-xs-12 col-sm-3">
                                             <input type="text" id="phone" name="phone" ng-model="psView.currentParticipatingSite.contact_phone" class="form-control input-sm" placeholder="Phone" ng-change="currentParticipatingSite.isValidPhoneNumber()">
                                             <span ng-show="ps_contact_form.phone.$dirty" class="form-control-feedback" ng-class="!psView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                         </div>
-                                        <div class="col-xs-12 col-sm-4">
+                                        <div class="col-xs-12 col-sm-2">
                                             <input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.central_contacts[0].extension" placeholder="Extension">
                                         </div>
                                     </div>
@@ -475,7 +478,9 @@
                                     <!-- Saving the form for the Contact tab" -->
                                     <div class="form-group no-bottom-margin">
                                         <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>Save</button>
+                                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
+                                                <i class="glyphicon glyphicon-ok"></i> Save
+                                            </button>
                                             <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field>
                                                 <i class="glyphicon glyphicon-remove"></i> Reset
                                             </button>
@@ -493,7 +498,7 @@
 </div>
 
 <!-- Grid the shows all the Participating Sites -->
-<div class="row" ng-show="psView.curTrial.participating_sites.length > 0">
+<div class="row">
     <uib-accordion close-others="false" ng-hide="psView.addEditMode">
         <uib-accordion-group is-open="true" >
             <uib-accordion-heading>
@@ -513,7 +518,7 @@
                 <th>Primary Contact</th>
                 <th class="text-center td-icon">Edit</th>
                 <th class="text-center td-icon">
-                    <input type="checkbox" ng-model="psView.selectedAllSites" ng-click="psView.checkAllSites()" />
+                    <input type="checkbox" restriction-field ng-model="psView.selectedAllSites" ng-click="psView.checkAllSites()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
                 </th>
                 </thead>
                 <tbody>
@@ -537,28 +542,32 @@
                         {{participating_site.contact_name}}
                     </td>
                     <td class="text-center td-icon">
-                        <button class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="psView.setEditMode($index)">
+                        <button class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_editable" ng-click="psView.setEditMode($index)">
                             <i class="glyphicon glyphicon-edit"></i>
                         </button>
                     </td>
                     <td class="text-center td-icon">
-                        <input type="checkbox" ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" />
+                        <input type="checkbox" restriction-field ng-model="participating_site.selected" ng-change="psView.deleteListHandler(psView.curTrial.participating_sites)" ng-click="psView.selectedAllSites = false" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"/>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                <button type="submit" class="btn btn-primary pull-right" id="add_participating_site" restriction-field ng-click="psView.setAddMode()">Add Participating Site</button>
-                <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="psView.deleteSelected()" ng-disabled="!psView.selectedDeleteParticipatingSitesList.length">
-                    <i class="glyphicon glyphicon-remove"></i> Delete Selected
+
+            <div class="btn-toolbar">
+                <button type="submit" ng-disable="!paTrialOverview.trialDetailObj.pa_editable" class="btn btn-primary pull-right" id="add_participating_site" restriction-field
+                        ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-click="psView.setAddMode()">Add Participating Site</button>
+                <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="psView.deleteSelected()"
+                        ng-show="psView.curTrial.participating_sites.length"
+                        ng-disabled="!psView.selectedDeleteParticipatingSitesList.length || !paTrialOverview.trialDetailObj.pa_editable">
+                    <i class="glyphicon glyphicon-trash"></i> Delete Selected
                 </button>
             </div>
         </div>
     </fieldset>
         </uib-accordion-group>
     </uib-accordion>
-    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable"  ng-show="psView.addEditMode">
+    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable" ng-show="psView.addEditMode">
         <button type="submit" class="btn btn-warning pull-right" id="participating_site_list" restriction-field ng-click="psView.setAddMode(false)">
             <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
         </button>

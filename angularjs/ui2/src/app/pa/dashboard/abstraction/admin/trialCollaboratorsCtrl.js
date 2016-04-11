@@ -93,6 +93,8 @@
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
+                vm.addMode = false;
+                vm.selectedAllCos = false;
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
@@ -205,7 +207,7 @@
 
         function deleteSelected(){
             if (vm.selectedDeleteCollaboratorsList.length === 0) {
-                // do nothing when nothing is selected for deletion 
+                // do nothing when nothing is selected for deletion
                 return;
             }
             vm.curTrial.collaborators_attributes=[];

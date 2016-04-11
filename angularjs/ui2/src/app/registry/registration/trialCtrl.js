@@ -92,7 +92,15 @@
         };
 
         $scope.capitalizeFirst = function(str) {
-            return str.charAt(0).toUpperCase() + str.slice(1).replace(/-/g, ' ');
+            var splits = str.split('-');
+            var resultStr = '';
+            for (var i = 0; i < splits.length; i++) {
+                if (i > 0) {
+                    resultStr += ' ';
+                }
+                resultStr += splits[i].charAt(0).toUpperCase() + splits[i].slice(1);
+            }
+            return resultStr;
         };
 
         activate();
