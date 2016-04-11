@@ -437,6 +437,7 @@
                 vm.isSpecTypeOtherChecked = false;
                 vm.isAssayTypeOtherChecked = false
                 vm.isEvalTypeOtherChecked = false;
+                vm.disableBtn = false;
                 
 
             }

@@ -94,6 +94,7 @@
                     timeOut: 0
                 });
                 vm.addMode = false;
+                vm.selectedAllCos = false;
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });

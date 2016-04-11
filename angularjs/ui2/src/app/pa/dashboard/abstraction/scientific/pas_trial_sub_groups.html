@@ -118,7 +118,7 @@
                     <button type="submit" class="btn btn-primary pull-right" id="add_sub_group" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="sgView.setAddMode()">
                         <i class="glyphicon glyphicon-plus"></i> Add Sub Group
                     </button>
-                    <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="sgView.deleteSelected()"
+                    <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="sgView.deleteSelected()"
                             ng-disabled="!sgView.selectedDeleteSubGroupsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="sgView.curTrial.sub_groups.length">
                         <i class="glyphicon glyphicon-trash"></i> Delete Selected
                 </button>

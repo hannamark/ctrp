@@ -213,7 +213,7 @@
                             <button type="button"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">
                                 <i class="glyphicon glyphicon-plus"></i> Add Outcome Measure
                             </button>
-                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()"
+                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="omView.deleteSelected()"
                                     ng-show="omView.curTrial.outcome_measures.length"
                                     ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length || !paTrialOverview.trialDetailObj.pa_editable">
                                 <i class="glyphicon glyphicon-trash"></i> Delete Selected

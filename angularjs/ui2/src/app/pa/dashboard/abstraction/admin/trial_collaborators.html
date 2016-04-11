@@ -91,7 +91,8 @@
                     <button type="button" class="btn btn-primary pull-right" id="add" restriction-field ng-click="trialDetailView.setAddMode()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <i class="glyphicon glyphicon-plus"></i> Add Collaborator
                     </button>
-                    <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="trialDetailView.curTrial.collaborators.length">
+                    <button type="button" class="btn btn-danger pull-right" id="delete"
+                            restriction-field ctrp-confirm ctrp-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="trialDetailView.curTrial.collaborators.length">
                         <i class="glyphicon glyphicon-trash"></i> Delete Selected
                     </button>
                 </div>
