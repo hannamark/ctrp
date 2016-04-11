@@ -104,9 +104,6 @@ Then all registration information will be entered in CTRP
 And the trial status will be Submitted
 And the trial milestone Submission Received Date will be created with the current date and time
 And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN 
-And the Submission Source is a Cancer Center
-And the submission method is Registry
-And the Submission Type is Original
 And an email entitled "Trial Registration" will be sent to the trial submitter (Email list in the shared drive under Functional/Registration: CTRP System Generated Emails)
 
  Examples:
