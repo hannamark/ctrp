@@ -143,7 +143,7 @@ And there is already a Document type from the list of:
 |List of Participating Sites|
 |Protocol Highlighted Document|
 Then the system displays a Error message that "Error: The selected document type already exists."
-  @runthis
+
 Scenario: #11 View Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
