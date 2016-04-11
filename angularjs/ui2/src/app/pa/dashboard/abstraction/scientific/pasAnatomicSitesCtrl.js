@@ -85,7 +85,10 @@
             });
 
         }//saveTrial
-
+        
+        vm.reset = function() {
+            vm.anatomic_sites_selected = [];
+        };
 
         function deleteListHandler(anatomicSitesSelectedInCheckboxes){
             //console.log("In deleteListHandler anatomicSitesSelectedInCheckboxes" + JSON.stringify(anatomicSitesSelectedInCheckboxes));

@@ -23,6 +23,9 @@
                             <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="anatomicView.saveSelection()">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
+                            <button type="button" class="btn btn-warning pull-right" ng-click="anatomicView.reset()"  restriction-field ng-disabled="anatomic.disableBtn">
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
                             <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
                                 <i class="glyphicon glyphicon-remove"></i> Clear
                             </button-->
