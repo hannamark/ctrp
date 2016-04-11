@@ -58,53 +58,19 @@
         };
 
         this.alertConfirm = function(alertMessage) {
-            var templateContent = '<md-dialog flex="35" aria-label="Confirm">' +
-           '  <md-dialog-content>'+ alertMessage +
-           '  </md-dialog-content>' +
-           '  <md-dialog-actions>' +
-           '    <md-button ng-click="cancel()" class="md-primary">' +
-           '      Cancel' +
-           '    </md-button>' +
-           '    <md-button ng-click="confirm()" class="md-primary">' +
-           '      Confirm' +
-           '    </md-button>' +
-           '  </md-dialog-actions>' +
-           '</md-dialog>';
-           /*
-           var confirm = $mdDialog.confirm()
-                        .title('Please confirm')
-                        .textContent(alertMessage)
-                        .ariaLabel('Confirm')
-                        .targetEvent()
-                        .clickOutsideToClose(false)
-                        .ok(true)
-                        .cancel(false);
+            
+            var confirm = $mdDialog.confirm()
+              .title('Please Confirm')
+    //          .textContent(alertMessage) // for newer version
+              .content(alertMessage)
+              .clickOutsideToClose(false)
+              .ariaLabel('Confirm')
+              .targetEvent('')
+              .ok('OK')
+              .cancel('Cancel');
+
           return $mdDialog.show(confirm);
-          */
-
-
-            return $mdDialog.show({
-              template: templateContent,
-              targetEvent: '',
-              clickOutsideToClose: false,
-              controller: alertConfirmCtrl
-          });
-
         };
     } // Common
-
-    angular.module('ctrp.module.common')
-    .controller('alertConfirmCtrl', alertConfirmCtrl);
-
-    alertConfirmCtrl.$inject = ['$scope', '$mdDialog'];
-    function alertConfirmCtrl($scope, $mdDialog) {
-        $scope.confirm = function() {
-            $mdDialog.hide('true');
-        }; // confirm
-
-        $scope.cancel = function() {
-            $mdDialog.hide('false');
-        }; // cancel
-    } // alertConfirmCtrl
 
 })();

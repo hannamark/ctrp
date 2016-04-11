@@ -127,11 +127,15 @@
                 // return if the description is empty
                 return;
             }
+            var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
             if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria)) {
-                Common.alertConfirm(confirmMsg).then(function(response) {
-                    response = JSON.parse(response); // string to boolean 
-                    if (response === true) {
+                Common.alertConfirm(confirmMsg).then(function(ok) {
+                    isConfirmed = ok;
+                }).catch(function(cancel) {
+                    isConfirmed = cancel;
+                }).finally(function() {
+                    if (isConfirmed === true) {
                         // user confirmed
                         if (otherCriterionObj.id === undefined) {
                             otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
@@ -140,9 +144,9 @@
                             vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
                         }
                         cancelEditOtherCriterion();
-                    }
+                    } // isConfirmed
                 });
-            }
+            } // if exists
 
 
 
