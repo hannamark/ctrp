@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :xml, :json
+  around_filter :global_request_logging
   #before_filter :wrapper_authenticate_user unless Rails.env.test?
   #check_authorization :unless => :devise_controller?
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
@@ -239,6 +240,18 @@ class ApplicationController < ActionController::Base
     user = get_user
     Rails.logger.debug "\nIn Application Controller, current_ctrp_user, user obtained from get_user = #{user.inspect}"
     current_local_user || current_ldap_user || user
+  end
+
+  def global_request_logging
+    http_request_header_keys = request.headers.env.keys.select{|header_name| header_name.match("^HTTP.*")}
+    http_request_headers = request.headers.env.select{|header_name, header_value| http_request_header_keys.index(header_name)}
+    logger.info "Received #{request.method.inspect} to #{request.url.inspect} from #{request.remote_ip.inspect}.  Processing with headers #{http_request_headers.inspect} and params #{params.inspect}"
+    begin
+      yield
+    ensure
+      #logger.info "Responding with #{response.status.inspect} => #{response.body.inspect}"
+      logger.info "Responding with #{response.status.inspect} "
+    end
   end
 
 end
