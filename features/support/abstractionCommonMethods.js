@@ -28,6 +28,8 @@ var poMenuItemList = require('../support/PoCommonBar');
 var paSearchTrialPage = require('../support/abstractionSearchTrialPage');
 //Abstraction NCI Specific Information
 var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
+//Trial Related Document
+var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -44,7 +46,7 @@ var abstractionCommonMethods = function(){
     var poHome = new poMenuItemList();
     var reader;
     var nciSpecific = new abstractionNCISpecific();
-
+    var trialDocCommon = new abstractionTrialRelatedDocument();
     var loginTxtVerif = 'CTRP Sign In';
     var loginCredTxtVerif = 'Please sign in to continue.';
     var loginNwUsrSngVerif = 'New User? Sign Up';
@@ -53,6 +55,7 @@ var abstractionCommonMethods = function(){
     var searchTrialsTxt = 'Search Trials * for wild card';
     var rsltCountValRT = '';
     var rsltGridValRT = '';
+    var exp_del_bttn_pg_hdr = 'Delete button on Organization page';
 
     /*****************************************
      * Verify Search Trials(PA) screen
@@ -373,6 +376,27 @@ var abstractionCommonMethods = function(){
      *****************************************/
     this.verifyIndicator = function(getObject ,getIndicator, result)  {
         expect(getObject.get(getIndicator).isSelected()).to.eventually.equal(result);
+    };
+
+    /***************************************
+     * Set Comment on Deletion button popup
+     ***************************************/
+    this.clickCommentDeleteButton = function (button, commitOrCancelComment, errorMessage){
+        helper.wait(button, errorMessage);
+        button.click();
+        console.log(errorMessage + " was clicked");
+        helper.wait_for(9000);
+        trialDocCommon.setCommentOnDeletion();
+        if (commitOrCancelComment === 'commit'){
+            trialDocCommon.clickCommitCommentButton();
+        } else if(commitOrCancelComment === 'cancel'){
+            trialDocCommon.clickCancelCommentButton();
+        }
+        if (errorMessage === exp_del_bttn_pg_hdr){
+            console.log("Page header does not exists on the popup dialog box");
+        } else {
+            //Do nothing
+        }
     };
 
 };
