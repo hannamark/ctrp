@@ -7,10 +7,10 @@
         .controller('pasEligibilityCtrl', pasEligibilityCtrl);
 
     pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods'];
+        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods', 'Common'];
 
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods) {
+        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods, Common) {
         var vm = this;
         var MAX_CHARS = 5000; // maximal character counts for the description field in ALL other criterion
         vm.trialDetailObj = {};
@@ -128,6 +128,27 @@
                 return;
             }
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
+            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria)) {
+                Common.alertConfirm(confirmMsg).then(function(response) {
+                    response = JSON.parse(response); // string to boolean 
+                    if (response === true) {
+                        // user confirmed
+                        if (otherCriterionObj.id === undefined) {
+                            otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
+                            vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
+                        } else {
+                            vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
+                        }
+                        cancelEditOtherCriterion();
+                    }
+                });
+            }
+
+
+
+
+
+            /*
             if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
                     !confirm(confirmMsg)) {
                     // if duplicate other criterion description and user cancels, return;
@@ -141,7 +162,10 @@
                 vm.trialDetailObj.other_criteria[otherCriterionObj.index] = otherCriterionObj;
             }
             cancelEditOtherCriterion();
-        }
+
+             */
+
+        } // upsertOtherCriterion
 
         /**
          * Edit other criterion

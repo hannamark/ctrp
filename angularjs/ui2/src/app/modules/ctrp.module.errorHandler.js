@@ -5,9 +5,9 @@
     angular.module('ctrp.module.errorHandler', [])
     .service('ErrorHandlingService', ErrorHandlingService);
 
-    ErrorHandlingService.$inject = ['$timeout', 'Common'];
+    ErrorHandlingService.$inject = ['$timeout'];
 
-    function ErrorHandlingService($timeout, Common) {
+    function ErrorHandlingService($timeout) {
         var errorDict = {
             301: 'Resources moved permanently',
             400: 'Bad Request',
@@ -38,5 +38,9 @@
         this.getErrorMsg = function(httpStatusCode) {
             return errorDict[httpStatusCode] || 'Unknown Error';
         };
-    }
+
+    } // ErrorHandlingService
+
+
+
 })();
