@@ -82,6 +82,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover" ng-show="sgView.curTrial.sub_groups.length">
                     <thead>
+                    <th>Index</th>
                     <th>Label</th>
                     <th>Description</th>
                     <th class="text-center td-icon">Edit</th>
@@ -89,9 +90,14 @@
                         <input type="checkbox" restriction-field ng-model="sgView.selectedAllSG" ng-click="sgView.checkAllSG()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                     </th>
                     </thead>
-                    <tbody>
+
+                    <tbody ui-sortable ng-model="sgView.curTrial.sub_groups">
 
                     <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
+
+                        <td>
+                            {{$index+1}}
+                        </td>
 
                         <td>
                             {{sub_group.label}}

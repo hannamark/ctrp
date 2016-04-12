@@ -19,6 +19,38 @@
 
         vm.trialDetailObj = {};
 
+        $scope.$on("$destroy", function() {
+
+            vm.curTrial.sub_groups_attributes=[];
+
+            for (var i = 0; i < vm.curTrial.sub_groups.length; i++) {
+                if(vm.curTrial.sub_groups[i].index !=i) {
+                    var obj = {};
+                    obj.id = vm.curTrial.sub_groups[i].id;
+                    obj.index = i;
+                    vm.curTrial.sub_groups_attributes.push(obj);
+                }
+            }
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.new = vm.curTrial.new;
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                vm.curTrial.lock_version = response.lock_version || '';
+                vm.curTrial.sub_groups = response["sub_groups"];
+                PATrialService.setCurrentTrial(vm.curTrial);
+                $scope.$emit('updatedInChildScope', {});
+            }).catch(function(err) {
+                console.log("error in re-ordering trial sub groups " + JSON.stringify(outerTrial));
+            });
+
+        });
+
         activate();
         function activate() {
             //submit();

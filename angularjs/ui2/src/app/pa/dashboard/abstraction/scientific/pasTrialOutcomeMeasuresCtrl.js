@@ -49,7 +49,7 @@
                              PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                             vm.selectedAllOM = false;
                         }).catch(function (err) {
-                         console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
+                         console.log("error in re-ordering outcome measures " + JSON.stringify(outerPS));
                         });
                     }
             }

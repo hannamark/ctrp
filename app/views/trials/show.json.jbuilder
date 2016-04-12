@@ -62,7 +62,7 @@ end
 
 json.sub_groups do
   json.array!(@trial.sub_groups) do |sub_group|
-    json.extract! sub_group, :id, :label, :description
+    json.extract! sub_group, :id, :label, :description,:index
   end
 end
 
