@@ -46,6 +46,12 @@ json.associated_trials do
   end
 end
 
+json.other_criteria do
+  json.array!(@trial.other_criteria.reorder(:index)) do |oc|
+    json.extract! oc, :id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy
+  end
+end
+
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status, :why_deleted

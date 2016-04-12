@@ -590,7 +590,7 @@ class TrialsController < ApplicationController
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status, :added_by_id, :why_deleted],
-                                  other_criteria_attributes: [:id, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
+                                  other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
