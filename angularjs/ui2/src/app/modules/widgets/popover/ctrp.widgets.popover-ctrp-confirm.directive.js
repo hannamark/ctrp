@@ -38,7 +38,7 @@
 
         function linkerFn(scope, element, attrs) {
             var popover = $popover(element, {
-                title: 'Are you sure you want to delete?',
+                title: attrs.confirmMsg || 'Are you sure you want to delete?',
                 templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
                 html: true,
                 trigger: 'manual',
@@ -71,6 +71,13 @@
                 // buttonAction(scope, {$event: popover.event}); // trigger the click action, !not working!
                 scope.ngClick(); // trigger the click action
                 popover.hide();
+                var contentConfirm = angular.element('<div id="ctrp-confirmbox" class="col-sm-12 text-right text-danger  rotate">Record(s) deleted.</div>');
+
+                contentConfirm.insertAfter(element);
+                $compile(contentConfirm)(scope);
+                $timeout(function() {
+                    angular.element(document.getElementById( "ctrp-confirmbox" )).remove();
+                },6000);
             }
 
             function cleanupPopover() {
