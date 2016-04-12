@@ -25,7 +25,7 @@ And a message displays with the number of results for the terms entered
     And I can click on "Add All" button to add all preferred terms to "Your Selections"
     Then the selected term will be displayed in "Your Selections" 
     And the message displays with the number of diseases selected on the top of "Your Selections" screen
-     | 3 diseases selected|
+     | 4 diseases selected|
     When I select the add button 
     Then the Disease/Condition screen displays with the term(s) added 
 
