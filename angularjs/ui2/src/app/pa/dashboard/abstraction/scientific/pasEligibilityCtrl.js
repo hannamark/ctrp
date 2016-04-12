@@ -36,7 +36,7 @@
         vm.updateOtherCriteriaType = updateOtherCriteriaType;
         vm.updateOtherCriteria = updateOtherCriteria;
         vm.sortableListener = {};
-        vm.sortableListener.stop = dragItem;
+        vm.sortableListener.stop = dragItemCallback;
 
         activate();
         function activate() {
@@ -271,7 +271,7 @@
          * @param  {[type]} ui    [description]
          * @return {[type]}       [description]
          */
-        function dragItem(event, ui) {
+        function dragItemCallback(event, ui) {
             var item = ui.item.scope().item;
             var fromIndex = ui.item.sortable.index;
             var toIndex = ui.item.sortable.dropindex;
