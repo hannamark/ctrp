@@ -20,7 +20,7 @@
         vm.samplingMethods = samplingMethods; // array
         vm.otherCriterion = {};
         vm.descCharsRemaining = MAX_CHARS;
-        vm.otherCriteriaPerPage = 10; // pagination
+        // vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
         vm.deleteAllOCCheckbox = false;
 
@@ -35,6 +35,14 @@
         vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
         vm.updateOtherCriteriaType = updateOtherCriteriaType;
         vm.updateOtherCriteria = updateOtherCriteria;
+        vm.sortableListener = {
+            stop: function(event, ui) {
+                var item = ui.item.scope().item;
+                var fromIndex = ui.item.sortable.index;
+                var toIndex = ui.item.sortable.dropindex;
+                console.log('moved: ', item, fromIndex, toIndex);
+            }
+        };
 
         activate();
         function activate() {
