@@ -7,10 +7,10 @@
         .controller('pasEligibilityCtrl', pasEligibilityCtrl);
 
     pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods', 'Common'];
+        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods'];
 
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods, Common) {
+        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods) {
         var vm = this;
         var MAX_CHARS = 5000; // maximal character counts for the description field in ALL other criterion
         vm.trialDetailObj = {};
@@ -144,32 +144,13 @@
                 // return if the description is empty
                 return;
             }
-            var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
-            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria)) {
-                // if OC exists already
-                Common.alertConfirm(confirmMsg).then(function(ok) {
-                    isConfirmed = ok;
-                }).catch(function(cancel) {
-                    // isConfirmed = cancel;
-                }).finally(function() {
-                    if (isConfirmed === true) {
-                        // user confirmed
-                        _insertOC(otherCriterionObj);
-                    } // isConfirmed
-                });
-            } else {
-                _insertOC(otherCriterionObj);
+            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
+                    !confirm(confirmMsg)) {
+                    // if duplicate other criterion description and user cancels, return;
+                    return;
             }
 
-        } // upsertOtherCriterion
-
-        /**
-         * Interner function called by upsertOtherCriterion
-         * @param  {JSON Object} otherCriterionObj [description]
-         * @return {Void}                   [description]
-         */
-        function _insertOC(otherCriterionObj) {
             if (otherCriterionObj.id === undefined) {
                 otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
@@ -213,7 +194,6 @@
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
 
             vm.addOtherCriterionFormShown = false;
-            vm.criteriaView.otherCriterion.edit = false;
         }
 
         function updateOtherCriteriaDesc(otherCriterionDesc, index) {

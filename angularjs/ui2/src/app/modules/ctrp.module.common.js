@@ -79,10 +79,8 @@
          */
         this.valueAtPathInObject = function(nestedJsonObj, pathString) {
             var pathArr = pathString.split('.');
-            console.log('initial path: ', pathArr);
             var obj = nestedJsonObj[pathArr.shift()];
             while (obj && pathArr.length) {
-                console.info('pathArr: ', pathArr);
                 obj = obj[pathArr.shift()];
             }
 

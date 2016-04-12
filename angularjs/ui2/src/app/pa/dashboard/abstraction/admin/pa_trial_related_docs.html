@@ -93,26 +93,26 @@
                                      </thead>
                                      <tbody>
                                          <tr ng-repeat="doc in trialRelatedDocsView.curTrialDetailObj.trial_documents track by $index"
-                                             class="animated-item" ng-class="doc.status !== 'active' ? 'deleted-text' : ''">
+                                             class="animated-item" ng-class="{'deleted-text': doc.status !== 'active', 'edit-selected': trialRelatedDocsView.curDoc.index === $index}">
                                              <td><a ng-class="doc.status == 'deleted' ? 'deleted-text' : ''" href="{{trialRelatedDocsView.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></td>
                                              <td>{{doc.document_type}}</td>
                                              <td>{{doc.document_subtype}}</td>
                                              <td>{{doc.created_at | date: "dd-MMM-yyyy H:mm"}}</td>
                                              <td>{{doc.added_by.username}} <!-- to be replaced with full name when available --></td>
                                              <td class="text-center td-icon">
-                                                 <label class="btn btn-primary" restriction-field ng-disabled="doc.status == 'deleted'" ng-click="trialRelatedDocsView.editDoc($index)">
+                                                 <button type="button" class="btn btn-primary" restriction-field ng-disabled="doc.status == 'deleted' || trialRelatedDocsView.curDoc.edit" ng-click="trialRelatedDocsView.editDoc($index)">
                                                      <i class="glyphicon glyphicon-edit"></i>
-                                                 </label>
+                                                 </button>
                                              </td>
                                              <td class="text-center td-icon">
-                                                 <label class="btn btn-warning" restriction-field
+                                                 <button type="button" class="btn btn-warning" restriction-field
                                                      comment-popover="doc"
                                                      on-save="trialRelatedDocsView.deleteDoc(why_deleted, $index)"
                                                      toggle-status="trialRelatedDocsView.toggleDeleteStatus($index)"
                                                      is-deleted="{{doc.status == 'deleted'}}"
-                                                     ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1">
+                                                     ng-hide="doc.document_type.indexOf('IRB Appro') > -1 || doc.document_type.indexOf('Protocol Doc') > -1 || doc.document_type.indexOf('Change Memo') > -1" ng-disabled="trialRelatedDocsView.curDoc.edit">
                                                      <i class="glyphicon" ng-class="doc.status =='deleted' ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                 </label>
+                                                 </button>
                                              </td>
                                          </tr>
                                      </tbody>
@@ -131,10 +131,10 @@
                          <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field
                              ng-disabled="trialRelatedDocsView.saveBtnDisabled || !paTrialOverview.trialDetailObj.pa_editable"
                              ng-click="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
-                           <i class="glyphicon glyphicon-ok"></i>  Save
+                           <i class="glyphicon glyphicon-ok"></i> Save
                          </button>
                          <button ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>
-                          <i class="glyphicon glyphicon-remove"></i>  Reset
+                          <i class="glyphicon glyphicon-remove"></i> Reset
                          </button>
                         <div id="warning_message"></div>
                      </div>
