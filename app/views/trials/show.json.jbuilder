@@ -54,14 +54,14 @@ json.trial_documents do
 end
 
 json.outcome_measures do
-  json.array!(@trial.outcome_measures) do |outcome_measure|
+  json.array!(@trial.outcome_measures.order(:index)) do |outcome_measure|
     json.extract! outcome_measure, :id, :title, :time_frame, :description, :safety_issue,:outcome_measure_type_id,:index
     json.outcome_measure_type outcome_measure.outcome_measure_type.present? ? outcome_measure.outcome_measure_type.name : nil
   end
 end
 
 json.sub_groups do
-  json.array!(@trial.sub_groups) do |sub_group|
+  json.array!(@trial.sub_groups.order(:index)) do |sub_group|
     json.extract! sub_group, :id, :label, :description,:index
   end
 end
