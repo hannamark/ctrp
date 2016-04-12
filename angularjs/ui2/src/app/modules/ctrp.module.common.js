@@ -9,9 +9,9 @@
     angular.module('ctrp.module.common', [])
         .service('Common', Common);
 
-    Common.$inject = ['$rootScope', '_'];
+    Common.$inject = ['$rootScope', '_', '$mdDialog'];
 
-    function Common($rootScope, _) {
+    function Common($rootScope, _, $mdDialog) {
 
         /**
          * A-Z Comparator for sorting an array of JSON objects
@@ -57,7 +57,20 @@
             return _.findIndex(arrayOfJson, queryObj);
         };
 
+        this.alertConfirm = function(alertMessage) {
+            
+            var confirm = $mdDialog.confirm()
+              .title('Please Confirm')
+    //          .textContent(alertMessage) // for newer version
+              .content(alertMessage)
+              .clickOutsideToClose(false)
+              .ariaLabel('Confirm')
+              .targetEvent('')
+              .ok('OK')
+              .cancel('Cancel');
 
-    }
+          return $mdDialog.show(confirm);
+        };
+    } // Common
 
 })();

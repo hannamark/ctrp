@@ -152,6 +152,24 @@ var helper = function() {
         }
     };
 
+    this.setCommentValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.clear();
+        fieldName.sendKeys(fieldValue);
+        //if(fieldValue == '[object Object]'){
+        //    var store = fieldName.getAttribute('value');
+        //    fieldValue.then(function(value){
+        //        console.log(errorMessage + ' ' + value + " Value entered");
+        //        expect(store).to.eventually.equal(value);});
+        //}
+        //else {
+        //    console.log(errorMessage + ' ' + fieldValue + " Value entered");
+        //    expect(fieldName.getAttribute('value')).to.eventually.equal((fieldValue));
+        //}
+    };
+
+
+
     this.getValue = function (fieldName, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.getAttribute('value');

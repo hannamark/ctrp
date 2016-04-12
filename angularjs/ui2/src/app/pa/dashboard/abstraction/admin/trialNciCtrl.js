@@ -65,10 +65,15 @@
                         }
                     }
                     if (!exists) {
+                        fs.new = true;
+                    }
+                    if(fs.new || fs.edit || fs._destroy) {
                         vm.curTrial.trial_funding_sources_attributes.push(fs);
                     }
                 });
             }
+
+            console.log(" vm.curTrial.trial_funding_sources_attributes.push(fs); = "+ JSON.stringify( vm.curTrial.trial_funding_sources_attributes));
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
@@ -82,9 +87,13 @@
                 vm.curTrial.lock_version = response.lock_version || '';
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                 vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
+                vm.curTrial.funding_sources = response["funding_sources"];
                 vm.curTrial.nih_nci_div =  response["nih_nci_div"];
                 vm.curTrial.nih_nci_prog =  response["nih_nci_prog"];
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                vm.addedFses = [];
+                vm.fsNum = 0;
+                appendFses();
                 $scope.$emit('updatedInChildScope', {});
                 toastr.clear();
                 toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
