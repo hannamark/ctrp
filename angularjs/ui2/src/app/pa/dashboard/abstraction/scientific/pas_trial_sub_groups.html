@@ -91,7 +91,7 @@
                     </th>
                     </thead>
 
-                    <tbody ui-sortable ng-model="sgView.curTrial.sub_groups">
+                    <tbody ui-sortable="sgView.sortableListener" ng-model="sgView.curTrial.sub_groups">
 
                     <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
 
