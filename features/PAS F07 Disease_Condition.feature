@@ -14,7 +14,7 @@ And I can select Exact match only
 When I have started entering a term
 Then a list of type ahead terms display
 When I have entered a term
-And I have entered a second term 
+And I have entered a second term separated by a comma
 And click the search icon or click on Enter
 Then a list of Preferred Terms that contain the entered terms display
 And a message displays with the number of results for the terms entered 
@@ -78,22 +78,13 @@ Scenario: #6 Edit Disease/Condition for a trial- Only the Disease Code field can
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
-When I have selected Edit for a specific Disease/Condition
-Then the Edit Disease/Condition Screen displays 
-And Preferred Name is prefilled with the NCIt Preferred Name 
-And Code is prefilled with the NCIt Code
-And the NCI Thesaurus Concept ID is prefilled
-And Menu Display Name is prefilled with the NCIt Menu Display Name
-And Parent Name is prefilled with the NCIt Parent Name
-And The field "Disease Code"  will be defaulted to "None" value
-And I can change the defaulted value to Disease Code
-|Disease Code|
-|Primary|
-|Secondary|
-
+When I click Primary for Disease Code for a specific disease
+Then Primary is removed from any other Disease that is currently marked as Primary
+When I click Secondary for Disease Code for a specific disease
+Then Secondary is removed from any other Disease that is currently marked as Secondary
 When I Select the Save Button
 Then the Disease/Condition screen displays with the updated Disease Code for the disease/Condition term
-And the updated Disease/Condition screen is associated to the trial
+And the updated Disease/Condition is associated to the trial
 And the message Record Updated displays
 
 
