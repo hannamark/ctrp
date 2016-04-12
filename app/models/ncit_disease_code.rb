@@ -117,4 +117,10 @@ class NcitDiseaseCode < ActiveRecord::Base
       end
     end
   end
+
+  private
+
+  scope :with_name, -> (value) do
+    where("preferred_name ilike ?", "%#{value}%")
+  end
 end
