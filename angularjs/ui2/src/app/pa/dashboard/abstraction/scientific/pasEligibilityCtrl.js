@@ -19,7 +19,8 @@
         delete samplingMethods.server_response;
         vm.samplingMethods = samplingMethods; // array
         vm.otherCriterion = {};
-        vm.otherCriteriaPerPage = 10; // pagination
+        vm.descCharsRemaining = MAX_CHARS;
+        // vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
         vm.deleteAllOCCheckbox = false;
 
@@ -34,6 +35,8 @@
         vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
         vm.updateOtherCriteriaType = updateOtherCriteriaType;
         vm.updateOtherCriteria = updateOtherCriteria;
+        vm.sortableListener = {};
+        vm.sortableListener.stop = dragItemCallback;
 
         activate();
         function activate() {
@@ -51,8 +54,8 @@
             _getTrialDetailCopy();
         }
 
-        function updateCriteria() {
-            vm.trialDetailObj.other_criteria_attributes = vm.trialDetailObj.other_criteria;
+        function updateCriteria(showToastr) {
+            vm.trialDetailObj.other_criteria_attributes = _labelSortableIndex(vm.trialDetailObj.other_criteria);
             var outerTrial = {};
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
@@ -67,18 +70,32 @@
 
                     PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                     $scope.$emit('updatedInChildScope', {});
-
-                    toastr.clear();
-                    toastr.success('Eligibility Criteria has been updated', 'Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    if (showToastr) {
+                        toastr.clear();
+                        toastr.success('Eligibility Criteria has been updated', 'Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                    }
                     _getTrialDetailCopy();
                 }
 
             }).catch(function(err) {
                 console.error('error in updating trial design: ', err);
             });
+        }
+
+        /**
+         * Add 'index' field to each other_criterion, persisted to database
+         * @param  {[Array]} ocArray [description]
+         * @return {[Array]}         [with the additional 'index' field to each element]
+         */
+        function _labelSortableIndex(ocArray) {
+            var sortedArray = _.map(ocArray, function(oc, idx) {
+                oc.index = idx;
+                return oc;
+            });
+            return sortedArray;
         }
 
         function prepareOtherCriterion(criterionType) {
@@ -208,8 +225,6 @@
             $scope.$watchCollection(function() {return vm.trialDetailObj.other_criteria;}, function(
                 newVal, oldVal) {
                     // number of characters for other criterion description (cumulative)
-
-                    console.info('newVal for other_criteria', newVal);
                     if (angular.isArray(newVal) && newVal.length > 0) {
                         vm.numCharsUsedInOC = OCDescCharCount(newVal);
                         vm.descCharsRemaining = MAX_CHARS - vm.numCharsUsedInOC;
@@ -228,6 +243,21 @@
                 totalCounts += oc.criteria_desc.length;
             });
             return totalCounts;
+        }
+
+        /**
+         * Callback for dragging item around
+         * @param  {[type]} event [description]
+         * @param  {[type]} ui    [description]
+         * @return {[type]}       [description]
+         */
+        function dragItemCallback(event, ui) {
+            var item = ui.item.scope().item;
+            var fromIndex = ui.item.sortable.index;
+            var toIndex = ui.item.sortable.dropindex;
+            updateCriteria(false);
+            // console.log('moved: ', item, fromIndex, toIndex);
+            // console.log('criteriaView.trialDetailObj.other_criteria: ', vm.trialDetailObj.other_criteria);
         }
 
     } // pasEligibilityCtrl

@@ -46,6 +46,12 @@ json.associated_trials do
   end
 end
 
+json.other_criteria do
+  json.array!(@trial.other_criteria.reorder(:index)) do |oc|
+    json.extract! oc, :id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy
+  end
+end
+
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
     json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status, :why_deleted
@@ -54,15 +60,15 @@ json.trial_documents do
 end
 
 json.outcome_measures do
-  json.array!(@trial.outcome_measures) do |outcome_measure|
+  json.array!(@trial.outcome_measures.reorder(:index)) do |outcome_measure|
     json.extract! outcome_measure, :id, :title, :time_frame, :description, :safety_issue,:outcome_measure_type_id,:index
     json.outcome_measure_type outcome_measure.outcome_measure_type.present? ? outcome_measure.outcome_measure_type.name : nil
   end
 end
 
 json.sub_groups do
-  json.array!(@trial.sub_groups) do |sub_group|
-    json.extract! sub_group, :id, :label, :description
+  json.array!(@trial.sub_groups.reorder(:index)) do |sub_group|
+    json.extract! sub_group, :id, :label, :description,:index
   end
 end
 

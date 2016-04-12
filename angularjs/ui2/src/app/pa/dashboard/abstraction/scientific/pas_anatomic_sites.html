@@ -69,7 +69,7 @@
                                 class="btn btn-danger pull-right" id="delete"
                                 restriction-field
                                 ctrp-confirm
-                                confirm-template=""
+                                confirm-msg="Click OK to remove selected Anatomic site(s) from the study. Click Cancel to abort."
                                 ctrp-click="anatomicView.deleteSelected()"
                                 ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0"
                                 ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length || !paTrialOverview.trialDetailObj.pa_editable">

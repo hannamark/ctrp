@@ -148,7 +148,7 @@
                   <button type="button" class="btn btn-danger pull-right" id="cancel_btn"
                       restriction-field
                       ctrp-confirm
-                      confirm-template=""
+                      confirm-msg="Click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort."
                       ctrp-click="assoTrialsView.deleteTrialAssociations()"
                       ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0"
                       ng-disabled="assoTrialsView.deleteBtnDisabled || !paTrialOverview.trialDetailObj.pa_editable">

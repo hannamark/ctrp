@@ -27,17 +27,10 @@
         vm.trialDetailObj = {};
         vm.om_types = outcomeTypesObj;
         vm.safety_issues=['Yes','No']
+        vm.sortableListener = {};
+        vm.sortableListener.stop = dragItemCallback;
 
-        $scope.list = ["one", "two", "thre", "four", "five", "six"];
 
-        $scope.sortableListener = {
-            stop : function(e, ui) {
-                var item = ui.item.scope().item;
-                var fromIndex = ui.item.sortable.index;
-                var toIndex = ui.item.sortable.dropindex;
-                console.log('moved', item, fromIndex, toIndex);
-            }
-        };
 
         $scope.$on("$destroy", function() {
             for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
@@ -49,7 +42,7 @@
                              PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                             vm.selectedAllOM = false;
                         }).catch(function (err) {
-                         console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
+                         console.log("error in re-ordering outcome measures " + JSON.stringify(outerPS));
                         });
                     }
             }
@@ -236,6 +229,43 @@
                 //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
+
+        /**
+         * Callback for dragging item around
+         * @param  {[type]} event [description]
+         * @param  {[type]} ui    [description]
+         * @return {[type]}       [description]
+         */
+        function dragItemCallback(event, ui) {
+
+            vm.curTrial.outcome_measures_attributes=[];
+
+            for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
+                if(vm.curTrial.outcome_measures[i].index !=i) {
+                    var obj = {};
+                    obj.id = vm.curTrial.outcome_measures[i].id;
+                    obj.index = i;
+                    vm.curTrial.outcome_measures_attributes.push(obj);
+                }
+            }
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.new = vm.curTrial.new;
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                vm.curTrial.lock_version = response.lock_version || '';
+                vm.curTrial.sub_groups = response["outcome_measures"];
+                PATrialService.setCurrentTrial(vm.curTrial);
+                $scope.$emit('updatedInChildScope', {});
+            }).catch(function(err) {
+                console.log("error in re-ordering trial outcome measures " + JSON.stringify(outerTrial));
+            });
+        }
 
     }
 
