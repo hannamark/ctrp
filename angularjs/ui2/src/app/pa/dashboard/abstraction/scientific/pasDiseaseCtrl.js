@@ -12,12 +12,12 @@
     function pasDiseaseCtrl($scope, $state, toastr, MESSAGES, _, $timeout, DiseaseService) {
         var vm = this;
 
-        vm.getTree = function() {
-            var treeParams = {disease_id: vm.disease_id};
-            DiseaseService.getNcitTree(treeParams).then(function(response) {
-                $scope.ncitTree = response.data;
+        vm.searchDiseases = function() {
+            var searchParams = {disease_name: vm.disease_name};
+            DiseaseService.searchDiseases(searchParams).then(function(response) {
+                console.log(response);
             }).catch(function(err) {
-                console.log("Error in getting NCIT tree: " + err);
+                console.log("Error in searching diseases: " + err);
             });
         };
 

@@ -250,6 +250,8 @@ Rails.application.routes.draw do
       collection do
         get 'get_tree'
         post 'get_tree'
+        get 'search'
+        post 'search'
       end
     end
   end

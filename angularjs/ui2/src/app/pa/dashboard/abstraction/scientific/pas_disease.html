@@ -4,6 +4,21 @@
             <uib-accordion-heading>
                 Disease/Condition <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
+            <form class="form form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="protocol_id" class="control-label col-xs-12 col-sm-2">Find a Disease/Condition: </label>
+                    <div class="col-xs-12 col-sm-5">
+                        <input type="text" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.disease_name" />
+                    </div>
+                    <div class="col-xs-12 col-sm-5">
+                        <div class="btn-toolbar">
+                            <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="diseaseView.searchDiseases()">
+                                <i class="glyphicon glyphicon-search"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </uib-accordion-group>
     </uib-accordion>
 </div>
