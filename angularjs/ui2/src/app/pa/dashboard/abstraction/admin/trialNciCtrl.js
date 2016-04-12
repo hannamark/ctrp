@@ -26,11 +26,16 @@
         vm.selectedFsArray = [];
         vm.study_source_id = vm.curTrial.study_source_id;
 
-        var sponsorName = Common.valueAtPathInObject(trialDetailObj, 'sponsor.name');
-        vm.isSponsorNci = sponsorName === "National Cancer Institute" ? true: false;
-        var leadOrgName = Common.valueAtPathInObject(trialDetailObj, 'lead_org.name');
-        vm.isLeadOrgNciCcr = leadOrgName === "NCI - Center for Cancer Research" ? true: false;
-
+        vm.isSponsorNci = false;
+        if(trialDetailObj["sponsor"] != null) {
+            var sponsorName = Common.valueAtPathInObject(trialDetailObj, 'sponsor.name');
+            vm.isSponsorNci = sponsorName === "National Cancer Institute" ? true : false;
+        }
+        vm.isLeadOrgNciCcr = false;
+        if (trialDetailObj["lead_org"] != null) {
+            var leadOrgName = Common.valueAtPathInObject(trialDetailObj, 'lead_org.name');
+            vm.isLeadOrgNciCcr = leadOrgName === "NCI - Center for Cancer Research" ? true : false;
+        }
         if (((vm.isSponsorNci==true) && (vm.isLeadOrgNciCcr==true) && (trialDetailObj.send_trial_rules_flag == "Yes"))==true) {
             vm.disable_send_trial = false;
             //console.log("disable set to false");
