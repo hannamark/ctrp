@@ -5,7 +5,7 @@
                 Eligibility Criteria <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <div class="row">
-                <form name="criteria_form" role="form" class="form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria()">
+                <form name="criteria_form" role="form" class="form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria(true)">
                     <!-- fieldset for eligibility criteria -->
                         <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                             <legend class="sub-bordered">Eligibility Criteria</legend>
