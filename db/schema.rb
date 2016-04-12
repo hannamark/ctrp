@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160401173146) do
+ActiveRecord::Schema.define(version: 20160412161259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -709,6 +709,7 @@ ActiveRecord::Schema.define(version: 20160401173146) do
     t.string   "uuid",          limit: 255
     t.integer  "lock_version",              default: 0
     t.text     "criteria_desc"
+    t.integer  "index"
   end
 
   add_index "other_criteria", ["trial_id"], name: "index_other_criteria_on_trial_id", using: :btree
@@ -746,6 +747,7 @@ ActiveRecord::Schema.define(version: 20160401173146) do
     t.datetime "updated_at",                                      null: false
     t.string   "uuid",                    limit: 255
     t.integer  "lock_version",                        default: 0
+    t.integer  "index"
   end
 
   add_index "outcome_measures", ["outcome_measure_type_id"], name: "index_outcome_measures_on_outcome_measure_type_id", using: :btree
@@ -1029,6 +1031,7 @@ ActiveRecord::Schema.define(version: 20160401173146) do
     t.datetime "updated_at",                           null: false
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
+    t.integer  "index"
   end
 
   add_index "sub_groups", ["trial_id"], name: "index_sub_groups_on_trial_id", using: :btree

@@ -213,6 +213,7 @@
                         console.log("2server_response="+JSON.stringify(response));
                     });
                 }
+                vm.selectedAllSites = false;
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerPS));
             });

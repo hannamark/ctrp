@@ -8,7 +8,7 @@
                     <!-- fieldset for trial statuses -->
                     <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">Trial Statuses</legend>
-                        <div class="row table-responsive search-calendar-grid">
+                        <div class="row">
                             <table class="table table-striped table-condensed">
                                 <thead>
                                     <th width="10%">Status Date</th>
@@ -64,7 +64,7 @@
                                                 {{160 - trial_status_form.why_stopped.$viewValue.length}} characters left
                                             </span>
                                         </td>
-                                        <td class="col-sm-2 text-center">
+                                        <td class="col-sm-2">
                                             <div ng-hide="trialStatusView.statusObj.edit">
                                                 <button class="btn btn-primary" restriction-field type="button" ng-click="trialStatusView.addTrialStatus()"
                                                     ng-disabled="!trialStatusView.statusObj.status_date ||
@@ -155,9 +155,9 @@
                         <legend class="sub-bordered">Trial Dates</legend>
                         <div class="form-group" ng-class="{'has-feedback required': trialStatusView.startDateRequired, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-2">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm min-width-md"
+                                    <input type="text" class="form-control input-sm min-width-sm"
                                            name="start_date"
                                            uib-datepicker-popup="{{trialStatusView.dateFormat}}"
                                            ng-model="trialStatusView.trialDetailObj.start_date"
@@ -176,7 +176,7 @@
                                     <span class="help-block" ng-message="required">Start date is Required</span>
                                </span>
                             </div>
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-7">
                                 <label class="radio-inline">
                                     <input type="radio" name="start_date_qual" restriction-field
                                         ng-model="trialStatusView.trialDetailObj.start_date_qual"
@@ -197,9 +197,9 @@
                         <!-- trial primary completion date -->
                         <div class="form-group" ng-class="{'has-feedback required': !trialStatusView.isDCPTrial, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.primary_comp_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.primary_comp_date_qual)}">
                             <label class="control-label col-xs-12 col-sm-3">Primary Completion Date:</label>
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-2">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm min-width-md" name="primary_comp_date" uib-datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.primary_comp_date"
+                                    <input type="text" class="form-control input-sm min-width-sm" name="primary_comp_date" uib-datepicker-popup="{{trialStatusView.dateFormat}}" ng-model="trialStatusView.trialDetailObj.primary_comp_date"
                                            ng-click="trialStatusView.openCalendar($event, 'primary_comp_date')" is-open="trialStatusView.primaryCompDateOpened" datepicker-options="trialStatusView.dateOptions" close-text="Close"
                                            ng-required="!trialStatusView.isDCPTrial" readonly>
                                     <span class="input-group-btn">
@@ -213,7 +213,7 @@
                                     <span class="help-block" ng-message="required">Primary completion date is Required for non-DCP Trials</span>
                                </span>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-7">
                                 <label class="radio-inline">
                                     <input type="radio" name="primary_comp_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.primary_comp_date_qual"
                                            value="Actual" ng-required="trialStatusView.isInterventional && !trialStatusView.trialDetailObj.primary_comp_date_qual"> Actual
@@ -232,9 +232,9 @@
                         <!-- completion date -->
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Completion Date:</label>
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-2">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm min-width-md" name="comp_date"
+                                    <input type="text" class="form-control input-sm min-width-sm" name="comp_date"
                                         uib-datepicker-popup="{{trialStatusView.dateFormat}}"
                                         ng-model="trialStatusView.trialDetailObj.comp_date"
                                         ng-click="trialStatusView.openCalendar($event, 'comp_date')"
@@ -251,7 +251,7 @@
                                     Completion Date is required
                                 </span> -->
                             </div>
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-7">
                                 <label class="radio-inline">
                                     <input type="radio" name="comp_date_qual" restriction-field ng-model="trialStatusView.trialDetailObj.comp_date_qual"
                                            value="Actual"> Actual

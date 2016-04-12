@@ -23,12 +23,12 @@
                                     >
                                 <option value="">- Please select a  outcome-measure type...</option>
                             </select>
-                        </div>
                             <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.om_type) &&
-                                        om_form.primary_purpose.$error">
-                            <span class="help-block" ng-message="required">Outcome Measure Type must be Entered</span>
+                                        om_form.om_type.$error">
+                            <span class="help-block" ng-message="required">Outcome Measure Type is Required</span>
                             </span>
-                         </div>
+                        </div>
+                        </div>
                     <!--/fieldset-->
                     <!-- end of outcome measure types -->
 
@@ -42,16 +42,16 @@
                                     <input name="title"
                                               id="title"
                                               rows="5"
-                                              class="form-control"
+                                              class="form-control input-sm"
                                               ng-model="omView.currentOutcomeMeasure.title"
                                               ng-maxlength="255"
                                               ng-required="true" />
-                                    <span ng-show="om_form.title.$dirty">
-                                        {{255 - om_form.title.$viewValue.length}} characters left
-                                    </span>
+                                <span class="help-block" ng-show="om_form.title.$dirty">
+                                    {{255 - om_form.title.$viewValue.length}} characters left
+                                </span>
 
                                 <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.title) && om_form.title.$error">
-                                  <span class="help-block" ng-message="required">Title must be Entered</span>
+                                  <span class="help-block" ng-message="required">Title is Required</span>
                                 </span>
                             </div>
                         </div>
@@ -66,16 +66,16 @@
                                     <input name="time_frame"
                                               id="time_frame"
                                               rows="5"
-                                              class="form-control"
+                                              class="form-control input-sm"
                                               ng-model="omView.currentOutcomeMeasure.time_frame"
                                               ng-maxlength="255"
                                               ng-required="true" />
-                                    <span ng-show="om_form.time_frame.$dirty">
+                                    <span class="help-block" ng-show="om_form.time_frame.$dirty">
                                         {{255 - om_form.time_frame.$viewValue.length}} characters left
                                     </span>
 
                                 <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.time_frame) && om_form.time_frame.$error">
-                                  <span class="help-block" ng-message="required">Time Frame must be Entered</span>
+                                  <span class="help-block" ng-message="required">Time Frame is Required</span>
                                 </span>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                               class="form-control"
                                               ng-model="omView.currentOutcomeMeasure.description"
                                               ng-maxlength="1000"></textarea>
-                                 <span ng-show="om_form.description.$dirty">
+                                 <span class="help-block" ng-show="om_form.description.$dirty">
                                         {{1000 - om_form.description.$viewValue.length}} characters left
                                     </span>
                             </div>
@@ -120,7 +120,7 @@
                             </select>
                          <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.safety_issue) &&
                                                 om_form.safety_issue.$error">
-                                <span class="help-block" ng-message="required">Safety Issue must be Entered</span>
+                                <span class="help-block" ng-message="required">Safety Issue is Required</span>
                            </span>
                         </div>
                     </div>
@@ -130,7 +130,9 @@
                     <!-- Saving the form for the Outcome Measure" -->
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing">Save</button>
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing">
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
                             <button type="button" class="btn btn-warning pull-right" ng-click="omView.resetOutcomeMeasure()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
@@ -151,9 +153,11 @@
                 </uib-accordion-heading>
 
                 <fieldset>
-                    <div class="table-responsive">
+
+                            <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" ng-show="omView.curTrial.outcome_measures.length">
                             <thead>
+                            <th>Index</th>
                             <th>Outcome Measure Type</th>
                             <th>Title</th>
                             <th>Time Frame</th>
@@ -162,13 +166,16 @@
                             <th class="text-center td-icon">Edit</th>
                             <th class="text-center td-icon">Copy</th>
                             <th class="text-center td-icon">
-                                <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()" />
+                                <input type="checkbox" restriction-field ng-model="omView.selectedAllOM" ng-click="omView.checkAllOM()"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </th>
                             </thead>
-                            <tbody>
+                            <tbody ui-sortable="omView.sortableListener" ng-model="omView.curTrial.outcome_measures">
 
-                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
+                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" style="cursor: move;" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
                                 <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
+                               <td>
+                                 {{$index+1}}
+                               </td>
                                 <td>
                                     {{(omView.om_types  | findObjByAttribute:'id':outcome_measure.outcome_measure_type_id)[0].name}}
                                 </td>
@@ -186,30 +193,30 @@
                                 </td>
 
                                 <td class="text-center td-icon">
-                                    <button  data-toggle="modal" class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="omView.setEditMode($index)">
+                                    <button  data-toggle="modal" class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="omView.setEditMode($index)">
                                         <i class="glyphicon glyphicon-edit"></i>
                                     </button>
                                 </td>
                                 <td class="text-center td-icon">
-                                    <button class="btn btn-default" restriction-field ng-disabled="status._destroy" ng-click="omView.setCopyMode($index)">
+                                    <button class="btn btn-default" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="omView.setCopyMode($index)" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                                         <i class="glyphicon glyphicon-copy"></i>
                                     </button>
                                 </td>
                                 <td class="text-center td-icon">
-                                    <input type="checkbox" restriction-field ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"/>
+                                    <input type="checkbox" restriction-field ng-model="outcome_measure.selected" ng-change="omView.deleteListHandler(omView.curTrial.outcome_measures)" ng-click="omView.selectedAllOM = false"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
-                        <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <button type="button" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">
+                        <div class="btn-toolbar">
+                            <button type="button"  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" id="add_outcome_measure" restriction-field ng-click="omView.setAddMode()">
                                 <i class="glyphicon glyphicon-plus"></i> Add Outcome Measure
                             </button>
-                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="omView.deleteSelected()"
+                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="omView.deleteSelected()"
                                     ng-show="omView.curTrial.outcome_measures.length"
-                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length">
-                                <i class="glyphicon glyphicon-trash"></i> Delete Outcome Measures
+                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length || !paTrialOverview.trialDetailObj.pa_editable">
+                                <i class="glyphicon glyphicon-trash"></i> Delete Selected
                             </button>
                         </div>
 

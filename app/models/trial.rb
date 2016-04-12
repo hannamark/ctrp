@@ -414,6 +414,18 @@ class Trial < TrialBase
       else
         ori = SubmissionType.find_by_code('ORI')
         if self.coming_from == 'rest'
+          user = self.current_user
+          case user.organization.name
+            when "CTEP"
+              sub_source = SubmissionSource.find_by_code('CTEP')
+            when "CCR"
+              sub_source = SubmissionSource.find_by_code('CCR')
+            when "DCP"
+              sub_source = SubmissionSource.find_by_code('DCP')
+            else
+              sub_source = SubmissionSource.find_by_code('CCT')
+          end
+
           sub_method = SubmissionMethod.find_by_code('RSV')
         else
           sub_source = SubmissionSource.find_by_code('CCT')
@@ -441,6 +453,17 @@ class Trial < TrialBase
       new_sub_number = largest_sub_num.present? ? largest_sub_num : 1
       upd = SubmissionType.find_by_code('UPD')
       if self.coming_from == 'rest'
+        user = self.current_user
+        case user.organization.name
+          when "CTEP"
+            sub_source = SubmissionSource.find_by_code('CTEP')
+          when "CCR"
+            sub_source = SubmissionSource.find_by_code('CCR')
+          when "DCP"
+            sub_source = SubmissionSource.find_by_code('DCP')
+          else
+            sub_source = SubmissionSource.find_by_code('CCT')
+        end
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
         sub_source = SubmissionSource.find_by_code('CCT')
@@ -452,6 +475,17 @@ class Trial < TrialBase
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       amd = SubmissionType.find_by_code('AMD')
       if self.coming_from == 'rest'
+        user = self.current_user
+        case user.organization.name
+          when "CTEP"
+            sub_source = SubmissionSource.find_by_code('CTEP')
+          when "CCR"
+            sub_source = SubmissionSource.find_by_code('CCR')
+          when "DCP"
+            sub_source = SubmissionSource.find_by_code('DCP')
+          else
+            sub_source = SubmissionSource.find_by_code('CCT')
+        end
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
         sub_source = SubmissionSource.find_by_code('CCT')
@@ -495,7 +529,7 @@ class Trial < TrialBase
     if last_sub_type.present? && last_sub_type.code == 'ORI' && last_sub_method.present? && last_sub_method.code == 'REG' && self.edit_type != 'verify'
       mail_template = MailTemplate.find_by_code('TRIAL_REG')
       if mail_template.present?
-        mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present?
+        mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
 
         # Populate the trial data in the email body
         mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?

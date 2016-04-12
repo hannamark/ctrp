@@ -1,5 +1,5 @@
 /**
- * Created by wangg5 on 10/27/15.
+ * Created by wangg5 on 04/05/16.
  *
  */
 
@@ -11,7 +11,7 @@
     popoverComment.$inject = ['$timeout', '$compile', '$popover'];
 
     function popoverComment($timeout, $compile, $popover) {
-        var defaultTemplateUrl = 'app/modules/widgets/popover/_default_popover_template.html';
+        var defaultTemplateUrl = 'app/modules/widgets/popover/_default_popover_comment.tpl.html';
         var directiveObj = {
             restrict: 'A',
             scope: {
@@ -28,7 +28,7 @@
         function linkerFn(scope, element, attrs) {
 
             var popover = $popover(element, {
-                title: 'Add Comment on Deletion',
+                title: 'Reason for Deletion',
                 // contentTemplate: attrs.template || defaultTemplateUrl,
                 templateUrl: attrs.template || defaultTemplateUrl,
                 html: true,
@@ -65,7 +65,7 @@
             }
 
             function cleanupPopover() {
-                popover.$destroy();
+                popover.destroy();
             }
         }
     }

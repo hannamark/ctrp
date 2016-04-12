@@ -95,6 +95,9 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   def create
     @rest_params = @paramsLoader.get_rest_params
     @rest_params[:current_user] = @current_user
+    @rest_params[:created_by]   = @current_user.username unless @current_user.nil?
+    @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
+
     @trial =Trial.new(@rest_params)
     if @trial.save!
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
@@ -106,6 +109,9 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   def update
     @rest_params = @paramsLoader.get_rest_params
+    @rest_params[:current_user] = @current_user
+    @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
+
     if @trial.update(@rest_params)
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
     else
@@ -116,6 +122,9 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   def amend
     @rest_params = @paramsLoader.get_rest_params
+    @rest_params[:current_user] = @current_user
+    @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
+
     if @trial.update(@rest_params)
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
     else

@@ -18,6 +18,8 @@
         vm.resetSubGroup = resetSubGroup;
 
         vm.trialDetailObj = {};
+        vm.sortableListener = {};
+        vm.sortableListener.stop = dragItemCallback;
 
         activate();
         function activate() {
@@ -179,6 +181,44 @@
                 //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
+
+        /**
+         * Callback for dragging item around
+         * @param  {[type]} event [description]
+         * @param  {[type]} ui    [description]
+         * @return {[type]}       [description]
+         */
+        function dragItemCallback(event, ui) {
+            var item = ui.item.scope().item;
+            var fromIndex = ui.item.sortable.index;
+            var toIndex = ui.item.sortable.dropindex;
+            vm.curTrial.sub_groups_attributes=[];
+
+            for (var i = 0; i < vm.curTrial.sub_groups.length; i++) {
+                if(vm.curTrial.sub_groups[i].index !=i) {
+                    var obj = {};
+                    obj.id = vm.curTrial.sub_groups[i].id;
+                    obj.index = i;
+                    vm.curTrial.sub_groups_attributes.push(obj);
+                }
+            }
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.new = vm.curTrial.new;
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                vm.curTrial.lock_version = response.lock_version || '';
+                vm.curTrial.sub_groups = response["sub_groups"];
+                PATrialService.setCurrentTrial(vm.curTrial);
+                $scope.$emit('updatedInChildScope', {});
+            }).catch(function(err) {
+                console.log("error in re-ordering trial sub groups " + JSON.stringify(outerTrial));
+            });        }
 
     }
 
