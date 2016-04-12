@@ -27,7 +27,7 @@ And a message displays with the number of results for the terms entered
     And the message displays with the number of diseases selected on the top of "Your Selections" screen
      | 3 diseases selected|
     When I select the add button 
-    Then the Disease/Condition screen displays with the term(s) added type
+    Then the Disease/Condition screen displays with the term(s) added 
 
       |Preferred Name  |
       |Code  |
@@ -54,7 +54,7 @@ Given I have a list of Preferred Term on Find a Disease/Condition page
 And I Click NCIt icon
 Then the NCIt page for the term displays  
      
-     Scenario: #4  Find a Disease/Condition Search Synonyms selected (pending CTRO feedback)
+     Scenario: #4  Find a Disease/Condition Search Synonyms selected 
 Given I am on the Find a Disease/Condition screen
 When I have entered a term
 And I have selected Search Synonyms
@@ -62,15 +62,8 @@ And I Click the search icon or click Enter
 Then a list of Preferred Terms and Synonyms that contain the entered term displays
 And a can select a preferred term to add 
 
-Scenario: #5 Find a Disease/Condition Exact Match (pending CTRO feedback)
-Given I am on the Find a Disease/Condition Screen
-When I have entered a term
-And I have selected Exact match only
-And I Click the search icon or click Enter 
-Then only exact term will be displayed 
-And a message displays with the number of results for the entered term
 
-Scenario: #6 Add All, Link to NCIt, Reset button on Find a Disease/Condition page
+Scenario: #5 Add All, Link to NCIt, Reset button on Find a Disease/Condition page
 Given I am on the Find a Disease/Condition screen
 When I click NCIt button
 Then the NCIt system displays
@@ -78,10 +71,10 @@ When I have a list of Preferred Term
 And I click Add All button
 Then all terms in list of Preferred Term display in Your Selection section of page
 When I click Reset button
-Then all entries are removed from the page
+Then all entries in the Your Selection section and the list of Preferred Term are removed
 
 
-Scenario: #7 Edit Disease/Condition for a trial- Only the Disease Code field can be edited
+Scenario: #6 Edit Disease/Condition for a trial- Only the Disease Code field can be edited
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
@@ -104,7 +97,7 @@ And the updated Disease/Condition screen is associated to the trial
 And the message Record Updated displays
 
 
-Scenario: #8  Find a Disease/Condition Reset
+Scenario: #7  Find a Disease/Condition Reset
 Given I am on the Find a Disease/Condition screen
 When I have entered a term
 And I Click the search icon or click Enter 
@@ -117,7 +110,7 @@ Then the term is not displayed in 'Your Selections'
 And I get a refreshed screen 
 
 
-Scenario: #9  Delete Disease/Condition for a trial
+Scenario: #8  Delete Disease/Condition for a trial
 Given  I am on the Disease and Condition screen
 And I have selected Delete box for the selected Disease/Condition
 And I have selected another delete check box for another Disease/Condition criteria
@@ -131,7 +124,7 @@ When I have clicked on the cancel button
 Then the selected Disease/Condition criteria is not removed 
 And no message displays
 
-Scenario:  #10 I must select Primary designation  
+Scenario:  #9 I must select Primary designation  
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
@@ -144,7 +137,7 @@ And I select the Save button
 Then an error message displays 
 |Only one disease can be selected as primary |
 
-Scenario:  #11 I can select one secondary disease designation  
+Scenario:  #10 I can select one secondary disease designation  
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
