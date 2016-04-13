@@ -214,8 +214,9 @@
                                 <i class="glyphicon glyphicon-plus"></i> Add Outcome Measure
                             </button>
                             <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="omView.deleteSelected()"
+                                    confirm-msg="Click OK to remove selected Outcome Measure(s) from the study. Click Cancel to abort."
                                     ng-show="omView.curTrial.outcome_measures.length"
-                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length || !paTrialOverview.trialDetailObj.pa_editable">
+                                    ng-disabled="!omView.selectedDeleteOutcomeMeasuresList.length || !paTrialOverview.trialDetailObj.pa_sci_editable">
                                 <i class="glyphicon glyphicon-trash"></i> Delete Selected
                             </button>
                         </div>

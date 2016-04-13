@@ -112,7 +112,7 @@
                                 <th class="text-center td-icon">Delete</th>
                               </thead>
                               <tbody>
-                                <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="status._destroy ? 'deleted-text' : ''">
+                                <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="{'deleted-text': status._destroy, 'edit-selected': status.trial_status_id === trialStatusView.statusObj.trial_status_id}">
                                   <td>{{status.status_date}}</td>
                                   <td>{{status.trial_status_name}}</td>
                                   <td>{{status.comment}}</td>
@@ -135,14 +135,14 @@
                                       </div>
                                   </td>
                                   <td class="text-center td-icon">
-                                      <label class="btn btn-primary" restriction-field ng-disabled="status._destroy" ng-click="trialStatusView.editTrialStatus($index)">
+                                      <button type="button" class="btn btn-primary" restriction-field ng-disabled="status._destroy || trialStatusView.statusObj.edit" ng-click="trialStatusView.editTrialStatus($index)">
                                           <i class="glyphicon glyphicon-edit"></i>
-                                      </label>
+                                      </button>
                                   </td>
                                     <td class="text-center td-icon">
-                                        <label class="btn btn-warning" restriction-field ng-click="trialStatusView.deleteTrialStatus($index)">
+                                        <button type="button" class="btn btn-warning" restriction-field ng-click="trialStatusView.deleteTrialStatus($index)" ng-disabled="trialStatusView.statusObj.edit">
                                             <i class="glyphicon" ng-class="status._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                        </label>
+                                        </button>
                                     </td>
                                 </tr>
                               </tbody>

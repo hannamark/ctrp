@@ -106,25 +106,25 @@
                       </th>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr ng-class="{'edit-selected': generalTrialDetailView.leadProtocolIdEdit}">
                           <td>Lead Organization Trial ID</td>
                           <td>
                             {{generalTrialDetailView.leadProtocolId}}
                           </td>
                           <td class="text-center td-icon">
-                            <button type="button" class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
+                            <button type="button" class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()" ng-disabled="otherId._destroy || generalTrialDetailView.otherIdentifierUpdate">
                               <i class="glyphicon glyphicon-edit"></i>
                             </button>
                           </td>
                           <td class="text-center">--</td>
                       </tr>
-                      <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
+                      <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="{'deleted-text': otherId._destroy, 'edit-selected': generalTrialDetailView.otherIdentifierEditIndex === $index}">
                         <td>{{otherId.identifierName}}</td>
                         <td>
                           {{otherId.protocol_id}}
                         </td>
                         <td class="text-center td-icon">
-                          <button type="button" class="btn btn-primary" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
+                          <button type="button" class="btn btn-primary" restriction-field ng-disabled="otherId._destroy || generalTrialDetailView.otherIdentifierUpdate" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
                             <i class="glyphicon glyphicon-edit"></i>
                           </button>
                         </td>
