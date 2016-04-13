@@ -125,10 +125,10 @@
                 $scope.$emit('updatedInChildScope', {});
 
                 toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                toastr.success('Record(s) deleted.', 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
-                })
+                });
 
             }).catch(function(err) {
                 console.log("error in creating or updating Trial sub group " + JSON.stringify(outerTrial));

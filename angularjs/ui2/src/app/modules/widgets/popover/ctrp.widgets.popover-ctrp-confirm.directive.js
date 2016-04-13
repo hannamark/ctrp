@@ -71,13 +71,6 @@
                 // buttonAction(scope, {$event: popover.event}); // trigger the click action, !not working!
                 scope.ngClick(); // trigger the click action
                 popover.hide();
-                var contentConfirm = angular.element('<div id="ctrp-confirmbox" class="col-sm-12 text-right text-danger rotate">Record(s) deleted.</div>');
-
-                contentConfirm.insertAfter(element);
-                $compile(contentConfirm)(scope);
-                $timeout(function() {
-                    angular.element(document.getElementById( "ctrp-confirmbox" )).remove();
-                },6000);
             }
 
             function cleanupPopover() {
