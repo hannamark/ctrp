@@ -84,7 +84,7 @@
                 obj = obj[pathArr.shift()];
             }
 
-            return obj || undefined;
+            return obj;
         };
 
         /**
