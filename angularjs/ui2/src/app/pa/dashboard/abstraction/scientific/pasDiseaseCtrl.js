@@ -15,7 +15,7 @@
         vm.searchDiseases = function() {
             var searchParams = {disease_name: vm.disease_name};
             DiseaseService.searchDiseases(searchParams).then(function(response) {
-                console.log(response);
+                vm.searchResult = response.diseases;
             }).catch(function(err) {
                 console.log("Error in searching diseases: " + err);
             });

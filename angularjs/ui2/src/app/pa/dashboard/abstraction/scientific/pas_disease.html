@@ -4,6 +4,7 @@
             <uib-accordion-heading>
                 Disease/Condition <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
+
             <form class="form form-horizontal" role="form">
                 <div class="form-group">
                     <label for="protocol_id" class="control-label col-xs-12 col-sm-2">Find a Disease/Condition: </label>
@@ -19,6 +20,27 @@
                     </div>
                 </div>
             </form>
+
+            <fieldset>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.searchResult.length">
+                        <thead>
+                            <th>Preferred Name</th>
+                            <th>Synonyms</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="result in diseaseView.searchResult track by $index">
+                                <td>{{result.preferred_name}}</td>
+                                <td>
+                                    <p ng-repeat="synonym in result.ncit_disease_synonyms track by $index">
+                                        {{synonym.alternate_name}}
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
         </uib-accordion-group>
     </uib-accordion>
 </div>

@@ -1,8 +1,15 @@
 json.diseases do
   json.array!(@diseases) do |disease|
     json.extract! disease, :id, :disease_code, :nt_term_id, :preferred_name, :menu_display_name, :ncit_status_id
+
     json.ncit_status do
       json.extract! disease.ncit_status, :id, :name, :code
+    end
+
+    json.ncit_disease_synonyms do
+      json.array!(disease.ncit_disease_synonyms) do |synonym|
+        json.extract! synonym, :id, :alternate_name
+      end
     end
   end
 end
