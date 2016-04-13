@@ -30,7 +30,6 @@ And a message displays with the number of results for the terms entered
     Then the Disease/Condition screen displays with the term(s) added 
 
       |Preferred Name  |
-      |Code  |
       |NCI Thesaurus Concept ID  |
       |Menu Display Name  |
       |Parent Preferred Name(s)  |

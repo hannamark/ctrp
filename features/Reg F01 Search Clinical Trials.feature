@@ -8,18 +8,32 @@ And I am on the Search Clinical Trials Screen
 When I select the option to search "My Trials"
 Then CTRP will display all trials where I am listed as a Trial Owner and the trials match the trial search criteria
 And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
-|Lead Protocol ID|
-|NCI ID|
-|Official Title|
-|Phase|
-|Purpose|
-|Pilot|
-|Principal Investigator|
+|NCI Trial Identifier|
+|Title|
 |Lead Organization|
+|Lead Org Trial Identifier|
+|Principal Investigator|
+|ClinicalTrials.gov Identifier|
+|Current Trial Status|
+|Current Processing Status|
+|Available Actions|
+|Accrual Disease Terminology|
+|Phase|
+|Primary Purpose|
+|Category|
+|Trial Start Date|
+|Responsible Party|
 |Sponsor|
 |Study Source|
-|Current Trial Status|
-|Actions|
+|Record Verification Date|
+|Submitter|
+|Primary Completion Date|
+|Last Update Submitted|
+|Last Updater Name|
+|Last Amendment Submitted|
+|Last Amender Name|
+|On-Hold Reason|
+
 
 Scenario: #2 I can search all clinical trials registered in CTRP
 Given I am logged into the CTRP Registration application

@@ -126,6 +126,11 @@
                         vm.trialDetailObj.associated_trials.unshift(res);
                         closeLookupForm();
                     }
+                    toastr.clear();
+                    toastr.success('Record Created.', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                     vm.deleteAllAssoCheckbox = false;
                 }).catch(function(err) {
                     console.error('error in associating the trial: ', err);
@@ -176,7 +181,7 @@
                         vm.deleteAllAssoCheckbox = false;
 
                         toastr.clear();
-                        toastr.success('Trial Associations have been updated', 'Successful!', {
+                        toastr.success('Record(s) deleted.', 'Operation Successful!', {
                             extendedTimeOut: 1000,
                             timeOut: 0
                         });
