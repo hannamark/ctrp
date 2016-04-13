@@ -13,6 +13,9 @@
               <span ng-show="popoverForm.comment_for_deletion.$dirty">
                   {{255 - popoverForm.comment_for_deletion.$viewValue.length}} characters left
               </span>
+              <span ng-show="errorMsg">
+                  <strong>{{errorMsg}}</strong>
+              </span>
             </div>
           </div>
           <div class="form-actions">
