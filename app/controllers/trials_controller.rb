@@ -229,15 +229,15 @@ class TrialsController < ApplicationController
       @trial = Trial.find(params[:trial_id])
       checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
 
-      if checkout_type == "admin" and @trial.admin_checkout.nil?
+      if checkout_type == "admin" and (@trial.admin_checkout.nil? || @current_user.role == "ROLE_ADMIN" || @current_user.role == "ROLE_SUPER")
         @trial.update_attribute('admin_checkout', checkout_json)
         checkout_message = 'Admin checkout was successful'
 
-      elsif checkout_type == "scientificadmin" and  @trial.admin_checkout.nil? and @trial.scientific_checkout.nil?
+      elsif checkout_type == "scientificadmin" and  ((@trial.admin_checkout.nil? and @trial.scientific_checkout.nil?) || @current_user.role == "ROLE_ADMIN" || @current_user.role == "ROLE_SUPER")
         @trial.update_attributes('admin_checkout': checkout_json, 'scientific_checkout': checkout_json)
         checkout_message = 'Admin and Scientific checkout was successful'
 
-      elsif checkout_type == "scientific" and @trial.scientific_checkout.nil?
+      elsif checkout_type == "scientific" and (@trial.scientific_checkout.nil? || @current_user.role == "ROLE_ADMIN" || @current_user.role == "ROLE_SUPER")
         @trial.update_attribute('scientific_checkout', checkout_json)
         checkout_message = 'Scientific checkout was successful'
       end
