@@ -52,7 +52,6 @@ FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center'
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
-StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 

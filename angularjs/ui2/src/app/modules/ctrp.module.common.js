@@ -84,7 +84,22 @@
                 obj = obj[pathArr.shift()];
             }
 
-            return obj || undefined;
+            return obj;
+        };
+
+        /**
+         * Parse String to JSON object
+         * @param  {String} jsonStr [description]
+         * @return {JSON or null}         [description]
+         */
+        this.jsonStrToObject = function(jsonStr) {
+            var result = null;
+            try {
+                result = JSON.parse(jsonStr);
+            } catch(err) {
+                console.error('err in parsing jsonStr: ', err);
+            }
+            return result;
         };
 
         /**
