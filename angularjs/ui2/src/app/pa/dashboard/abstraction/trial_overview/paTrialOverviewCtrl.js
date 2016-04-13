@@ -23,7 +23,7 @@
         vm.loadingTrialDetail = true;
         console.log('curTrial: ', curTrial);
         vm.trialDetailObj = curTrial;
-        vm.adminCheckoutObj = JSON.parse(vm.trialDetailObj.admin_checkout);
+        vm.adminCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.admin_checkout);
         vm.scientificCheckoutObj = JSON.parse(vm.trialDetailObj.scientific_checkout);
 
         vm.isPanelOpen = true;
@@ -70,7 +70,7 @@
                 var checkout_message = res.checkout_message || 'Checkout was not successful, other user may have checked it out ';
                 if (res.checkout_message !== null) {
                     updateTrialDetailObj(res.result);
-                    vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout);
+                    vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
                     vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout);
                 }
 
@@ -82,7 +82,7 @@
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
                 // console.log('checkin result: ', res.result);
                 updateTrialDetailObj(res.result);
-                vm.adminCheckoutObj = JSON.parse(res.result.admin_checkout); // null
+                vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
                 vm.scientificCheckoutObj = JSON.parse(res.result.scientific_checkout); // null
                 // updateTrialDetailObj(res.result);
                 showToastr(checkinType + ' checkin was successful!', 'top right')

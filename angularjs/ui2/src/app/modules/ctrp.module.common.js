@@ -88,6 +88,21 @@
         };
 
         /**
+         * Parse String to JSON object
+         * @param  {String} jsonStr [description]
+         * @return {JSON or null}         [description]
+         */
+        this.jsonStrToObject = function(jsonStr) {
+            var result = null;
+            try {
+                result = JSON.parse(jsonStr);
+            } catch(err) {
+                console.error('err in parsing jsonStr: ', err);
+            }
+            return result;
+        };
+
+        /**
          * Pop up an alert dialog for user to confirm the operation
          *
          * @param  {String} alertMessage [message for user to make a choice on the operation: cancel or ok]
