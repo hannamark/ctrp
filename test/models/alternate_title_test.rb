@@ -12,10 +12,6 @@
 #  lock_version :integer          default(0)
 #  source       :string
 #
-# Indexes
-#
-#  index_alternate_titles_on_trial_id  (trial_id)
-#
 
 require 'test_helper'
 

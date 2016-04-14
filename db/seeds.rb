@@ -197,6 +197,16 @@ Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
+InterventionType.find_or_create_by(code: 'DRUG', name: 'Drug')
+InterventionType.find_or_create_by(code: 'DEVI', name: 'Device')
+InterventionType.find_or_create_by(code: 'BIOL', name: 'Biological/Vaccine')
+InterventionType.find_or_create_by(code: 'PROC', name: 'Procedure/Surgery')
+InterventionType.find_or_create_by(code: 'RAD', name: 'Radiation')
+InterventionType.find_or_create_by(code: 'BEHA', name: 'Behavioral')
+InterventionType.find_or_create_by(code: 'GENE', name: 'Genetic')
+InterventionType.find_or_create_by(code: 'DSUP', name: 'Dietary Supplement')
+InterventionType.find_or_create_by(code: 'OTH', name: 'Other')
+
 StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
 StudyClassification.find_or_create_by(code: 'SAEF', name: 'Safety/Efficacy')
@@ -865,6 +875,8 @@ AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'Clinical
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
 
 ########## SEEDING APP SETTINGS ENDS ##########
 

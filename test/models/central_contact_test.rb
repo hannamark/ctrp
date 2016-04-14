@@ -15,12 +15,6 @@
 #  extension               :string(255)
 #  fullname                :string
 #
-# Indexes
-#
-#  index_central_contacts_on_central_contact_type_id  (central_contact_type_id)
-#  index_central_contacts_on_person_id                (person_id)
-#  index_central_contacts_on_trial_id                 (trial_id)
-#
 
 require 'test_helper'
 

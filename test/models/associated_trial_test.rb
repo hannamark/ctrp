@@ -13,11 +13,6 @@
 #  official_title         :text
 #  research_category_name :string
 #
-# Indexes
-#
-#  index_associated_trials_on_identifier_type_id  (identifier_type_id)
-#  index_associated_trials_on_trial_id            (trial_id)
-#
 
 require 'test_helper'
 

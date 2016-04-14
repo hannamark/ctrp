@@ -221,7 +221,7 @@
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'Disease/Condition'
+                    label: 'Interventions'
                 }
             });
     }

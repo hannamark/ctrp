@@ -14,11 +14,6 @@
 #  lock_version   :integer          default(0)
 #  ind_ide_number :string(255)
 #
-# Indexes
-#
-#  index_ind_ides_on_holder_type_id  (holder_type_id)
-#  index_ind_ides_on_trial_id        (trial_id)
-#
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 

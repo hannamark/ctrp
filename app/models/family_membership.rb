@@ -13,12 +13,6 @@
 #  uuid                   :string(255)
 #  lock_version           :integer          default(0)
 #
-# Indexes
-#
-#  index_family_memberships_on_family_id               (family_id)
-#  index_family_memberships_on_family_relationship_id  (family_relationship_id)
-#  index_family_memberships_on_organization_id         (organization_id)
-#
 
 class FamilyMembership < ActiveRecord::Base
   include BasicConcerns
