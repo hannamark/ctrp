@@ -275,9 +275,17 @@
             var item = ui.item.scope().item;
             var fromIndex = ui.item.sortable.index;
             var toIndex = ui.item.sortable.dropindex;
-            updateCriteria(false);
-            // console.log('moved: ', item, fromIndex, toIndex);
-            // console.log('criteriaView.trialDetailObj.other_criteria: ', vm.trialDetailObj.other_criteria);
+            if (isFormModelsComplete()) {
+                console.info('form models are all completed!');
+                // only update when the other fields in the form are also completed!
+                updateCriteria(false);
+            }
+        }
+
+        function isFormModelsComplete() {
+            return vm.trialDetailObj.gender_id !== null && vm.trialDetailObj.accept_vol !== null &&
+                 vm.trialDetailObj.min_age !== null && vm.trialDetailObj.min_age_unit_id !== null &&
+                         vm.trialDetailObj.max_age !== null && vm.trialDetailObj.max_age_unit_id !== null;
         }
 
     } // pasEligibilityCtrl
