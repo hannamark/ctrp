@@ -25,11 +25,6 @@
 #  updated_by        :string
 #  extension         :string(255)
 #
-# Indexes
-#
-#  index_organizations_on_source_context_id  (source_context_id)
-#  index_organizations_on_source_status_id   (source_status_id)
-#
 
 class Organization < ActiveRecord::Base
   include BasicConcerns
@@ -59,6 +54,8 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :name_aliases, allow_destroy: true
 
   validates :name, presence: true
+  ##validates_length_of :name, :in => 5..255
+
   validates :address, presence: true
   validates :city, presence: true
 

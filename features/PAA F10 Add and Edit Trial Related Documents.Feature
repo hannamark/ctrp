@@ -52,7 +52,7 @@ Then the Trial Related edited Document will be associated with the trail
 And the date the document was will be listed with the document 
 And the users name that added the document will be listed with the document
 And the prior file will be annotated as Revised
-  @runthis
+
 Scenario: #3 I can Delete Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
@@ -129,31 +129,31 @@ Scenario: #10 Mutliple documents of the same type
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
 When I add a new document
-And have selected the Document type from the list of:
+And I have selected the Document type from the list of:
 |Protocol Document|
-|IRB Approval Document|
-|Informed Consent Document|
-|Participating Sites|
+|IRB Approval|
+|Informed Consent|
+|List of Participating Sites|
 |Protocol Highlighted Document|
-And select save
+And select save on the trial related documents screen
 And there is already a Document type from the list of:
 |Protocol Document|
-|IRB Approval Document|
-|Informed Consent Document|
-|Participating Sites|
+|IRB Approval|
+|Informed Consent|
+|List of Participating Sites|
 |Protocol Highlighted Document|
-Then the system will display a Error message that "The selected document type is already been selected."
-
+Then the system displays a Error message that "Error: The selected document type already exists."
+@runthis
 Scenario: #11 View Trial Related Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Related Documents screen
 Then I can see Document that have the following types:
 |Protocol Document|
-|IRB Approval Document|
-|Informed Consent Document|
-|Participating Sites|
+|IRB Approval|
+|Informed Consent|
 |Protocol Highlighted Document|
+|List of Participating Sites|
 |TSR|
 |Complete Sheet|
-|Change Memo|
+|Change Memo Document|
 |Other|

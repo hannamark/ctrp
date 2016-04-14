@@ -7,10 +7,10 @@
         .controller('pasEligibilityCtrl', pasEligibilityCtrl);
 
     pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods'];
+        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods', 'Common'];
 
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods) {
+        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods, Common) {
         var vm = this;
         var MAX_CHARS = 5000; // maximal character counts for the description field in ALL other criterion
         vm.trialDetailObj = {};
@@ -19,7 +19,8 @@
         delete samplingMethods.server_response;
         vm.samplingMethods = samplingMethods; // array
         vm.otherCriterion = {};
-        vm.otherCriteriaPerPage = 10; // pagination
+        vm.descCharsRemaining = MAX_CHARS;
+        // vm.otherCriteriaPerPage = 10; // pagination
         vm.addOtherCriterionFormShown = false;
         vm.deleteAllOCCheckbox = false;
 
@@ -31,9 +32,11 @@
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
-        vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
-        vm.updateOtherCriteriaType = updateOtherCriteriaType;
         vm.updateOtherCriteria = updateOtherCriteria;
+        vm.sortableListener = {};
+        vm.sortableListener.stop = dragItemCallback;
+        //vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
+        //vm.updateOtherCriteriaType = updateOtherCriteriaType;
 
         activate();
         function activate() {
@@ -51,8 +54,8 @@
             _getTrialDetailCopy();
         }
 
-        function updateCriteria() {
-            vm.trialDetailObj.other_criteria_attributes = vm.trialDetailObj.other_criteria;
+        function updateCriteria(showToastr) {
+            vm.trialDetailObj.other_criteria_attributes = _labelSortableIndex(vm.trialDetailObj.other_criteria);
             var outerTrial = {};
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
@@ -67,18 +70,32 @@
 
                     PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                     $scope.$emit('updatedInChildScope', {});
-
-                    toastr.clear();
-                    toastr.success('Eligibility Criteria has been updated', 'Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    if (showToastr) {
+                        toastr.clear();
+                        toastr.success('Eligibility Criteria has been updated', 'Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                    }
                     _getTrialDetailCopy();
                 }
 
             }).catch(function(err) {
                 console.error('error in updating trial design: ', err);
             });
+        }
+
+        /**
+         * Add 'index' field to each other_criterion, persisted to database
+         * @param  {[Array]} ocArray [description]
+         * @return {[Array]}         [with the additional 'index' field to each element]
+         */
+        function _labelSortableIndex(ocArray) {
+            var sortedArray = _.map(ocArray, function(oc, idx) {
+                oc.index = idx;
+                return oc;
+            });
+            return sortedArray;
         }
 
         function prepareOtherCriterion(criterionType) {
@@ -127,13 +144,32 @@
                 // return if the description is empty
                 return;
             }
+            var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
-            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
-                    !confirm(confirmMsg)) {
-                    // if duplicate other criterion description and user cancels, return;
-                    return;
+            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria)) {
+                // if OC exists already
+                Common.alertConfirm(confirmMsg).then(function(ok) {
+                    isConfirmed = ok;
+                }).catch(function(cancel) {
+                    // isConfirmed = cancel;
+                }).finally(function() {
+                    if (isConfirmed === true) {
+                        // user confirmed
+                        _insertOC(otherCriterionObj);
+                    } // isConfirmed
+                });
+            } else {
+                _insertOC(otherCriterionObj);
             }
 
+        } // upsertOtherCriterion
+
+        /**
+         * Interner function called by upsertOtherCriterion
+         * @param  {JSON Object} otherCriterionObj [description]
+         * @return {Void}                   [description]
+         */
+        function _insertOC(otherCriterionObj) {
             if (otherCriterionObj.id === undefined) {
                 otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
@@ -177,8 +213,13 @@
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
 
             vm.addOtherCriterionFormShown = false;
-            vm.criteriaView.otherCriterion.edit = false;
+            vm.otherCriterion = newOtherCriterion(''); // reset to empty because edit/update is complete
         }
+
+/*
+        ADIL: Removed inline editing feature so no longer required since
+              function updateOtherCriteria() performs both tasks in one function.
+              Commented out for now
 
         function updateOtherCriteriaDesc(otherCriterionDesc, index) {
             if (otherCriterionDesc.length === 0) {
@@ -190,6 +231,7 @@
         function updateOtherCriteriaType(otherCriterionType, index) {
             vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
+*/
 
         /**
          * Check whether the Other Criterion description is duplicate
@@ -209,8 +251,6 @@
             $scope.$watchCollection(function() {return vm.trialDetailObj.other_criteria;}, function(
                 newVal, oldVal) {
                     // number of characters for other criterion description (cumulative)
-
-                    console.info('newVal for other_criteria', newVal);
                     if (angular.isArray(newVal) && newVal.length > 0) {
                         vm.numCharsUsedInOC = OCDescCharCount(newVal);
                         vm.descCharsRemaining = MAX_CHARS - vm.numCharsUsedInOC;
@@ -229,6 +269,29 @@
                 totalCounts += oc.criteria_desc.length;
             });
             return totalCounts;
+        }
+
+        /**
+         * Callback for dragging item around
+         * @param  {[type]} event [description]
+         * @param  {[type]} ui    [description]
+         * @return {[type]}       [description]
+         */
+        function dragItemCallback(event, ui) {
+            var item = ui.item.scope().item;
+            var fromIndex = ui.item.sortable.index;
+            var toIndex = ui.item.sortable.dropindex;
+            if (isFormModelsComplete()) {
+                console.info('form models are all completed!');
+                // only update when the other fields in the form are also completed!
+                updateCriteria(false);
+            }
+        }
+
+        function isFormModelsComplete() {
+            return vm.trialDetailObj.gender_id !== null && vm.trialDetailObj.accept_vol !== null &&
+                 vm.trialDetailObj.min_age !== null && vm.trialDetailObj.min_age_unit_id !== null &&
+                         vm.trialDetailObj.max_age !== null && vm.trialDetailObj.max_age_unit_id !== null;
         }
 
     } // pasEligibilityCtrl

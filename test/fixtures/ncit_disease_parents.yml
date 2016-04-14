@@ -12,12 +12,6 @@
 #  uuid                :string(255)
 #  lock_version        :integer          default(0)
 #
-# Indexes
-#
-#  index_ncit_disease_parents_on_child_id        (child_id)
-#  index_ncit_disease_parents_on_ncit_status_id  (ncit_status_id)
-#  index_ncit_disease_parents_on_parent_id       (parent_id)
-#
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 

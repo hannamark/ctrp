@@ -292,25 +292,41 @@
             outerTrial.trial = vm.curTrial;
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-
+            var resStatus = undefined;
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                resStatus = response.server_response.status;
 
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.bio_markers = response["bio_markers"];
-                PATrialService.setCurrentTrial(vm.curTrial);
-                $scope.$emit('updatedInChildScope', {});
+                if (response.server_response.status === 200) {
 
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                })
-                vm.addEditMode=false;
-                vm.disableBtn = false;
-                vm.selectedAllBM = false;
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    vm.curTrial.bio_markers = response["bio_markers"];
+                    PATrialService.setCurrentTrial(vm.curTrial);
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    })
+                    vm.addEditMode = false;
+                    vm.disableBtn = false;
+                    vm.selectedAllBM = false;
+
+                } else {
+                    console.log("error while trying to save  bio markers" + response.server_response.status);
+                    vm.addEditMode=true;
+                    vm.disableBtn = false;
+                }
+
             }).catch(function(err) {
                 vm.disableBtn = false;
-                console.log("error in creating or updating sub group " + JSON.stringify(outerTrial));
+                console.log("error in creating or updating bio marker " + JSON.stringify(outerTrial));
+            }).finally(function() {
+               // TODO: change the visibility here
+                if (resStatus>210) {
+                    vm.addEditMode= true;
+                }
+
             });
         };//saveBioMarker
 
@@ -353,10 +369,10 @@
                 $scope.$emit('updatedInChildScope', {});
 
                 toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                toastr.success('Record(s) deleted.', 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
-                })
+                });
 
             }).catch(function(err) {
                 vm.disableBtn = false;
@@ -437,6 +453,7 @@
                 vm.isSpecTypeOtherChecked = false;
                 vm.isAssayTypeOtherChecked = false
                 vm.isEvalTypeOtherChecked = false;
+                vm.disableBtn = false;
                 
 
             }

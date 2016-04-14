@@ -52,7 +52,6 @@ FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center'
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
-StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -197,6 +196,16 @@ SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
 Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
+
+InterventionType.find_or_create_by(code: 'DRUG', name: 'Drug')
+InterventionType.find_or_create_by(code: 'DEVI', name: 'Device')
+InterventionType.find_or_create_by(code: 'BIOL', name: 'Biological/Vaccine')
+InterventionType.find_or_create_by(code: 'PROC', name: 'Procedure/Surgery')
+InterventionType.find_or_create_by(code: 'RAD', name: 'Radiation')
+InterventionType.find_or_create_by(code: 'BEHA', name: 'Behavioral')
+InterventionType.find_or_create_by(code: 'GENE', name: 'Genetic')
+InterventionType.find_or_create_by(code: 'DSUP', name: 'Dietary Supplement')
+InterventionType.find_or_create_by(code: 'OTH', name: 'Other')
 
 StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
@@ -867,6 +876,8 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 
 ########## SEEDING MAIL TEMPLATES STARTS ##########
@@ -988,9 +999,9 @@ family1.organizations << org3
 family1.organizations << org4
 family1.organizations << org5
 
-ctep = Organization.find_or_create_by( id: 9999998,
-                                       source_id: '9999998',
-                                       name: 'organization for restfulservices',
+ctep = Organization.find_or_create_by( id: 10000000,
+                                       source_id: '10000000',
+                                       name: 'CTEP',
                                        phone:'240-276-0001',
                                        source_status: SourceStatus.find_by_code("ACT"),
                                        source_context: SourceContext.find_by_code('CTEP'),
@@ -1001,6 +1012,34 @@ ctep = Organization.find_or_create_by( id: 9999998,
                                        postal_code: '20850',
                                        email: "ncictrpdev@mail.nih.gov"
 )
+ccr = Organization.find_or_create_by( id: 10000001,
+                                       source_id: '10000001',
+                                       name: 'CCR',
+                                       phone:'240-276-0002',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+dcp = Organization.find_or_create_by( id: 10000002,
+                                       source_id: '10000002',
+                                       name: 'DCP',
+                                       phone:'240-276-0003',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
 
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
                {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "approve" => true},
@@ -1019,7 +1058,10 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "approve" => true},
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
-               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
+               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
+               {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
+               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
+
 
 ]
 
@@ -1036,7 +1078,16 @@ test_users.each do |u|
       end
     end
     if user.role == "ROLE_SERVICE-REST"
-      user.organization = ctep
+      case user.username
+        when "ctepservice"
+          user.organization = ctep
+
+        when "dcpservice"
+          user.organization = dcp
+
+        when "ccrservice"
+          user.organization = ccr
+      end
     end
     user.save!
     #puts "Updated role of user = #{user.username}, role = #{user.role}"

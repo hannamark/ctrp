@@ -88,6 +88,7 @@ Then the Biomarkers list will be displayed
  
 
       |Name|
+      |Protocol Marker Name|
       |Evaluation Type|
       |Assay Type|
       |Biomarker Use                    |

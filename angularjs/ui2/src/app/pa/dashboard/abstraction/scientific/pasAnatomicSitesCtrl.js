@@ -57,8 +57,10 @@
 
         };
 
-        vm.saveTrial = function(){
+        vm.saveTrial = function(params){
             vm.disableBtn = true;
+
+            var successMsg = '';
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
@@ -75,8 +77,14 @@
                 $scope.$emit('updatedInChildScope', {});
                 vm.curTrial = response;
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+
+                if (params && params.del) {
+                    successMsg = 'Record(s) deleted.';
+                } else {
+                    successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
+                }
                 toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                toastr.success(successMsg, 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
@@ -85,7 +93,10 @@
             });
 
         }//saveTrial
-
+        
+        vm.reset = function() {
+            vm.anatomic_sites_selected = [];
+        };
 
         function deleteListHandler(anatomicSitesSelectedInCheckboxes){
             //console.log("In deleteListHandler anatomicSitesSelectedInCheckboxes" + JSON.stringify(anatomicSitesSelectedInCheckboxes));
@@ -113,7 +124,7 @@
                 anatomicSiteToBeDeletedFromDb._destroy = true;
                 vm.curTrial.anatomic_site_wrappers_attributes.push(anatomicSiteToBeDeletedFromDb);
             }
-            vm.saveTrial();
+            vm.saveTrial({"del": anatomicSiteToBeDeletedFromDb});
         }
 
         function saveSelection() {

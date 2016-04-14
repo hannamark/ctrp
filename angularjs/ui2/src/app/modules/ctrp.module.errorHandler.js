@@ -5,9 +5,9 @@
     angular.module('ctrp.module.errorHandler', [])
     .service('ErrorHandlingService', ErrorHandlingService);
 
-    ErrorHandlingService.$inject = ['$timeout', 'Common'];
+    ErrorHandlingService.$inject = ['$timeout'];
 
-    function ErrorHandlingService($timeout, Common) {
+    function ErrorHandlingService($timeout) {
         var errorDict = {
             301: 'Resources moved permanently',
             400: 'Bad Request',
@@ -24,6 +24,7 @@
             413: 'Reuest entity is too large for the server to process',
             414: 'Request URL is too long',
             415: 'Request contains unsupported media/file type',
+            422: 'Object cannot be saved',
             500: 'Internal server error encountered',
             503: 'Service is not available',
             504: 'Gateway has timedout',
@@ -38,5 +39,9 @@
         this.getErrorMsg = function(httpStatusCode) {
             return errorDict[httpStatusCode] || 'Unknown Error';
         };
-    }
+
+    } // ErrorHandlingService
+
+
+
 })();

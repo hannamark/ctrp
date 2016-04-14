@@ -139,6 +139,7 @@
                                                             <textarea class="form-control input-sm" id="comments" name="comments"
                                                                       rows="1"
                                                                       ng-maxlength="160"
+                                                                      maxlength="160"
                                                                       ng-model="psView.current_site_recruitment.comments">
                                                             </textarea>
                                                             <span ng-show="ps_sites_form.comments.$dirty">
@@ -523,7 +524,7 @@
                 </thead>
                 <tbody>
 
-                <tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="{'deleted-text': participating_site._destroy, 'edit-selected': participating_site.id === psView.currentParticipatingSite.id}">
+                <tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item">
                 <!--<tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                     <td>{{participating_site.organization.id}}</td>
                     <td>
@@ -557,9 +558,10 @@
             <div class="btn-toolbar">
                 <button type="submit" ng-disable="!paTrialOverview.trialDetailObj.pa_editable" class="btn btn-primary pull-right" id="add_participating_site" restriction-field
                         ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-click="psView.setAddMode()">Add Participating Site</button>
-                <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="psView.deleteSelected()"
+                <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="psView.deleteSelected()"
+                        confirm-msg="Click OK to remove selected Participating Site(s) from the study. Click Cancel to abort."
                         ng-show="psView.curTrial.participating_sites.length"
-                        ng-disabled="!psView.selectedDeleteParticipatingSitesList.length">
+                        ng-disabled="!psView.selectedDeleteParticipatingSitesList.length || !paTrialOverview.trialDetailObj.pa_editable">
                     <i class="glyphicon glyphicon-trash"></i> Delete Selected
                 </button>
             </div>

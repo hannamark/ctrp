@@ -14,19 +14,17 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Lead Org Trial Identifier|
 |Principal Investigator|
 |ClinicalTrials.gov Identifier|
-|Other Identifiers|
 |Current Trial Status|
 |Current Processing Status|
 |Available Actions|
 |Accrual Disease Terminology|
-|Sites|
 |Phase|
 |Primary Purpose|
 |Category|
 |Trial Start Date|
 |Responsible Party|
 |Sponsor|
-|Summary 4 Funding Sponsor Type|
+|Study Source|
 |Record Verification Date|
 |Submitter|
 |Primary Completion Date|
@@ -35,6 +33,7 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Last Amendment Submitted|
 |Last Amender Name|
 |On-Hold Reason|
+
 
 Scenario: #2 I can search all clinical trials registered in CTRP
 Given I am logged into the CTRP Registration application

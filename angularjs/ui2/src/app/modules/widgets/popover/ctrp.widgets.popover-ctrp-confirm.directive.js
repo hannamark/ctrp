@@ -1,5 +1,18 @@
 /**
  * Created by wangg5 on 04/07/16.
+ * Usage example:
+ * <button
+ * 	ctrp-confirm
+ * 	confirm-template="path/to/custom/template.html"
+ * 	ctrp-click="deleteAll()"
+ * > Delete
+ * </button>
+ *
+ * <b>Note: </b> DO NOT use Angular's ng-click in the button that
+ * uses ctrp-confirm directive, instead attach your delete action to
+ * the ctrp-click attributes (like above)
+ *
+ * <b>confirm-template is optional, use it only when you need a custom template<b>
  *
  */
 
@@ -25,22 +38,27 @@
 
         function linkerFn(scope, element, attrs) {
             var popover = $popover(element, {
-                title: 'Are you sure you want to delete?',
+                title: 'Please Confirm',
                 templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
                 html: true,
                 trigger: 'manual',
                 placement: 'top',
                 animation: 'am-flip-x',
-                content: 'Please confirm this operation',
+                content: attrs.confirmMsg || 'Are you sure?',
                 autoClose: true,
                 scope: scope
             });
 
             element.bind('click', function(event) {
-                popover.event = event;
-                if (!popover.$isShown) {
-                    // console.info('popover: ', popover);
-                    popover.show();
+                if (attrs.confirmOff) {
+                    // trigger the click action
+                    scope.ngClick();
+                } else {
+                    popover.event = event;
+                    if (!popover.$isShown) {
+                        // console.info('popover: ', popover);
+                        popover.show();
+                    }
                 }
             });
 

@@ -273,7 +273,7 @@
                             </thead>
                             <tbody>
 
-                            <tr ng-repeat="bio_marker in markersView.curTrial.bio_markers track by $index" class="animated-item" ng-class="{'deleted-text': bio_marker._destroy, 'edit-selected': bio_marker.id === markersView.currentBioMarker.id}">
+                            <tr ng-repeat="bio_marker in markersView.curTrial.bio_markers track by $index" class="animated-item">
 
                                 <td>
                                     {{bio_marker.name}}
@@ -311,7 +311,8 @@
                             <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="markersView.setAddMode()">
                                 <i class="glyphicon glyphicon-plus"></i> Add Bio Marker
                             </button>
-                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ng-click="markersView.deleteSelected()" ng-disabled="!markersView.selectedDeleteBioMarkersList.length" ng-show="markersView.curTrial.bio_markers.length">
+                            <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="markersView.deleteSelected()" confirm-msg="Click OK to remove selected Biomarker(s) form the study. Click Cancel to abort."
+                                    ng-disabled="!markersView.selectedDeleteBioMarkersList.length || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="markersView.curTrial.bio_markers.length">
                                 <i class="glyphicon glyphicon-trash"></i> Delete Selected
                             </button>
                         </div>

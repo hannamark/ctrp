@@ -213,6 +213,7 @@
                         console.log("2server_response="+JSON.stringify(response));
                     });
                 }
+                vm.selectedAllSites = false;
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerPS));
             });
@@ -823,7 +824,7 @@
                 }
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 toastr.clear();
-                toastr.success('Participating Site ' + psId + ' for' + vm.curTrial.lead_protocol_id + ' has been deleted', 'Operation Successful!', {
+                toastr.success('Record(s) deleted.', 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });

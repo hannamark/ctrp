@@ -10,11 +10,6 @@
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
 #
-# Indexes
-#
-#  index_trial_co_pis_on_person_id  (person_id)
-#  index_trial_co_pis_on_trial_id   (trial_id)
-#
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
