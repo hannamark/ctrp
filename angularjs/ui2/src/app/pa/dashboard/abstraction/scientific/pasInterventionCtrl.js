@@ -11,10 +11,16 @@
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, _, $timeout, Common) {
-            console.info('in intervention view!');
+
             var vm = this;
             vm.trialDetailObj = {};
+            vm.showInterventionForm = false;
+            vm.curInterventionObj = {};
 
+            // actions
+            vm.addIntervention = addIntervention;
+            vm.editIntervention = editIntervention;
+            vm.upsertIntervention = upsertIntervention;
 
             activate();
             function activate() {
@@ -24,6 +30,42 @@
             function _getTrialDetailCopy() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
             }
+
+            function addIntervention() {
+                vm.showInterventionForm = true;
+                vm.curInterventionObj = _newInterventionObj();
+            }
+
+            function upsertIntervention(inventionObj) {
+                if (angular.isDefined(inventionObj)) {
+                    if (inventionObj.index !== undefined) {
+                        // insert at index: index
+                    } else {
+                        // unshift at index: 0
+                    }
+                    // TODO: persist to backend
+                    vm.showInterventionForm = false; // hide the form
+                }
+            }
+
+            function editIntervention(index) {
+                vm.showInterventionForm = true;
+                vm.curInterventionObj = angular.copy(vm.trialDetailObj.interventions[index]);
+                vm.curInterventionObj.edit = true;
+                vm.curInterventionObj.index = index;
+            }
+
+            function _newInterventionObj() {
+                return {
+                    name: null,
+                    other_name: null,
+                    description: null,
+                    intervention_type_id: null,
+                    trial_id: null,
+                    edit: false
+                };
+            }
+
 
     } // pasInterventionCtrl
 

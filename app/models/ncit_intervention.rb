@@ -46,9 +46,9 @@ class NcitIntervention < ActiveRecord::Base
               # if !NcitIntervention.exists?(preferred_name: name) # no duplicate preferred_name
                 synonyms = ''
                 node.css('P90').xpath('ncicp:ComplexTerm/ncicp:term-name').each do |synonym|
-                  synonyms += ", #{synonym.text}"  # concatenate each synonym
+                  synonyms += "; #{synonym.text}"  # concatenate each synonym
                 end
-                synonyms = synonyms.sub(',', '') # remove the first comma
+                synonyms = synonyms.sub(';', '') # remove the first semi-colon
                 intervention_type_code = intervention_types.sample # generate a random intervention type code
                 p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}, type_code: #{intervention_type_code}"
                 NcitIntervention.create(preferred_name: name, synonyms: synonyms, description: nil, type_code: intervention_type_code, ct_gov_type_code: nil, ncit_status: act)
