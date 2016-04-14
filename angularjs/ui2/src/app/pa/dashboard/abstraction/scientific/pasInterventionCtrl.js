@@ -17,13 +17,15 @@
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
             vm.selectedInterventionObj = {preferred_name: ''};
+            vm.deleteBtnDisabled = true;
 
             // actions
             vm.addIntervention = addIntervention;
             vm.editIntervention = editIntervention;
             vm.upsertIntervention = upsertIntervention;
             vm.resetLookupForm = resetLookupForm;
-            vm.deleteAllInterventions = deleteAllInterventions;
+            vm.flagAllInterventionsForDeletion = flagAllInterventionsForDeletion;
+            vm.deleteInterventions = deleteInterventions;
 
             activate();
             function activate() {
@@ -78,14 +80,20 @@
             function watchInterventionList() {
                 $scope.$watch(function() {return vm.trialDetailObj.interventions;},
                     function(newVal, oldVal) {
-                        console.info('interventions: ', newVal);
-                });
+                        if (angular.isDefined(newVal) && angular.isArray(newVal)) {
+                            vm.deleteBtnDisabled = _.findIndex(newVal, {_destroy: true}) === -1;
+                        }
+                }, true);
             }
 
-            function deleteAllInterventions(booleanFlag) {
+            function flagAllInterventionsForDeletion(booleanFlag) {
                 _.each(vm.trialDetailObj.interventions, function(inter, idx) {
                     inter._destroy = booleanFlag;
                 });
+            }
+
+            function deleteInterventions() {
+                console.info('deleting interventions')
             }
 
 

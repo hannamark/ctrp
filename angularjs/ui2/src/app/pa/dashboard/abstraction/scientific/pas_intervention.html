@@ -94,18 +94,21 @@
                                 <thead>
                                 <tr>
                                     <th class="col-sm-2">Name</th>
+                                    <th>Description</th>
                                     <th class="col-sm-2">Other Names</th>
                                     <th class="col-sm-2">Type Code</th>
                                     <th class="col-sm-2">ClinicalTrials.gov Type Code</th>
-                                    <th>Description</th>
                                     <th>Edit</th>
-                                    <th class="text-center td-icon"><input type="checkbox" name="delete_all_inter" id="delete_all_inter" ng-model="interventionView.deleteAll" ng-change="interventionView.deleteAllInterventions(interventionView.deleteAll)"></th>
+                                    <th class="text-center td-icon"><input type="checkbox" name="delete_all_inter" id="delete_all_inter" ng-model="interventionView.deleteAll" ng-change="interventionView.flagAllInterventionsForDeletion(interventionView.deleteAll)"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.name === t.name}">
                                         <td>
                                             {{t.name}}
+                                        </td>
+                                        <td>
+                                            {{t.description}}
                                         </td>
                                         <td>
                                             {{t.other_name}}
@@ -115,9 +118,6 @@
                                         </td>
                                         <td>
                                             {{t.ct_type_code}}
-                                        </td>
-                                        <td>
-                                            {{t.description}}
                                         </td>
                                         <td>
                                             Edit
@@ -145,8 +145,8 @@
                       restriction-field
                       ctrp-confirm
                       confirm-msg="Click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort."
-                      ctrp-click="interventionView.deleteTrialAssociations()"
-                      ng-show="interventionView.trialDetailObj.associated_trials.length > 0"
+                      ctrp-click="interventionView.deleteInterventions()"
+                      ng-show="interventionView.trialDetailObj.interventions.length > 0"
                       ng-disabled="interventionView.deleteBtnDisabled || !paTrialOverview.trialDetailObj.pa_sci_editable">
                    <i class="glyphicon glyphicon-remove"></i>  Delete Selected
                   </button>
