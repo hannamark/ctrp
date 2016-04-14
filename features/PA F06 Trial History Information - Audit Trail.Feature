@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PA F05 Trial History Information - Audit Trail.Feature
 
 As any CTRP PA User, I can View the Trial History Information Audit Trail
@@ -262,5 +262,12 @@ When I select the export to Excel option
 Then the contents of the search result will be export to an Excel format spreadsheet
 And I will be able to open and save the spreadsheet
 
+ Scenario: #3 Paging
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I have selected a Trial
+      And I am on the Trial History Information Audit Trail Screen
+      And I select View Audit Trail
+      Then the audit trail will be displayed the trial 
+      And the list will be paganiated  
 
 
