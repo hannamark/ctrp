@@ -1189,3 +1189,13 @@ div.datepicker {
     border-top-color: rgba(0, 0, 0, 0.25);
     border-bottom-width: 0;
 }
+
+.popover-confirm {
+    width: 300px;
+}
+.popover-confirm .popover-message {
+    margin-bottom:3px;
+}
+.popover-confirm .form-actions {
+    text-align: right;
+}
