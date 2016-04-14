@@ -94,7 +94,8 @@ json.bio_markers do
     st_array =MarkerSpecTypeAssociation.where("marker_id = ? ", marker.id).pluck(:specimen_type_id)
     spec_types= SpecimenType.where(id: st_array)
     json.spec_types spec_types
-    json.spec_types_array spec_types.pluck(:code).inspect[1...-1].gsub('"',"")
+    json.spec_types_array
+    spec_types.pluck(:code).inspect[1...-1].gsub('"',"")
 
     biomarker_purpose_array = MarkerBiomarkerPurposeAssociation.where("marker_id = ? ", marker.id).pluck(:biomarker_purpose_id)
     biomarker_purposes = BiomarkerPurpose.where(id: biomarker_purpose_array)
@@ -106,7 +107,7 @@ end
 
 json.interventions do
   json.array!(@trial.interventions) do |intervention|
-    json.extract! intervention, :id, :name, :description
+    json.extract! intervention, :id, :name, :description, :other_name, :lock_version, :intervention_type_id, :trial_id
   end
 end
 

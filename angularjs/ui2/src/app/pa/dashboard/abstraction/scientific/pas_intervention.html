@@ -1,4 +1,4 @@
-<div ng-show="interventionView.showLookupForm">
+<div ng-show="interventionView.showInterventionForm">
         <!-- first row in the accordion body -->
         <div class="row">
             <uib-accordion close-others="false">
@@ -10,35 +10,19 @@
                     <!-- add associated trial -->
                     <div class="row">
                         <form name="intervention_form" role="form" class="form-horizontal" novalidate ctrp-submit="interventionView.lookupTrial()">
-                            <!-- fieldset for eligibility criteria -->
-                            <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="interventionView.showLookupForm">
+                            <!-- fieldset for list of interventions -->
+                            <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="interventionView.showInterventionForm">
                                 <legend class="sub-bordered">
                                     Intervention Detail
                                 </legend>
                                 <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.intervention_form.needsAttention(intervention_form.identifier_type)}">
                                     <label for="intervention_name" class="control-label col-xs-12 col-sm-3">Intervention Name:</label>
-
-                                    <!-- <div class="col-xs-12 col-sm-4">
-                                        <select name="identifier_type" id="identifier_type" class="form-control input-sm"
-                                                ng-model="interventionView.trialQueryObj.identifierTypeId"
-                                                ng-options="type.id as type.name for type in interventionView.identifierTypes"
-                                                ng-required="true"
-                                        >
-                                            <option value="">
-                                                -- Please select a trial identifier type...
-                                            </option>
-                                        </select>
-                                <span ng-messages="ctrpbtn.intervention_form.needsAttention(intervention_form.identifier_type) &&
-                                                    intervention_form.identifier_type.$error">
-                                    <span class="help-block" ng-message="required"><br />Identifier Type is Required</span>
-                               </span>
-                                    </div> -->
                                     <div class="col-xs-12 col-sm-5">
                                         <input type="text" id="intervention_name" class="form-control input-sm">
                                     </div>
                                     <div class="col-xs-12 col-sm-2">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-search"></i> Look Up
+                                        <button type="button" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-search"></i> Look Up Interventions
                                         </button>
                                     </div>
                                 </div>
@@ -85,14 +69,14 @@
         </div>
     </form>
 </div>
-<div class="row" ng-hide="interventionView.showLookupForm && (interventionView.trialDetailObj.associated_trials.length === 0)">
+<div class="row" ng-hide="interventionView.showInterventionForm">
     <uib-accordion close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
                 List of Interventions <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <!-- associated trials -->
-            <div class="row ">
+            <div class="row">
                 <form>
                     <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <div class="row">
@@ -170,7 +154,7 @@
                   <!-- <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-click="interventionView.updateTrialAssociations()">
                     <i class="glyphicon glyphicon-ok"></i>  Save
                   </button> -->
-                  <button type="button" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" ng-click="interventionView.showTrialLookupForm(intervention_form)">
+                  <button type="button" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" ng-click="interventionView.addIntervention()">
                       <i class="glyphicon glyphicon-plus"></i> Add Intervention
                   </button>
                   <button type="button" class="btn btn-danger pull-right" id="cancel_btn"
@@ -189,7 +173,7 @@
       </uib-accordion>
 </div>
 <div class="btn-toolbar" ng-show="interventionView.showLookupForm">
-    <button type="button" class="btn btn-warning pull-right" id="oc_site_list" restriction-field ng-click="interventionView.showLookupForm = false">
-        <i class="glyphicon glyphicon-arrow-left"></i> Back to Associated Trials List
+    <button type="button" class="btn btn-warning pull-right" id="oc_site_list" restriction-field ng-click="interventionView.addIntervention()">
+        <i class="glyphicon glyphicon-arrow-left"></i> Back to List of Interventions
     </button>
 </div>

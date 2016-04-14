@@ -32,6 +32,7 @@
             }
 
             function addIntervention() {
+                console.info('showing intervention');
                 vm.showInterventionForm = true;
                 vm.curInterventionObj = _newInterventionObj();
             }
