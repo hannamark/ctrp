@@ -38,22 +38,27 @@
 
         function linkerFn(scope, element, attrs) {
             var popover = $popover(element, {
-                title: attrs.confirmMsg || 'Are you sure you want to delete?',
+                title: 'Please Confirm',
                 templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
                 html: true,
                 trigger: 'manual',
                 placement: 'top',
                 animation: 'am-flip-x',
-                content: 'Please confirm this operation',
+                content: attrs.confirmMsg || 'Are you sure?',
                 autoClose: true,
                 scope: scope
             });
 
-            element.bind('click', function(event) {                
-                popover.event = event;
-                if (!popover.$isShown) {
-                    // console.info('popover: ', popover);
-                    popover.show();
+            element.bind('click', function(event) {
+                if (attrs.confirmOff) {
+                    // trigger the click action
+                    scope.ngClick();
+                } else {
+                    popover.event = event;
+                    if (!popover.$isShown) {
+                        // console.info('popover: ', popover);
+                        popover.show();
+                    }
                 }
             });
 

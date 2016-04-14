@@ -61,6 +61,7 @@
 
         vm.setToDefaultMode = function() {
             vm.addMode = vm.editMode = vm.copyMode = false;
+            vm.currentOutcomeMeasure = {};
             vm.copyOM = {};
 
             $location.hash('section_top');
