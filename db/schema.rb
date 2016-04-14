@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414144021) do
+ActiveRecord::Schema.define(version: 20160414185519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,15 +369,18 @@ ActiveRecord::Schema.define(version: 20160414144021) do
   end
 
   create_table "grants", force: :cascade do |t|
-    t.string   "funding_mechanism", limit: 255
-    t.string   "institute_code",    limit: 255
-    t.string   "nci",               limit: 255
+    t.string   "funding_mechanism",   limit: 255
+    t.string   "institute_code",      limit: 255
+    t.string   "nci",                 limit: 255
     t.integer  "trial_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uuid",              limit: 255
-    t.integer  "lock_version",                  default: 0
-    t.string   "serial_number",     limit: 255
+    t.string   "uuid",                limit: 255
+    t.integer  "lock_version",                    default: 0
+    t.string   "serial_number",       limit: 255
+    t.text     "deletion_comment"
+    t.datetime "deleted_at"
+    t.string   "deleted_by_username"
   end
 
   add_index "grants", ["trial_id"], name: "index_grants_on_trial_id", using: :btree
@@ -1222,9 +1225,9 @@ ActiveRecord::Schema.define(version: 20160414144021) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1420,9 +1423,9 @@ ActiveRecord::Schema.define(version: 20160414144021) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
