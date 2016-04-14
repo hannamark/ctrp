@@ -10,6 +10,7 @@ var expect = require('chai').expect;
 var util = require('util');
 var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
+var assert = require('assert');
 
 
 /**
@@ -134,6 +135,9 @@ var helper = function() {
             console.log(errorMessage + " was clicked");
             expect(button.get(2).isSelected()).to.eventually.equal(true);
         }
+        else {
+            assert.fail(value, '0 OR 1 OR 2 OR Yes OR No OR Actual OR Anticipated', 'Value -- ' + value + ' --' + ' not found as Radio option button');
+        }
     };
 
     this.setUploadedFile = function (fieldName, fieldValue, getFileNm, errorMessage) {
@@ -185,7 +189,7 @@ var helper = function() {
     this.getVerifyLabel= function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         expect(fieldName.getText()).to.eventually.equal(fieldValue);
-        console.log(errorMessage + " - Required field value");
+        console.log(errorMessage + " - field value");
     };
 
     this.verifyElementPresents =function (fieldName, fieldValueTrueOrFalse) {

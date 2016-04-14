@@ -160,6 +160,101 @@ var registerTrial = function(){
     this.addTrialDateClickNextMonth = element(by.css('.glyphicon.glyphicon-chevron-right'));
     this.addTrialDateClickYearMonthDate = element(by.css('button[role="heading"]'));
 
+    /******************
+     * View Trial *
+     ******************/
+
+    /** Trial Identifiers **/
+    this.viewTrialLeadProtocolIdentifier = element(by.binding('viewTrialView.curTrial.lead_protocol_id'));
+    this.viewTrialNCIID = element(by.binding('viewTrialView.curTrial.nci_id'));
+    this.viewTrialOtherIdentifierNameValue =  element.all(by.binding('otherId.protocol_id'));
+
+    /** Trial Details **/
+    this.viewTrialOfficialTitle = element(by.binding('viewTrialView.curTrial.official_title'));
+    this.viewTrialPhase = element(by.binding('viewTrialView.curTrial.phase.name'));
+    this.viewTrialPilotOption = element(by.binding('viewTrialView.curTrial.pilot'));
+    this.viewTrialResearchCategory = element(by.binding('viewTrialView.curTrial.research_category.name'));
+    this.viewTrialPrimaryPurpose = element(by.binding('viewTrialView.curTrial.primary_purpose.name'));
+    this.viewTrialPrimaryPurposeOtherDescription = element(by.model('trialDetailView.curTrial.primary_purpose_other'));
+    this.viewTrialSecondaryPurpose = element(by.binding('viewTrialView.curTrial.secondary_purpose.name'));
+    this.viewTrialSecondaryPurposeOtherDescription = element(by.model('trialDetailView.curTrial.secondary_purpose_other'));
+    this.viewTrialAccrualDiseaseTerminology = element(by.binding('viewTrialView.curTrial.accrual_disease_term.name'));
+
+    /** Lead Organization/Principal Investigator **/
+    this.viewTrialLeadOrganization = element(by.binding('viewTrialView.curTrial.lead_org.name'));
+    this.viewTrialPrincipalInvestigator = element(by.binding('viewTrialView.curTrial.pi.lname + ', ' + viewTrialView.curTrial.pi.fname'));
+
+    /** Sponsor **/
+    this.viewTrialSponsor = element(by.binding('viewTrialView.curTrial.sponsor.name'));
+
+    /** Data Table 4 Information **/
+    this.viewTrialDataTable4FundingSourceValues = element(by.binding('funding_source.name'));
+    this.viewTrialDataTable4ProgramCode = element(by.model('trialDetailView.curTrial.program_code'));
+
+    /** NIH Grant Information **/
+    this.viewTrialFundedByNCIOption = element.all(by.model('trialDetailView.curTrial.grant_question'));
+    this.viewTrialFundingMechanism = element(by.model('trialDetailView.funding_mechanism'));
+    this.viewTrialInstituteCode = element(by.model('trialDetailView.institute_code'));
+    this.viewTrialSerialNumberBox = element(by.binding('$select.placeholder')); //element(by.css('span[aria-label="Select box activate"]'));//element(by.model('trialDetailView.serial_number'));
+    this.viewTrialSerialNumberField = element(by.css('input[ng-model="$select.search"]'));
+    this.viewTrialSerialNumberSelect = element(by.css('.ui-select-choices-row.select2-highlighted'));
+    this.viewTrialSerialNumberVerify = element(by.css('.select2-choice.ui-select-match'));
+    this.viewTrialNCIDivisionProgramCode = element(by.model('trialDetailView.nci'));
+    this.viewTrialviewGrantInfoButton = element(by.css('button[ng-click="trialDetailView.addGrant()"]'));
+    this.viewTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in trialDetailView.viewedGrants track by $index"]'));
+
+    /** Trial Status **/
+    this.viewTrialStatusDate = element(by.binding('viewTrialView.curTrial.current_trial_status_date'));
+    this.viewTrialStatus = element(by.binding('viewTrialView.curTrial.current_trial_status'));
+    this.viewTrialStatusComment = element(by.model('trialDetailView.status_comment'));
+    this.viewTrialWhyStudyStopped = element(by.model('trialDetailView.why_stopped'));
+
+    /** Trial Dates **/
+    this.viewTrialStartDate = element(by.binding('viewTrialView.curTrial.start_date'));
+    this.viewTrialStartDateOption = element(by.binding('viewTrialView.curTrial.start_date_qual'));
+    this.viewTrialPrimaryCompletionDate = element(by.binding('viewTrialView.curTrial.primary_comp_date'));
+    this.viewTrialPrimaryCompletionDateOption = element(by.binding('viewTrialView.curTrial.primary_comp_date_qual'));
+    this.viewTrialCompletionDate = element(by.binding('viewTrialView.curTrial.comp_date'));
+    this.viewTrialCompletionDateOption = element(by.binding('viewTrialView.curTrial.comp_date_qual'));
+
+    /** FDA IND/IDE Information **/
+    this.viewTrialFDAIND_IDEOption = element.all(by.model('trialDetailView.curTrial.ind_ide_question'));
+    this.viewTrialFDAIND_IDETypes = element(by.model('trialDetailView.ind_ide_type'));
+    this.viewTrialFDAIND_IDETypesList = element.all(by.css('.ind-ide-type'));
+    this.viewTrialFDAIND_IDENumber = element(by.model('trialDetailView.ind_ide_number'));
+    this.viewTrialFDAIND_IDEGrantor = element(by.model('trialDetailView.grantor'));
+    this.viewTrialFDAIND_IDEGrantorList = element.all(by.binding('grantor'));
+    this.viewTrialFDAIND_IDEHolderType = element(by.model('trialDetailView.holder_type_id'));
+    this.viewTrialFDAIND_IDEHolderTypeList = element.all(by.css('option[ng-repeat="holderType in trialDetailView.holderTypeArr"]'));
+    this.viewTrialFDAProgramCode = element(by.model('trialDetailView.nih_nci'));
+    this.viewTrialFDAProgramCodeList = element.all(by.binding('nihNci.code'));
+    this.viewTrialAddIND_IDEButton = element(by.css('button[ng-click="trialDetailView.addIndIde()"]'));
+    this.viewTrialVerifyIND_IDETable = element.all(by.css('tr[ng-repeat="indIde in trialDetailView.addedIndIdes track by $index"]'));
+
+    /** Regulatory Information **/
+    this.viewTrialRegulatoryInformationText = element(by.css('.control-label.col-xs-12.col-sm-7'));
+    this.viewTrialResponsibleParty = element(by.model('trialDetailView.curTrial.responsible_party_id'));
+    this.viewTrialResponsiblePartyList = element(by.model('trialDetailView.curTrial.responsible_party_id')).all(by.css('option[label]'));
+    this.viewTrialInvestigator = element(by.css('input[name="investigator_name1"]'));
+    this.viewTrialInvestigatorTitle = element(by.model('trialDetailView.curTrial.investigator_title'));
+    this.viewTrialInvestigatorAffiliation = element(by.css('input[name="inv_aff_name1"]'));
+    this.viewTrialOversightAuthorityCountry = element(by.model('trialDetailView.authority_country'));
+    this.viewTrialOversightAuthorityOrganization = element(by.model('trialDetailView.authority_org'));
+    this.viewTrialAddOversightAuthorityButton = element(by.css('button[ng-click="trialDetailView.addAuthority()"]'));
+    this.viewTrialVerifyOversightCountryOrganization = element.all(by.css('tr[ng-repeat="authority in trialDetailView.viewedAuthorities track by $index"]'));
+    this.viewTrialFDARegulatedInterventionIndicator = element(by.binding('viewTrialView.curTrial.intervention_indicator'));
+    this.viewTrialSection801Indicator = element(by.binding('viewTrialView.curTrial.sec801_indicator'));
+    this.viewTrialDataMonitoringCommitteeAppointedIndicator = element(by.binding('viewTrialView.curTrial.data_monitor_indicator'));
+    this.viewTrialDuplicateCountryOrganizationMessage = element(by.binding('trialDetailView.addAuthorityError'));
+
+    /** Trial Related Documents **/
+    this.viewTrialVerifyviewedDocs = element.all(by.binding('document.file_name'));
+    this.viewTrialVerifyviewedOtherDocsDescription = element.all(by.binding('document.document_subtype'));
+    this.viewTrialAcceptedFileExtensionMsg = element.all(by.binding('trialDetailView.acceptedFileExtensions'));
+    this.viewTrialAddMoreDocsButton = element(by.css('button[ng-click="trialDetailView.addOtherDoc()"]'));
+    this.viewTrialOtherDocsDescription = element.all(by.model('trialDetailView.other_document_subtypes[$index]'));
+
+
     var helper = new helperFunctions();
 
     /********** Trial Identifiers **********/
@@ -203,19 +298,31 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialPhase = function(trialPhase)  {
+        if (trialPhase !== ''){
         helper.selectValueFromList(this.addTrialPhase,trialPhase,"Add Trial by Phase ID field");
+        }
     };
 
     this.selectAddTrialPilotOption = function(trialPilotOption)  {
-        helper.clickRadioButton(this.addTrialPilotOption,trialPilotOption,"Add Trial by Pilot Option field");
+        if(trialPilotOption.toUpperCase() === 'NO'){
+            helper.clickRadioButton(this.addTrialPilotOption, '0', "Add Trial by Pilot Option field");
+        } else if(trialPilotOption.toUpperCase() === 'YES'){
+            helper.clickRadioButton(this.addTrialPilotOption, '1', "Add Trial by Pilot Option field");
+        } else {
+            helper.clickRadioButton(this.addTrialPilotOption, trialPilotOption, "Add Trial by Pilot Option field");
+        }
     };
 
     this.selectAddTrialResearchCategory = function(trialResearchCategory)  {
-        helper.selectValueFromList(this.addTrialResearchCategory,trialResearchCategory,"Add Trial by Research Category field");
+        if(trialResearchCategory !== '') {
+            helper.selectValueFromList(this.addTrialResearchCategory, trialResearchCategory, "Add Trial by Research Category field");
+        }
     };
 
     this.selectAddTrialPrimaryPurpose = function(trialPrimaryPurpose)  {
-        helper.selectValueFromList(this.addTrialPrimaryPurpose,trialPrimaryPurpose,"Add Trial by Primary Purpose field");
+        if(trialPrimaryPurpose !== '') {
+            helper.selectValueFromList(this.addTrialPrimaryPurpose, trialPrimaryPurpose, "Add Trial by Primary Purpose field");
+        }
     };
 
     this.setAddTrialPrimaryPurposeOtherDescription= function(PrimaryPurposeOtherDescription)  {
@@ -223,7 +330,9 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialSecondaryPurpose = function(trialSecondaryPurpose)  {
-        helper.selectValueFromList(this.addTrialSecondaryPurpose,trialSecondaryPurpose,"Add Trial by Secondary Purpose field");
+        if(trialSecondaryPurpose !== '') {
+            helper.selectValueFromList(this.addTrialSecondaryPurpose, trialSecondaryPurpose, "Add Trial by Secondary Purpose field");
+        }
     };
 
     this.setAddTrialSecondaryPurposeOtherDescription = function(SecondaryPurposeOtherDescription)  {
@@ -231,7 +340,9 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialAccrualDiseaseTerminology = function(trialAccrualDiseaseTerminology)  {
-        helper.selectValueFromList(this.addTrialAccrualDiseaseTerminology,trialAccrualDiseaseTerminology,"Add Trial by Accrual Disease Terminology field");
+        if(trialAccrualDiseaseTerminology !== '') {
+            helper.selectValueFromList(this.addTrialAccrualDiseaseTerminology, trialAccrualDiseaseTerminology, "Add Trial by Accrual Disease Terminology field");
+        }
     };
 
 
@@ -305,15 +416,25 @@ var registerTrial = function(){
     /**********  NIH Grant Information **********/
 
     this.selectAddTrialFundedByNCIOption = function(trialFundedByNCIOption)  {
-        helper.clickRadioButton(this.addTrialFundedByNCIOption,trialFundedByNCIOption,"Add Trial funded by NCI option field");
+        if(trialFundedByNCIOption.toUpperCase() === 'YES'){
+            helper.clickRadioButton(this.addTrialFundedByNCIOption,'0',"Add Trial funded by NCI option field");
+        } else if(trialFundedByNCIOption.toUpperCase() === 'NO'){
+            helper.clickRadioButton(this.addTrialFundedByNCIOption,'1',"Add Trial funded by NCI option field");
+        } else {
+            helper.clickRadioButton(this.addTrialFundedByNCIOption,trialFundedByNCIOption,"Add Trial funded by NCI option field");
+        }
     };
 
     this.selectAddTrialFundingMechanism = function(trialFundingMechanism)  {
-        helper.selectValueFromList(this.addTrialFundingMechanism,trialFundingMechanism,"Add Trial by Funding Mechanism field");
+        if(trialFundingMechanism !== '') {
+            helper.selectValueFromList(this.addTrialFundingMechanism, trialFundingMechanism, "Add Trial by Funding Mechanism field");
+        }
     };
 
     this.selectAddTrialInstituteCode = function(trialInstituteCode)  {
-        helper.selectValueFromList(this.addTrialInstituteCode,trialInstituteCode,"Add Trial by Institute Code field");
+        if(trialInstituteCode !== '') {
+            helper.selectValueFromList(this.addTrialInstituteCode, trialInstituteCode, "Add Trial by Institute Code field");
+        }
     };
 
     this.setAddTrialSerialNumber = function(trialSerialNumber)  {
@@ -322,7 +443,9 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialNCIDivisionProgramCode = function(trialNCIDivisionProgramCode)  {
-        helper.selectValueFromList(this.addTrialNCIDivisionProgramCode,trialNCIDivisionProgramCode,"Add Trial by NCI Division Program code field");
+        if(trialNCIDivisionProgramCode !== '') {
+            helper.selectValueFromList(this.addTrialNCIDivisionProgramCode, trialNCIDivisionProgramCode, "Add Trial by NCI Division Program code field");
+        }
     };
 
     this.clickAddTrialAddGrantInfoButton = function(){
@@ -434,11 +557,19 @@ var registerTrial = function(){
     /********** FDA IND/IDE Information **********/
 
     this.selectAddTrialFDAIND_IDEOption = function(trialFDAIND_IDEOption)  {
-        helper.clickRadioButton(this.addTrialFDAIND_IDEOption,trialFDAIND_IDEOption,"Add Trial funded by FDA_IND option field");
+        if(trialFDAIND_IDEOption.toUpperCase() === 'YES'){
+            helper.clickRadioButton(this.addTrialFDAIND_IDEOption,'0',"Add Trial funded by FDA_IND option field");
+        } else if(trialFDAIND_IDEOption.toUpperCase() === 'NO'){
+            helper.clickRadioButton(this.addTrialFDAIND_IDEOption,'1',"Add Trial funded by FDA_IND option field");
+        } else {
+            helper.clickRadioButton(this.addTrialFDAIND_IDEOption,trialFDAIND_IDEOption,"Add Trial funded by FDA_IND option field");
+        }
     };
 
     this.selectAddTrialFDAIND_IDETypes = function(trialFDAIND_IDETypes)  {
-        helper.selectValueFromList(this.addTrialFDAIND_IDETypes,trialFDAIND_IDETypes,"Add Trial by IND/IDE Types field");
+        if(trialFDAIND_IDETypes !== '') {
+            helper.selectValueFromList(this.addTrialFDAIND_IDETypes, trialFDAIND_IDETypes, "Add Trial by IND/IDE Types field");
+        }
     };
 
     this.setAddTrialFDAIND_IDENumber = function(trialFDAIND_IDENumber)  {
@@ -446,15 +577,21 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialFDAIND_IDEGrantor = function(trialFDAIND_IDEGrantor)  {
-        helper.selectValueFromList(this.addTrialFDAIND_IDEGrantor,trialFDAIND_IDEGrantor,"Add Trial by IND/IDE Grantor field");
+        if(trialFDAIND_IDEGrantor !== '') {
+            helper.selectValueFromList(this.addTrialFDAIND_IDEGrantor, trialFDAIND_IDEGrantor, "Add Trial by IND/IDE Grantor field");
+        }
     };
 
     this.selectAddTrialFDAIND_IDEHolderType = function(trialFDAIND_IDEHolderType)  {
-        helper.selectValueFromList(this.addTrialFDAIND_IDEHolderType,trialFDAIND_IDEHolderType,"Add Trial by IND/IDE Holder Type field");
+        if(trialFDAIND_IDEHolderType !== '') {
+            helper.selectValueFromList(this.addTrialFDAIND_IDEHolderType, trialFDAIND_IDEHolderType, "Add Trial by IND/IDE Holder Type field");
+        }
     };
 
     this.selectAddTrialFDAProgramCode = function(trialFDAProgramCode)  {
-        helper.selectValueFromList(this.addTrialFDAProgramCode,trialFDAProgramCode,"Add Trial by FDA IND/IDE Program Code field");
+        if(trialFDAProgramCode !== '') {
+            helper.selectValueFromList(this.addTrialFDAProgramCode, trialFDAProgramCode, "Add Trial by FDA IND/IDE Program Code field");
+        }
     };
 
     this.clickAddTrialAddIND_IDEButton = function(){
@@ -478,7 +615,9 @@ var registerTrial = function(){
 
 
     this.selectAddTrialResponsibleParty = function(trialResponsibleParty)  {
-        helper.selectValueFromList(this.addTrialResponsibleParty,trialResponsibleParty,"Add Trial by Responsible Party field");
+        if(trialResponsibleParty !== '') {
+            helper.selectValueFromList(this.addTrialResponsibleParty, trialResponsibleParty, "Add Trial by Responsible Party field");
+        }
     };
 
     this.getVerifyAddTrialResponsibleParty = function(trialResponsibleParty)  {
@@ -502,11 +641,15 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialOversightAuthorityCountry = function(trialOversightAuthorityCountry)  {
-        helper.selectValueFromList(this.addTrialOversightAuthorityCountry,trialOversightAuthorityCountry,"Add Trial by Trial Oversight Authority Country field");
+        if(trialOversightAuthorityCountry !== '') {
+            helper.selectValueFromList(this.addTrialOversightAuthorityCountry, trialOversightAuthorityCountry, "Add Trial by Trial Oversight Authority Country field");
+        }
     };
 
     this.selectAddTrialOversightAuthorityOrganization = function(trialOversightAuthorityOrganization)  {
-        helper.selectValueFromList(this.addTrialOversightAuthorityOrganization,trialOversightAuthorityOrganization,"Add Trial by Trial Oversight Authority Organization field");
+        if(trialOversightAuthorityOrganization !== '') {
+            helper.selectValueFromList(this.addTrialOversightAuthorityOrganization, trialOversightAuthorityOrganization, "Add Trial by Trial Oversight Authority Organization field");
+        }
     };
 
     this.clickAddTrialAddOversightAuthorityButton = function() {
@@ -514,15 +657,39 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialFDARegulatedInterventionIndicator = function(trialFDARegulatedInterventionIndicator)  {
-        helper.clickRadioButton(this.addTrialFDARegulatedInterventionIndicator,trialFDARegulatedInterventionIndicator,"Add Trial by Trial FDA Regulated Intervention Indicator Option field");
+        if(trialFDARegulatedInterventionIndicator.toUpperCase() === 'NO'){
+            helper.clickRadioButton(this.addTrialFDARegulatedInterventionIndicator,'0',"Add Trial by Trial FDA Regulated Intervention Indicator Option field");
+        } else if(trialFDARegulatedInterventionIndicator.toUpperCase() === 'YES'){
+            helper.clickRadioButton(this.addTrialFDARegulatedInterventionIndicator,'1',"Add Trial by Trial FDA Regulated Intervention Indicator Option field");
+        } else if (trialFDARegulatedInterventionIndicator.toUpperCase() === 'N/A' ||  trialFDARegulatedInterventionIndicator.toUpperCase() === 'NA') {
+            helper.clickRadioButton(this.addTrialFDARegulatedInterventionIndicator,'2',"Add Trial by Trial FDA Regulated Intervention Indicator Option field");
+        } else {
+            helper.clickRadioButton(this.addTrialFDARegulatedInterventionIndicator,trialFDARegulatedInterventionIndicator,"Add Trial by Trial FDA Regulated Intervention Indicator Option field");
+        }
     };
 
     this.selectAddTrialSection801Indicator = function(trialSection801Indicator)  {
-        helper.clickRadioButton(this.addTrialSection801Indicator,trialSection801Indicator,"Add Trial by Trial Section 801 Indicator Option field");
+        if(trialSection801Indicator.toUpperCase() === 'NO'){
+            helper.clickRadioButton(this.addTrialSection801Indicator,'0',"Add Trial by Trial Section 801 Indicator Option field");
+        } else if(trialSection801Indicator.toUpperCase() === 'YES'){
+            helper.clickRadioButton(this.addTrialSection801Indicator,'1',"Add Trial by Trial Section 801 Indicator Option field");
+        } else if (trialSection801Indicator.toUpperCase() === 'N/A' ||  trialSection801Indicator.toUpperCase() === 'NA') {
+            helper.clickRadioButton(this.addTrialSection801Indicator,'2',"Add Trial by Trial Section 801 Indicator Option field");
+        } else {
+            helper.clickRadioButton(this.addTrialSection801Indicator,trialSection801Indicator,"Add Trial by Trial Section 801 Indicator Option field");
+        }
     };
 
     this.selectAddTrialDataMonitoringCommitteeAppointedIndicator= function(trialDataMonitoringCommitteeAppointedIndicator)  {
-        helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,trialDataMonitoringCommitteeAppointedIndicator,"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+        if(trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'NO'){
+            helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,'0',"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+        } else if(trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'YES'){
+            helper.trialDataMonitoringCommitteeAppointedIndicator(this.addTrialDataMonitoringCommitteeAppointedIndicator,'1',"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+        } else if (trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'N/A' ||  trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'NA') {
+            helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,'2',"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+        } else {
+            helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,trialDataMonitoringCommitteeAppointedIndicator,"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+        }
     };
 
     this.verifyAddTrialFDARegulatedInterventionIndicator = function(trialFDARegulatedInterventionIndicator, result)  {
@@ -575,6 +742,145 @@ var registerTrial = function(){
         this.addTrialOtherDocsDescription.get(indexOfDescriptionField).sendKeys(descriptionText);
         expect(this.addTrialOtherDocsDescription.get(indexOfDescriptionField).getAttribute('value')).to.eventually.equal(descriptionText);
            };
+
+
+    /*************************************** Verify Trial Page *********************************/
+
+
+
+    /********** Verify Trial Identifiers **********/
+
+    this.getViewTrialLeadProtocolIdentifier = function(trialLeadProtocolIdentifier)  {
+        helper.getVerifyLabel(this.viewTrialLeadProtocolIdentifier,trialLeadProtocolIdentifier,"View Trial by Lead Protocol Identifier field");
+    };
+
+    this.getViewTrialOtherIdentifier = function(trialLeadProtocolIdentifier){
+        helper.getVerifyValue(this.viewTrialOtherIdentifierNameValue,trialLeadProtocolIdentifier,"View Trial by Other Protocol Identifier field");
+    };
+
+
+    /********** Verify Trial Details **********/
+
+    this.getViewTrialOfficialTitle= function(trialOfficialTitle)  {
+        helper.getVerifyLabel(this.viewTrialOfficialTitle,trialOfficialTitle,"View Trial by Official Title field");
+    };
+
+    this.getViewTrialPhase = function(trialPhase)  {
+        helper.getVerifyLabel(this.viewTrialPhase,trialPhase,"View Trial by Phase ID field");
+    };
+
+    this.getViewTrialPilotOption = function(trialPilotOption)  {
+        helper.getVerifyLabel(this.viewTrialPilotOption,trialPilotOption,"View Trial by Pilot Option field");
+    };
+
+    this.getViewTrialResearchCategory = function(trialResearchCategory)  {
+        helper.getVerifyLabel(this.viewTrialResearchCategory,trialResearchCategory,"View Trial by Research Category field");
+    };
+
+    this.getViewTrialPrimaryPurpose = function(trialPrimaryPurpose)  {
+        helper.getVerifyLabel(this.viewTrialPrimaryPurpose,trialPrimaryPurpose,"View Trial by Primary Purpose field");
+    };
+
+    //this.getViewTrialPrimaryPurposeOtherDescription= function(PrimaryPurposeOtherDescription)  {
+    //  //  helper.getVerifyLabel(this.addTrialPrimaryPurposeOtherDescription,PrimaryPurposeOtherDescription,"View Trial by Primary Purpose Other Description field");
+    //};
+
+    this.getViewAddTrialSecondaryPurpose = function(trialSecondaryPurpose)  {
+        helper.getVerifyLabel(this.viewTrialSecondaryPurpose,trialSecondaryPurpose,"View Trial by Secondary Purpose field");
+    };
+
+    //this.getViewTrialSecondaryPurposeOtherDescription = function(SecondaryPurposeOtherDescription)  {
+    // //   helper.getVerifyLabel(this.addTrialSecondaryPurposeOtherDescription,SecondaryPurposeOtherDescription,"View Trial by Secondary Purpose Other Description field");
+    //};
+
+    this.getViewTrialAccrualDiseaseTerminology = function(trialAccrualDiseaseTerminology)  {
+        helper.getVerifyLabel(this.viewTrialAccrualDiseaseTerminology,trialAccrualDiseaseTerminology,"View Trial by Accrual Disease Terminology field");
+    };
+
+
+    /********** Verify Lead Organization/Principal Investigator **********/
+
+    this.getViewTrialLeadOrganization = function(trialLeadOrganization){
+        helper.getVerifyLabel(this.viewTrialLeadOrganization,trialLeadOrganization,"View Trial by Lead Organization field");
+    };
+
+    this.getViewTrialPrincipalInvestigator = function(principalInvestigator){
+        helper.getVerifyLabel(this.viewTrialPrincipalInvestigator,principalInvestigator,"View Trial by Principal Investigator field");
+    };
+
+
+    /********** Verify Sponsor/Responsible Party **********/
+
+    this.getViewTrialSponsor = function(trialSponsor){
+        helper.getVerifyLabel(this.viewTrialSponsor,trialSponsor,"View Trial by Sponsor field");
+    };
+
+
+    /**********  Verify Data Table 4 Information **********/
+
+    this.getViewTrialFundingSource = function(trialFundingSource){
+        helper.getVerifyLabel(this.viewTrialDataTable4FundingSourceValues,trialFundingSource,"View Trial by Funding Source field");
+    };
+
+
+    /********** Verify Trial Status **********/
+
+    this.getViewTrialStatusDate = function(trialStatusDate)  {
+        helper.getVerifyLabel(this.viewTrialStatusDate ,trialStatusDate,"View Trial by Status Date field");
+    };
+
+    this.getViewTrialStatus = function(trialStatus)  {
+            helper.getVerifyLabel(this.viewTrialStatus,trialStatus,"View Trial by trial Status field");
+    };
+
+
+    /********** Verify Trial Dates **********/
+
+    this.getViewTrialStartDate= function(trialStartDate)  {
+        helper.getVerifyLabel(this.viewTrialStartDate,trialStartDate,"View Trial by Trial Start Date field");
+    };
+
+    this.getViewTrialStartDateOption = function(trialStartDateOption)  {
+        helper.getVerifyLabel(this.viewTrialStartDateOption,trialStartDateOption,"View Trial by Start Date option field");
+    };
+
+    this.getViewTrialPrimaryCompletionDate= function(trialPrimaryCompletionDate)  {
+        helper.getVerifyLabel(this.viewTrialPrimaryCompletionDate ,trialPrimaryCompletionDate,"View Trial by Primary Completion Date field");
+    };
+
+    this.getViewTrialPrimaryCompletionDateOption = function(trialPrimaryCompletionDateOption)  {
+        helper.getVerifyLabel(this.viewTrialPrimaryCompletionDateOption,trialPrimaryCompletionDateOption,"View Trial by Primary Completion Date option field");
+    };
+
+    this.getViewTrialCompletionDate = function(trialCompletionDate)  {
+        helper.getVerifyLabel(this.viewTrialCompletionDate ,trialCompletionDate,"View Trial by Completion Date field");
+    };
+
+    this.getViewTrialCompletionDateOption = function(trialCompletionDateOption)  {
+        helper.getVerifyLabel(this.viewTrialCompletionDateOption,trialCompletionDateOption,"View Trial by Completion Date Option field");
+    };
+
+
+    /********** Verify Regulatory Information **********/
+
+    this.getViewTrialFDARegulatedInterventionIndicator = function(trialFDARegulatedInterventionIndicator)  {
+        helper.getVerifyLabel(this.viewTrialFDARegulatedInterventionIndicator,trialFDARegulatedInterventionIndicator,"View Trial by Trial FDA Regulated Intervention Indicator Option field");
+    };
+
+    this.getViewTrialSection801Indicator = function(trialSection801Indicator)  {
+        helper.getVerifyLabel(this.viewTrialSection801Indicator,trialSection801Indicator,"View Trial by Trial Section 801 Indicator Option field");
+    };
+
+    this.getViewTrialDataMonitoringCommitteeAppointedIndicator= function(trialDataMonitoringCommitteeAppointedIndicator)  {
+        helper.getVerifyLabel(this.viewTrialDataMonitoringCommitteeAppointedIndicator,trialDataMonitoringCommitteeAppointedIndicator,"View Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+    };
+
+
+    /*************** Verify Trial Related Documents ****************/
+
+    this.getViewTrialDoc = function(){
+        helper.getVerifyLabel(this.viewTrialVerifyviewedDocs,"View Trial Docs ");
+    };
 
 
     /*************** Buttons ****************/
