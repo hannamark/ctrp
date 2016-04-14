@@ -10,11 +10,6 @@
 #  uuid             :string(255)
 #  lock_version     :integer          default(0)
 #
-# Indexes
-#
-#  index_anatomic_site_wrappers_on_anatomic_site_id  (anatomic_site_id)
-#  index_anatomic_site_wrappers_on_trial_id          (trial_id)
-#
 
 class AnatomicSiteWrapper < ActiveRecord::Base
   include BasicConcerns

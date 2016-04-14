@@ -1,19 +1,21 @@
 # == Schema Information
 #
-# Table name: anatomic_site_wrappers
+# Table name: ncit_interventions
 #
 #  id               :integer          not null, primary key
-#  anatomic_site_id :integer
-#  trial_id         :integer
+#  preferred_name   :string
+#  synonyms         :string
+#  description      :text
+#  type_code        :string
+#  ct_gov_type_code :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  uuid             :string(255)
-#  lock_version     :integer          default(0)
+#  ncit_status_id   :integer
 #
 
 require 'test_helper'
 
-class AnatomicSiteWrapperTest < ActiveSupport::TestCase
+class NcitInterventionTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
