@@ -18,7 +18,7 @@
                                 <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.intervention_form.needsAttention(intervention_form.identifier_type)}">
                                     <label for="intervention_name" class="control-label col-xs-12 col-sm-3">Intervention Name:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <input type="text" id="intervention_name" class="form-control input-sm">
+                                        <input type="text" id="intervention_name" class="form-control input-sm" readonly>
                                     </div>
                                     <div class="col-xs-12 col-sm-2">
                                         <button type="button" class="btn btn-primary">
@@ -26,9 +26,9 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.intervention_form.needsAttention(intervention_form.trial_identifier)}">
+                                <div class="form-group">
                                     <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Intervention Type:</label>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-5">
                                         <input type="text" name="trial_identifier" id="trial_identifier"
                                                class="form-control input-sm"
                                                ng-model="interventionView.trialQueryObj.trialIdentifier"
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="intervention_desc" class="control-label col-xs-12 col-sm-3">Intervention Description</label>
+                                    <label for="intervention_desc" class="control-label col-xs-12 col-sm-3">Intervention Description:</label>
                                     <div class="col-xs-12 col-sm-5">
                                         <textarea name="intervention_desc" id="intervention_desc" rows="10" class="form-control"></textarea>
                                         characters left....
@@ -54,10 +54,20 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="other_names" class="control-label col-xs-12 col-sm-3"></label>
+                                    <label for="other_names" class="control-label col-xs-12 col-sm-3">Other Names:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <input type="text" id="other_names" class="form-control input-sm" />
+                                        <input type="text" id="other_names" class="form-control input-sm" readonly>
                                     </div>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button type="button" class="btn btn-warning" ng-click="interventionView.resetLookupForm(intervention_form)">Reset</button>
+                                    <button type="button" class="btn btn-primary"
+                                        ng-disabled="interventionView.selectedInterventionObj.preferred_name.length==0"
+                                        ng-click="interventionView.upsertIntervention(interventionView.selectedInterventionObj)">
+                                        <i class="glyphicon glyphicon-plus"></i> Add
+                                    </button>
+                                    <span class="help-block">{{interventionView.associationErrorMsg}}</span>
                                 </div>
                             </fieldset>
 

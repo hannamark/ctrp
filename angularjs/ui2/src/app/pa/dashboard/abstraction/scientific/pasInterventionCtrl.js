@@ -16,11 +16,13 @@
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
+            vm.selectedInterventionObj = {preferred_name: ''};
 
             // actions
             vm.addIntervention = addIntervention;
             vm.editIntervention = editIntervention;
             vm.upsertIntervention = upsertIntervention;
+            vm.resetLookupForm = resetLookupForm;
 
             activate();
             function activate() {
@@ -65,6 +67,10 @@
                     trial_id: null,
                     edit: false
                 };
+            }
+
+            function resetLookupForm(form) {
+                console.info('resetting form: ', form);
             }
 
 
