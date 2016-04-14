@@ -17,5 +17,46 @@ class NcitIntervention < ActiveRecord::Base
   include BasicConcerns
 
   belongs_to :ncit_status
-  
+
+  def self.import_ncit_interventions
+    ActiveRecord::Base.transaction do
+      FileUtils.rm_rf('../../storage/ncit_interventions')
+      FileUtils.mkdir_p('../../storage/ncit_interventions')
+
+      NcitIntervention.delete_all
+      url = AppSetting.find_by_code('NCI_THESAURUS_URL').value
+      intervention_file_names = AppSetting.find_by_code('NCI_THESAURUS_INTERVENTIONS').big_value.split(',')
+      act = NcitStatus.find_by_code('ACT')
+
+      intervention_file_names.each do |file_name|
+        File.open("../../storage/ncit_interventions/#{file_name}", 'wb') do |fo|
+          fo.write open(url + file_name).read
+        end
+
+        # Populate ncit_interventions table
+        Zip::File.open("../../storage/ncit_interventions/#{file_name}") do |zipfile|
+          zipfile.each do |entry|
+            xml = Nokogiri::XML(entry.get_input_stream.read)
+
+            # Search for label as preferred name
+            xml.xpath('//owl:Class[@rdf:about]').each do |node|
+              # extract preferred_name and synonyms
+              name = node.xpath('rdfs:label').text
+              synonyms = ''
+              node.css('P90').xpath('ncicp:ComplexTerm/ncicp:term-name').each do |synonym|
+                synonyms += ", #{synonym.text}"  # concatenate each synonym
+              end
+              synonyms = synonyms.sub(',', '') # remove the first comma
+              p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}"
+              # NcitIntervention.create(preferred_name: name, synonyms: nil, description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+            end
+
+          end
+        end
+
+      end
+
+    end
+  end
+
 end
