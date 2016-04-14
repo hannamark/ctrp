@@ -93,63 +93,37 @@
                             <table st-table="interventionView.trialDetailObj.associated_trials" class="table table-striped table-hover table-bordered" ng-hide="">
                                 <thead>
                                 <tr>
-                                    <th class="col-sm-2">Preferred Name</th>
+                                    <th class="col-sm-2">Name</th>
                                     <th class="col-sm-2">Other Names</th>
                                     <th class="col-sm-2">Type Code</th>
                                     <th class="col-sm-2">ClinicalTrials.gov Type Code</th>
                                     <th>Description</th>
                                     <th>Edit</th>
-                                    <th class="text-center td-icon"><input type="checkbox" name="delete_all_asso" id="delete_all_asso" ng-model="interventionView.deleteAllAssoCheckbox" ng-change="interventionView.deleteAllAssociations(interventionView.deleteAllAssoCheckbox)"></th>
+                                    <th class="text-center td-icon"><input type="checkbox" name="delete_all_inter" id="delete_all_inter" ng-model="interventionView.deleteAll" ng-change="interventionView.deleteAllInterventions(interventionView.deleteAll)"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- <tr ng-repeat="t in interventionView.trialDetailObj.associated_trials track by $index" >
+                                    <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.name === t.name}">
                                         <td>
-                                            <span ng-show="t.trial_identifier.indexOf('NCI') > -1">
-
-                                                <a href="" ctrp-trial-peek-view trial-id="t.associated_trial_id">{{t.trial_identifier}}</a>
-                                            </span>
-                                            <span ng-show="t.trial_identifier.indexOf('NCI') === -1">
-                                                <a href="https://clinicaltrials.gov/ct2/show/{{t.trial_identifier}}" target="_blank">{{t.trial_identifier}}</a>
-                                            </span>
+                                            {{t.name}}
                                         </td>
                                         <td>
-                                            {{t.identifierTypeStr}}
+                                            {{t.other_name}}
                                         </td>
                                         <td>
-                                            {{t.research_category_name}}
+                                            {{t.intervention_type_id}} <!-- TODO: convert to string -->
                                         </td>
                                         <td>
-                                            {{t.official_title}}
+                                            {{t.ct_type_code}}
                                         </td>
                                         <td>
-                                            Edit Button
+                                            {{t.description}}
+                                        </td>
+                                        <td>
+                                            Edit
                                         </td>
                                         <td class="text-center td-icon">
                                             <input type="checkbox" ng-model="t._destroy" ng-change="!t._destroy" ng-click="interventionView.deleteAllAssoCheckbox = false"/>
-                                        </td>
-                                    </tr> -->
-                                    <tr>
-                                        <td>
-                                            Placeholder
-                                        </td>
-                                        <td>
-                                            Placeholder
-                                        </td>
-                                        <td>
-                                            Placeholder
-                                        </td>
-                                        <td>
-                                            Placeholder
-                                        </td>
-                                        <td>
-                                            Placeholder
-                                        </td>
-                                        <td>
-                                            Placeholder
-                                        </td>
-                                        <td>
-                                            Placeholder
                                         </td>
                                     </tr>
                                 </tbody>

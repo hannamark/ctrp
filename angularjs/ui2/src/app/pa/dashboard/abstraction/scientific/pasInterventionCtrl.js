@@ -23,10 +23,12 @@
             vm.editIntervention = editIntervention;
             vm.upsertIntervention = upsertIntervention;
             vm.resetLookupForm = resetLookupForm;
+            vm.deleteAllInterventions = deleteAllInterventions;
 
             activate();
             function activate() {
                 _getTrialDetailCopy();
+                watchInterventionList();
             }
 
             function _getTrialDetailCopy() {
@@ -71,6 +73,19 @@
 
             function resetLookupForm(form) {
                 console.info('resetting form: ', form);
+            }
+
+            function watchInterventionList() {
+                $scope.$watch(function() {return vm.trialDetailObj.interventions;},
+                    function(newVal, oldVal) {
+                        console.info('interventions: ', newVal);
+                });
+            }
+
+            function deleteAllInterventions(booleanFlag) {
+                _.each(vm.trialDetailObj.interventions, function(inter, idx) {
+                    inter._destroy = booleanFlag;
+                });
             }
 
 
