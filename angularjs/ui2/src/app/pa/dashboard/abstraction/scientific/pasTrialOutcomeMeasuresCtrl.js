@@ -84,6 +84,7 @@
 
         vm.saveOutcomeMeasure = function(){
             vm.disableBtn = true;
+            var successMsg = '';
 
             if (!vm.currentOutcomeMeasure.id || vm.copyMode) {
                 vm.currentOutcomeMeasure.new = true;
@@ -119,13 +120,20 @@
                         vm.currentOutcomeMeasure.new = false;
                         //vm.curTrial.outcome_measure_type=vm.curTrial.outcome_measure_type
                         vm.curTrial.outcome_measures.push(vm.currentOutcomeMeasure);
+                        successMsg = 'Record Created.';
                     } else {
                         for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
                             if (vm.curTrial.outcome_measures[i].id == vm.currentOutcomeMeasure.id) {
                                 vm.curTrial.outcome_measures[i] = vm.currentOutcomeMeasure;
                             }
                         }
+                        successMsg = 'Record Updated.';
                     }
+                    toastr.clear();
+                    toastr.success(successMsg, 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                     vm.setToDefaultMode();
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 }
@@ -171,7 +179,7 @@
                 }
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 toastr.clear();
-                toastr.success('Outcome Measure ' + psId + ' for' + vm.curTrial.lead_protocol_id + ' has been deleted', 'Operation Successful!', {
+                toastr.success('Record(s) deleted.', 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
