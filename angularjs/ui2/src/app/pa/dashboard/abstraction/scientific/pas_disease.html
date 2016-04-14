@@ -5,23 +5,22 @@
                 Disease/Condition <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
 
-            <form class="form form-horizontal" role="form">
-                <div class="form-group">
-                    <label for="protocol_id" class="control-label col-xs-12 col-sm-2">Find a Disease/Condition: </label>
-                    <div class="col-xs-12 col-sm-5">
-                        <input type="text" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.disease_name" autofocus />
-                    </div>
-                    <div class="col-xs-12 col-sm-5">
-                        <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="diseaseView.searchDiseases()">
-                                <i class="glyphicon glyphicon-search"></i> Search
-                            </button>
+            <div class="col-xs-12 col-sm-12 col-md-7">
+                <form class="form form-horizontal" role="form">
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.disease_name" autofocus />
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="btn-toolbar">
+                                <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="diseaseView.searchDiseases()">
+                                    <i class="glyphicon glyphicon-search"></i> Search
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
 
-            <fieldset>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.searchResult.length">
                         <thead>
@@ -30,7 +29,13 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="result in diseaseView.searchResult track by $index">
-                                <td>{{result.preferred_name}}</td>
+                                <td>
+                                    {{result.preferred_name}}
+                                    <button restriction-field class="btn btn-primary" type="button" ng-click="diseaseView.addDisease($index)"
+                                            ng-disabled="result.added">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </button>
+                                </td>
                                 <td>
                                     <p ng-repeat="synonym in result.ncit_disease_synonyms track by $index">
                                         {{synonym.alternate_name}}
@@ -40,7 +45,21 @@
                         </tbody>
                     </table>
                 </div>
-            </fieldset>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-5">
+                <div class="form-group">
+                    <h4>Your Selections</h4>
+                    <ul class="list-group">
+                        <li ng-repeat="addedDisease in diseaseView.addedDiseases track by $index" class="list-group-item">
+                            {{addedDisease.preferred_name}}
+                            <button restriction-field class="btn btn-warning" type="button" ng-click="diseaseView.removeDisease($index)">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </uib-accordion-group>
     </uib-accordion>
 </div>
