@@ -31,6 +31,12 @@
                             <tr ng-repeat="result in diseaseView.searchResult track by $index">
                                 <td>
                                     {{result.preferred_name}}
+                                    <button class="btn btn-primary" type="button" ng-click="diseaseView.openTree(result.nt_term_id)">
+                                        <i class="glyphicon glyphicon-tree-conifer"></i>
+                                    </button>
+                                    <button class="btn btn-primary" type="button" ng-click="diseaseView.openInfo(result.nt_term_id)">
+                                        <i class="glyphicon glyphicon-info-sign"></i>
+                                    </button>
                                     <button restriction-field class="btn btn-primary" type="button" ng-click="diseaseView.addDisease($index)"
                                             ng-disabled="result.added">
                                         <i class="glyphicon glyphicon-plus"></i>

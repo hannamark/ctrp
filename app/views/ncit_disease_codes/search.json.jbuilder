@@ -13,6 +13,8 @@ json.diseases do
     end
   end
 end
+json.info_url AppSetting.find_by_code('NCI_THESAURUS_INFO_URL').value
+json.tree_url AppSetting.find_by_code('NCI_THESAURUS_TREE_URL').value
 json.start params[:start]
 json.rows params[:rows]
 json.total @diseases.respond_to?(:total_count) ? @diseases.total_count : @diseases.size

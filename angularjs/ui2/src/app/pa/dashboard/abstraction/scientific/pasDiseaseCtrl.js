@@ -7,9 +7,9 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasDiseaseCtrl', pasDiseaseCtrl);
 
-    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'MESSAGES', '_', '$timeout', 'DiseaseService'];
+    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'MESSAGES', '_', '$timeout', 'DiseaseService', '$window'];
 
-    function pasDiseaseCtrl($scope, $state, toastr, MESSAGES, _, $timeout, DiseaseService) {
+    function pasDiseaseCtrl($scope, $state, toastr, MESSAGES, _, $timeout, DiseaseService, $window) {
         var vm = this;
         vm.addedDiseases = [];
 
@@ -17,9 +17,21 @@
             var searchParams = {disease_name: vm.disease_name};
             DiseaseService.searchDiseases(searchParams).then(function(response) {
                 vm.searchResult = response.diseases;
+                vm.infoUrl = response.info_url;
+                vm.treeUrl = response.tree_url;
             }).catch(function(err) {
                 console.log("Error in searching diseases: " + err);
             });
+        };
+
+        vm.openTree = function(ncitCode) {
+            console.log(ncitCode);
+            $window.open(vm.infoUrl + ncitCode), '_blank';
+        };
+
+        vm.openInfo = function(ncitCode) {
+            console.log(ncitCode);
+            $window.open(vm.treeUrl + ncitCode);
         };
 
         vm.addDisease = function(index) {
