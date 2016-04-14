@@ -25,11 +25,6 @@
 #  updated_by        :string
 #  extension         :string(255)
 #
-# Indexes
-#
-#  index_organizations_on_source_context_id  (source_context_id)
-#  index_organizations_on_source_status_id   (source_status_id)
-#
 
 class Organization < ActiveRecord::Base
   include BasicConcerns

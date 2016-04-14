@@ -12,11 +12,6 @@
 #  object_changes :jsonb
 #  transaction_id :integer
 #
-# Indexes
-#
-#  index_trial_versions_on_item_type_and_item_id  (item_type,item_id)
-#  index_trial_versions_on_transaction_id         (transaction_id)
-#
 
 class TrialVersion <  PaperTrail::Version
   self.table_name = :trial_versions

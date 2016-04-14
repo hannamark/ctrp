@@ -13,11 +13,6 @@
 #  lock_version    :integer          default(0)
 #  comment         :text
 #
-# Indexes
-#
-#  index_trial_status_wrappers_on_trial_id         (trial_id)
-#  index_trial_status_wrappers_on_trial_status_id  (trial_status_id)
-#
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 

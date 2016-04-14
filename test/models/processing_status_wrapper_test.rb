@@ -12,12 +12,6 @@
 #  lock_version         :integer          default(0)
 #  submission_id        :integer
 #
-# Indexes
-#
-#  index_processing_status_wrappers_on_processing_status_id  (processing_status_id)
-#  index_processing_status_wrappers_on_submission_id         (submission_id)
-#  index_processing_status_wrappers_on_trial_id              (trial_id)
-#
 
 require 'test_helper'
 
