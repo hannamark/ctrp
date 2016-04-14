@@ -208,23 +208,6 @@ module.exports = function() {
      Then the Participating Site will be removed from the trial record
      */
 
-    this.Given(/^I select one or more participating sites$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.When(/^select delete participationg sites$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^the Participating Site will be removed from the trial record$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-
-
 
 
 };
