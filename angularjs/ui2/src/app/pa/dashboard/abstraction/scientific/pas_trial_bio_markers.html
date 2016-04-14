@@ -273,7 +273,7 @@
                             </thead>
                             <tbody>
 
-                            <tr ng-repeat="bio_marker in markersView.curTrial.bio_markers track by $index" class="animated-item" ng-class="{'deleted-text': bio_marker._destroy, 'edit-selected': bio_marker.id === markersView.currentBioMarker.id}">
+                            <tr ng-repeat="bio_marker in markersView.curTrial.bio_markers track by $index" class="animated-item">
 
                                 <td>
                                     {{bio_marker.name}}

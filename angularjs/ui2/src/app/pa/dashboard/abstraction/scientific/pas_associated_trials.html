@@ -42,19 +42,19 @@
                                            required
                                            placeholder="Trial Identifier"
                                     >
-                            <span ng-messages="ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.trial_identifier) &&
-                                                associated_trials_form.trial_identifier.$error">
-                                <span class="help-block" ng-message="required"><br />Trial Identifier is Required</span>
-                           </span>
+                                    <span ng-messages="ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.trial_identifier) &&
+                                                        associated_trials_form.trial_identifier.$error">
+                                        <span class="help-block" ng-message="required"><br />Trial Identifier is Required</span>
+                                   </span>
+                                   <span class="help-block" ng-show="assoTrialsView.foundTrialObj.errorMsg.length > 0">
+                                       {{assoTrialsView.foundTrialObj.errorMsg}}
+                                   </span>
                                 </div>
                                 <div class="col-xs-12 col-sm-2">
                                     <button type="submit" class="btn btn-primary"
                                             ng-disabled="assoTrialsView.lookupBtnDisabled">
                                         <i class="glyphicon glyphicon-search"></i> Look Up Trial
                                     </button>
-                                </div>
-                                <div class="col-xs-12 col-sm-2 form-text alert alert-warning" ng-show="assoTrialsView.foundTrialObj.errorMsg.length > 0">
-                                    {{assoTrialsView.foundTrialObj.errorMsg}}
                                 </div>
                             </div>
                             <div ng-hide="assoTrialsView.foundTrialObj.official_title.length==0">

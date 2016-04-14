@@ -32,11 +32,11 @@
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
-        vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
-        vm.updateOtherCriteriaType = updateOtherCriteriaType;
         vm.updateOtherCriteria = updateOtherCriteria;
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
+        //vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
+        //vm.updateOtherCriteriaType = updateOtherCriteriaType;
 
         activate();
         function activate() {
@@ -213,8 +213,13 @@
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
 
             vm.addOtherCriterionFormShown = false;
-            vm.criteriaView.otherCriterion.edit = false;
+            vm.otherCriterion = newOtherCriterion(''); // reset to empty because edit/update is complete
         }
+
+/*
+        ADIL: Removed inline editing feature so no longer required since
+              function updateOtherCriteria() performs both tasks in one function.
+              Commented out for now
 
         function updateOtherCriteriaDesc(otherCriterionDesc, index) {
             if (otherCriterionDesc.length === 0) {
@@ -226,6 +231,7 @@
         function updateOtherCriteriaType(otherCriterionType, index) {
             vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
+*/
 
         /**
          * Check whether the Other Criterion description is duplicate
