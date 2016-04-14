@@ -51,23 +51,31 @@
             newPerson.person = vm.curPerson;
 
             PersonService.upsertPerson(newPerson).then(function (response) {
+                var statusCode = response.status || response.server_response.status;
                 //vm.savedSelection = [];
-                if (newPerson.new) {
-                    //vm.clearForm();
+                if (newPerson.new && statusCode === 201) {
+                    // created
+                    showToastr(vm.curPerson.lname);
+                    vm.curPerson.new = false;
                     $state.go('main.personDetail', {personId: response.data.id});
-                } else {
+                } else if (statusCode === 200) {
+                    // updated
                     vm.curPerson = response.data;
+                    showToastr(vm.curPerson.lname);
+                    vm.curPerson.new = false;
                 }
-                vm.curPerson.new = false;
-                toastr.clear();
-                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
         }; // updatePerson
+
+        function showToastr(personName) {
+            toastr.clear();
+            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!', {
+                extendedTimeOut: 1000,
+                timeOut: 0
+            });
+        }
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy, vm.curPerson);

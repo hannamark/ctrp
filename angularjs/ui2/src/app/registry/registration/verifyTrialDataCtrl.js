@@ -7,15 +7,19 @@
 
     angular.module('ctrp.app.registry').controller('verifyTrialDataCtrl', verifyTrialDataCtrl);
 
-    verifyTrialDataCtrl.$inject = ['trialDetailObj', 'TrialService', 'toastr', '$state', 'DateService'];
+    verifyTrialDataCtrl.$inject = ['trialDetailObj', 'TrialService', 'toastr', '$state', 'DateService', 'Common'];
 
-    function verifyTrialDataCtrl(trialDetailObj, TrialService, toastr, $state, DateService) {
+    function verifyTrialDataCtrl(trialDetailObj, TrialService, toastr, $state, DateService, Common) {
 
         var vm = this;
         vm.curTrial = trialDetailObj;
 
-        vm.updateTrial = function(updateType) {
-            if (confirm('Are you sure you would like to save a Data Verification record with todays\'s date')) {
+        vm.updateTrial = function() {
+            var isConfirmed = false;
+            var confirmMsg = 'Are you sure you would like to save a Data Verification record with todays\'s date';
+            Common.alertConfirm(confirmMsg).then(function(ok) {
+                isConfirmed = ok;
+
                 // Prevent multiple submissions
                 vm.disableBtn = true;
 
@@ -38,7 +42,9 @@
                 }).catch(function (err) {
                     console.log("error in verifying trial data " + JSON.stringify(outerTrial));
                 });
-            }
+            }).catch(function(cancel) {
+                // isConfirmed = cancel;
+            });
         }; // updateTrial
 
         activate();

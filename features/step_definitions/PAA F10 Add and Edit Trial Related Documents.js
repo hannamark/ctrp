@@ -132,6 +132,11 @@ module.exports = function() {
     var tblOptionI = '';
     var tblOptionJ = '';
     var tblOptionK = '';
+    var tblOptionADup = '';
+    var tblOptionBDup = '';
+    var tblOptionCDup = '';
+    var tblOptionDDup = '';
+    var tblOptionEDup = '';
     var selectOptionSelect = '- Please select a document type ...';
     var selectOptionChangeMemo = 'Change Memo Document';
     var selectOptionComplete = 'Complete Sheet';
@@ -154,6 +159,12 @@ module.exports = function() {
     var getProtocolUploadFile = 'testSampleDocFile_Protocol.docx';
     var getChangeMemoUploadFile = 'testSampleDocFile_ChangeMemo.docx';
     var getNonSupportedUploadFile = 'testSampleDocFile_invalidExt.log';
+    var getInformedConsentUploadFile = 'testSampleDocFile_Consent.docx';
+    var getListOfParticipatingUploadFile = 'testSampleDocFile_Participeting.docx';
+    var getProtocolHighlightedDocumentUploadFile = 'testSampleDocFile_ProtocolHighlighted.docx';
+    var getTSRUploadFile = 'testSampleDocFile_TSR.docx';
+    var getCompleteUploadFile = 'testSampleDocFile_Complete.docx';
+    var getOtherUploadFile = 'testSampleDocFile_Other.docx';
 
     /*
      Scenario: #1 I can add Trial Related Documents
@@ -179,6 +190,7 @@ module.exports = function() {
      */
 
     this.Given(/^I am on the Trial Related Documents screen$/, function (callback) {
+        var datTm = new Date();
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
@@ -189,14 +201,21 @@ module.exports = function() {
         commonFunctions.adminCheckOut();
         trialDoc.clickAdminDataTrialRelatedDocument();
         trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
-        //helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
-        //helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
-        //helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
-        //helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
         trialDoc.trialTable.isDisplayed().then(function(condition) {
             if (condition){
                 console.log("Condition: "+condition);
-                trialDoc.findDocumentAndClickWhereDeleteExists();
+                trialDoc.findDeleteIconsWhereExists();
+            }
+        });
+        trialDoc.trialTable.isDisplayed().then(function(condition) {
+            if (condition){
+                helper.setCommentValue(trialDoc.trialDeleteCommentBox, "Test Delete Comment - " + moment().format('MMMDoYY hmmss'), "Comment - on Delete Action - field");
+                trialDoc.clickCommitCommentButton();
+                helper.wait_for(9000);
                 trialDoc.clickSave();
             }
         });
@@ -490,7 +509,7 @@ module.exports = function() {
     });
 
     this.Then(/^the information entered or edited on the Trial Related Documents screen will be saved to the trial record$/, function (callback) {
-        trialDoc.verifyTrialDocTblHeaders(trialDocHdrs[0], trialDocHdrs[1], trialDocHdrs[2], trialDocHdrs[3], trialDocHdrs[4], trialDocHdrs[5]);
+        trialDoc.verifyTrialDocTblHeaders(trialDocHdrs[0], trialDocHdrs[1], trialDocHdrs[2], trialDocHdrs[3], trialDocHdrs[4], trialDocHdrs[5], trialDocHdrs[6]);
         trialDoc.findDocumentAndVerifyFileName(getTestUploadFileA);
         trialDoc.findDocumentAndVerifyDocumentType(getTestUploadFileA, selectOptionComplete);
         getExpectedDate = trialDoc.getCurrentDate();
@@ -708,12 +727,19 @@ module.exports = function() {
      */
 
     this.Then(/^the following docuuments will be required$/, function (table, callback) {
+        var strVal = '';
+        selectDcoumentTableVal = table.raw();
+        strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
+        console.log('Required Document Type value(s) in the data table:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        tblOptionA = tableDataSplt[0];
+        tblOptionB = tableDataSplt[1];
         trialDoc.clickBackToSearchResultsButton();
         commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDF);
         pageSearchTrail.clickSearchTrialSearchButton();
         commonFunctions.verifyPASearchResultCount(searchResultCountText);
-        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.clickLinkText(leadProtocolIDF);
         commonFunctions.adminCheckOut();
         trialDoc.clickAdminDataTrialRelatedDocument();
         trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
@@ -725,12 +751,245 @@ module.exports = function() {
         trialDoc.selectADocument(selectOptionChangeMemo);
         trialDoc.clickAddButton();
         trialDoc.clickSave();
-        var buildRequiredErrorMsg = "Error: Both Protocol Document and IRB Approval Document are required";
+        var buildRequiredErrorMsg = "Error: Both "+tblOptionA+" and "+tblOptionB+" Document are required";
         trialDoc.verifyRequiredErrorMsg(buildRequiredErrorMsg);
         browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario: #10 Mutliple documents of the same type
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     When I add a new document
+     And I have selected the Document type from the list of:
+     |Protocol Document|
+     |IRB Approval|
+     |Informed Consent|
+     |List of Participating Sites|
+     |Protocol Highlighted Document|
+     And select save on the trial related documents screen
+     And there is already a Document type from the list of:
+     |Protocol Document|
+     |IRB Approval|
+     |Informed Consent|
+     |List of Participating Sites|
+     |Protocol Highlighted Document|
+     Then the system displays a Error message that "Error: The selected document type already exists."
+     */
 
+    this.When(/^I add a new document$/, function (callback) {
+        trialDoc.clickBackToSearchResultsButton();
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDG);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolIDG);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataTrialRelatedDocument();
+        trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
+        helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have selected the Document type from the list of:$/, function (table, callback) {
+        var strVal = '';
+        selectDcoumentTableVal = table.raw();
+        strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
+        console.log('Select Document Type value(s) in the data table:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        tblOptionA = tableDataSplt[0];
+        tblOptionB = tableDataSplt[1];
+        tblOptionC = tableDataSplt[2];
+        tblOptionD = tableDataSplt[3];
+        tblOptionE = tableDataSplt[4];
+        //Protocol Document
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolUploadFile);
+        trialDoc.selectADocument(tblOptionA);
+        trialDoc.clickAddButton();
+        //IRB Approval
+        trialDoc.trialRelatedFileUpload('PA', '1', getIRBUploadFile);
+        trialDoc.selectADocument(tblOptionB);
+        trialDoc.clickAddButton();
+        //Informed Consent
+        trialDoc.trialRelatedFileUpload('PA', '1', getInformedConsentUploadFile);
+        trialDoc.selectADocument(tblOptionC);
+        trialDoc.clickAddButton();
+        //List of Participating Sites
+        trialDoc.trialRelatedFileUpload('PA', '1', getListOfParticipatingUploadFile);
+        trialDoc.selectADocument(tblOptionD);
+        trialDoc.clickAddButton();
+        //Protocol Highlighted Document
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolHighlightedDocumentUploadFile);
+        trialDoc.selectADocument(tblOptionE);
+        trialDoc.clickAddButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^select save on the trial related documents screen$/, function (callback) {
+        trialDoc.clickSave();
+        browser.sleep(2500).then(callback);
+    });
+
+    this.When(/^there is already a Document type from the list of:$/, function (table, callback) {
+        var strValDup = '';
+        selectDcoumentTableValDup = table.raw();
+        strValDup = selectDcoumentTableValDup.toString().replace(/,/g, "\n", -1);
+        console.log('Select Document Type value(s) in the data table:[' + strValDup +']');
+        var tableDataSpltDup = strValDup.toString().split("\n");
+        tblOptionADup = tableDataSpltDup[0];
+        tblOptionBDup = tableDataSpltDup[1];
+        tblOptionCDup = tableDataSpltDup[2];
+        tblOptionDDup = tableDataSpltDup[3];
+        tblOptionEDup = tableDataSpltDup[4];
+        //Protocol Document
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolUploadFile);
+        trialDoc.selectADocument(tblOptionADup);
+        trialDoc.clickAddButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the system displays a Error message that "([^"]*)"$/, function (arg1, callback) {
+        trialDoc.verifyDocErrorMsg(arg1);
+        trialDoc.clickSave();
+        //IRB Approval
+        trialDoc.trialRelatedFileUpload('PA', '1', getIRBUploadFile);
+        trialDoc.selectADocument(tblOptionBDup);
+        trialDoc.clickAddButton();
+        trialDoc.verifyDocErrorMsg(arg1);
+        trialDoc.clickSave();
+        //Informed Consent
+        trialDoc.trialRelatedFileUpload('PA', '1', getInformedConsentUploadFile);
+        trialDoc.selectADocument(tblOptionCDup);
+        trialDoc.clickAddButton();
+        trialDoc.verifyDocErrorMsg(arg1);
+        trialDoc.clickSave();
+        //List of Participating Sites
+        trialDoc.trialRelatedFileUpload('PA', '1', getListOfParticipatingUploadFile);
+        trialDoc.selectADocument(tblOptionDDup);
+        trialDoc.clickAddButton();
+        trialDoc.verifyDocErrorMsg(arg1);
+        trialDoc.clickSave();
+        //Protocol Highlighted Document
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolHighlightedDocumentUploadFile);
+        trialDoc.selectADocument(tblOptionEDup);
+        trialDoc.clickAddButton();
+        trialDoc.verifyDocErrorMsg(arg1);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #11 View Trial Related Documents
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Related Documents screen
+     Then I can see Document that have the following types:
+     |Protocol Document|
+     |IRB Approval|
+     |Informed Consent|
+     |Protocol Highlighted Document|
+     |List of Participating Sites|
+     |TSR|
+     |Complete Sheet|
+     |Change Memo Document|
+     |Other|
+     */
+
+    this.Then(/^I can see Document that have the following types:$/, function (table, callback) {
+        trialDoc.clickBackToSearchResultsButton();
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDH);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolIDH);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataTrialRelatedDocument();
+        trialCollaborators.waitForElement(trialDoc.trialDocSelectADocList, "Trial Related Documents - Select a Document - Drop down");
+        helper.verifyElementDisplayed(trialDoc.trialDocBrowse, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocAddButton, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocSave, true);
+        helper.verifyElementDisplayed(trialDoc.trialDocReset, true);
+        var strVal = '';
+        selectDcoumentTableVal = table.raw();
+        strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
+        console.log('Select Document Type value(s) in the data table:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        tblOptionA = tableDataSplt[0];
+        tblOptionB = tableDataSplt[1];
+        tblOptionC = tableDataSplt[2];
+        tblOptionD = tableDataSplt[3];
+        tblOptionE = tableDataSplt[4];
+        tblOptionF = tableDataSplt[5];
+        tblOptionG = tableDataSplt[6];
+        tblOptionH = tableDataSplt[7];
+        tblOptionI = tableDataSplt[8];
+        //IRB Approval
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolUploadFile);
+        trialDoc.selectADocument(tblOptionA);
+        trialDoc.clickAddButton();
+        //IRB Approval
+        trialDoc.trialRelatedFileUpload('PA', '1', getIRBUploadFile);
+        trialDoc.selectADocument(tblOptionB);
+        trialDoc.clickAddButton();
+        //Informed Consent
+        trialDoc.trialRelatedFileUpload('PA', '1', getInformedConsentUploadFile);
+        trialDoc.selectADocument(tblOptionC);
+        trialDoc.clickAddButton();
+        //Protocol Highlighted Document
+        trialDoc.trialRelatedFileUpload('PA', '1', getProtocolHighlightedDocumentUploadFile);
+        trialDoc.selectADocument(tblOptionD);
+        trialDoc.clickAddButton();
+        //List of Participating Sites
+        trialDoc.trialRelatedFileUpload('PA', '1', getListOfParticipatingUploadFile);
+        trialDoc.selectADocument(tblOptionE);
+        trialDoc.clickAddButton();
+        //TSR
+        trialDoc.trialRelatedFileUpload('PA', '1', getTSRUploadFile);
+        trialDoc.selectADocument(tblOptionF);
+        trialDoc.clickAddButton();
+        //Complete Sheet
+        trialDoc.trialRelatedFileUpload('PA', '1', getCompleteUploadFile);
+        trialDoc.selectADocument(tblOptionG);
+        trialDoc.clickAddButton();
+        //Change Memo Document
+        trialDoc.trialRelatedFileUpload('PA', '1', getChangeMemoUploadFile);
+        trialDoc.selectADocument(tblOptionH);
+        trialDoc.clickAddButton();
+        //Other
+        trialDoc.trialRelatedFileUpload('PA', '1', getOtherUploadFile);
+        trialDoc.selectADocument(tblOptionI);
+        if (tblOptionI === selectOptionOther){
+            trialDoc.setSubType('Other Subtype');
+        }
+        trialDoc.clickAddButton();
+        //Save Doc
+        trialDoc.clickSave();
+        helper.wait_for(3000);
+        trialDoc.findDocumentAndVerifyFileName(getProtocolUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getIRBUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getInformedConsentUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getProtocolHighlightedDocumentUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getListOfParticipatingUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getTSRUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getCompleteUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getChangeMemoUploadFile);
+        trialDoc.findDocumentAndVerifyFileName(getOtherUploadFile);
+        //Document Type
+        trialDoc.findDocumentAndVerifyDocumentType(getProtocolUploadFile, tblOptionA);
+        trialDoc.findDocumentAndVerifyDocumentType(getIRBUploadFile, tblOptionB);
+        trialDoc.findDocumentAndVerifyDocumentType(getInformedConsentUploadFile, tblOptionC);
+        trialDoc.findDocumentAndVerifyDocumentType(getProtocolHighlightedDocumentUploadFile, tblOptionD);
+        trialDoc.findDocumentAndVerifyDocumentType(getListOfParticipatingUploadFile, tblOptionE);
+        trialDoc.findDocumentAndVerifyDocumentType(getTSRUploadFile, tblOptionF);
+        trialDoc.findDocumentAndVerifyDocumentType(getCompleteUploadFile, tblOptionG);
+        trialDoc.findDocumentAndVerifyDocumentType(getChangeMemoUploadFile, tblOptionH);
+        trialDoc.findDocumentAndVerifyDocumentType(getOtherUploadFile, tblOptionI);
+        if (tblOptionI === selectOptionOther){
+            trialDoc.findDocumentAndVerifyDocumentSubType(getOtherUploadFile, 'Other Subtype');
+        }
+        browser.sleep(25).then(callback);
+    });
 
 
 

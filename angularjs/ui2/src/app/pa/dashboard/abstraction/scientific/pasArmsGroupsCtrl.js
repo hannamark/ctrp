@@ -64,7 +64,7 @@
             console.log("vm.curTrial.arms_groups_attributes " + JSON.stringify(vm.curTrial.arms_groups_attributes));
             vm.saveTrial();
         }
-        vm.saveTrial = function(){
+        vm.saveTrial = function(params){
             vm.disableBtn = true;
 
             if(vm.currentArmsGroup){
@@ -72,6 +72,8 @@
                     return;
                 }
             }
+            var successMsg = '';
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -95,8 +97,13 @@
                 //}
                 $state.go('main.pa.trialOverview.armsGroups');
 
+                if (params && params.del) {
+                    successMsg = 'Record(s) deleted.';
+                } else {
+                    successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
+                }
                 toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                toastr.success(successMsg, 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
@@ -195,9 +202,8 @@
                 console.log("armsGroupsToBeDeletedFromDb="+JSON.stringify(armsGroupsToBeDeletedFromDb));
                 vm.curTrial.arms_groups_attributes.push(armsGroupsToBeDeletedFromDb);
             }
-            vm.saveTrial();
+            vm.saveTrial({"del": armsGroupsToBeDeletedFromDb});
             vm.selectedAllAG = false;
-
         };
 
         function selectListHandler(interventionCheckboxes){

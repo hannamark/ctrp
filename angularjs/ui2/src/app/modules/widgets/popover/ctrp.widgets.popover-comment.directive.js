@@ -55,16 +55,24 @@
             scope.saveComment = saveComment;
             scope.cancelComment = cancelComment;
 
+            scope.errorMsg = null;
             function saveComment(comment) {
+                if (!angular.isDefined(comment) || comment.length === 0) {
+                    scope.errorMsg = 'Comment is required';
+                    return;
+                }
                 scope.saveHandler({why_deleted: comment});
                 popover.hide();
+                scope.errorMsg = null;
             }
 
             function cancelComment() {
                 popover.hide();
+                scope.errorMsg = null;
             }
 
             function cleanupPopover() {
+                scope.errorMsg = null;
                 popover.destroy();
             }
         }

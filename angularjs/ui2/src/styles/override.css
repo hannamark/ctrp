@@ -870,6 +870,14 @@ fieldset.sub-bordered {
     margin: 0 0 1.5em 0 !important;
     -webkit-box-shadow:  0px 0px 0px 0px #000;
             box-shadow:  0px 0px 0px 0px #000;
+    /* try out
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-right-width: 0 !important;
+    border-left-width: 3px !important;
+    border-bottom-width: 0 !important;
+    */
 }
 legend.sub-bordered {
     font-size: 1em !important;
@@ -878,6 +886,11 @@ legend.sub-bordered {
     width:auto;
     padding:0 10px;
     border-bottom:none;
+
+/* try out
+    font-style: italic;
+    color: #aaa;
+    */
 }
 
 .editable-click,
@@ -974,13 +987,13 @@ a.btn-file:hover {
 }
 
 .td-date {
-    min-width: 130px;
+    min-width: 5%;
 }
 .td-time {
-    min-width: 140px;
+    min-width: 6%;
 }
 .td-name {
-    min-width: 175px;
+    min-width: 5%;
 }
 
 body.identification  a.menu-identification,
@@ -1018,6 +1031,11 @@ body.trial-sub-groups a.menu-trial-sub-groups {
     -moz-border-radius: 0px 0px 0px 0px;
     -webkit-border-radius: 0px 0px 0px 0px;
     cursor: default;
+}
+
+
+body.trial-related-documents #trial-doc-upload {
+    width: 100%;
 }
 
 
@@ -1170,4 +1188,14 @@ div.datepicker {
     border-top-color: #999;
     border-top-color: rgba(0, 0, 0, 0.25);
     border-bottom-width: 0;
+}
+
+.popover-confirm {
+    width: 300px;
+}
+.popover-confirm .popover-message {
+    margin-bottom:3px;
+}
+.popover-confirm .form-actions {
+    text-align: right;
 }
