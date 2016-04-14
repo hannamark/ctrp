@@ -38,7 +38,7 @@
 
         function linkerFn(scope, element, attrs) {
             var popover = $popover(element, {
-                title: 'Are you sure you want to delete?',
+                title: attrs.confirmMsg || 'Are you sure you want to delete?',
                 templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
                 html: true,
                 trigger: 'manual',

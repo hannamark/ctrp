@@ -35,6 +35,7 @@
       vm.principalInvestigator = {name: '', array: []};
       vm.sponsor = {name: '', array: []};
       vm.leadProtocolId = '';
+      vm.leadProtocolIdEdit = false;
       var otherIdsClone = [];
       var regex = new RegExp('-', 'g');
 
@@ -256,6 +257,7 @@
              protocol_id: vm.generalTrialDetailsObj.lead_protocol_id
           };
           vm.otherIdentifier = vm.otherIdentifierUpdate;
+          vm.leadProtocolIdEdit = true;
       }
 
       function updateTrialIdentifier() {
@@ -274,6 +276,10 @@
          vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
          vm.otherIdentifierUpdate = null;
          vm.otherIdentifierEditIndex = null;
+
+         if (vm.leadProtocolIdEdit) {
+             vm.leadProtocolIdEdit = false;
+         }
       }
 
       function watchLeadOrg() {

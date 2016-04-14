@@ -212,6 +212,17 @@
                     parent: 'main.pa.trialOverview',
                     label: 'Disease/Condition'
                 }
+            })
+
+            .state('main.pa.trialOverview.intervention', {
+                url: '/interventions',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_intervention.html',
+                controller: 'pasInterventionCtrl as interventionView',
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Disease/Condition'
+                }
             });
     }
 })();

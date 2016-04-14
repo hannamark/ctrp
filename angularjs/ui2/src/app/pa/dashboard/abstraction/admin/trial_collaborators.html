@@ -92,7 +92,8 @@
                         <i class="glyphicon glyphicon-plus"></i> Add Collaborator
                     </button>
                     <button type="button" class="btn btn-danger pull-right" id="delete"
-                            restriction-field ctrp-confirm ctrp-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="trialDetailView.curTrial.collaborators.length">
+                            restriction-field ctrp-confirm
+                            confirm-msg="Click OK to remove selected Collaborator(s) from the study. Click Cancel to abort." ctrp-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="trialDetailView.curTrial.collaborators.length">
                         <i class="glyphicon glyphicon-trash"></i> Delete Selected
                     </button>
                 </div>

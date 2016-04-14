@@ -824,7 +824,7 @@
                 }
                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                 toastr.clear();
-                toastr.success('Participating Site ' + psId + ' for' + vm.curTrial.lead_protocol_id + ' has been deleted', 'Operation Successful!', {
+                toastr.success('Record(s) deleted.', 'Operation Successful!', {
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });

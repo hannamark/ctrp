@@ -112,7 +112,7 @@
                         <thead>
                         <th>Label</th>
                         <th>Type</th>
-                        <th>Interventions</th>
+                        <th>Assigned Interventions</th>
                         <th>Description</th>
                         <th class="text-center td-icon">Edit</th>
                         <th class="text-center td-icon">
@@ -142,8 +142,8 @@
                         <button type="button" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setAddMode(true)">
                             <i class="glyphicon glyphicon-plus"></i> Add Arms Group
                         </button>
-                        <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="armView.deleteSelected()"
-                                ng-disabled="!armView.selectedDeleteArmsGroupsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="armView.curTrial.arms_groups.length">
+                        <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="armView.deleteSelected()" confirm-msg="Click OK to remove selected Arm/Group(s) from the study. Click Cancel to abort."
+                                ng-disabled="!armView.selectedDeleteArmsGroupsList.length || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="armView.curTrial.arms_groups.length">
                             <i class="glyphicon glyphicon-trash"></i> Delete Selected
                         </button>
                     </div>
