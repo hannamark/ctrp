@@ -24,6 +24,25 @@ var abstractionParticipating = function(){
      * Participating Site object(s)
      */
 
+    //Add Participating Site
+    this.addParticipatingSiteBtn = element(by.id('add_participating_site'));
+
+    //Add Organization
+    this.searchOrgnaizationsBtn = element(by.id('org_search_modal'));
+    this.orgnizationTxt = element(by.model('psView.currentParticipatingSite.organization.name')); //by.id('organization')
+    this.cityTxt = element(by.model('psView.city'));
+    this.stateTxt = element(by.model('psView.state_province'));
+    this.countryTxt = element(by.model('psView.country'));
+    this.zipPostalCodeTxt = element(by.model('psView.postal_code'));
+
+    this.orgnizationLbl = element(by.css('label[for="organization"]'));
+    this.cityLbl = element(by.css('label[for="city"]'));
+    this.stateLbl = element(by.css('label[for="state_province"]'));
+    this.countryLbl = element(by.css('.control-label.col-xs-12.col-sm-3'));
+    this.zipPostalCodeLbl = element(by.css('label.control-label.col-xs-12.col-sm-3'));
+
+    //Program Code
+
 
 
     //page Header

@@ -3,11 +3,11 @@ Feature: PAA F08 Add and Edit Trial Participating Sites
 
 As any CTRP PA User, I can add and edit Trial Participating Sites
 
-Scenario Outline: #1 I can add one or more a participating sites for a trial 
+Scenario Outline: #1 I can add one or more a participating sites for a trial
 Given I am on the Participating Site Page
 And I have selected an organization <Organization name> with the Organization look up
 And I have entered or edited the Local Trial Identifier <Local Trial Identifier >
-And I have selected one or more Site Recruitment Status <Site Recruitment Status> 
+And I have selected one or more Site Recruitment Status <Site Recruitment Status>
 And I have selected one or more Site Recruitment status date <Site Recruitment Status Date>
 And I have entered Site Recruitment status comments <Site Recruitment status comments>
 And I have entered the program code <Site Specific Program Code>
@@ -18,19 +18,19 @@ And I have selected the role for each investigator <Site Principal Investigator 
 |Sub Investigator|
 And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact
 And I have edited the phone number for the investigator contact <Phone #>
-And I have edited the phone number extension <ext> for the investigator contact 
+And I have edited the phone number extension <ext> for the investigator contact
 And I have edited the contact e-mail for the contact <e-mail address>
-And I have selected the �Set as Site Contact" for a central contact <Central Contact> when the central contact for the participating site is generic  
+And I have selected the �Set as Site Contact" for a central contact <Central Contact> when the central contact for the participating site is generic
 And I have added or edited the contact phone number for the contact <Phone #>
-And I have added or edited the contact phone number extension <ext> for the contact 
+And I have added or edited the contact phone number extension <ext> for the contact
 And I have added or edited the contact e-mail for the contact <e-mail address>
 Then the participating site information will be associated with the trial
-And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial 
+And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial
 And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
 
-Scenario Outline: #2 I can edit a participating site for a trial 
+Scenario Outline: #2 I can edit a participating site for a trial
 Given I am on the Participating Site Page
-And I have selected the Participating site <organization name> 
+And I have selected the Participating site <organization name>
 And I have entered or edited the Local Trial Identifier <Local Trial Identifier >
 And I have selected one or more Site Recruitment Status <Site Recruitment Status> 
 And I have selected one or more Site Recruitment status date <Site Recruitment Status Date>
@@ -43,17 +43,17 @@ And I have selected the role for each investigator <Site Principal Investigator 
 |Sub Investigator|
 And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact
 And I have edited the phone number for the investigator contact <Phone #>
-And I have edited the phone number extension <ext> for the investigator contact 
+And I have edited the phone number extension <ext> for the investigator contact
 And I have edited the contact e-mail for the contact <e-mail address>
 And I have selected the �Set as Site Contact" for a central contact <Central Contact> when the central contact for the participating site is generic  
 And I have added or edited the contact phone number for the contact <Phone #>
-And I have added or edited the contact phone number extension <ext> for the contact 
+And I have added or edited the contact phone number extension <ext> for the contact
 And I have added or edited the contact e-mail for the contact <e-mail address>
 Then the participating site information will be associated with the trial
-And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial 
+And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial
 And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
 
-Scenario: #3 Delete participating site information for a trial 
+Scenario: #3 Delete participating site information for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I select one or more participating sites
@@ -92,12 +92,11 @@ And I have edited the phone number extension <ext> for the investigator contact
 And I have edited the contact e-mail for the contact <e-mail address>
 And I have selected the �Set as Site Contact" for a central contact <Central Contact> when the central contact for the participating site is generic  
 And I have added or edited the contact phone number for the contact <Phone #>
-And I have added or edited the contact phone number extension <ext> for the contact 
+And I have added or edited the contact phone number extension <ext> for the contact
 And I have added or edited the contact e-mail for the contact <e-mail address>
 Then the participating site information will be associated with the trial
-And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial 
+And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial
 And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
-
 Examples:
 |Organization name||Org City||Org State||Org Country||Org zip code||Local Trial Identifier  ||Site Recruitment Status||Site Recruitment Status Date||Site Recruitment status comments||Site Specific Program Code  ||Target Accrual Number ||Site Principal Investigator||Site Principal Investigator Role||Central Contact      ||Phone #       ||e-mail address||Warning/Error||Message|
 |Mayo             ||New York||NY       ||USA        ||10101       || 123                    ||Approved               ||30-Sep-2015                 ||Free Text                       ||48                          || 100                  ||Jane Doe                   ||Principal Investigator          ||Jane Doe             ||212-123-4567  ||jane@mayo.com ||             ||Participating Site Has been Updated|
@@ -124,7 +123,7 @@ And I am on the Participating Site Page
 and I select "set as site contact" for general contact
 Then the "set as site contact" will be cleared for investigators
 
-Scenario : #9 I view the participating site status' for a trial 
+Scenario : #9 I view the participating site status' for a trial
 Given I am on the Participating Site Page
 And I have selected an organization 
 And I have selected the Participating Site Status
@@ -294,9 +293,6 @@ When I add a trial status from <statusFrom> to trial status <statusTo> and the r
       |Administratively Complete	                    |Temporarily Closed to Accrual and Intervention |ERROR: Invalid status Transition from [ADMINISTRATIVELY COMPLETE] to [TEMPORARILY  CLOSED TO ACCRUAL AND INTERVENTIONS]	                                                                                                                                                    |
       |Administratively Complete	                    |Complete	                                    |ERROR: Invalid status Transition from [ADMINISTRATIVELY COMPLETE] to [COMPLETE]	                                                                                                                                                                                            |
       |Administratively Complete	                    |Administratively Complete	                    |ERROR: Duplicate [ADMINISTRATIVELY COMPLETE] status is not allowed	                                                                                                                                                                                                            |
-
-  
-   
 
 Scenario: #12 Delete Trial Status Comment not null
 Given I am on the Participating Site Page
