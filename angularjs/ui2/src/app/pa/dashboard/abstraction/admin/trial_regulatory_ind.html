@@ -99,7 +99,7 @@
                             </table>
 
                             <input type="hidden" name="ind_ide_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.curTrial.ind_ide_question === 'Yes' && !trialDetailView.addedIndIdes.length">
-                            <div ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy) || trialDetailView.showAddIndIdeError, 'bottom-offset-xs': trialDetailView.showAddIndIdeError && trialDetailView.addedIndIdes.length}">
+                            <div ng-if="trialDetailView.curTrial.ind_ide_question === 'Yes'" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy) || trialDetailView.showAddIndIdeError, 'bottom-offset-xs': trialDetailView.showAddIndIdeError && trialDetailView.addedIndIdes.length}">
                                 <span class="help-block" ng-show="trialDetailView.showAddIndIdeError && !trialDetailView.ind_ide_type">
                                     IND/IDE Type is Required<br>
                                 </span>
