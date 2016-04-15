@@ -23,8 +23,7 @@
                                     >
                                 <option value="">- Please select a  outcome-measure type...</option>
                             </select>
-                            <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.om_type) &&
-                                        om_form.om_type.$error">
+                            <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.om_type) && om_form.om_type.$error">
                             <span class="help-block" ng-message="required">Outcome Measure Type is Required</span>
                             </span>
                         </div>
@@ -171,7 +170,7 @@
                             </thead>
                             <tbody ui-sortable="omView.sortableListener" ng-model="omView.curTrial.outcome_measures">
 
-                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" style="cursor: move;" ng-class="{'deleted-text': outcome_measure._destroy, 'edit-selected': outcome_measure.id === omView.currentOutcomeMeasure.id}">
+                            <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" style="cursor: move;">
                                 <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                                <td>
                                  {{$index+1}}

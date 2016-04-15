@@ -14,11 +14,6 @@
 #  onhold_reason_code :string(255)
 #  offhold_date       :date
 #
-# Indexes
-#
-#  index_onholds_on_onhold_reason_id  (onhold_reason_id)
-#  index_onholds_on_trial_id          (trial_id)
-#
 
 class Onhold < ActiveRecord::Base
   include BasicConcerns

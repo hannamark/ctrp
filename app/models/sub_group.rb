@@ -10,10 +10,7 @@
 #  updated_at   :datetime         not null
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
-#
-# Indexes
-#
-#  index_sub_groups_on_trial_id  (trial_id)
+#  index        :integer
 #
 
 class SubGroup < ActiveRecord::Base

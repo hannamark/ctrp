@@ -13,11 +13,6 @@
 #  uuid                 :string(255)
 #  lock_version         :integer          default(0)
 #
-# Indexes
-#
-#  index_interventions_on_intervention_type_id  (intervention_type_id)
-#  index_interventions_on_trial_id              (trial_id)
-#
 
 class Intervention < ActiveRecord::Base
   include BasicConcerns

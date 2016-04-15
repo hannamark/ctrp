@@ -10,10 +10,6 @@
 #  uuid            :string(255)
 #  lock_version    :integer          default(0)
 #
-# Indexes
-#
-#  index_name_aliases_on_organization_id  (organization_id)
-#
 
 class NameAlias < ActiveRecord::Base
   include BasicConcerns

@@ -68,9 +68,11 @@
 
             function cancelComment() {
                 popover.hide();
+                scope.errorMsg = null;
             }
 
             function cleanupPopover() {
+                scope.errorMsg = null;
                 popover.destroy();
             }
         }

@@ -22,11 +22,6 @@
 #  updated_by        :string
 #  extension         :string(255)
 #
-# Indexes
-#
-#  index_people_on_source_context_id  (source_context_id)
-#  index_people_on_source_status_id   (source_status_id)
-#
 
 class Person < ActiveRecord::Base
   include BasicConcerns

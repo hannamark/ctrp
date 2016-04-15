@@ -13,12 +13,6 @@
 #  effective_date           :datetime
 #  expiration_date          :datetime
 #
-# Indexes
-#
-#  index_po_affiliations_on_organization_id           (organization_id)
-#  index_po_affiliations_on_person_id                 (person_id)
-#  index_po_affiliations_on_po_affiliation_status_id  (po_affiliation_status_id)
-#
 
 require 'test_helper'
 

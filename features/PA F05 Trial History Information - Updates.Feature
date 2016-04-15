@@ -68,3 +68,11 @@ And I am on the Trial History Information for Updates Screen
 Then the Action fields will display "Acknowledge Scientific"
 And the trial update will need to be acknowldeged
 
+
+ Scenario: #6 Paging
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I have selected a Trial
+      And I am on the Trial History Information Update Screen
+      Then the Update history will be displayed for the trial 
+      And the list will be paganiated  
+

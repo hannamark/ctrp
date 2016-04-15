@@ -32,11 +32,11 @@
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
-        vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
-        vm.updateOtherCriteriaType = updateOtherCriteriaType;
         vm.updateOtherCriteria = updateOtherCriteria;
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
+        //vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
+        //vm.updateOtherCriteriaType = updateOtherCriteriaType;
 
         activate();
         function activate() {
@@ -213,8 +213,13 @@
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
 
             vm.addOtherCriterionFormShown = false;
-            vm.criteriaView.otherCriterion.edit = false;
+            vm.otherCriterion = newOtherCriterion(''); // reset to empty because edit/update is complete
         }
+
+/*
+        ADIL: Removed inline editing feature so no longer required since
+              function updateOtherCriteria() performs both tasks in one function.
+              Commented out for now
 
         function updateOtherCriteriaDesc(otherCriterionDesc, index) {
             if (otherCriterionDesc.length === 0) {
@@ -226,6 +231,7 @@
         function updateOtherCriteriaType(otherCriterionType, index) {
             vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
+*/
 
         /**
          * Check whether the Other Criterion description is duplicate
@@ -275,9 +281,17 @@
             var item = ui.item.scope().item;
             var fromIndex = ui.item.sortable.index;
             var toIndex = ui.item.sortable.dropindex;
-            updateCriteria(false);
-            // console.log('moved: ', item, fromIndex, toIndex);
-            // console.log('criteriaView.trialDetailObj.other_criteria: ', vm.trialDetailObj.other_criteria);
+            if (isFormModelsComplete()) {
+                console.info('form models are all completed!');
+                // only update when the other fields in the form are also completed!
+                updateCriteria(false);
+            }
+        }
+
+        function isFormModelsComplete() {
+            return vm.trialDetailObj.gender_id !== null && vm.trialDetailObj.accept_vol !== null &&
+                 vm.trialDetailObj.min_age !== null && vm.trialDetailObj.min_age_unit_id !== null &&
+                         vm.trialDetailObj.max_age !== null && vm.trialDetailObj.max_age_unit_id !== null;
         }
 
     } // pasEligibilityCtrl

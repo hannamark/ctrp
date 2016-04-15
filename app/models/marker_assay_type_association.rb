@@ -10,11 +10,6 @@
 #  uuid          :string(255)
 #  lock_version  :integer          default(0)
 #
-# Indexes
-#
-#  index_marker_assay_type_associations_on_assay_type_id  (assay_type_id)
-#  index_marker_assay_type_associations_on_marker_id      (marker_id)
-#
 
 class MarkerAssayTypeAssociation < ActiveRecord::Base
   include BasicConcerns
