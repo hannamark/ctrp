@@ -211,7 +211,7 @@ Rails.application.routes.draw do
           get  'genders'
           get  'age_units'
           get  'trial_identifier_types'
-          get  'lookup_imported_ncit_interventions'
+          post 'lookup_imported_ncit_interventions'
         end
       end
 
