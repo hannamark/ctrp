@@ -26,12 +26,12 @@
 
         vm.openTree = function(ncitCode) {
             console.log(ncitCode);
-            $window.open(vm.infoUrl + ncitCode), '_blank';
+            $window.open(vm.treeUrl + ncitCode, '_blank', 'top=100, left=100, height=740, width=680, scrollbars=yes');
         };
 
         vm.openInfo = function(ncitCode) {
             console.log(ncitCode);
-            $window.open(vm.treeUrl + ncitCode);
+            $window.open(vm.infoUrl + ncitCode);
         };
 
         vm.addDisease = function(index) {
