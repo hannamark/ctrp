@@ -12,11 +12,6 @@
 #  lock_version     :integer          default(0)
 #  ctrp_id          :integer
 #
-# Indexes
-#
-#  index_families_on_family_status_id  (family_status_id)
-#  index_families_on_family_type_id    (family_type_id)
-#
 
 require 'test_helper'
 

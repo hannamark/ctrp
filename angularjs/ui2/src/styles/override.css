@@ -1140,8 +1140,6 @@ div.datepicker {
     background: #AEF;
 }
 
-.panel-title .glyphicon-chevron-down {display:none;}
-
 .popover-wide {
     color: #444;
     position: absolute;
@@ -1190,4 +1188,14 @@ div.datepicker {
     border-top-color: #999;
     border-top-color: rgba(0, 0, 0, 0.25);
     border-bottom-width: 0;
+}
+
+.popover-confirm {
+    width: 300px;
+}
+.popover-confirm .popover-message {
+    margin-bottom:3px;
+}
+.popover-confirm .form-actions {
+    text-align: right;
 }

@@ -52,9 +52,10 @@ And the CTRP application will check if any optional fields have been entered
 And the CTRP application will check that all registration sections have been completed
 And the option to submit trial will be available
 And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN 
-And an email entitled "Trial Registration" will be sent to the trial submitter (Email list in the shared drive under Functional/Registration: CTRP System Generated Emails)
 And the created by field will be displayed with the created date and time in format username (dd-mmm-yyyy hh:mm)
 And the updated by field will be displayed with the updated date and time in format username (dd-mmm-yyyy hh:mm)
+And an email entitled "Trial Registration" will be sent to the trial submitter (Email list in the shared drive under Functional/Registration: CTRP System Generated Emails)
+
  Examples:
   |trialType                |
   |National                 |
@@ -71,7 +72,7 @@ And the updated by field will be displayed with the updated date and time in for
 
 
 Scenario Outline: #2 I can review my registration with errors
-Given I have selected the option to Register a trial <TrialType>
+Given I have selected the option to register a trial <TrialType>
 And I have completed the registration sections but with errors
 When I have selected Review Trial
 Then the registration errors will be displayed
@@ -83,7 +84,7 @@ Examples:
   |Externally Peer-Reviewed |
   |Institutional            |
 
-Scenario Outline: #2a Check for Duplicate trials
+Scenario Outline: #3 Check for Duplicate trials
 Given I have selected the option to register a trial <trialType>
 When I have entered the same Lead Organization Trial Identifier for a Lead Organization which exists in another Trial
 Then on review, the error message " A Trial exists in the system with the same Lead Organization Trial identifier for the selected Lead Organization" will be displayed
@@ -96,21 +97,6 @@ And the option to Register Trial will be not available
   |Institutional            |
 
 
-Scenario Outline: #3 I can submit my completed trial registration
-Given I have selected the option to register a trial <trialType>
-And I have performed the Review Trial action without errors
-When I have selected Register Trial
-Then all registration information will be entered in CTRP
-And the trial status will be Submitted
-And the trial milestone Submission Received Date will be created with the current date and time
-And the trial record will have the NCI Identifer with the format NCI-YYYY-NNNNN 
-And an email entitled "Trial Registration" will be sent to the trial submitter (Email list in the shared drive under Functional/Registration: CTRP System Generated Emails)
-
- Examples:
-  |trialType                |
-  |National                 |
-  |Externally Peer-Reviewed |
-  |Institutional            |
 
 
 Scenario Outline: #4 I can edit my completed trial registration

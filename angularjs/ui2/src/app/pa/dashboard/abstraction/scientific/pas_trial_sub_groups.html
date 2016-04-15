@@ -93,7 +93,7 @@
 
                     <tbody ui-sortable="sgView.sortableListener" ng-model="sgView.curTrial.sub_groups">
 
-                    <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy, 'edit-selected': sub_group.id === sgView.currentSubGroup.id}">
+                    <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy}">
 
                         <td>
                             {{$index+1}}
@@ -125,7 +125,7 @@
                         <i class="glyphicon glyphicon-plus"></i> Add Sub Group
                     </button>
                     <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="sgView.deleteSelected()" confirm-msg="Click OK to remove selected Marker(s) fromm the study. Click Cancel to abort."
-                            ng-disabled="!sgView.selectedDeleteSubGroupsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="sgView.curTrial.sub_groups.length">
+                            ng-disabled="!sgView.selectedDeleteSubGroupsList.length || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="sgView.curTrial.sub_groups.length">
                         <i class="glyphicon glyphicon-trash"></i> Delete Selected
                 </button>
                 </div>

@@ -212,11 +212,11 @@ class ApplicationController < ActionController::Base
 
   ### StandardError
   ### \----------------------------/ Big Basket for Active Record
-  rescue_from StandardError do |e|
-    respond_with do |format|
-      format.json { render json: { errors: "Standard eroors may be restricting to save your form data" }, status:500 }
-    end
-  end
+  #rescue_from StandardError do |e|
+   # respond_with do |format|
+    #  format.json { render json: { errors: "Standard eroors may be restricting to save your form data" }, status:500 }
+    #end
+  #end
 
 
   ### ActiveRecord ####

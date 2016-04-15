@@ -1,89 +1,88 @@
 <div ng-show="assoTrialsView.showLookupForm">
-        <!-- first row in the accordion body -->
-        <div class="row">
-            <uib-accordion close-others="false">
-                <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-                    <uib-accordion-heading>
-                        Associated Trial Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-                    </uib-accordion-heading>
+    <!-- first row in the accordion body -->
+    <div class="row">
+        <uib-accordion close-others="false">
+            <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+                <uib-accordion-heading>
+                    Associated Trial Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+                </uib-accordion-heading>
 
-                    <!-- add associated trial -->
-                    <div class="row">
-                        <form name="associated_trials_form" role="form" class="form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()">
-                            <!-- fieldset for eligibility criteria -->
-                            <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm">
-                                <legend class="sub-bordered">
-                                    Trial Lookup
-                                </legend>
-                                <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type)}">
-                                    <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type:</label>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <select name="identifier_type" id="identifier_type" class="form-control input-sm"
-                                                ng-model="assoTrialsView.trialQueryObj.identifierTypeId"
-                                                ng-options="type.id as type.name for type in assoTrialsView.identifierTypes"
-                                                ng-required="true"
-                                        >
-                                            <option value="">
-                                                -- Please select a trial identifier type...
-                                            </option>
-                                        </select>
-                                <span ng-messages="ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type) &&
-                                                    associated_trials_form.identifier_type.$error">
-                                    <span class="help-block" ng-message="required"><br />Identifier Type is Required</span>
-                               </span>
-                                    </div>
+                <!-- add associated trial -->
+                <div class="row">
+                    <form name="associated_trials_form" role="form" class="form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()">
+                        <!-- fieldset for eligibility criteria -->
+                        <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm">
+                            <legend class="sub-bordered">
+                                Trial Lookup
+                            </legend>
+                            <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type)}">
+                                <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type:</label>
+                                <div class="col-xs-12 col-sm-4">
+                                    <select name="identifier_type" id="identifier_type" class="form-control input-sm"
+                                            ng-model="assoTrialsView.trialQueryObj.identifierTypeId"
+                                            ng-options="type.id as type.name for type in assoTrialsView.identifierTypes"
+                                            ng-required="true"
+                                    >
+                                        <option value="">
+                                            -- Please select a trial identifier type...
+                                        </option>
+                                    </select>
+                            <span ng-messages="ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type) &&
+                                                associated_trials_form.identifier_type.$error">
+                                <span class="help-block" ng-message="required"><br />Identifier Type is Required</span>
+                           </span>
                                 </div>
-                                <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.trial_identifier)}">
-                                    <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Trial Identifier:</label>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <input type="text" name="trial_identifier" id="trial_identifier"
-                                               class="form-control input-sm"
-                                               ng-model="assoTrialsView.trialQueryObj.trialIdentifier"
-                                               required
-                                               placeholder="Trial Identifier"
-                                        >
-                                <span ng-messages="ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.trial_identifier) &&
-                                                    associated_trials_form.trial_identifier.$error">
-                                    <span class="help-block" ng-message="required"><br />Trial Identifier is Required</span>
-                               </span>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-2">
-                                        <button type="submit" class="btn btn-primary"
-                                                ng-disabled="assoTrialsView.lookupBtnDisabled">
-                                            <i class="glyphicon glyphicon-search"></i> Look Up Trial
-                                        </button>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-2 form-text alert alert-warning" ng-show="assoTrialsView.foundTrialObj.errorMsg.length > 0">
-                                        {{assoTrialsView.foundTrialObj.errorMsg}}
-                                    </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.trial_identifier)}">
+                                <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Trial Identifier:</label>
+                                <div class="col-xs-12 col-sm-4">
+                                    <input type="text" name="trial_identifier" id="trial_identifier"
+                                           class="form-control input-sm"
+                                           ng-model="assoTrialsView.trialQueryObj.trialIdentifier"
+                                           required
+                                           placeholder="Trial Identifier"
+                                    >
+                                    <span ng-messages="ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.trial_identifier) &&
+                                                        associated_trials_form.trial_identifier.$error">
+                                        <span class="help-block" ng-message="required"><br />Trial Identifier is Required</span>
+                                   </span>
+                                   <span class="help-block" ng-show="assoTrialsView.foundTrialObj.errorMsg.length > 0">
+                                       {{assoTrialsView.foundTrialObj.errorMsg}}
+                                   </span>
                                 </div>
-                                <div ng-hide="assoTrialsView.foundTrialObj.official_title.length==0">
-                                    <!-- show this div only if the trial is found not null -->
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-12 col-sm-3">Research Category</label>
-                                        <div class="col-xs-12 col-sm-5 form-text">{{assoTrialsView.foundTrialObj.researchCategory}}</div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-12 col-sm-3">Official Title</label>
-                                        <div class="col-xs-12 col-sm-9 form-text">{{assoTrialsView.foundTrialObj.official_title}}</div>
-                                    </div>
-
-                                    <div class="form-group text-center">
-                                        <button type="button" class="btn btn-warning" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">Reset</button>
-                                        <button type="button" class="btn btn-primary" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
-                                        <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
-                                    </div>
+                                <div class="col-xs-12 col-sm-2">
+                                    <button type="submit" class="btn btn-primary"
+                                            ng-disabled="assoTrialsView.lookupBtnDisabled">
+                                        <i class="glyphicon glyphicon-search"></i> Look Up Trial
+                                    </button>
                                 </div>
-                            </fieldset>
+                            </div>
 
-                        </form>
-                    </div>
-                    <!-- end of adding associated trial -->
-                </uib-accordion-group>
-            </uib-accordion>
-        </div>
-    </form>
+                            <!-- show this div only if the trial is found not null -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3">Research Category:</label>
+                                <div class="col-xs-12 col-sm-5 form-text">{{assoTrialsView.foundTrialObj.researchCategory}}</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3">Official Title:</label>
+                                <div class="col-xs-12 col-sm-9 form-text">{{assoTrialsView.foundTrialObj.official_title}}</div>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <button type="button" class="btn btn-warning" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">Reset</button>
+                                <button type="button" class="btn btn-primary" ng-disabled="assoTrialsView.foundTrialObj.official_title.length==0" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
+                                <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
+                            </div>
+
+                        </fieldset>
+
+                    </form>
+                </div>
+                <!-- end of adding associated trial -->
+            </uib-accordion-group>
+        </uib-accordion>
+    </div>
 </div>
 <div class="row" ng-hide="assoTrialsView.showLookupForm && (assoTrialsView.trialDetailObj.associated_trials.length === 0)">
     <uib-accordion close-others="false">
@@ -151,8 +150,8 @@
                       confirm-msg="Click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort."
                       ctrp-click="assoTrialsView.deleteTrialAssociations()"
                       ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0"
-                      ng-disabled="assoTrialsView.deleteBtnDisabled || !paTrialOverview.trialDetailObj.pa_editable">
-                   <i class="glyphicon glyphicon-remove"></i>  Delete Selected
+                      ng-disabled="assoTrialsView.deleteBtnDisabled || !paTrialOverview.trialDetailObj.pa_sci_editable">
+                   <i class="glyphicon glyphicon-trash"></i>  Delete Selected
                   </button>
                 </div>
             </div>

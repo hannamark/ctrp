@@ -7,10 +7,10 @@
         .controller('pasEligibilityCtrl', pasEligibilityCtrl);
 
     pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods'];
+        'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods', 'Common'];
 
     function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods) {
+        MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods, Common) {
         var vm = this;
         var MAX_CHARS = 5000; // maximal character counts for the description field in ALL other criterion
         vm.trialDetailObj = {};
@@ -32,11 +32,11 @@
         vm.editOtherCriterion = editOtherCriterion;
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
-        vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
-        vm.updateOtherCriteriaType = updateOtherCriteriaType;
         vm.updateOtherCriteria = updateOtherCriteria;
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
+        //vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
+        //vm.updateOtherCriteriaType = updateOtherCriteriaType;
 
         activate();
         function activate() {
@@ -144,13 +144,32 @@
                 // return if the description is empty
                 return;
             }
+            var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
-            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria) &&
-                    !confirm(confirmMsg)) {
-                    // if duplicate other criterion description and user cancels, return;
-                    return;
+            if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria)) {
+                // if OC exists already
+                Common.alertConfirm(confirmMsg).then(function(ok) {
+                    isConfirmed = ok;
+                }).catch(function(cancel) {
+                    // isConfirmed = cancel;
+                }).finally(function() {
+                    if (isConfirmed === true) {
+                        // user confirmed
+                        _insertOC(otherCriterionObj);
+                    } // isConfirmed
+                });
+            } else {
+                _insertOC(otherCriterionObj);
             }
 
+        } // upsertOtherCriterion
+
+        /**
+         * Interner function called by upsertOtherCriterion
+         * @param  {JSON Object} otherCriterionObj [description]
+         * @return {Void}                   [description]
+         */
+        function _insertOC(otherCriterionObj) {
             if (otherCriterionObj.id === undefined) {
                 otherCriterionObj._destroy = vm.deleteAllOCCheckbox;
                 vm.trialDetailObj.other_criteria.unshift(otherCriterionObj);
@@ -194,7 +213,13 @@
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
 
             vm.addOtherCriterionFormShown = false;
+            vm.otherCriterion = newOtherCriterion(''); // reset to empty because edit/update is complete
         }
+
+/*
+        ADIL: Removed inline editing feature so no longer required since
+              function updateOtherCriteria() performs both tasks in one function.
+              Commented out for now
 
         function updateOtherCriteriaDesc(otherCriterionDesc, index) {
             if (otherCriterionDesc.length === 0) {
@@ -206,6 +231,7 @@
         function updateOtherCriteriaType(otherCriterionType, index) {
             vm.trialDetailObj.other_criteria[index].criteria_type = otherCriterionType;
         }
+*/
 
         /**
          * Check whether the Other Criterion description is duplicate
@@ -255,9 +281,17 @@
             var item = ui.item.scope().item;
             var fromIndex = ui.item.sortable.index;
             var toIndex = ui.item.sortable.dropindex;
-            updateCriteria(false);
-            // console.log('moved: ', item, fromIndex, toIndex);
-            // console.log('criteriaView.trialDetailObj.other_criteria: ', vm.trialDetailObj.other_criteria);
+            if (isFormModelsComplete()) {
+                console.info('form models are all completed!');
+                // only update when the other fields in the form are also completed!
+                updateCriteria(false);
+            }
+        }
+
+        function isFormModelsComplete() {
+            return vm.trialDetailObj.gender_id !== null && vm.trialDetailObj.accept_vol !== null &&
+                 vm.trialDetailObj.min_age !== null && vm.trialDetailObj.min_age_unit_id !== null &&
+                         vm.trialDetailObj.max_age !== null && vm.trialDetailObj.max_age_unit_id !== null;
         }
 
     } // pasEligibilityCtrl

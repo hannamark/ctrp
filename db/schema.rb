@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412161259) do
+ActiveRecord::Schema.define(version: 20160414185519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,15 +369,18 @@ ActiveRecord::Schema.define(version: 20160412161259) do
   end
 
   create_table "grants", force: :cascade do |t|
-    t.string   "funding_mechanism", limit: 255
-    t.string   "institute_code",    limit: 255
-    t.string   "nci",               limit: 255
+    t.string   "funding_mechanism",   limit: 255
+    t.string   "institute_code",      limit: 255
+    t.string   "nci",                 limit: 255
     t.integer  "trial_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uuid",              limit: 255
-    t.integer  "lock_version",                  default: 0
-    t.string   "serial_number",     limit: 255
+    t.string   "uuid",                limit: 255
+    t.integer  "lock_version",                    default: 0
+    t.string   "serial_number",       limit: 255
+    t.text     "deletion_comment"
+    t.datetime "deleted_at"
+    t.string   "deleted_by_username"
   end
 
   add_index "grants", ["trial_id"], name: "index_grants_on_trial_id", using: :btree
@@ -538,7 +541,6 @@ ActiveRecord::Schema.define(version: 20160412161259) do
     t.string   "name",                  limit: 255
     t.string   "record_status",         limit: 255
     t.integer  "biomarker_use_id"
-    t.integer  "biomarker_purpose_id"
     t.integer  "trial_id"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
@@ -551,7 +553,6 @@ ActiveRecord::Schema.define(version: 20160412161259) do
     t.integer  "cadsr_marker_id"
   end
 
-  add_index "markers", ["biomarker_purpose_id"], name: "index_markers_on_biomarker_purpose_id", using: :btree
   add_index "markers", ["biomarker_use_id"], name: "index_markers_on_biomarker_use_id", using: :btree
   add_index "markers", ["cadsr_marker_id"], name: "index_markers_on_cadsr_marker_id", using: :btree
   add_index "markers", ["trial_id"], name: "index_markers_on_trial_id", using: :btree
@@ -641,6 +642,17 @@ ActiveRecord::Schema.define(version: 20160412161259) do
 
   add_index "ncit_disease_synonyms", ["ncit_disease_code_id"], name: "index_ncit_disease_synonyms_on_ncit_disease_code_id", using: :btree
   add_index "ncit_disease_synonyms", ["ncit_status_id"], name: "index_ncit_disease_synonyms_on_ncit_status_id", using: :btree
+
+  create_table "ncit_interventions", force: :cascade do |t|
+    t.string   "preferred_name"
+    t.string   "synonyms"
+    t.text     "description"
+    t.string   "type_code"
+    t.string   "ct_gov_type_code"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "ncit_status_id"
+  end
 
   create_table "ncit_statuses", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -1213,9 +1225,9 @@ ActiveRecord::Schema.define(version: 20160412161259) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1411,9 +1423,9 @@ ActiveRecord::Schema.define(version: 20160412161259) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.jsonb    "object"
+    t.text     "object"
     t.datetime "created_at"
-    t.jsonb    "object_changes"
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1451,7 +1463,6 @@ ActiveRecord::Schema.define(version: 20160412161259) do
   add_foreign_key "marker_assay_type_associations", "markers"
   add_foreign_key "marker_biomarker_purpose_associations", "biomarker_purposes"
   add_foreign_key "marker_biomarker_purpose_associations", "markers"
-  add_foreign_key "markers", "biomarker_purposes"
   add_foreign_key "markers", "biomarker_uses"
   add_foreign_key "markers", "cadsr_markers"
   add_foreign_key "markers", "trials"
@@ -1590,6 +1601,7 @@ ActiveRecord::Schema.define(version: 20160412161259) do
   create_sequence "ncit_disease_codes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ncit_disease_parents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ncit_disease_synonyms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ncit_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onhold_reasons_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onholds_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

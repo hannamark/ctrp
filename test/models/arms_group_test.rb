@@ -13,10 +13,6 @@
 #  arms_groups_type  :string
 #  intervention_text :string
 #
-# Indexes
-#
-#  index_arms_groups_on_trial_id  (trial_id)
-#
 
 require 'test_helper'
 

@@ -72,7 +72,7 @@
                                 confirm-msg="Click OK to remove selected Anatomic site(s) from the study. Click Cancel to abort."
                                 ctrp-click="anatomicView.deleteSelected()"
                                 ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0"
-                                ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length || !paTrialOverview.trialDetailObj.pa_editable">
+                                ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length || !paTrialOverview.trialDetailObj.pa_sci_editable">
                             <i class="glyphicon glyphicon-trash"></i> Delete Selected
                         </button>
                     </div>
