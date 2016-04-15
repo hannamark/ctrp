@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  # before_filter :wrapper_authenticate_user unless Rails.env.test?
+  # load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -180,6 +180,30 @@ class TrialsController < ApplicationController
 
     respond_to do |format|
       format.json { render :json => {:statuses => @statuses} }
+    end
+  end
+
+  def lookup_imported_ncit_interventions
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 20 if params[:rows].blank?
+    params[:sort] = 'id' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+    @interventions = []
+    p "params!!: #{params}"
+    if params[:name].present?
+      @interventions = NcitIntervention.all
+      @interventions = @interventions.matches_like('synonyms', params[:name]) if params[:include_synonyms].present?  # like synonyms
+      @interventions = @interventions.matches_exact('preferred_name', params[:name]) if params[:exact].present?
+
+      if !params[:exact].present? and !params[:include_synonyms].present?
+        @interventions = @interventions.match_loosely_preferred_name(params[:name])
+      end
+
+      @interventions = @interventions.sort_by_col(params).page(params[:start]).per(params[:rows])
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:data => @interventions} }
     end
   end
 

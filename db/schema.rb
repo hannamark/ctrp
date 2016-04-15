@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414185519) do
+ActiveRecord::Schema.define(version: 20160415142216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -654,6 +654,8 @@ ActiveRecord::Schema.define(version: 20160414185519) do
     t.integer  "ncit_status_id"
   end
 
+  add_index "ncit_interventions", ["preferred_name"], name: "index_ncit_interventions_on_preferred_name", using: :btree
+
   create_table "ncit_statuses", force: :cascade do |t|
     t.string   "code",         limit: 255
     t.string   "name",         limit: 255
@@ -1225,9 +1227,9 @@ ActiveRecord::Schema.define(version: 20160414185519) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 
@@ -1423,9 +1425,9 @@ ActiveRecord::Schema.define(version: 20160414185519) do
     t.integer  "item_id",        null: false
     t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object"
+    t.jsonb    "object"
     t.datetime "created_at"
-    t.text     "object_changes"
+    t.jsonb    "object_changes"
     t.integer  "transaction_id"
   end
 
