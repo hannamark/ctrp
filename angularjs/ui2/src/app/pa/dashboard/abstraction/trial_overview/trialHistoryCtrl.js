@@ -30,9 +30,11 @@
         vm.searchWarningMessage = '';
 
         //ui-grid plugin options
-        vm.gridOptions = AuditService.getGridOptions();
-        //vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-        //vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+        vm.auditGridOptions = AuditService.getAuditsGridOptions();
+        //vm.auditGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.auditGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+
+        vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
 
 
         activate();
@@ -40,11 +42,31 @@
         function activate() {
             // getTrialDetailObj();
             //_getProcessingInfo();
-            vm.gridOptions = AuditService.getGridOptions();
-            vm.gridOptions.data =null;
-            vm.gridOptions.totalItems = null;
+            vm.auditGridOptions = AuditService.getAuditsGridOptions();
+            vm.auditGridOptions.data =null;
+            vm.auditGridOptions.totalItems = null;
+
+            vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
+            vm.updatesGridOptions.data = null;
+            vm.updatesGridOptions.totalItems = null;
+            loadTrialUpdates();
+
         }
 
+        function loadTrialUpdates() {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            vm.trialHistoryObj = {trial_id: trialId};
+
+            AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                vm.updatesGridOptions.data = data.trial_versions;
+                vm.updatesGridOptions.totalItems = data.trial_versions["length"];
+            }).catch(function (err) {
+                console.log('Getting trial updates failed');
+            }).finally(function () {
+                console.log('search finished');
+            });
+        }
         /**
          * Get trial detail object from parent scope
          */
@@ -114,8 +136,8 @@
                 vm.searchWarningMessage=''
                 AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
                     console.log('received search results: ' + JSON.stringify(data.trial_versions));
-                    vm.gridOptions.data = data.trial_versions;
-                    vm.gridOptions.totalItems = data.trial_versions["length"];
+                    vm.auditGridOptions.data = data.trial_versions;
+                    vm.auditGridOptions.totalItems = data.trial_versions["length"];
                 }).catch(function (err) {
                     console.log('Getting audit trials failed');
                 }).finally(function () {

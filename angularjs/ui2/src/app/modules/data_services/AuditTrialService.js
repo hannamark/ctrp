@@ -15,7 +15,6 @@
                         GeoLocationService, Common, $rootScope,
                         PromiseTimeoutService,UserService,uiGridConstants) {
 
-        var statesOrProvinces = [];
         var initOrgSearchParams = {
             name : '',
             alias: true,
@@ -42,7 +41,40 @@
             start: 1
         }; //initial Organization Search Parameters
 
-        var gridOptions = {
+        var updatesGridOptions = {
+            rowTemplate: '<div>'+
+            '<div>' +
+            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            //enableRowSelection: false,
+            paginationPageSizes: [20, 50, 100],
+            paginationPageSize: 20,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            columnDefs: [
+                {name: 'submission_num', displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Update At', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'date', displayName:'Acknowledge Date',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'user', displayName:'Acknowledge User ID',enableSorting: true, minWidth: '100', width: '*'}
+
+            ]
+        };
+
+
+        var auditsGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
             ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
@@ -135,9 +167,14 @@
             ]
         };
 
+
+
         var services = {
-            getGridOptions : getGridOptions,
-            getAudits: getAudits
+            getAuditsGridOptions: getAuditsGridOptions,
+            getAudits: getAudits,
+            getUpdatesGridOptions: getUpdatesGridOptions,
+            getUpdates: getUpdates,
+            getSubmissions: getSubmissions
         };
 
         return services;
@@ -152,8 +189,22 @@
         }
 
 
-        function getGridOptions() {
-            return gridOptions;
+        function getAuditsGridOptions() {
+            return auditsGridOptions;
+        }
+
+
+
+        function getUpdates(obj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_UPDATES_HISTORY, obj);
+        }
+
+        function getUpdatesGridOptions() {
+            return updatesGridOptions;
+        }
+
+        function getSubmissions(obj) {
+
         }
 
 

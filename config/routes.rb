@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       collection do
         get 'index'
         post 'history'
+        post 'updates_history'
       end
     end
 
