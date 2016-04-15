@@ -69,7 +69,7 @@ class NcitIntervention < ActiveRecord::Base
   # scope :match_exact_preferred_name, -> (value) { where(preferred_name: value.strip) }
   scope :matches_exact, -> (column, value) { where("ncit_interventions.#{column} = ?", "#{value}") }
 
-  scope :matches_like, -> (column, value) { where("ncit_interventions.#{column} ilike ?", "#{value}")} # like?
+  scope :matches_like, -> (column, value) { where("ncit_interventions.#{column} ilike ?", "%#{value}%")} # like?
 
   # support like and wildcard queries
   scope :match_loosely_preferred_name, -> (value) {
@@ -84,7 +84,8 @@ class NcitIntervention < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       value_exp = "%#{value[1..str_len - 2]}%"
     else
-      value_exp = "#{value}"
+      p "value_exp = value!!"
+      value_exp = "%#{value}%"
     end
 
     where(where_clause, value_exp)

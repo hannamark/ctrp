@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  # before_filter :wrapper_authenticate_user unless Rails.env.test?
+  # load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -189,7 +189,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     @interventions = []
-    p "params!!: #{params}"
+
     if params[:name].present?
       @interventions = NcitIntervention.all
       @interventions = @interventions.matches_like('synonyms', params[:name]) if params[:include_synonyms].present?  # like synonyms
