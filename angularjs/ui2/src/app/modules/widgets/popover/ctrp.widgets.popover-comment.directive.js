@@ -54,7 +54,6 @@
             scope.$on('$destroy', cleanupPopover); // clean up the popover
             scope.saveComment = saveComment;
             scope.cancelComment = cancelComment;
-
             scope.errorMsg = null;
             function saveComment(comment) {
                 if (!angular.isDefined(comment) || comment.length === 0) {
@@ -75,7 +74,9 @@
                 scope.errorMsg = null;
                 popover.destroy();
             }
-        }
+
+            $compile(element.contents())(scope); // compile the template
+        } // linkerFn
     }
 
 })();
