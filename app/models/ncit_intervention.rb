@@ -84,7 +84,6 @@ class NcitIntervention < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       value_exp = "%#{value[1..str_len - 2]}%"
     else
-      p "value_exp = value!!"
       value_exp = "%#{value}%"
     end
 
