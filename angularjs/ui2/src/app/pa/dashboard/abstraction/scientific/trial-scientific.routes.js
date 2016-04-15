@@ -205,7 +205,11 @@
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_disease.html',
                 controller: 'pasDiseaseCtrl as diseaseView',
                 resolve: {
-                    DiseaseService: 'DiseaseService'
+                    DiseaseService: 'DiseaseService',
+                    TrialService: 'TrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    }
                 },
                 section: 'pa',
                 ncyBreadcrumb: {

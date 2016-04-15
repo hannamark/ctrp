@@ -54,17 +54,30 @@
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-5">
-                <div class="form-group">
-                    <h4>Your Selections</h4>
-                    <ul class="list-group">
-                        <li ng-repeat="addedDisease in diseaseView.addedDiseases track by $index" class="list-group-item">
-                            {{addedDisease.preferred_name}}
-                            <button restriction-field class="btn btn-warning" type="button" ng-click="diseaseView.removeDisease($index)">
-                                <i class="glyphicon glyphicon-remove"></i>
+                <form class="form form-horizontal" role="form" name="added_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
+                    <div class="form-group">
+                        <h4>Your Selections</h4>
+                        <ul class="list-group">
+                            <li ng-repeat="addedDisease in diseaseView.addedDiseases track by $index" class="list-group-item">
+                                {{addedDisease.preferred_name}}
+                                <button restriction-field class="btn btn-warning" type="button" ng-click="diseaseView.removeDisease($index)">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div ng-show="diseaseView.addedDiseases.length > 0" class="form-group no-bottom-margin">
+                        <div class="btn-toolbar">
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_btn" restriction-field ng-disabled="diseaseView.disableBtn">
+                                <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                        </li>
-                    </ul>
-                </div>
+                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="diseaseView.resetDisease()">
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </uib-accordion-group>
     </uib-accordion>
