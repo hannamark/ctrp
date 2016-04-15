@@ -24,7 +24,7 @@ Feature: Reg F05 Register Trial Protocol Identifiers
     And I am on the Register Trial Protocol Identifiers screen
     When I have not entered the lead organization trial identifier
     And I click on the Review Trial button
-    Then the Register Trial Protocol Identifiers section will indicate an error "Lead Organization Trial Identifier is required"
+    Then the Register Trial Protocol Identifiers section will indicate an error "Lead Organization Trial Identifier is Required"
 
     Examples:
 
