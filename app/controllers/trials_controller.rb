@@ -190,7 +190,7 @@ class TrialsController < ApplicationController
     params[:order] = 'asc' if params[:order].blank?
     @interventions = []
 
-    if params[:name].present?
+    if params[:name].present? # and !params[:name].blank?
       @interventions = NcitIntervention.all
       @interventions = @interventions.matches_like('synonyms', params[:name]) if params[:include_synonyms].present?  # like synonyms
       @interventions = @interventions.matches_exact('preferred_name', params[:name]) if params[:exact].present?
@@ -203,7 +203,7 @@ class TrialsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {:data => @interventions} }
+      format.json { render :json => {:data => @interventions, :start => params[:start], :rows => params[:rows], :total => @interventions.total_count, :sort => params[:sort], :order => params[:order]} }
     end
   end
 
