@@ -57,11 +57,11 @@ Feature: Reg F06 Register Trial Details
     Then the Trial Details field <FieldType> section will indicate an error <error>
 
       |FieldType                  |error                                      |
-      | Official Title              | Official Title is required                   |
-      | Phase                       | Phase is required                  |
-      | Research Category           | Research Category is required            |
-      | Primary Purpose             | Primary Purpose is required             |
-      | Accrual Disease Terminology | Accrual Disease Terminology is required   |
+      | Official Title              | Official Title is Required                   |
+      | Phase                       | Phase is Required                  |
+      | Research Category           | Research Category is Required            |
+      | Primary Purpose             | Primary Purpose is Required             |
+      | Accrual Disease Terminology | Accrual Disease Terminology is Required   |
 
     Examples:
 
