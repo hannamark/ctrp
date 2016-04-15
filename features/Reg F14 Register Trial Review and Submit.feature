@@ -84,7 +84,7 @@ Examples:
   |Externally Peer-Reviewed |
   |Institutional            |
 
-Scenario Outline: #2a Check for Duplicate trials
+Scenario Outline: #3 Check for Duplicate trials
 Given I have selected the option to register a trial <trialType>
 When I have entered the same Lead Organization Trial Identifier for a Lead Organization which exists in another Trial
 Then on review, the error message " A Trial exists in the system with the same Lead Organization Trial identifier for the selected Lead Organization" will be displayed
