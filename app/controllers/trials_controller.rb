@@ -189,7 +189,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     @interventions = []
-    p "params!!: #{params}"
+
     if params[:name].present?
       @interventions = NcitIntervention.all
       @interventions = @interventions.matches_like('synonyms', params[:name]) if params[:include_synonyms].present?  # like synonyms
