@@ -64,13 +64,6 @@ And an email entitled "Trial Registration" will be sent to the trial submitter (
 
 
 
- Examples:
-  |trialType                |
-  |National                 |
-  |Externally Peer-Reviewed |
-  |Institutional            |
-
-
 Scenario Outline: #2 I can review my registration with errors
 Given I have selected the option to register a trial <TrialType>
 And I have completed the registration sections but with errors
