@@ -26,8 +26,8 @@ Feature: Reg F08 Register Trial Person and Organization Associations
     And I have not selected a person as the trial's Principal Investigator
     Then the Register Trial Lead Organization/Principal Investigator screen will indicate errors as:
 
-      |Lead Organization is required|
-      |Principal Investigator is required|
+      |Lead Organization is Required|
+      |Principal Investigator is Required|
 
     Examples:
       |trialType              |
@@ -58,7 +58,7 @@ Feature: Reg F08 Register Trial Person and Organization Associations
     Then the Register Trial Sponsor Party section will indicate errors during Trial Review as:
 
 
-      |Sponsor is required  |
+      |Sponsor is Required  |
 
     Examples:
 
@@ -88,7 +88,7 @@ Feature: Reg F08 Register Trial Person and Organization Associations
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Funding Source screen
     When I have not entered one or more organizations as the trial's Funding Source
-    Then The Register Trial Funding Source will indicate a error as "Funding Source is required"
+    Then The Register Trial Funding Source will indicate a error as "Funding Source is Required"
 
     Examples:
 
