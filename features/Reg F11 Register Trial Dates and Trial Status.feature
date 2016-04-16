@@ -432,20 +432,20 @@ Feature: Reg F11 Register Trial Dates and Trial Status
 
   Scenario Outline:#3a Validation rule for Trial status fields
     Given I have selected the option to register a trial <trialType>
-    And I am on the Register Trial Status screen
+    And I am on the Register Trial Status screen 
     When I click on Review Trial without any Trial Status
-    Then I should get an error message as "Trial Status is required"
+    Then I should get an error message as "Trial Status is Required"
     And On Add Trial Status if Status Date or Status is missing
-    Then I should get an error message as "Status Date, Trial Status are required"
+    Then I should get an error message as "Status Date, Trial Status are Required"
     And On Add Trial Status when the Status selected is
-    Then I should get an error message as "Trial Status Date and Trial Status are required"
+    Then I should get an error message as "Trial Status Date and Trial Status are Required"
     And On Add Trial Status when the Status selected is
       |Temporarily Closed to Accrual                  |
       |Temporarily Closed to Accrual and Intervention |
       |Withdrawn                                      |
       |Administratively Complete                      |
     And Why Study Stopped reason is not provided
-    Then I should get an error message as "Trial Status Date, Trial Status and  Why Study Stopped are required"
+    Then I should get an error message as "Trial Status Date, Trial Status and  Why Study Stopped are Required"
 
     Examples:
       |trialType  |
@@ -525,9 +525,9 @@ Feature: Reg F11 Register Trial Dates and Trial Status
     
     Then an error message type will be displayed
     
-      |Trial Start Date is required  |
-      |Primary Completion Date is required  |
-      |Completion Date is required  |
+      |Trial Start Date is Required  |
+      |Primary Completion Date is Required  |
+      |Completion Date is Required  |
 
     
     When I have not entered a Trial Date type for the mandatory Trial Dates
@@ -535,9 +535,9 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Anticipated  |
     Then the error message type will be displayed
       
-      |Trial Start Date Type is required  |
-      |Primary Completion Date Type is required  |
-      |Completion Date Type is required  |
+      |Trial Start Date Type is Required  |
+      |Primary Completion Date Type is Required  |
+      |Completion Date Type is Required  |
 
     Examples:
       |trialType  |

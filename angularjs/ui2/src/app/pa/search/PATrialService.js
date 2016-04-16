@@ -156,7 +156,8 @@
             searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists,
             searchNCITrial: searchNCITrial,
             lookupTrial: lookupTrial,
-            associateTrial: associateTrial
+            associateTrial: associateTrial,
+            lookupNcitInterventions: lookupNcitInterventions
         };
 
         return services;
@@ -503,6 +504,10 @@
         function associateTrial(associatedTrialObj) {
             console.info('associating trial: ', associatedTrialObj);
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.ASSOCIATE_TRIAL, associatedTrialObj);
+        }
+
+        function lookupNcitInterventions(searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.NCIT_INTERVENTIONS_LOOKUP, searchParams);
         }
 
         /**

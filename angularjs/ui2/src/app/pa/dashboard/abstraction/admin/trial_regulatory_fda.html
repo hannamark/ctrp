@@ -16,7 +16,7 @@
                         <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.responsible_party_id)}">
                             <label class="control-label col-xs-12 col-sm-4">Responsible Party:</label>
                             <div class=" col-xs-12 col-sm-5">
-                                <select restriction-field class="form-control input-sm" id="responsible_party" name="responsible_party" ng-model="trialDetailView.curTrial.responsible_party_id"
+                                <select restriction-field class="form-control input-sm" id="responsible_party" name="responsible_party_id" ng-model="trialDetailView.curTrial.responsible_party_id"
                                         ng-options="responsibleParty.id as responsibleParty.name for responsibleParty in trialDetailView.responsiblePartyArr"
                                         ng-change="trialDetailView.watchOption('responsible_party')" ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required>
                                     <option value="">-Select a Responsible Party-</option>
@@ -93,7 +93,7 @@
                                     <tr>
                                         <td>
                                             <div>
-                                                <select restriction-field class="form-control input-sm" id="authority_country" ng-model="trialDetailView.authority_country" ng-change="trialDetailView.watchOption('authority_country')">
+                                                <select name="authority_country" restriction-field class="form-control input-sm" id="authority_country" ng-model="trialDetailView.authority_country" ng-change="trialDetailView.watchOption('authority_country')">
                                                     <option value="">-Select a Country-</option>
                                                     <option ng-repeat="country in trialDetailView.countryArr track by $index" value="{{country.name}}" ng-selected="trialDetailView.curTrial.authority_country == country.name">{{country.name}}</option>
                                                 </select>
@@ -101,7 +101,7 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <select restriction-field class="form-control input-sm" id="authority_org" ng-model="trialDetailView.authority_org">
+                                                <select restriction-field class="form-control input-sm" name="authority_org" id="authority_org" ng-model="trialDetailView.authority_org">
                                                     <option value="">-Select an Organization-</option>
                                                     <option ng-repeat="org in trialDetailView.authorityOrgArr track by $index" value="{{org}}" ng-selected="trialDetailView.curTrial.authority_org == org">{{org}}</option>
                                                 </select>
