@@ -183,6 +183,30 @@ class TrialsController < ApplicationController
     end
   end
 
+  def lookup_imported_ncit_interventions
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 20 if params[:rows].blank?
+    params[:sort] = 'id' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+    @interventions = []
+
+    if params[:name].present? # and !params[:name].blank?
+      @interventions = NcitIntervention.all
+      @interventions = @interventions.matches_like('synonyms', params[:name]) if params[:include_synonyms].present?  # like synonyms
+      @interventions = @interventions.matches_exact('preferred_name', params[:name]) if params[:exact].present?
+
+      if !params[:exact].present? and !params[:include_synonyms].present?
+        @interventions = @interventions.match_loosely_preferred_name(params[:name])
+      end
+
+      @interventions = @interventions.sort_by_col(params).page(params[:start]).per(params[:rows])
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:data => @interventions, :start => params[:start], :rows => params[:rows], :total => @interventions.total_count, :sort => params[:sort], :order => params[:order]} }
+    end
+  end
+
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
@@ -590,6 +614,7 @@ class TrialsController < ApplicationController
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status, :added_by_id, :why_deleted],
+                                  interventions_attributes: [:id, :name, :description, :other_name, :intervention_type_id, :trial_id],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:index,:label,:description,:_destroy],

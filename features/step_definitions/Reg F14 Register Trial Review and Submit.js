@@ -19,6 +19,7 @@ var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 var helperFunctions = require('../support/helper');
 var moment = require('moment');
+var mailVerificationPage = require('../support/mailVerification');
 
 
 module.exports = function() {
@@ -28,29 +29,30 @@ module.exports = function() {
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
     var trialDoc = new abstractionTrialRelatedDocument();
     var helper = new helperFunctions();
+    var emailVerify = new mailVerificationPage();
 
     /**** Required field Validation message ****/
-    var leadOrgTrialIdentifierRqdMsg = 'Lead Organization Trial Identifier is required';
-    var officialTitleRqdMsg ='Official Title is required';
-    var phaseRqdMsg = 'Phase is required';
-    var researchCatRqdMsg = 'Research Category is required';
-    var primaryPurposeRqdMsg = 'Primary Purpose is required';
-    var accDisTerminologyRqdMsg = 'Accrual Disease Terminology is required';
-    var leadOrgRqdMsg = 'Lead Organization is required';
-    var prinInvRqdMsg = 'Principal Investigator is required';
-    var sponsorRqdMsg = 'Sponsor is required';
-    var fundingSrcRqdMsg = 'Funding Source is required';
-    var grantRqdMsg = 'Grant is required';
-    var trialStatusRqdMsg = 'Trial Status is required';
-    var trialStartDateRqdMsg = 'Trial Start Date is required';
-    var trialStartDateTypeRqdMsg = 'Trial Start Date Type is required';
-    var trialPrimaryDateRqdMsg = 'Primary Completion Date is required';
-    var trialPrimaryDateTypeRqdMsg = 'Primary Completion Date Type is required';
-    var trialCompletionDateRqdMsg = 'Completion Date is required';
-    var trialCompletionDateTypeRqdMsg = 'Completion Date Type is required';
-    var INDIDERqdMsg = 'IND/IDE is required';
-    var protocolDocumentRqdMsg = 'Protocol Document is required';
-    var IRBDocumentRqdMsg = 'IRB Approval is required';
+    var leadOrgTrialIdentifierRqdMsg = 'Lead Organization Trial Identifier is Required';
+    var officialTitleRqdMsg ='Official Title is Required';
+    var phaseRqdMsg = 'Phase is Required';
+    var researchCatRqdMsg = 'Research Category is Required';
+    var primaryPurposeRqdMsg = 'Primary Purpose is Required';
+    var accDisTerminologyRqdMsg = 'Accrual Disease Terminology is Required';
+    var leadOrgRqdMsg = 'Lead Organization is Required';
+    var prinInvRqdMsg = 'Principal Investigator is Required';
+    var sponsorRqdMsg = 'Sponsor is Required';
+    var fundingSrcRqdMsg = 'Funding Source is Required';
+    var grantRqdMsg = 'Grant is Required';
+    var trialStatusRqdMsg = 'Trial Status is Required';
+    var trialStartDateRqdMsg = 'Trial Start Date is Required';
+    var trialStartDateTypeRqdMsg = 'Trial Start Date Type is Required';
+    var trialPrimaryDateRqdMsg = 'Primary Completion Date is Required';
+    var trialPrimaryDateTypeRqdMsg = 'Primary Completion Date Type is Required';
+    var trialCompletionDateRqdMsg = 'Completion Date is Required';
+    var trialCompletionDateTypeRqdMsg = 'Completion Date Type is Required';
+    var INDIDERqdMsg = 'IND/IDE is Required';
+    var protocolDocumentRqdMsg = 'Protocol Document is Required';
+    var IRBDocumentRqdMsg = 'IRB Approval is Required';
 
     /**** Required field values ****/
     var leadOrgTrialIdentifier = 'Shi Lead Organization ';
@@ -79,11 +81,11 @@ module.exports = function() {
     var IRBDocument = 'testSampleXlsFile.xls';
 
     /**** Conditional field value message ****/
-    var secondaryPurposeOtherDescriptionRqdMsg = 'Other Secondary Purpose is required';
-    var grantFundingRqdMsg = 'Funding Mechanism, Institute Code, Serial Number and NCI Division/Program Code are required';
-    var INDIDEFieldsRqdMsg = 'IND/IDE Type, ND/IDE Number, IND/IDE Grantor and IND/IDE Holder Type are required';
-    var trialStatusStudyStopped = 'Status Date, Status and Why Study Stopped are required';
-    var informedConsentDoc = 'Informed Consent Document is required for Interventional Trial';
+    var secondaryPurposeOtherDescriptionRqdMsg = 'Other Secondary Purpose is Required';
+    var grantFundingRqdMsg = 'Funding Mechanism, Institute Code, Serial Number and NCI Division/Program Code are Required';
+    var INDIDEFieldsRqdMsg = 'IND/IDE Type, ND/IDE Number, IND/IDE Grantor and IND/IDE Holder Type are Required';
+    var trialStatusStudyStopped = 'Status Date, Status and Why Study Stopped are Required';
+    var informedConsentDoc = 'Informed Consent Document is Required for Interventional Trial';
 
 
     /**** Conditional field value ****/
@@ -95,11 +97,20 @@ module.exports = function() {
     var informedConsentDocument = 'testSamplePDFFile.pdf';
 
     /**** Optional field value ****/
+    var clinicalIdentifierType = 'ClinicalTrials.gov Identifier';
+    var clinicalIdentifierID = 'NCT22446688';
+    var obsoleteClinicalIdentifierType = 'Obsolete ClinicalTrials.gov Identifier';
+    var obsoleteClinicalIdentifierID = 'NCT11335577';
     var otherIdentifierType = 'Other Identifier';
     var otherIdentifierID = 'SS1234';
     var programCode = 'SS cuke 777';
     var participatingSiteDocument = 'testSampleRichTextFile.rtf';
     var otherDocument = 'testSampleXlsmFile.xlsm';
+
+    /**** Email Verification ****/
+    var gmaillink = 'https://mail.google.com/mail/#inbox';
+    var gmailID = 'ctrptrialsubmitter@gmail.com';
+    var firstLastName = 'rita tam';
 
 
 
@@ -113,27 +124,6 @@ module.exports = function() {
     });
 
     this.Then(/^the CTRP application will check that all required fields have been entered$/, function (table, callback) {
-        //expect(projectFunctions.verifyWarningMessage(leadOrgTrialIdentifierRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(officialTitleRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(phaseRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(researchCatRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(primaryPurposeRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(accDisTerminologyRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(leadOrgRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(prinInvRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(sponsorRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(fundingSrcRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(grantRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(trialStatusRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(trialStartDateRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(trialStartDateTypeRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(trialPrimaryDateRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(trialPrimaryDateTypeRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(trialCompletionDateRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(trialCompletionDateTypeRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(INDIDERqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(protocolDocumentRqdMsg)).to.become('true');
-        //expect(projectFunctions.verifyWarningMessage(IRBDocumentRqdMsg)).to.become('true');
 
         /****** Create Lead Organization ********/
         projectFunctionsRegistry.createOrgforTrial(leadOrg, typeOfTrial, '0');
@@ -184,7 +174,12 @@ module.exports = function() {
                     });
 
                     /**** Trial Identifiers ****/
-                    addTrial.setAddTrialLeadProtocolIdentifier(leadOrgTrialIdentifier + typeOfTrial  + ' ' + moment().format('MMMDoYY') );
+                    addTrial.setAddTrialLeadProtocolIdentifier(leadOrgTrialIdentifier + typeOfTrial  + ' ' + moment().format('MMMDoYY hmm') );
+                    /** Stores the value of Lead Protocol Identifier **/
+                    storeLeadProtocolId = addTrial.addTrialLeadProtocolIdentifier.getAttribute('value').then(function (value) {
+                        console.log('This is the Lead Organization Trial Identifier that is added' + value);
+                        return value;
+                    });
 
                     /**** Trial Details ****/
                     addTrial.setAddTrialOfficialTitle(officialTitle);
@@ -307,6 +302,12 @@ module.exports = function() {
     });
 
     this.Given(/^the CTRP application will check if any optional fields have been entered$/, function (table, callback) {
+        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', clinicalIdentifierType)).click();
+        addTrial.setAddTrialProtocolID(clinicalIdentifierID);
+        addTrial.clickAddTrialAddProtocolButton();
+        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', obsoleteClinicalIdentifierType)).click();
+        addTrial.setAddTrialProtocolID(obsoleteClinicalIdentifierID);
+        addTrial.clickAddTrialAddProtocolButton();
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', otherIdentifierType)).click();
         addTrial.setAddTrialProtocolID(otherIdentifierID);
         addTrial.clickAddTrialAddProtocolButton();
@@ -320,12 +321,122 @@ module.exports = function() {
         callback();
     });
 
-    this.Given(/^the option to Register Trial will be available$/, function (callback) {
+
+    this.Given(/^the option to submit trial will be available$/, function (callback) {
         expect(addTrial.addTrialReviewButton.isPresent()).to.eventually.equal(false);
         expect(addTrial.addTrialSubmitButton.isPresent()).to.eventually.equal(true);
+        addTrial.clickAddTrialReviewButton();
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^the trial record will have the NCI Identifer with the format NCI\-YYYY\-NNNNN$/, function (callback) {
+        /** Stores the value of NCI ID **/
+        helper.wait(addTrial.viewTrialNCIID, 'NCI ID element on View Trial Page');
+        addTrial.viewTrialNCIID.getText().then(function (value) {
+            var valueToVerify = value.slice(0,9);
+            console.log('NCI ID string after Slice:' + valueToVerify);
+            expect(valueToVerify).to.equal('NCI-'+ moment().year()+'-');
+        });
+        storeNCIIdentifier = addTrial.viewTrialNCIID.getText().then(function (value) {
+            console.log('This is the NCI Identifier' + value);
+            return value;
+        });
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the created by field will be displayed with the created date and time in format username \(dd\-mmm\-yyyy hh:mm\)$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback();
+    });
+
+    this.Given(/^the updated by field will be displayed with the updated date and time in format username \(dd\-mmm\-yyyy hh:mm\)$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback();
+    });
+
+    this.Given(/^an email entitled "([^"]*)" will be sent to the trial submitter \(Email list in the shared drive under Functional\/Registration: CTRP System Generated Emails\)$/, function (arg1, string, callback) {
+        console.log('value of arg:');
+        console.log(arg1);
+        console.log('value od String:');
+        console.log(string);
+        var mapObj = {
+            "<<Trial Title>>": officialTitle,
+            "<<ClinicalTrials.gov ID>>": clinicalIdentifierID,
+            "<<Obsolete ClinicalTrials.gov ID>>" : obsoleteClinicalIdentifierID,
+            "<<Other Identifier>>" : otherIdentifierID,
+            "<<Submission Date Format DD-mmm-YYYY>>" : moment().format('DD-MMM-YYYY'),
+            "<<Current date Format DD-mmm-YYYY>>" : moment().format('DD-MMM-YYYY'),
+            "<<firstName lastname>>" : firstLastName
+        };
+        string = string.replace(/<<Trial Title>>|<<ClinicalTrials.gov ID>>|<<Obsolete ClinicalTrials.gov ID>>|<<Other Identifier>>|<<Submission Date Format DD-mmm-YYYY>>|<<Current date Format DD-mmm-YYYY>>|<<firstName lastname>>/gi, function(matched){
+            return mapObj[matched];
+        });
+        storeLeadProtocolId.then(function(leadProtocolID) {
+            string = string.replace("<<Lead Org Trial ID>>", leadProtocolID);
+
+            storeLeadOrg.then(function (leadOrgName) {
+                string = string.replace("<<Lead Organization Name>>", leadOrgName);
+
+                storeNCIIdentifier.then(function (nciTrialID) {
+                    string = string.replace("<<NCI Trial ID>>", nciTrialID);
+                    string = string.replace("<<Trial ID>>", nciTrialID);
+                    console.log('value of updated string:');
+                    console.log(string);
+                    browser.sleep(5000);
+                    emailVerify.gmailMailVerification(gmaillink, gmailID, 'NCI CTRP: Trial RECORD CREATED for ' + nciTrialID + ',' + leadProtocolID, string, callback);
+                });
+            });
+        });
+        browser.sleep(25).then(callback);
+    });
+
+
+    this.Given(/^I have completed the registration sections but with errors$/, function (callback) {
+        addTrial.setAddTrialLeadProtocolIdentifier(leadOrgTrialIdentifier + typeOfTrial  + ' ' + moment().format('MMMDoYY hmm') );
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the registration errors will be displayed$/, function (callback) {
+        expect(projectFunctions.verifyWarningMessage(leadOrgTrialIdentifierRqdMsg)).to.become('false');
+        expect(projectFunctions.verifyWarningMessage(officialTitleRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(phaseRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(researchCatRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(primaryPurposeRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(accDisTerminologyRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(leadOrgRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(prinInvRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(sponsorRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(fundingSrcRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(grantRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(trialStatusRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(trialStartDateRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(trialStartDateTypeRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(trialPrimaryDateRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(trialPrimaryDateTypeRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(trialCompletionDateRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(trialCompletionDateTypeRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(INDIDERqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(protocolDocumentRqdMsg)).to.become('true');
+        expect(projectFunctions.verifyWarningMessage(IRBDocumentRqdMsg)).to.become('true').and.notify(callback);
+
+    });
+
+    this.Given(/^the option to Register Trial will be not available$/, function (callback) {
+        expect(addTrial.addTrialReviewButton.isPresent()).to.eventually.equal(true);
+        expect(addTrial.addTrialSubmitButton.isPresent()).to.eventually.equal(false).and.notify(callback);
+    });
+
+
+
+    this.When(/^I have entered the same Lead Organization Trial Identifier for a Lead Organization which exists in another Trial$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^on review, the error message "([^"]*)" will be displayed$/, function (arg1, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
 
 
