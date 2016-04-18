@@ -43,7 +43,7 @@
             }
 
             function addIntervention() {
-                console.info('showing intervention');
+                // console.info('showing intervention');
                 vm.showInterventionForm = true;
                 vm.curInterventionObj = _newInterventionObj();
             }
@@ -139,7 +139,7 @@
         };
 
         $scope.$watch(function() {return vm.selection;}, function(newVal) {
-            console.info('selection is: ', newVal);
+            // console.info('selection is: ', newVal);
             if (newVal !== '') {
                 // $uibModalInstance.close(newVal);
             }
