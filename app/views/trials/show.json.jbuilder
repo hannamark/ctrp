@@ -193,6 +193,12 @@ json.arms_groups do
   end
 end
 
+json.diseases do
+  json.array!(@trial.diseases) do |disease|
+    json.extract! disease, :id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :trial_id, :rank
+  end
+end
+
 json.sitesu_sites do
   json.array!(@trial.sitesu_sites) do |ps|
     json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization, :current_status_name, :site_pi

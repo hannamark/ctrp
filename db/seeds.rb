@@ -876,6 +876,10 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INFO_URL', name: 'NCI Thesaurus page for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=NCI_Thesaurus&code=')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL', name: 'NCI Thesaurus tree for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ajax?action=search_hierarchy&ontology_node_ns=NCI_Thesaurus&ontology_display_name=NCI_Thesaurus&ontology_node_id=')
+
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
 
 ########## SEEDING APP SETTINGS ENDS ##########
