@@ -40,11 +40,13 @@
           var vm = this;
           vm.lookupInterventions = lookupInterventions;
           vm.resetSearch = resetSearch;
-          vm.confirmSelectedIntervention = confirmSelectedIntervention;
+          // vm.confirmSelectedIntervention = confirmSelectedIntervention;
           vm.searchParams = _getSearchParams();
           vm.searchResults = _initResultsObj();
           vm.gridOptions = _getGridOptions();
-          vm.selection = [];
+          vm.curSelectedRow = '';
+
+          $scope.$on('$destroy', function() {vm.curSelectedRow = '';}); // clean up
 
           function lookupInterventions(params) {
               PATrialService.lookupNcitInterventions(params).then(function(res) {
@@ -127,19 +129,14 @@
           function rowSelectionCallBack(rowObj, event) {
              // console.info('rowSelectionCallBack: ', event, rowObj.entity);
                 if (rowObj.isSelected) {
-                    if (vm.selection.length === $scope.maxRowSelectable) {
-                        vm.selection = [];
-                    }
-                    vm.selection.push(rowObj.entity);
+                    vm.curSelectedRow = rowObj.entity;
+                    $scope.setSelectedIntervention(rowObj.entity || '');
                 } else {
                     rowObj.isSelected = false;
-                    vm.selection.pop();
+                    vm.curSelectedRow = '';
+                    $scope.setSelectedIntervention('');
                 }
           } // rowSelectionCallBack
-
-          function confirmSelectedIntervention() {
-              $scope.setSelectedIntervention(vm.selection[0] || null);
-          }
 
           function getColumnDefs() {
               return [
