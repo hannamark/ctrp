@@ -1,8 +1,57 @@
 <div class="row">
-    <uib-accordion close-others="false">
+    <uib-accordion ng-hide="diseaseView.addMode" close-others="false">
         <uib-accordion-group is-open="paTrialOverview.accordionOpen">
             <uib-accordion-heading>
-                Disease/Condition <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+                List of Disease/Condition <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
+            </uib-accordion-heading>
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <form class="form form-horizontal" role="form">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.existingDiseases.length">
+                            <thead>
+                                <th>Preferred Name</th>
+                                <th>NCI Thesaurus Concept ID</th>
+                                <th>Menu Display Name</th>
+                                <th>Parent Preferred Name(s)</th>
+                                <th class="text-center td-icon">
+                                    <input type="checkbox" restriction-field ng-model="diseaseView.selectedAll" ng-change="diseaseView.toggleAll()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
+                                </th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="disease in diseaseView.existingDiseases track by $index">
+                                <td>{{disease.preferred_name}}</td>
+                                <td>{{disease.thesaurus_id}}</td>
+                                <td>{{disease.display_name}}</td>
+                                <td>{{disease.parent_preferred}}</td>
+                                <td class="text-center td-icon">
+                                    <input type="checkbox" restriction-field ng-model="disease._destroy" ng-change="diseaseView.toggleOne()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+                <div class="form-group no-bottom-margin">
+                    <div class="btn-toolbar">
+                        <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="diseaseView.setAddMode()">
+                            <i class="glyphicon glyphicon-plus"></i> Add Disease/Condition
+                        </button>
+                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="diseaseView.deleteSelected()" confirm-msg="Click OK to remove selected Disease/Condition from the study. Click Cancel to abort."
+                                ng-disabled="diseaseView.selectedNum === 0 || diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="diseaseView.existingDiseases.length">
+                            <i class="glyphicon glyphicon-trash"></i> Delete Selected
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+
+    <uib-accordion ng-show="diseaseView.addMode" close-others="false">
+        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
+            <uib-accordion-heading>
+                Add Disease/Condition <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
 
             <div class="col-xs-12 col-sm-12 col-md-7">

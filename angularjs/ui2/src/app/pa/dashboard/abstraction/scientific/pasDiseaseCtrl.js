@@ -7,13 +7,66 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasDiseaseCtrl', pasDiseaseCtrl);
 
-    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', '_', 'DiseaseService', '$window', 'trialDetailObj', 'TrialService'];
+    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'DiseaseService', '$window', 'trialDetailObj', 'TrialService'];
 
-    function pasDiseaseCtrl($scope, $state, toastr, _, DiseaseService, $window, trialDetailObj, TrialService) {
+    function pasDiseaseCtrl($scope, $state, toastr, DiseaseService, $window, trialDetailObj, TrialService) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        vm.addMode = false;
         vm.addedDiseases = [];
+        vm.existingDiseases = [];
+        vm.selectedAll = false;
+        vm.selectedNum = 0;
         vm.disableBtn = false;
+
+        vm.setAddMode = function() {
+            vm.addMode = true;
+        };
+
+        vm.toggleAll = function() {
+            angular.forEach(vm.existingDiseases, function (disease) {
+                disease._destroy = vm.selectedAll;
+            });
+            countSelected();
+        };
+
+        vm.toggleOne = function() {
+            vm.selectedAll = false;
+            countSelected();
+        };
+
+        vm.deleteSelected = function() {
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+
+            vm.curTrial.diseases_attributes = [];
+            angular.forEach(vm.existingDiseases, function (disease) {
+                if (disease._destroy) {
+                    var diseaseObj = {};
+                    diseaseObj.id = disease.id;
+                    diseaseObj._destroy = disease._destroy;
+                    vm.curTrial.diseases_attributes.push(diseaseObj);
+                }
+            });
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                if (response.server_response.status < 300) {
+                    $state.go('main.pa.trialOverview.disease', {}, {reload: true});
+                    toastr.success('Record(s) deleted', 'Operation Successful!');
+                    vm.disableBtn = false;
+                } else {
+                    // Enable buttons in case of backend error
+                    vm.disableBtn = false;
+                }
+            }).catch(function(err) {
+                console.log("Error in saving diseases " + JSON.stringify(outerTrial));
+            });
+        };
 
         vm.searchDiseases = function() {
             var searchParams = {disease_name: vm.disease_name};
@@ -52,7 +105,7 @@
 
             if (vm.addedDiseases.length > 0) {
                 vm.curTrial.diseases_attributes = [];
-                _.each(vm.addedDiseases, function (disease) {
+                angular.forEach(vm.addedDiseases, function (disease) {
                     var diseaseObj = {};
                     diseaseObj.preferred_name = disease.preferred_name;
                     diseaseObj.code = disease.disease_code;
@@ -69,6 +122,7 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 if (response.server_response.status < 300) {
+                    $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Diseases have been recorded', 'Operation Successful!');
                 } else {
                     // Enable buttons in case of backend error
@@ -84,7 +138,36 @@
         /****************************** implementations **************************/
 
         function activate() {
+            appendDiseases();
         }
 
+        // Append associations for existing Trial
+        function appendDiseases() {
+            for (var i = 0; i < vm.curTrial.diseases.length; i++) {
+                var disease = {};
+                disease.id = vm.curTrial.diseases[i].id;
+                disease.preferred_name = vm.curTrial.diseases[i].preferred_name;
+                disease.code = vm.curTrial.diseases[i].code;
+                disease.thesaurus_id = vm.curTrial.diseases[i].thesaurus_id;
+                disease.display_name = vm.curTrial.diseases[i].display_name;
+                disease.parent_preferred = vm.curTrial.diseases[i].parent_preferred;
+                disease.rank = vm.curTrial.diseases[i].rank;
+                disease._destroy = false;
+                vm.existingDiseases.push(disease);
+            }
+        }
+
+        // Return the number of the selected disease
+        function countSelected() {
+            var c = 0;
+
+            angular.forEach(vm.existingDiseases, function(disease) {
+                if (disease._destroy) {
+                    c++;
+                }
+            });
+
+            vm.selectedNum = c;
+        }
     } //pasDiseaseCtrl
 })();
