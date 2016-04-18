@@ -18,7 +18,8 @@
         restrict: 'E',
         require: '^ngModel',
         scope: {
-          maxRowSelectable: '=?'
+          maxRowSelectable: '=?',
+          ngModel: '='
         },
         controller: nciInterventionsSearchCtrl,
         controllerAs: 'interventionsLookupView',
@@ -28,10 +29,9 @@
       return directive;
 
       function linkerFn(scope, element, attrs, ngModelCtrl) {
-          console.info('in linkerFn: ', scope.maxRowSelectable);
          // $compile(element.contents())(scope); // compile the template
          scope.setSelectedIntervention = function(selection) {
-             console.info('selection is set: ', selection);
+             //console.info('selection is set: ', selection);
              ngModelCtrl.$setViewValue(selection); // set the value of the ng-model with the selection
          }; // setSelectedIntervention to be used in the below controller
       } // linkerFn
@@ -40,11 +40,13 @@
           var vm = this;
           vm.lookupInterventions = lookupInterventions;
           vm.resetSearch = resetSearch;
-          vm.confirmSelectedIntervention = confirmSelectedIntervention;
+          // vm.confirmSelectedIntervention = confirmSelectedIntervention;
           vm.searchParams = _getSearchParams();
           vm.searchResults = _initResultsObj();
           vm.gridOptions = _getGridOptions();
-          vm.selection = [];
+          vm.curSelectedRow = '';
+
+          $scope.$on('$destroy', function() {vm.curSelectedRow = '';}); // clean up
 
           function lookupInterventions(params) {
               PATrialService.lookupNcitInterventions(params).then(function(res) {
@@ -125,28 +127,23 @@
           } // sortChangedCallBack
 
           function rowSelectionCallBack(rowObj, event) {
-              console.info('rowSelectionCallBack: ', event, rowObj.entity);
+             // console.info('rowSelectionCallBack: ', event, rowObj.entity);
                 if (rowObj.isSelected) {
-                    if (vm.selection.length === $scope.maxRowSelectable) {
-                        vm.selection = [];
-                    }
-                    vm.selection.push(rowObj.entity);
+                    vm.curSelectedRow = rowObj.entity;
+                    $scope.setSelectedIntervention(rowObj.entity || '');
                 } else {
                     rowObj.isSelected = false;
-                    vm.selection.pop();
+                    vm.curSelectedRow = '';
+                    $scope.setSelectedIntervention('');
                 }
           } // rowSelectionCallBack
-
-          function confirmSelectedIntervention() {
-              $scope.setSelectedIntervention(vm.selection[0] || null);
-          }
 
           function getColumnDefs() {
               return [
                   {
                       name:'preferred_name',
                       headerName: 'Preferred Name',
-                      minWidth:'20',
+                      width:'20%',
                       enableSorting: true,
                       enableFiltering: true,
                       sort: {direction: 'asc', priority: 1},
@@ -154,7 +151,7 @@
                   {
                       name:'synonyms',
                       headerName: 'Other Names',
-                      minWidth:'80',
+                      width:'*',
                       enableSorting: true,
                       enableFiltering: true,
                   }
