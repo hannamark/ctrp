@@ -8,9 +8,9 @@
   angular.module('ctrpApp.widgets')
   .directive('ctrpNcitInterventionsSearch', ctrpNcitInterventionsSearch);
 
-  ctrpNcitInterventionsSearch.$inject = ['$timeout', '_', 'PATrialService', 'Common', '$compile'];
+  ctrpNcitInterventionsSearch.$inject = ['$timeout', '_', 'PATrialService', 'Common', '$compile', 'uiGridConstants'];
 
-  function ctrpNcitInterventionsSearch($timeout, _, PATrialService, Common, $compile) {
+  function ctrpNcitInterventionsSearch($timeout, _, PATrialService, Common, $compile, uiGridConstants) {
 
       var directive = {
         link: linkerFn,
@@ -51,9 +51,8 @@
                  console.info('res from the interventions lookup: ', res);
                  res.server_response = null;
                  vm.searchResults = res;
-                 vm.gridOptions.api.setRowData(res.data);
-                 vm.gridOptions.api.sizeColumnsToFit();
-                 vm.gridOptions.api.refreshView();
+                 vm.gridOptions.data = res.data;
+                 vm.gridOptions.totalItems = res.total;
               }).catch(function(err) {
                   console.error('err in the lookup: ', err);
                   vm.searchResults = _initResultsObj();
@@ -62,98 +61,111 @@
 
          function resetSearch() {
               vm.searchParams = _getSearchParams();
-              vm.gridOptions.api.setRowData([]);
-          };
-
-          function _getGridOptions() {
-
-              var options = {
-                   enableServerSideSorting: true,
-                   enableServerSideFilter: true,
-                   rowModelType: 'virtual',
-                   angularCompileRows: true,
-                   columnDefs: getColumnDefs(),
-                   rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
-                //   onSelectionChanged: onRowSelectionChanged, // for all rows
-                   onRowSelected: rowSelectedCallback, // current selected row (single row)
-                   enableColResize: true,
-                   enableSorting: true,
-                   enableFilter: true,
-                   // groupHeaders: true,
-                   rowHeight: 37,
-                   onModelUpdated: onModelUpdated,
-                   suppressRowClickSelection: false
-               };
-               // options.datasource = tableDataSource;
-               return options;
-          } // _getGridOptions
-
-          function rowSelectedCallback(event) {
-              console.info('is node selected? ', vm.gridOptions.api.isNodeSelected(event.node), event.node.id);
-              var curSelectedNode = event.node;
-              console.log('curSelectedNode: ', curSelectedNode);
-            //   console.log('node props: ', curSelectedNode);
-              var curSelectedRowObj = curSelectedNode.data;
-              var isSelected = vm.gridOptions.api.isNodeSelected(event.node); // is the node selected?
-              _selectRow(curSelectedRowObj, isSelected); // method from linkerFn
-              var selectedRows = vm.gridOptions.api.getSelectedRows();
+              vm.gridOptions.data = [];
+              vm.gridOptions.totalItems = null;
           }
 
-          function _selectRow(rowObj, isSelected) {
-                if (isSelected) {
+          function _getGridOptions() {
+              var gridOptions = {};
+              // gridOptions.enableColumnResizing = true;
+              gridOptions.totalItems = null;
+              gridOptions.rowHeight = 22;
+              gridOptions.enableSelectAll = false;
+              gridOptions.paginationPageSizes = [20, 50, 100];
+              gridOptions.paginationPageSize = 20;
+              gridOptions.useExternalPagination = true;
+              gridOptions.useExternalSorting = true;
+              gridOptions.enableGridMenu = true;
+              gridOptions.enableFiltering = true;
+              gridOptions.multiSelect = $scope.maxRowSelectable > 1;
+              // columns
+              gridOptions.columnDefs = getColumnDefs();
+              gridOptions.enableVerticalScrollbar = 2;
+              gridOptions.enableHorizontalScrollbar = 2;
+              // call backs for events
+              gridOptions.onRegisterApi = function(gridApi) {
+                  vm.gridApi = gridApi;
+                  vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
+                  vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
+                      vm.searchParams.start = newPage;
+                      vm.searchParams.rows = pageSize;
+                      lookupInterventions(vm.searchParams);
+                  });
+
+                  gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
+                  gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
+                      _.each(rows, function(row, index) {
+                        rowSelectionCallBack(row);
+                      });
+                  });
+              }
+              return gridOptions;
+          } // _getGridOptions
+
+          function sortChangedCallBack(grid, sortColumns) {
+              if (sortColumns.length === 0) {
+                  //console.log("removing sorting");
+                  //remove sorting
+                  vm.searchParams.sort = '';
+                  vm.searchParams.order = '';
+              } else {
+                  vm.searchParams.sort = sortColumns[0].name; //sort the column
+                  switch (sortColumns[0].sort.direction) {
+                      case uiGridConstants.ASC:
+                          vm.searchParams.order = 'ASC';
+                          break;
+                      case uiGridConstants.DESC:
+                          vm.searchParams.order = 'DESC';
+                          break;
+                      case 'undefined':
+                          break;
+                  }
+              }
+              lookupInterventions(vm.searchParams);
+          } // sortChangedCallBack
+
+          function rowSelectionCallBack(rowObj, event) {
+              console.info('rowSelectionCallBack: ', event, rowObj.entity);
+                if (rowObj.isSelected) {
                     if (vm.selection.length === $scope.maxRowSelectable) {
                         vm.selection = [];
                     }
-                    vm.selection.push(rowObj);
+                    vm.selection.push(rowObj.entity);
                 } else {
+                    rowObj.isSelected = false;
                     vm.selection.pop();
                 }
-          }
+          } // rowSelectionCallBack
 
           function confirmSelectedIntervention() {
               $scope.setSelectedIntervention(vm.selection[0] || null);
           }
 
-          function onModelUpdated() {
-              console.info('on model updated triggered!');
-          } // onModelUpdated
-
           function getColumnDefs() {
-
-              var colDefs = [
-                  {headerName: 'Select', width: 15, checkboxSelection: true,
-                       suppressSorting: true, suppressMenu: true, pinned: true},
-                  {headerName: 'Preferred Name', field: 'preferred_name', width: 70, editable: true},
-                  {headerName: 'Other Names', template: '<span style="" ng-bind="data.synonyms"></span>' },
-                //  {headerName: 'Type Code', field: 'type_code', width: 140},
-                //  {headerName: 'ClinicalTrials.gov Type Code', field: 'ct_gov_type_code', width: 220},
-                //  {headerName: 'Description', field: 'description'}
-               ];
-
-              return colDefs;
-          }
-
-          var tableDataSource = {
-              getRows: getRows,
-              pageSize: vm.searchParams.rows,
-              rowCount: 100,
-              overflowSize: 100,
-              maxConcurrentRequests: 3
-          };
-
-          function getRows(params) {
-              params.startRow = (vm.searchParams.start - 1) * vm.searchParams.rows;
-              params.endRow = vm.searchParams.start * vm.searchParams.rows;
-              params.successCallback = function() {
-                  console.info('success in getRows');
-              }
-              return params;
+              return [
+                  {
+                      name:'preferred_name',
+                      headerName: 'Preferred Name',
+                      minWidth:'20',
+                      enableSorting: true,
+                      enableFiltering: true,
+                      sort: {direction: 'asc', priority: 1},
+                  },
+                  {
+                      name:'synonyms',
+                      headerName: 'Other Names',
+                      minWidth:'80',
+                      enableSorting: true,
+                      enableFiltering: true,
+                  }
+              ];
           }
 
           function _initResultsObj() {
               var results = angular.copy(vm.searchParams);
               results.data = [];
               results.total = -1;
+
               return results;
           }
 
@@ -161,7 +173,7 @@
               return {
                   sort: '',
                   order: '',
-                  rows: 10,
+                  rows: 20,
                   start: 1,
                   intervention_name: '' // against either preferred_name or synonyms in ncit_interventions table
               };
