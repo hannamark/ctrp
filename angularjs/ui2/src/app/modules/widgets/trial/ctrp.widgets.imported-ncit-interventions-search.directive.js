@@ -70,7 +70,7 @@
               var options = {
                    enableServerSideSorting: true,
                    enableServerSideFilter: true,
-                   rowModelType: 'pagination',
+                   rowModelType: 'virtual',
                    angularCompileRows: true,
                    columnDefs: getColumnDefs(),
                    rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
@@ -89,20 +89,25 @@
           } // _getGridOptions
 
           function rowSelectedCallback(event) {
-            //   console.info('is node selected? ', vm.gridOptions.api.isNodeSelected(event.node), event.node.id);
+              console.info('is node selected? ', vm.gridOptions.api.isNodeSelected(event.node), event.node.id);
               var curSelectedNode = event.node;
+              console.log('curSelectedNode: ', curSelectedNode);
             //   console.log('node props: ', curSelectedNode);
               var curSelectedRowObj = curSelectedNode.data;
-              _selectRow(curSelectedRowObj); // method from linkerFn
+              var isSelected = vm.gridOptions.api.isNodeSelected(event.node); // is the node selected?
+              _selectRow(curSelectedRowObj, isSelected); // method from linkerFn
               var selectedRows = vm.gridOptions.api.getSelectedRows();
           }
 
-          function _selectRow(rowObj) {
-
-                if (vm.selection.length === $scope.maxRowSelectable) {
-                    vm.selection = [];
+          function _selectRow(rowObj, isSelected) {
+                if (isSelected) {
+                    if (vm.selection.length === $scope.maxRowSelectable) {
+                        vm.selection = [];
+                    }
+                    vm.selection.push(rowObj);
+                } else {
+                    vm.selection.pop();
                 }
-                vm.selection.push(rowObj);
           }
 
           function confirmSelectedIntervention() {
@@ -116,7 +121,7 @@
           function getColumnDefs() {
 
               var colDefs = [
-                  {headerName: 'Select', width: 10, checkboxSelection: true,
+                  {headerName: 'Select', width: 15, checkboxSelection: true,
                        suppressSorting: true, suppressMenu: true, pinned: true},
                   {headerName: 'Preferred Name', field: 'preferred_name', width: 70, editable: true},
                   {headerName: 'Other Names', template: '<span style="" ng-bind="data.synonyms"></span>' },
