@@ -125,7 +125,7 @@
           } // sortChangedCallBack
 
           function rowSelectionCallBack(rowObj, event) {
-              console.info('rowSelectionCallBack: ', event, rowObj.entity);
+             // console.info('rowSelectionCallBack: ', event, rowObj.entity);
                 if (rowObj.isSelected) {
                     if (vm.selection.length === $scope.maxRowSelectable) {
                         vm.selection = [];
@@ -146,7 +146,7 @@
                   {
                       name:'preferred_name',
                       headerName: 'Preferred Name',
-                      minWidth:'20',
+                      width:'20%',
                       enableSorting: true,
                       enableFiltering: true,
                       sort: {direction: 'asc', priority: 1},
@@ -154,7 +154,7 @@
                   {
                       name:'synonyms',
                       headerName: 'Other Names',
-                      minWidth:'80',
+                      width:'*',
                       enableSorting: true,
                       enableFiltering: true,
                   }
