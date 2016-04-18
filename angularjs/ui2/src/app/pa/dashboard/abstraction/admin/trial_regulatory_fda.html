@@ -96,7 +96,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <select restriction-field class="form-control input-sm" name="authority_org" id="authority_org" ng-model="trialDetailView.authority_org">
+                                    <select restriction-field class="form-control input-sm" name="authority_org" id="authority_org" ng-model="trialDetailView.authority_org" ng-disabled="!trialDetailView.authorityOrgArr.length">
                                         <option value="">-Select an Organization-</option>
                                         <option ng-repeat="org in trialDetailView.authorityOrgArr track by $index" value="{{org}}" ng-selected="trialDetailView.curTrial.authority_org == org">{{org}}</option>
                                     </select>

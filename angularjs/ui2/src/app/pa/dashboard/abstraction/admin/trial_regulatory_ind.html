@@ -53,7 +53,7 @@
                         </td>
                         <td>
                             <div ng-class="{'has-error': trialDetailView.showAddIndIdeError && !trialDetailView.grantor}">
-                                <select restriction-field class="form-control input-sm" id="grantor" name="grantor" ng-model="trialDetailView.grantor">
+                                <select restriction-field class="form-control input-sm" id="grantor" name="grantor" ng-model="trialDetailView.grantor" ng-disabled="!trialDetailView.grantorArr.length">
                                     <option value="">-Select-</option>
                                     <option ng-repeat="grantor in trialDetailView.grantorArr" value="{{grantor}}">
                                         {{grantor}}
