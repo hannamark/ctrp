@@ -111,6 +111,16 @@
                     diseaseObj.code = disease.disease_code;
                     diseaseObj.thesaurus_id = disease.nt_term_id;
                     diseaseObj.display_name = disease.menu_display_name;
+
+                    var parent_preferred = '';
+                    angular.forEach(disease.parents, function(parent) {
+                        if (parent_preferred.length > 0) {
+                            parent_preferred += ', ';
+                        }
+                        parent_preferred += parent.preferred_name;
+                    });
+                    diseaseObj.parent_preferred = parent_preferred;
+
                     vm.curTrial.diseases_attributes.push(diseaseObj);
                 });
             }

@@ -11,6 +11,12 @@ json.diseases do
         json.extract! synonym, :id, :alternate_name
       end
     end
+
+    json.parents do
+      json.array!(disease.parents) do |parent|
+        json.extract! parent, :preferred_name
+      end
+    end
   end
 end
 json.info_url AppSetting.find_by_code('NCI_THESAURUS_INFO_URL').value
