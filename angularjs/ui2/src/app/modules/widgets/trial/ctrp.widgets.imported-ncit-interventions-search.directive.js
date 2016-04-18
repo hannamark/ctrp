@@ -52,6 +52,7 @@
                  res.server_response = null;
                  vm.searchResults = res;
                  vm.gridOptions.api.setRowData(res.data);
+                 vm.gridOptions.api.sizeColumnsToFit();
                  vm.gridOptions.api.refreshView();
               }).catch(function(err) {
                   console.error('err in the lookup: ', err);
@@ -78,7 +79,7 @@
                    enableSorting: true,
                    enableFilter: true,
                    // groupHeaders: true,
-                   rowHeight: 25,
+                   rowHeight: 37,
                    onModelUpdated: onModelUpdated,
                    suppressRowClickSelection: false
                };
@@ -96,13 +97,11 @@
           }
 
           function _selectRow(rowObj) {
-            //   if (vm.selection.length === $scope.maxRowSelectable) {
-            //       vm.selection.unshift();
-            //       vm.selection.push(rowObj);
-            //   }
-            console.info('length: ', vm.selection.length);
-              vm.selection.push(rowObj);
 
+                if (vm.selection.length === $scope.maxRowSelectable) {
+                    vm.selection = [];
+                }
+                vm.selection.push(rowObj);
           }
 
           function confirmSelectedIntervention() {
@@ -116,10 +115,10 @@
           function getColumnDefs() {
 
               var colDefs = [
-                  {headerName: 'Select', width: 80, checkboxSelection: true,
+                  {headerName: 'Select', width: 20, checkboxSelection: true,
                        suppressSorting: true, suppressMenu: true, pinned: true},
-                  {headerName: 'Preferred Name', field: 'preferred_name', width: 280, unSortIcon: false, editable: true},
-                  {headerName: 'Other Names', field: 'synonyms'},
+                  {headerName: 'Preferred Name', field: 'preferred_name', width: 70, editable: true},
+                  {headerName: 'Other Names', cellTemplate: '<span style="font-weight: bold;" ng-bind="data.synonyms"></span>' },
                 //  {headerName: 'Type Code', field: 'type_code', width: 140},
                 //  {headerName: 'ClinicalTrials.gov Type Code', field: 'ct_gov_type_code', width: 220},
                 //  {headerName: 'Description', field: 'description'}
