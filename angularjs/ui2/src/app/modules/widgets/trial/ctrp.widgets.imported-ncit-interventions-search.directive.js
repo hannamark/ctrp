@@ -134,7 +134,7 @@
                   order: '',
                   rows: 10,
                   start: 1,
-                  name: '' // against either preferred_name or synonyms in ncit_interventions table
+                  intervention_name: '' // against either preferred_name or synonyms in ncit_interventions table
               };
           } // _getSearchParams
 
