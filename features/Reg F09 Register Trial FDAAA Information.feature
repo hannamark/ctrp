@@ -65,8 +65,8 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     When the field type is not entered
     Then the error type will be displayed
       |Investigator is required            |
-      |Investigator Title is required      |
-      |Investigator Affiliation is required|
+      |Investigator Title is Required      |
+      |Investigator Affiliation is Required|
 
     Examples:
       |trialType                |
@@ -104,8 +104,8 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
     When the field type is not entered
     Then the error type will be displayed
       |Investigator is required            |
-      |Investigator Title is required      |
-      |Investigator Affiliation is required|
+      |Investigator Title is Required      |
+      |Investigator Affiliation is Required|
 
     Examples:
       |trialType              |
