@@ -30,19 +30,21 @@
       function linkerFn(scope, element, attrs, ngModelCtrl) {
           console.info('in linkerFn: ', scope.maxRowSelectable);
          // $compile(element.contents())(scope); // compile the template
-         scope.setSelectedRow = function(selection) {
+         scope.setSelectedIntervention = function(selection) {
              console.info('selection is set: ', selection);
              ngModelCtrl.$setViewValue(selection); // set the value of the ng-model with the selection
-         }; // setSelectedRow to be used in the below controller
+         }; // setSelectedIntervention to be used in the below controller
       } // linkerFn
 
       function nciInterventionsSearchCtrl($scope, $element, $attrs) {
           var vm = this;
           vm.lookupInterventions = lookupInterventions;
           vm.resetSearch = resetSearch;
+          vm.confirmSelectedIntervention = confirmSelectedIntervention;
           vm.searchParams = _getSearchParams();
           vm.searchResults = _initResultsObj();
           vm.gridOptions = _getGridOptions();
+          vm.selection = [];
 
           function lookupInterventions(params) {
               PATrialService.lookupNcitInterventions(params).then(function(res) {
@@ -69,7 +71,7 @@
                    enableServerSideFilter: true,
                    rowModelType: 'pagination',
                    columnDefs: getColumnDefs(),
-                   rowSelection: vm.maxRowSelectable > 1 ? 'multiple' : 'single',
+                   rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
                 //   onSelectionChanged: onRowSelectionChanged, // for all rows
                    onRowSelected: rowSelectedCallback, // current selected row (single row)
                    enableColResize: true,
@@ -89,8 +91,22 @@
               var curSelectedNode = event.node;
             //   console.log('node props: ', curSelectedNode);
               var curSelectedRowObj = curSelectedNode.data;
-              $scope.setSelectedRow(curSelectedRowObj); // method from linkerFn
+              _selectRow(curSelectedRowObj); // method from linkerFn
               var selectedRows = vm.gridOptions.api.getSelectedRows();
+          }
+
+          function _selectRow(rowObj) {
+            //   if (vm.selection.length === $scope.maxRowSelectable) {
+            //       vm.selection.unshift();
+            //       vm.selection.push(rowObj);
+            //   }
+            console.info('length: ', vm.selection.length);
+              vm.selection.push(rowObj);
+
+          }
+
+          function confirmSelectedIntervention() {
+              $scope.setSelectedIntervention(vm.selection[0] || null);
           }
 
           function onModelUpdated() {
@@ -98,15 +114,15 @@
           } // onModelUpdated
 
           function getColumnDefs() {
-              // {headerCellTemplate: '<strong>Head</strong>'}
+
               var colDefs = [
                   {headerName: 'Select', width: 80, checkboxSelection: true,
                        suppressSorting: true, suppressMenu: true, pinned: true},
                   {headerName: 'Preferred Name', field: 'preferred_name', width: 280, unSortIcon: false, editable: true},
-                  {headerName: 'Other Names', field: 'synonyms', width: 370},
-                  {headerName: 'Type Code', field: 'type_code', width: 140},
-                  {headerName: 'ClinicalTrials.gov Type Code', field: 'ct_gov_type_code', width: 220},
-                  {headerName: 'Description', field: 'description'},
+                  {headerName: 'Other Names', field: 'synonyms'},
+                //  {headerName: 'Type Code', field: 'type_code', width: 140},
+                //  {headerName: 'ClinicalTrials.gov Type Code', field: 'ct_gov_type_code', width: 220},
+                //  {headerName: 'Description', field: 'description'}
                ];
 
               return colDefs;
