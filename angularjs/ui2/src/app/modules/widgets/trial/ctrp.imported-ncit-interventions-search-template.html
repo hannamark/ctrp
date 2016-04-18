@@ -38,12 +38,9 @@
             </div>
         </div>
         <div class="row" ng-hide="interventionsLookupView.searchResults.total == -1">
-            <strong>Intervention Lookup Results: {{interventionsLookupView.searchResults.total}}</strong>
-            <!-- <div ng-hide="interventionsLookupView.searchResults.total == 0"
-                 style="width: 100%; height: 400px;"
-                 ag-grid="interventionsLookupView.gridOptions"
-                 class="ag-fresh ag-basic">
-            </div> -->
+            <p>
+                <strong>Intervention Lookup Results: {{interventionsLookupView.searchResults.total | number}} found</strong>
+            </p>
             <div ui-grid="interventionsLookupView.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
         </div>
         <div class="row top-buffer" ng-hide="interventionsLookupView.searchResults.total == -1">

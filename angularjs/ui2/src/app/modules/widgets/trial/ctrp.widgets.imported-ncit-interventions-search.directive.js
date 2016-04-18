@@ -18,7 +18,8 @@
         restrict: 'E',
         require: '^ngModel',
         scope: {
-          maxRowSelectable: '=?'
+          maxRowSelectable: '=?',
+          ngModel: '='
         },
         controller: nciInterventionsSearchCtrl,
         controllerAs: 'interventionsLookupView',
@@ -28,10 +29,9 @@
       return directive;
 
       function linkerFn(scope, element, attrs, ngModelCtrl) {
-          console.info('in linkerFn: ', scope.maxRowSelectable);
          // $compile(element.contents())(scope); // compile the template
          scope.setSelectedIntervention = function(selection) {
-             console.info('selection is set: ', selection);
+             //console.info('selection is set: ', selection);
              ngModelCtrl.$setViewValue(selection); // set the value of the ng-model with the selection
          }; // setSelectedIntervention to be used in the below controller
       } // linkerFn
