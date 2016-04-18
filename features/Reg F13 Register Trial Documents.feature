@@ -34,8 +34,8 @@ Examples:
     And I click on the Review Trial button
     Then Trial Related Documents section will indicate an error 
     
-      |Protocol Document is required  |
-      |IRB Approval is required       |
+      |Protocol Document is Required  |
+      |IRB Approval is Required       |
 
     
   Examples: 
