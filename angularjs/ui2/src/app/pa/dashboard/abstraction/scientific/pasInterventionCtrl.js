@@ -1,16 +1,20 @@
 /**
  * created by wangg5 on Feb 10, 2016
+ *         <ctrp-ncit-interventions-search max-row-selectable="1" ng-model="personSearchView.selection"></ctrp-ncit-interventions-search>
  */
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
-        .controller('pasInterventionCtrl', pasInterventionCtrl);
+        .controller('pasInterventionCtrl', pasInterventionCtrl)
+        .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'Common'];
+        'MESSAGES', '_', '$timeout', 'Common', '$uibModal'];
+
+    pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, Common) {
+        MESSAGES, _, $timeout, Common, $uibModal) {
 
             var vm = this;
             vm.trialDetailObj = {};
@@ -26,6 +30,7 @@
             vm.resetLookupForm = resetLookupForm;
             vm.flagAllInterventionsForDeletion = flagAllInterventionsForDeletion;
             vm.deleteInterventions = deleteInterventions;
+            vm.openLookupModal = openLookupModal;
 
             activate();
             function activate() {
@@ -96,7 +101,51 @@
                 console.info('deleting interventions')
             }
 
+            var modalOpened = false;
+            function openLookupModal(size) {
+                if (modalOpened) return;
 
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'app/pa/dashboard/abstraction/scientific/_intervention_lookup_form.html',
+                    controller: 'pasInterventionLookupModalCtrl as lookupModalView',
+                    size: size,
+                });
+                modalOpened = true;
+
+                modalInstance.result.then(function(selectedInterventionObj) {
+                    vm.selectedInterventionObj = selectedInterventionObj;
+                    console.info('received selectedInterventionObj: ', vm.selectedInterventionObj);
+                }).catch(function(err) {
+                    console.error('error in modal instance: ', err);
+                }).finally(function() {
+                    console.info('completed modal instance');
+                    modalOpened = false;
+                });
+            } // openLookupModal
     } // pasInterventionCtrl
+
+
+    function pasInterventionLookupModalCtrl($scope, $uibModalInstance) {
+        var vm = this;
+        vm.selection = '';
+
+        vm.cancel = function() {
+            $uibModalInstance.dismiss('canceled');
+        };
+
+        vm.confirmSelection = function() {
+            $uibModalInstance.close(vm.selection);
+        };
+
+        $scope.$watch(function() {return vm.selection;}, function(newVal) {
+            console.info('selection is: ', newVal);
+            if (newVal !== '') {
+                // $uibModalInstance.close(newVal);
+            }
+        });
+
+
+    } // pasInterventionLookupModalCtrl
 
 })();
