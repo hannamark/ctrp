@@ -107,6 +107,8 @@
 
                 var modalInstance = $uibModal.open({
                     animation: true,
+                    backdrop: 'static',
+                    keyboard: false,
                     templateUrl: 'app/pa/dashboard/abstraction/scientific/_intervention_lookup_form.html',
                     controller: 'pasInterventionLookupModalCtrl as lookupModalView',
                     size: size,
