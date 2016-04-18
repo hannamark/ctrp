@@ -71,6 +71,7 @@
                    enableServerSideSorting: true,
                    enableServerSideFilter: true,
                    rowModelType: 'pagination',
+                   angularCompileRows: true,
                    columnDefs: getColumnDefs(),
                    rowSelection: $scope.maxRowSelectable > 1 ? 'multiple' : 'single',
                 //   onSelectionChanged: onRowSelectionChanged, // for all rows
@@ -115,10 +116,10 @@
           function getColumnDefs() {
 
               var colDefs = [
-                  {headerName: 'Select', width: 20, checkboxSelection: true,
+                  {headerName: 'Select', width: 10, checkboxSelection: true,
                        suppressSorting: true, suppressMenu: true, pinned: true},
                   {headerName: 'Preferred Name', field: 'preferred_name', width: 70, editable: true},
-                  {headerName: 'Other Names', cellTemplate: '<span style="font-weight: bold;" ng-bind="data.synonyms"></span>' },
+                  {headerName: 'Other Names', template: '<span style="" ng-bind="data.synonyms"></span>' },
                 //  {headerName: 'Type Code', field: 'type_code', width: 140},
                 //  {headerName: 'ClinicalTrials.gov Type Code', field: 'ct_gov_type_code', width: 220},
                 //  {headerName: 'Description', field: 'description'}
