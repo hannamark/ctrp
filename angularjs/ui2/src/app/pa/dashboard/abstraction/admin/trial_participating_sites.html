@@ -1,5 +1,5 @@
 <div class="row" id="section_top">
-    <div class="row">
+    <div class="row" ng-show="psView.addEditMode">
         <p>
             <h4 ng-show="!psView.currentParticipatingSite.organization.name && psView.addEditMode">Add Participating Site</h4>
             <h4 ng-show="psView.currentParticipatingSite.organization.name && psView.addEditMode">Edit Participating Site: {{psView.currentParticipatingSite.organization.name}}</h4>
@@ -12,230 +12,225 @@
                 <md-tab-body>
                     <form class="form form-horizontal" role="form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                         <!-- first row in the accordion body -->
-                        <div class="row">
-                            <uib-accordion close-others="false">
-                                <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-                                    <uib-accordion-heading>
-                                        Participating Site Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-                                    </uib-accordion-heading>
-                                    <!-- fieldset for Organization -->
-                                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                                        <legend class="sub-bordered">Add Organization</legend>
-                                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization)}">
-                                            <label for="organization" class="control-label col-xs-12 col-sm-3">Organization:</label>
-                                            <div class="col-xs-12 col-sm-4">
-                                                <input type="text" id="organization" name="organization" ng-model="psView.currentParticipatingSite.organization.name" readonly class="form-control input-sm" placeholder="Organization" required>
-                                                <!-- <input type="text" id="sponsor" name="organization" disabled class="form-control" placeholder="Sponsor"> -->
-                                                <span class="form-control-feedback" ng-show="psView.currentParticipatingSite.organization.name"
-                                                    ng-class="!ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
-                                                </span>
-                                                <span class="help-block" ng-show="ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization)">Sponsor is Required</span>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-5">
-                                                <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
-                                                <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="psView.selOrganization.array"></ctrp-org-adv-search-modal-button>
-                                            </div>
-                                        </div>
-                                        <div ng-show="psView.showOrgFields">
-                                            <!-- City -->
-                                            <div class="form-group">
-                                                <label for="city" class="control-label col-xs-12 col-sm-3"> City:</label>
-                                                <div class="col-sm-4">
-                                                    <input type="text" id="city" class="form-control input-sm" name="city" ng-model="psView.city" disabled>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-5"></div>
-                                            </div>
 
-                                            <!-- State/Province -->
-                                            <div class="form-group">
-                                                <label for="state_province" class="control-label col-xs-12 col-sm-3">State:</label>
-                                                <div class="col-sm-4">
-                                                    <input type="text" id="state_province" class="form-control input-sm" name="state_province" ng-model="psView.state_province" disabled>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-5"></div>
-                                            </div>
-
-                                            <!-- Country -->
-                                            <div class="form-group">
-                                                <label for="country" class="control-label col-xs-12 col-sm-3">Country:</label>
-                                                <div class="col-sm-4">
-                                                    <input type="text" id="country" class="form-control input-sm" name="country" ng-model="psView.country" disabled>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-5"></div>
-                                            </div>
-
-                                            <!-- Postal Code -->
-                                            <div class="form-group">
-                                                <label for="country" class="control-label col-xs-12 col-sm-3">Zip/Postal Code:<br><small>(US/Canada/Australia)</small></label>
-                                                <div class="col-sm-4">
-                                                    <input type="text" id="postal_code" class="form-control input-sm" name="postal_code" ng-model="psView.postal_code" disabled>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-5"></div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                                        <legend class="sub-bordered">Program Code:</legend>
-                                        <div class="form-group">
-                                            <label for="program_code" class="control-label col-xs-12 col-sm-3">Code:</label>
-                                            <div class="col-xs-12 col-sm-9">
-                                                <input type="text" id="program_code" name="program_code" class="form-control input-sm" ng-model="psView.currentParticipatingSite.program_code" placeholder="Program Code">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                                        <legend class="sub-bordered">Local Trial Identifier:</legend>
-                                        <div class="form-group">
-                                            <label for="program_code" class="control-label col-xs-12 col-sm-3">Identifier:</label>
-                                            <div class="col-xs-12 col-sm-9">
-                                                <input type="text" id="local_trial_identifier" name="local_trial_identifier" class="form-control input-sm" ng-model="psView.currentParticipatingSite.local_trial_identifier" placeholder="Local Trial Identifier">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <!-- fieldset for Site Recruitment -->
-                                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                                        <legend class="sub-bordered">Site Recruitment</legend>
-                                        <div class="row search-calendar-grid-sm">
-                                            <table class="table table-striped table-condensed">
-                                                <thead>
-                                                    <th width="15%" class="min-width-md">Status Date</th>
-                                                    <th width="15%" class="min-width-lg">Status</th>
-                                                    <th>Comment</th>
-                                                    <th width="10%" ng-if="psView.current_site_recruitment.edit">Cance/Confirm</th>
-                                                    <th width="10%" ng-if="!psView.current_site_recruitment.edit"></th>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                                            <input type="text" id="status_date" name="status_date" class="form-control input-sm"
-                                                                   uib-datepicker-popup="{{psView.dateFormat}}" ng-model="psView.current_site_recruitment.status_date"
-                                                                   ng-click="psView.openCalendar($event, 'status_date')"
-                                                                   is-open="psView.statusDateOpened"
-                                                                   datepicker-options="psView.dateOptions"
-                                                                   close-text="Close" readonly />
-                                                            <span class="input-group-btn">
-                                                                <button type="button" restriction-field class="btn btn-primary" ng-click="psView.openCalendar($event, 'status_date')">
-                                                                    <i class="glyphicon glyphicon-calendar"></i>
-                                                                </button>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            <select name="siteRecStatus" id="siteRecStatus_select"
-                                                                    class="form-control input-sm"
-                                                                    restriction-field
-                                                                    ng-model="psView.current_site_recruitment.site_recruitment_status.name">
-                                                                <option value="">Select a status</option>
-                                                                <option ng-repeat="siteStatus in psView.siteRecruitmentStatusesArr" value="{{siteStatus.name}}">
-                                                                    {{siteStatus.name}}
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            <textarea class="form-control input-sm" id="comments" name="comments"
-                                                                      rows="1"
-                                                                      ng-maxlength="160"
-                                                                      maxlength="160"
-                                                                      ng-model="psView.current_site_recruitment.comments">
-                                                            </textarea>
-                                                            <span ng-show="ps_sites_form.comments.$dirty">
-                                                                {{160 - ps_sites_form.comments.$viewValue.length}} characters left
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div ng-hide="psView.current_site_recruitment.edit">
-                                                            <button class="btn btn-primary" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
-                                                                    ng-disabled="!psView.current_site_recruitment.status_date ||
-                                                                !(psView.current_site_recruitment.site_recruitment_status && psView.current_site_recruitment.site_recruitment_status.name) ||
-                                                                ps_sites_form.comments.$viewValue.length > 160"><i class="glyphicon glyphicon-plus"></i> Add</button>
-                                                        </div>
-
-                                                        <!-- <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
-                                                            <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                            <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
-                                                        </div> -->
-                                                        <div class="btn-toolbar" ng-show="psView.current_site_recruitment.edit">
-                                                            <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelSiteRecruitmentEdit()">
-                                                                <i class="glyphicon glyphicon-remove"></i>
-                                                            </button>
-                                                            <button class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditSiteRecruitment()"
-                                                                    ng-disabled="psView.current_site_recruitment.status_date == '' ||
-                                                                psView.current_site_recruitment.site_recruitment_status == '' ||
-                                                                ps_sites_form.comments.$viewValue.length > 160">
-                                                                <i class="glyphicon glyphicon-ok"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
-                                                {{trialStatusView.statusErrorMsg}}
-                                            </div>
-                                        </div>
-                                        <div class="row table-responsive" ng-show="psView.siteRecruitmentGrid.length > 0">
-                                            <table class="table table-bordered table-striped table-hover">
-                                                <thead>
-                                                    <th width="10%" class="text-center">Status Date</th>
-                                                    <th width="10%">Status</th>
-                                                    <th width="30%">Comment</th>
-                                                    <th width="35%">Errors/Warnings</th>
-                                                    <th class="text-center td-icon">Edit</th>
-                                                    <th class="text-center td-icon">Delete</th>
-                                                </thead>
-                                                <tbody>
-                                                <tr ng-repeat="site_rec in psView.siteRecruitmentGrid track by $index" class="animated-item" ng-class="{'deleted-text' : site_rec._destroy, 'edit-selected': site_rec.uiEdit}">
-                                                    <td class="text-center">{{site_rec.status_date}}</td>
-                                                    <td>{{site_rec.site_recruitment_status.name}}</td>
-                                                    <td>{{site_rec.comments}}</td>
-                                                    <td>
-                                                        <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
-                                                            ERROR: Interim status [{{error.status}}] is missing
-                                                        </div>
-                                                        <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
-                                                            ERROR: {{error.message}}
-                                                        </div>
-                                                        <div class="text-warning" ng-repeat="warning in psView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
-                                                            WARNING: Interim status [{{warning.status}}] is missing
-                                                        </div>
-                                                        <div class="text-warning" ng-repeat="warning in psView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
-                                                            WARNING: {{warning.message}}
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-center td-icon">
-                                                        <button type="button" class="btn btn-primary" restriction-field ng-disabled="site_rec._destroy || psView.current_site_recruitment.edit" ng-click="psView.editSiteRecruitment($index)">
-                                                            <i class="glyphicon glyphicon-edit"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td class="text-center td-icon">
-                                                        <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteSiteRecruitment($index)" ng-disabled="psView.current_site_recruitment.edit">
-                                                            <i class="glyphicon" ng-class="site_rec._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </fieldset>
-                                    <!-- End fieldset for Site Recruitment -->
-                                    <!-- Saving the form for the Participating site tab" -->
-                                    <div class="form-group no-bottom-margin">
-                                        <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="psView.current_site_recruitment.edit">
-                                                <i class="glyphicon glyphicon-ok"></i> Save
-                                            </button>
-                                            <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit">
-                                                <i class="glyphicon glyphicon-remove"></i> Reset
-                                            </button>
-                                        </div>
+                        <!-- fieldset for Organization -->
+                        <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                            <legend class="sub-bordered">Add Organization</legend>
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization) && ps_sites_form.$submitted}">
+                                <label for="organization" class="control-label col-xs-12 col-sm-3">Organization:</label>
+                                <div class="col-xs-12 col-sm-4">
+                                    <input type="text" id="organization" name="organization" ng-model="psView.currentParticipatingSite.organization.name" readonly class="form-control input-sm" placeholder="Organization" required>
+                                    <!-- <input type="text" id="sponsor" name="organization" disabled class="form-control" placeholder="Sponsor"> -->
+                                    <span class="form-control-feedback" ng-show="psView.currentParticipatingSite.organization.name"
+                                        ng-class="!ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
+                                    </span>
+                                    <span class="help-block" ng-show="ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization)">Sponsor is Required</span>
+                                </div>
+                                <div class="col-xs-12 col-sm-5">
+                                    <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
+                                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="psView.selOrganization.array"></ctrp-org-adv-search-modal-button>
+                                </div>
+                            </div>
+                            <div ng-show="psView.showOrgFields">
+                                <!-- City -->
+                                <div class="form-group">
+                                    <label for="city" class="control-label col-xs-12 col-sm-3"> City:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="city" class="form-control input-sm" name="city" ng-model="psView.city" disabled>
                                     </div>
-                            </uib-accordion-group>
-                        </uib-accordion>
+                                    <div class="col-xs-12 col-sm-5"></div>
+                                </div>
+
+                                <!-- State/Province -->
+                                <div class="form-group">
+                                    <label for="state_province" class="control-label col-xs-12 col-sm-3">State:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="state_province" class="form-control input-sm" name="state_province" ng-model="psView.state_province" disabled>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-5"></div>
+                                </div>
+
+                                <!-- Country -->
+                                <div class="form-group">
+                                    <label for="country" class="control-label col-xs-12 col-sm-3">Country:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="country" class="form-control input-sm" name="country" ng-model="psView.country" disabled>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-5"></div>
+                                </div>
+
+                                <!-- Postal Code -->
+                                <div class="form-group">
+                                    <label for="country" class="control-label col-xs-12 col-sm-3">Zip/Postal Code:<br><small>(US/Canada/Australia)</small></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="postal_code" class="form-control input-sm" name="postal_code" ng-model="psView.postal_code" disabled>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-5"></div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                            <legend class="sub-bordered">Program Code:</legend>
+                            <div class="form-group">
+                                <label for="program_code" class="control-label col-xs-12 col-sm-3">Code:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <input type="text" id="program_code" name="program_code" class="form-control input-sm" ng-model="psView.currentParticipatingSite.program_code" placeholder="Program Code">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                            <legend class="sub-bordered">Local Trial Identifier:</legend>
+                            <div class="form-group">
+                                <label for="program_code" class="control-label col-xs-12 col-sm-3">Identifier:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <input type="text" id="local_trial_identifier" name="local_trial_identifier" class="form-control input-sm" ng-model="psView.currentParticipatingSite.local_trial_identifier" placeholder="Local Trial Identifier">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- fieldset for Site Recruitment -->
+                        <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                            <legend class="sub-bordered">Site Recruitment</legend>
+                            <div class="row search-calendar-grid-sm">
+                                <table class="table table-striped table-condensed">
+                                    <thead>
+                                        <th width="15%" class="min-width-md">Status Date</th>
+                                        <th width="15%" class="min-width-lg">Status</th>
+                                        <th>Comment</th>
+                                        <th width="10%" ng-if="psView.current_site_recruitment.edit">Cance/Confirm</th>
+                                        <th width="10%" ng-if="!psView.current_site_recruitment.edit"></th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
+                                                <input type="text" id="status_date" name="status_date" class="form-control input-sm"
+                                                       uib-datepicker-popup="{{psView.dateFormat}}" ng-model="psView.current_site_recruitment.status_date"
+                                                       ng-click="psView.openCalendar($event, 'status_date')"
+                                                       is-open="psView.statusDateOpened"
+                                                       datepicker-options="psView.dateOptions"
+                                                       close-text="Close" readonly />
+                                                <span class="input-group-btn">
+                                                    <button type="button" restriction-field class="btn btn-primary" ng-click="psView.openCalendar($event, 'status_date')">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <select name="siteRecStatus" id="siteRecStatus_select"
+                                                        class="form-control input-sm"
+                                                        restriction-field
+                                                        ng-model="psView.current_site_recruitment.site_recruitment_status.name">
+                                                    <option value="">Select a status</option>
+                                                    <option ng-repeat="siteStatus in psView.siteRecruitmentStatusesArr" value="{{siteStatus.name}}">
+                                                        {{siteStatus.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <textarea class="form-control input-sm" id="comments" name="comments"
+                                                          rows="1"
+                                                          ng-maxlength="160"
+                                                          maxlength="160"
+                                                          ng-model="psView.current_site_recruitment.comments">
+                                                </textarea>
+                                                <span ng-show="ps_sites_form.comments.$dirty">
+                                                    {{160 - ps_sites_form.comments.$viewValue.length}} characters left
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div ng-hide="psView.current_site_recruitment.edit">
+                                                <button class="btn btn-primary" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
+                                                        ng-disabled="!psView.current_site_recruitment.status_date ||
+                                                    !(psView.current_site_recruitment.site_recruitment_status && psView.current_site_recruitment.site_recruitment_status.name) ||
+                                                    ps_sites_form.comments.$viewValue.length > 160"><i class="glyphicon glyphicon-plus"></i> Add</button>
+                                            </div>
+
+                                            <!-- <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
+                                                <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
+                                                <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
+                                            </div> -->
+                                            <div class="btn-toolbar" ng-show="psView.current_site_recruitment.edit">
+                                                <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelSiteRecruitmentEdit()">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                </button>
+                                                <button class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditSiteRecruitment()"
+                                                        ng-disabled="psView.current_site_recruitment.status_date == '' ||
+                                                    psView.current_site_recruitment.site_recruitment_status == '' ||
+                                                    ps_sites_form.comments.$viewValue.length > 160">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
+                                    {{trialStatusView.statusErrorMsg}}
+                                </div>
+                            </div>
+                            <div class="row table-responsive" ng-show="psView.siteRecruitmentGrid.length > 0">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <th width="10%" class="text-center">Status Date</th>
+                                        <th width="10%">Status</th>
+                                        <th width="30%">Comment</th>
+                                        <th width="35%">Errors/Warnings</th>
+                                        <th class="text-center td-icon">Edit</th>
+                                        <th class="text-center td-icon">Delete</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="site_rec in psView.siteRecruitmentGrid track by $index" class="animated-item" ng-class="{'deleted-text' : site_rec._destroy, 'edit-selected': site_rec.uiEdit}">
+                                        <td class="text-center">{{site_rec.status_date}}</td>
+                                        <td>{{site_rec.site_recruitment_status.name}}</td>
+                                        <td>{{site_rec.comments}}</td>
+                                        <td>
+                                            <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
+                                                ERROR: Interim status [{{error.status}}] is missing
+                                            </div>
+                                            <div class="text-danger" ng-repeat="error in psView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
+                                                ERROR: {{error.message}}
+                                            </div>
+                                            <div class="text-warning" ng-repeat="warning in psView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
+                                                WARNING: Interim status [{{warning.status}}] is missing
+                                            </div>
+                                            <div class="text-warning" ng-repeat="warning in psView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
+                                                WARNING: {{warning.message}}
+                                            </div>
+                                        </td>
+                                        <td class="text-center td-icon">
+                                            <button type="button" class="btn btn-primary" restriction-field ng-disabled="site_rec._destroy || psView.current_site_recruitment.edit" ng-click="psView.editSiteRecruitment($index)">
+                                                <i class="glyphicon glyphicon-edit"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center td-icon">
+                                            <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteSiteRecruitment($index)" ng-disabled="psView.current_site_recruitment.edit">
+                                                <i class="glyphicon" ng-class="site_rec._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                        <!-- End fieldset for Site Recruitment -->
+                    <!-- Saving the form for the Participating site tab" -->
+                    <div class="form-group no-bottom-margin">
+                        <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="psView.current_site_recruitment.edit">
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit">
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)">
+                                <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
+                            </button>
+                        </div>
                     </div>
                 </form>
             </md-tab-body>
@@ -245,144 +240,137 @@
             <md-tab-body>
                 <form class="form form-horizontal" role="form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                     <!-- first row in the accordion body -->
-                    <div class="row">
-                        <uib-accordion close-others="false">
-                            <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-                                <uib-accordion-heading>
-                                    Investigator Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-                                </uib-accordion-heading>
+                    <!-- fieldset for Investigator -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">Investigators</legend>
 
-                                <!-- fieldset for Investigator -->
-                                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                                    <legend class="sub-bordered">Investigators</legend>
-
-                                    <!-- Principal investigator -->
-                                    <h5>Add New Investigator</h5>
-                                    <!--
-                                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.principal_investigator)}">
-                                    -->
-                                    <div class="form-group has-feedback">
-                                        <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">Investigator Name:</label>
-                                        <div class="col-xs-12 col-sm-4">
-                                            <input type="text" id="principal_investigator" name="principal_investigator" class="form-control input-sm" ng-model="psView.principalInvestigator.name" readonly placeholder="Principal Investigator">
+                        <!-- Principal investigator -->
+                        <h5>Add New Investigator</h5>
+                        <!--
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.principal_investigator)}">
+                        -->
+                        <div class="form-group has-feedback">
+                            <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">Investigator Name:</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <input type="text" id="principal_investigator" name="principal_investigator" class="form-control input-sm" ng-model="psView.principalInvestigator.name" readonly placeholder="Principal Investigator">
 <!--
-                                            <span ng-show="!psView.investigatorGrid.length">
-                                                <span class="help-block">One or more Investigators are required</span>
-                                            </span>
+                                <span ng-show="!psView.investigatorGrid.length">
+                                    <span class="help-block">One or more Investigators are required</span>
+                                </span>
 -->
+                            </div>
+                            <div class="col-xs-12 col-sm-5">
+                                <!-- <button class="btn btn-primary">Look Up Person</button> -->
+                                <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
+                            </div>
+                        </div>
+
+                        <div class="row table-responsive top-offset-xs" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
+                            <h5>Edit Investigator</h5>
+                            <table class="table table-striped table-condensed">
+                                <thead>
+                                    <th width="10%">PO ID</th>
+                                    <th width="20%">Last Name</th>
+                                    <th width="20%">First Name</th>
+                                    <th width="20%" class="min-width-lg">Role</th>
+                                    <th width="20%">Set as Primary Contact</th>
+                                    <th width="10%">Cancel/Confirm</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                     <td>
+                                        <input type="text" id="person_id" name="person_id" class="form-control input-sm" ng-model="psView.current_investigator.person.id" placeholder="person_id" ng-disabled="true">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="last_name" name="last_name" class="form-control input-sm" ng-model="psView.current_investigator.person.lname" placeholder="Last Name" ng-disabled="true">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="first_name" name="first_name" class="form-control input-sm" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
+                                    </td>
+                                    <td>
+                                        <select name="investigator_type" id="investigator_type_select"
+                                                class="form-control input-sm"
+                                                restriction-field
+                                                ng-model="psView.current_investigator.investigator_type">
+                                            <option value="">Select a status</option>
+                                            <option value="Principal Investigator">Principal Investigator</option>
+                                            <option value="Sub Investigator">Sub Investigator</option>
+                                        </select>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <label>
+                                            <input type="checkbox" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact" ng-value="{{psView.current_investigator.set_as_contact}}">
+                                        </label>
+                                    </td>
+                                     <td>
+                                         <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
+                                            <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                            <button class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditInvestigator()" ng-disabled="psView.current_investigator.person.id == null">
+                                                <i class="glyphicon glyphicon-ok"></i>
+                                            </button>
                                         </div>
-                                        <div class="col-xs-12 col-sm-5">
-                                            <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
-                                        </div>
-                                    </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
+                                {{trialStatusView.statusErrorMsg}}
+                            </div>
+                        </div>
 
-                                    <div class="row table-responsive top-offset-xs" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
-                                        <h5>Edit Investigator</h5>
-                                        <table class="table table-striped table-condensed">
-                                            <thead>
-                                                <th width="10%">PO ID</th>
-                                                <th width="20%">Last Name</th>
-                                                <th width="20%">First Name</th>
-                                                <th width="20%" class="min-width-lg">Role</th>
-                                                <th width="20%">Set as Primary Contact</th>
-                                                <th width="10%">Cancel/Confirm</th>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                 <td>
-                                                    <input type="text" id="person_id" name="person_id" class="form-control input-sm" ng-model="psView.current_investigator.person.id" placeholder="person_id" ng-disabled="true">
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="last_name" name="last_name" class="form-control input-sm" ng-model="psView.current_investigator.person.lname" placeholder="Last Name" ng-disabled="true">
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="first_name" name="first_name" class="form-control input-sm" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
-                                                </td>
-                                                <td>
-                                                    <select name="investigator_type" id="investigator_type_select"
-                                                            class="form-control input-sm"
-                                                            restriction-field
-                                                            ng-model="psView.current_investigator.investigator_type">
-                                                        <option value="">Select a status</option>
-                                                        <option value="Principal Investigator">Principal Investigator</option>
-                                                        <option value="Sub Investigator">Sub Investigator</option>
-                                                    </select>
-                                                </td>
-
-                                                <td class="text-center">
-                                                    <label>
-                                                        <input type="checkbox" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact" ng-value="{{psView.current_investigator.set_as_contact}}">
-                                                    </label>
-                                                </td>
-                                                 <td>
-                                                     <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
-                                                        <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
-                                                            <i class="glyphicon glyphicon-remove"></i>
-                                                        </button>
-                                                        <button class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditInvestigator()" ng-disabled="psView.current_investigator.person.id == null">
-                                                            <i class="glyphicon glyphicon-ok"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
-                                            {{trialStatusView.statusErrorMsg}}
-                                        </div>
-                                    </div>
-
-                                    <div class="row table-responsive" ng-show="psView.investigatorGrid.length" ng-class="{'top-offset-xs': !psView.current_investigator.edit }">
-                                        <table class="table table-bordered table-striped table-hover">
-                                            <thead>
-                                                <th width="10%">PO ID</th>
-                                                <th>Last Name</th>
-                                                <th width="10%">First Name</th>
-                                                <th width="20%">Role</th>
-                                                <th width="10%">Status Code</th>
-                                                <th width="20%">Primary Contact?</th>
-                                                <th class="text-center td-icon">Edit</th>
-                                                <th class="text-center td-icon">Delete</th>
-                                            </thead>
-                                            <tbody>
-                                            <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
-                                                <td>{{inv.person.id}}  <span ng-bind="inv.id"></span></td>
-                                                <td>{{inv.person.lname}}</td>
-                                                <td>{{inv.person.fname}}</td>
-                                                <td>{{inv.investigator_type}}</td>
-                                                <td>{{inv.status_code}}</td>
-                                                <td ng-bind="inv.set_as_contact ? 'Yes' : 'No'"></td>
-                                                <td class="text-center td-icon">
-                                                    <button type="button" class="btn btn-primary" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit || psView.current_investigator.uiEdit" ng-click="psView.editInvestigator($index)">
-                                                        <i class="glyphicon glyphicon-edit"></i>
-                                                    </button>
-                                                </td>
-                                                <td class="text-center td-icon">
-                                                    <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
-                                                        <i class="glyphicon" ng-class="inv._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </fieldset>
-                                <!-- End fieldset for Investigator  -->
-
-                                <!-- Saving the form for the Investigator tab" -->
-                                <div class="form-group no-bottom-margin">
-                                    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="psView.current_investigator.uiEdit">
-                                            <i class="glyphicon glyphicon-ok"></i> Save
+                        <div class="row table-responsive" ng-show="psView.investigatorGrid.length" ng-class="{'top-offset-xs': !psView.current_investigator.edit }">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <th width="10%">PO ID</th>
+                                    <th>Last Name</th>
+                                    <th width="10%">First Name</th>
+                                    <th width="20%">Role</th>
+                                    <th width="10%">Status Code</th>
+                                    <th width="20%">Primary Contact?</th>
+                                    <th class="text-center td-icon">Edit</th>
+                                    <th class="text-center td-icon">Delete</th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
+                                    <td>{{inv.person.id}}  <span ng-bind="inv.id"></span></td>
+                                    <td>{{inv.person.lname}}</td>
+                                    <td>{{inv.person.fname}}</td>
+                                    <td>{{inv.investigator_type}}</td>
+                                    <td>{{inv.status_code}}</td>
+                                    <td ng-bind="inv.set_as_contact ? 'Yes' : 'No'"></td>
+                                    <td class="text-center td-icon">
+                                        <button type="button" class="btn btn-primary" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit || psView.current_investigator.uiEdit" ng-click="psView.editInvestigator($index)">
+                                            <i class="glyphicon glyphicon-edit"></i>
                                         </button>
-                                        <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit">
-                                            <i class="glyphicon glyphicon-remove"></i> Reset
+                                    </td>
+                                    <td class="text-center td-icon">
+                                        <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
+                                            <i class="glyphicon" ng-class="inv._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                         </button>
-                                    </div>
-                                </div>
-                            </uib-accordion-group>
-                        </uib-accordion>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                    <!-- End fieldset for Investigator  -->
+
+                    <!-- Saving the form for the Investigator tab" -->
+                    <div class="form-group no-bottom-margin">
+                        <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="psView.current_investigator.uiEdit">
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit">
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)">
+                                <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
+                            </button>
+                        </div>
                     </div>
                 </form>
             </md-tab-body>
@@ -393,104 +381,98 @@
                 <!-- General Contact Begin -->
                 <!-- fieldset for Central Contact -->
                 <form class="form form-horizontal" role="form" name="ps_contact_form" novalidate ctrp-submit="psView.saveContact()">
-                    <uib-accordion close-others="false">
-                        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-                            <uib-accordion-heading>
-                                General Contact Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-                            </uib-accordion-heading>
-                            <!-- fieldset for Organization -->
+                    <!-- fieldset for Organization -->
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                        <legend class="sub-bordered">General Contact</legend>
 
-                            <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                                <legend class="sub-bordered">General Contact</legend>
+                        <!-- Central contact -->
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-3">Type:</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <label ng-repeat="type in psView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
+                                    <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="psView.currentParticipatingSite.contact_type">{{type.name}}
+                                </label>
+                            </div>
+                        </div>
 
-                                <!-- Central contact -->
-                                <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3">Type:</label>
-                                    <div class="col-xs-12 col-sm-9">
-                                        <label ng-repeat="type in psView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
-                                            <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="psView.currentParticipatingSite.contact_type">{{type.name}}
-                                        </label>
-                                    </div>
+                        <div class="form-group" ng-show="psView.selectedContactTypePI && psView.investigatorArray.length">
+                            <label for="investigator" class="control-label col-xs-12 col-sm-3">Primary Contact:</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <!--
+                                    <ui-select id="investigator" ng-model="psView.selectedInvestigator">
+                                        <ui-select-match placeholder="-Select Investigator-"></ui-select-match>
+                                        <ui-select-choices repeat="investigator in psView.investigatorArray">{{investigator.name}}</ui-select-choices>
+                                    </ui-select>
+                                -->
+                                <select name="investigator" id="investigator"
+                                        class="form-control input-sm"
+                                        ng-model="psView.selectedInvestigator"
+                                        ng-options="investigator as investigator.name for investigator in psView.investigatorArray">
+                                    <option value="">-Select Investigator-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="psView.selectedContactTypePI && !psView.investigatorArray.length">
+                            <div class="col-xs-12 col-sm-3"></div>
+                            <div class="col-xs-12 col-sm-9">
+                                <span class="help-block">There are no Investigators available for selection.</span>
+                            </div>
+                        </div>
+
+                        <div ng-hide="psView.currentParticipatingSite.contact_type == 'None' || psView.currentParticipatingSite.contact_type == ''">
+                            <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}" ng-hide="psView.selectedContactTypePI">
+                                <label for="contact_type" class="control-label col-xs-12 col-sm-3">Contact:</label>
+                                <div class="col-xs-12 col-sm-4">
+                                    <input type="text" id="contact_name" name="contact_name" class="form-control input-sm" placeholder="Central Contact"
+                                           ng-disabled="psView.currentParticipatingSite.contact_type !== 'General'"
+                                           ng-model="psView.currentParticipatingSite.contact_name"
+                                           ng-required="psView.centralContactNameRequired">
                                 </div>
-
-                                <div class="form-group" ng-show="psView.selectedContactTypePI && psView.investigatorArray.length">
-                                    <label for="investigator" class="control-label col-xs-12 col-sm-3">Primary Contact:</label>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <!--
-                                            <ui-select id="investigator" ng-model="psView.selectedInvestigator">
-                                                <ui-select-match placeholder="-Select Investigator-"></ui-select-match>
-                                                <ui-select-choices repeat="investigator in psView.investigatorArray">{{investigator.name}}</ui-select-choices>
-                                            </ui-select>
-                                        -->
-                                        <select name="investigator" id="investigator"
-                                                class="form-control input-sm"
-                                                ng-model="psView.selectedInvestigator"
-                                                ng-options="investigator as investigator.name for investigator in psView.investigatorArray">
-                                            <option value="">-Select Investigator-</option>
-                                        </select>
-                                    </div>
+                                <div class="col-xs-12 col-sm-4" ng-show="psView.currentParticipatingSite.contact_type == 'Person'">
+                                    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button>
                                 </div>
+                              <span ng-messages="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name) && pps_contact_form.contact_name.$error">
+                                  <span class="help-block" ng-message="required">Central contact name is Required</span>
+                              </span>
+                            </div>
 
-                                <div class="form-group" ng-show="psView.selectedContactTypePI && !psView.investigatorArray.length">
-                                    <div class="col-xs-12 col-sm-3"></div>
-                                    <div class="col-xs-12 col-sm-9">
-                                        <span class="help-block">There are no Investigators available for selection.</span>
-                                    </div>
+                            <!-- Email Address -->
+                            <div class="form-group">
+                                <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
+                                <div class="col-xs-12 col-sm-5">
+                                    <input type="email" id="email" name="email" ng-model="psView.currentParticipatingSite.contact_email" class="form-control input-sm" placeholder="Email">
+                                    <span class="form-control-feedback" ng-show="ps_contact_form.email.$dirty" ng-class="!ps_contact_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 </div>
+                            </div>
 
-                                <div ng-hide="psView.currentParticipatingSite.contact_type == 'None' || psView.currentParticipatingSite.contact_type == ''">
-                                    <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}" ng-hide="psView.selectedContactTypePI">
-                                        <label for="contact_type" class="control-label col-xs-12 col-sm-3">Contact:</label>
-                                        <div class="col-xs-12 col-sm-4">
-                                            <input type="text" id="contact_name" name="contact_name" class="form-control input-sm" placeholder="Central Contact"
-                                                   ng-disabled="psView.currentParticipatingSite.contact_type !== 'General'"
-                                                   ng-model="psView.currentParticipatingSite.contact_name"
-                                                   ng-required="psView.centralContactNameRequired">
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4" ng-show="psView.currentParticipatingSite.contact_type == 'Person'">
-                                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button>
-                                        </div>
-                                      <span ng-messages="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name) && pps_contact_form.contact_name.$error">
-                                          <span class="help-block" ng-message="required">Central contact name is Required</span>
-                                      </span>
-                                    </div>
-
-                                    <!-- Email Address -->
-                                    <div class="form-group">
-                                        <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
-                                        <div class="col-xs-12 col-sm-5">
-                                            <input type="email" id="email" name="email" ng-model="psView.currentParticipatingSite.contact_email" class="form-control input-sm" placeholder="Email">
-                                            <span class="form-control-feedback" ng-show="ps_contact_form.email.$dirty" ng-class="!ps_contact_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Phone Number -->
-                                    <div class="form-group">
-                                        <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
-                                        <div class="col-xs-12 col-sm-3">
-                                            <input type="text" id="phone" name="phone" ng-model="psView.currentParticipatingSite.contact_phone" class="form-control input-sm" placeholder="Phone" ng-change="currentParticipatingSite.isValidPhoneNumber()">
-                                            <span ng-show="ps_contact_form.phone.$dirty" class="form-control-feedback" ng-class="!psView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.central_contacts[0].extension" placeholder="Extension">
-                                        </div>
-                                    </div>
-
-                                    <!-- Saving the form for the Contact tab" -->
-                                    <div class="form-group no-bottom-margin">
-                                        <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
-                                                <i class="glyphicon glyphicon-ok"></i> Save
-                                            </button>
-                                            <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field>
-                                                <i class="glyphicon glyphicon-remove"></i> Reset
-                                            </button>
-                                        </div>
-                                    </div>
+                            <!-- Phone Number -->
+                            <div class="form-group">
+                                <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
+                                <div class="col-xs-12 col-sm-3">
+                                    <input type="text" id="phone" name="phone" ng-model="psView.currentParticipatingSite.contact_phone" class="form-control input-sm" placeholder="Phone" ng-change="currentParticipatingSite.isValidPhoneNumber()">
+                                    <span ng-show="ps_contact_form.phone.$dirty" class="form-control-feedback" ng-class="!psView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                 </div>
-                            </fieldset>
-                        </uib-accordion-group>
-                    </uib-accordion>
+                                <div class="col-xs-12 col-sm-2">
+                                    <input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.central_contacts[0].extension" placeholder="Extension">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Saving the form for the Contact tab" -->
+                    <div class="form-group no-bottom-margin">
+                        <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field>
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)">
+                                <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </md-tab-body>
         </md-tab>
@@ -500,13 +482,9 @@
 
 <!-- Grid the shows all the Participating Sites -->
 <div class="row">
-    <uib-accordion close-others="false" ng-hide="psView.addEditMode">
-        <uib-accordion-group is-open="true" >
-            <uib-accordion-heading>
-                List of Participating Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-            </uib-accordion-heading>
+    <fieldset ng-hide="psView.addEditMode">
+        <h4>List of Participating Sites</h4>
 
-        <fieldset>
         <!--<legend class="sub-bordered">List of Participating Sites:</legend>-->
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
@@ -554,7 +532,6 @@
                 </tbody>
             </table>
 
-
             <div class="btn-toolbar">
                 <button type="submit" ng-disable="!paTrialOverview.trialDetailObj.pa_editable" class="btn btn-primary pull-right" id="add_participating_site" restriction-field
                         ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-click="psView.setAddMode()">Add Participating Site</button>
@@ -567,12 +544,5 @@
             </div>
         </div>
     </fieldset>
-        </uib-accordion-group>
-    </uib-accordion>
-    <div class="btn-toolbar" ng-if="paTrialOverview.trialDetailObj.pa_editable" ng-show="psView.addEditMode">
-        <button type="submit" class="btn btn-warning pull-right" id="participating_site_list" restriction-field ng-click="psView.setAddMode(false)">
-            <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
-        </button>
-    </div>
-    <div class="top-offset-xs" ng-show="psView.addEditMode"></div>
+    <div class="top-offset-xss"></div>
 </div>
