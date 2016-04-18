@@ -96,6 +96,9 @@
 
 class Trial < TrialBase
 
+  # Disabled optimistic locking
+  self.locking_column = :dummy_column
+
   belongs_to :study_source
   belongs_to :phase
   belongs_to :research_category
