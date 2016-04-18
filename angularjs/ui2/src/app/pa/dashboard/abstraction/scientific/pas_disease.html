@@ -102,7 +102,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-5">
+            <div ng-show="diseaseView.addedDiseases.length > 0" class="col-xs-12 col-sm-12 col-md-5">
                 <form class="form form-horizontal" role="form" name="added_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
                     <div class="form-group">
                         <h4>Your Selections</h4>
@@ -116,7 +116,7 @@
                         </ul>
                     </div>
 
-                    <div ng-show="diseaseView.addedDiseases.length > 0" class="form-group no-bottom-margin">
+                    <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
                             <button type="submit" class="btn btn-primary pull-right" id="submit_btn" restriction-field ng-disabled="diseaseView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
