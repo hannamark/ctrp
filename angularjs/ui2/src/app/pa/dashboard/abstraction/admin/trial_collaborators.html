@@ -6,99 +6,87 @@
 
     <!-- first row in the accordion body -->
         <div class="row">
-            <uib-accordion close-others="false">
-                <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-                    <uib-accordion-heading>
-                        Trial Collaborator Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-                    </uib-accordion-heading>
+            <h4>Trial Collaborator Details</h4>
 
-
-                    <!-- first row in the accordion body -->
-                    <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-if="trialDetailView.addMode"> 
-                        <legend class="sub-bordered">Add Collaborators</legend>
-                        <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
-                            <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
-                            <div class="col-xs-12 col-sm-9">
-                                <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedCollaborators" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
-                                <input type="hidden" name="collaborator_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.collaboratorNum === 0">
-                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.collaborator_dummy)">
-                                   Collaborator is Required
-                                </span>
-                            </div>
+            <!-- first row in the accordion body -->
+            <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-if="trialDetailView.addMode"> 
+                <legend class="sub-bordered">Add Collaborators</legend>
+                <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
+                    <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedCollaborators" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
+                        <input type="hidden" name="collaborator_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.collaboratorNum === 0">
+                        <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.collaborator_dummy)">
+                           Collaborator is Required
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group table-responsive" ng-show="trialDetailView.addedCollaborators.length">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <div ng-repeat="collaborator in trialDetailView.addedCollaborators track by $index">
+                            <span ng-class="collaborator._destroy == true ? 'deleted-text animated-item' : 'animated-item'">{{collaborator.org_name}}</span>
                         </div>
-                        <div class="form-group table-responsive" ng-show="trialDetailView.addedCollaborators.length">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-6">
-                                <div ng-repeat="collaborator in trialDetailView.addedCollaborators track by $index">
-                                    <span ng-class="collaborator._destroy == true ? 'deleted-text animated-item' : 'animated-item'">{{collaborator.org_name}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                            <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
-                                    <i class="glyphicon glyphicon-ok"></i> Save
-                                </button>
-                                <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field>
-                                    <i class="glyphicon glyphicon-remove"></i> Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </uib-accordion-group>
-            </uib-accordion>
+                    </div>
+                </div>
+                <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                    <div class="btn-toolbar">
+                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
+                            <i class="glyphicon glyphicon-ok"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field>
+                            <i class="glyphicon glyphicon-remove"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
         </div>
     </form>
 </div>
 
 <div class="row" ng-hide="trialDetailView.addMode && (trialDetailView.curTrial.collaborators.length === 0)">
-    <uib-accordion close-others="false">
-        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-            <uib-accordion-heading>
-                List of Trial Collaborators <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-            </uib-accordion-heading>
-            <div ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" class="table-responsive">
-                <table class="table table-bordered table-striped table-hover" ng-show="trialDetailView.curTrial.collaborators.length" >
-                    <thead>
-                    <th>PO ID</th>
-                    <th>Name</th>
-                    <th class="text-center td-icon">
-                        <input type="checkbox" restriction-field ng-model="trialDetailView.selectedAllCos" ng-click="trialDetailView.checkAllCos()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
-                    </th>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators | orderBy:'org_name' track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
-                        <td>
-                            {{collaborator.organization_id}}
-                        </td>
-                        <td>
-                            <div ng-if="!collaborator.organization_id">
-                                <span in-place-edit="collaborator.org_name" on-save="trialDetailView.updateCollaborator(collaborator.org_name, collaborator.id)"
-                                      template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
-                                </span>
-                            </div>
-                            <div ng-if="collaborator.organization_id">
-                                {{collaborator.org_name}}
-                            </div>
-                        </td>
-                        <td class="text-center td-icon">
-                            <input type="checkbox" ng-model="collaborator.selected" restriction-field ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" ng-click="trialDetailView.selectedAllCos = false" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="btn-toolbar">
-                    <button type="button" class="btn btn-primary pull-right" id="add" restriction-field ng-click="trialDetailView.setAddMode()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-                        <i class="glyphicon glyphicon-plus"></i> Add Collaborator
-                    </button>
-                    <button type="button" class="btn btn-danger pull-right" id="delete"
-                            restriction-field ctrp-confirm
-                            confirm-msg="Click OK to remove selected Collaborator(s) from the study. Click Cancel to abort." ctrp-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="trialDetailView.curTrial.collaborators.length">
-                        <i class="glyphicon glyphicon-trash"></i> Delete Selected
-                    </button>
-                </div>
-            </div>
-        </uib-accordion-group>
-    </uib-accordion>
-</div>
+    <h4>List of Trial Collaborators</h4>
+    <div ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" class="table-responsive">
+        <table class="table table-bordered table-striped table-hover" ng-show="trialDetailView.curTrial.collaborators.length" >
+            <thead>
+            <th>PO ID</th>
+            <th>Name</th>
+            <th class="text-center td-icon">
+                <input type="checkbox" restriction-field ng-model="trialDetailView.selectedAllCos" ng-click="trialDetailView.checkAllCos()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
+            </th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators | orderBy:'org_name' track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
+                <td>
+                    {{collaborator.organization_id}}
+                </td>
+                <td>
+                    <div ng-if="!collaborator.organization_id">
+                        <span in-place-edit="collaborator.org_name" on-save="trialDetailView.updateCollaborator(collaborator.org_name, collaborator.id)"
+                              template="app/pa/dashboard/abstraction/admin/other_identifier_edit_template.html" id="#other_id_edit">
+                        </span>
+                    </div>
+                    <div ng-if="collaborator.organization_id">
+                        {{collaborator.org_name}}
+                    </div>
+                </td>
+                <td class="text-center td-icon">
+                    <input type="checkbox" ng-model="collaborator.selected" restriction-field ng-change="trialDetailView.deleteListHandler(trialDetailView.curTrial.collaborators)" ng-click="trialDetailView.selectedAllCos = false" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
+        <div class="btn-toolbar">
+            <button type="button" class="btn btn-primary pull-right" id="add" restriction-field ng-click="trialDetailView.setAddMode()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <i class="glyphicon glyphicon-plus"></i> Add Collaborator
+            </button>
+            <button type="button" class="btn btn-danger pull-right" id="delete"
+                    restriction-field ctrp-confirm
+                    confirm-msg="Click OK to remove selected Collaborator(s) from the study. Click Cancel to abort." ctrp-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="trialDetailView.curTrial.collaborators.length">
+                <i class="glyphicon glyphicon-trash"></i> Delete Selected
+            </button>
+        </div>
+    </div>
+    <div class="top-offset-xss"></div>
+</div>
