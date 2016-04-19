@@ -84,8 +84,8 @@
                                 <div class="form-group text-center">
                                     <button type="button" class="btn btn-warning" ng-click="interventionView.resetLookupForm(intervention_form)">Reset</button>
                                     <button type="button" class="btn btn-primary"
-                                        ng-disabled="interventionView.selectedInterventionObj.preferred_name.length==0"
-                                        ng-click="interventionView.upsertIntervention(interventionView.selectedInterventionObj)">
+                                        ng-disabled="!interventionView.curInterventionObj.name"
+                                        ng-click="interventionView.upsertIntervention(interventionView.curInterventionObj)">
                                         <i class="glyphicon glyphicon-plus"></i> Add
                                     </button>
                                     <span class="help-block">{{interventionView.associationErrorMsg}}</span>
@@ -135,10 +135,10 @@
                                             {{t.other_name}}
                                         </td>
                                         <td>
-                                            {{t.intervention_type_id}} <!-- TODO: convert to string -->
+                                            {{t.intervention_type_cancer_name}}
                                         </td>
                                         <td>
-                                            {{t.ct_type_code}}
+                                            {{t.intervention_type_ct_name}}
                                         </td>
                                         <td>
                                             Edit

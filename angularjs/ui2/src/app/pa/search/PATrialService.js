@@ -159,7 +159,8 @@
             associateTrial: associateTrial,
             lookupNcitInterventions: lookupNcitInterventions,
             getInterventionTypes: getInterventionTypes,
-            searchCtrpInterventionsByName: searchCtrpInterventionsByName
+            searchCtrpInterventionsByName: searchCtrpInterventionsByName,
+            updateTrial: updateTrial
         };
 
         return services;
@@ -523,6 +524,23 @@
 
         function lookupNcitInterventions(searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.NCIT_INTERVENTIONS_LOOKUP, searchParams);
+        }
+
+        /**
+         * Update an existing trial
+         * @param  {[JSON]} trialObj - Trial detail object
+         * @return {[Promise]}
+         */
+        function updateTrial(trialObj) {
+            if (!angular.isDefined(trialObj.id)) {
+                return;
+            }
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = trialObj.id;
+            outerTrial.trial = trialObj;
+            outerTrial.trial.lock_version = getCurrentTrialFromCache().lock_version;
+            return upsertTrial(outerTrial);
         }
 
         /**

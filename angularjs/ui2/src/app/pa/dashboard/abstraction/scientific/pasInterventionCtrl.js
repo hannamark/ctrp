@@ -28,7 +28,6 @@
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
-            vm.selectedInterventionObj = {preferred_name: ''};
             vm.deleteBtnDisabled = true;
 
             vm.isCancerGovTypeListEnabled = false;
@@ -79,14 +78,44 @@
             }
 
             function upsertIntervention(inventionObj) {
+
                 if (angular.isDefined(inventionObj)) {
+                    var typeCancerObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_cancer_gov_id});
+                    var typeCTObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_ct_gov_id});
+                    inventionObj.intervention_type_cancer_name = typeCancerObj.name || '';
+                    inventionObj.intervention_type_ct_name = typeCTObj.name || '';
+                    console.info('upserting intervention: ', inventionObj);
+
                     if (inventionObj.index !== undefined) {
                         // insert at index: index
+                        vm.trialDetailObj.interventions[inventionObj.index] = angular.copy(inventionObj);
                     } else {
                         // unshift at index: 0
+                        vm.trialDetailObj.interventions.unshift(angular.copy(inventionObj));
                     }
-                    // TODO: persist to backend
-                    vm.showInterventionForm = false; // hide the form
+
+                    vm.trialDetailObj.interventions_attributes = vm.trialDetailObj.interventions;
+                    PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
+                        console.info('res after upsert: ', res);
+                        if (res.server_response.status === 200) {
+                            vm.trialDetailObj = res;
+                            PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                            $scope.$emit('updatedInChildScope', {});
+                            toastr.clear();
+                            toastr.success('Trial design has been updated', 'Successful!', {
+                                extendedTimeOut: 1000,
+                                timeOut: 0
+                            });
+                            _getTrialDetailCopy();
+                        }
+                    }).catch(function(err) {
+                        console.error('trial upsert error: ', err);
+                    }).finally(function() {
+                        vm.showInterventionForm = false; // hide the form
+                        resetLookupForm();
+                    });
+
+
                 }
             }
 
@@ -110,6 +139,7 @@
             }
 
             function resetLookupForm(form) {
+                vm.curInterventionObj = _newInterventionObj();
                 console.info('resetting form: ', form);
             }
 
@@ -147,7 +177,7 @@
                 modalOpened = true;
 
                 modalInstance.result.then(function(selectedInterventionObj) {
-                    vm.selectedInterventionObj = selectedInterventionObj;
+                    // vm.selectedInterventionObj = selectedInterventionObj;
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
                     vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
@@ -156,7 +186,7 @@
                     vm.isCancerGovTypeListEnabled = vm.curInterventionObj.intervention_type_cancer_gov_id === '' && isUserAllowedToSelectType;
                     vm.curInterventionObj.intervention_type_ct_gov_id = selectedInterventionObj.intervention_type_ct_gov_id || '';
                     vm.isCTGovTypeListEnabled = vm.curInterventionObj.intervention_type_ct_gov_id === '' && isUserAllowedToSelectType;
-                    console.info('received selectedInterventionObj: ', vm.selectedInterventionObj);
+                    console.info('received vm.curInterventionObj: ', vm.curInterventionObj);
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
                 }).finally(function() {
