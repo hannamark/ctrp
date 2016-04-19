@@ -18,7 +18,7 @@
                                 <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.intervention_form.needsAttention(intervention_form.identifier_type)}">
                                     <label for="intervention_name" class="control-label col-xs-12 col-sm-3">Intervention Name:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <input type="text" id="intervention_name" class="form-control input-sm" ng-model="interventionView.curInterventionObj.name" ng-click="interventionView.openLookupModal('lg')" readonly>
+                                        <input type="text" id="intervention_name" class="form-control input-sm" ng-model="interventionView.curInterventionObj.name" readonly>
                                     </div>
                                     <div class="col-xs-12 col-sm-2">
                                         <button type="button" class="btn btn-primary" ng-click="interventionView.openLookupModal('lg')">
@@ -65,15 +65,19 @@
                                 <div class="form-group">
                                     <label for="intervention_desc" class="control-label col-xs-12 col-sm-3">Intervention Description:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <textarea name="intervention_desc" id="intervention_desc" rows="10" class="form-control"></textarea>
-                                        characters left....
+                                        <textarea name="intervention_desc" id="intervention_desc" rows="10" class="form-control"
+                                            maxlength="1000"
+                                            ng-model="interventionView.curInterventionObj.description"></textarea>
+                                        <span class="help-block" ng-show="intervention_form.intervention_desc.$viewValue.length > 0">
+                                            {{1000 - intervention_form.intervention_desc.$viewValue.length}} characters left
+                                        </span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="other_names" class="control-label col-xs-12 col-sm-3">Other Names:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <input type="text" id="other_names" class="form-control input-sm" readonly>
+                                        <textarea type="text" name="other_names" id="other_names" rows="3" class="form-control" ng-model="interventionView.curInterventionObj.other_name" readonly></textarea>
                                     </div>
                                 </div>
 

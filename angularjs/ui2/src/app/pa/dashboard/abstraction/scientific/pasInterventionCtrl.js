@@ -169,6 +169,8 @@
 
         vm.confirmSelection = function() {
             var interventionName = vm.selection.preferred_name || '';
+            // search ctrp interventions for same name, if exists, get its intervention type id for
+            // trials to use
             PATrialService.searchCtrpInterventionsByName(interventionName).then(function(searchResponse) {
                 // console.info('searchResponse: ', searchResponse);
                 var result = searchResponse.data;
@@ -178,7 +180,6 @@
                 }
                 vm.selection.intervention_type_cancer_gov_id = 13; // for test TODO: delete
                 vm.selection.intervention_type_ct_gov_id = 1; // for test TODO: delete
-
             }).catch(function(err) {
                 console.error('error in search CTRP Interventions: ', err);
             }).finally(function() {
