@@ -215,6 +215,7 @@ Rails.application.routes.draw do
           get  'trial_identifier_types'
           post 'lookup_imported_ncit_interventions'
           get  'get_intervention_types'
+          get  'search_ctrp_interventions'
         end
       end
 

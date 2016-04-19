@@ -429,13 +429,71 @@ module.exports = function() {
 
 
     this.When(/^I have entered the same Lead Organization Trial Identifier for a Lead Organization which exists in another Trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var leadOrgIdentifier = 'SS12 Lead';
+        var otherClinicalTrialID = 'nct12345678';
+        var otherObsoleteClinicalTrialID = 'nct98765432';
+        var otherIdentifier = 'abcd12356';
+        var officialTitle = 'Trial created by Cuke test SS';
+        var phase = 'I';
+        var pilotOption = 'yes';
+        var researchCategory = 'Interventional';
+        var primaryPurpose = 'Treatment';
+        var secondaryPurpose = '';
+        var accrualDisease = 'SDC';
+        var leadOrg = 'leadOrgSS';
+        var principalInv = 'prinInvSS';
+        var sponsorOrg = 'sponOrg';
+        var dataTableOrg = 'dataTblOrg';
+        var programCode = '';
+        var grantOption = 'No';
+        var grantFundingMechanism = '';
+        var grantInstituteCode = '';
+        var grantSerialNumber = '';
+        var grantNCIDivisionCode = '';
+        var trialStatus = 'In Review';
+        var trialComment = '';
+        var trialWhyStudyStopped = '';
+        var INDIDEOption = 'no';
+        var INDIDEType = 'IND';
+        var INDIDENumber = '';
+        var INDIDEGrantor = '';
+        var INDIDEHolder = '';
+        var INDIDEInstitution = '';
+        var responsibleParty = '';
+        var trialOversightCountry = '';
+        var trialOversightOrg = '';
+        var FDARegulatedIndicator = '';
+        var section801Indicator = '';
+        var dataMonitoringIndicator = '';
+        var protocolDoc = 'testSampleDocFile.docx';
+        var IRBDoc = 'testSampleXlsFile.xls';
+        var participatingSiteDoc = '';
+        var informedConsentDoc = 'testSampleDocFile.docx';
+        var otherDoc = '';
+        projectFunctionsRegistry.createTrial(typeOfTrial, leadOrgIdentifier, otherClinicalTrialID, otherObsoleteClinicalTrialID, otherIdentifier, officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose,
+            accrualDisease, leadOrg, principalInv, sponsorOrg, dataTableOrg, programCode, grantOption, grantFundingMechanism, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode, trialStatus, trialComment, trialWhyStudyStopped,
+            INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution, responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,
+            protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc);
+        projectFunctionsRegistry.selectTrials(typeOfTrial);
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 10).then(function () {
+            storeLeadProtocolId.then(function (value) {
+            console.log('This is the Lead Organization Trial Identifier that was added for Previous Trial' + value);
+            addTrial.setAddTrialLeadProtocolIdentifier(value);
+        });
+           storeLeadOrg.then(function (value) {
+                projectFunctionsRegistry.selectOrgforTrial(value, '0');
+            });
+        });
+        browser.sleep(6000).then(callback);
     });
 
     this.Then(/^on review, the error message "([^"]*)" will be displayed$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        addTrial.clickAddTrialReviewButton();
+        expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
+        browser.sleep(25).then(callback);
     });
 
 
