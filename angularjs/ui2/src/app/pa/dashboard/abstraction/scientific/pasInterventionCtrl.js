@@ -9,14 +9,22 @@
         .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'Common', '$uibModal'];
+        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes'];
 
     pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, Common, $uibModal) {
+        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes) {
 
             var vm = this;
+            vm.interventionTypesByCategory = {
+                cancerGov: [],
+                ctGov: []
+            };
+            var CANCER_GOV = 'cancer.gov';
+            var CT_GOV = 'clinicaltrials.gov';
+            vm.interventionTypes = interventionTypes;
+            console.info('interventionTypes: ', interventionTypes);
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
@@ -34,6 +42,7 @@
 
             activate();
             function activate() {
+                _splitInterventionTypesByCat();
                 _getTrialDetailCopy();
                 watchInterventionList();
             }
@@ -42,8 +51,24 @@
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
             }
 
+            /**
+             * Split the intervention types array by their category names: cancer.gov or clinicaltrials.gov
+             * into their respective container in the vm.interventionTypesByCategory
+             * @return {Void}
+             */
+            function _splitInterventionTypesByCat() {
+                _.each(interventionTypes, function(type, idex) {
+                    if (type.category === CANCER_GOV) {
+                        vm.interventionTypesByCategory.cancerGov.push(type);
+                    } else if (type.category === CT_GOV) {
+                        vm.interventionTypesByCategory.ctGov.push(type);
+                    }
+                });
+                console.info('after split: ', vm.interventionTypesByCategory);
+            }
+
             function addIntervention() {
-                console.info('showing intervention');
+                // console.info('showing intervention');
                 vm.showInterventionForm = true;
                 vm.curInterventionObj = _newInterventionObj();
             }
@@ -72,8 +97,9 @@
                     name: null,
                     other_name: null,
                     description: null,
-                    intervention_type_id: null,
-                    trial_id: null,
+                    intervention_type_id: null, // for cancer.gov
+                    intervention_type_ct_id: null, // for clinicaltrials.gov
+                    trial_id: vm.trialDetailObj.id,
                     edit: false
                 };
             }
@@ -107,6 +133,8 @@
 
                 var modalInstance = $uibModal.open({
                     animation: true,
+                    backdrop: 'static',
+                    keyboard: false,
                     templateUrl: 'app/pa/dashboard/abstraction/scientific/_intervention_lookup_form.html',
                     controller: 'pasInterventionLookupModalCtrl as lookupModalView',
                     size: size,
@@ -115,6 +143,10 @@
 
                 modalInstance.result.then(function(selectedInterventionObj) {
                     vm.selectedInterventionObj = selectedInterventionObj;
+                    vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
+                    vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
+                    vm.curInterventionObj.intervention_type_id = selectedInterventionObj.type_code_id; // TODO: add type_code_id
+                    vm.curInterventionObj.intervention_type_ct_id = selectedInterventionObj.ct_gov_type_code_id; // TODO: add ct_gov_type_code_id
                     console.info('received selectedInterventionObj: ', vm.selectedInterventionObj);
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
@@ -139,7 +171,7 @@
         };
 
         $scope.$watch(function() {return vm.selection;}, function(newVal) {
-            console.info('selection is: ', newVal);
+            // console.info('selection is: ', newVal);
             if (newVal !== '') {
                 // $uibModalInstance.close(newVal);
             }

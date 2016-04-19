@@ -222,6 +222,12 @@
                 url: '/interventions',
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_intervention.html',
                 controller: 'pasInterventionCtrl as interventionView',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    interventionTypes: function(PATrialService) {
+                        return PATrialService.getInterventionTypes();
+                    }
+                },
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',

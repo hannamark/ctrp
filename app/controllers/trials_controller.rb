@@ -149,6 +149,14 @@ class TrialsController < ApplicationController
     end
   end
 
+  def get_intervention_types
+    @intervention_types = InterventionType.all
+
+    respond_to do |format|
+      format.json { render :json => @intervention_types }
+    end
+  end
+
   def get_intervention_models
     @intervention_models = InterventionModel.all
 
