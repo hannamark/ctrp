@@ -108,8 +108,7 @@
         };
 
         vm.searchDiseases = function() {
-            var searchParams = {disease_name: vm.disease_name};
-            DiseaseService.searchDiseases(searchParams).then(function(response) {
+            DiseaseService.searchDiseases(vm.searchParams).then(function(response) {
                 vm.searchResult = response.diseases;
                 vm.infoUrl = response.info_url;
                 vm.treeUrl = response.tree_url;
@@ -194,7 +193,7 @@
         };
 
         vm.resetDiseases = function() {
-            vm.disease_name = '';
+            vm.searchParams = {};
             vm.searchResult = [];
             vm.addedDiseases = [];
         };
