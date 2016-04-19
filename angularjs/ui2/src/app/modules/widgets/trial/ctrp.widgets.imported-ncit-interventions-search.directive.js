@@ -50,7 +50,7 @@
 
           function lookupInterventions(params) {
               PATrialService.lookupNcitInterventions(params).then(function(res) {
-                 console.info('res from the interventions lookup: ', res);
+                 // console.info('res from the interventions lookup: ', res);
                  res.server_response = null;
                  vm.searchResults = res;
                  vm.gridOptions.data = res.data;

@@ -157,7 +157,8 @@
             searchNCITrial: searchNCITrial,
             lookupTrial: lookupTrial,
             associateTrial: associateTrial,
-            lookupNcitInterventions: lookupNcitInterventions
+            lookupNcitInterventions: lookupNcitInterventions,
+            getInterventionTypes: getInterventionTypes
         };
 
         return services;
@@ -479,6 +480,14 @@
          */
         function searchNCITrial(nciTrialId) {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_NCI_TRIAL + '?nci_id=' + nciTrialId);
+        }
+
+        /**
+         * Get a list of intervention types from CTRP/local database
+         * @return {[Promise resolved to array]} [possible values include 'Device', 'Drug', etc]
+         */
+        function getInterventionTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_TYPES);
         }
 
         /**
