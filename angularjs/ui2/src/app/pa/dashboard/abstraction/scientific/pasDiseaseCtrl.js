@@ -13,14 +13,18 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
+        vm.searchResult = [];
         vm.addedDiseases = [];
         vm.existingDiseases = [];
         vm.selectedAll = false;
         vm.selectedNum = 0;
+        vm.showPrimaryRequired = false;
+        vm.showPrimaryOnlyOne = false;
+        vm.showSecondaryOnlyOne = false;
         vm.disableBtn = false;
 
-        vm.setAddMode = function() {
-            vm.addMode = true;
+        vm.setAddMode = function(mode) {
+            vm.addMode = mode;
         };
 
         vm.toggleAll = function() {
@@ -33,6 +37,10 @@
         vm.toggleOne = function() {
             vm.selectedAll = false;
             countSelected();
+        };
+
+        vm.updateValidationVar = function() {
+            updateValidationVar();
         };
 
         vm.deleteSelected = function() {
@@ -64,13 +72,43 @@
                     vm.disableBtn = false;
                 }
             }).catch(function(err) {
-                console.log("Error in saving diseases " + JSON.stringify(outerTrial));
+                console.log("Error in deleting diseases " + JSON.stringify(outerTrial));
+            });
+        };
+
+        vm.updateRank = function() {
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+
+            vm.curTrial.diseases_attributes = [];
+            angular.forEach(vm.existingDiseases, function (disease) {
+                var diseaseObj = {};
+                diseaseObj.id = disease.id;
+                diseaseObj.rank = disease.rank;
+                vm.curTrial.diseases_attributes.push(diseaseObj);
+            });
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerTrial = {};
+            outerTrial.id = vm.curTrial.id;
+            outerTrial.trial = vm.curTrial;
+
+            TrialService.upsertTrial(outerTrial).then(function(response) {
+                if (response.server_response.status < 300) {
+                    $state.go('main.pa.trialOverview.disease', {}, {reload: true});
+                    toastr.success('Diseases have been updated', 'Operation Successful!');
+                    vm.disableBtn = false;
+                } else {
+                    // Enable buttons in case of backend error
+                    vm.disableBtn = false;
+                }
+            }).catch(function(err) {
+                console.log("Error in updating diseases " + JSON.stringify(outerTrial));
             });
         };
 
         vm.searchDiseases = function() {
-            var searchParams = {disease_name: vm.disease_name};
-            DiseaseService.searchDiseases(searchParams).then(function(response) {
+            DiseaseService.searchDiseases(vm.searchParams).then(function(response) {
                 vm.searchResult = response.diseases;
                 vm.infoUrl = response.info_url;
                 vm.treeUrl = response.tree_url;
@@ -90,8 +128,17 @@
         };
 
         vm.addDisease = function(index) {
-            vm.addedDiseases.push(vm.searchResult[index]);
-            vm.searchResult[index].added = true;
+            angular.forEach(vm.existingDiseases, function (disease) {
+                if (disease.thesaurus_id === vm.searchResult[index].nt_term_id) {
+                    vm.searchResult[index].exists = true;
+                }
+            });
+
+            // Add it only when it's not added before
+            if (!vm.searchResult[index].exists) {
+                vm.addedDiseases.push(vm.searchResult[index]);
+                vm.searchResult[index].added = true;
+            }
         };
 
         vm.removeDisease = function(index) {
@@ -121,6 +168,8 @@
                     });
                     diseaseObj.parent_preferred = parent_preferred;
 
+                    diseaseObj.rank = '';
+
                     vm.curTrial.diseases_attributes.push(diseaseObj);
                 });
             }
@@ -143,12 +192,19 @@
             });
         };
 
+        vm.resetDiseases = function() {
+            vm.searchParams = {};
+            vm.searchResult = [];
+            vm.addedDiseases = [];
+        };
+
         activate();
 
         /****************************** implementations **************************/
 
         function activate() {
             appendDiseases();
+            updateValidationVar();
         }
 
         // Append associations for existing Trial
@@ -178,6 +234,35 @@
             });
 
             vm.selectedNum = c;
+        }
+
+        // Update variables for rank validation
+        function updateValidationVar() {
+            var primaryNum = 0, secondaryNum = 0;
+            angular.forEach(vm.existingDiseases, function (disease) {
+                if (disease.rank === 'Primary') {
+                    primaryNum++;
+                } else if (disease.rank === 'Secondary') {
+                    secondaryNum++;
+                }
+            });
+
+            if (primaryNum === 0) {
+                vm.showPrimaryRequired = true;
+                vm.showPrimaryOnlyOne = false;
+            } else if (primaryNum === 1) {
+                vm.showPrimaryRequired = false;
+                vm.showPrimaryOnlyOne = false;
+            } else {
+                vm.showPrimaryRequired = false;
+                vm.showPrimaryOnlyOne = true;
+            }
+
+            if (secondaryNum <= 1) {
+                vm.showSecondaryOnlyOne = false;
+            } else {
+                vm.showSecondaryOnlyOne = true;
+            }
         }
     } //pasDiseaseCtrl
 })();
