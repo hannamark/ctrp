@@ -69,6 +69,21 @@ class NcitDiseaseCodesController < ApplicationController
     end
   end
 
+  def search
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 20 if params[:rows].blank?
+    params[:sort] = 'lead_protocol_id' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+
+    if params[:disease_name].present?
+      @diseases = NcitDiseaseCode.all
+      @diseases = @diseases.with_name(params[:disease_name]) if params[:disease_name].present?
+    else
+      @diseases = []
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ncit_disease_code

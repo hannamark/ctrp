@@ -221,7 +221,7 @@
                         </tr>
                         </thead>
                         <tbody ui-sortable="criteriaView.sortableListener" ng-model="criteriaView.trialDetailObj.other_criteria">
-                        <tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="{'deleted-text': row._destroy, 'edit-selected': criteriaView.otherCriterion.id === row.id}">
+                        <tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="{'deleted-text': row._destroy, 'edit-selected': row.edit}">
                             <td>
                                 {{$index + 1}}
                             </td>
@@ -232,12 +232,12 @@
                                 {{row.criteria_desc}}
                             </td>
                             <td class="text-center td-icon">
-                                <button type="button" class="btn btn-primary" restriction-field ng-disabled="row._destroy || criteriaView.addOtherCriterionFormShown" ng-click="criteriaView.editOtherCriterion($index)">
+                                <button type="button" class="btn btn-primary" restriction-field ng-disabled="row._destroy || criteriaView.otherCriterion.edit" ng-click="criteriaView.editOtherCriterion($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
                             <td  class="text-center td-icon">
-                                <button type="button" class="btn btn-warning" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)" ng-disabled="criteriaView.addOtherCriterionFormShown">
+                                <button type="button" class="btn btn-warning" restriction-field ng-click="criteriaView.deleteOtherCriterion($index)" ng-disabled="criteriaView.otherCriterion.edit">
                                     <i class="glyphicon" ng-class="row._destroy == true ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                 </button>
                             </td>
