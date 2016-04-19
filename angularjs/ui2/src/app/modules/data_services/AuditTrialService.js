@@ -62,8 +62,11 @@
             enableFiltering: true,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
+            expandableRowHeight: 150,
+
             columnDefs: [
-                {name: 'submission_num', displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Update At', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},

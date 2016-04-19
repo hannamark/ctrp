@@ -59,6 +59,14 @@
 
             AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
                 console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                var i =0
+                for(i = 0; i < data.trial_versions.length; i++){
+                    data.trial_versions[i].subGridOptions = {
+                        columnDefs: [ {name:"Field", field:"field"}, {name:"old value", field:"old_value"},{name:"new value", field:"new_value"} ],
+                        data: data.trial_versions[i].friends
+                    }
+                }
+
                 vm.updatesGridOptions.data = data.trial_versions;
                 vm.updatesGridOptions.totalItems = data.trial_versions["length"];
             }).catch(function (err) {
@@ -197,10 +205,6 @@
                     'acknowledge':vm.entity.acknowledge,
                     'acknowledge_date':vm.entity.acknowledge_date,
                     'acknowledged_by':vm.entity.acknowledged_by};
-
-
-
-
 
                 var resStatus=null;
                 AuditService.upsertSubmission(obj).then(function(response) {

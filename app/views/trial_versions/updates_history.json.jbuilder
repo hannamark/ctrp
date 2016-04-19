@@ -12,6 +12,18 @@ json.trial_versions do
       json.lead_protocol_id trial_version.object_changes["lead_protocol_id"]?  trial_version.object_changes["lead_protocol_id"][1] : nil
       json.official_title trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][1] : nil
 
+
+      json.friends do
+        subs=Submission.all
+        json.array!(subs) do |sub|
+          json.field "offcial title"
+          json.old_value trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][0] : nil
+          json.new_value trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][1] : nil
+        end
+      end
+
+
+
       json.submission_num submission.submission_num
           json.id submission.id
           json.submission_date submission.submission_date
@@ -21,5 +33,10 @@ json.trial_versions do
           json.acknowledged_by submission.acknowledged_by
           json.acknowledge submission.acknowledge
     end
+
+
+
+
+
   end
 end
