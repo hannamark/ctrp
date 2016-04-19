@@ -28,13 +28,13 @@
                                 </div>
                                 <!-- intervention type for cancer.gov -->
                                 <div class="form-group">
-                                    <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Intervention Type (Cancer.gov):</label>
+                                    <label for="intervention_type_cancer" class="control-label col-xs-12 col-sm-3">Intervention Type (Cancer.gov):</label>
                                     <div class="col-xs-12 col-sm-5">
                                         <select name="intervention_type_cancer" id="intervention_type_cancer"
                                                 class="form-control input-sm"
                                                 ng-model="interventionView.curInterventionObj.intervention_type_cancer_gov_id"
+                                                ng-disabled="!interventionView.isCancerGovTypeListEnabled"
                                                 ng-options="type.id as type.name for type in interventionView.interventionTypesByCategory.cancerGov"
-                                                ng-required="true"
                                         >
                                             <option value="">
                                                 -- Please select an intervention type (cancer.gov)...
@@ -46,13 +46,13 @@
 
                                 <!-- intervention type for clinicaltrials.gov -->
                                 <div class="form-group">
-                                    <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Intervention Type (ClinicalTrials.gov):</label>
+                                    <label for="intervention_type_ct" class="control-label col-xs-12 col-sm-3">Intervention Type (ClinicalTrials.gov):</label>
                                     <div class="col-xs-12 col-sm-5">
                                         <select name="intervention_type_ct" id="intervention_type_ct"
                                                 class="form-control input-sm"
                                                 ng-model="interventionView.curInterventionObj.intervention_type_ct_gov_id"
+                                                ng-disabled="!interventionView.isCTGovTypeListEnabled"
                                                 ng-options="type.id as type.name for type in interventionView.interventionTypesByCategory.ctGov"
-                                                ng-required="true"
                                         >
                                             <option value="">
                                                 -- Please select an intervention type (CT.gov)...

@@ -9,12 +9,12 @@
         .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes'];
+        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes', 'UserService'];
 
     pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance', 'PATrialService'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes) {
+        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes, UserService) {
 
             var vm = this;
             vm.interventionTypesByCategory = {
@@ -30,6 +30,11 @@
             vm.curInterventionObj = {};
             vm.selectedInterventionObj = {preferred_name: ''};
             vm.deleteBtnDisabled = true;
+
+            vm.isCancerGovTypeListEnabled = false;
+            vm.isCTGovTypeListEnabled = false;
+            var curUserRole = UserService.getUserRole() || '';
+            var isUserAllowedToSelectType = curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU'; // only super userss are allowed
 
             // actions
             vm.addIntervention = addIntervention;
@@ -146,8 +151,11 @@
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
                     vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
-                    vm.curInterventionObj.intervention_type_cancer_gov_id = selectedInterventionObj.intervention_type_cancer_gov_id; // TODO: add type_code_id
-                    vm.curInterventionObj.intervention_type_ct_gov_id = selectedInterventionObj.intervention_type_ct_gov_id; // TODO: add ct_gov_type_code_id
+
+                    vm.curInterventionObj.intervention_type_cancer_gov_id = selectedInterventionObj.intervention_type_cancer_gov_id || '';
+                    vm.isCancerGovTypeListEnabled = vm.curInterventionObj.intervention_type_cancer_gov_id === '' && isUserAllowedToSelectType;
+                    vm.curInterventionObj.intervention_type_ct_gov_id = selectedInterventionObj.intervention_type_ct_gov_id || '';
+                    vm.isCTGovTypeListEnabled = vm.curInterventionObj.intervention_type_ct_gov_id === '' && isUserAllowedToSelectType;
                     console.info('received selectedInterventionObj: ', vm.selectedInterventionObj);
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
@@ -178,8 +186,8 @@
                     vm.selection.intervention_type_cancer_gov_id = result.intervention_type_cancer_gov_id;
                     vm.selection.intervention_type_ct_gov_id = result.intervention_type_ct_gov_id;
                 }
-                vm.selection.intervention_type_cancer_gov_id = 13; // for test TODO: delete
-                vm.selection.intervention_type_ct_gov_id = 1; // for test TODO: delete
+                // vm.selection.intervention_type_cancer_gov_id = 13; // for test TODO: delete
+                // vm.selection.intervention_type_ct_gov_id = 1; // for test TODO: delete
             }).catch(function(err) {
                 console.error('error in search CTRP Interventions: ', err);
             }).finally(function() {
