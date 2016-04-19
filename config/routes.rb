@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       collection do
         get 'index'
         post 'history'
+        post 'updates_history'
       end
     end
 
@@ -180,6 +181,7 @@ Rails.application.routes.draw do
     end
 
     scope '/registry' do
+      resources :submissions
       resources :study_sources
       resources :phases
       resources :primary_purposes
@@ -248,6 +250,9 @@ Rails.application.routes.draw do
       get 'accepted_file_types' => 'util#get_accepted_file_types'
       get 'sampling_methods' => 'util#get_sampling_methods'
     end
+
+
+
 
     resources :ncit_disease_codes do
       collection do
