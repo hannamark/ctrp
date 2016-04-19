@@ -118,7 +118,7 @@ Then the selected organization will be the Affiliation of the Investigator for t
 Scenario: #14 I can view and edit the Data Table 4 Funding Catagory
 Given I have selected a trial for Trail Validation 
 And I am on the Trial Validation (Submission) screen
-And see the valus for Data Table 4 Funding Catagory
+And see the values for Data Table 4 Funding Catagory
 When I select a different Data Table 4 Funding Catagory
 |National|
 |Externally Peer-Reviewed|
@@ -207,10 +207,6 @@ And the trial information source is
 |Protocol|
 And the trial submission number is (orginal)
 |1|
-And the study souce is:
-|National|
-|Externally Peer-Reviewed|
-|Institutional|
 When I select Accept
 And any of the mandatory fields have not be entered:
 |Lead Organizaiton identifier|
@@ -224,7 +220,7 @@ And any of the mandatory fields have not be entered:
 |Investigator|
 |Investigator Title|
 |Investigator Affiliation|
-Then a warning message will be displayed stating the missing information
+Then a warning message will be displayed stating the missing fields are required
 
 Scenario: #25 Accept Trial Validation Error Non Import Amendment
 Given I have selected a trial for Trail Validation 
@@ -233,10 +229,6 @@ And the trial information source is
 |Protocol|
 And the trial submission number is (Amendment)
 |>1|
-And the study souce is:
-|National|
-|Externally Peer-Reviewed|
-|Institutional|
 When I select Accept
 And any of the mandatory fields have not be entered:
 |Lead Organizaiton identifier|
@@ -251,17 +243,13 @@ And any of the mandatory fields have not be entered:
 |Investigator Title|
 |Investigator Affiliation|
 |Amendment Reason Code|
-Then a warning message will be displayed stating the missing information
+Then a warning message will be displayed stating the  missing fields are required
 
 Scenario: #26 Accept Trial Validation Errors Imported
 Given I have selected a trial for Trail Validation 
 And I am on the Trial Validation (Submission) screen
 And the trial information source is
 |Imported|
-And the study souce is:
-|Industrial|
-|Other|
-|Expanded Access|
 When I select Accept
 And any of the mandatory fields have not be entered:
 |Lead Organizaiton identifier|
@@ -269,4 +257,4 @@ And any of the mandatory fields have not be entered:
 |Phase|
 |Primary Purpose|
 |Lead Organization|
-Then a warning message will be displayed stating the missing information
+Then a warning message will be displayed stating the missing fields are required
