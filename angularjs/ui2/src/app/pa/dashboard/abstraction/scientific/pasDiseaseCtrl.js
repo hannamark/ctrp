@@ -40,31 +40,7 @@
         };
 
         vm.updateValidationVar = function() {
-            var primaryNum = 0, secondaryNum = 0;
-            angular.forEach(vm.existingDiseases, function (disease) {
-                if (disease.rank === 'Primary') {
-                    primaryNum++;
-                } else if (disease.rank === 'Secondary') {
-                    secondaryNum++;
-                }
-            });
-
-            if (primaryNum === 0) {
-                vm.showPrimaryRequired = true;
-                vm.showPrimaryOnlyOne = false;
-            } else if (primaryNum === 1) {
-                vm.showPrimaryRequired = false;
-                vm.showPrimaryOnlyOne = false;
-            } else {
-                vm.showPrimaryRequired = false;
-                vm.showPrimaryOnlyOne = true;
-            }
-
-            if (secondaryNum <= 1) {
-                vm.showSecondaryOnlyOne = false;
-            } else {
-                vm.showSecondaryOnlyOne = true;
-            }
+            updateValidationVar();
         };
 
         vm.deleteSelected = function() {
@@ -229,6 +205,7 @@
 
         function activate() {
             appendDiseases();
+            updateValidationVar();
         }
 
         // Append associations for existing Trial
@@ -258,6 +235,35 @@
             });
 
             vm.selectedNum = c;
+        }
+
+        // Update variables for rank validation
+        function updateValidationVar() {
+            var primaryNum = 0, secondaryNum = 0;
+            angular.forEach(vm.existingDiseases, function (disease) {
+                if (disease.rank === 'Primary') {
+                    primaryNum++;
+                } else if (disease.rank === 'Secondary') {
+                    secondaryNum++;
+                }
+            });
+
+            if (primaryNum === 0) {
+                vm.showPrimaryRequired = true;
+                vm.showPrimaryOnlyOne = false;
+            } else if (primaryNum === 1) {
+                vm.showPrimaryRequired = false;
+                vm.showPrimaryOnlyOne = false;
+            } else {
+                vm.showPrimaryRequired = false;
+                vm.showPrimaryOnlyOne = true;
+            }
+
+            if (secondaryNum <= 1) {
+                vm.showSecondaryOnlyOne = false;
+            } else {
+                vm.showSecondaryOnlyOne = true;
+            }
         }
     } //pasDiseaseCtrl
 })();
