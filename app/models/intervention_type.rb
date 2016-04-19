@@ -13,4 +13,8 @@
 
 class InterventionType < ActiveRecord::Base
   include BasicConcerns
+
+  # has_many :intervention_type_cancer_gov, :class_name => 'Intervention', :foreign_key => :intervention_type_cancer_gov_id
+  # has_many :intervention_type_clinicaltrials_gov, :class_name => 'Intervention', :foreign_key => :intervention_type_ct_gov_id
+
 end

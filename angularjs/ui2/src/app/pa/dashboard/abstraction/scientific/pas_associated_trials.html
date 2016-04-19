@@ -57,24 +57,24 @@
                                     </button>
                                 </div>
                             </div>
-                            <div ng-hide="assoTrialsView.foundTrialObj.official_title.length==0">
-                                <!-- show this div only if the trial is found not null -->
-                                <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3">Research Category</label>
-                                    <div class="col-xs-12 col-sm-5 form-text">{{assoTrialsView.foundTrialObj.researchCategory}}</div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3">Official Title</label>
-                                    <div class="col-xs-12 col-sm-9 form-text">{{assoTrialsView.foundTrialObj.official_title}}</div>
-                                </div>
-
-                                <div class="form-group text-center">
-                                    <button type="button" class="btn btn-warning" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">Reset</button>
-                                    <button type="button" class="btn btn-primary" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
-                                    <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
-                                </div>
+                            <!-- show this div only if the trial is found not null -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3">Research Category:</label>
+                                <div class="col-xs-12 col-sm-5 form-text">{{assoTrialsView.foundTrialObj.researchCategory}}</div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3">Official Title:</label>
+                                <div class="col-xs-12 col-sm-9 form-text">{{assoTrialsView.foundTrialObj.official_title}}</div>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <button type="button" class="btn btn-warning" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">Reset</button>
+                                <button type="button" class="btn btn-primary" ng-disabled="assoTrialsView.foundTrialObj.official_title.length==0" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">Associate</button>
+                                <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
+                            </div>
+
                         </fieldset>
 
                     </form>

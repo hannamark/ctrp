@@ -65,12 +65,12 @@ json.trial_versions do
     subs = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "Submission",trial_version.transaction_id)
 
     if subs
-      subs.each do |sub|
-       json.submission_number  sub.object_changes["submission_num"]?  sub.object_changes["submission_num"][1]:nil
-       json.submission_date sub.object_changes["submission_date"]? sub.object_changes["submission_date"][1]:nil
-       #json.submission_type sub.object_changes["submission_type_id"]? SubmissionMethod.find_by_id(sub.object_changes["submission_type_id"][1]).name:nil
+        subs.each do |sub|
+           json.submission_number  sub.object_changes["submission_num"]?  sub.object_changes["submission_num"][1]:nil
+           json.submission_date sub.object_changes["submission_date"]? sub.object_changes["submission_date"][1]:nil
+           #json.submission_type sub.object_changes["submission_type_id"]? SubmissionMethod.find_by_id(sub.object_changes["submission_type_id"][1]).name:nil
+        end
     end
-end
 
 
     json.other_ids  ""

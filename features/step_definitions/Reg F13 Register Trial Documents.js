@@ -244,34 +244,39 @@ module.exports = function() {
     });
 
     this.Then(/^an error will be displayed "([^"]*)"$/, function (arg1, callback) {
-        addTrial.clickAddTrialResetButton();
-        trialDoc.trialRelatedFileUpload('reg', '1', testSampleCSVFile);
-        trialDoc.trialRelatedFileUpload('reg', '2', testSampleCSVFile);
-        trialDoc.trialRelatedFileUpload('reg', '3', testSampleCSVFile);
-        trialDoc.trialRelatedFileUpload('reg', '4', testSampleCSVFile);
-        trialDoc.trialRelatedFileUpload('reg', '5', testSampleCSVFile);
-        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
-        addTrial.clickAddTrialResetButton();
-        trialDoc.trialRelatedFileUpload('reg', '1', testSampleMSGFile);
-        trialDoc.trialRelatedFileUpload('reg', '2', testSampleMSGFile);
-        trialDoc.trialRelatedFileUpload('reg', '3', testSampleMSGFile);
-        trialDoc.trialRelatedFileUpload('reg', '4', testSampleMSGFile);
-        trialDoc.trialRelatedFileUpload('reg', '5', testSampleMSGFile);
-        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
-        addTrial.clickAddTrialResetButton();
-        trialDoc.trialRelatedFileUpload('reg', '1', testSampleHtmlFile);
-        trialDoc.trialRelatedFileUpload('reg', '2', testSampleHtmlFile);
-        trialDoc.trialRelatedFileUpload('reg', '3', testSampleHtmlFile);
-        trialDoc.trialRelatedFileUpload('reg', '4', testSampleHtmlFile);
-        trialDoc.trialRelatedFileUpload('reg', '5', testSampleHtmlFile);
-        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
-        addTrial.clickAddTrialResetButton();
-        trialDoc.trialRelatedFileUpload('reg', '1', testSampleXMLFile);
-        trialDoc.trialRelatedFileUpload('reg', '2', testSampleXMLFile);
-        trialDoc.trialRelatedFileUpload('reg', '3', testSampleXMLFile);
-        trialDoc.trialRelatedFileUpload('reg', '4', testSampleXMLFile);
-        trialDoc.trialRelatedFileUpload('reg', '5', testSampleXMLFile);
-        expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([ arg1, arg1, arg1, arg1, arg1 ]);
+        if(arg1 === 'Lead Organization Trial Identifier is Required'){
+            expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
+        }
+        if (arg1 === 'Select a valid file. Allowed file types: pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt') {
+            addTrial.clickAddTrialResetButton();
+            trialDoc.trialRelatedFileUpload('reg', '1', testSampleCSVFile);
+            trialDoc.trialRelatedFileUpload('reg', '2', testSampleCSVFile);
+            trialDoc.trialRelatedFileUpload('reg', '3', testSampleCSVFile);
+            trialDoc.trialRelatedFileUpload('reg', '4', testSampleCSVFile);
+            trialDoc.trialRelatedFileUpload('reg', '5', testSampleCSVFile);
+            expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
+            addTrial.clickAddTrialResetButton();
+            trialDoc.trialRelatedFileUpload('reg', '1', testSampleMSGFile);
+            trialDoc.trialRelatedFileUpload('reg', '2', testSampleMSGFile);
+            trialDoc.trialRelatedFileUpload('reg', '3', testSampleMSGFile);
+            trialDoc.trialRelatedFileUpload('reg', '4', testSampleMSGFile);
+            trialDoc.trialRelatedFileUpload('reg', '5', testSampleMSGFile);
+            expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
+            addTrial.clickAddTrialResetButton();
+            trialDoc.trialRelatedFileUpload('reg', '1', testSampleHtmlFile);
+            trialDoc.trialRelatedFileUpload('reg', '2', testSampleHtmlFile);
+            trialDoc.trialRelatedFileUpload('reg', '3', testSampleHtmlFile);
+            trialDoc.trialRelatedFileUpload('reg', '4', testSampleHtmlFile);
+            trialDoc.trialRelatedFileUpload('reg', '5', testSampleHtmlFile);
+            expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
+            addTrial.clickAddTrialResetButton();
+            trialDoc.trialRelatedFileUpload('reg', '1', testSampleXMLFile);
+            trialDoc.trialRelatedFileUpload('reg', '2', testSampleXMLFile);
+            trialDoc.trialRelatedFileUpload('reg', '3', testSampleXMLFile);
+            trialDoc.trialRelatedFileUpload('reg', '4', testSampleXMLFile);
+            trialDoc.trialRelatedFileUpload('reg', '5', testSampleXMLFile);
+            expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
+        }
         browser.sleep(25).then(callback);
     });
 

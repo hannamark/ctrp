@@ -218,7 +218,7 @@ class ApplicationController < ActionController::Base
     #end
   #end
 
-
+=begin
   ### ActiveRecord ####
   ### \----------------------------/ Big Basket for Active Record
   rescue_from ActiveRecord::ActiveRecordError do |e|
@@ -275,7 +275,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
+=end
 
 
 

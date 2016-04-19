@@ -96,6 +96,9 @@
 
 class Trial < TrialBase
 
+  # Disabled optimistic locking
+  self.locking_column = :dummy_column
+
   belongs_to :study_source
   belongs_to :phase
   belongs_to :research_category
@@ -163,6 +166,7 @@ class Trial < TrialBase
   attr_accessor :coming_from
   attr_accessor :current_user
 
+  accepts_nested_attributes_for :interventions, allow_destroy: true
   accepts_nested_attributes_for :associated_trials, allow_destroy: true
   accepts_nested_attributes_for :arms_groups, allow_destroy: true
   accepts_nested_attributes_for :other_ids, allow_destroy: true
@@ -183,6 +187,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
   accepts_nested_attributes_for :sub_groups, allow_destroy: true
   accepts_nested_attributes_for :markers, allow_destroy: true
+  accepts_nested_attributes_for :diseases, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'

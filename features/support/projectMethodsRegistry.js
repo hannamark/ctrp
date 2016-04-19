@@ -6,6 +6,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
+var assert = require('assert');
 var helperFunctions = require('../support/helper');
 var addTrialPage = require('../support/registerTrialPage');
 var searchTrialPage = require('../support/searchTrialPage');
@@ -22,6 +23,8 @@ var loginPage = require('../support/LoginPage');
 var moment = require('moment');
 //var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
+var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
+var underscore = require('underscore');
 
 
 var projectMethodsRegistry = function() {
@@ -40,6 +43,7 @@ var projectMethodsRegistry = function() {
     var trialMenuItem = new trialMenuItemList();
 //    var projectFunctionsRegistry = new projectFunctionRegistryPage();
     var commonFunctions = new abstractionCommonMethods();
+    var trialDoc = new abstractionTrialRelatedDocument();
     var self = this;
 
     this.selectTrials = function(trialType) {
@@ -514,121 +518,337 @@ var projectMethodsRegistry = function() {
     };
 
 
-    /** ******************************** ******************************** ******************************** ******************************** ********************************
+    /**
      * Method: This will create a New Trial
-     * @param: trialType
-     ******************************** ******************************** ******************************** ******************************** ********************************/
-    this.createTrial = function(trialType, leadOrgIdentifier) {
-        self.createOrgforTrialfromPO('leadOrg');
-        /**** Stores the value of Lead Org ****/
-        browser.driver.wait(function() {
-            console.log('wait here');
-            return true;
-        }, 40).then(function() {
-            storeLeadOrg = cukeOrganization.then(function (value) {
-                console.log('This is the Lead Organization that is added' + value);
-                return value;
-            });
+     * @param trialType
+     * @param leadOrgIdentifier
+     * @param otherClinicalTrialID
+     * @param otherObsoleteClinicalTrialID
+     * @param otherIdentifier
+     * @param officialTitle
+     * @param phase
+     * @param pilotOption
+     * @param researchCategory
+     * @param primaryPurpose
+     * @param secondaryPurpose
+     * @param accrualDisease
+     * @param leadOrg
+     * @param principalInv
+     * @param sponsorOrg
+     * @param dataTableOrg
+     * @param programCode
+     * @param grantOption
+     * @param grantFundingMechanism
+     * @param grantInstituteCode
+     * @param grantSerialNumber
+     * @param grantNCIDivisionCode
+     * @param trialStatus
+     * @param trialComment
+     * @param trialWhyStudyStopped
+     * @param INDIDEOption
+     * @param INDIDEType
+     * @param INDIDENumber
+     * @param INDIDEGrantor
+     * @param INDIDEHolder
+     * @param INDIDEInstitution
+     * @param responsibleParty
+     * @param trialOversightCountry
+     * @param trialOversightOrg
+     * @param FDARegulatedIndicator
+     * @param section801Indicator
+     * @param dataMonitoringIndicator
+     * @param protocolDoc
+     * @param IRBDoc
+     * @param participatingSiteDoc
+     * @param informedConsentDoc
+     * @param otherDoc
+     */
+    this.createTrial = function(
+        trialType, leadOrgIdentifier, otherClinicalTrialID, otherObsoleteClinicalTrialID, otherIdentifier,                                  //Trial Identifiers
+        officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose, accrualDisease,                              //Trial Details
+        leadOrg, principalInv,                                                                                                              //Lead Organization/Principal Investigator
+        sponsorOrg,                                                                                                                         //Sponsor
+        dataTableOrg, programCode,                                                                                                          //Data Table 4 Information
+        grantOption, grantFundingMechanism, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode,                                    //NIH Grant Information (for NIH funded Trials)
+        trialStatus, trialComment, trialWhyStudyStopped,                                                                                    //Trial Status
+        INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution,                                             //FDA IND/IDE Information for applicable trials
+        responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,    //Regulatory Information
+        protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc                                                             //Trial Related Documents
+    ) {
+        trialMenuItem.clickTrials();
+        trialMenuItem.clickListSearchTrialLink();
+        searchTrial.setSearchTrialProtocolID(leadOrgIdentifier + trialType + ' ' + moment().format('MMMDoYY'));
+        storeLeadProtocolId = searchTrial.searchTrialProtocolID.getAttribute('value').then(function (value) {
+            console.log('This is the Lead Organization Trial Identifier that was searched' + value);
+            return value;
         });
-        self.createPersonforTrialfromPO('prinInv');
-        /**** Stores the value of Principal Investigator ****/
-        browser.driver.wait(function() {
-            console.log('wait here');
-            return true;
-        }, 40).then(function() {
-            storePrinInv = per4.then(function (value) {
-                console.log('This is the Principal Investigator that is added' + value);
-                return value;
-            });
-        });
-        self.createOrgforTrialfromPO('sponsorOrg');
-        /**** Stores the value of Sponsor Org ****/
-        browser.driver.wait(function() {
-            console.log('wait here');
-            return true;
-        }, 40).then(function() {
-            storeSponOrg = cukeOrganization.then(function (value) {
-                console.log('This is the Sponsor Organization that is added' + value);
-                return value;
-            });
-        });
-        self.createOrgforTrialfromPO('dataTbl4Org');
-        /**** Stores the value of Lead Org ****/
-        browser.driver.wait(function() {
-            console.log('wait here');
-            return true;
-        }, 40).then(function() {
-            storeDateTblOrg = cukeOrganization.then(function (value) {
-                console.log('This is the Data Table 4 Organization that is added' + value);
-                return value;
-            });
-            browser.get('ui/#/main/sign_in');
-            commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
-            self.selectTrials(trialType);
-            login.clickWriteMode('On');
-            addTrial.setAddTrialLeadProtocolIdentifier(leadOrgIdentifier + moment().format('MMMDoYY'));
-            addTrial.setAddTrialOfficialTitle('Trial Shi created by Cuke Test script');
-            addTrial.selectAddTrialPhase('IV');
-            addTrial.selectAddTrialPilotOption('1');
-            addTrial.selectAddTrialResearchCategory('Observational');
-            addTrial.selectAddTrialPrimaryPurpose('Treatment');
-            addTrial.selectAddTrialAccrualDiseaseTerminology('SDC');
-            /***** This will add the Lead Org ******/
-            browser.driver.wait(function () {
-                console.log('wait here');
-                return true;
-            }, 40).then(function () {
-                storeLeadOrg.then(function (value) {
-                    self.selectOrgforTrial(value, '0');
+        searchTrial.clickSearchTrialSearchButton();
+        searchTrial.clickSearchTrialAllTrials();
+        return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
+            if (state === true) {
+                 storeLeadProtocolId.then(function (value) {
+                                         element(by.linkText(value)).click();
+                    nciID = addTrial.viewTrialNCIID.getText().then(function (nciIDTrial){
+                        console.log('***** Trial with Lead Protocol ID " ' + value + ' " exists **********. Its NCI ID is --> ' + nciIDTrial + ' <--');
+                    });
                 });
-                /***** This will add the Principal Investigator ******/
-                storePrinInv.then(function (value) {
-                    self.selectPerForTrial(value, '0');
-                });
-                /***** This will add the Sponsor Org ******/
-                storeSponOrg.then(function (value) {
-                    self.selectOrgforTrial(value, '1');
-                });
-                /***** This will add the Data Table 4 Org ******/
-                storeDateTblOrg.then(function (value) {
-                    self.selectOrgforTrial(value, '2');
-                });
-            });
-            addTrial.selectAddTrialFundedByNCIOption('0');
-            addTrial.selectAddTrialFundingMechanism('F32');
-            addTrial.selectAddTrialInstituteCode('CA');
-            addTrial.setAddTrialSerialNumber('153978');
-            addTrial.addTrialSerialNumberSelect.click();
-            addTrial.selectAddTrialNCIDivisionProgramCode('CCR');
-            addTrial.clickAddTrialAddGrantInfoButton();
-            //    addTrial.selectAddTrialStatus
-            //    addTrial.clickAddTrialAddStatusButton
-            //    addTrial.selectAddTrialStartDateOption
-            //    addTrial.selectAddTrialPrimaryCompletionDateOption
-            //    addTrial.selectAddTrialCompletionDateOption
-            //    addTrial.selectAddTrialFDAIND_IDEOption
-            //addTrial.selectAddTrialFDAIND_IDETypes
-            //addTrial.setAddTrialFDAIND_IDENumber
-            //addTrial.selectAddTrialFDAIND_IDEGrantor
-            //addTrial.selectAddTrialFDAIND_IDEHolderType
-            //    addTrial.clickAddTrialAddIND_IDEButton
-            addTrial.clickAddTrialReviewButton();
-        });
+            }
+            else {
+                self.selectTrials(trialType);
 
+//      Create Lead Org, Principal Investigator, sponsor Org, DataTable Org//
+                /****** Create Lead Organization ********/
+                self.createOrgforTrial(leadOrg, trialType, '0');
 
+                /** Stores the value of Lead Org **/
+                storeLeadOrg = cukeOrganization.then(function (value) {
+                    console.log('This is the Lead Organization that is added' + value);
+                    return value;
+                });
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 10).then(function () {
+
+                    /****** Create Principal Investigator ********/
+                    self.createPersonforTrial(principalInv, trialType, '0');
+
+                    /** Stores the value of Principal Investigator **/
+                    storePI = cukePerson.then(function (value) {
+                        console.log('This is the Principal Investigator that is added' + value);
+                        return value;
+                    });
+                    browser.driver.wait(function () {
+                        console.log('wait here');
+                        return true;
+                    }, 10).then(function () {
+
+                        /****** Create Sponsor Organization ********/
+                        self.createOrgforTrial(sponsorOrg, trialType, '1');
+
+                        /** Stores the value of Sponsor Org **/
+                        storeSponsorOrg = cukeOrganization.then(function (value) {
+                            console.log('This is the Sponsor Organization that is added' + value);
+                            return value;
+                        });
+                        browser.driver.wait(function () {
+                            console.log('wait here');
+                            return true;
+                        }, 10).then(function () {
+
+                            /****** Create Data Table 4 Funding Source Organization ********/
+                            self.createOrgforTrial(dataTableOrg, trialType, '2');
+
+                            /** Stores the value of Data Table 4 Funding Source Org **/
+                            storeFundingSrcOrg = cukeOrganization.then(function (value) {
+                                console.log('This is the Funding Source Organization that is added' + value);
+                                return value;
+                            });
+
+                            /**** Trial Identifiers ****/
+                            storeLeadProtocolId.then(function (value) {
+                                console.log('This is the Lead Organization Trial Identifier that is added' + value);
+                                addTrial.setAddTrialLeadProtocolIdentifier(value);
+                            });
+                            if (otherClinicalTrialID !== '') {
+                                addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'ClinicalTrials.gov Identifier')).click();
+                                addTrial.setAddTrialProtocolID(otherClinicalTrialID);
+                                addTrial.clickAddTrialAddProtocolButton();
+                            }
+                            if (otherObsoleteClinicalTrialID !== '') {
+                                addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Obsolete ClinicalTrials.gov Identifier')).click();
+                                addTrial.setAddTrialProtocolID(otherObsoleteClinicalTrialID);
+                                addTrial.clickAddTrialAddProtocolButton();
+                            }
+                            if (otherIdentifier !== '') {
+                                addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Other Identifier')).click();
+                                addTrial.setAddTrialProtocolID(otherIdentifier);
+                                addTrial.clickAddTrialAddProtocolButton();
+                            }
+
+                            /**** Trial Details ****/
+                            addTrial.setAddTrialOfficialTitle(officialTitle);
+                            addTrial.selectAddTrialPhase(phase);
+                            if (pilotOption !== '') {
+                                addTrial.selectAddTrialPilotOption(pilotOption);
+                            }
+                            addTrial.selectAddTrialResearchCategory(researchCategory);
+                            addTrial.selectAddTrialPrimaryPurpose(primaryPurpose);
+                            if (secondaryPurpose !== '') {
+                                addTrial.selectAddTrialSecondaryPurpose(secondaryPurpose);
+                            }
+                            addTrial.selectAddTrialAccrualDiseaseTerminology(accrualDisease);
+
+                            /**** Lead Organization/Principal Investigator ****/
+                            /***** This will add the Lead Org  if Lead org is not there ******/
+                            addTrial.addTrialLeadOrganization.getAttribute('value').then(function (value) {
+                                console.log('value of Lead Org"' + value + '"is this');
+                                if (value === '') {
+
+                                    storeLeadOrg.then(function (value) {
+                                        self.selectOrgforTrial(value, '0');
+                                    });
+                                }
+                            });
+
+                            /***** This will add the Principal Investigator if PI is not there ******/
+                            addTrial.addTrialPrincipalInvestigator.getAttribute('value').then(function (value) {
+                                console.log('value of PI"' + value + '"is this');
+                                if (value.trim() === '') {
+                                    storePI.then(function (value) {
+                                        self.selectPerForTrial(value, '0');
+                                    });
+                                }
+                            });
+
+                            /**** Sponsor ****/
+                            /***** This will add the Sponsor Org if Sponsor Org is not there ******/
+                            addTrial.addTrialSponsor.getAttribute('value').then(function (value) {
+                                console.log('value of Sponsor Org"' + value + '"is this');
+                                if (value === '') {
+                                    storeSponsorOrg.then(function (value) {
+                                        self.selectOrgforTrial(value, '1');
+                                    });
+                                }
+                            });
+
+                            /**** Data Table 4 Information ****/
+                            /***** This will add the Funding Source Org if it is not there******/
+                            addTrial.addTrialDataTable4FundingSourceValues.getAttribute('value').then(function (value) {
+                                console.log('value of data table Org"' + value + '"is this');
+                                if (value === '') {
+
+                                    storeFundingSrcOrg.then(function (value) {
+                                        self.selectOrgforTrial(value, '2');
+                                    });
+                                }
+                            });
+
+                            if (programCode !== '') {
+                                addTrial.setAddTrialDataTable4ProgramCode(programCode);
+                            }
+
+                            /**** NIH Grant Information (for NIH funded Trials) ****/
+                            if (grantOption !== '') {
+                                addTrial.selectAddTrialFundedByNCIOption(grantOption);
+                            }
+                            if (grantOption.toUpperCase() !== 'NO' && grantOption !== '1') {
+                                addTrial.selectAddTrialFundingMechanism(grantFundingMechanism);
+                                addTrial.selectAddTrialInstituteCode(grantInstituteCode);
+                                addTrial.setAddTrialSerialNumber(grantSerialNumber);
+                                addTrial.addTrialSerialNumberSelect.click();
+                                addTrial.selectAddTrialNCIDivisionProgramCode(grantNCIDivisionCode);
+                                addTrial.clickAddTrialAddGrantInfoButton();
+                            }
+
+                            /**** Trial Status ****/
+                            addTrial.clickAddTrialDateField(0);
+                            addTrial.clickAddTrialDateToday();
+                            addTrial.selectAddTrialStatus(trialStatus);
+                            if (trialComment !== '') {
+                                addTrial.setAddTrialStatusComment(trialComment);
+                            }
+                            if (trialStatus === 'Withdrawn' || trialStatus === 'Temporarily Closed to Accrual' || trialStatus === 'Temporarily Closed to Accrual and Intervention' || trialStatus === 'Administratively Complete') {
+                                addTrial.setAddTrialWhyStudyStopped(trialWhyStudyStopped);
+                            }
+                            addTrial.clickAddTrialAddStatusButton();
+
+                            /**** Trial Dates ****/
+                            addTrial.clickAddTrialDateField(1);
+                            addTrial.clickAddTrialDateFieldPreviousMonth('10');
+                            addTrial.selectAddTrialStartDateOption('0');
+                            addTrial.clickAddTrialDateField(2);
+                            addTrial.clickAddTrialDateToday();
+                            addTrial.selectAddTrialPrimaryCompletionDateOption('0');
+                            addTrial.clickAddTrialDateField(3);
+                            addTrial.clickAddTrialDateFieldNextMonth('10');
+                            addTrial.selectAddTrialCompletionDateOption('1');
+
+                            /**** FDA IND/IDE Information for applicable trials ****/
+                            if (INDIDEOption !== '') {
+                                addTrial.selectAddTrialFDAIND_IDEOption(INDIDEOption);
+                            }
+                            if (INDIDEOption.toUpperCase() !== 'NO' && INDIDEOption !== '1') {
+                                addTrial.selectAddTrialFDAIND_IDETypes(INDIDEType);
+                                addTrial.setAddTrialFDAIND_IDENumber(INDIDENumber);
+                                addTrial.selectAddTrialFDAIND_IDEGrantor(INDIDEGrantor);
+                                addTrial.selectAddTrialFDAIND_IDEHolderType(INDIDEHolder);
+                                if (INDIDEInstitution !== '') {
+                                    addTrial.selectAddTrialFDAProgramCode(INDIDEInstitution);
+                                }
+                                addTrial.clickAddTrialAddIND_IDEButton();
+                            }
+
+                            /**** Regulatory Information ****/
+                            if (responsibleParty !== '') {
+                                addTrial.selectAddTrialResponsibleParty(responsibleParty);
+                            }
+                            if (trialOversightCountry !== '') {
+                                addTrial.selectAddTrialOversightAuthorityCountry(trialOversightCountry);
+                                addTrial.selectAddTrialOversightAuthorityOrganization(trialOversightOrg);
+                                addTrial.clickAddTrialAddOversightAuthorityButton();
+                            }
+                            if (FDARegulatedIndicator !== '') {
+                                addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+                            }
+                            if (section801Indicator !== '') {
+                                addTrial.selectAddTrialSection801Indicator('0');
+                            }
+                            if (dataMonitoringIndicator !== '') {
+                                addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('0');
+                            }
+
+                            /**** Trial Related Documents ****/
+                            if (protocolDoc !== '') {
+                                trialDoc.trialRelatedFileUpload('reg', '1', protocolDoc);
+                            }
+                            if (IRBDoc !== '') {
+                                trialDoc.trialRelatedFileUpload('reg', '2', IRBDoc);
+                            }
+                            if (participatingSiteDoc !== '') {
+                                trialDoc.trialRelatedFileUpload('reg', '3', participatingSiteDoc);
+                            }
+                            if (informedConsentDoc !== '') {
+                                trialDoc.trialRelatedFileUpload('reg', '4', informedConsentDoc);
+                            }
+                            if (otherDoc !== '') {
+                                trialDoc.trialRelatedFileUpload('reg', '5', otherDoc);
+                            }
+                            return addTrial.addTrialSubmitButton.isPresent().then(function (state) {
+                                if (state === true) {
+                                    addTrial.clickAddTrialReviewButton();
+                                    console.log('Trial Successfully created');
+                                    helper.wait(addTrial.viewTrialNCIID, 'NCI ID element on View Trial Page');
+                                    addTrial.viewTrialNCIID.getText().then(function (nciID) {
+                                        console.log('NCI ID of the Trial that was created is *************   ' + nciID + '   ************ Trial Type ->  ' + trialType);
+                                    });
+                                } else {
+                                    addTrial.clickAddTrialReviewButton();
+                                    menuItem.addWarningMessage.getText().then(function (warningMsg) {
+                                        addTrial.addTrialValidationMessage.getText().then(function (associationWarningMsg) {
+                                            assert.fail(0, 1, '\nSubmit button not found in the Page, may be form has some errors.\n See below if error is listed\n' + 'Error message in Page:\n-->' + underscore.compact(warningMsg).join("\n-->") + '\nAssociation error msg in Page: \n-->' + underscore.compact(associationWarningMsg).join("\n-->"));
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    });
+                });
+            }
+        });
     };
 
     /** ******************************** ******************************** ******************************** ******************************** ********************************
      * Method: This will create Trial Organization in PO, it creates a new org then checks if it exist then use the same one
      ******************************** ******************************** ******************************** ******************************** ********************************/
-    this.createOrgforTrialfromPO = function(orgName){
+    this.createOrgforTrialfromPO = function(orgName) {
         browser.get('ui/#/main/sign_in');
         commonFunctions.onPrepareLoginTest('ctrpcurator');
         // login.accept();
-        browser.driver.wait(function() {
+        browser.driver.wait(function () {
             console.log('wait here');
             return true;
-        }, 40).then(function() {
+        }, 40).then(function () {
             menuItem.clickHomeEnterOrganizations();
             login.clickWriteMode('On');
             menuItem.clickOrganizations();
@@ -636,22 +856,22 @@ var projectMethodsRegistry = function() {
             searchOrg.setOrgName(orgName + moment().format('MMMDoYY'));
             cukeOrganization = searchOrg.orgName.getAttribute('value');
             searchOrg.clickSearchButton();
-            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
-                if(state === true) {
+            return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
+                if (state === true) {
                     console.log('Organization exists');
-                    cukeOrganization.then(function(value){
+                    cukeOrganization.then(function (value) {
                         element(by.linkText(value)).click();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                     });
                 }
                 else {
-                    browser.driver.wait(function() {
+                    browser.driver.wait(function () {
                         console.log('wait here');
                         return true;
-                    }, 40).then(function() {
+                    }, 40).then(function () {
                         menuItem.clickOrganizations();
                         menuItem.clickAddOrganizations();
-                        cukeOrganization.then(function(value){
+                        cukeOrganization.then(function (value) {
                             console.log('Add org Name' + value);
                             addOrg.setAddOrgName(value);
                         });

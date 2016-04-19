@@ -1199,3 +1199,9 @@ div.datepicker {
 .popover-confirm .form-actions {
     text-align: right;
 }
+
+/* For validation within Angular ui-select elements */
+.select2-results-absolute.has-error a {
+    border-color: #a94442;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}

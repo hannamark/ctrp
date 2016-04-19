@@ -124,6 +124,10 @@ AddOrganizationsPage = function(){
         addOrg.getVerifyValue(this.addOrgName,orgName,"Get Organization by Name field");
     };
 
+    this.getVerifyAddSourceContext = function(sourceContext){
+        addOrg.getVerifyListValue(this.addSourceContext,sourceContext,"Get Organization by Source Context field");
+    };
+
     this.getVerifyAddOrgAlias = function(alias){
         addOrg.getVerifyValue(this.addAlias,alias,"Get Organization by Alias field");
     };

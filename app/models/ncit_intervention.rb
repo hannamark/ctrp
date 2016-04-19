@@ -27,7 +27,7 @@ class NcitIntervention < ActiveRecord::Base
       url = AppSetting.find_by_code('NCI_THESAURUS_URL').value
       intervention_file_names = AppSetting.find_by_code('NCI_THESAURUS_INTERVENTIONS').big_value.split(',')
       act = NcitStatus.find_by_code('ACT')
-      intervention_types = ['DRUG', 'DEVI', 'BIOL', 'PROC', 'RAD', 'BEHA', 'GENE', 'DSUP', 'OTH'] # for sampling/mocking data TODO: replace it with actual intervention type
+      # intervention_types = ['DRUG', 'DEVI', 'BIOL', 'PROC', 'RAD', 'BEHA', 'GENE', 'DSUP', 'OTH'] # for sampling/mocking data TODO: replace it with actual intervention type
 
       intervention_file_names.each do |file_name|
         File.open("../../storage/ncit_interventions/#{file_name}", 'wb') do |fo|
@@ -43,16 +43,17 @@ class NcitIntervention < ActiveRecord::Base
             xml.xpath('//owl:Class[@rdf:about]').each do |node|
               # extract preferred_name and synonyms
               name = node.xpath('rdfs:label').text
-              # if !NcitIntervention.exists?(preferred_name: name) # no duplicate preferred_name
+              if !NcitIntervention.exists?(preferred_name: name) # no duplicate preferred_name
                 synonyms = ''
                 node.css('P90').xpath('ncicp:ComplexTerm/ncicp:term-name').each do |synonym|
-                  synonyms += ", #{synonym.text}"  # concatenate each synonym
+                  synonyms += "; #{synonym.text}"  # concatenate each synonym
                 end
-                synonyms = synonyms.sub(',', '') # remove the first comma
-                intervention_type_code = intervention_types.sample # generate a random intervention type code
-                p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}, type_code: #{intervention_type_code}"
-                NcitIntervention.create(preferred_name: name, synonyms: synonyms, description: nil, type_code: intervention_type_code, ct_gov_type_code: nil, ncit_status: act)
-              # end
+                synonyms = synonyms.sub(';', '') # remove the first semi-colon
+                # intervention_type_code = intervention_types.sample # generate a random intervention type code
+                p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}" # , type_code: #{intervention_type_code}
+               # p "NcitIntervention.create(preferred_name: #{name}, synonyms: #{synonyms}, description: #{nil}, type_code: #{nil}, ct_gov_type_code: #{nil}, ncit_status: #{act})"
+                NcitIntervention.create(preferred_name: name, synonyms: synonyms, description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+              end
 
             end
 
@@ -63,5 +64,39 @@ class NcitIntervention < ActiveRecord::Base
 
     end
   end
+
+  private
+
+  # scope :match_exact_preferred_name, -> (value) { where(preferred_name: value.strip) }
+  scope :matches_exact, -> (column, value) { where("ncit_interventions.#{column} = ?", "#{value}") }
+
+  scope :matches_like, -> (column, value) { where("ncit_interventions.#{column} ilike ?", "%#{value}%")} # like?
+
+  # support like and wildcard queries
+  scope :match_loosely_preferred_name, -> (value) {
+    where_clause = 'ncit_interventions.preferred_name ilike ?'
+    value = value.strip
+    str_len = value.length
+
+    if value[0] == '*' && value[str_len - 1] != '*'
+      value_exp = "%#{value[1..str_len - 1]}"
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      value_exp = "#{value[0..str_len - 2]}%"
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      value_exp = "%#{value[1..str_len - 2]}%"
+    else
+      value_exp = "%#{value}%"
+    end
+
+    where(where_clause, value_exp)
+  }
+
+  scope :sort_by_col, -> (params) {
+    column = params[:sort]
+    order = params[:order]
+    order("#{column} #{order}")
+  }
+
+
 
 end

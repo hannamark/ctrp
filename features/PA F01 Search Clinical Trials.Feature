@@ -305,3 +305,12 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       |Imported|
       And select search
       Then the search results will display trials that have the Information Source that was selected
+
+ Scenario: #24 Paging
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I am on the Search Clinical Trials Screen
+      And select search
+      Then the search results will display a list of the trials 
+      And the trail list will be paganiated  
+	
+	

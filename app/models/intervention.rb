@@ -17,6 +17,8 @@
 class Intervention < ActiveRecord::Base
   include BasicConcerns
 
-  belongs_to :intervention_type
+  belongs_to :intervention_type_cancer_gov, :class_name => 'InterventionType'
+  belongs_to :intervention_type_ct_gov, :class_name => 'InterventionType'
+
   belongs_to :trial
 end

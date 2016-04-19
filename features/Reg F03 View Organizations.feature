@@ -3,12 +3,12 @@ Feature: Reg F03 View Organizations
 
 As a CTRP User, I am able to View Organizations 
 
-    
-     Scenario Outline: #1 I am able to View organizations in CTRP
+
+     Scenario: #1 I am able to View organizations in CTRP
     Given I am logged into the CTRP Registration application
     And the following parameters of an Organization exist:
     |CTRPID |Name|SourceContext|SourceID|SourceStatus|NameAlias|Address1|Address2|Country|State|City|PostalCode|Email|Phone|Fax|Families|
-    |9999999|SopNameCancer|CTRP|999999|Active|SopAlias|SopAddress1|SopAddress2|Morocco|Ifrane|SopCity|22306|SopPercukeTrial@pr.com|420-999-8906|420-999-8906|SopFamilies|
+    |9999999|SopNameCancer RegF03vw|CTRP|999999|Active|SopAlias |SopAddress1|SopAddress2|Morocco|Ifrane|SopCity|22306|SopPercukeTrial@pr.com|420-999-8906|420-999-8906|SopFamilies|
     
     And I have completed an organization search 
     When I click on the organization name
@@ -16,7 +16,7 @@ As a CTRP User, I am able to View Organizations
     
     
       |CTRPID  |999999  |
-      |Name  |SopNameCancer  |
+      |Name  |SopNameCancer  RegF03vw|
       |SourceContext  |CTRP  |
       |SourceID  |999999  |
       |SourceStatus  |Active  |
@@ -32,7 +32,7 @@ As a CTRP User, I am able to View Organizations
       |Fax  |420-999-8906  |
       |Families  |SopFamilies  |
       
-  And I should not be allowed to edit person parameters
+  And I should not be allowed to edit organization parameters
 And I should not view, edit or delete comments added by curators
 And the following button type should also be invisible to the user
 
