@@ -14,10 +14,10 @@
                                 <th>NCI Thesaurus Concept ID</th>
                                 <th>Menu Display Name</th>
                                 <th>Parent Preferred Name(s)</th>
+                                <th>Disease Code</th>
                                 <th class="text-center td-icon">
                                     <input type="checkbox" restriction-field ng-model="diseaseView.selectedAll" ng-change="diseaseView.toggleAll()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </th>
-                                <th>Disease Code</th>
                             </thead>
                             <tbody>
                             <tr ng-repeat="disease in diseaseView.existingDiseases track by $index">
@@ -25,9 +25,6 @@
                                 <td>{{disease.thesaurus_id}}</td>
                                 <td>{{disease.display_name}}</td>
                                 <td>{{disease.parent_preferred}}</td>
-                                <td class="text-center td-icon">
-                                    <input type="checkbox" restriction-field ng-model="disease._destroy" ng-change="diseaseView.toggleOne()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
-                                </td>
                                 <td>
                                     <div>
                                         <label class="radio-inline">
@@ -40,6 +37,9 @@
                                             <input type="radio" restriction-field ng-model="disease.rank" ng-change="diseaseView.updateValidationVar()" value=""> N/A
                                         </label>
                                     </div>
+                                </td>
+                                <td class="text-center td-icon">
+                                    <input type="checkbox" restriction-field ng-model="disease._destroy" ng-change="diseaseView.toggleOne()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
                             </tr>
                             </tbody>
