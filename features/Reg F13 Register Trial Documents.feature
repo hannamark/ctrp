@@ -6,8 +6,12 @@ As a CTRP User, I can attach various documents to a trial registration
 Scenario Outline: #1 I can attach Trial Related Documents to a trial registration
 Given I have selected the option to register a trial <TrialType>
 And I am on the Register Trial Related Documents screen
-And I have noted the message "To ensure successful registration, upload a Protocol document and an IRB Approval document. If the Protocol document does not include the Informed Consent and/or participating sites, upload the Informed Consent document and a list of participating sites separately. You can use the Participating Sites template to submit your list of participating sites."
-    "CTRP accepts most standard document types. For additional information about what document types are accepted, please refer to the Help section."
+And I have noted the message 
+     """
+     To ensure successful registration, upload a Protocol document and an IRB Approval document. If the Protocol document does not include the Informed Consent and/or participating sites, upload the Informed Consent document and a list of participating sites separately. You can use the Participating Sites template to submit your list of participating sites.
+     CTRP accepts most standard document types. For additional information about what document types are accepted, please refer to the Help section.
+     """
+     
 When I have selected a file to attach as the Protocol Document
 And I have selected a file to attach as the IRB Approval
 And I have selected a file to attach as the list of Participating Sites 
@@ -30,8 +34,8 @@ Examples:
     And I click on the Review Trial button
     Then Trial Related Documents section will indicate an error 
     
-      |Protocol Document is required  |
-      |IRB Approval is required       |
+      |Protocol Document is Required  |
+      |IRB Approval is Required       |
 
     
   Examples: 
@@ -40,24 +44,7 @@ Examples:
       |Externally Peer-Reviewed |
       |Institutional            |
  
- Scenario Outline:#3 Informed consent rules
-    Given I have selected the option to register a trial <TrialType>
-    And I am on the Register Trial Related Documents screen
-    And I have noted the message "To ensure successful registration, upload a Protocol document and an IRB Approval document. If the Protocol document does not include the Informed Consent and/or participating sites, upload the Informed Consent document and a list of participating sites separately. You can use the Participating Sites template to submit your list of participating sites."
-    "CTRP accepts most standard document types. For additional information about what document types are accepted, please refer to the Help section."
-    When the Protocol document does not include the Informed Consent  
-    And the trial is Interventional 
-    Then the informed consent document must be uploaded
-   	And the Trial Related Documents section will not indicate any errors during Trial Review
-    When reviewing an Interventional trial without attaching an Informed Consent document
-    Then the error "Informed Consent Document is Required for Interventional Trial" will be displayed
-    
-
-  Examples: 
-      |TrialType                |
-      |National                 |
-      |Externally Peer-Reviewed |
-      |Institutional            |
+ 
       
      
 Scenario Outline: #4 I can only attach documents with permitted document types

@@ -15,6 +15,7 @@ Then I will see a list of all CTRP Users with the same Site Affiliation as I hav
 | Organizational Affiliation |
 | Organization Family|
 And the list will display an indicator if the CTRP Users have Site Administrator privileges 
+And the list will display an indicator if the CTRP Users will receive e-mails
 And Status
 
 Scenario: #2 I can search for CTRP Users with the same site affilition and their Site Administration privileges
@@ -39,6 +40,8 @@ Then I will see a list of all CTRP Users with the same Site Affiliation as I hav
 |Organization|
 |Family|
 And the list will display an indicator if the CTRP Users have Site Administrator privileges
+And the list will display an indicator if the CTRP Users will receive e-mails
+|Status|
 And the list will be ordered by Last Name and then First name
 And the list can be sorted by
 |Username|
@@ -62,6 +65,7 @@ And I will see a list of all CTRP Users with the same Site Affiliation as I have
 |Organization|
 |Family|
 And the list will display an indicator if the CTRP Users have Site Administrator privileges
+And the list will display an indicator if the CTRP Users will receive e-mails
 And Status
 When I select a site user
 Then the CTRP system will display the user profile for the CTRP User

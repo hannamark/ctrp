@@ -18,33 +18,50 @@
                                 <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.intervention_form.needsAttention(intervention_form.identifier_type)}">
                                     <label for="intervention_name" class="control-label col-xs-12 col-sm-3">Intervention Name:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <input type="text" id="intervention_name" class="form-control input-sm" readonly>
+                                        <input type="text" id="intervention_name" class="form-control input-sm" ng-model="interventionView.curInterventionObj.name" ng-click="interventionView.openLookupModal('lg')" readonly>
                                     </div>
                                     <div class="col-xs-12 col-sm-2">
-                                        <button type="button" class="btn btn-primary">
+                                        <button type="button" class="btn btn-primary" ng-click="interventionView.openLookupModal('lg')">
                                             <i class="glyphicon glyphicon-search"></i> Look Up Interventions
                                         </button>
                                     </div>
                                 </div>
+                                <!-- intervention type for cancer.gov -->
                                 <div class="form-group">
-                                    <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Intervention Type:</label>
+                                    <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Intervention Type (Cancer.gov):</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <input type="text" name="trial_identifier" id="trial_identifier"
-                                               class="form-control input-sm"
-                                               ng-model="interventionView.trialQueryObj.trialIdentifier"
-                                               required
-                                               placeholder="Trial Identifier"
+                                        <select name="intervention_type_cancer" id="intervention_type_cancer"
+                                                class="form-control input-sm"
+                                                ng-model="interventionView.curInterventionObj.intervention_type_id"
+                                                ng-options="type.id as type.name for type in interventionView.interventionTypesByCategory.cancerGov"
+                                                ng-required="true"
                                         >
-                                        <span ng-messages="ctrpbtn.intervention_form.needsAttention(intervention_form.trial_identifier) &&
-                                                            intervention_form.trial_identifier.$error">
-                                            <span class="help-block" ng-message="required"><br />Trial Identifier is Required</span>
-                                       </span>
-                                    </div>
-
-                                    <div class="col-xs-12 col-sm-2 form-text alert alert-warning" ng-show="interventionView.foundTrialObj.errorMsg.length > 0">
-                                        {{interventionView.foundTrialObj.errorMsg}}
+                                            <option value="">
+                                                -- Please select an intervention type (cancer.gov)...
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
+                                <!-- end of intervention type for cancer.gov -->
+
+                                <!-- intervention type for clinicaltrials.gov -->
+                                <div class="form-group">
+                                    <label for="trial_identifier" class="control-label col-xs-12 col-sm-3">Intervention Type (ClinicalTrials.gov):</label>
+                                    <div class="col-xs-12 col-sm-5">
+                                        <select name="intervention_type_ct" id="intervention_type_ct"
+                                                class="form-control input-sm"
+                                                ng-model="interventionView.curInterventionObj.intervention_type_ct_id"
+                                                ng-options="type.id as type.name for type in interventionView.interventionTypesByCategory.ctGov"
+                                                ng-required="true"
+                                        >
+                                            <option value="">
+                                                -- Please select an intervention type (CT.gov)...
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- end of intervention type for clinicaltrials.gov -->
+
                                 <div class="form-group">
                                     <label for="intervention_desc" class="control-label col-xs-12 col-sm-3">Intervention Description:</label>
                                     <div class="col-xs-12 col-sm-5">

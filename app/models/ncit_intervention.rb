@@ -50,7 +50,8 @@ class NcitIntervention < ActiveRecord::Base
                 end
                 synonyms = synonyms.sub(';', '') # remove the first semi-colon
                 # intervention_type_code = intervention_types.sample # generate a random intervention type code
-                p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}, type_code: #{intervention_type_code}"
+                p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}" # , type_code: #{intervention_type_code}
+               # p "NcitIntervention.create(preferred_name: #{name}, synonyms: #{synonyms}, description: #{nil}, type_code: #{nil}, ct_gov_type_code: #{nil}, ncit_status: #{act})"
                 NcitIntervention.create(preferred_name: name, synonyms: synonyms, description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
               end
 
@@ -63,5 +64,39 @@ class NcitIntervention < ActiveRecord::Base
 
     end
   end
+
+  private
+
+  # scope :match_exact_preferred_name, -> (value) { where(preferred_name: value.strip) }
+  scope :matches_exact, -> (column, value) { where("ncit_interventions.#{column} = ?", "#{value}") }
+
+  scope :matches_like, -> (column, value) { where("ncit_interventions.#{column} ilike ?", "%#{value}%")} # like?
+
+  # support like and wildcard queries
+  scope :match_loosely_preferred_name, -> (value) {
+    where_clause = 'ncit_interventions.preferred_name ilike ?'
+    value = value.strip
+    str_len = value.length
+
+    if value[0] == '*' && value[str_len - 1] != '*'
+      value_exp = "%#{value[1..str_len - 1]}"
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      value_exp = "#{value[0..str_len - 2]}%"
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      value_exp = "%#{value[1..str_len - 2]}%"
+    else
+      value_exp = "%#{value}%"
+    end
+
+    where(where_clause, value_exp)
+  }
+
+  scope :sort_by_col, -> (params) {
+    column = params[:sort]
+    order = params[:order]
+    order("#{column} #{order}")
+  }
+
+
 
 end

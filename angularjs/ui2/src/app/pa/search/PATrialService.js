@@ -156,7 +156,9 @@
             searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists,
             searchNCITrial: searchNCITrial,
             lookupTrial: lookupTrial,
-            associateTrial: associateTrial
+            associateTrial: associateTrial,
+            lookupNcitInterventions: lookupNcitInterventions,
+            getInterventionTypes: getInterventionTypes
         };
 
         return services;
@@ -481,6 +483,14 @@
         }
 
         /**
+         * Get a list of intervention types from CTRP/local database
+         * @return {[Promise resolved to array]} [possible values include 'Device', 'Drug', etc]
+         */
+        function getInterventionTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_TYPES);
+        }
+
+        /**
          * Look up a trial with the given identifier from either NCT or NCI (local database)
          * @param  {[type]} trialIdentifier [description]
          * @return {[type]}                 [description]
@@ -503,6 +513,10 @@
         function associateTrial(associatedTrialObj) {
             console.info('associating trial: ', associatedTrialObj);
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.ASSOCIATE_TRIAL, associatedTrialObj);
+        }
+
+        function lookupNcitInterventions(searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.NCIT_INTERVENTIONS_LOOKUP, searchParams);
         }
 
         /**
