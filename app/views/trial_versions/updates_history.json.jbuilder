@@ -13,14 +13,92 @@ json.trial_versions do
       json.official_title trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][1] : nil
 
 
+
+
+
+=begin
+protocol
+      |Other Protocol Identifiers|
+      |Grant Information|
+      |trial status|
+      |trial status date|
+      |start date
+      |Start date type|
+      |Primary Completion Date
+      |Prmary Completion Date Type|
+      |completion date
+      |completion date type|
+      |Trial Related Documents|
+=end
+
+     Array updated_fields_array = Array.new
+
+      grants = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "Grant",trial_version.transaction_id)
+
+      puts grants
+
+
+      if grants
+        Hash h = Hash.new
+        h[:updated_filed]="Grant Information(Inst Code, Funding , SNo)";
+
+        grants_string_N = ""
+        grants_string_O =""
+        delimiter = " |"
+        grants.each do |o|
+          case o.event
+            when "destroy"
+              p o.event
+              institute_code_N = o.object["institute_code"]
+              funding_mechanism_N = o.object["funding_mechanism"]
+              serial_number_N = o.object["serial_number"]
+
+              destroy_sign = " (D) "
+              grants_string_N = grants_string_N + delimiter + institute_code_N.to_s + "   " + funding_mechanism_N.to_s + "  " + serial_number_N.to_s + destroy_sign + delimiter
+
+              grants_string_O=""
+
+            when "create" || "update"
+              institute_code_N = o.object_changes["institute_code"][1]
+              funding_mechanism_N = o.object_changes["funding_mechanism"][1]
+              serial_number_N = o.object_changes["serial_number"][1]
+
+              destroy_sign = " "
+              grants_string_N = grants_string_N + delimiter + institute_code_N.to_s + "   " + funding_mechanism_N.to_s + "  " + serial_number_N.to_s + destroy_sign + delimiter
+
+              institute_code_O = o.object_changes["institute_code"][0]
+              funding_mechanism_O = o.object_changes["funding_mechanism"][0]
+              serial_number_O = o.object_changes["serial_number"][0]
+
+              grants_string_O = grants_string_O + delimiter + institute_code_O.to_s + "   " + funding_mechanism_O.to_s + "  " + serial_number_O.to_s + destroy_sign + delimiter
+
+
+            else
+              grants_string_O =   " "
+              grants_string_N =   " "
+
+          end
+
+        end
+        #end
+        h[:new_value] = grants_string_N
+        h[:old_value] = grants_string_O
+        updated_fields_array.push(h)
+      end
+
+
+
+
+
       json.friends do
-        subs=Submission.all
-        json.array!(subs) do |sub|
-          json.field "offcial title"
-          json.old_value trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][0] : nil
-          json.new_value trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][1] : nil
+        json.array!(updated_fields_array) do |h|
+          json.field_name h[:updated_filed]
+          json.old_value  h[:old_value]
+          json.new_value  h[:new_value]
         end
       end
+
+
 
 
 

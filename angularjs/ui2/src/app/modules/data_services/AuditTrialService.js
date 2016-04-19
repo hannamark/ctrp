@@ -67,15 +67,15 @@
 
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'submission_date',displayName:'Update At', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
                 {
                     name: 'Acknowledge ',
                     cellTemplate: '<div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row)">Acknowledge</button></div>'
                 },
-                {name: 'acknowledge_date', displayName:'Acknowledge Date',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'acknowledged_by', displayName:'Acknowledge User ID',enableSorting: true, minWidth: '100', width: '*'}
+                {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
 
             ]
         };
