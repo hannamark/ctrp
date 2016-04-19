@@ -2,7 +2,7 @@
 Feature: PAA F08 Add and Edit Trial Participating Sites
 
 As any CTRP PA User, I can add and edit Trial Participating Sites
-
+  @runthis
 Scenario Outline: #1 I can add one or more a participating sites for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
@@ -26,17 +26,17 @@ And I have added or edited the contact phone number for the contact <Phone>
 And I have added or edited the contact phone number extension <Ext> for the contact
 And I have added or edited the contact e-mail for the contact <e-mail address>
 Then the participating site information will be associated with the trial
-And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial
+And the organization address information <Org City> <Org State> <Org Country> <Org zip code> will be associated with the trial
 And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
 And the system will display a message that the Participating Site Has been Updated <Message>
 And the Participating Site table can be sorted by
 |Organiztion ID|
 |Organization Name|
 Examples:
-|Organization name |Org City|Org State|Org Country|Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext |e-mail address|Warning/Error|Message|
-|Mayo              |New York|NY       |USA        |10101       |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Jane Doe             |212-123-4567  |1234|jane@mayo.com |             |Participating Site Has been Updated|
-|MD Anderson       |New York|NY       |USA        |10101       |123a                  |approved               |30-sep-2015                 |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com   |             |Participating Site Has been Updated|
-|Wake Forest       |Trenton |NJ       |USA        |10101       |123b                  |approved               |30-Sep-2015                 |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |1111|<null>        |             |Participating Site Has been Updated|
+|Organization name    |Org City|Org State    |Org Country  |Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext |e-mail address|Warning/Error|Message|
+|Boston Medical Center|Boston  |Massachussets|United States|3849504     |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Jane Doe             |212-123-4567  |1234|jane@mayo.com |             |Participating Site Has been Updated|
+#|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-sep-2015                 |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com   |             |Participating Site Has been Updated|
+#|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-Sep-2015                 |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |1111|<null>        |             |Participating Site Has been Updated|
 
 Scenario Outline: #2 I can edit a participating site for a trial
 Given I am logged into the CTRP Protocol Abstraction application
