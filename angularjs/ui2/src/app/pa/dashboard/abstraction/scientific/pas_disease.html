@@ -6,7 +6,7 @@
             </uib-accordion-heading>
 
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <form class="form form-horizontal" role="form">
+                <form class="form form-horizontal" role="form" name="disease_form" novalidate ctrp-submit="diseaseView.updateRank()">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.existingDiseases.length">
                             <thead>
@@ -17,6 +17,7 @@
                                 <th class="text-center td-icon">
                                     <input type="checkbox" restriction-field ng-model="diseaseView.selectedAll" ng-change="diseaseView.toggleAll()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </th>
+                                <th>Disease Code</th>
                             </thead>
                             <tbody>
                             <tr ng-repeat="disease in diseaseView.existingDiseases track by $index">
@@ -27,23 +28,53 @@
                                 <td class="text-center td-icon">
                                     <input type="checkbox" restriction-field ng-model="disease._destroy" ng-change="diseaseView.toggleOne()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
+                                <td>
+                                    <div>
+                                        <label class="radio-inline">
+                                            <input type="radio" restriction-field ng-model="disease.rank" ng-change="diseaseView.updateValidationVar()" value="Primary"> Primary
+                                        </label><br>
+                                        <label class="radio-inline">
+                                            <input type="radio" restriction-field ng-model="disease.rank" ng-change="diseaseView.updateValidationVar()" value="Secondary"> Secondary
+                                        </label><br>
+                                        <label class="radio-inline">
+                                            <input type="radio" restriction-field ng-model="disease.rank" ng-change="diseaseView.updateValidationVar()" value=""> N/A
+                                        </label>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                </form>
 
-                <div class="form-group no-bottom-margin">
-                    <div class="btn-toolbar">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="diseaseView.setAddMode()">
-                            <i class="glyphicon glyphicon-plus"></i> Add Disease/Condition
-                        </button>
-                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="diseaseView.deleteSelected()" confirm-msg="Click OK to remove selected Disease/Condition from the study. Click Cancel to abort."
-                                ng-disabled="diseaseView.selectedNum === 0 || diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="diseaseView.existingDiseases.length">
-                            <i class="glyphicon glyphicon-trash"></i> Delete Selected
-                        </button>
+                    <input type="hidden" name="disease_dummy" ng-model="diseaseView.dummyField" ng-required="diseaseView.showPrimaryRequired || diseaseView.showPrimaryOnlyOne || diseaseView.showSecondaryOnlyOne">
+                    <div ng-class="{'has-error': ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)}">
+                        <span class="help-block" ng-show="diseaseView.showPrimaryRequired && ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)">
+                            One disease must be selected as primary<br>
+                        </span>
+                        <span class="help-block" ng-show="diseaseView.showPrimaryOnlyOne && ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)">
+                            Only one disease can be selected as primary<br>
+                        </span>
+                        <span class="help-block" ng-show="diseaseView.showSecondaryOnlyOne && ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)">
+                            Only one disease can be selected as secondary
+                        </span>
                     </div>
-                </div>
+
+                    <div class="form-group no-bottom-margin">
+                        <div class="btn-toolbar">
+                            <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field  ng-disabled="diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="diseaseView.setAddMode()">
+                                <i class="glyphicon glyphicon-plus"></i> Add Disease/Condition
+                            </button>
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable"
+                                    ng-show="diseaseView.existingDiseases.length">
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-danger pull-right" id="delete_btn" restriction-field ctrp-confirm ctrp-click="diseaseView.deleteSelected()" confirm-msg="Click OK to remove selected Disease/Condition from the study. Click Cancel to abort."
+                                    ng-disabled="diseaseView.selectedNum === 0 || diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="diseaseView.existingDiseases.length">
+                                <i class="glyphicon glyphicon-trash"></i> Delete Selected
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </uib-accordion-group>
     </uib-accordion>
@@ -62,7 +93,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-4">
                             <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="diseaseView.searchDiseases()">
+                                <button type="submit" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn" ng-click="diseaseView.searchDiseases()">
                                     <i class="glyphicon glyphicon-search"></i> Search
                                 </button>
                             </div>
@@ -118,10 +149,10 @@
 
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_btn" restriction-field ng-disabled="diseaseView.disableBtn">
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn2" restriction-field ng-disabled="diseaseView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="diseaseView.resetDisease()">
+                            <button type="button" class="btn btn-warning pull-right" id="reset_btn" restriction-field ng-disabled="diseaseView.disableBtn" ng-click="diseaseView.resetDisease()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                         </div>
