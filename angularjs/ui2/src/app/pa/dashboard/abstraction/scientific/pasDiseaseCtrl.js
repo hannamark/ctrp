@@ -22,8 +22,8 @@
         vm.showSecondaryOnlyOne = false;
         vm.disableBtn = false;
 
-        vm.setAddMode = function() {
-            vm.addMode = true;
+        vm.setAddMode = function(mode) {
+            vm.addMode = mode;
         };
 
         vm.toggleAll = function() {
