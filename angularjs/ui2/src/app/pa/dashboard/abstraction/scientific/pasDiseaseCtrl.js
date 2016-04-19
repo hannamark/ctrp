@@ -13,6 +13,7 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
+        vm.searchResult = [];
         vm.addedDiseases = [];
         vm.existingDiseases = [];
         vm.selectedAll = false;
@@ -205,6 +206,12 @@
             }).catch(function(err) {
                 console.log("Error in saving diseases " + JSON.stringify(outerTrial));
             });
+        };
+
+        vm.resetDiseases = function() {
+            vm.disease_name = '';
+            vm.searchResult = [];
+            vm.addedDiseases = [];
         };
 
         activate();
