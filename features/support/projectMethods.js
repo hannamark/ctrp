@@ -549,7 +549,47 @@ var projectMethods = function() {
         });
     };
 
+    /*****************************************************************
+     * Method: Verify the affiliated Organization Effective Date Family
+     * @param affiliatedOrg
+     * @param effectiveDate
+     *****************************************************************/
+    this.verifyOrgAffiliatedEffectiveDateFamily = function(affiliatedOrg, effectiveDate) {
+        return searchOrg.orgFamilyAffiliatedTable.getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(2).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === affiliatedOrg;
+            });
+        }).then(function(rows) {
+            // This is an array. Find the button in the row and click on it.
+            console.log('value of row' + rows);
+            // rows[0].element(by.model('org.effective_date')).getAttribute('value');
+            expect(rows[0].element(by.model('org.effective_date')).getAttribute('value')).to.eventually.equal(effectiveDate);
+        });
+    };
 
+
+    /*****************************************************************
+     * Method: Verify the affiliated Organization Expiration Date Family
+     * @param affiliatedOrg
+     * @param expirationDate
+     *****************************************************************/
+    this.verifyOrgAffiliatedExpirationDateFamily = function(affiliatedOrg, expirationDate) {
+        return searchOrg.orgFamilyAffiliatedTable.getText().filter(function(row) {
+            // Get the second column's text.
+            return row.$$('td').get(2).getText().then(function(rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === affiliatedOrg;
+            });
+        }).then(function(rows) {
+            // This is an array. Find the button in the row and click on it.
+            console.log('value of row' + rows);
+            expect(rows[0].element(by.model('org.expiration_date')).getAttribute('value')).to.eventually.equal(expirationDate);
+        });
+    };
 
     /********************************
      * Method: Convert Object value to a String
@@ -953,7 +993,7 @@ var projectMethods = function() {
                         }, 40).then(function () {
                             menuItem.clickPeople();
                             menuItem.clickAddPerson();
-                            addPeople.setAddPersonPrefix('prefix');
+                            addPeople.setAddPersonPrefix(prefix);
                             per4.then(function (value1) {
                                 console.log('Add first Name' + value1);
                                 addPeople.setAddPersonFirstName(value1);

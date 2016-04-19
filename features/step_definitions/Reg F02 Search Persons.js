@@ -13,6 +13,7 @@ var moment = require('moment');
 var listOfPeoplePage = require('../support/ListOfPeoplePage');
 var orgPage = require('../support/ListOfOrganizationsPage');
 var underscore = require('underscore');
+var assert = require('assert');
 
 module.exports = function() {
     var addTrial = new addTrialPage();
@@ -25,10 +26,19 @@ module.exports = function() {
     this.Given(/^the following parameters of a Person exist:$/, function (table, callback) {
         personTable = table.hashes();
         for (var i = 0; i < personTable.length; i++) {
-            personLastNameValue = personTable[i].PersonLastName;
-            personEmailValue = personTable[i].email;
-            personPhoneValue = personTable[i].phone;
-           projectFunctions.createPersonForSearchWithParameters('ctrptrialsubmitter', 'trPfx', personTable[i].PersonFirstName, 'trMdl', personTable[i].PersonLastName, 'trSfx', personTable[i].email, personTable[i].phone, personTable[i].Affiliation, 'trAlias', 'trAdd1', 'trAdd2', 'Latvia', 'Jelgava', 'trCity', '20089', 'trOrg@email.com', '434-345-4543', '556-679-9230');
+            if (personTable[i].PersonFirstName === 'shiFNameTrial') {
+                personLastNameValue = personTable[i].PersonLastName;
+                personEmailValue = personTable[i].email;
+                personPhoneValue = personTable[i].phone;
+                projectFunctions.createPersonForSearchWithParameters('ctrptrialsubmitter', 'trPfx', personTable[i].PersonFirstName, 'trMdl', personTable[i].PersonLastName, 'trSfx', personTable[i].email, personTable[i].phone, personTable[i].Affiliation, 'trAlias', 'trAdd1', 'trAdd2', 'Latvia', 'Jelgava', 'trCity', '20089', 'trOrg@email.com', '434-345-4543', '556-679-9230');
+            } else if (personTable[i].PersonFirstName === 'shiFNameTrRegF02 vw') {
+                personLastNameValue = personTable[i].PersonLastName;
+                personEmailValue = personTable[i].email;
+                personPhoneValue = personTable[i].phone;
+                projectFunctions.createPersonForSearchWithParameters('ctrptrialsubmitter', personTable[i].Prefix, personTable[i].PersonFirstName, personTable[i].PersonMiddleName, personTable[i].PersonLastName, personTable[i].Suffix, personTable[i].email, personTable[i].phone, personTable[i].OrgAffiliation, 'trAlias', 'trAdd1', 'trAdd2', 'Latvia', 'Jelgava', 'trCity', '20089', 'trOrg@email.com', '434-345-4543', '556-679-9230');
+            } else {
+                assert.fail(0,1,'No Match found to create a Person');
+            }
         }
         browser.sleep(25).then(callback);
     });
