@@ -63,6 +63,7 @@ end
   def updates_history
   p params[:trial_id]
   ##find all versions with given trial ; extract trial id and transaction id
+
   @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? AND event=? ", "Trial",params[:trial_id], "update").order('created_at desc')
 
     ## find submission

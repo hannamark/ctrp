@@ -33,14 +33,55 @@ protocol
 
      Array updated_fields_array = Array.new
 
+      other_ids = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "OtherId",trial_version.transaction_id)
+      if other_ids
+        Hash h = Hash.new
+        h[:updated_filed]="Other Protocol Identifiers";
+
+        other_ids_string_N = ""
+        other_ids_string_O = ""
+
+        delimiter = " | "
+        other_ids.each do |o|
+          case o.event
+            when "destroy"
+              protocol_id_N = o.object["protocol_id"]
+              protocol_id_origin_id_N = o.object["protocol_id_origin_id"]
+              destroy_sign = " (D) "
+
+              other_ids_string_N = other_ids_string_N + delimiter + protocol_id_N.to_s + "   " + protocol_id_origin_id_N.to_s + destroy_sign + delimiter
+              other_ids_string_O = ""
+
+            when "create" || "update"
+              destroy_sign=""
+
+              protocol_id_N = o.object_changes["protocol_id"][1]
+              protocol_id_origin_id_N = o.object_changes["protocol_id_origin_id"][1]
+
+              other_ids_string_N = other_ids_string_N + delimiter + protocol_id_N.to_s + "   " + protocol_id_origin_id_N.to_s + destroy_sign + delimiter
+
+              protocol_id_O = o.object_changes["protocol_id"][0]
+              protocol_id_origin_id_O = o.object_changes["protocol_id_origin_id"][0]
+              other_ids_string_O = other_ids_string_O + delimiter + protocol_id_O.to_s + "   " + protocol_id_origin_id_O.to_s + destroy_sign + delimiter
+
+            else
+              other_ids_string_N =""
+              other_ids_string_O =""
+          end
+
+        end
+
+        h[:new_value] = other_ids_string_N
+        h[:old_value] = other_ids_string_O
+        updated_fields_array.push(h)
+
+      end
+
       grants = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "Grant",trial_version.transaction_id)
-
-      puts grants
-
-
       if grants
         Hash h = Hash.new
         h[:updated_filed]="Grant Information(Inst Code, Funding , SNo)";
+
 
         grants_string_N = ""
         grants_string_O =""
