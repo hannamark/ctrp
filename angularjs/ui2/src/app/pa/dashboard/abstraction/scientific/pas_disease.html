@@ -47,7 +47,7 @@
                     </div>
 
                     <input type="hidden" name="disease_dummy" ng-model="diseaseView.dummyField" ng-required="diseaseView.showPrimaryRequired || diseaseView.showPrimaryOnlyOne || diseaseView.showSecondaryOnlyOne">
-                    <div ng-class="{'has-error': ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)}">
+                    <div class="has-error">
                         <span class="help-block" ng-show="diseaseView.showPrimaryRequired && ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)">
                             One disease must be selected as primary<br>
                         </span>
@@ -121,6 +121,11 @@
                                             ng-disabled="result.added">
                                         <i class="glyphicon glyphicon-plus"></i>
                                     </button>
+                                    <div class="has-error">
+                                        <span class="help-block" ng-show="result.exists">
+                                            This disease has been added to this trial already
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>
                                     <p ng-repeat="synonym in result.ncit_disease_synonyms track by $index">

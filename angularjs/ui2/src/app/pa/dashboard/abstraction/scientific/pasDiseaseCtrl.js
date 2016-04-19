@@ -153,8 +153,17 @@
         };
 
         vm.addDisease = function(index) {
-            vm.addedDiseases.push(vm.searchResult[index]);
-            vm.searchResult[index].added = true;
+            angular.forEach(vm.existingDiseases, function (disease) {
+                if (disease.thesaurus_id === vm.searchResult[index].nt_term_id) {
+                    vm.searchResult[index].exists = true;
+                }
+            });
+
+            // Add it only when it's not added before
+            if (!vm.searchResult[index].exists) {
+                vm.addedDiseases.push(vm.searchResult[index]);
+                vm.searchResult[index].added = true;
+            }
         };
 
         vm.removeDisease = function(index) {
