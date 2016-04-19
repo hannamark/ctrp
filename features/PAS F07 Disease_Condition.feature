@@ -34,7 +34,6 @@ And a message displays with the number of results for the terms entered
       |Menu Display Name  |
       |Parent Preferred Name(s)  |
       |Disease Code  |
-      |Edit Link  |
       |Delete Box  |
 
 

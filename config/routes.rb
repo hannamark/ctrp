@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       collection do
         get 'index'
         post 'history'
+        post 'updates_history'
       end
     end
 
@@ -184,6 +185,7 @@ Rails.application.routes.draw do
     end
 
     scope '/registry' do
+      resources :submissions
       resources :study_sources
       resources :phases
       resources :primary_purposes
@@ -215,6 +217,9 @@ Rails.application.routes.draw do
           get  'genders'
           get  'age_units'
           get  'trial_identifier_types'
+          post 'lookup_imported_ncit_interventions'
+          get  'get_intervention_types'
+          get  'search_ctrp_interventions'
         end
       end
 
@@ -250,10 +255,15 @@ Rails.application.routes.draw do
       get 'sampling_methods' => 'util#get_sampling_methods'
     end
 
+
+
+
     resources :ncit_disease_codes do
       collection do
         get 'get_tree'
         post 'get_tree'
+        get 'search'
+        post 'search'
       end
     end
   end

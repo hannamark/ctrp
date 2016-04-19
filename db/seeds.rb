@@ -197,6 +197,68 @@ Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
+InterventionType.find_or_create_by(code: 'DRUG', name: 'Drug', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DEVI', name: 'Device', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BIOL', name: 'Biological/Vaccine', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'PROC', name: 'Procedure/Surgery', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'RAD', name: 'Radiation', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BEHA', name: 'Behavioral', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'GENE', name: 'Genetic', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DSUP', name: 'Dietary Supplement', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'OTH', name: 'Other', category: 'clinicaltrials.gov')
+
+InterventionType.find_or_create_by(code: 'DRUGC', name: 'Drug', category: 'cancer.gov')
+InterventionType.find_or_create_by(code: 'PROCC', name: 'Procedure/Surgery', category: 'cancer.gov')
+InterventionType.find_or_create_by(code: 'GENEC', name: 'Genetic', category: 'cancer.gov')
+InterventionType.find_or_create_by(code: 'OTHC', name: 'Other', category: 'cancer.gov')
+
+NcitStatus.find_or_create_by(code:'ACT',name:'Active')
+NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
+
+## seed 40 NcitIntervention records
+act = NcitStatus.find_by_code('ACT')
+NcitIntervention.create(preferred_name: 'Zafuleptine', synonyms:  'ZAFULEPTINE; Zafuleptine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: '18F-Fluoromisonidazole', synonyms:  '18F-Fluoromisonidazole; 18F-MISO; 18F-MISO; 18F-Misonidazole; 18F-fluoromisonidazole; FMISO; FMISO', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaldaride', synonyms:  'ZALDARIDE; Zaldaride', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaleplon', synonyms:  'Sonata; ZALEPLON; Zaleplon', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zalospirone Hydrochloride', synonyms:  'ZALOSPIRONE HYDROCHLORIDE; Zalospirone Hydrochloride', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaltoprofen', synonyms:  'ZALTOPROFEN; Zaltoprofen', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zalutumumab', synonyms:  'HuMax-EGFr, 2F8; Zalutumumab', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zamifenacin', synonyms:  '(R)-3-(Diphenylmethoxy)-1-(3,4-(methylenedioxy)phenethyl)piperidine; ZAMIFENACIN; Zamifenacin', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanamivir', synonyms:  '4-Guanidino-2,4-dideoxy-2,3-dehydro-N-acetylneuraminic Acid; 5-Acetamido-2,6-anhydro-3,4,5-trideoxy-4-guanidino-D-glycero-D-galacto-non-2-enonic Acid; GANA; GG 167; Relenza; Relenza; ZANAMIVIR; Zanamivir; zanamivir', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanapezil', synonyms:  'ZANAPEZIL; Zanapezil', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zankiren', synonyms:  '(S)-N-((1S,2R,3S)-1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha((Alpha-S)-Alpha(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)Hydrocinnamamido)-4-Thiazolepropionamide; 4-Thiazolepropanamide, N-(1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha-((2-(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)-1-Oxo-3-Phenylpropyl)Amino)-, (1S-(1R*,(R*(R*)),2S*,3R*))-; ZANKIREN; Zankiren', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zankiren Hydrochloride', synonyms:  '(S)-N-((1S,2R,3S)-1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha((Alpha-S)-Alpha-(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)Hydrocinnamamido)-4-Thiazolepropionamide Monohydrochloride; 4-Thiazolepropanamide, N-(1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha-((2-(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)-1-Oxo-3-Phenylpropyl)Amino)-, Monohydrochloride, (1S-(1R*,(R*(R*)),2S*,3R*))-; ABBOTT-72517; ZANKIREN HYDROCHLORIDE; Zankiren Hydrochloride', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanolimumab', synonyms:  'Anti-CD4 Monoclonal Antibody HuMax; HuMax-CD4; ZANOLIMUMAB; Zanolimumab', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanoterone', synonyms:  'ZANOTERONE; Zanoterone', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zapizolam', synonyms:  'ZAPIZOLAM; Zapizolam', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaprinast', synonyms:  'ZAPRINAST; Zaprinast', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zardaverine', synonyms:  'ZARDAVERINE; Zardaverine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zatebradine', synonyms:  'UL-FS49; ZATEBRADINE; Zatebradine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zatosetron', synonyms:  '5-Chloro-2,3-Dihydro-2,2-Dimethyl-N-1Alpha-H,5Alpha-H-Tropan-3Alpha-yl-7-Benzofurancarboxamide; 7-Benzofurancarboxamide, 5-Chloro-2,3-Dihydro-2,2-Dimethyl-N-(8-Methyl-8-Azabicyclo(3.2.1)Oct-3-yl)-, Endo-; LY-277359; LY277359; ZATOSETRON; Zatosetron', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zatosetron Maleate', synonyms:  '7-Benzofurancarboxamide, 5-Chloro-2,3-Dihydro-2,2-Dimethyl-N-(8-Methyl-8-Azabicyclo(3.2.1)Oct-3-yl)-, Endo-, (Z)-2-Butenedioate (1:1); LY-277359 Maleate; LY277359 Maleate; ZATOSETRON MALEATE; Zatosetron Maleate', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaurategrast', synonyms:  'ZAURATEGRAST; Zaurategrast', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zea mays Pollen', synonyms:  'ZEA MAYS POLLEN; Zea mays Pollen', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zeaxanthin', synonyms:  '4-[18-(4-hydroxy-2,6,6-trimethyl-1-cyclohexenyl)-3,7,12,16-tetramethyl-octadeca-1,3,5,7,9,11,13,15,17-nonaenyl]-3,5,5-trimethyl-cyclohex-3-en-1-ol; ZEAXANTHIN; Zeaxanthin; Zeaxanthin', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zebularine', synonyms:  '1-beta-D-Ribofuranosyl-2(1H)-pyrimidinone; 2-Pyrimidone-1-beta-D-riboside; Pyrimidin-2-one beta-Ribofuranoside; Zebularine; Zebularine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zedoary Oil', synonyms:  'ZEDOARY OIL; Zedoary Oil', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zein', synonyms:  'ZEIN; Zein', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zelandopam', synonyms:  'ZELANDOPAM; Zelandopam', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zenarestat', synonyms:  'ZENARESTAT; Zenarestat', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zenazocine Mesylate', synonyms:  '(+/-)-1-((2R*,6S*,11s*)-1,2,3,4,5,6-Hexahydro-8-Hydroxy-3,6,11-Trimethyl-2,6-Methano-3-Benzazocin-11-Yl)-6-Methyl-3-Heptanone Methanesulfonate (Salt); 3-Heptanone, 1-(1,2,3,4,5,6-Hexahydro-8-Hydroxy-3,6,11-Trimethyl-2,6-Methano-3-Benzazocin-11-Yl)-6-Methyl-, (2Alpha,6Alpha,11s*)-(+/-)-, Methanesulfonate (Salt); WIN 42964-4; ZENAZOCINE MESYLATE; Zenazocine Mesylate', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zeniplatin', synonyms:  'CL 286,558; ZENIPLATIN; Zeniplatin; cis-(2,2-Bis(aminomethyl)-1,3-propanediol)(1,1-cyclobutanedicarboxylato)platinum', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zepastine', synonyms:  'ZEPASTINE; Zepastine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zeranol', synonyms:  'ZERANOL; Zeranol', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zetidoline', synonyms:  'ZETIDOLINE; Zetidoline', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zhongyao Fufang', synonyms:  'Zhongyao Fufang; Zhongyaofufang', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Ziconotide', synonyms:  'Prialt; Prialt; SNX 111; SNX-111; ZICONOTIDE; Ziconotide; ziconotide', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Ziconotide Acetate', synonyms:  'Cys-Lys-Gly-Lys-Gly-Ala-Lys-Cys-Ser-Arg-Leu-Met-Tyr-Asp-Cys-Cys-Thr-Gly-Ser-Cys-Arg-Ser-Gly-Lys-Cys-Nh2 Acetate; Omega-Conotoxin M VIIa Acetate; SNX-111 Acetate; ZICONOTIDE ACETATE; Ziconotide Acetate', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zidapamide', synonyms:  'ZIDAPAMIDE; Zidapamide', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zidometacin', synonyms:  'ZIDOMETACIN; Zidometacin', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zifrosilone', synonyms:  'ZIFROSILONE; Zifrosilone', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zirconium Zr 89 Trastuzumab', synonyms:  '89Zr-Trastuzumab; Zirconium Zr 89 Trastuzumab', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+
+
 StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
 StudyClassification.find_or_create_by(code: 'SAEF', name: 'Safety/Efficacy')
@@ -511,8 +573,6 @@ CadsrMarkerSynonym.find_or_create_by(id: 7725,alternate_name:  'Spi-B Transcript
 CadsrMarkerSynonym.find_or_create_by(id: 7723,alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 CadsrMarkerSynonym.find_or_create_by(id: 7724,alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 
-NcitStatus.find_or_create_by(code:'ACT',name:'Active')
-NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -866,15 +926,11 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
-AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INFO_URL', name: 'NCI Thesaurus page for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=NCI_Thesaurus&code=')
 
-AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value', big_value: 'ROLE_RO||ROLE_SUPER||ROLE_ADMIN||ROLE_CURATOR||ROLE_ABSTRACTOR||ROLE_ABSTRACTOR-SU||ROLE_TRIAL-SUBMITTER||ROLE_ACCRUAL-SUBMITTER||ROLE_SITE-SU||ROLE_SERVICE-REST')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL', name: 'NCI Thesaurus tree for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ajax?action=search_hierarchy&ontology_node_ns=NCI_Thesaurus&ontology_display_name=NCI_Thesaurus&ontology_node_id=')
 
-AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons||Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
-
-AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
-
-AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'Federated User Functions', value: 'see big value', big_value: 'Submit Trials')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
 
 ########## SEEDING APP SETTINGS ENDS ##########
 
@@ -1058,9 +1114,9 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
                {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
-
-
+               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
+               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true},
+               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true}
 ]
 
 test_users.each do |u|

@@ -13,4 +13,6 @@
 
 class NcitStatus < ActiveRecord::Base
   include BasicConcerns
+
+  has_many  :ncit_interventions
 end

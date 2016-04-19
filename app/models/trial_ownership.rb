@@ -10,11 +10,6 @@
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
 #
-# Indexes
-#
-#  index_trial_ownerships_on_trial_id  (trial_id)
-#  index_trial_ownerships_on_user_id   (user_id)
-#
 
 class TrialOwnership < TrialBase
   belongs_to :trial

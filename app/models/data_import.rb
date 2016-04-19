@@ -123,13 +123,13 @@ class DataImport
         # Internal Source
         trial.internal_source = InternalSource.all[rand(0..(InternalSource.all.size-1))]
         #Responsible party
-        resp_party = trial_spreadsheet.cell(row,'CJ')
-        responsible_party = ResponsibleParty.find_by_code(resp_party)
-        if resp_party.present? && responsible_party.blank?
-          puts "missed resonsible party = #{resp_party} "
-        else
-          trial.responsible_party = responsible_party
-        end
+        #resp_party = trial_spreadsheet.cell(row,'CJ')
+        #responsible_party = ResponsibleParty.find_by_code(resp_party)
+        # if resp_party.present? && responsible_party.blank?
+        #  puts "missed resonsible party = #{resp_party} "
+        #else
+        #  trial.responsible_party = responsible_party
+        #end
 
         trial.ind_ide_question = "Yes"
         trial.pilot = "Yes"

@@ -15,12 +15,7 @@
 #  lock_version     :integer          default(0)
 #  submission_id    :integer
 #  status           :string           default("active")
-#
-# Indexes
-#
-#  index_trial_documents_on_added_by_id    (added_by_id)
-#  index_trial_documents_on_submission_id  (submission_id)
-#  index_trial_documents_on_trial_id       (trial_id)
+#  why_deleted      :string
 #
 
 require 'test_helper'

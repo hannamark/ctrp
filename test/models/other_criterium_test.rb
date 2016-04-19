@@ -10,10 +10,7 @@
 #  uuid          :string(255)
 #  lock_version  :integer          default(0)
 #  criteria_desc :text
-#
-# Indexes
-#
-#  index_other_criteria_on_trial_id  (trial_id)
+#  index         :integer
 #
 
 require 'test_helper'

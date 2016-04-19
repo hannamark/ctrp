@@ -52,7 +52,9 @@ exports.config = {
 
         /************* Registry Features ************/
         'features/Reg\ F02\ Search\ Persons.feature',
+        'features/Reg\ F02\ View\ Persons.feature',
         'features/Reg\ F03\ Search\ Organizations.feature',
+        'features/Reg\ F03\ View\ Organizations.feature',
         'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
         'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
         'features/Reg\ F06\ Register\ Trial\ Details.feature',
@@ -63,6 +65,9 @@ exports.config = {
         'features/Reg\ F11\ Register\ Trial\ Dates\ and\ Trial\ Status.feature',
         'features/Reg\ F12\ Register\ Trial\ IND\ IDE.feature',
         'features/Reg\ F13\ Register\ Trial\ Documents.feature',
+        'features/Reg\ F14\ Register\ Trial\ Review\ and\ Submit.feature',
+        'features/Reg\ F15\ Register\ Trial\ Save\ as\ Draft.feature',
+
 
         /************* PO F2-F15 ************/
         'features/PO\ F2\ Search\ for\ Organizations.feature',

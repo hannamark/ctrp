@@ -11,11 +11,6 @@
 #  uuid                  :string(255)
 #  lock_version          :integer          default(0)
 #
-# Indexes
-#
-#  index_other_ids_on_protocol_id_origin_id  (protocol_id_origin_id)
-#  index_other_ids_on_trial_id               (trial_id)
-#
 
 require 'test_helper'
 

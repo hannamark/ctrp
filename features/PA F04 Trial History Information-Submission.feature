@@ -116,3 +116,10 @@ And the indicator displays that there are deleated and revised documents associa
 And I Select Show Deleted and Revisied Documents
 Then the files that were revised will have the "Deleted or Revised Attribute" set to R
 And the Comment will be "Revised" 
+
+ Scenario: #11 Paging
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I have selected a Trial
+      And I am on the Trial History Information Submission Screen
+      Then the submission history will be displayed for the trial 
+      And the list will be paganiated 

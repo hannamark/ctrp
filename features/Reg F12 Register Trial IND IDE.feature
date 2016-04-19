@@ -60,7 +60,7 @@ Scenario Outline:#3 FDA IND/IDE Information Validation check rule
       |IND/IDE Grantor  |
       |IND/IDE Holder Type  |
     And I have clicked on the Add IND/IDE Button
-     Then A message will be displayed "IND/IDE Type,IND/IDE Number,IND/IDE Grantor and IND/IDE Holder Type are required"
+     Then A message will be displayed "IND/IDE Type,IND/IDE Number,IND/IDE Grantor and IND/IDE Holder Type are Required"
 
   Examples:
     |trialType                 |
@@ -76,7 +76,7 @@ Scenario Outline: #4 I must enter FDA IND/IDE Information for applicable trials
     And I have not entered IND/IDE Number
     And I have not selected an IND/IDE Grantor
     And I have not selected an IND/IDE Holder Type
-    Then the Register Trial FDA IND/IDE Information for applicable trials section will indicate an error type"IND/IDE is required"
+    Then the Register Trial FDA IND/IDE Information for applicable trials section will indicate an error type"IND/IDE is Required"
 
 
 Examples:

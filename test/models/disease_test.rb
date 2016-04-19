@@ -15,10 +15,6 @@
 #  lock_version     :integer          default(0)
 #  rank             :string(255)
 #
-# Indexes
-#
-#  index_diseases_on_trial_id  (trial_id)
-#
 
 require 'test_helper'
 

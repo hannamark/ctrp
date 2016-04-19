@@ -8,7 +8,7 @@
     <section>
         <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
             <md-tab>
-                <md-tab-label>Participating Site</md-tab-label>
+                <md-tab-label id="participatingSites">Participating Site</md-tab-label>
                 <md-tab-body>
                     <form class="form form-horizontal" role="form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                         <!-- first row in the accordion body -->
@@ -241,7 +241,7 @@
             </md-tab-body>
         </md-tab>
         <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-            <md-tab-label>Investigators</md-tab-label>
+            <md-tab-label id="investigators">Investigators</md-tab-label>
             <md-tab-body>
                 <form class="form form-horizontal" role="form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                     <!-- first row in the accordion body -->
@@ -388,7 +388,7 @@
             </md-tab-body>
         </md-tab>
         <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-            <md-tab-label>Contact</md-tab-label>
+            <md-tab-label id="contact">Contact</md-tab-label>
             <md-tab-body>
                 <!-- General Contact Begin -->
                 <!-- fieldset for Central Contact -->
@@ -524,7 +524,7 @@
                 </thead>
                 <tbody>
 
-                <tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="{'deleted-text': participating_site._destroy, 'edit-selected': participating_site.id === psView.currentParticipatingSite.id}">
+                <tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item">
                 <!--<tr ng-repeat="participating_site in psView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                     <td>{{participating_site.organization.id}}</td>
                     <td>
