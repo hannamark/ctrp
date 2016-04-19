@@ -9,10 +9,10 @@
         .controller('trialHistoryCtrl', trialHistoryCtrl);
 
     trialHistoryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr','DateService','AuditService','uiGridConstants'];
+        '$timeout', '_', 'PATrialService', 'toastr','DateService','AuditService','uiGridConstants','$uibModal','UserService'];
 
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
-                                     $timeout, _, PATrialService, toastr,DateService,AuditService,uiGridConstants) {
+                                     $timeout, _, PATrialService, toastr,DateService,AuditService,uiGridConstants,$uibModal,UserService) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
@@ -149,6 +149,95 @@
             }
 
             }
+
+        $scope.buttonClick = function(value) {
+            alert('Row: ' + value.submission_num);
+        };
+
+        $scope.editRow= function(grid, row) {
+
+            $uibModal.open({
+                template: '<div>'+
+                          '<div class="modal-header">'+
+                          '<h3 class="modal-title">Acknowledge Update</h3>'+
+                          '</div>'+
+                          '<div class="modal-body">'+
+                          '<form >Comment: <input type="text" ng-model="vm.entity.acknowledge_comment"></form>'+
+                          '</div>'+
+                          '<div class="modal-footer">'+
+                          '<button class="btn btn-success" ng-click="vm.save()">Acknowledge</button>'+
+                          '<button class="btn btn-warning" ng-click="$close()">Cancel</button>'+
+                          '</div>'+
+                          '</div>',
+                controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                controllerAs: 'vm',
+                resolve: {
+                    grid: function () { return grid; },
+                    row: function () { return row; }
+                }
+            });
+        }
+
+        /* @ngInject */
+        function ModalInstanceController($uibModalInstance, grid, row) {
+
+            var vm = this;
+            vm.entity = angular.copy(row.entity);
+
+
+            vm.save = save;
+
+            function save() {
+                vm.entity.acknowledge ="Yes";
+                vm.entity.acknowledge_date = new Date();
+                vm.entity.acknowledged_by = UserService.getLoggedInUsername();
+
+                var obj={'id':row.entity.id,
+                    'acknowledge_comment':vm.entity.acknowledge_comment,
+                    'acknowledge':vm.entity.acknowledge,
+                    'acknowledge_date':vm.entity.acknowledge_date,
+                    'acknowledged_by':vm.entity.acknowledged_by};
+
+
+
+
+
+                var resStatus=null;
+                AuditService.upsertSubmission(obj).then(function(response) {
+                    resStatus = response.server_response.status;
+
+                    if (response.server_response.status === 200) {
+
+                        row.entity = angular.extend(row.entity, vm.entity);
+
+                        toastr.clear();
+                        toastr.success('Submission has been acknowledged', 'Operation Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        })
+
+                    } else {
+                        console.log("error while trying to save  bio markers" + response.server_response.status);
+
+                    }
+
+                }).catch(function(err) {
+                    console.log("error acknowledging trial submission ");
+                }).finally(function() {
+                    // TODO: change the visibility here
+                    if (resStatus>210) {
+                    }
+
+                });
+
+                console.log(vm.entity.acknowledge_comment);
+                // Copy row values over
+                $uibModalInstance.close(row.entity);
+
+
+            }
+        }
+
 
 
 

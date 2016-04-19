@@ -66,9 +66,13 @@
                 {name: 'submission_num', displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Update At', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'date', displayName:'Acknowledge Date',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'user', displayName:'Acknowledge User ID',enableSorting: true, minWidth: '100', width: '*'}
+                {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
+                {
+                    name: 'Acknowledge ',
+                    cellTemplate: '<div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row)">Acknowledge</button></div>'
+                },
+                {name: 'acknowledge_date', displayName:'Acknowledge Date',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledged_by', displayName:'Acknowledge User ID',enableSorting: true, minWidth: '100', width: '*'}
 
             ]
         };
@@ -174,7 +178,8 @@
             getAudits: getAudits,
             getUpdatesGridOptions: getUpdatesGridOptions,
             getUpdates: getUpdates,
-            getSubmissions: getSubmissions
+            getSubmissions: getSubmissions,
+            upsertSubmission:upsertSubmission
         };
 
         return services;
@@ -206,6 +211,23 @@
         function getSubmissions(obj) {
 
         }
+
+
+        /**
+         * Update submission
+         *
+         * @param obj
+         * @returns {*}
+         */
+        function upsertSubmission(obj) {
+            if (obj.new) {
+                //return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
+            }
+
+            var configObj={};
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
+
+        } //upsertOrg
 
 
     }

@@ -78,6 +78,7 @@
             'BIOMARKER_PURPOSES': '/ctrp/biomarker_purposes',
             'SUB_GROUP_LIST' : '/ctrp/registry/sub_groups.json',
             'A_SUB_GROUP' : '/ctrp/registry/sub_groups/',
+            'A_SUBMISSION' : '/ctrp/registry/submissions/',
             'CADSR_SEARCH': '/ctrp/cadsr_markers/search',
             'NCIT_DISEASE_CODE_LIST': '/ctrp/ncit_disease_codes.json',
             'NCIT_TREE': '/ctrp/ncit_disease_codes/get_tree.json',
