@@ -1199,3 +1199,26 @@ div.datepicker {
 .popover-confirm .form-actions {
     text-align: right;
 }
+
+.sign_up .panel {
+    max-width: 500px;
+}
+.sign_up form {
+    width:100%;
+}
+.sign_up .centered-form{
+    padding: 1% 0;
+}
+
+.sign_up #password_confirm {
+    font-family: inherit;
+}
+.sign_up fieldset legend {
+    border: none;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+.sign_up fieldset label {
+    font-weight: normal;
+}
