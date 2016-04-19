@@ -11,7 +11,7 @@
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
         'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes'];
 
-    pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance'];
+    pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance', 'PATrialService'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, _, $timeout, Common, $uibModal, interventionTypes) {
@@ -145,8 +145,9 @@
                     vm.selectedInterventionObj = selectedInterventionObj;
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
-                    vm.curInterventionObj.intervention_type_id = selectedInterventionObj.type_code_id; // TODO: add type_code_id
-                    vm.curInterventionObj.intervention_type_ct_id = selectedInterventionObj.ct_gov_type_code_id; // TODO: add ct_gov_type_code_id
+                    vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
+                    vm.curInterventionObj.intervention_type_cancer_gov_id = selectedInterventionObj.intervention_type_cancer_gov_id; // TODO: add type_code_id
+                    vm.curInterventionObj.intervention_type_ct_gov_id = selectedInterventionObj.intervention_type_ct_gov_id; // TODO: add ct_gov_type_code_id
                     console.info('received selectedInterventionObj: ', vm.selectedInterventionObj);
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
@@ -158,7 +159,7 @@
     } // pasInterventionCtrl
 
 
-    function pasInterventionLookupModalCtrl($scope, $uibModalInstance) {
+    function pasInterventionLookupModalCtrl($scope, $uibModalInstance, PATrialService) {
         var vm = this;
         vm.selection = '';
 
@@ -167,7 +168,22 @@
         };
 
         vm.confirmSelection = function() {
-            $uibModalInstance.close(vm.selection);
+            var interventionName = vm.selection.preferred_name || '';
+            PATrialService.searchCtrpInterventionsByName(interventionName).then(function(searchResponse) {
+                // console.info('searchResponse: ', searchResponse);
+                var result = searchResponse.data;
+                if (result !== null) {
+                    vm.selection.intervention_type_cancer_gov_id = result.intervention_type_cancer_gov_id;
+                    vm.selection.intervention_type_ct_gov_id = result.intervention_type_ct_gov_id;
+                }
+                vm.selection.intervention_type_cancer_gov_id = 13; // for test TODO: delete
+                vm.selection.intervention_type_ct_gov_id = 1; // for test TODO: delete
+
+            }).catch(function(err) {
+                console.error('error in search CTRP Interventions: ', err);
+            }).finally(function() {
+                $uibModalInstance.close(vm.selection);
+            });
         };
 
         $scope.$watch(function() {return vm.selection;}, function(newVal) {
@@ -176,7 +192,6 @@
                 // $uibModalInstance.close(newVal);
             }
         });
-
 
     } // pasInterventionLookupModalCtrl
 

@@ -158,7 +158,8 @@
             lookupTrial: lookupTrial,
             associateTrial: associateTrial,
             lookupNcitInterventions: lookupNcitInterventions,
-            getInterventionTypes: getInterventionTypes
+            getInterventionTypes: getInterventionTypes,
+            searchCtrpInterventionsByName: searchCtrpInterventionsByName
         };
 
         return services;
@@ -471,6 +472,11 @@
          */
         function searchClinicalTrialsGovIgnoreExists(nctId) {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
+        }
+
+        function searchCtrpInterventionsByName(interventionName) {
+            var url = URL_CONFIGS.PA.SEARCH_CTRP_INTERVENTIONS.replace(/\s*\{.*?\}\s*/g, interventionName);
+            return PromiseTimeoutService.getData(url);
         }
 
         /**

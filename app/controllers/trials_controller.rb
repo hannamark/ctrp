@@ -191,6 +191,19 @@ class TrialsController < ApplicationController
     end
   end
 
+  # search interventions table against the 'name' field
+  def search_ctrp_interventions
+    @intervention = nil
+    if params[:intervention_name].present?
+      @intervention = Intervention.find_by_name(params[:intervention_name]) # first match
+    end
+
+    respond_to do |format|
+      format.json { render :json => { :data => @intervention } }
+    end
+
+  end
+
   def lookup_imported_ncit_interventions
     params[:start] = 1 if params[:start].blank?
     params[:rows] = 20 if params[:rows].blank?
