@@ -149,6 +149,14 @@ class TrialsController < ApplicationController
     end
   end
 
+  def get_intervention_types
+    @intervention_types = InterventionType.all
+
+    respond_to do |format|
+      format.json { render :json => @intervention_types }
+    end
+  end
+
   def get_intervention_models
     @intervention_models = InterventionModel.all
 
@@ -190,20 +198,21 @@ class TrialsController < ApplicationController
     params[:order] = 'asc' if params[:order].blank?
     @interventions = []
 
-    if params[:name].present?
+    if params[:intervention_name].present? # and !params[:intervention_name].blank?
+      p "searching imported ncit interventions"
       @interventions = NcitIntervention.all
-      @interventions = @interventions.matches_like('synonyms', params[:name]) if params[:include_synonyms].present?  # like synonyms
-      @interventions = @interventions.matches_exact('preferred_name', params[:name]) if params[:exact].present?
+      @interventions = @interventions.matches_like('synonyms', params[:intervention_name]) if params[:include_synonyms].present?  # like synonyms
+      @interventions = @interventions.matches_exact('preferred_name', params[:intervention_name]) if params[:exact].present?
 
       if !params[:exact].present? and !params[:include_synonyms].present?
-        @interventions = @interventions.match_loosely_preferred_name(params[:name])
+        @interventions = @interventions.match_loosely_preferred_name(params[:intervention_name])
       end
 
       @interventions = @interventions.sort_by_col(params).page(params[:start]).per(params[:rows])
     end
 
     respond_to do |format|
-      format.json { render :json => {:data => @interventions} }
+      format.json { render :json => {:data => @interventions, :start => params[:start], :rows => params[:rows], :total => @interventions.size == 0 ? 0 : @interventions.total_count, :sort => params[:sort], :order => params[:order]} }
     end
   end
 
@@ -596,7 +605,7 @@ class TrialsController < ApplicationController
                                   :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :study_pop_desc, :sampling_method,
                                   :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :study_model_id, :study_model_other,
                                   :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :time_perspective_id, :time_perspective_other,
-                                  :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version,
+                                  :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version, :intervention_name,
                                   :brief_title, :brief_summary, :objective, :detailed_description, :study_classification_id, :target_enrollment, :final_enrollment,
                                   :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
@@ -625,7 +634,8 @@ class TrialsController < ApplicationController
                                                        marker_eval_type_associations_attributes:[:id,:evaluation_type_id,:_destroy],
                                                        marker_assay_type_associations_attributes:[:id,:assay_type_id,:_destroy],
                                                        marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
-                                                       marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]])
+                                                       marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
+                                  diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy])
   end
 
   # Convert status code to name in validation messages
