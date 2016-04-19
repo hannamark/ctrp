@@ -20,4 +20,6 @@ class Disease < ActiveRecord::Base
   include BasicConcerns
 
   belongs_to :trial
+
+  validates_uniqueness_of :thesaurus_id, scope: :trial_id
 end

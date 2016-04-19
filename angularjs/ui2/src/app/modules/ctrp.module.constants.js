@@ -80,6 +80,7 @@
             'CADSR_SEARCH': '/ctrp/cadsr_markers/search',
             'NCIT_DISEASE_CODE_LIST': '/ctrp/ncit_disease_codes.json',
             'NCIT_TREE': '/ctrp/ncit_disease_codes/get_tree.json',
+            'SEARCH_DISEASE': '/ctrp/ncit_disease_codes/search.json',
 
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
@@ -121,6 +122,7 @@
                 'SEARCH_NCI_TRIAL': '/ctrp/registry/trials/search_trial_with_nci_id.json',
                 'ASSOCIATE_TRIAL': '/ctrp/associated_trials.json',
                 'NCIT_INTERVENTIONS_LOOKUP': '/ctrp/registry/trials/lookup_imported_ncit_interventions.json',
+                'INTERVENTION_TYPES': '/ctrp/registry/trials/get_intervention_types.json',
             }
         })
         .constant('MESSAGES', {
