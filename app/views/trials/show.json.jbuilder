@@ -107,7 +107,9 @@ end
 
 json.interventions do
   json.array!(@trial.interventions) do |intervention|
-    json.extract! intervention, :id, :name, :description, :other_name, :lock_version, :intervention_type_id, :trial_id
+    json.extract! intervention, :id, :name, :description, :other_name, :lock_version, :intervention_type_id, :intervention_type_cancer_gov_id, :intervention_type_ct_gov_id, :trial_id
+    json.set! :intervention_type_cancer_name, intervention.intervention_type_cancer_gov_id.nil? ? '' : InterventionType.find(intervention.intervention_type_cancer_gov_id).nil? ? '' : InterventionType.find(intervention.intervention_type_cancer_gov_id).name
+    json.set! :intervention_type_ct_name, intervention.intervention_type_ct_gov_id.nil? ? '' : InterventionType.find(intervention.intervention_type_ct_gov_id).nil? ? '' : InterventionType.find(intervention.intervention_type_ct_gov_id).name
   end
 end
 

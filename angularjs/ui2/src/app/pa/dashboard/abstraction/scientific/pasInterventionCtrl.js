@@ -9,12 +9,12 @@
         .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes'];
+        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes', 'UserService'];
 
-    pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance'];
+    pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance', 'PATrialService'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes) {
+        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes, UserService) {
 
             var vm = this;
             vm.interventionTypesByCategory = {
@@ -28,8 +28,12 @@
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
-            vm.selectedInterventionObj = {preferred_name: ''};
             vm.deleteBtnDisabled = true;
+
+            vm.isCancerGovTypeListEnabled = false;
+            vm.isCTGovTypeListEnabled = false;
+            var curUserRole = UserService.getUserRole() || '';
+            var isUserAllowedToSelectType = curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU'; // only super userss are allowed
 
             // actions
             vm.addIntervention = addIntervention;
@@ -74,14 +78,44 @@
             }
 
             function upsertIntervention(inventionObj) {
+
                 if (angular.isDefined(inventionObj)) {
+                    var typeCancerObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_cancer_gov_id});
+                    var typeCTObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_ct_gov_id});
+                    inventionObj.intervention_type_cancer_name = typeCancerObj.name || '';
+                    inventionObj.intervention_type_ct_name = typeCTObj.name || '';
+                    console.info('upserting intervention: ', inventionObj);
+
                     if (inventionObj.index !== undefined) {
                         // insert at index: index
+                        vm.trialDetailObj.interventions[inventionObj.index] = angular.copy(inventionObj);
                     } else {
                         // unshift at index: 0
+                        vm.trialDetailObj.interventions.unshift(angular.copy(inventionObj));
                     }
-                    // TODO: persist to backend
-                    vm.showInterventionForm = false; // hide the form
+
+                    vm.trialDetailObj.interventions_attributes = vm.trialDetailObj.interventions;
+                    PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
+                        console.info('res after upsert: ', res);
+                        if (res.server_response.status === 200) {
+                            vm.trialDetailObj = res;
+                            PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                            $scope.$emit('updatedInChildScope', {});
+                            toastr.clear();
+                            toastr.success('Trial design has been updated', 'Successful!', {
+                                extendedTimeOut: 1000,
+                                timeOut: 0
+                            });
+                            _getTrialDetailCopy();
+                        }
+                    }).catch(function(err) {
+                        console.error('trial upsert error: ', err);
+                    }).finally(function() {
+                        vm.showInterventionForm = false; // hide the form
+                        resetLookupForm();
+                    });
+
+
                 }
             }
 
@@ -97,14 +131,15 @@
                     name: null,
                     other_name: null,
                     description: null,
-                    intervention_type_id: null, // for cancer.gov
-                    intervention_type_ct_id: null, // for clinicaltrials.gov
+                    intervention_type_cancer_gov_id: null, // for cancer.gov
+                    intervention_type_ct_gov_id: null, // for clinicaltrials.gov
                     trial_id: vm.trialDetailObj.id,
                     edit: false
                 };
             }
 
             function resetLookupForm(form) {
+                vm.curInterventionObj = _newInterventionObj();
                 console.info('resetting form: ', form);
             }
 
@@ -142,12 +177,16 @@
                 modalOpened = true;
 
                 modalInstance.result.then(function(selectedInterventionObj) {
-                    vm.selectedInterventionObj = selectedInterventionObj;
+                    // vm.selectedInterventionObj = selectedInterventionObj;
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
-                    vm.curInterventionObj.intervention_type_id = selectedInterventionObj.type_code_id; // TODO: add type_code_id
-                    vm.curInterventionObj.intervention_type_ct_id = selectedInterventionObj.ct_gov_type_code_id; // TODO: add ct_gov_type_code_id
-                    console.info('received selectedInterventionObj: ', vm.selectedInterventionObj);
+                    vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
+
+                    vm.curInterventionObj.intervention_type_cancer_gov_id = selectedInterventionObj.intervention_type_cancer_gov_id || '';
+                    vm.isCancerGovTypeListEnabled = vm.curInterventionObj.intervention_type_cancer_gov_id === '' && isUserAllowedToSelectType;
+                    vm.curInterventionObj.intervention_type_ct_gov_id = selectedInterventionObj.intervention_type_ct_gov_id || '';
+                    vm.isCTGovTypeListEnabled = vm.curInterventionObj.intervention_type_ct_gov_id === '' && isUserAllowedToSelectType;
+                    console.info('received vm.curInterventionObj: ', vm.curInterventionObj);
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
                 }).finally(function() {
@@ -158,7 +197,7 @@
     } // pasInterventionCtrl
 
 
-    function pasInterventionLookupModalCtrl($scope, $uibModalInstance) {
+    function pasInterventionLookupModalCtrl($scope, $uibModalInstance, PATrialService) {
         var vm = this;
         vm.selection = '';
 
@@ -167,7 +206,23 @@
         };
 
         vm.confirmSelection = function() {
-            $uibModalInstance.close(vm.selection);
+            var interventionName = vm.selection.preferred_name || '';
+            // search ctrp interventions for same name, if exists, get its intervention type id for
+            // trials to use
+            PATrialService.searchCtrpInterventionsByName(interventionName).then(function(searchResponse) {
+                // console.info('searchResponse: ', searchResponse);
+                var result = searchResponse.data;
+                if (result !== null) {
+                    vm.selection.intervention_type_cancer_gov_id = result.intervention_type_cancer_gov_id;
+                    vm.selection.intervention_type_ct_gov_id = result.intervention_type_ct_gov_id;
+                }
+                // vm.selection.intervention_type_cancer_gov_id = 13; // for test TODO: delete
+                // vm.selection.intervention_type_ct_gov_id = 1; // for test TODO: delete
+            }).catch(function(err) {
+                console.error('error in search CTRP Interventions: ', err);
+            }).finally(function() {
+                $uibModalInstance.close(vm.selection);
+            });
         };
 
         $scope.$watch(function() {return vm.selection;}, function(newVal) {
@@ -176,7 +231,6 @@
                 // $uibModalInstance.close(newVal);
             }
         });
-
 
     } // pasInterventionLookupModalCtrl
 
