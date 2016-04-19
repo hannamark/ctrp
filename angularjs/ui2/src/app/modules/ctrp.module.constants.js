@@ -122,6 +122,7 @@
                 'SEARCH_NCI_TRIAL': '/ctrp/registry/trials/search_trial_with_nci_id.json',
                 'ASSOCIATE_TRIAL': '/ctrp/associated_trials.json',
                 'NCIT_INTERVENTIONS_LOOKUP': '/ctrp/registry/trials/lookup_imported_ncit_interventions.json',
+                'INTERVENTION_TYPES': '/ctrp/registry/trials/get_intervention_types.json',
             }
         })
         .constant('MESSAGES', {

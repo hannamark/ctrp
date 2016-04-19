@@ -9,14 +9,15 @@
         .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'Common', '$uibModal'];
+        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes'];
 
     pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, Common, $uibModal) {
+        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes) {
 
             var vm = this;
+            console.info('interventionTypes: ', interventionTypes);
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};

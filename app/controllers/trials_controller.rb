@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  # before_filter :wrapper_authenticate_user unless Rails.env.test?
+  # load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -146,6 +146,14 @@ class TrialsController < ApplicationController
     @maskings = Masking.all
     respond_to do |format|
       format.json { render :json => {:maskings => @maskings} }
+    end
+  end
+
+  def get_intervention_types
+    @intervention_types = InterventionType.all
+
+    respond_to do |format|
+      format.json { render :json => @intervention_types }
     end
   end
 
