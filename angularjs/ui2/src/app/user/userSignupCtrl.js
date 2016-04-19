@@ -8,30 +8,65 @@
     angular.module('ctrp.app.user')
         .controller('userSignupCtrl', userSignupCtrl);
 
-    userSignupCtrl.$inject = ['$scope', '$http', '$window', 'toastr',
-        '$sce', '$state', '$timeout', 'UserService', 'OrgService'];
+    userSignupCtrl.$inject = ['$scope', 'AppSettingsService', 'UserService', 'OrgService'];
 
-    function userSignupCtrl($scope, $http, $window, toastr, $state, $sce, $timeout,  UserService, OrgService) {
+    function userSignupCtrl($scope, AppSettingsService,  UserService, OrgService) {
         var vm = this;
 
-        // { "local_user"=>{"username"=>"e", "email"=>"e@x.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "role"=>"ROLE_READONLY"}, "commit"=>"Sign up"}
         $scope.signup_form = {};
 
         vm.userObj = {
             'local_user': {
+                domain: '',
                 username: '',
+                first_name: '',
+                last_name: '',
                 email: '',
                 password: '',
                 password_confirmation: '',
-                organization: '',
-                role: ''
+                organization_id: '',
+                role: '',
+                selected_functions: []
             },
             'type': vm.type
         };
 
-        vm.rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
+        AppSettingsService.getSettings('USER_ROLES', true).then(function (response) {
+            vm.rolesArr = response.data[0].settings.split('||');
+        }).catch(function (err) {
+            console.log("Error in retrieving USER_ROLES.");
+        });
+
+        AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
+            vm.domainsArr = response.data[0].settings.split('||');
+            vm.selectedFunctionsObj = [];
+            angular.forEach(vm.domainsArr, function (domain) {
+                AppSettingsService.getSettings(domain + '_USER_FUNCTIONS', true).then(function (response) {
+                    var functionsArr = response.data[0].settings.split('||');
+                    vm.selectedFunctionsObj[domain] = {};
+                    angular.forEach(functionsArr, function (func) {
+                        vm.selectedFunctionsObj[domain][func] = false;
+                    });
+                }).catch(function (err) {
+                    console.log("Error in retrieving " + domain + "_USER_FUNCTIONS.");
+                });
+            });
+        }).catch(function (err) {
+            console.log("Error in retrieving USER_DOMAINS.");
+        });
+
+        vm.selectedUserFunctions = function(){
+            var selectedArr = [];
+            _.each( vm.selectedFunctionsObj[vm.userObj.local_user.domain], function( selected, func ) {
+                if ( selected ) {
+                    selectedArr.push(func);
+                }
+            });
+            vm.userObj.local_user.selected_functions = selectedArr;
+            vm.selecteAbleUserFunctions = Object.keys(vm.selectedFunctionsObj[vm.userObj.local_user.domain]).length;
+        };
+
         vm.searchParams = OrgService.getInitialOrgSearchParams();
-        vm.masterCopy = angular.copy(vm.userObj);
 
         vm.typeAheadNameSearch = function () {
             var wildcardOrgName = vm.searchParams.name.indexOf('*') > -1 ? vm.searchParams.name : '*' + vm.searchParams.name + '*';
@@ -42,17 +77,13 @@
                 source_status: 'Active'
             };
 
-            /*
-            //for trial-related org search, use only 'Active' source status
-            if (curStateName.indexOf('trial') === -1) {
-                delete queryObj.source_status;
-            }
-            */
             return OrgService.searchOrgs(queryObj).then(function(res) {
                 //remove duplicates
                 var uniqueNames = [];
                 var orgNames = [];
+                
                 orgNames = res.orgs.map(function (org) {
+                    vm.userObj.local_user.organization_id = org.id;
                     return org.name;
                 });
 
@@ -76,10 +107,6 @@
             });
 
 **/
-        };
-
-        vm.reset = function() {
-            vm.userObj = angular.copy(vm.masterCopy);
         };
     }
 
