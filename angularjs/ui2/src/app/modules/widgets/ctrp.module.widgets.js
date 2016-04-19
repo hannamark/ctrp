@@ -13,6 +13,11 @@
     'angularMoment',
     'angularUtils.directives.dirPagination',
     'agGrid',
+    'ui.grid',
+    'ui.grid.autoResize',
+    'ui.grid.pagination',
+    'ui.grid.selection',
+    'ui.scrollpoint',
     'formly',
     'formlyBootstrap',
 
