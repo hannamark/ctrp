@@ -97,8 +97,8 @@
                     name: null,
                     other_name: null,
                     description: null,
-                    intervention_type_id: null, // for cancer.gov
-                    intervention_type_ct_id: null, // for clinicaltrials.gov
+                    intervention_type_cancer_gov_id: null, // for cancer.gov
+                    intervention_type_ct_gov_id: null, // for clinicaltrials.gov
                     trial_id: vm.trialDetailObj.id,
                     edit: false
                 };
