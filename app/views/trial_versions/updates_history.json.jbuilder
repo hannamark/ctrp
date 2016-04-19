@@ -34,7 +34,12 @@ protocol
      Array updated_fields_array = Array.new
 
       other_ids = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "OtherId",trial_version.transaction_id)
-      if other_ids
+
+      puts "Other Ids"
+      puts  other_ids
+
+
+      if !other_ids.nil?
         Hash h = Hash.new
         h[:updated_filed]="Other Protocol Identifiers";
 
@@ -78,7 +83,11 @@ protocol
       end
 
       grants = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "Grant",trial_version.transaction_id)
-      if grants
+
+      puts "Grants "
+      puts grants
+
+      if !grants.nil?
         Hash h = Hash.new
         h[:updated_filed]="Grant Information(Inst Code, Funding , SNo)";
 
@@ -124,6 +133,130 @@ protocol
         #end
         h[:new_value] = grants_string_N
         h[:old_value] = grants_string_O
+        updated_fields_array.push(h)
+      end
+
+
+      trial_statuses = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "TrialStatusWrapper",trial_version.transaction_id)
+
+      if !trial_statuses.nil?
+        Hash h = Hash.new
+        h[:updated_filed]="Trial Status (Status, Date)";
+        trial_statuses_string_N = ""
+        trial_statuses_string_O =""
+        delimiter = " |"
+        trial_statuses.each do |o|
+          case o.event
+            when "destroy"
+              p o.event
+              status_date_N = o.object_changes["status_date"][1]
+              trial_status_id = o.object_changes["trial_status_id"][1]
+              trial_status_N = TrialStatus.find_by_code(trial_status_id) if trial_status_id?
+
+              destroy_sign = " (D) "
+
+              trial_statuses_string_N = trial_statuses_string_N + delimiter + status_date_N.to_s + "   " + trial_status_N.to_s + destroy_sign + delimiter
+              trial_statuses_string_O = ""
+
+            when "create" || "update"
+              status_date_N = o.object_changes["status_date"][1]
+              trial_status_id = o.object_changes["trial_status_id"][1]
+              trial_status_N = TrialStatus.find_by_code(trial_status_id) if trial_status_id?
+
+              destroy_sign = " "
+              trial_statuses_string_N = trial_statuses_string_N + delimiter + status_date_N.to_s + "   " + trial_status_N.to_s + destroy_sign + delimiter
+
+              status_date_O = o.object_changes["status_date"][0]
+              trial_status_id = o.object_changes["trial_status_id"][0]
+              trial_status_O = TrialStatus.find_by_code(trial_status_id) if trial_status_id?
+
+              trial_statuses_string_O = trial_statuses_string_O + delimiter + status_date_O.to_s + "   " + trial_status_O.to_s + destroy_sign + delimiter
+
+
+            else
+              trial_statuses_string_O =   " "
+              trial_statuses_string_N =   " "
+
+          end
+
+        end
+        #end
+        h[:new_value] = trial_statuses_string_N
+        h[:old_value] = trial_statuses_string_O
+        updated_fields_array.push(h)
+      end
+
+
+      start_date_N = trial_version.object_changes["start_date"]?  trial_version.object_changes["start_date"][1] : nil
+      start_date_O = trial_version.object_changes["start_date"]?  trial_version.object_changes["start_date"][0] : nil
+
+      if start_date_N || start_date_O
+        Hash h = Hash.new
+        h[:updated_filed]="Start date"
+        h[:old_value] = start_date_O
+        h[:new_value] = start_date_N
+        updated_fields_array.push(h)
+      end
+
+
+
+      start_date_type_N = trial_version.object_changes["start_date_qual"]?  trial_version.object_changes["start_date_qual"][1] : nil
+      start_date_type_O = trial_version.object_changes["start_date_qual"]?  trial_version.object_changes["start_date_qual"][0] : nil
+
+      if start_date_type_N || start_date_type_O
+        Hash h = Hash.new
+        h[:updated_filed]="Start date type"
+        h[:old_value] = start_date_type_O
+        h[:new_value] = start_date_type_N
+        updated_fields_array.push(h)
+      end
+
+
+
+      primary_comp_date_N = trial_version.object_changes["primary_comp_date"]?  trial_version.object_changes["primary_comp_date"][1] : nil
+      primary_comp_date_O = trial_version.object_changes["primary_comp_date"]?  trial_version.object_changes["primary_comp_date"][0] : nil
+
+      if primary_comp_date_N || primary_comp_date_O
+        Hash h = Hash.new
+        h[:updated_filed]="Primary completion date"
+        h[:old_value] = primary_comp_date_O
+        h[:new_value] = primary_comp_date_N
+        updated_fields_array.push(h)
+      end
+
+
+
+      primary_comp_date_type_N = trial_version.object_changes["primary_comp_date_qual"]?  trial_version.object_changes["primary_comp_date_qual"][1] : nil
+      primary_comp_date_type_O = trial_version.object_changes["primary_comp_date_qual"]?  trial_version.object_changes["primary_comp_date_qual"][0] : nil
+
+      if primary_comp_date_type_N || primary_comp_date_type_O
+        Hash h = Hash.new
+        h[:updated_filed]="Primary completion date type"
+        h[:old_value] = primary_comp_date_type_O
+        h[:new_value] = primary_comp_date_type_N
+        updated_fields_array.push(h)
+      end
+
+      comp_date_N = trial_version.object_changes["comp_date"]?  trial_version.object_changes["comp_date"][1] : nil
+      comp_date_O = trial_version.object_changes["comp_date"]?  trial_version.object_changes["comp_date"][0] : nil
+
+      if comp_date_N || comp_date_O
+        Hash h = Hash.new
+        h[:updated_filed]="Completion date"
+        h[:old_value] = comp_date_O
+        h[:new_value] = comp_date_N
+        updated_fields_array.push(h)
+      end
+
+
+      comp_date_type_N = trial_version.object_changes["comp_date_qual"]?  trial_version.object_changes["comp_date_qual"][1] : nil
+      comp_date_type_O = trial_version.object_changes["comp_date_qual"]?  trial_version.object_changes["comp_date_qual"][0] : nil
+
+      if comp_date_type_N || comp_date_type_O
+        Hash h = Hash.new
+        h[:updated_filed]="Completion date type"
+        h[:old_value] = comp_date_type_O
+        h[:new_value] = comp_date_type_N
         updated_fields_array.push(h)
       end
 
