@@ -40,12 +40,14 @@
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
             vm.selectedFunctionsObj = [];
+            vm.selecteAbleUserFunctions = [];
             angular.forEach(vm.domainsArr, function (domain) {
                 AppSettingsService.getSettings(domain + '_USER_FUNCTIONS', true).then(function (response) {
                     var functionsArr = response.data[0].settings.split('||');
                     vm.selectedFunctionsObj[domain] = {};
                     angular.forEach(functionsArr, function (func) {
-                        vm.selectedFunctionsObj[domain][func] = false;
+                        vm.selecteAbleUserFunctions[domain] = functionsArr.length;
+                        vm.selectedFunctionsObj[domain][func] = vm.selecteAbleUserFunctions[domain] > 1 ? false : true;
                     });
                 }).catch(function (err) {
                     console.log("Error in retrieving " + domain + "_USER_FUNCTIONS.");
@@ -63,7 +65,6 @@
                 }
             });
             vm.userObj.local_user.selected_functions = selectedArr;
-            vm.selecteAbleUserFunctions = Object.keys(vm.selectedFunctionsObj[vm.userObj.local_user.domain]).length;
         };
 
         vm.searchParams = OrgService.getInitialOrgSearchParams();
