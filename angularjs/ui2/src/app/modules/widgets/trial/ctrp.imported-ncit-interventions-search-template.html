@@ -1,11 +1,12 @@
 <div class="row">
-    <form class="form form-horizontal" role="form" name="interventions_lookup_form">
+    <form class="form form-horizontal" role="form" name="interventions_lookup_form" novalidate>
         <div class="row">
             <div class="col-xs-7">
                 <div class="form-group">
                     <label for="intervention_name" class="control-label col-xs-12 col-sm-3">Intervention Name: </label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" id="intervention_name" name="intervention_name" class="form-control input-sm" placeholder="Intervention Name" ng-model="interventionsLookupView.searchParams.intervention_name" auto-focus/>
+                        <input type="text" id="intervention_name" name="intervention_name" class="form-control input-sm" placeholder="Intervention Name" ng-model="interventionsLookupView.searchParams.intervention_name" auto-focus required/>
+                        <span ng-hide="interventionsLookupView.errorMsg.length == 0">{{interventionsLookupView.errorMsg}}</span>
                     </div>
                 </div>
                 <div class="form-group">
