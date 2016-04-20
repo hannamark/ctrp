@@ -25,27 +25,22 @@
                 password: '',
                 password_confirmation: '',
                 organization_id: '',
-                role: '',
                 selected_functions: []
             },
             'type': vm.type
         };
-
-        AppSettingsService.getSettings('USER_ROLES', true).then(function (response) {
-            vm.rolesArr = response.data[0].settings.split('||');
-        }).catch(function (err) {
-            console.log("Error in retrieving USER_ROLES.");
-        });
-
+        
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
             vm.selectedFunctionsObj = [];
+            vm.selectAbleUserFunctions = [];
             angular.forEach(vm.domainsArr, function (domain) {
                 AppSettingsService.getSettings(domain + '_USER_FUNCTIONS', true).then(function (response) {
                     var functionsArr = response.data[0].settings.split('||');
                     vm.selectedFunctionsObj[domain] = {};
                     angular.forEach(functionsArr, function (func) {
-                        vm.selectedFunctionsObj[domain][func] = false;
+                        vm.selectAbleUserFunctions[domain] = functionsArr.length;
+                        vm.selectedFunctionsObj[domain][func] = vm.selectAbleUserFunctions[domain] > 1 ? false : true;
                     });
                 }).catch(function (err) {
                     console.log("Error in retrieving " + domain + "_USER_FUNCTIONS.");
@@ -63,7 +58,6 @@
                 }
             });
             vm.userObj.local_user.selected_functions = selectedArr;
-            vm.selecteAbleUserFunctions = Object.keys(vm.selectedFunctionsObj[vm.userObj.local_user.domain]).length;
         };
 
         vm.searchParams = OrgService.getInitialOrgSearchParams();

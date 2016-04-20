@@ -80,11 +80,6 @@
             function upsertIntervention(inventionObj) {
 
                 if (angular.isDefined(inventionObj)) {
-                    var typeCancerObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_cancer_gov_id});
-                    var typeCTObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_ct_gov_id});
-                    inventionObj.intervention_type_cancer_name = !!typeCancerObj ? typeCancerObj.name : '';
-                    inventionObj.intervention_type_ct_name = !!typeCTObj ? typeCTObj.name : '';
-                    console.info('upserting intervention: ', inventionObj);
 
                     if (inventionObj.index !== undefined) {
                         // insert at index: index
@@ -94,29 +89,32 @@
                         vm.trialDetailObj.interventions.unshift(angular.copy(inventionObj));
                     }
 
-                    vm.trialDetailObj.interventions_attributes = vm.trialDetailObj.interventions;
-                    PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
-                        console.info('res after upsert: ', res);
-                        if (res.server_response.status === 200) {
-                            vm.trialDetailObj = res;
-                            PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
-                            $scope.$emit('updatedInChildScope', {});
-                            toastr.clear();
-                            toastr.success('Trial design has been updated', 'Successful!', {
-                                extendedTimeOut: 1000,
-                                timeOut: 0
-                            });
-                            _getTrialDetailCopy();
-                        }
-                    }).catch(function(err) {
-                        console.error('trial upsert error: ', err);
-                    }).finally(function() {
-                        vm.showInterventionForm = false; // hide the form
-                        resetLookupForm();
-                    });
-
-
+                    updateInterventions();
                 }
+            }
+
+            function updateInterventions() {
+                console.info('interventions: ', vm.trialDetailObj.interventions);
+                vm.trialDetailObj.interventions_attributes = vm.trialDetailObj.interventions;
+                PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
+                    console.info('res after upsert: ', res);
+                    if (res.server_response.status === 200) {
+                        vm.trialDetailObj = res;
+                        PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                        $scope.$emit('updatedInChildScope', {});
+                        toastr.clear();
+                        toastr.success('Intervention has been updated', 'Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                        _getTrialDetailCopy();
+                    }
+                }).catch(function(err) {
+                    console.error('trial upsert error: ', err);
+                }).finally(function() {
+                    vm.showInterventionForm = false; // hide the form
+                    resetLookupForm();
+                });
             }
 
             function editIntervention(index) {
@@ -159,7 +157,11 @@
             }
 
             function deleteInterventions() {
-                console.info('deleting interventions')
+                console.info('deleting interventions');
+                if (vm.trialDetailObj.interventions.length === 0) {
+                    return;
+                }
+                updateInterventions();
             }
 
             var modalOpened = false;

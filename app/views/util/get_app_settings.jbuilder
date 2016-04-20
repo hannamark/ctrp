@@ -1,3 +1,3 @@
 json.array! @settings do |code|
-  json.code code
+  json.settings code
 end
