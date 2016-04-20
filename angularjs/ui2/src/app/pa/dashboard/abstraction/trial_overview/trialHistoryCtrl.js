@@ -170,11 +170,19 @@
                           '<h3 class="modal-title">Acknowledge Update</h3>'+
                           '</div>'+
                           '<div class="modal-body">'+
-                          '<form >Comment: <input type="text" ng-model="vm.entity.acknowledge_comment"></form>'+
+                          '<form class="form form-horizontal">'+
+                          '<div class="form-group">'+
+                          '<label for="acknowledge_comment" class="control-label col-sm-3">Comment:</label>'+
+                          '<div class="col-sm-9"><input class="form-control input-sm" type="text" name="acknowledge_comment" ng-model="vm.entity.acknowledge_comment"></div>'+
+                          '</div>'+
+                          '</form>'+
                           '</div>'+
                           '<div class="modal-footer">'+
-                          '<button class="btn btn-success" ng-click="vm.save()">Acknowledge</button>'+
-                          '<button class="btn btn-warning" ng-click="$close()">Cancel</button>'+
+                          '<div class="col-sm-12">'+
+                          '<div class="btn-toolbar">'+
+                          '<button class="btn btn-primary pull-right" ng-click="vm.save()"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>'+
+                          '<button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>'+
+                          '</div>'+
                           '</div>'+
                           '</div>',
                 controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],

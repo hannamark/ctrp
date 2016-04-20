@@ -40,7 +40,6 @@ And the CTRP application will check that all conditional fields have been entere
 |Sponsor-Investigator as Responsible Party : Investigator, Investigator Title, Investigator Affiliation|
 |Funded by NCI Grant : Funding Mechanism, Institute Code, Serial Number, NCI Division/Program Code|
 |IND/IDE : IND/IDE Type, IND/IDE Number, IND/IDE Grantor, IND/IDE Holder Type, NIH Institution or NCI Division|
-|Interventional Trial : Informed Consent Document|
 |Administratively Complete, Withdrawn, Temporarily Closed Trial Status : Why Study Stopped|
 And the CTRP application will check if any optional fields have been entered
 |Optional Fields|
@@ -48,6 +47,7 @@ And the CTRP application will check if any optional fields have been entered
 |Secondary Purpose|
 |Program Code|
 |List of Participating Site Documents|
+|Informed Consent Document|
 |Other Documents|
 And the CTRP application will check that all registration sections have been completed with no errors
 And the option to submit trial will be available
