@@ -24,6 +24,7 @@
                 email: '',
                 password: '',
                 password_confirmation: '',
+                organization_name: '',
                 organization_id: '',
                 selected_functions: []
             },
@@ -78,6 +79,7 @@
                 
                 orgNames = res.orgs.map(function (org) {
                     vm.userObj.local_user.organization_id = org.id;
+                    vm.userObj.local_user.organization_name = org.name;
                     return org.name;
                 });
 
@@ -88,19 +90,7 @@
         }; //typeAheadNameSearch
 
         vm.updateUser = function () {
-            //
             UserService.upsertUserSignup(vm.userObj);
-
-            /**
-            UserService.upsertUserSignup(vm.userObj).then(function (response) {
-                toastr.success('User ' +JSON.stringify(vm.userObj) + ' has been recorded', 'Operation Successful!');
-                console.log("Added User" + JSON.stringify(vm.userObj));
-
-            }).catch(function (err) {
-                console.log("Error in updating inserting new User " + JSON.stringify(vm.userObj));
-            });
-
-**/
         };
     }
 

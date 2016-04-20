@@ -31,6 +31,7 @@
             vm.deleteBtnDisabled = true;
             vm.isCancerGovTypeListEnabled = false;
             vm.isCTGovTypeListEnabled = false;
+            vm.upsertBtnDisabled = true;
             vm.sortableListener = {};
             vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
@@ -75,6 +76,7 @@
             function addIntervention() {
                 // console.info('showing intervention');
                 vm.showInterventionForm = true;
+                vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = _newInterventionObj();
             }
 
@@ -106,6 +108,7 @@
                 console.info('interventions: ', vm.trialDetailObj.interventions);
                 vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
                 vm.deleteBtnDisabled = true;
+                vm.upsertBtnDisabled = true;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
                     console.info('res after upsert: ', res);
                     if (res.server_response.status === 200) {
@@ -131,6 +134,7 @@
 
             function editIntervention(index) {
                 vm.showInterventionForm = true;
+                vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = angular.copy(vm.trialDetailObj.interventions[index]);
                 vm.curInterventionObj.edit = true;
                 vm.curInterventionObj.index = index;
@@ -169,7 +173,7 @@
             }
 
             function deleteInterventions() {
-                console.info('deleting interventions');
+                // console.info('deleting interventions');
                 if (vm.trialDetailObj.interventions.length === 0) {
                     return;
                 }

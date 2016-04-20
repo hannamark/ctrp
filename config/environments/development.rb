@@ -49,6 +49,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
       address: "mailfwd.nih.gov",
       port: 25,
+      openssl_verify_mode: 'none',
       authentication: "plain"
   }
 
