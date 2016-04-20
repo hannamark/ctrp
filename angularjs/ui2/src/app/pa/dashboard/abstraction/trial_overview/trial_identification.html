@@ -71,8 +71,8 @@
                                         Select a priority
                                     </option>
                                 </select>
+                                <span class="help-block" ng-show="abstraction_form.priority_selection.$error.required">Priority is Required</span>
                             </div>
-                            <span class="help-block" ng-show="abstraction_form.priority_selection.$error.required">Priority is Required</span>
                             <div class="col-xs-12 col-sm-5"></div>
                         </div>
                         <!-- end of first form-group -->
@@ -88,21 +88,20 @@
                                 </textarea>
                             </div>
                         </div>
+                        <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                            <div class="btn-toolbar">
+                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-disabled="!abstraction_form.$valid" restriction-field>
+                                    <i class="glyphicon glyphicon-ok"></i> Save
+                                </button>
+                                <button type="button" class="btn btn-warning pull-right" id="cancel_processing" ng-click="trialIdView.resetView()" restriction-field>
+                                    <i class="glyphicon glyphicon-remove"></i> Reset
+                                </button>
+                            </div>
+                        </div>
                         <!-- end of second row -->
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
-        <div class="btn-toolbar">
-            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-disabled="!abstraction_form.$valid" restriction-field>
-                <i class="glyphicon glyphicon-ok"></i> Save
-            </button>
-            <button type="button" class="btn btn-warning pull-right" id="cancel_processing" ng-click="trialIdView.resetView()" restriction-field>
-                <i class="glyphicon glyphicon-remove"></i> Reset
-            </button>
-        </div>
-    </div>
-    <div class="top-offset-xss"></div>
 </div>
