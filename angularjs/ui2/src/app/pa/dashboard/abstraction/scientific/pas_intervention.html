@@ -88,9 +88,13 @@
 
                                 <div class="form-group text-center">
                                     <button type="button" class="btn btn-warning" ng-click="interventionView.resetLookupForm(intervention_form)">Reset</button>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" ng-hide="interventionView.curInterventionObj.edit">
                                         <i class="glyphicon glyphicon-plus"></i> Add
                                     </button>
+                                    <button type="submit" class="btn btn-primary" ng-show="interventionView.curInterventionObj.edit">
+                                        <i class="glyphicon glyphicon-edit"></i> Update
+                                    </button>
+
                                 </div>
                             </fieldset>
 
@@ -121,14 +125,14 @@
                                     <th class="col-sm-2">Other Names</th>
                                     <th class="col-sm-2">Cancer.gov Type</th>
                                     <th class="col-sm-2">ClinicalTrials.gov Type</th>
-                                    <th>Edit</th>
+                                    <th class="text-center td-icon">Edit</th>
                                     <th class="text-center td-icon">
                                         <input type="checkbox" name="delete_all_inter" id="delete_all_inter" ng-model="interventionView.deleteAll" ng-change="interventionView.flagAllInterventionsForDeletion(interventionView.deleteAll)">
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.name === t.name}">
+                                    <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.id === t.id}">
                                         <td>
                                             {{t.name}}
                                         </td>
@@ -144,8 +148,10 @@
                                         <td>
                                             {{t.intervention_type_ct_name}}
                                         </td>
-                                        <td>
-                                            Edit
+                                        <td class="text-center td-icon">
+                                            <button type="button" class="btn btn-primary" restriction-field ng-disabled="t._destroy" ng-click="interventionView.editIntervention($index)">
+                                                <i class="glyphicon glyphicon-edit"></i>
+                                            </button>
                                         </td>
                                         <td class="text-center td-icon">
                                             <input type="checkbox" ng-model="t._destroy" ng-change="!t._destroy" ng-click="interventionView.deleteAllAssoCheckbox = false"/>
