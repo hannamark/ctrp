@@ -67,7 +67,9 @@
                                     <div class="col-xs-12 col-sm-5">
                                         <textarea name="intervention_desc" id="intervention_desc" rows="10" class="form-control"
                                             maxlength="1000"
-                                            ng-model="interventionView.curInterventionObj.description"></textarea>
+                                            ng-model="interventionView.curInterventionObj.description">
+                                            placeholder="Intervention Description"    
+                                        </textarea>
                                         <span class="help-block" ng-show="intervention_form.intervention_desc.$viewValue.length > 0">
                                             {{1000 - intervention_form.intervention_desc.$viewValue.length}} characters left
                                         </span>

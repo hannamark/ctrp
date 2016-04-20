@@ -80,11 +80,6 @@
             function upsertIntervention(inventionObj) {
 
                 if (angular.isDefined(inventionObj)) {
-                    var typeCancerObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_cancer_gov_id});
-                    var typeCTObj = _.findWhere(interventionTypes, {id: inventionObj.intervention_type_ct_gov_id});
-                    inventionObj.intervention_type_cancer_name = !!typeCancerObj ? typeCancerObj.name : '';
-                    inventionObj.intervention_type_ct_name = !!typeCTObj ? typeCTObj.name : '';
-                    console.info('upserting intervention: ', inventionObj);
 
                     if (inventionObj.index !== undefined) {
                         // insert at index: index
