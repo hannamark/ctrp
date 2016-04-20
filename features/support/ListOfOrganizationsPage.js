@@ -38,6 +38,7 @@ ListOfOrganizationsPage = function () {
     this.orgModelCloseButton = element(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]')); //element(by.css('.btn.btn-danger.pull-right'));
     this.orgPersonModelCloseButton = element(by.css('button[ng-click="advPersonSearchModalView.cancel()"]'));
     this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
+    this.orgFamilyAffiliatedTable = element.all(by.css('div[ng-show="familyDetailView.savedSelection.length > 0"]'));
     //  this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedExpirationDate = element(by.model('org.expiration_date'));

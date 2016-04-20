@@ -20,6 +20,7 @@ AddPersonPage = function () {
     this.addPersonLastName = element(by.model('personDetailView.curPerson.lname'));
     this.addPersonSourceId = element(by.binding('personDetailView.curPerson.source_id'));
     this.addPersonSourceStatus = element(by.model('personDetailView.curPerson.source_status_id'));
+    this.addPersonSourceContext = element(by.model('personDetailView.curPerson.source_context_id'));
     this.addPersonPrefix = element(by.model('personDetailView.curPerson.prefix'));
     this.addPersonSuffix = element(by.model('personDetailView.curPerson.suffix'));
     this.addPersonEmail = element(by.model('personDetailView.curPerson.email'));
@@ -30,11 +31,13 @@ AddPersonPage = function () {
     this.addPersonSelectAllAffiliatedOrg = element(by.css('button[title="Select all"]'));
     this.addPersonRemoveAllAffiliatedOrg = element(by.css('button[title="Remove all"]'));
     this.personSaveButton = element(by.id('save_btn'));//element(by.css('button[type="submit"]')); //element(by.css('input[value="Save"]'));
-    this.personResetButton = element(by.css('#reset_btn'));
+    this.personResetButton = element(by.id('clear_btn'));
+    this.personDeleteButton = element(by.id('confirm_btn'));
     this.addPersonHeader = element(by.binding('personDetailView.formTitleLabel'));//element(by.css('h4[ng-if="personDetailView.curPerson.new"]'));
     this.editPersonHeader = element(by.binding('personDetailView.formTitleLabel'));//element(by.css('h4[ng-if="!personDetailView.curPerson.new"]'));
     this.personLastUpdatedBy = element(by.binding('personDetailView.curPerson.updated_by'));
     this.personCreatedBy = element(by.binding('personDetailView.curPerson.created_by'));
+    this.addPersonComment = element.all(by.css('ng-md-icon[icon="comment"]'));
 
 
     var personVerifyAddHeader = 'Add Person';
@@ -125,6 +128,10 @@ AddPersonPage = function () {
 
     this.getVerifyAddPerSourceStatus = function(sourceStatus){
         addPerson.getVerifyListValue(this.addPersonSourceStatus,sourceStatus,"Get Person by Source Status field");
+    };
+
+    this.getVerifyAddPerSourceContext= function(sourceContext){
+        addPerson.getVerifyListValue(this.addPersonSourceContext,sourceContext,"Get Person by Source Context field");
     };
 
     this.getVerifyAddPerPrefix = function(prefix){

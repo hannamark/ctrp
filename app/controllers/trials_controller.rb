@@ -149,6 +149,14 @@ class TrialsController < ApplicationController
     end
   end
 
+  def get_intervention_types
+    @intervention_types = InterventionType.all
+
+    respond_to do |format|
+      format.json { render :json => @intervention_types }
+    end
+  end
+
   def get_intervention_models
     @intervention_models = InterventionModel.all
 
@@ -181,6 +189,19 @@ class TrialsController < ApplicationController
     respond_to do |format|
       format.json { render :json => {:statuses => @statuses} }
     end
+  end
+
+  # search interventions table against the 'name' field
+  def search_ctrp_interventions
+    @intervention = nil
+    if params[:intervention_name].present?
+      @intervention = Intervention.find_by_name(params[:intervention_name]) # first match
+    end
+
+    respond_to do |format|
+      format.json { render :json => { :data => @intervention } }
+    end
+
   end
 
   def lookup_imported_ncit_interventions
@@ -615,7 +636,7 @@ class TrialsController < ApplicationController
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status, :added_by_id, :why_deleted],
-                                  interventions_attributes: [:id, :name, :description, :other_name, :intervention_type_id, :trial_id],
+                                  interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_cancer_gov_id, :intervention_type_ct_gov_id],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:index,:label,:description,:_destroy],

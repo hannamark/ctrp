@@ -1,9 +1,7 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   ## Please comment the next two lines if you donot want the Authorization checks
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
-  skip_authorize_resource :only => [:search, :select]
+  before_filter :wrapper_authenticate_user, :except => [:search, :select] unless Rails.env.test?
 
   respond_to :html, :json
 
@@ -158,7 +156,7 @@ class OrganizationsController < ApplicationController
       @organizations = @organizations.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present?
 
 
-      if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
+      if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER")
         @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
         @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
 
