@@ -111,7 +111,7 @@
                     </div>
                 </form>
 
-                <h4 ng-show="diseaseView.searchResult.length">{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
+                <h4 ng-show="diseaseView.searchResult.length">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
 
                 <div class="table-responsive max-height-lg">
                     <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.searchResult.length">
