@@ -131,7 +131,7 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody ui-sortable="interventionView.sortableListener" ng-model="interventionView.trialDetailObj.interventions">
                                     <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.id === t.id}">
                                         <td>
                                             {{t.name}}

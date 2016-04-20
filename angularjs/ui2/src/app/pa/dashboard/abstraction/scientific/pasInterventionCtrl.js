@@ -29,9 +29,10 @@
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
             vm.deleteBtnDisabled = true;
-
             vm.isCancerGovTypeListEnabled = false;
             vm.isCTGovTypeListEnabled = false;
+            vm.sortableListener = {};
+            vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
             var isUserAllowedToSelectType = curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU'; // only super userss are allowed
 
@@ -162,6 +163,12 @@
                     return;
                 }
                 updateInterventions();
+            }
+
+            function dragItemCallback(event, ui) {
+                var item = ui.item.scope().item;
+                var fromIndex = ui.item.sortable.index;
+                var toIndex = ui.item.sortable.dropindex;
             }
 
             var modalOpened = false;
