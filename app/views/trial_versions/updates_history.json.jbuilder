@@ -1,39 +1,22 @@
 json.trial_versions do
-  json.array!(@trial_versions) do |trial_version|
-
-    sub = TrialVersion.find_by_item_type_and_transaction_id("Submission",trial_version.transaction_id)
-    submission = Submission.find_by_id(sub.item_id) if sub
-    submission_type= SubmissionType.find_by_id(submission.submission_type_id) if submission
-    p submission_type
-
-    if submission && submission_type.name == "Update"
-      json.extract! trial_version, :event, :created_at
-      json.nci_id trial_version.object_changes["nci_id"]?  trial_version.object_changes["nci_id"][1] : nil
-      json.lead_protocol_id trial_version.object_changes["lead_protocol_id"]?  trial_version.object_changes["lead_protocol_id"][1] : nil
-      json.official_title trial_version.object_changes["official_title"]?  trial_version.object_changes["official_title"][1] : nil
+  json.array!(@submissions) do |submission|
 
 
+    json.submission_num submission.submission_num
+    json.id submission.id
+    json.submission_date submission.submission_date
+    json.submission_source SubmissionSource.find_by_id(submission.submission_source_id).name
+    json.acknowledge_comment submission.acknowledge_comment
+    json.acknowledge_date submission.acknowledge_date
+    json.acknowledged_by submission.acknowledged_by
+    json.acknowledge submission.acknowledge
+
+    submission_version = TrialVersion.find_by_item_type_and_item_id("Submission", submission.id)
 
 
+    Array updated_fields_array = Array.new
 
-=begin
-protocol
-      |Other Protocol Identifiers|
-      |Grant Information|
-      |trial status|
-      |trial status date|
-      |start date
-      |Start date type|
-      |Primary Completion Date
-      |Prmary Completion Date Type|
-      |completion date
-      |completion date type|
-      |Trial Related Documents|
-=end
-
-     Array updated_fields_array = Array.new
-
-      other_ids = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "OtherId",trial_version.transaction_id)
+      other_ids = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "OtherId",submission_version.transaction_id) if submission_version
 
       puts "Other Ids"
       puts  other_ids
@@ -82,7 +65,7 @@ protocol
 
       end
 
-      grants = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "Grant",trial_version.transaction_id)
+      grants = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "Grant",submission_version.transaction_id) if submission_version
 
       puts "Grants "
       puts grants
@@ -137,7 +120,7 @@ protocol
       end
 
 
-      trial_statuses = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "TrialStatusWrapper",trial_version.transaction_id)
+      trial_statuses = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "TrialStatusWrapper",submission_version.transaction_id) if submission_version
 
       if !trial_statuses.nil?
         Hash h = Hash.new
@@ -149,9 +132,9 @@ protocol
           case o.event
             when "destroy"
               p o.event
-              status_date_N = o.object_changes["status_date"][1]
-              trial_status_id = o.object_changes["trial_status_id"][1]
-              trial_status_N = TrialStatus.find_by_code(trial_status_id) if trial_status_id?
+              status_date_N = o.object["status_date"]
+              trial_status_id = o.object["trial_status_id"]
+              trial_status_N = TrialStatus.find_by_code(trial_status_id) if trial_status_id
 
               destroy_sign = " (D) "
 
@@ -161,14 +144,14 @@ protocol
             when "create" || "update"
               status_date_N = o.object_changes["status_date"][1]
               trial_status_id = o.object_changes["trial_status_id"][1]
-              trial_status_N = TrialStatus.find_by_code(trial_status_id) if trial_status_id?
+              trial_status_N = TrialStatus.find_by_code(trial_status_id) if trial_status_id
 
               destroy_sign = " "
               trial_statuses_string_N = trial_statuses_string_N + delimiter + status_date_N.to_s + "   " + trial_status_N.to_s + destroy_sign + delimiter
 
               status_date_O = o.object_changes["status_date"][0]
               trial_status_id = o.object_changes["trial_status_id"][0]
-              trial_status_O = TrialStatus.find_by_code(trial_status_id) if trial_status_id?
+              trial_status_O = TrialStatus.find_by_code(trial_status_id) if trial_status_id
 
               trial_statuses_string_O = trial_statuses_string_O + delimiter + status_date_O.to_s + "   " + trial_status_O.to_s + destroy_sign + delimiter
 
@@ -187,84 +170,88 @@ protocol
       end
 
 
-      start_date_N = trial_version.object_changes["start_date"]?  trial_version.object_changes["start_date"][1] : nil
-      start_date_O = trial_version.object_changes["start_date"]?  trial_version.object_changes["start_date"][0] : nil
-
-      if start_date_N || start_date_O
-        Hash h = Hash.new
-        h[:updated_filed]="Start date"
-        h[:old_value] = start_date_O
-        h[:new_value] = start_date_N
-        updated_fields_array.push(h)
-      end
+     trial_version = TrialVersion.find_by_item_type_and_transaction_id("Trial", submission_version.transaction_id) if submission_version
 
 
+     if trial_version
+       start_date_N = trial_version.object_changes["start_date"]?  trial_version.object_changes["start_date"][1] : nil
+       start_date_O = trial_version.object_changes["start_date"]?  trial_version.object_changes["start_date"][0] : nil
 
-      start_date_type_N = trial_version.object_changes["start_date_qual"]?  trial_version.object_changes["start_date_qual"][1] : nil
-      start_date_type_O = trial_version.object_changes["start_date_qual"]?  trial_version.object_changes["start_date_qual"][0] : nil
-
-      if start_date_type_N || start_date_type_O
-        Hash h = Hash.new
-        h[:updated_filed]="Start date type"
-        h[:old_value] = start_date_type_O
-        h[:new_value] = start_date_type_N
-        updated_fields_array.push(h)
-      end
+       if start_date_N || start_date_O
+         Hash h = Hash.new
+         h[:updated_filed]="Start date"
+         h[:old_value] = start_date_O
+         h[:new_value] = start_date_N
+         updated_fields_array.push(h)
+       end
 
 
 
-      primary_comp_date_N = trial_version.object_changes["primary_comp_date"]?  trial_version.object_changes["primary_comp_date"][1] : nil
-      primary_comp_date_O = trial_version.object_changes["primary_comp_date"]?  trial_version.object_changes["primary_comp_date"][0] : nil
+       start_date_type_N = trial_version.object_changes["start_date_qual"]?  trial_version.object_changes["start_date_qual"][1] : nil
+       start_date_type_O = trial_version.object_changes["start_date_qual"]?  trial_version.object_changes["start_date_qual"][0] : nil
 
-      if primary_comp_date_N || primary_comp_date_O
-        Hash h = Hash.new
-        h[:updated_filed]="Primary completion date"
-        h[:old_value] = primary_comp_date_O
-        h[:new_value] = primary_comp_date_N
-        updated_fields_array.push(h)
-      end
-
-
-
-      primary_comp_date_type_N = trial_version.object_changes["primary_comp_date_qual"]?  trial_version.object_changes["primary_comp_date_qual"][1] : nil
-      primary_comp_date_type_O = trial_version.object_changes["primary_comp_date_qual"]?  trial_version.object_changes["primary_comp_date_qual"][0] : nil
-
-      if primary_comp_date_type_N || primary_comp_date_type_O
-        Hash h = Hash.new
-        h[:updated_filed]="Primary completion date type"
-        h[:old_value] = primary_comp_date_type_O
-        h[:new_value] = primary_comp_date_type_N
-        updated_fields_array.push(h)
-      end
-
-      comp_date_N = trial_version.object_changes["comp_date"]?  trial_version.object_changes["comp_date"][1] : nil
-      comp_date_O = trial_version.object_changes["comp_date"]?  trial_version.object_changes["comp_date"][0] : nil
-
-      if comp_date_N || comp_date_O
-        Hash h = Hash.new
-        h[:updated_filed]="Completion date"
-        h[:old_value] = comp_date_O
-        h[:new_value] = comp_date_N
-        updated_fields_array.push(h)
-      end
-
-
-      comp_date_type_N = trial_version.object_changes["comp_date_qual"]?  trial_version.object_changes["comp_date_qual"][1] : nil
-      comp_date_type_O = trial_version.object_changes["comp_date_qual"]?  trial_version.object_changes["comp_date_qual"][0] : nil
-
-      if comp_date_type_N || comp_date_type_O
-        Hash h = Hash.new
-        h[:updated_filed]="Completion date type"
-        h[:old_value] = comp_date_type_O
-        h[:new_value] = comp_date_type_N
-        updated_fields_array.push(h)
-      end
+       if start_date_type_N || start_date_type_O
+         Hash h = Hash.new
+         h[:updated_filed]="Start date type"
+         h[:old_value] = start_date_type_O
+         h[:new_value] = start_date_type_N
+         updated_fields_array.push(h)
+       end
 
 
 
+       primary_comp_date_N = trial_version.object_changes["primary_comp_date"]?  trial_version.object_changes["primary_comp_date"][1] : nil
+       primary_comp_date_O = trial_version.object_changes["primary_comp_date"]?  trial_version.object_changes["primary_comp_date"][0] : nil
+
+       if primary_comp_date_N || primary_comp_date_O
+         Hash h = Hash.new
+         h[:updated_filed]="Primary completion date"
+         h[:old_value] = primary_comp_date_O
+         h[:new_value] = primary_comp_date_N
+         updated_fields_array.push(h)
+       end
 
 
-      json.friends do
+
+       primary_comp_date_type_N = trial_version.object_changes["primary_comp_date_qual"]?  trial_version.object_changes["primary_comp_date_qual"][1] : nil
+       primary_comp_date_type_O = trial_version.object_changes["primary_comp_date_qual"]?  trial_version.object_changes["primary_comp_date_qual"][0] : nil
+
+       if primary_comp_date_type_N || primary_comp_date_type_O
+         Hash h = Hash.new
+         h[:updated_filed]="Primary completion date type"
+         h[:old_value] = primary_comp_date_type_O
+         h[:new_value] = primary_comp_date_type_N
+         updated_fields_array.push(h)
+       end
+
+       comp_date_N = trial_version.object_changes["comp_date"]?  trial_version.object_changes["comp_date"][1] : nil
+       comp_date_O = trial_version.object_changes["comp_date"]?  trial_version.object_changes["comp_date"][0] : nil
+
+       if comp_date_N || comp_date_O
+         Hash h = Hash.new
+         h[:updated_filed]="Completion date"
+         h[:old_value] = comp_date_O
+         h[:new_value] = comp_date_N
+         updated_fields_array.push(h)
+       end
+
+
+       comp_date_type_N = trial_version.object_changes["comp_date_qual"]?  trial_version.object_changes["comp_date_qual"][1] : nil
+       comp_date_type_O = trial_version.object_changes["comp_date_qual"]?  trial_version.object_changes["comp_date_qual"][0] : nil
+
+       if comp_date_type_N || comp_date_type_O
+         Hash h = Hash.new
+         h[:updated_filed]="Completion date type"
+         h[:old_value] = comp_date_type_O
+         h[:new_value] = comp_date_type_N
+         updated_fields_array.push(h)
+       end
+     end
+
+
+
+
+    json.friends do
         json.array!(updated_fields_array) do |h|
           json.field_name h[:updated_filed]
           json.old_value  h[:old_value]
@@ -272,23 +259,6 @@ protocol
         end
       end
 
-
-
-
-
-      json.submission_num submission.submission_num
-          json.id submission.id
-          json.submission_date submission.submission_date
-          json.submission_source SubmissionSource.find_by_id(submission.submission_source_id).name
-          json.acknowledge_comment submission.acknowledge_comment
-          json.acknowledge_date submission.acknowledge_date
-          json.acknowledged_by submission.acknowledged_by
-          json.acknowledge submission.acknowledge
     end
 
-
-
-
-
-  end
 end

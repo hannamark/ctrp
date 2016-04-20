@@ -64,10 +64,13 @@ end
   p params[:trial_id]
   ##find all versions with given trial ; extract trial id and transaction id
 
-  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? AND event=? ", "Trial",params[:trial_id], "update").order('created_at desc')
+  submission_type= SubmissionType.find_by_name("Update")
+
+   @submissions =Submission.where("trial_id =? AND submission_type_id=? ", params[:trial_id],submission_type.id)
+
+  #@trial_versions =TrialVersion.where("item_type = ? AND item_id = ? AND event=? ", "Trial",params[:trial_id], "update").order('created_at desc')
 
     ## find submission
-
   end
 
 
