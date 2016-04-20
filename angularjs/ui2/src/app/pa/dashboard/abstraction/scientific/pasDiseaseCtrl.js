@@ -22,6 +22,7 @@
         vm.showPrimaryOnlyOne = false;
         vm.showSecondaryOnlyOne = false;
         vm.disableBtn = false;
+        vm.searching = false;
 
         vm.setAddMode = function(mode) {
             vm.addMode = mode;
@@ -108,10 +109,12 @@
         };
 
         vm.searchDiseases = function() {
+            vm.searching = true;
             DiseaseService.searchDiseases(vm.searchParams).then(function(response) {
                 vm.searchResult = response.diseases;
                 vm.infoUrl = response.info_url;
                 vm.treeUrl = response.tree_url;
+                vm.searching = false;
             }).catch(function(err) {
                 console.log("Error in searching diseases: " + err);
             });
@@ -162,7 +165,7 @@
                     var parent_preferred = '';
                     angular.forEach(disease.parents, function(parent) {
                         if (parent_preferred.length > 0) {
-                            parent_preferred += ', ';
+                            parent_preferred += ' | ';
                         }
                         parent_preferred += parent.preferred_name;
                     });
