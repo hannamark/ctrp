@@ -8,7 +8,7 @@
     <section>
         <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
             <md-tab>
-                <md-tab-label>Participating Site</md-tab-label>
+                <md-tab-label><span id="participating_site">Participating Site</span></md-tab-label>
                 <md-tab-body>
                     <form class="form form-horizontal" role="form" id="ps_sites_form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                         <!-- first row in the accordion body -->
@@ -236,7 +236,7 @@
             </md-tab-body>
         </md-tab>
         <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-            <md-tab-label>Investigators</md-tab-label>
+            <md-tab-label><span id="investigators">Investigators</span></md-tab-label>
             <md-tab-body>
                 <form class="form form-horizontal" role="form" id="ps_inv_form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                     <!-- first row in the accordion body -->
@@ -376,7 +376,7 @@
             </md-tab-body>
         </md-tab>
         <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-            <md-tab-label>Contact</md-tab-label>
+            <md-tab-label><span id="contact">Contact</span></md-tab-label>
             <md-tab-body>
                 <!-- General Contact Begin -->
                 <!-- fieldset for Central Contact -->
