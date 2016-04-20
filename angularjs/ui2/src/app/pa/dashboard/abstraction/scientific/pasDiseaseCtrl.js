@@ -162,7 +162,7 @@
                     var parent_preferred = '';
                     angular.forEach(disease.parents, function(parent) {
                         if (parent_preferred.length > 0) {
-                            parent_preferred += ', ';
+                            parent_preferred += ' | ';
                         }
                         parent_preferred += parent.preferred_name;
                     });
