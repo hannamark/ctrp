@@ -111,6 +111,10 @@
                     </div>
                 </form>
 
+                <div class="col-xs-12">
+                    <span us-spinner="{radius: 10, length: 5}" spinner-on="diseaseView.searching"></span>
+                </div>
+
                 <h4 ng-show="diseaseView.searchResult.length">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
 
                 <div class="table-responsive max-height-lg">
