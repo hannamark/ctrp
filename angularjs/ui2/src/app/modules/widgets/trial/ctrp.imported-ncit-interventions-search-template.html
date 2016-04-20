@@ -37,13 +37,13 @@
                 </div>
             </div>
         </div>
-        <div class="row" ng-hide="interventionsLookupView.searchResults.total == -1">
+        <div class="row" ng-hide="interventionsLookupView.searchResults.total == -1" ng-cloak>
             <p>
                 <strong>Intervention Lookup Results: {{interventionsLookupView.searchResults.total | number}} found</strong>
             </p>
             <div ui-grid="interventionsLookupView.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
         </div>
-        <div class="row top-buffer" ng-hide="interventionsLookupView.searchResults.total == -1">
+        <div class="row top-buffer" ng-hide="interventionsLookupView.searchResults.total == -1" ng-cloak>
             <div class="col-xs-12 col-sm-10" ng-hide="interventionsLookupView.curSelectedRow == ''">
                 <p><strong>Preferred Name:</strong> {{interventionsLookupView.curSelectedRow.preferred_name}}</p>
                 <p><strong>Other Names:</strong> {{interventionsLookupView.curSelectedRow.synonyms}}</p>

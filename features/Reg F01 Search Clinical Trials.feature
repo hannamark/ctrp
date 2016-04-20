@@ -179,3 +179,15 @@ Then the search results will display the trials that match all the search criter
 
 
 
+  Scenario: #14 Search Trials Rules
+    Given I am logged into the CTRP Registration application
+    And I am on the Search Clinical Trials Screen
+    And I have clicked on the search button to find any trial type
+         
+      |My Trials  |
+      |All Trials  |
+      |Saved Drafts  |
+    When I have not selected or entered any search criteria
+   Then the message "At least one selection value must be entered prior to running the search" will be displayed
+   And no Trials will be found in the results
+
