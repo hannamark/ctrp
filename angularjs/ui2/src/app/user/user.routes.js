@@ -53,7 +53,12 @@
                 })
                 .state('main.welcome_signup', {
                     url: '/welcome_signup',
-                    templateUrl: 'app/user/welcome_signup.html'
+                    templateUrl: 'app/user/welcome_signup.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.sign_in',
+                        label: 'CTRP Welcome'
+                        // skip: true,
+                    }
                 })
 
                 .state('main.gsa', {

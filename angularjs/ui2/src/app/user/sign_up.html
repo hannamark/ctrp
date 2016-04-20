@@ -127,7 +127,7 @@
                     <div class="row" ng-if="userView.userObj.local_user.domain.length">
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <fieldset class="form-group has-feedback required" ng-class="{'has-error': userView.selectAbleUserFunctions > 1 && !userView.userObj.local_user.selected_functions.length}">
-                                <legend>Select the functionality desired:</legend>
+                                <legend>Functionality desired:</legend>
                                     <div ng-repeat="(userFunc,enabled) in userView.selectedFunctionsObj[userView.userObj.local_user.domain]">
                                         <label>
                                             <input type="checkbox" ng-model="userView.selectedFunctionsObj[userView.userObj.local_user.domain][userFunc]" ng-change='userView.selectedUserFunctions()' ng-disabled="userView.selectAbleUserFunctions[userView.userObj.local_user.domain] === 1"/> {{userFunc}}

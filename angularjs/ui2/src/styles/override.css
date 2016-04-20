@@ -1206,13 +1206,13 @@ div.datepicker {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 }
 
-.sign_up .panel {
+.sign_up .panel, .welcome_signup .panel {
     max-width: 500px;
 }
 .sign_up form {
     width:100%;
 }
-.sign_up .centered-form{
+.sign_up .centered-form, .welcome_signup .centered-form{
     padding: 1% 0;
 }
 
