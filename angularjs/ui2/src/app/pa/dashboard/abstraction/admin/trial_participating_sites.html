@@ -8,9 +8,9 @@
     <section>
         <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
             <md-tab>
-                <md-tab-label id="participatingSites">Participating Site</md-tab-label>
+                <md-tab-label>Participating Site</md-tab-label>
                 <md-tab-body>
-                    <form class="form form-horizontal" role="form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
+                    <form class="form form-horizontal" role="form" id="ps_sites_form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                         <!-- first row in the accordion body -->
 
                         <!-- fieldset for Organization -->
@@ -236,9 +236,9 @@
             </md-tab-body>
         </md-tab>
         <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-            <md-tab-label id="investigators">Investigators</md-tab-label>
+            <md-tab-label>Investigators</md-tab-label>
             <md-tab-body>
-                <form class="form form-horizontal" role="form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
+                <form class="form form-horizontal" role="form" id="ps_inv_form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                     <!-- first row in the accordion body -->
                     <!-- fieldset for Investigator -->
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
@@ -376,11 +376,11 @@
             </md-tab-body>
         </md-tab>
         <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-            <md-tab-label id="contact">Contact</md-tab-label>
+            <md-tab-label>Contact</md-tab-label>
             <md-tab-body>
                 <!-- General Contact Begin -->
                 <!-- fieldset for Central Contact -->
-                <form class="form form-horizontal" role="form" name="ps_contact_form" novalidate ctrp-submit="psView.saveContact()">
+                <form class="form form-horizontal" role="form" id="ps_contact_form" name="ps_contact_form" novalidate ctrp-submit="psView.saveContact()">
                     <!-- fieldset for Organization -->
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                         <legend class="sub-bordered">General Contact</legend>
