@@ -40,14 +40,14 @@
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
             vm.selectedFunctionsObj = [];
-            vm.selecteAbleUserFunctions = [];
+            vm.selectAbleUserFunctions = [];
             angular.forEach(vm.domainsArr, function (domain) {
                 AppSettingsService.getSettings(domain + '_USER_FUNCTIONS', true).then(function (response) {
                     var functionsArr = response.data[0].settings.split('||');
                     vm.selectedFunctionsObj[domain] = {};
                     angular.forEach(functionsArr, function (func) {
-                        vm.selecteAbleUserFunctions[domain] = functionsArr.length;
-                        vm.selectedFunctionsObj[domain][func] = vm.selecteAbleUserFunctions[domain] > 1 ? false : true;
+                        vm.selectAbleUserFunctions[domain] = functionsArr.length;
+                        vm.selectedFunctionsObj[domain][func] = vm.selectAbleUserFunctions[domain] > 1 ? false : true;
                     });
                 }).catch(function (err) {
                     console.log("Error in retrieving " + domain + "_USER_FUNCTIONS.");

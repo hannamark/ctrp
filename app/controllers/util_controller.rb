@@ -2,9 +2,8 @@ class UtilController < ApplicationController
   before_filter :wrapper_authenticate_user, :except => [:get_app_settings_ext] unless Rails.env.test?
 
   def get_app_settings
-    results = {}
     requestedSettings = params[:settings]
-    results[requestedSettings] = AppSetting.find_by_code(requestedSettings).big_value
+    results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value : nil
     @settings = [results]
   end
 
