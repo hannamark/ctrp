@@ -88,10 +88,10 @@
 
                                 <div class="form-group text-center">
                                     <button type="button" class="btn btn-warning" ng-click="interventionView.resetLookupForm(intervention_form)">Reset</button>
-                                    <button type="submit" class="btn btn-primary" ng-hide="interventionView.curInterventionObj.edit">
+                                    <button type="submit" class="btn btn-primary" ng-hide="interventionView.curInterventionObj.edit" ng-disabled="interventionView.upsertBtnDisabled">
                                         <i class="glyphicon glyphicon-plus"></i> Add
                                     </button>
-                                    <button type="submit" class="btn btn-primary" ng-show="interventionView.curInterventionObj.edit">
+                                    <button type="submit" class="btn btn-primary" ng-show="interventionView.curInterventionObj.edit" ng-disabled="interventionView.upsertBtnDisabled">
                                         <i class="glyphicon glyphicon-edit"></i> Update
                                     </button>
 
