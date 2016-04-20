@@ -12,7 +12,8 @@ As a CTRP User, I am able to View Organizations
     
     And I have completed an organization search 
     When I click on the organization name
-    Then I will be able to view Organization details type
+    Then the View Organization screen opens with the page title as "View Organization"
+    And I will be able to view Organization details type
     
     
       |CTRPID  |999999  |

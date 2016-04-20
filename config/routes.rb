@@ -116,6 +116,7 @@ Rails.application.routes.draw do
         get 'index'
         post 'history'
         post 'updates_history'
+        post 'submissions_history'
       end
     end
 

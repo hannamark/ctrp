@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419142939) do
+ActiveRecord::Schema.define(version: 20160420174211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,17 +448,22 @@ ActiveRecord::Schema.define(version: 20160419142939) do
   end
 
   create_table "interventions", force: :cascade do |t|
-    t.string   "name",                 limit: 255
-    t.string   "other_name",           limit: 255
+    t.string   "name",                            limit: 255
+    t.string   "other_name",                      limit: 255
     t.text     "description"
+    t.integer  "intervention_type_cancer_gov_id"
+    t.integer  "intervention_type_ct_gov_id"
     t.integer  "intervention_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.string   "uuid",                 limit: 255
-    t.integer  "lock_version",                     default: 0
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
+    t.string   "uuid",                            limit: 255
+    t.integer  "lock_version",                                default: 0
+    t.integer  "index"
   end
 
+  add_index "interventions", ["intervention_type_cancer_gov_id"], name: "index_interventions_on_intervention_type_cancer_gov_id", using: :btree
+  add_index "interventions", ["intervention_type_ct_gov_id"], name: "index_interventions_on_intervention_type_ct_gov_id", using: :btree
   add_index "interventions", ["intervention_type_id"], name: "index_interventions_on_intervention_type_id", using: :btree
   add_index "interventions", ["trial_id"], name: "index_interventions_on_trial_id", using: :btree
 
@@ -1402,7 +1407,6 @@ ActiveRecord::Schema.define(version: 20160419142939) do
     t.integer  "user_status_id"
     t.string   "phone"
     t.string   "city"
-    t.string   "domain"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree

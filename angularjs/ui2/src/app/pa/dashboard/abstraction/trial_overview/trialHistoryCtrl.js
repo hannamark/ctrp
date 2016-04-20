@@ -37,6 +37,9 @@
         vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
 
 
+        vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
+
+
         activate();
 
         function activate() {
@@ -50,6 +53,12 @@
             vm.updatesGridOptions.data = null;
             vm.updatesGridOptions.totalItems = null;
             loadTrialUpdates();
+
+            vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
+            vm.submissionsGridOptions.data = null;
+            vm.submissionsGridOptions.totalItems = null;
+            loadTrialSubmissions();
+
 
         }
 
@@ -75,6 +84,29 @@
                 console.log('search finished');
             });
         }
+
+
+        function loadTrialSubmissions() {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            vm.trialHistoryObj = {trial_id: trialId};
+
+            AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                vm.submissionsGridOptions.data = data.trial_versions;
+                vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
+            }).catch(function (err) {
+                console.log('Getting trial submissions failed');
+            }).finally(function () {
+                console.log('search finished');
+            });
+        }
+
+
+
+
+
+
+
         /**
          * Get trial detail object from parent scope
          */
@@ -134,6 +166,9 @@
             }
         }; //openCalendar
 
+
+
+
         function submit() {
 
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
@@ -170,11 +205,19 @@
                           '<h3 class="modal-title">Acknowledge Update</h3>'+
                           '</div>'+
                           '<div class="modal-body">'+
-                          '<form >Comment: <input type="text" ng-model="vm.entity.acknowledge_comment"></form>'+
+                          '<form class="form form-horizontal">'+
+                          '<div class="form-group">'+
+                          '<label for="acknowledge_comment" class="control-label col-sm-3">Comment:</label>'+
+                          '<div class="col-sm-9"><input class="form-control input-sm" type="text" name="acknowledge_comment" ng-model="vm.entity.acknowledge_comment"></div>'+
+                          '</div>'+
+                          '</form>'+
                           '</div>'+
                           '<div class="modal-footer">'+
-                          '<button class="btn btn-success" ng-click="vm.save()">Acknowledge</button>'+
-                          '<button class="btn btn-warning" ng-click="$close()">Cancel</button>'+
+                          '<div class="col-sm-12">'+
+                          '<div class="btn-toolbar">'+
+                          '<button class="btn btn-primary pull-right" ng-click="vm.save()"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>'+
+                          '<button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>'+
+                          '</div>'+
                           '</div>'+
                           '</div>',
                 controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
