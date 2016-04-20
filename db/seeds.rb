@@ -932,6 +932,14 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL', name: 'NCI Thesauru
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
 
+AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
+
+AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value', big_value: 'ROLE_RO||ROLE_SUPER||ROLE_ADMIN||ROLE_CURATOR||ROLE_ABSTRACTOR||ROLE_ABSTRACTOR-SU||ROLE_TRIAL-SUBMITTER||ROLE_ACCRUAL-SUBMITTER||ROLE_SITE-SU||ROLE_SERVICE-REST')
+
+AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons||Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
+
+AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 
 ########## SEEDING MAIL TEMPLATES STARTS ##########

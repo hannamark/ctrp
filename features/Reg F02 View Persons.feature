@@ -4,19 +4,19 @@ Feature: Reg F02 View Persons
 As any CTRP User, I am able to View Existing Persons
 
 
-Scenario Outline: #1 I am able to view existing person in CTRP as a Registry user
+Scenario: #1 I am able to view existing person in CTRP as a Registry user
   Given I am logged into the CTRP Registration application
   And the following parameters of a Person exist:
-    |Prefix|PersonFirstName|PersonMiddleName|PersonLastName|Suffix|SourceContext|SourceID|SourceStatus |email |phone|Org Affiliation|
-    |Ms|shiFNameTrial|shiMNameTrial |shiLNameTrial |Suffix|CTRP|shiSID|Active |shiPercukeTrial@pr.com| 420-999-8906|ShiOrg|
+    |Prefix|PersonFirstName|PersonMiddleName|PersonLastName|Suffix|SourceContext|SourceID|SourceStatus |email |phone|OrgAffiliation|
+    |Ms|shiFNameTrRegF02 vw|shiMNameTrial |shiLNameTrial |Suffix|CTRP|shiSID|Active |shiPercukeTrial@pr.com| 420-999-8906|ShiOrg|
   And I have completed a person search 
   When I have cliked on the name of the person I want to view
   Then the View Person screen opens with the page title as "View Person"
   And I will view person details type
       |Prefix  | Ms|
-      |First Name  | shiFNameTrial|
-      |Middle Name  | shiMNameTrial|
-      |Last Name  | shiLNameTrial
+      |First Name  | shiFNameTrRegF02 vw|
+      |Middle Name  | shiMNameTrial     |
+      |Last Name  | shiLNameTrial  |
       |Suffix  | Suffix|
       |Source Context  | CTRP|
       |Source ID  | shiSID|
