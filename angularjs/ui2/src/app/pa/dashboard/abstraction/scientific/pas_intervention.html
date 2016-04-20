@@ -113,7 +113,7 @@
                 List of Interventions <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <!-- associated trials -->
-            <div class="row">
+            <div class="row" ng-show="interventionView.trialDetailObj.interventions.length > 0">
                 <form>
                     <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <div class="row">
