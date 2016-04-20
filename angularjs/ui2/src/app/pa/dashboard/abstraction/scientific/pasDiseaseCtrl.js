@@ -13,7 +13,8 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
-        vm.searchResult = [];
+        vm.searchParams = {};
+        vm.searchParams.disease_name = '';
         vm.addedDiseases = [];
         vm.existingDiseases = [];
         vm.selectedAll = false;
