@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       collection do
         get 'index'
         post 'history'
+        post 'updates_history'
       end
     end
 
@@ -142,6 +143,10 @@ Rails.application.routes.draw do
 
     resources :marker_assay_type_associations
 
+
+
+    get '/app_settings/:settings' => 'util#get_app_settings'
+    get '/app_settings_ext/:settings' => 'util#get_app_settings_ext'
 
 
     get '/countries' => 'util#get_countries'
@@ -180,6 +185,7 @@ Rails.application.routes.draw do
     end
 
     scope '/registry' do
+      resources :submissions
       resources :study_sources
       resources :phases
       resources :primary_purposes
@@ -213,6 +219,7 @@ Rails.application.routes.draw do
           get  'trial_identifier_types'
           post 'lookup_imported_ncit_interventions'
           get  'get_intervention_types'
+          get  'search_ctrp_interventions'
         end
       end
 
@@ -247,6 +254,9 @@ Rails.application.routes.draw do
       get 'accepted_file_types' => 'util#get_accepted_file_types'
       get 'sampling_methods' => 'util#get_sampling_methods'
     end
+
+
+
 
     resources :ncit_disease_codes do
       collection do

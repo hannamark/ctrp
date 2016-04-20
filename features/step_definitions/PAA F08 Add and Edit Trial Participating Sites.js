@@ -46,6 +46,8 @@ var abstractionTrialDetails = require('../support/abstractionTrialDetails');
 var abstractionRegulatoryInfoFDAA = require('../support/abstractionRegulatoryInfo');
 //Trial Related Document
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
+//Participating Site
+var abstractionParticipatingSite = require('../support/abstractionParticipating');
 
 
 //
@@ -69,6 +71,7 @@ module.exports = function() {
     var trialDetails = new abstractionTrialDetails();
     var fdaaa = new abstractionRegulatoryInfoFDAA();
     var trialDoc = new abstractionTrialRelatedDocument();
+    var participatingSite = new abstractionParticipatingSite();
     var searchOrg = new OrgPage();
     var organizationSearch = new orgSearch();
     var addTrial = new addTrialPage();
@@ -89,9 +92,6 @@ module.exports = function() {
     var leadProtocolIDH = 'CTRP_01_1785';
     var leadProtocolIDI = 'CTRP_01_1786';
     var searchResultCountText = 'Trial Search Results';
-    var indIDEAssociatedQueVal = '';
-    var indTypVal = 'IND';
-    var ideTypVal = 'IDE';
     var identifierRnd = Math.floor(Math.random()*(99999999-77777777+1)+77777777).toString();
     var identifierNmbr = ''+identifierRnd+'';
     var identifierRndA = Math.floor(Math.random()*(99999999-77777777+1)+77777777).toString();
@@ -162,52 +162,148 @@ module.exports = function() {
      And I have added or edited the contact phone number extension <Ext> for the contact
      And I have added or edited the contact e-mail for the contact <e-mail address>
      Then the participating site information will be associated with the trial
-     And the organization address information <Org City> and <Org State> and <Org Country> and <Org zip code> will be associated with the trial
+     And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial
      And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
+     And the system will display a message that the Participating Site Has been Updated <Message>
+     And the Participating Site table can be sorted by
+     |Organiztion ID|
+     |Organization Name|
      Examples:
-     |Organization name|Org City|Org State|Org Country|Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext |e-mail address|
-     |Mayo             |New York|NY       |USA        |10101       |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Jane Doe             |212-123-4567  |1111|jane@mayo.com |
+     |Organization name |Org City|Org State|Org Country|Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext |e-mail address|Warning/Error|Message|
+     |Mayo              |New York|NY       |USA        |10101       |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Jane Doe             |212-123-4567  |1234|jane@mayo.com |             |Participating Site Has been Updated|
+     |MD Anderson       |New York|NY       |USA        |10101       |123a                  |Approved               |30-sep-2015                 |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com   |             |Participating Site Has been Updated|
+     |Wake Forest       |Trenton |NJ       |USA        |10101       |123b                  |Approved               |30-Sep-2015                 |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |1111|<null>        |             |Participating Site Has been Updated|
      */
 
+    this.Given(/^I am on the Participating Site Page$/, function (callback) {
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolIDD);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataParticipatingSites();
+        trialCollaborators.waitForElement(participatingSite.addParticipatingSiteBtn , "Add Participating Site - Button");
+        participatingSite.clickAddParticipatingSite();
+        browser.sleep(2500).then(callback);
+    });
 
+    this.Given(/^I have selected an organization (.*) with the Organization look up$/, function (OrganizationName, callback) {
+        participatingSite.clickSearchOrganization();
+        trialDetails.clickSearchOrgButtonByIndex('0');
+        searchOrg.setOrgName(OrganizationName);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        browser.sleep(25).then(callback);
+    });
 
-    /*
-     Scenario Outline: #2 I can edit a participating site for a trial
-     Given I am logged into the CTRP Protocol Abstraction application
-     And I am on the Participating Site Page
-     And I have selected the Participating site <Organization name>
-     And I have entered or edited the Local Trial Identifier <Local Trial Identifier>
-     And I have selected one or more Site Recruitment Status <Site Recruitment Status>
-     And I have selected one or more Site Recruitment status date <Site Recruitment Status Date>
-     And I have entered Site Recruitment status comments <Site Recruitment status comments>
-     And I have entered or edited the program code <Site Specific Program Code>
-     And I have entered or edited the Target Accrual Number <Target Accrual Number>
-     And I have selected one or more Investigators <Site Principal Investigator> for each Participating Site with the person look up
-     And I have selected the role for each investigator <Site Principal Investigator Role>
-     |Principal Investigator|
-     |Sub Investigator|
-     And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact
-     And I have edited the phone number for the investigator contact <Phone>
-     And I have edited the phone number extension <Ext> for the investigator contact
-     And I have edited the contact e-mail for the contact <e-mail address>
-     And I have selected the �Set as Site Contact" for a central contact <Central Contact> when the central contact for the participating site is generic
-     And I have added or edited the contact phone number for the contact <Phone #>
-     And I have added or edited the contact phone number extension <Ext> for the contact
-     And I have added or edited the contact e-mail for the contact <e-mail address>
-     Then the participating site information will be associated with the trial
-     And the organization address information <Org City> and <Org State> and <Org Country> and <Org zip code> will be associated with the trial
-     And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
-     */
+    this.Given(/^I have entered or edited the Local Trial Identifier (.*)$/, function (LocalTrialIdentifier, callback) {
+        participatingSite.setIdentifier(LocalTrialIdentifier);
+        browser.sleep(25).then(callback);
+    });
 
-    /*
-     Scenario: #3 Delete participating site information for a trial
-     Given I am logged into the CTRP Protocol Abstraction application
-     And I am on the Participating Site Page
-     And I select one or more participating sites
-     When select delete participationg sites
-     Then the Participating Site will be removed from the trial record
-     */
+    this.Given(/^I have selected one or more Site Recruitment Status (.*)$/, function (SiteRecruitmentStatus, callback) {
+        participatingSite.selectStatus(SiteRecruitmentStatus);
+        browser.sleep(25).then(callback);
+    });
 
+    this.Given(/^I have selected one or more Site Recruitment status date (.*)$/, function (SiteRecruitmentStatusDate, callback) {
+        participatingSite.setStatusDate(SiteRecruitmentStatusDate);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered Site Recruitment status comments (.*)$/, function (SiteRecruitmentStatusComments, callback) {
+        participatingSite.setStatusDate(SiteRecruitmentStatusDate);
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Given(/^I have entered the program code (.*)$/, function (SiteSpecificProgramCode, callback) {
+        participatingSite.setProgramCode(SiteSpecificProgramCode);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered a Target Accrual Number (.*)$/, function (TargetAccrualNumber, callback) {
+        console.log("Dev team did not implemented this feature on the participating site");
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected one or more Investigators (.*) for each Participating Site with the person look up$/, function (SitePrincipalInvestigator, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have selected the role for each investigator (.*)$/, function (SitePrincipalInvestigatorRole, table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have edited the phone number for the investigator contact (.*)$/, function (Phone, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have edited the phone number extension (.*) for the investigator contact$/, function (Ext, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have edited the contact e\-mail for the contact (.*)$/, function (eMailAddress, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have selected the �Set as Site Contact" for a central contact (.*) when the central contact for the participating site is generic$/, function (CentralContact, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have added or edited the contact phone number for the contact (.*)$/, function (Phone, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have added or edited the contact phone number extension (.*) for the contact$/, function (Ext, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I have added or edited the contact e\-mail for the contact (.*)$/, function (eMailAddress, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the participating site information will be associated with the trial$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^the organization address information (.*) (.*) (.*) (.*) will be associated with the trial$/, function (OrgCity, OrgState, OrgCountry, OrgZipCode, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^the system will display the list of participating sites ordered assending alphanumeric by participationg site name$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^the system will display a message that the Participating Site Has been Updated (.*)$/, function (Message, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^the Participating Site table can be sorted by$/, function (table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
 
 };

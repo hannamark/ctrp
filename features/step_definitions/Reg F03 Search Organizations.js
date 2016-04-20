@@ -16,6 +16,7 @@ var listOfPeoplePage = require('../support/ListOfPeoplePage');
 var orgPage = require('../support/ListOfOrganizationsPage');
 var underscore = require('underscore');
 var mainSelectItemPage = require('../support/CommonSelectList.js');
+var assert = require('assert');
 
 module.exports = function() {
     var addTrial = new addTrialPage();
@@ -29,14 +30,22 @@ module.exports = function() {
     this.Given(/^the following parameters of an Organization exist:$/, function (table, callback) {
         organizationTable = table.hashes();
         for (var i = 0; i < organizationTable.length; i++) {
-            organizationAliasValue = organizationTable[i].Alias;
-            organizationCityValue = organizationTable[i].City;
-            organizationCountryValue = organizationTable[i].Country;
-            organizationPostalValue = organizationTable[i].PostalCode;
-            organizationPhoneValue = organizationTable[i].Phone;
-            organizationEmailValue = organizationTable[i].Email;
-            organizationStateValue = organizationTable[i].State;
-            projectFunctions.createOrgForSearchWithParameters('ctrptrialsubmitter',organizationTable[i].Name, organizationTable[i].Alias, 'tr Org Add1', 'tr Org Add2', organizationTable[i].Country, organizationTable[i].State, organizationTable[i].City, organizationTable[i].PostalCode,  organizationTable[i].Email, organizationTable[i].Phone, '456-786-0981', organizationTable[i].FamilyName, 'Active', 'NIH', 'Organizational', '05', 'May', '2015', '15', 'April', '2018');
+            if(organizationTable[i].Name === 'SopNameCancer') {
+                organizationAliasValue = organizationTable[i].Alias;
+                organizationCityValue = organizationTable[i].City;
+                organizationCountryValue = organizationTable[i].Country;
+                organizationPostalValue = organizationTable[i].PostalCode;
+                organizationPhoneValue = organizationTable[i].Phone;
+                organizationEmailValue = organizationTable[i].Email;
+                organizationStateValue = organizationTable[i].State;
+                projectFunctions.createOrgForSearchWithParameters('ctrptrialsubmitter', organizationTable[i].Name, organizationTable[i].Alias, 'tr Org Add1', 'tr Org Add2', organizationTable[i].Country, organizationTable[i].State, organizationTable[i].City, organizationTable[i].PostalCode, organizationTable[i].Email, organizationTable[i].Phone, '456-786-0981', organizationTable[i].FamilyName, 'Active', 'NIH', 'Organizational', '05', 'May', '2015', '15', 'April', '2018');
+            }
+        else if(organizationTable[i].Name === 'SopNameCancer RegF03vw') {
+                projectFunctions.createOrgForSearchWithParameters('ctrptrialsubmitter', organizationTable[i].Name, organizationTable[i].NameAlias, organizationTable[i].Address1, organizationTable[i].Address2, organizationTable[i].Country, organizationTable[i].State, organizationTable[i].City, organizationTable[i].PostalCode, organizationTable[i].Email, organizationTable[i].Phone,  organizationTable[i].Fax, organizationTable[i].Families, 'Active', 'NIH', 'Organizational', '05', 'May', '2015', '15', 'April', '2018');
+            }
+            else {
+                assert.fail(0,1,'No Match found to create a Person');
+            }
         }
         browser.sleep(25).then(callback);
     });

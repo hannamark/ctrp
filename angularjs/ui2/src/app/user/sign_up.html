@@ -1,58 +1,127 @@
-<div class="drop-shadow">
-    <div class="row top-offset-xs"></div>
-    <div class="row">
-        <div class="col-xs-4"></div>
-        <div class="col-xs-4">
-            <div class="row">
-                <div class="panel panel-default no-bottom-margin">
-                    <div class="panel-heading">
-                        <div class="panel-title">Sign Up Form</div>
-                    </div>
-                    <div class="panel-body">
-                        <form class="form form-horizontal" role="form" name="signup_form" autocomplete="off" novalidate ctrp-submit="userView.updateUser()">
+
+<div class="row centered-form drop-shadow">
+    <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sign Up Form</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form form-horizontal" role="form" name="signup_form" autocomplete="off" novalidate ctrp-submit="userView.updateUser()">
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.username)}">
                                 <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                    </span>
-                                    <input class="form-control input-sm" name="username" type="text" required ng-model="userView.userObj.local_user.username" placeholder="Username">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-user"></i>
+                                            </span>
+                                    <input class="form-control input-sm" name="username" type="text" required ng-model="userView.userObj.local_user.username" pattern="^[A-Za-z0-9]{4,40}$"  placeholder="Username">
                                 </div>
                                 <span class="form-control-feedback feedback-height-sm" ng-show="userView.userObj.local_user.username.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.username) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="signup_form.username.$error.required">Username is Required</span>
+                                <span ng-if="ctrpbtn.signup_form.needsAttention(signup_form.username)">Valid Username is Required</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.first_name)}">
+                                <div>
+                                    <input type="text" name="first_name" id="first_name" required ng-model="userView.userObj.local_user.first_name"  class="form-control input-sm" placeholder="First Name">
+                                </div>
+                                <span class="form-control-feedback select-feedback feedback-height-sm" ng-show="userView.userObj.local_user.first_name.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.first_name)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="signup_form.first_name.$error.required">First Name is Required</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.last_name)}">
+                                <div>
+                                    <input type="text" name="last_name" id="last_name" required ng-model="userView.userObj.local_user.last_name"  class="form-control input-sm" placeholder="Last Name">
+                                </div>
+                                <span class="form-control-feedback select-feedback feedback-height-sm" ng-show="userView.userObj.local_user.last_name.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.last_name)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="signup_form.last_name.$error.required">Last Name is Required</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.domain)}">
+                                <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-eye-open"></i>
+                                            </span>
+                                    <select class="form-control input-sm" id="domain" ng-model="userView.userObj.local_user.domain" name="domain" required ng-change='userView.selectedUserFunctions()'>
+                                        <option value="" ng-selected="userView.userObj.local_user.domain == ''">Select Your Domain</option>
+                                        <option ng-repeat="domain in userView.domainsArr track by $index" value="{{domain}}" ng-selected="userView.userObj.local_user.domain === domain">{{domain}}</option>
+                                    </select>
+                                </div>
+                                <span class="form-control-feedback select-feedback feedback-height-sm" ng-show="userView.userObj.local_user.domain.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.domain)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="signup_form.domain.$error.required">Domain is Required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.email)}">
+                                <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-envelope"></i>
+                                            </span>
+                                    <input name="email" type="email" class="form-control input-sm" ng-model="userView.userObj.local_user.email" placeholder="Email" required>
+                                </div>
+                                <span class="form-control-feedback feedback-height-sm" ng-show="userView.userObj.local_user.email.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.email) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="signup_form.email.$error.required">Email is Required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.password)}">
                                 <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-lock"></i>
-                                    </span>
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-lock"></i>
+                                            </span>
                                     <input type="password" class="form-control input-sm" name="password" ng-model="userView.userObj.local_user.password" autocomplete="off" placeholder="Password" required>
                                 </div>
                                 <span class="form-control-feedback feedback-height-sm" ng-show="userView.userObj.local_user.password.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="signup_form.password.$error.required">Password is Required</span>
                             </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) || (userView.userObj.local_user.password !== userView.userObj.local_user.password_confirmation)}">
                                 <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-lock"></i>
-                                    </span>
-                                    <input type="password" class="form-control input-sm" name="password_confirmation" ng-model="userView.userObj.local_user.password_confirmation" placeholder="Password Confirmation" required ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-lock"></i>
+                                            </span>
+                                    <input type="password" id="password_confirm" class="form-control input-sm" name="password_confirmation" ng-model="userView.userObj.local_user.password_confirmation" placeholder="Password Confirmation" required ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
                                 </div>
                                 <span class="form-control-feedback feedback-height-sm" ng-show="userView.userObj.local_user.password_confirmation.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.local_user.password === userView.userObj.local_user.password_confirmation  ? 'glyphicon glyphicon-ok glyphicon-green' : ''"></span>
                                 <span class="help-block" ng-show="userView.userObj.local_user.password !== userView.userObj.local_user.password_confirmation && signup_form.password_confirmation.$dirty">Passwords do not match</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.organization_name)}">
                                 <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-tower"></i>
-                                    </span>
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-tower"></i>
+                                            </span>
                                     <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
-                                            autocomplete="off" placeholder="Organization Name" ng-model="userView.searchParams.name"
-                                            uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
-                                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
+                                           autocomplete="off" placeholder="Organization Name" ng-model="userView.searchParams.name"
+                                           uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
+                                           typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
                                 </div>
                                 <span class="form-control-feedback feedback-height-sm" ng-show="userView.searchParams.name.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.organization_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="signup_form.organization_name.$error.required">Organization Name is Required</span>
                             </div>
+<<<<<<< HEAD
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.role)}">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -90,11 +159,31 @@
                                 </div>
                             </div>
                         </form>
+=======
+                        </div>
                     </div>
-                </div>
+
+                    <div class="row" ng-if="userView.userObj.local_user.domain.length">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <fieldset class="form-group has-feedback required" ng-class="{'has-error': userView.selectAbleUserFunctions > 1 && !userView.userObj.local_user.selected_functions.length}">
+                                <legend>Select the functionality desired:</legend>
+                                    <div ng-repeat="(userFunc,enabled) in userView.selectedFunctionsObj[userView.userObj.local_user.domain]">
+                                        <label>
+                                            <input type="checkbox" ng-model="userView.selectedFunctionsObj[userView.userObj.local_user.domain][userFunc]" ng-change='userView.selectedUserFunctions()' ng-disabled="userView.selectAbleUserFunctions[userView.userObj.local_user.domain] === 1"/> {{userFunc}}
+                                        </label>
+                                    </div>
+                                <span class="form-control-feedback select-feedback feedback-height-sm" ng-show="!userView.userObj.local_user.selected_functions.length && userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1" ng-class="userView.userObj.local_user.selected_functions.length && userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                <span class="help-block" ng-show="userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1 && !userView.userObj.local_user.selected_functions.length">Functionality is Required</span>
+                            </fieldset>
+                        </div>
+>>>>>>> develop
+                    </div>
+
+                    <input type="submit" value="Register" class="btn btn-primary btn-block" ng-disabled="signup_form.$invalid || (userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1 && !userView.userObj.local_user.selected_functions.length) || (!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.local_user.password !== userView.userObj.local_user.password_confirmation)">
+
+                </form>
             </div>
         </div>
-        <div class="col-xs-4"></div>
     </div>
-    <div class="row top-offset-xs"></div>
 </div>
+
