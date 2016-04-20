@@ -25,18 +25,11 @@
                 password: '',
                 password_confirmation: '',
                 organization_id: '',
-                role: '',
                 selected_functions: []
             },
             'type': vm.type
         };
-
-        AppSettingsService.getSettings('USER_ROLES', true).then(function (response) {
-            vm.rolesArr = response.data[0].settings.split('||');
-        }).catch(function (err) {
-            console.log("Error in retrieving USER_ROLES.");
-        });
-
+        
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
             vm.selectedFunctionsObj = [];
