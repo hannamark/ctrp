@@ -73,7 +73,11 @@ end
     ## find submission
   end
 
+  def submissions_history
 
+    @submissions =Submission.where("trial_id =? ", params[:trial_id])
+    ## find submission
+  end
 
 private
 # Use callbacks to share common setup or constraints between actions.
