@@ -37,6 +37,9 @@
         vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
 
 
+        vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
+
+
         activate();
 
         function activate() {
@@ -50,6 +53,12 @@
             vm.updatesGridOptions.data = null;
             vm.updatesGridOptions.totalItems = null;
             loadTrialUpdates();
+
+            vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
+            vm.submissionsGridOptions.data = null;
+            vm.submissionsGridOptions.totalItems = null;
+            loadTrialSubmissions();
+
 
         }
 
@@ -75,6 +84,29 @@
                 console.log('search finished');
             });
         }
+
+
+        function loadTrialSubmissions() {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            vm.trialHistoryObj = {trial_id: trialId};
+
+            AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                vm.submissionsGridOptions.data = data.trial_versions;
+                vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
+            }).catch(function (err) {
+                console.log('Getting trial submissions failed');
+            }).finally(function () {
+                console.log('search finished');
+            });
+        }
+
+
+
+
+
+
+
         /**
          * Get trial detail object from parent scope
          */
@@ -133,6 +165,9 @@
                 vm.endDateOpened = !vm.endDateOpened;
             }
         }; //openCalendar
+
+
+
 
         function submit() {
 

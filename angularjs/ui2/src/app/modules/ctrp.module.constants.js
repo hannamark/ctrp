@@ -68,6 +68,7 @@
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
             'AUDIT_HISTORY': '/ctrp/trial_versions/history',
             'TRIAL_UPDATES_HISTORY': '/ctrp/trial_versions/updates_history',
+            'TRIAL_SUBMISSIONS_HISTORY': '/ctrp/trial_versions/submissions_history',
             'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',

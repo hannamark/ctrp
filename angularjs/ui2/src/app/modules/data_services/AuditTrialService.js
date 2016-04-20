@@ -81,6 +81,47 @@
         };
 
 
+        var submissionsGridOptions = {
+            rowTemplate: '<div>'+
+            '<div>' +
+            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            //enableRowSelection: false,
+            paginationPageSizes: [20, 50, 100],
+            paginationPageSize: 20,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
+            expandableRowHeight: 150,
+
+            columnDefs: [
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
+                {
+                    name: 'Acknowledge ',
+                    cellTemplate: '<div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row)">Acknowledge</button></div>'
+                },
+                {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
+
+            ]
+        };
+
+
+
         var auditsGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
@@ -182,6 +223,7 @@
             getUpdatesGridOptions: getUpdatesGridOptions,
             getUpdates: getUpdates,
             getSubmissions: getSubmissions,
+            getSubmissionsGridOptions: getSubmissionsGridOptions,
             upsertSubmission:upsertSubmission
         };
 
@@ -211,13 +253,19 @@
             return updatesGridOptions;
         }
 
+        function getSubmissionsGridOptions() {
+            return submissionsGridOptions;
+        }
+
+
         function getSubmissions(obj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_SUBMISSIONS_HISTORY, obj);
 
         }
 
 
         /**
-         * Update submission
+         * Update submission for Updates Tab Updates
          *
          * @param obj
          * @returns {*}
@@ -231,6 +279,23 @@
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
 
         } //upsertOrg
+
+        /**
+         * Update submission for Submissions Tab Amendments
+         *
+         * @param obj
+         * @returns {*}
+         */
+       /* function upsertSubmissionAmendment(obj) {
+            if (obj.new) {
+                //return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
+            }
+
+            var configObj={};
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
+
+        } //upsertOrg
+        */
 
 
     }
