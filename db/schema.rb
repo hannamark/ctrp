@@ -1419,6 +1419,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
     t.integer  "user_status_id"
     t.string   "phone"
     t.string   "city"
+    t.string   "domain"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
