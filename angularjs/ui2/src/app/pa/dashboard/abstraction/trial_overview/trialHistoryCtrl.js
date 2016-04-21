@@ -71,7 +71,11 @@
                 var i =0
                 for(i = 0; i < data.trial_versions.length; i++){
                     data.trial_versions[i].subGridOptions = {
-                        columnDefs: [ {name:"Updated Field", field:"field_name"}, {name:"Old value", field:"old_value"},{name:"New value", field:"new_value"} ],
+                                columnDefs: [
+                                    {name:"Updated Field", field:"field_name"},
+                                    {name:"Old value", field:"old_value"},
+                                    {name:"New value", field:"new_value"}
+                                ],
                         data: data.trial_versions[i].friends
                     }
                 }
@@ -100,11 +104,6 @@
                 console.log('search finished');
             });
         }
-
-
-
-
-
 
 
         /**
@@ -197,36 +196,40 @@
             alert('Row: ' + value.submission_num);
         };
 
-        $scope.editRow= function(grid, row) {
+        $scope.editRow= function(grid, row,gridType) {
 
-            $uibModal.open({
-                template: '<div>'+
-                          '<div class="modal-header">'+
-                          '<h3 class="modal-title">Acknowledge Update</h3>'+
-                          '</div>'+
-                          '<div class="modal-body">'+
-                          '<form class="form form-horizontal">'+
-                          '<div class="form-group">'+
-                          '<label for="acknowledge_comment" class="control-label col-sm-3">Comment:</label>'+
-                          '<div class="col-sm-9"><input class="form-control input-sm" type="text" name="acknowledge_comment" ng-model="vm.entity.acknowledge_comment"></div>'+
-                          '</div>'+
-                          '</form>'+
-                          '</div>'+
-                          '<div class="modal-footer">'+
-                          '<div class="col-sm-12">'+
-                          '<div class="btn-toolbar">'+
-                          '<button class="btn btn-primary pull-right" ng-click="vm.save()"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>'+
-                          '<button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>'+
-                          '</div>'+
-                          '</div>'+
-                          '</div>',
-                controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
-                controllerAs: 'vm',
-                resolve: {
-                    grid: function () { return grid; },
-                    row: function () { return row; }
-                }
-            });
+            console.log(gridType);
+
+
+
+            if(gridType == "updates") {
+                $uibModal.open({
+                    templateUrl: 'acknowledgeModal.html',
+                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controllerAs: 'vm',
+                    resolve: {
+                        grid: function () { return grid; },
+                        row: function () { return row; }
+                    }
+
+
+                });
+            } else if(gridType == "submissions") {
+                $uibModal.open({
+                    templateUrl: 'submissionsModal.html',
+                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controllerAs: 'vm',
+                    resolve: {
+                        grid: function () { return grid; },
+                        row: function () { return row; }
+                    }
+
+
+                });
+
+            }
+
+
         }
 
         /* @ngInject */
