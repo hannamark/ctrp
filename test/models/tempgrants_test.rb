@@ -12,6 +12,11 @@
 #  updated_at        :datetime         not null
 #  pi_full_name      :string(255)
 #
+# Indexes
+#
+#  index_tempgrants_on_funding_mechanism  (funding_mechanism)
+#  index_tempgrants_on_institute_code     (institute_code)
+#
 
 require 'test_helper'
 

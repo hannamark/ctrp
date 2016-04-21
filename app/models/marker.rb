@@ -17,6 +17,12 @@
 #  protocol_marker_name  :string(255)
 #  cadsr_marker_id       :integer
 #
+# Indexes
+#
+#  index_markers_on_biomarker_use_id  (biomarker_use_id)
+#  index_markers_on_cadsr_marker_id   (cadsr_marker_id)
+#  index_markers_on_trial_id          (trial_id)
+#
 
 class Marker < ActiveRecord::Base
   include BasicConcerns

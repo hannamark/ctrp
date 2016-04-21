@@ -19,6 +19,12 @@
 #  contact_type           :string(255)
 #  local_trial_identifier :string
 #
+# Indexes
+#
+#  index_participating_sites_on_organization_id  (organization_id)
+#  index_participating_sites_on_person_id        (person_id)
+#  index_participating_sites_on_trial_id         (trial_id)
+#
 
 class ParticipatingSite < ActiveRecord::Base
   include BasicConcerns

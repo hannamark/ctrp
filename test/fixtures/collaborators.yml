@@ -11,6 +11,11 @@
 #  uuid            :string(255)
 #  lock_version    :integer          default(0)
 #
+# Indexes
+#
+#  index_collaborators_on_organization_id  (organization_id)
+#  index_collaborators_on_trial_id         (trial_id)
+#
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 

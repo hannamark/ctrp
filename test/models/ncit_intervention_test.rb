@@ -12,6 +12,10 @@
 #  updated_at       :datetime         not null
 #  ncit_status_id   :integer
 #
+# Indexes
+#
+#  index_ncit_interventions_on_preferred_name  (preferred_name)
+#
 
 require 'test_helper'
 

@@ -1,19 +1,14 @@
 # == Schema Information
 #
-# Table name: trial_co_pis
+# Table name: milestone_types
 #
 #  id           :integer          not null, primary key
-#  trial_id     :integer
-#  person_id    :integer
+#  code         :string(255)
+#  name         :string(255)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
-#
-# Indexes
-#
-#  index_trial_co_pis_on_person_id  (person_id)
-#  index_trial_co_pis_on_trial_id   (trial_id)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
