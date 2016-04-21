@@ -12,6 +12,11 @@
 #  uuid                  :string(255)
 #  lock_version          :integer          default(0)
 #
+# Indexes
+#
+#  index_participating_site_investigators_on_participating_site_id  (participating_site_id)
+#  index_participating_site_investigators_on_person_id              (person_id)
+#
 
 require 'test_helper'
 

@@ -41,33 +41,19 @@
             }
 
             console.log('vm.userDetails is:', vm.userDetails.user_status);
-            //console.log('hello email changed ? ' +vm.userDetails.email);
-            //console.log('IN UPDATEUSER');
             var newUser = {};
-            //newUser.new = vm.userDetails.new || '';
             newUser.id = vm.userDetails.id || '';
-            //console.log("newUser="+JSON.stringify(newUser));
             if(vm.selectedOrgsArray.length >0) {
-                /* Only updates using the first item in the org. array */
-                if (vm.selectedOrgsArray[0]._destroy) {
-                    vm.userDetails.organization_id = null;
-                    vm.selectedOrgsArray = [];
-                } else {
-                    vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
-                }
+                vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
             newUser.user = vm.userDetails;
             newUser.user.user_status_id = vm.userDetails.user_status.id;
-            //console.log("22newUser="+JSON.stringify(newUser));
-           //newUser.org_id=watch.org[o];
 
             if (vm.selectedOrgsArray[0] != null){
                 console.log('orgs id is ' + vm.selectedOrgsArray[0].id);
             }
-            //console.log('newUser is: ' + JSON.stringify(newUser));
             UserService.upsertUser(newUser).then(function(response) {
                 toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
-                //console.log('response is:', response);
                 vm.userDetails.username = response.username;
                 vm.userDetails.email = response.email;
                 vm.userDetails.role = response.role;
@@ -86,24 +72,11 @@
             });
         }; // updatePerson
 
-        /*UserService.getUserDetailsByUsername().then(function(details) {
-            console.log('user details: ' + JSON.stringify(details));
-            vm.userDetails = details;
-        });*/
-
         vm.isValidPhoneNumber = function(){
             vm.IsPhoneValid = isValidNumberPO(vm.userDetails.phone, vm.userDetails.country);
             vm.showPhoneWarning = true;
             console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
-
-        //delete the affiliated organization from table view
-        vm.toggleSelection = function (index) {
-            if (index < vm.selectedOrgsArray.length) {
-                vm.selectedOrgsArray[index]._destroy = !vm.selectedOrgsArray[index]._destroy;
-               // vm.savedSelection.splice(index, 1);
-            }
-        };// toggleSelection
 
         vm.reset = function() {
             vm.userDetails = angular.copy(userDetailObj);
@@ -113,29 +86,19 @@
             }
         };
 
-        $scope.$watch(function() {return vm.selectedOrgsArray;}, function(newVal) {
-           console.log('selected org:' + JSON.stringify(vm.selectedOrgsArray));
-        });
-
-        activate();
-
         /****************** implementations below ***************/
-        function activate() {
+        var activate = function() {
 
             if(vm.userDetails.organization_id != null) {
-                var org_id= vm.userDetails.organization_id;
-                //var org_name =vm.userDetails.organization_name;
                 OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
                     var curOrg = {'id' : vm.userDetails.organization_id, 'name': organization.name};
-                    //var org_name = organization.name;
-                    //var org_name = vm.userDetails.organization_name;
                     vm.savedSelection.push(curOrg);
                     vm.selectedOrgsArray = angular.copy(vm.savedSelection);
                 });
             }
 
             listenToStatesProvinces();
-        }
+        }();
 
         /**
          * Listen to the message for availability of states or provinces
