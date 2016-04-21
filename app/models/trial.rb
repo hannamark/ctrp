@@ -93,6 +93,35 @@
 #  nci_specific_comment          :text
 #  send_trial_flag               :string
 #
+# Indexes
+#
+#  index_trials_on_accrual_disease_term_id   (accrual_disease_term_id)
+#  index_trials_on_allocation_id             (allocation_id)
+#  index_trials_on_assigned_to_id            (assigned_to_id)
+#  index_trials_on_biospecimen_retention_id  (biospecimen_retention_id)
+#  index_trials_on_board_affiliation_id      (board_affiliation_id)
+#  index_trials_on_board_approval_status_id  (board_approval_status_id)
+#  index_trials_on_gender_id                 (gender_id)
+#  index_trials_on_internal_source_id        (internal_source_id)
+#  index_trials_on_intervention_model_id     (intervention_model_id)
+#  index_trials_on_investigator_aff_id       (investigator_aff_id)
+#  index_trials_on_investigator_id           (investigator_id)
+#  index_trials_on_lead_org_id               (lead_org_id)
+#  index_trials_on_masking_id                (masking_id)
+#  index_trials_on_max_age_unit_id           (max_age_unit_id)
+#  index_trials_on_min_age_unit_id           (min_age_unit_id)
+#  index_trials_on_phase_id                  (phase_id)
+#  index_trials_on_pi_id                     (pi_id)
+#  index_trials_on_primary_purpose_id        (primary_purpose_id)
+#  index_trials_on_research_category_id      (research_category_id)
+#  index_trials_on_responsible_party_id      (responsible_party_id)
+#  index_trials_on_secondary_purpose_id      (secondary_purpose_id)
+#  index_trials_on_sponsor_id                (sponsor_id)
+#  index_trials_on_study_classification_id   (study_classification_id)
+#  index_trials_on_study_model_id            (study_model_id)
+#  index_trials_on_study_source_id           (study_source_id)
+#  index_trials_on_time_perspective_id       (time_perspective_id)
+#
 
 class Trial < TrialBase
 

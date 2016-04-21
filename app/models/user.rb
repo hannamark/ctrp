@@ -40,6 +40,16 @@
 #  phone                       :string
 #  city                        :string
 #
+# Indexes
+#
+#  index_users_on_approved              (approved)
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_organization_id       (organization_id)
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_unlock_token          (unlock_token) UNIQUE
+#  index_users_on_user_status_id        (user_status_id)
+#  index_users_on_username              (username) UNIQUE
+#
 
 class  User < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -182,6 +192,11 @@ class  User < ActiveRecord::Base
                            {registry_write_mode: false},
                            {user_write_mode: true},
                            {pa_write_mode: true}]
+                        when  "ROLE_ACCOUNT-APPROVER"
+                          [{po_write_mode: false},
+                           {registry_write_mode: false},
+                           {user_write_mode: true},
+                           {pa_write_mode: false}]
                       end
   end
 

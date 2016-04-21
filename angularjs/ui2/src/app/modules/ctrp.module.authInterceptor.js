@@ -52,11 +52,17 @@
                 $injector.get('toastr').clear();
                 var errorMsg = '<u>Error Code</u>: ' + rejection.status;
                 errorMsg += '\nError Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
-                errorMsg += '\nCause(s): ' + (rejection.errors || '') + '.';
+                errorMsg += '\nCause(s): ';
 
                 Object.keys(rejection.data).forEach(function(field, index) {
                     if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
                         errorMsg += '\n ' + field + ': ' + rejection.data[field];
+                    }
+                });
+
+                Object.keys(rejection.errors).forEach(function(field, index) {
+                    if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
+                        errorMsg += '\n ' + field + ': ' + rejection.errors[field];
                     }
                 });
 

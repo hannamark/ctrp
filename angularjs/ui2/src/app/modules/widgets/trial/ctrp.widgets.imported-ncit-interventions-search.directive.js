@@ -54,6 +54,7 @@
                   vm.errorMsg = 'Intervention Name is Required';
                   return;
               }
+              vm.errorMsg = '';
               PATrialService.lookupNcitInterventions(params).then(function(res) {
                  // console.info('res from the interventions lookup: ', res);
                  res.server_response = null;
@@ -70,6 +71,7 @@
               vm.searchParams = _getSearchParams();
               vm.gridOptions.data = [];
               vm.gridOptions.totalItems = null;
+              vm.searchResults.total = -1;
           }
 
           function _getGridOptions() {

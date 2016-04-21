@@ -11,6 +11,11 @@
 #  uuid                 :string(255)
 #  lock_version         :integer          default(0)
 #
+# Indexes
+#
+#  index_ncit_disease_synonyms_on_ncit_disease_code_id  (ncit_disease_code_id)
+#  index_ncit_disease_synonyms_on_ncit_status_id        (ncit_status_id)
+#
 
 require 'test_helper'
 
