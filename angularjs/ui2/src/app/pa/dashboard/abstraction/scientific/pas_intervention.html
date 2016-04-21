@@ -113,7 +113,7 @@
                 List of Interventions <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <!-- associated trials -->
-            <div class="row">
+            <div class="row" ng-show="interventionView.trialDetailObj.interventions.length > 0">
                 <form>
                     <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <div class="row">
@@ -133,7 +133,7 @@
                                 </tr>
                                 </thead>
                                 <tbody ui-sortable="interventionView.sortableListener" ng-model="interventionView.trialDetailObj.interventions">
-                                    <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.id === t.id}">
+                                    <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.index === t.index}">
                                         <td>
                                             {{$index + 1}}
                                         </td>

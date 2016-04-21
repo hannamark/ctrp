@@ -117,7 +117,7 @@ class NcitDiseaseCode < ActiveRecord::Base
   private
 
   scope :with_name, -> (name, synonym) do
-    name_splits = name.split(',')
+    name_splits = name.split('|')
 
     if synonym
       q1 = ''

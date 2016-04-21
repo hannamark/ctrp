@@ -14,9 +14,6 @@ Then I can view the Trial History Information each Update for a trial ordered by
 |Updated Field|
 |Old Value|
 |New Value|
-|Issue Type|
-|Issue Description|
-|Issue Description Comment|
 |Action (Acknowledge)|
 |Comment|
 |Update Acknowldegement Date|

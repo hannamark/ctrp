@@ -1,10 +1,9 @@
 <div class="row">
-    <uib-accordion close-others="false">
-        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-            <uib-accordion-heading>
-                Trial Identification <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-            </uib-accordion-heading>
-            <!-- first row in the accordion body -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Trial Identification</div>
+        </div>
+        <div class="panel-body">
             <div class="row">
                 <div class="col-xs-12">
                         <label class="control-label col-xs-12 col-sm-3">PNCI ID:</label>
@@ -53,11 +52,9 @@
                     </div>
                 </div>
             </div>
-            <!-- end of first row in the accordion body -->
 
             <hr />
 
-            <!-- second row in the accordion body -->
             <div class="row">
                 <form name="abstraction_form" class="form form-horizontal" role="form" novalidate ctrp-submit="trialIdView.saveProcessingInfo()">
                     <div class="col-xs-12">
@@ -74,8 +71,8 @@
                                         Select a priority
                                     </option>
                                 </select>
+                                <span class="help-block" ng-show="abstraction_form.priority_selection.$error.required">Priority is Required</span>
                             </div>
-                            <span class="help-block" ng-show="abstraction_form.priority_selection.$error.required">Priority is Required</span>
                             <div class="col-xs-12 col-sm-5"></div>
                         </div>
                         <!-- end of first form-group -->
@@ -91,22 +88,20 @@
                                 </textarea>
                             </div>
                         </div>
-                        <!-- end of second row -->
-
                         <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                             <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-disabled="!abstraction_form.$valid" restriction-field>Save</button>
+                                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-disabled="!abstraction_form.$valid" restriction-field>
+                                    <i class="glyphicon glyphicon-ok"></i> Save
+                                </button>
                                 <button type="button" class="btn btn-warning pull-right" id="cancel_processing" ng-click="trialIdView.resetView()" restriction-field>
                                     <i class="glyphicon glyphicon-remove"></i> Reset
                                 </button>
                             </div>
                         </div>
+                        <!-- end of second row -->
                     </div>
                 </form>
             </div>
-
-        </uib-accordion-group>
-    </uib-accordion>
+        </div>
+    </div>
 </div>
-
-<!-- end of row -->

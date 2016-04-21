@@ -77,9 +77,9 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease and Condition screen
 When I click Primary for Disease Code for a specific disease
-Then Primary is removed from any other Disease that is currently marked as Primary
+Then Primary is designated for the disease
 When I click Secondary for Disease Code for a specific disease
-Then Secondary is removed from any other Disease that is currently marked as Secondary
+Then Secondary is designated for the disease
 When I Select the Save Button
 Then the Disease/Condition screen displays with the updated Disease Code for the disease/Condition term
 And the updated Disease/Condition is associated to the trial

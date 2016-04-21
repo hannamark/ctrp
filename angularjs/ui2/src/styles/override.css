@@ -730,6 +730,11 @@ h5 {
     height: 22px !important;
 }
 
+.grid-large-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 60px !important;
+}
+
 .ui-grid-cell .btn {
     margin: 0 auto;
     padding: 0 6px;

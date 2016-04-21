@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-xs-12 col-sm-3">
+                        <div class="col-xs-12 col-sm-4">
                             <div>
                                 <label for="synonym">
                                     <input type="checkbox" id="synonym" ng-model="diseaseView.searchParams.synonym"> Search Synonyms
@@ -111,7 +111,13 @@
                     </div>
                 </form>
 
-                <div class="table-responsive">
+                <div class="col-xs-12">
+                    <span us-spinner="{radius: 10, length: 5}" spinner-on="diseaseView.searching"></span>
+                </div>
+
+                <h4 ng-show="diseaseView.searchResult">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
+
+                <div class="table-responsive max-height-lg">
                     <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.searchResult.length">
                         <thead>
                             <th>Preferred Name</th>
@@ -151,7 +157,7 @@
             <div class="col-xs-12 col-sm-12 col-md-5">
                 <form class="form form-horizontal" role="form" name="added_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
                     <div ng-show="diseaseView.addedDiseases.length > 0" class="form-group">
-                        <h4>Your Selections</h4>
+                        <h4>Your Selections <span class="pull-right">{{diseaseView.addedDiseases.length}} diseases selected</span></h4>
                         <ul class="list-group">
                             <li ng-repeat="addedDisease in diseaseView.addedDiseases track by $index" class="list-group-item">
                                 {{addedDisease.preferred_name}}
@@ -180,4 +186,3 @@
         </uib-accordion-group>
     </uib-accordion>
 </div>
-
