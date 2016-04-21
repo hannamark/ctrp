@@ -19,6 +19,10 @@ json.trial_versions do
 
     submission_version = TrialVersion.find_by_item_type_and_item_id("Submission", submission.id)
 
+    doc = TrialDocument.find_by_id(24)
+
+    json.doc_id doc.id
+    json.doc_name doc.file_name
 
   end
 

@@ -9,10 +9,10 @@
         .controller('trialHistoryCtrl', trialHistoryCtrl);
 
     trialHistoryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr','DateService','AuditService','uiGridConstants','$uibModal','UserService'];
+        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService'];
 
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
-                                     $timeout, _, PATrialService, toastr,DateService,AuditService,uiGridConstants,$uibModal,UserService) {
+                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
@@ -240,6 +240,17 @@
 
 
             vm.save = save;
+            vm.amendmentDateOpened = false;
+            vm.openCalendar = openCalendar;
+
+            function openCalendar($event, type) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                if (type === 'amendment_date') {
+                    vm.amendmentDateOpened = !vm.amendmentDateOpened;
+                }
+            }; //openCalendar
 
             function save() {
                 vm.entity.acknowledge ="Yes";

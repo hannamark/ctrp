@@ -9,11 +9,13 @@
         .factory('AuditService', AuditService);
 
     AuditService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants','HOST'];
 
     function AuditService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService,UserService,uiGridConstants) {
+                        PromiseTimeoutService,UserService,uiGridConstants,HOST) {
+
+        var downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
         var initOrgSearchParams = {
             name : '',
@@ -108,6 +110,9 @@
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*'},
                 {field: 'submission_type_list', displayName: 'Type',enableSorting:true, cellTemplate:'<div ng-repeat="item in row.entity[col.field]">{{item}}</div>'},
+            {name: 'doc',displayName:'Docs', enableSorting: true, minWidth: '100', width: '*',
+            cellTemplate: '<div> <a href="{{downloadBaseUrl}}/{{row.entity.doc_id}}">{{row.entity.file_name}}</a></td></div>'},
+
 
                 {
                     name: 'Action ',
