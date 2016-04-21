@@ -11,6 +11,10 @@
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
 #
+# Indexes
+#
+#  index_links_on_trial_id  (trial_id)
+#
 
 class Link < ActiveRecord::Base
   include BasicConcerns

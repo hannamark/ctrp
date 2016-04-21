@@ -11,6 +11,11 @@
 #  uuid                   :string(255)
 #  lock_version           :integer          default(0)
 #
+# Indexes
+#
+#  index_cadsr_marker_synonyms_on_cadsr_marker_id         (cadsr_marker_id)
+#  index_cadsr_marker_synonyms_on_cadsr_marker_status_id  (cadsr_marker_status_id)
+#
 
 class CadsrMarkerSynonym < ActiveRecord::Base
   include BasicConcerns

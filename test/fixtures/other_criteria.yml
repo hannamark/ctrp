@@ -12,6 +12,10 @@
 #  criteria_desc :text
 #  index         :integer
 #
+# Indexes
+#
+#  index_other_criteria_on_trial_id  (trial_id)
+#
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
