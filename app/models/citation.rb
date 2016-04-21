@@ -12,6 +12,10 @@
 #  uuid              :string(255)
 #  lock_version      :integer          default(0)
 #
+# Indexes
+#
+#  index_citations_on_trial_id  (trial_id)
+#
 
 class Citation < ActiveRecord::Base
   include BasicConcerns

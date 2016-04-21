@@ -142,11 +142,16 @@ ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Resp
 ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
 ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
 
+Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
 Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
-Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
 Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
 Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
-Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
+Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
+Milestone.find_or_create_by(code: 'VPS', name: 'Validation Processing Start Date')
+Milestone.find_or_create_by(code: 'VPC', name: 'Validation Processing Completed Date')
+Milestone.find_or_create_by(code: 'RVQ', name: 'Ready for Validation QC Date')
+Milestone.find_or_create_by(code: 'VQS', name: 'Validation QC Start Date')
+Milestone.find_or_create_by(code: 'VQC', name: 'Validation QC Completed Date')
 Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
 Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
 Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
@@ -161,9 +166,12 @@ Milestone.find_or_create_by(code: 'RTS', name: 'Ready for Trial Summary Report D
 Milestone.find_or_create_by(code: 'TSR', name: 'Trial Summary Report Date')
 Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report Feedback Date')
 Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
-Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'ONG', name: 'On-going Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
+
+MilestoneType.find_or_create_by(code: 'ADM', name: 'Administrative')
+MilestoneType.find_or_create_by(code: 'SCI', name: 'Scientific')
+MilestoneType.find_or_create_by(code: 'GEN', name: 'General')
 
 SubmissionType.find_or_create_by(code: 'ORI', name: 'Original')
 SubmissionType.find_or_create_by(code: 'AMD', name: 'Amendment')
@@ -1132,8 +1140,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
                {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
                {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true},
-               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true}
+               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true},
+               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true}
 ]
 
 test_users.each do |u|

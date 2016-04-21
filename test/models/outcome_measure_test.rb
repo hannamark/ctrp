@@ -15,6 +15,11 @@
 #  lock_version            :integer          default(0)
 #  index                   :integer
 #
+# Indexes
+#
+#  index_outcome_measures_on_outcome_measure_type_id  (outcome_measure_type_id)
+#  index_outcome_measures_on_trial_id                 (trial_id)
+#
 
 require 'test_helper'
 

@@ -10,6 +10,11 @@
 #  uuid               :string(255)
 #  lock_version       :integer          default(0)
 #
+# Indexes
+#
+#  index_marker_eval_type_associations_on_evaluation_type_id  (evaluation_type_id)
+#  index_marker_eval_type_associations_on_marker_id           (marker_id)
+#
 
 class MarkerEvalTypeAssociation < ActiveRecord::Base
   include BasicConcerns

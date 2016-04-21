@@ -12,6 +12,10 @@
 #  lock_version :integer          default(0)
 #  index        :integer
 #
+# Indexes
+#
+#  index_sub_groups_on_trial_id  (trial_id)
+#
 
 class SubGroup < ActiveRecord::Base
   include BasicConcerns

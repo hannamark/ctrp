@@ -15,6 +15,10 @@
 #  uuid                   :string(255)
 #  lock_version           :integer          default(0)
 #
+# Indexes
+#
+#  index_cadsr_markers_on_cadsr_marker_status_id  (cadsr_marker_status_id)
+#
 
 class CadsrMarker < ActiveRecord::Base
   include BasicConcerns

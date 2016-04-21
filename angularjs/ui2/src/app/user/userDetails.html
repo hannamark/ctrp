@@ -20,15 +20,6 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus)}">
                         <label class="control-label col-xs-12 col-sm-3">User Status:</label>
                         <div class="col-xs-12 col-sm-6">
-                            <!-- <select class="form-control input-sm" id="userstatus"
-                                ng-model="userDetailView.userDetails.user_status.id"
-                                name="userstatus"
-                                required
-                                ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
-                                ng-change="userDetailView.checkUserStatus()">
-                                <option value="" ng-selected="!userDetailView.userDetails.user_status.id">Select a status</option>
-                                <option ng-repeat="status in userDetailView.statusArr track by status.id" value="{{status.id}}" ng-selected="userDetailView.userDetails.user_status.id === status.id">{{status.name}}</option>
-                            </select> -->
                             <select name="userstatus" id="userstatus"
                                 class="form-control input-sm"
                                 ng-model="userDetailView.userDetails.user_status.id"
@@ -38,7 +29,6 @@
                                 required>
                                 <option value="">Select a status</option>
                             </select>
-
                             <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.id" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                             <span class="help-block" ng-show="userDetail_form.userstatus.$error.required">Status is Required</span>
                         </div>
@@ -165,38 +155,11 @@
                     </div>
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': !userDetailView.selectedOrgsArray.length}">
-                        <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
-                        <div class="col-xs-12 col-sm-9">
-                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" allow-overwrite="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
-                            <span class="help-block" ng-show="!userDetailView.selectedOrgsArray.length">Affiliated Organization is Required</span>
+                        <label class="control-label col-xs-12 col-sm-3">Affiliated Organization:</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <input class="form-control input-sm" type="text" id="lead_org" name="lead_organization" ng-model="userDetailView.selectedOrgsArray[userDetailView.selectedOrgsArray.length-1].name" disabled class="form-control input-sm" placeholder="Affialiated Organization" ng-required="true">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-12 col-sm-3"></div>
-                        <div class="col-xs-12 col-sm-6">
-                            <!-- ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button-->
-                            <div class="row animated-item">
-                                <table class="table table-bordered table-striped table-condensed" ng-if="userDetailView.selectedOrgsArray.length">
-                                    <thead>
-                                        <th>CTRP ID</th>
-                                        <th>Organization</th>
-                                        <th class="text-center td-icon"> Delete</th>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="org in userDetailView.selectedOrgsArray | filter: {'name': userDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                        <td>{{org.id}}</td>
-                                        <td>{{org.name}}</td>
-                                        <td class="text-center td-icon">
-                                            <label class="btn btn-warning" ng-click="userDetailView.toggleSelection($index)">
-                                                <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-1"></div>
+                        <ctrp-org-adv-search-modal-button class="col-xs-12 col-sm-3"  max-row-selectable="1" use-built-in-template="false" allow-overwrite="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
                     </div>
 
                     <div class="form-group no-bottom-margin">
