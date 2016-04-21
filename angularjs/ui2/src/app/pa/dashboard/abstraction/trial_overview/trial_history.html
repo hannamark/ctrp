@@ -47,126 +47,132 @@
     </script>
 
 
-    <div class="row">
-    <uib-accordion close-others="false">
-        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-            <uib-accordion-heading>
-                Trial History <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-            </uib-accordion-heading>
 
-            <section>
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Trial History</div>
+        </div>
+        <div class="panel-body">
                 <md-tabs md-dynamic-height md-border-bottom md-selected="trialHistoryView.tabIndex">
-                    <md-tab>
-                        <md-tab-label>Submissions</md-tab-label>
-                        <md-tab-body>
-                            <!-- list of trial submissions  -->
-                            <div class="row" ng-class="{'top-offset-xs': trialHistoryView.submissionsGridOptions.data.length > 0 }">
-                                <div class="col-xs-12">
-                                    <div class="row" ng-if="trialHistoryView.submissionsGridOptions.totalItems != null">
-                                        <p><h4>Audit Trail Submissions: {{trialHistoryView.submissionsGridOptions.totalItems}} found</h4></p>
-                                    </div>
-                                    <div class="row animated-item" ng-if="trialHistoryView.submissionsGridOptions.data.length > 0">
-                                        <div class="col-xs-12">
-                                            <div ui-grid="trialHistoryView.submissionsGridOptions"  ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-large-cell"></div>
-                                        </div>
-                                    </div>
+                <md-tab>
+                    <md-tab-label>Submissions</md-tab-label>
+                    <md-tab-body>
+                        <!-- list of trial submissions  -->
+                        <div class="row" ng-class="{'top-offset-xs': trialHistoryView.submissionsGridOptions.data.length > 0 }">
+                            <div class="col-xs-12">
+                                <div class="row" ng-if="trialHistoryView.submissionsGridOptions.totalItems != null">
+                                    <p><h4>Audit Trail Submissions: {{trialHistoryView.submissionsGridOptions.totalItems}} found</h4></p>
                                 </div>
-                            </div>                        </md-tab-body>
-                    </md-tab>
-
-                    <md-tab> <!--ng-disabled="!psView.currentParticipatingSite.organization.name"-->
-                        <md-tab-label>Updates</md-tab-label>
-                        <md-tab-body>
-                            <!-- list of trial updates  -->
-                            <div class="row" ng-class="{'top-offset-xs': trialHistoryView.updatesGridOptions.data.length > 0 }">
-                                <div class="col-xs-12">
-                                    <div class="row" ng-if="trialHistoryView.updatesGridOptions.totalItems != null">
-                                        <p><h4>Audit Trail Updates: {{trialHistoryView.updatesGridOptions.totalItems}} found</h4></p>
-                                    </div>
-                                    <div class="row animated-item" ng-if="trialHistoryView.updatesGridOptions.data.length > 0">
-                                        <div class="col-xs-12" >
-                                            <div ui-grid="trialHistoryView.updatesGridOptions" ui-grid-expandable ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
-                                        </div>
+                                <div class="row animated-item" ng-if="trialHistoryView.submissionsGridOptions.data.length > 0">
+                                    <div class="col-xs-12">
+                                        <div ui-grid="trialHistoryView.submissionsGridOptions"  ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
                                     </div>
                                 </div>
                             </div>
-                        </md-tab-body>
-                    </md-tab>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
 
 
-
-                    <md-tab> <!--ng-disabled="!psView.currentParticipatingSite.organization.name"-->
-                        <md-tab-label>Audit Trail</md-tab-label>
-                        <md-tab-body>
-                            <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialHistoryView.updateTrialStatuses()">
-
-                                <div class="row">
-                                    <div class="form-group" date-date-format="yyyy-mm-dd">
-                                        <label for="start_date" class="control-label col-xs-12 col-sm-3">Start Date:</label>
-                                        <div class="col-xs-12 col-sm-2" >
-                                            <div class="input-group add-on date datepicker min-width-md" date-date-format="yyyy-mm-dd">
-                                                <input type="text" id="start_date" name="status_date" class="form-control input-sm"
-                                                       uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
-                                                       ng-click="trialHistoryView.openCalendar($event, 'start_date')"
-                                                       is-open="trialHistoryView.startDateOpened"
-                                                       datepicker-options="trialHistoryView.dateOptions"
-                                                       close-text="Close" placeholder="Start Date" readonly />
-                                                        <span class="input-group-btn">
-                                                            <button type="button" restriction-field class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'start_date')">
-                                                                <i class="glyphicon glyphicon-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                            </div>
-                                        </div>
-                                        <label for="end_date" class="control-label col-xs-12 col-sm-1">End Date:</label>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <div class="input-group add-on date datepicker min-width-md">
-                                                <input type="text" id="end_date" name="end_date" class="form-control input-sm"
-                                                       uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
-                                                       ng-click="trialHistoryView.openCalendar($event, 'end_date')"
-                                                       is-open="trialHistoryView.endDateOpened"
-                                                       datepicker-options="trialHistoryView.dateOptions"
-                                                       date-later-than="{{trialHistoryView.statusObj.start_date| date: 'short'}}"
-                                                       close-text="Close" placeholder="End Date" readonly />
-                                                        <span class="input-group-btn">
-                                                            <button type="button" restriction-field class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'end_date')">
-                                                                <i class="glyphicon glyphicon-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4"></div>
+                <md-tab>
+                    <md-tab-label>Updates</md-tab-label>
+                    <md-tab-body>
+                        <!-- list of trial updates  -->
+                        <div class="row" ng-class="{'top-offset-xs': trialHistoryView.updatesGridOptions.data.length > 0 }">
+                            <div class="col-xs-12">
+                                <div class="row" ng-if="trialHistoryView.updatesGridOptions.totalItems != null">
+                                    <p><h4>Audit Trail Updates: {{trialHistoryView.updatesGridOptions.totalItems}} found</h4></p>
+                                </div>
+                                <div class="row animated-item" ng-if="trialHistoryView.updatesGridOptions.data.length > 0">
+                                    <div class="col-xs-12">
+                                        <div ui-grid="trialHistoryView.updatesGridOptions" ui-grid-expandable ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+
+                <md-tab>
+                    <md-tab-label>Audit Trial</md-tab-label>
+                    <md-tab-body>
+                        <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialHistoryView.updateTrialStatuses()">
+
+
+                            <div class="row">
+                                <div class="form-group" date-date-format="yyyy-mm-dd">
+                                    <label for="start_date" class="control-label col-xs-12 col-sm-3">Start Date:</label>
+                                    <div class="col-xs-12 col-sm-2 search-calendar-grid">
+                                        <div class="input-group add-on date datepicker min-width-md" date-date-format="yyyy-mm-dd">
+                                            <input type="text" id="start_date" name="status_date" class="form-control input-sm"
+                                                   uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
+                                                   ng-click="trialHistoryView.openCalendar($event, 'start_date')"
+                                                   is-open="trialHistoryView.startDateOpened"
+                                                   datepicker-options="trialHistoryView.dateOptions"
+                                                   close-text="Close" placeholder="Start Date" readonly />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" restriction-field class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'start_date')">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                        </div>
+                                    </div>
+<<<<<<< HEAD
                                     <div class="form-group no-bottom-margin" >
                                         <div class="col-sm-3"></div>
                                         <div class="btn-toolbar col-xs-12 col-sm-9">
                                             <button type="button" class="btn btn-primary pull-right" id="submit_btn" ng-click="trialHistoryView.submit()" restriction-field>
                                                 <i class="glyphicon glyphicon-ok"></i> Search
                                             </button>
+=======
+                                    <label for="end_date" class="control-label col-xs-12 col-sm-1">End Date:</label>
+                                    <div class="col-xs-12 col-sm-2 search-calendar-grid">
+                                        <div class="input-group add-on date datepicker min-width-md">
+                                            <input type="text" id="end_date" name="end_date" class="form-control input-sm"
+                                                   uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
+                                                   ng-click="trialHistoryView.openCalendar($event, 'end_date')"
+                                                   is-open="trialHistoryView.endDateOpened"
+                                                   datepicker-options="trialHistoryView.dateOptions"
+                                                   date-later-than="{{trialHistoryView.statusObj.start_date| date: 'short'}}"
+                                                   close-text="Close" placeholder="End Date" readonly />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" restriction-field class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'end_date')">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>
+>>>>>>> 6cd21f7a79449bce2b47ae2afa4280ac6f24988d
                                         </div>
                                     </div>
+                                    <div class="col-xs-12 col-sm-4"></div>
                                 </div>
-                            </form>
-
-                            <!-- list of audit trials -->
-                            <div class="row" ng-class="{'top-offset-xs': trialHistoryView.auditGridOptions.data.length > 0 }">
-                                <div class="col-xs-12">
-                                    <div class="row" ng-if="trialHistoryView.auditGridOptions.totalItems != null">
-                                        <p><h4>Audit Trail Results: {{trialHistoryView.auditGridOptions.totalItems}} found</h4></p>
-                                    </div>
-                                    <div class="row animated-item" ng-if="trialHistoryView.auditGridOptions.data.length > 0">
-                                        <div class="col-xs-12">
-                                            <div ui-grid="trialHistoryView.auditGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
-                                        </div>
+                                <div class="form-group no-bottom-margin" >
+                                    <div class="col-sm-3"></div>
+                                    <div class="btn-toolbar col-xs-12 col-sm-9">
+                                        <button type="button" class="btn btn-primary pull-right" id="submit_btn" ng-click="trialHistoryView.submit()" restriction-field>
+                                            <i class="glyphicon glyphicon-ok"></i> Save
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </md-tab-body>
-                    </md-tab>
+                        </form>
 
-                </md-tabs>
-            </section>
-
-        </uib-accordion-group>
-    </uib-accordion>
+                        <!-- list of audit trials -->
+                        <div class="row" ng-class="{'top-offset-xs': trialHistoryView.auditGridOptions.data.length > 0 }">
+                            <div class="col-xs-12">
+                                <div class="row" ng-if="trialHistoryView.auditGridOptions.totalItems != null">
+                                    <p><h4>Audit Trail Results: {{trialHistoryView.auditGridOptions.totalItems}} found</h4></p>
+                                </div>
+                                <div class="row animated-item" ng-if="trialHistoryView.auditGridOptions.data.length > 0">
+                                    <div class="col-xs-12">
+                                        <div ui-grid="trialHistoryView.auditGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </div>
+    </div>
 </div>

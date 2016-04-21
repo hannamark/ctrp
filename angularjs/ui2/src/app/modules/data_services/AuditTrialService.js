@@ -62,7 +62,7 @@
             enableFiltering: true,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
-            expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
+            expandableRowTemplate: '<div class="ui-grid-no-hover" ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
             expandableRowHeight: 150,
 
             columnDefs: [

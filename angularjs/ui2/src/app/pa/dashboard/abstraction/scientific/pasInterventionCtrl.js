@@ -29,9 +29,11 @@
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
             vm.deleteBtnDisabled = true;
-
             vm.isCancerGovTypeListEnabled = false;
             vm.isCTGovTypeListEnabled = false;
+            vm.upsertBtnDisabled = true;
+            vm.sortableListener = {};
+            vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
             var isUserAllowedToSelectType = curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU'; // only super userss are allowed
 
@@ -74,6 +76,7 @@
             function addIntervention() {
                 // console.info('showing intervention');
                 vm.showInterventionForm = true;
+                vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = _newInterventionObj();
             }
 
@@ -89,24 +92,36 @@
                         vm.trialDetailObj.interventions.unshift(angular.copy(inventionObj));
                     }
 
-                    updateInterventions();
+                    updateInterventions(true);
                 }
             }
 
-            function updateInterventions() {
+            function _labelSortableIndex(interventionArr) {
+                var reorderedArr = _.map(interventionArr, function(inter, idx) {
+                    inter.index = idx;
+                    return inter;
+                });
+                return reorderedArr;
+            }
+
+            function updateInterventions(showToastr) {
                 console.info('interventions: ', vm.trialDetailObj.interventions);
-                vm.trialDetailObj.interventions_attributes = vm.trialDetailObj.interventions;
+                vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
+                vm.deleteBtnDisabled = true;
+                vm.upsertBtnDisabled = true;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
                     console.info('res after upsert: ', res);
                     if (res.server_response.status === 200) {
                         vm.trialDetailObj = res;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                         $scope.$emit('updatedInChildScope', {});
-                        toastr.clear();
-                        toastr.success('Intervention has been updated', 'Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
+                        if (showToastr) {
+                            toastr.clear();
+                            toastr.success('Intervention has been updated', 'Successful!', {
+                                extendedTimeOut: 1000,
+                                timeOut: 0
+                            });
+                        }
                         _getTrialDetailCopy();
                     }
                 }).catch(function(err) {
@@ -119,6 +134,7 @@
 
             function editIntervention(index) {
                 vm.showInterventionForm = true;
+                vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = angular.copy(vm.trialDetailObj.interventions[index]);
                 vm.curInterventionObj.edit = true;
                 vm.curInterventionObj.index = index;
@@ -157,11 +173,18 @@
             }
 
             function deleteInterventions() {
-                console.info('deleting interventions');
+                // console.info('deleting interventions');
                 if (vm.trialDetailObj.interventions.length === 0) {
                     return;
                 }
-                updateInterventions();
+                updateInterventions(true);
+            }
+
+            function dragItemCallback(event, ui) {
+                var item = ui.item.scope().item;
+                var fromIndex = ui.item.sortable.index;
+                var toIndex = ui.item.sortable.dropindex;
+                updateInterventions(false); // update without showing toastr
             }
 
             var modalOpened = false;

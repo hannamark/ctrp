@@ -88,10 +88,10 @@
 
                                 <div class="form-group text-center">
                                     <button type="button" class="btn btn-warning" ng-click="interventionView.resetLookupForm(intervention_form)">Reset</button>
-                                    <button type="submit" class="btn btn-primary" ng-hide="interventionView.curInterventionObj.edit">
+                                    <button type="submit" class="btn btn-primary" ng-hide="interventionView.curInterventionObj.edit" ng-disabled="interventionView.upsertBtnDisabled">
                                         <i class="glyphicon glyphicon-plus"></i> Add
                                     </button>
-                                    <button type="submit" class="btn btn-primary" ng-show="interventionView.curInterventionObj.edit">
+                                    <button type="submit" class="btn btn-primary" ng-show="interventionView.curInterventionObj.edit" ng-disabled="interventionView.upsertBtnDisabled">
                                         <i class="glyphicon glyphicon-edit"></i> Update
                                     </button>
 
@@ -113,13 +113,14 @@
                 List of Interventions <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
             </uib-accordion-heading>
             <!-- associated trials -->
-            <div class="row">
+            <div class="row" ng-show="interventionView.trialDetailObj.interventions.length > 0">
                 <form>
                     <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">
                         <div class="row">
                             <table st-table="interventionView.trialDetailObj.associated_trials" class="table table-striped table-hover table-bordered" ng-hide="">
                                 <thead>
                                 <tr>
+                                    <th class="col-sm-1">Index</th>
                                     <th class="col-sm-2">Name</th>
                                     <th>Description</th>
                                     <th class="col-sm-2">Other Names</th>
@@ -131,8 +132,11 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                    <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.id === t.id}">
+                                <tbody ui-sortable="interventionView.sortableListener" ng-model="interventionView.trialDetailObj.interventions">
+                                    <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'deleted-text': t._destroy, 'edit-selected': interventionView.curInterventionObj.index === t.index}">
+                                        <td>
+                                            {{$index + 1}}
+                                        </td>
                                         <td>
                                             {{t.name}}
                                         </td>

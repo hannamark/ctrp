@@ -185,6 +185,8 @@
          * @return {JSON object}  Other criterion object
          */
         function editOtherCriterion(index) {
+            vm.trialDetailObj.other_criteria[index].edit = true;
+
             vm.otherCriterion = angular.copy(vm.trialDetailObj.other_criteria[index]);
             vm.otherCriterion.edit = true;
             vm.otherCriterion.index = index;
@@ -196,6 +198,8 @@
         }
 
         function cancelEditOtherCriterion() {
+            resetOtherCriterionEdit();
+
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion = newOtherCriterion('');
         }
@@ -211,9 +215,17 @@
 
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_type = otherCriterionType;
             vm.trialDetailObj.other_criteria[otherCriterionIndex].criteria_desc = otherCriterionDesc;
+            resetOtherCriterionEdit();  // resets edit property of currently edited criterion back to false
 
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion = newOtherCriterion(''); // reset to empty because edit/update is complete
+        }
+
+        function resetOtherCriterionEdit() {
+            var otherCriterionIndex = vm.otherCriterion.index;
+            if (vm.trialDetailObj.other_criteria[otherCriterionIndex]) {
+                vm.trialDetailObj.other_criteria[otherCriterionIndex].edit = false;
+            }
         }
 
 /*
