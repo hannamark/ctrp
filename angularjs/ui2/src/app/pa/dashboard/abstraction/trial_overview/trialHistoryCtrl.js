@@ -9,10 +9,10 @@
         .controller('trialHistoryCtrl', trialHistoryCtrl);
 
     trialHistoryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService'];
+        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService','HOST'];
 
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
-                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService) {
+                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService,HOST) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
@@ -39,6 +39,7 @@
 
         vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
 
+        $scope.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download/';
 
         activate();
 

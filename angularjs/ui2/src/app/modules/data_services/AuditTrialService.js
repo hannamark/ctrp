@@ -15,7 +15,7 @@
                         GeoLocationService, Common, $rootScope,
                         PromiseTimeoutService,UserService,uiGridConstants,HOST) {
 
-        var downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
+
 
         var initOrgSearchParams = {
             name : '',
@@ -95,7 +95,7 @@
             rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
-            enableRowSelection: true,
+            enableRowSelection: false,
             paginationPageSizes: [20, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
@@ -110,8 +110,9 @@
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*'},
                 {field: 'submission_type_list', displayName: 'Type',enableSorting:true, cellTemplate:'<div ng-repeat="item in row.entity[col.field]">{{item}}</div>'},
-            {name: 'doc',displayName:'Docs', enableSorting: true, minWidth: '100', width: '*',
-            cellTemplate: '<div> <a href="{{downloadBaseUrl}}/{{row.entity.doc_id}}">{{row.entity.file_name}}</a></td></div>'},
+                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></div>'},
+
 
 
                 {
