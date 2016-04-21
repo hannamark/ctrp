@@ -13,7 +13,7 @@ Then I can view the Trial History Information type for Submissions and Updates f
 |Submission Type|
 |Submitter User ID|
 |Documents| 
-|Milestone|
+|Current Milestone (for this submission number)|
 |Action|
 
 Scenario Outline: #2 I can view Amendment Information for Submissions
@@ -73,7 +73,7 @@ Then I can view the Trial History Information for Submissions for each submissio
 |Submission Type|
 |Submitter User ID|
 |Documents| 
-|Milestone|
+|Current Milestone (for this submission number)|
 
 
 Scenario: #7 I can view each document
