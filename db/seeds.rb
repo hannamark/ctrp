@@ -169,6 +169,10 @@ Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Dat
 Milestone.find_or_create_by(code: 'ONG', name: 'On-going Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
 
+MilestoneType.find_or_create_by(code: 'ADM', name: 'Administrative')
+MilestoneType.find_or_create_by(code: 'SCI', name: 'Scientific')
+MilestoneType.find_or_create_by(code: 'GEN', name: 'General')
+
 SubmissionType.find_or_create_by(code: 'ORI', name: 'Original')
 SubmissionType.find_or_create_by(code: 'AMD', name: 'Amendment')
 SubmissionType.find_or_create_by(code: 'UPD', name: 'Update')

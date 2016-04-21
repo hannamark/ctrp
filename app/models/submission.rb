@@ -22,6 +22,15 @@
 #  acknowledge_date     :date
 #  acknowledged_by      :string(255)
 #
+# Indexes
+#
+#  index_submissions_on_amendment_reason_id   (amendment_reason_id)
+#  index_submissions_on_submission_method_id  (submission_method_id)
+#  index_submissions_on_submission_source_id  (submission_source_id)
+#  index_submissions_on_submission_type_id    (submission_type_id)
+#  index_submissions_on_trial_id              (trial_id)
+#  index_submissions_on_user_id               (user_id)
+#
 
 class Submission < TrialBase
   include BasicConcerns
