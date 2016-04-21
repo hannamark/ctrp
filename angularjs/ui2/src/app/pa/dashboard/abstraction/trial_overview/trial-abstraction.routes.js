@@ -59,6 +59,9 @@
                     TrialService: 'TrialService',
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    milestoneObj: function(TrialService) {
+                        return TrialService.getMilestones();
                     }
                 },
                 section: 'pa',
