@@ -54,7 +54,7 @@
             .state('main.pa.trialOverview.milestone', {
                 url: '/milestone',
                 templateUrl: 'app/pa/dashboard/abstraction/trial_overview/pa_milestone.html',
-                controller: 'paMilestoneCtrl as paMilestoneView',
+                controller: 'paMilestoneCtrl as milestoneView',
                 resolve: {
                     TrialService: 'TrialService',
                     trialDetailObj: function($stateParams, TrialService) {

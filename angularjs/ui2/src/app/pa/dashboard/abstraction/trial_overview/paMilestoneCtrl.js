@@ -12,6 +12,11 @@
     function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, TrialService) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        vm.addMode = false;
+
+        vm.setAddMode = function(mode) {
+            vm.addMode = mode;
+        };
 
         activate();
 
