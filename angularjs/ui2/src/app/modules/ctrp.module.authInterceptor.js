@@ -66,7 +66,6 @@
                     }
                 });
 
-
                 $injector.get('toastr').error(errorMsg, {
                     extendedTimeOut: 1000,
                     timeOut: 0
