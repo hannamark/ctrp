@@ -6,7 +6,7 @@
             </uib-accordion-heading>
 
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <form class="form form-horizontal" role="form">
+                <form class="form form-horizontal" role="form" name="disease_form" novalidate ctrp-submit="diseaseView.updateRank()">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.existingDiseases.length">
                             <thead>
@@ -14,6 +14,7 @@
                                 <th>NCI Thesaurus Concept ID</th>
                                 <th>Menu Display Name</th>
                                 <th>Parent Preferred Name(s)</th>
+                                <th>Disease Code</th>
                                 <th class="text-center td-icon">
                                     <input type="checkbox" restriction-field ng-model="diseaseView.selectedAll" ng-change="diseaseView.toggleAll()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </th>
@@ -24,6 +25,19 @@
                                 <td>{{disease.thesaurus_id}}</td>
                                 <td>{{disease.display_name}}</td>
                                 <td>{{disease.parent_preferred}}</td>
+                                <td>
+                                    <div>
+                                        <label class="radio-inline">
+                                            <input type="radio" restriction-field ng-model="disease.rank" ng-change="diseaseView.updateValidationVar()" value="Primary"> Primary
+                                        </label><br>
+                                        <label class="radio-inline">
+                                            <input type="radio" restriction-field ng-model="disease.rank" ng-change="diseaseView.updateValidationVar()" value="Secondary"> Secondary
+                                        </label><br>
+                                        <label class="radio-inline">
+                                            <input type="radio" restriction-field ng-model="disease.rank" ng-change="diseaseView.updateValidationVar()" value=""> N/A
+                                        </label>
+                                    </div>
+                                </td>
                                 <td class="text-center td-icon">
                                     <input type="checkbox" restriction-field ng-model="disease._destroy" ng-change="diseaseView.toggleOne()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                                 </td>
@@ -31,19 +45,36 @@
                             </tbody>
                         </table>
                     </div>
-                </form>
 
-                <div class="form-group no-bottom-margin">
-                    <div class="btn-toolbar">
-                        <button type="submit" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="diseaseView.setAddMode()">
-                            <i class="glyphicon glyphicon-plus"></i> Add Disease/Condition
-                        </button>
-                        <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="diseaseView.deleteSelected()" confirm-msg="Click OK to remove selected Disease/Condition from the study. Click Cancel to abort."
-                                ng-disabled="diseaseView.selectedNum === 0 || diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="diseaseView.existingDiseases.length">
-                            <i class="glyphicon glyphicon-trash"></i> Delete Selected
-                        </button>
+                    <input type="hidden" name="disease_dummy" ng-model="diseaseView.dummyField" ng-required="diseaseView.showPrimaryRequired || diseaseView.showPrimaryOnlyOne || diseaseView.showSecondaryOnlyOne">
+                    <div class="has-error">
+                        <span class="help-block" ng-show="diseaseView.showPrimaryRequired && ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)">
+                            One disease must be selected as primary<br>
+                        </span>
+                        <span class="help-block" ng-show="diseaseView.showPrimaryOnlyOne && ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)">
+                            Only one disease can be selected as primary<br>
+                        </span>
+                        <span class="help-block" ng-show="diseaseView.showSecondaryOnlyOne && ctrpbtn.disease_form.needsAttention(disease_form.disease_dummy)">
+                            Only one disease can be selected as secondary
+                        </span>
                     </div>
-                </div>
+
+                    <div class="form-group no-bottom-margin">
+                        <div class="btn-toolbar">
+                            <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field  ng-disabled="diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="diseaseView.setAddMode(true)">
+                                <i class="glyphicon glyphicon-plus"></i> Add Disease/Condition
+                            </button>
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable"
+                                    ng-show="diseaseView.existingDiseases.length">
+                                <i class="glyphicon glyphicon-ok"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-danger pull-right" id="delete_btn" restriction-field ctrp-confirm ctrp-click="diseaseView.deleteSelected()" confirm-msg="Click OK to remove selected Disease/Condition from the study. Click Cancel to abort."
+                                    ng-disabled="diseaseView.selectedNum === 0 || diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="diseaseView.existingDiseases.length">
+                                <i class="glyphicon glyphicon-trash"></i> Delete Selected
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </uib-accordion-group>
     </uib-accordion>
@@ -58,19 +89,35 @@
                 <form class="form form-horizontal" role="form">
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-8">
-                            <input type="text" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.disease_name" autofocus />
+                            <input type="text" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.searchParams.disease_name" autofocus />
                         </div>
                         <div class="col-xs-12 col-sm-4">
                             <div class="btn-toolbar">
-                                <button type="submit" class="btn btn-primary" id="submission_btn" ng-click="diseaseView.searchDiseases()">
+                                <button type="submit" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn" ng-click="diseaseView.searchDiseases()">
                                     <i class="glyphicon glyphicon-search"></i> Search
                                 </button>
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-4">
+                            <div>
+                                <label for="synonym">
+                                    <input type="checkbox" id="synonym" ng-model="diseaseView.searchParams.synonym"> Search Synonyms
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </form>
 
-                <div class="table-responsive">
+                <div class="col-xs-12">
+                    <span us-spinner="{radius: 10, length: 5}" spinner-on="diseaseView.searching"></span>
+                </div>
+
+                <h4 ng-show="diseaseView.searchResult">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
+
+                <div class="table-responsive max-height-lg">
                     <table class="table table-bordered table-striped table-hover" ng-show="diseaseView.searchResult.length">
                         <thead>
                             <th>Preferred Name</th>
@@ -90,6 +137,11 @@
                                             ng-disabled="result.added">
                                         <i class="glyphicon glyphicon-plus"></i>
                                     </button>
+                                    <div class="has-error">
+                                        <span class="help-block" ng-show="result.exists">
+                                            This disease has been added to this trial already
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>
                                     <p ng-repeat="synonym in result.ncit_disease_synonyms track by $index">
@@ -102,10 +154,10 @@
                 </div>
             </div>
 
-            <div ng-show="diseaseView.addedDiseases.length > 0" class="col-xs-12 col-sm-12 col-md-5">
+            <div class="col-xs-12 col-sm-12 col-md-5">
                 <form class="form form-horizontal" role="form" name="added_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
-                    <div class="form-group">
-                        <h4>Your Selections</h4>
+                    <div ng-show="diseaseView.addedDiseases.length > 0" class="form-group">
+                        <h4>Your Selections <span class="pull-right">{{diseaseView.addedDiseases.length}} diseases selected</span></h4>
                         <ul class="list-group">
                             <li ng-repeat="addedDisease in diseaseView.addedDiseases track by $index" class="list-group-item">
                                 {{addedDisease.preferred_name}}
@@ -118,11 +170,14 @@
 
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_btn" restriction-field ng-disabled="diseaseView.disableBtn">
+                            <button type="submit" ng-show="diseaseView.addedDiseases.length > 0" class="btn btn-primary pull-right" id="save_btn2" restriction-field ng-disabled="diseaseView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="diseaseView.resetDisease()">
+                            <button type="button" ng-show="diseaseView.addedDiseases.length > 0" class="btn btn-warning pull-right" id="reset_btn" restriction-field ng-disabled="diseaseView.disableBtn" ng-click="diseaseView.resetDiseases()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                            <button type="button" class="btn btn-warning pull-right" id="back_btn" restriction-field ng-click="diseaseView.setAddMode(false)">
+                                <i class="glyphicon glyphicon-arrow-left"></i> Back to Disease List
                             </button>
                         </div>
                     </div>
@@ -131,4 +186,3 @@
         </uib-accordion-group>
     </uib-accordion>
 </div>
-

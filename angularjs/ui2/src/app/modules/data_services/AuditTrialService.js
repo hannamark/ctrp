@@ -9,13 +9,14 @@
         .factory('AuditService', AuditService);
 
     AuditService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants','HOST'];
 
     function AuditService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService,UserService,uiGridConstants) {
+                        PromiseTimeoutService,UserService,uiGridConstants,HOST) {
 
-        var statesOrProvinces = [];
+        var downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
+
         var initOrgSearchParams = {
             name : '',
             alias: true,
@@ -38,11 +39,11 @@
             //for pagination and sorting
             sort: '',
             order: '',
-            rows: 20,
+            rows: 5,
             start: 1
         }; //initial Organization Search Parameters
 
-        var gridOptions = {
+        var updatesGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
             ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
@@ -55,6 +56,88 @@
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
+            paginationPageSizes: [5, 10],
+            paginationPageSize: 5,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            expandableRowTemplate: '<div class="ui-grid-no-hover" ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
+            expandableRowHeight: 150,
+
+            columnDefs: [
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
+                {
+                    name: 'Acknowledge ',
+                    cellTemplate: '<div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row,\'updates\')">Acknowledge</button></div>'
+                },
+                {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
+
+            ]
+        };
+
+
+        var submissionsGridOptions = {
+            rowTemplate: '<div>'+
+            '<div>' +
+            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            enableRowSelection: true,
+            paginationPageSizes: [20, 50, 100],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+
+
+            columnDefs: [
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*'},
+                {field: 'submission_type_list', displayName: 'Type',enableSorting:true, cellTemplate:'<div ng-repeat="item in row.entity[col.field]">{{item}}</div>'},
+            {name: 'doc',displayName:'Docs', enableSorting: true, minWidth: '100', width: '*',
+            cellTemplate: '<div> <a href="{{downloadBaseUrl}}/{{row.entity.doc_id}}">{{row.entity.file_name}}</a></td></div>'},
+
+
+                {
+                    name: 'Action ',
+                    cellTemplate: '<div class="text-center"><button type="button" class="btn btn-primary" ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button></div>',
+                    width: '100'
+
+                }
+            ]
+        };
+
+
+
+        var auditsGridOptions = {
+            rowTemplate: '<div>'+
+            '<div>' +
+            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            enableRowSelection: true,
             paginationPageSizes: [20, 50, 100],
             paginationPageSize: 20,
             useExternalPagination: true,
@@ -135,9 +218,16 @@
             ]
         };
 
+
+
         var services = {
-            getGridOptions : getGridOptions,
-            getAudits: getAudits
+            getAuditsGridOptions: getAuditsGridOptions,
+            getAudits: getAudits,
+            getUpdatesGridOptions: getUpdatesGridOptions,
+            getUpdates: getUpdates,
+            getSubmissions: getSubmissions,
+            getSubmissionsGridOptions: getSubmissionsGridOptions,
+            upsertSubmission:upsertSubmission
         };
 
         return services;
@@ -152,9 +242,63 @@
         }
 
 
-        function getGridOptions() {
-            return gridOptions;
+        function getAuditsGridOptions() {
+            return auditsGridOptions;
         }
+
+
+
+        function getUpdates(obj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_UPDATES_HISTORY, obj);
+        }
+
+        function getUpdatesGridOptions() {
+            return updatesGridOptions;
+        }
+
+        function getSubmissionsGridOptions() {
+            return submissionsGridOptions;
+        }
+
+
+        function getSubmissions(obj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_SUBMISSIONS_HISTORY, obj);
+
+        }
+
+
+        /**
+         * Update submission for Updates Tab Updates
+         *
+         * @param obj
+         * @returns {*}
+         */
+        function upsertSubmission(obj) {
+            if (obj.new) {
+                //return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
+            }
+
+            var configObj={};
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
+
+        } //upsertOrg
+
+        /**
+         * Update submission for Submissions Tab Amendments
+         *
+         * @param obj
+         * @returns {*}
+         */
+       /* function upsertSubmissionAmendment(obj) {
+            if (obj.new) {
+                //return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
+            }
+
+            var configObj={};
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
+
+        } //upsertOrg
+        */
 
 
     }

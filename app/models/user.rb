@@ -53,6 +53,9 @@ class  User < ActiveRecord::Base
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :trials, through: :trial_ownerships
 
+  attr_accessor :organization_name
+  attr_accessor :selected_functions
+
   scope :approved, -> { where(approved: true) }
   scope :not_approved, -> { where(approved: false) }
 

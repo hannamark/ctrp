@@ -26,6 +26,8 @@ var searchTrial = function(){
     this.searchTrialByMyTrials = element(by.linkText('My Trials'));
     this.searchTrialByAllTrials = element(by.linkText('All Trials'));
     this.searchTrialsBySavedDrafts = element(by.linkText('Saved Drafts'));
+    this.searchTrialsActionButton = element(by.buttonText('Action'));
+    this.searchTrialsCompleteButton = element(by.linkText('Complete'));
 
 
     var helper = new helperFunctions();
@@ -84,6 +86,14 @@ var searchTrial = function(){
 
     this.clickSearchTrialSavedDrafts = function(){
         helper.clickLink(this.searchTrialsBySavedDrafts, "Search by Saved Drafts option");
+    };
+
+    this.clickSearchTrialActionButton = function(){
+        helper.clickButton(this.searchTrialsActionButton,"Search Trial Action button");
+    };
+
+    this.clickSearchTrialCompleteOption = function(){
+        helper.clickLink(this.searchTrialsCompleteButton, "Search Trial Complete option on Action button");
     };
 };
 

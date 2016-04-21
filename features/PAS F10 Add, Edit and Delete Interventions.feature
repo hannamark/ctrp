@@ -10,48 +10,54 @@ And I have clicked on Interventions
 And The Intervention Screen Opens
 When I have clicked on the Add button to add Interventions
 Then the Add Intervention screen opens
-When I have clicked on the Look Up button to select an Intervention Name
+When I have clicked on the Look Up button to select an Intervention Name 
 Then the Search Intervention Name screen is  displayed
-And I enter an intervention name 
+And I enter an intervention name (Intervention Name Example: Aspirin)
 When I have clicked on the search button
 Then the intervention name type will be displayed
  
 
       |Preferred Name                |
       |Other Names                   |
-      |Type Code                     |
-      |ClinicalTrials.gov Type Code  |
+      |Cancer.gov Type               |
+      |ClinicalTrial.gov Type        |
       |Description                   |
       |Action                        |
 
 And I will select an Intervention Name by clicking on the Select button on the Action column
 And the selected intervention name will be added to the Intervention name field
-And The Intervention Type will be populated
-
-      |Drug                |
-      |Device              |
-      |Biological/Vaccine  |
-      |Procedure/Surgery   |
-      |Radiation           |
-      |Behavioral          |
-      |Genetic             |
-      |Dietary Supplement  |
-      |Other               |
-And other names will be added in the other Names field
 And I have entered the Intervention Description in the provided box
+And other names will be added in the other Names field
+And the <InterventionType> will be populated from the intervention results table if not null
+      |InterventionType|
+      |Cancer.gov Type  |
+      |ClinicalTrial.gov Type |
+      
+      
+When the value of <InterventionType> is null 
+Then the <InterventionType> field will be blank and grayed out
+And only the Super Abstractor can edit to add <InterventionType>
 When I click on the save button to add the Intervention
-Then the intervention type will be added
-When an Intervention name is not entered
-And I have clicked on the Search Button
-Then an error message will be displayed
+Then the intervention type will be added to the intervention table with fields below
+
+      |Name  |
+      |Other Names  |
+      |Description  |
+      |Cancer.gov Type  |
+      |ClinicalTrial.gov Type  |
+      |Edit  |
+      |Delete  |
+
+
+
+  Scenario: #2 Intervention Search Screen Mandatory field
+    Given I am on the the Search Intervention Name screen 
+    When an Intervention name is not entered
+    And I have clicked on the Search Button
+   Then an error message will be displayed
 
       |Intervention Name is Required  |
 
- Scenario: #2 Intervention Type Rule
-    Given I am on the Search Intervention Screen
-    And I have completed an Intervention Search
-     When I have selected an Intervention to add 
-     Then the intervention Type will be automatically populated from the ClinicalTrials.gov Type Code 
 
 
    Scenario: #3 Intervention Desciption field Characters Rule

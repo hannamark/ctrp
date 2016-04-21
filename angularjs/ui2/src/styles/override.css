@@ -364,6 +364,19 @@ header img {
     min-width: 275px;
 }
 
+.max-height-xs {
+    max-height: 230px;
+}
+.max-height-sm {
+    max-height: 500px;
+}
+.max-height-md {
+    max-height: 750px;
+}
+.max-height-lg {
+    max-height: 1000px;
+}
+
 .row-blue {
     background-color: #2A71A5;
     height:29px;
@@ -715,6 +728,11 @@ h5 {
 .ui-grid-cell {
     line-height: 1em;
     height: 22px !important;
+}
+
+.grid-large-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 60px !important;
 }
 
 .ui-grid-cell .btn {
@@ -1204,4 +1222,27 @@ div.datepicker {
 .select2-results-absolute.has-error a {
     border-color: #a94442;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.sign_up .panel, .welcome_signup .panel {
+    max-width: 500px;
+}
+.sign_up form {
+    width:100%;
+}
+.sign_up .centered-form, .welcome_signup .centered-form{
+    padding: 1% 0;
+}
+
+.sign_up #password_confirm {
+    font-family: inherit;
+}
+.sign_up fieldset legend {
+    border: none;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+.sign_up fieldset label {
+    font-weight: normal;
 }

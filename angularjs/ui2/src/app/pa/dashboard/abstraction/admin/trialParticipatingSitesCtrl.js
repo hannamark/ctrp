@@ -253,6 +253,7 @@
             } else {
                 vm.addEditMode = true;
                 vm.tabIndex = 0;
+                $scope.ps_sites_form.$setPristine();
             }
             vm.currentParticipatingSite = {};
             vm.current_site_recruitment = {};

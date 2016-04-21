@@ -158,7 +158,9 @@
             lookupTrial: lookupTrial,
             associateTrial: associateTrial,
             lookupNcitInterventions: lookupNcitInterventions,
-            getInterventionTypes: getInterventionTypes
+            getInterventionTypes: getInterventionTypes,
+            searchCtrpInterventionsByName: searchCtrpInterventionsByName,
+            updateTrial: updateTrial
         };
 
         return services;
@@ -473,6 +475,11 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
         }
 
+        function searchCtrpInterventionsByName(interventionName) {
+            var url = URL_CONFIGS.PA.SEARCH_CTRP_INTERVENTIONS.replace(/\s*\{.*?\}\s*/g, interventionName);
+            return PromiseTimeoutService.getData(url);
+        }
+
         /**
          * Search NCI trial in the database
          * @param  {String} nciTrialId, trial id that starts with NCI- (e.g. NCI-2014-00894)
@@ -517,6 +524,23 @@
 
         function lookupNcitInterventions(searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.NCIT_INTERVENTIONS_LOOKUP, searchParams);
+        }
+
+        /**
+         * Update an existing trial
+         * @param  {[JSON]} trialObj - Trial detail object
+         * @return {[Promise]}
+         */
+        function updateTrial(trialObj) {
+            if (!angular.isDefined(trialObj.id)) {
+                return;
+            }
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = trialObj.id;
+            outerTrial.trial = trialObj;
+            outerTrial.trial.lock_version = getCurrentTrialFromCache().lock_version;
+            return upsertTrial(outerTrial);
         }
 
         /**

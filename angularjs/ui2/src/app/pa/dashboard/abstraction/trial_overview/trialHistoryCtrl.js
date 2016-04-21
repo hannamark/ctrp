@@ -9,10 +9,10 @@
         .controller('trialHistoryCtrl', trialHistoryCtrl);
 
     trialHistoryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr','DateService','AuditService','uiGridConstants'];
+        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService'];
 
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
-                                     $timeout, _, PATrialService, toastr,DateService,AuditService,uiGridConstants) {
+                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
@@ -30,9 +30,14 @@
         vm.searchWarningMessage = '';
 
         //ui-grid plugin options
-        vm.gridOptions = AuditService.getGridOptions();
-        //vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-        //vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+        vm.auditGridOptions = AuditService.getAuditsGridOptions();
+        //vm.auditGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
+        //vm.auditGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+
+        vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
+
+
+        vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
 
 
         activate();
@@ -40,10 +45,66 @@
         function activate() {
             // getTrialDetailObj();
             //_getProcessingInfo();
-            vm.gridOptions = AuditService.getGridOptions();
-            vm.gridOptions.data =null;
-            vm.gridOptions.totalItems = null;
+            vm.auditGridOptions = AuditService.getAuditsGridOptions();
+            vm.auditGridOptions.data =null;
+            vm.auditGridOptions.totalItems = null;
+
+            vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
+            vm.updatesGridOptions.data = null;
+            vm.updatesGridOptions.totalItems = null;
+            loadTrialUpdates();
+
+            vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
+            vm.submissionsGridOptions.data = null;
+            vm.submissionsGridOptions.totalItems = null;
+            loadTrialSubmissions();
+
+
         }
+
+        function loadTrialUpdates() {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            vm.trialHistoryObj = {trial_id: trialId};
+
+            AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                var i =0
+                for(i = 0; i < data.trial_versions.length; i++){
+                    data.trial_versions[i].subGridOptions = {
+                                columnDefs: [
+                                    {name:"Updated Field", field:"field_name"},
+                                    {name:"Old value", field:"old_value"},
+                                    {name:"New value", field:"new_value"}
+                                ],
+                        data: data.trial_versions[i].friends
+                    }
+                }
+
+                vm.updatesGridOptions.data = data.trial_versions;
+                vm.updatesGridOptions.totalItems = data.trial_versions["length"];
+            }).catch(function (err) {
+                console.log('Getting trial updates failed');
+            }).finally(function () {
+                console.log('search finished');
+            });
+        }
+
+
+        function loadTrialSubmissions() {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            vm.trialHistoryObj = {trial_id: trialId};
+
+            AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                vm.submissionsGridOptions.data = data.trial_versions;
+                vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
+            }).catch(function (err) {
+                console.log('Getting trial submissions failed');
+            }).finally(function () {
+                console.log('search finished');
+            });
+        }
+
 
         /**
          * Get trial detail object from parent scope
@@ -104,6 +165,9 @@
             }
         }; //openCalendar
 
+
+
+
         function submit() {
 
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
@@ -114,8 +178,8 @@
                 vm.searchWarningMessage=''
                 AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
                     console.log('received search results: ' + JSON.stringify(data.trial_versions));
-                    vm.gridOptions.data = data.trial_versions;
-                    vm.gridOptions.totalItems = data.trial_versions["length"];
+                    vm.auditGridOptions.data = data.trial_versions;
+                    vm.auditGridOptions.totalItems = data.trial_versions["length"];
                 }).catch(function (err) {
                     console.log('Getting audit trials failed');
                 }).finally(function () {
@@ -127,6 +191,114 @@
             }
 
             }
+
+        $scope.buttonClick = function(value) {
+            alert('Row: ' + value.submission_num);
+        };
+
+        $scope.editRow= function(grid, row,gridType) {
+
+            console.log(gridType);
+
+
+
+            if(gridType == "updates") {
+                $uibModal.open({
+                    templateUrl: 'acknowledgeModal.html',
+                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controllerAs: 'vm',
+                    resolve: {
+                        grid: function () { return grid; },
+                        row: function () { return row; }
+                    }
+
+
+                });
+            } else if(gridType == "submissions") {
+                $uibModal.open({
+                    templateUrl: 'submissionsModal.html',
+                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controllerAs: 'vm',
+                    resolve: {
+                        grid: function () { return grid; },
+                        row: function () { return row; }
+                    }
+
+
+                });
+
+            }
+
+
+        }
+
+        /* @ngInject */
+        function ModalInstanceController($uibModalInstance, grid, row) {
+
+            var vm = this;
+            vm.entity = angular.copy(row.entity);
+
+
+            vm.save = save;
+            vm.amendmentDateOpened = false;
+            vm.openCalendar = openCalendar;
+
+            function openCalendar($event, type) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                if (type === 'amendment_date') {
+                    vm.amendmentDateOpened = !vm.amendmentDateOpened;
+                }
+            }; //openCalendar
+
+            function save() {
+                vm.entity.acknowledge ="Yes";
+                vm.entity.acknowledge_date = new Date();
+                vm.entity.acknowledged_by = UserService.getLoggedInUsername();
+
+                var obj={'id':row.entity.id,
+                    'acknowledge_comment':vm.entity.acknowledge_comment,
+                    'acknowledge':vm.entity.acknowledge,
+                    'acknowledge_date':vm.entity.acknowledge_date,
+                    'acknowledged_by':vm.entity.acknowledged_by};
+
+                var resStatus=null;
+                AuditService.upsertSubmission(obj).then(function(response) {
+                    resStatus = response.server_response.status;
+
+                    if (response.server_response.status === 200) {
+
+                        row.entity = angular.extend(row.entity, vm.entity);
+
+                        toastr.clear();
+                        toastr.success('Submission has been acknowledged', 'Operation Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        })
+
+                    } else {
+                        console.log("error while trying to save  bio markers" + response.server_response.status);
+
+                    }
+
+                }).catch(function(err) {
+                    console.log("error acknowledging trial submission ");
+                }).finally(function() {
+                    // TODO: change the visibility here
+                    if (resStatus>210) {
+                    }
+
+                });
+
+                console.log(vm.entity.acknowledge_comment);
+                // Copy row values over
+                $uibModalInstance.close(row.entity);
+
+
+            }
+        }
+
 
 
 

@@ -116,7 +116,48 @@ class NcitDiseaseCode < ActiveRecord::Base
 
   private
 
-  scope :with_name, -> (value) do
-    where("preferred_name ilike ?", "%#{value}%")
+  scope :with_name, -> (name, synonym) do
+    name_splits = name.split('|')
+
+    if synonym
+      q1 = ''
+      q2 = ''
+      params1 = []
+      params2 = []
+
+      name_splits.each_with_index { |e, i|
+        if i == 0
+          q1 = 'ncit_disease_codes.preferred_name ilike ?'
+          q2 = 'ncit_disease_synonyms.alternate_name ilike ?'
+        else
+          q1 += ' AND ncit_disease_codes.preferred_name ilike ?'
+          q2 += ' AND ncit_disease_synonyms.alternate_name ilike ?'
+        end
+        params1.push("%#{e.strip}%")
+        params2.push("%#{e.strip}%")
+      }
+
+      conditions = params1 + params2
+      q = '(' + q1 + ') OR (' + q2 + ')'
+      conditions.insert(0, q)
+      join_clause = 'LEFT JOIN ncit_disease_synonyms ON ncit_disease_synonyms.ncit_disease_code_id = ncit_disease_codes.id'
+
+      joins(join_clause).where(conditions)
+    else
+      conditions = []
+      q = ''
+
+      name_splits.each_with_index { |e, i|
+        if i == 0
+          q = 'preferred_name ilike ?'
+        else
+          q += ' AND preferred_name ilike ?'
+        end
+        conditions.push("%#{e.strip}%")
+      }
+      conditions.insert(0, q)
+
+      where(conditions)
+    end
   end
 end
