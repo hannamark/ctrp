@@ -30,6 +30,22 @@ class MilestoneWrapper < TrialBase
   belongs_to :submission
   belongs_to :trial
 
+  before_create :save_type
+
+  private
+
+  def save_type
+    if self.milestone.present?
+      if ['APS', 'APC', 'RAQ', 'AQS', 'AQC'].include? self.milestone.code
+        self.milestone_type = MilestoneType.find_by_code('ADM')
+      elsif ['SPS', 'SPC', 'RSQ', 'SQS', 'SQC'].include? self.milestone.code
+        self.milestone_type = MilestoneType.find_by_code('SCI')
+      else
+        self.milestone_type = MilestoneType.find_by_code('GEN')
+      end
+    end
+  end
+
   scope :by_value, ->  (value) {
     joins(:milestone).where("milestone_wrappers.milestone_id = milestones.id and milestones.code = ?","#{value.to_s}")
   }
