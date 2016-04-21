@@ -71,6 +71,7 @@
               vm.searchParams = _getSearchParams();
               vm.gridOptions.data = [];
               vm.gridOptions.totalItems = null;
+              vm.searchResults.total = -1;
           }
 
           function _getGridOptions() {
