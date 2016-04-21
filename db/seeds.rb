@@ -1132,8 +1132,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
                {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
                {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true},
-               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true}
+               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true},
+               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true}
 ]
 
 test_users.each do |u|
