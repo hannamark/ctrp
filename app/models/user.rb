@@ -182,6 +182,11 @@ class  User < ActiveRecord::Base
                            {registry_write_mode: false},
                            {user_write_mode: true},
                            {pa_write_mode: true}]
+                        when  "ROLE_ACCOUNT-APPROVER"
+                          [{po_write_mode: false},
+                           {registry_write_mode: false},
+                           {user_write_mode: true},
+                           {pa_write_mode: false}]
                       end
   end
 
