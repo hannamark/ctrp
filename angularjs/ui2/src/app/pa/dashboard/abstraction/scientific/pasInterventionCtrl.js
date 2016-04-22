@@ -117,8 +117,9 @@
                 vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
                 vm.deleteBtnDisabled = true;
                 vm.upsertBtnDisabled = true;
+                vm.deleteAll = false;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
-                    console.info('res after upsert: ', res);
+                    // console.info('res after upsert: ', res);
                     if (res.server_response.status === 200) {
                         vm.trialDetailObj = res;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
@@ -135,8 +136,10 @@
                 }).catch(function(err) {
                     console.error('trial upsert error: ', err);
                 }).finally(function() {
+                    console.info('hiding intervention form now!');
+                    vm.curInterventionObj = null;
                     vm.showInterventionForm = false; // hide the form
-                    resetLookupForm();
+                    // resetLookupForm();
                 });
             }
 
