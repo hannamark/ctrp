@@ -39,6 +39,17 @@
 #  user_status_id              :integer
 #  phone                       :string
 #  city                        :string
+#  domain                      :string
+#
+# Indexes
+#
+#  index_users_on_approved              (approved)
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_organization_id       (organization_id)
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_unlock_token          (unlock_token) UNIQUE
+#  index_users_on_user_status_id        (user_status_id)
+#  index_users_on_username              (username) UNIQUE
 #
 
 class  User < ActiveRecord::Base
@@ -52,6 +63,9 @@ class  User < ActiveRecord::Base
   belongs_to :user_status
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :trials, through: :trial_ownerships
+
+  attr_accessor :organization_name
+  attr_accessor :selected_functions
 
   scope :approved, -> { where(approved: true) }
   scope :not_approved, -> { where(approved: false) }
@@ -179,6 +193,11 @@ class  User < ActiveRecord::Base
                            {registry_write_mode: false},
                            {user_write_mode: true},
                            {pa_write_mode: true}]
+                        when  "ROLE_ACCOUNT-APPROVER"
+                          [{po_write_mode: false},
+                           {registry_write_mode: false},
+                           {user_write_mode: true},
+                           {pa_write_mode: false}]
                       end
   end
 

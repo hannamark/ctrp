@@ -648,7 +648,8 @@ class TrialsController < ApplicationController
                                                        marker_assay_type_associations_attributes:[:id,:assay_type_id,:_destroy],
                                                        marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
-                                  diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy])
+                                  diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
+                                  milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :_destroy])
   end
 
   # Convert status code to name in validation messages

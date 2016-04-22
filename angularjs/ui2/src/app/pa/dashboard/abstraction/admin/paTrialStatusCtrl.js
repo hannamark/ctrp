@@ -267,6 +267,11 @@
                  console.log('posted comment, res: ', res);
                  vm.commentObj = _initCommentObj();
                  _loadComments(commentField);
+
+                 toastr.clear();
+                 toastr.success('Your comment has been added', 'Successful!', {
+                     timeOut: 1000
+                 });
               });
         } //createComment
 

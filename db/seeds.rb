@@ -142,11 +142,16 @@ ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Resp
 ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
 ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
 
+Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
 Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
-Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
 Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
 Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
-Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
+Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
+Milestone.find_or_create_by(code: 'VPS', name: 'Validation Processing Start Date')
+Milestone.find_or_create_by(code: 'VPC', name: 'Validation Processing Completed Date')
+Milestone.find_or_create_by(code: 'RVQ', name: 'Ready for Validation QC Date')
+Milestone.find_or_create_by(code: 'VQS', name: 'Validation QC Start Date')
+Milestone.find_or_create_by(code: 'VQC', name: 'Validation QC Completed Date')
 Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
 Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
 Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
@@ -161,9 +166,12 @@ Milestone.find_or_create_by(code: 'RTS', name: 'Ready for Trial Summary Report D
 Milestone.find_or_create_by(code: 'TSR', name: 'Trial Summary Report Date')
 Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report Feedback Date')
 Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
-Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'ONG', name: 'On-going Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
+
+MilestoneType.find_or_create_by(code: 'ADM', name: 'Administrative')
+MilestoneType.find_or_create_by(code: 'SCI', name: 'Scientific')
+MilestoneType.find_or_create_by(code: 'GEN', name: 'General')
 
 SubmissionType.find_or_create_by(code: 'ORI', name: 'Original')
 SubmissionType.find_or_create_by(code: 'AMD', name: 'Amendment')
@@ -953,6 +961,15 @@ MailTemplate.find_or_create_by(
                 body_text: 'Text version.',
                 body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br><br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
 )
+MailTemplate.find_or_create_by(
+    code: 'USER_REGISTRATION',
+    name: 'User Registration',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to:   'ugpulse@gmail.com',
+    subject: 'New NCI CTRP Account Request',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br>A new user account in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application.<br><br>The user information is as follows:<ul><li><b>First Name:</b> ${first_name}</li><li><b>Last Name:</b> ${last_name}</li><li><b>Affiliated Organization:</b> ${organization}</li><li><b>Email:</b> ${email}</li></ul></p><p>The user would like the following functions:${functions_list}</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ and activate user and assign role.<p></body></html>'
+)
 
 ########## SEEDING MAIL TEMPLATES ENDS ############
 
@@ -1123,8 +1140,8 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
                {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
                {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true},
-               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT_APPROVER", "approve" => true}
+               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true},
+               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true}
 ]
 
 test_users.each do |u|

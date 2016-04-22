@@ -13,6 +13,10 @@
 #  uuid              :string(255)
 #  lock_version      :integer          default(0)
 #
+# Indexes
+#
+#  index_ncit_disease_codes_on_ncit_status_id  (ncit_status_id)
+#
 
 class NcitDiseaseCode < ActiveRecord::Base
   include BasicConcerns
@@ -117,7 +121,7 @@ class NcitDiseaseCode < ActiveRecord::Base
   private
 
   scope :with_name, -> (name, synonym) do
-    name_splits = name.split(',')
+    name_splits = name.split('|')
 
     if synonym
       q1 = ''

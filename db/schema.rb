@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160420174211) do
+ActiveRecord::Schema.define(version: 20160422153714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,7 +282,7 @@ ActiveRecord::Schema.define(version: 20160420174211) do
     t.string   "code",             limit: 255
     t.string   "thesaurus_id",     limit: 255
     t.string   "display_name",     limit: 255
-    t.string   "parent_preferred", limit: 255
+    t.text     "parent_preferred"
     t.integer  "trial_id"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
@@ -572,18 +572,31 @@ ActiveRecord::Schema.define(version: 20160420174211) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "milestone_types", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "milestone_wrappers", force: :cascade do |t|
     t.date     "milestone_date"
     t.integer  "milestone_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "uuid",           limit: 255
-    t.integer  "lock_version",               default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.integer  "submission_id"
+    t.text     "comment"
+    t.integer  "milestone_type_id"
+    t.string   "created_by",        limit: 255
   end
 
   add_index "milestone_wrappers", ["milestone_id"], name: "index_milestone_wrappers_on_milestone_id", using: :btree
+  add_index "milestone_wrappers", ["milestone_type_id"], name: "index_milestone_wrappers_on_milestone_type_id", using: :btree
   add_index "milestone_wrappers", ["submission_id"], name: "index_milestone_wrappers_on_submission_id", using: :btree
   add_index "milestone_wrappers", ["trial_id"], name: "index_milestone_wrappers_on_trial_id", using: :btree
 
@@ -1407,6 +1420,7 @@ ActiveRecord::Schema.define(version: 20160420174211) do
     t.integer  "user_status_id"
     t.string   "phone"
     t.string   "city"
+    t.string   "domain"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
@@ -1474,6 +1488,7 @@ ActiveRecord::Schema.define(version: 20160420174211) do
   add_foreign_key "markers", "biomarker_uses"
   add_foreign_key "markers", "cadsr_markers"
   add_foreign_key "markers", "trials"
+  add_foreign_key "milestone_wrappers", "milestone_types"
   add_foreign_key "milestone_wrappers", "milestones"
   add_foreign_key "milestone_wrappers", "submissions"
   add_foreign_key "milestone_wrappers", "trials"
@@ -1603,6 +1618,7 @@ ActiveRecord::Schema.define(version: 20160420174211) do
   create_sequence "marker_spec_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "maskings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "milestone_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestones_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "name_aliases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

@@ -7,10 +7,10 @@
         .controller('pasAssociatedTrialCtrl', pasAssociatedTrialCtrl);
 
     pasAssociatedTrialCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'identifierTypes'];
+        'MESSAGES', '_', '$timeout', 'identifierTypes', '$location', '$anchorScroll'];
 
     function pasAssociatedTrialCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, identifierTypes) {
+        MESSAGES, _, $timeout, identifierTypes, $location, $anchorScroll) {
             var vm = this;
             vm.identifierTypes = identifierTypes;
             vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
@@ -103,6 +103,8 @@
 
             function closeLookupForm() {
                 vm.showLookupForm = false;
+                $location.hash('section_top');
+                $anchorScroll();
             }
 
             /**

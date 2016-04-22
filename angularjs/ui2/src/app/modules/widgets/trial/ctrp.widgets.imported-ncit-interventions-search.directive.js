@@ -38,6 +38,7 @@
 
       function nciInterventionsSearchCtrl($scope, $element, $attrs) {
           var vm = this;
+          vm.errorMsg = '';
           vm.lookupInterventions = lookupInterventions;
           vm.resetSearch = resetSearch;
           // vm.confirmSelectedIntervention = confirmSelectedIntervention;
@@ -45,10 +46,17 @@
           vm.searchResults = _initResultsObj();
           vm.gridOptions = _getGridOptions();
           vm.curSelectedRow = '';
+          $scope.submitted = false; // form submitted?
 
           $scope.$on('$destroy', function() {vm.curSelectedRow = '';}); // clean up
 
           function lookupInterventions(params) {
+              $scope.submitted = true;
+              if (params.intervention_name.length === 0) {
+                  vm.errorMsg = 'Intervention Name is Required';
+                  return;
+              }
+              vm.errorMsg = '';
               PATrialService.lookupNcitInterventions(params).then(function(res) {
                  // console.info('res from the interventions lookup: ', res);
                  res.server_response = null;
@@ -62,9 +70,11 @@
           };
 
          function resetSearch() {
+              $scope.submitted = false;
               vm.searchParams = _getSearchParams();
               vm.gridOptions.data = [];
               vm.gridOptions.totalItems = null;
+              vm.searchResults.total = -1;
           }
 
           function _getGridOptions() {
