@@ -139,6 +139,8 @@
                 $location.hash('section_top');
                 $anchorScroll();
             }
+
+            //$scope.arm_form.$setPristine();
         }
 
         /**

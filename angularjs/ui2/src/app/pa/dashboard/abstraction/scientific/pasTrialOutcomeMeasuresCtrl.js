@@ -198,6 +198,7 @@
             vm.setToDefaultMode();
             vm.addMode = true;
             vm.currentOutcomeMeasure = {};
+            $scope.om_form.$setPristine();
         }
 
         /**
