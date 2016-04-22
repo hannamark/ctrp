@@ -966,7 +966,7 @@ MailTemplate.find_or_create_by(
     code: 'USER_REGISTRATION',
     name: 'User Registration',
     from: 'noreply@ctrp.nci.nih.gov',
-    to:   'ugpulse@gmail.com',
+    to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
     subject: 'New NCI CTRP Account Request',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br>A new user account in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application.<br><br>The user information is as follows:<ul><li><b>First Name:</b> ${first_name}</li><li><b>Last Name:</b> ${last_name}</li><li><b>Affiliated Organization:</b> ${organization}</li><li><b>Email:</b> ${email}</li></ul></p><p>The user would like the following functions:${functions_list}</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ and activate user and assign role.<p></body></html>'
@@ -976,7 +976,7 @@ MailTemplate.find_or_create_by(
     code: 'USER_ADMIN_REQUEST',
     name: 'User Admin Request',
     from: 'noreply@ctrp.nci.nih.gov',
-    to:   'ugpulse@gmail.com,bestbeeu@yahoo.com',
+    to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
     subject: 'New NCI CTRP User Admin Request',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br><b>${username}</b>, a user in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application, is requesting admin access.</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ for the user\'s details and assign new role to grant access.<p></body></html>'
