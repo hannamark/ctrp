@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160421173647) do
+ActiveRecord::Schema.define(version: 20160422153714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,7 +282,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
     t.string   "code",             limit: 255
     t.string   "thesaurus_id",     limit: 255
     t.string   "display_name",     limit: 255
-    t.string   "parent_preferred", limit: 255
+    t.text     "parent_preferred"
     t.integer  "trial_id"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
@@ -592,6 +592,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
     t.integer  "submission_id"
     t.text     "comment"
     t.integer  "milestone_type_id"
+    t.string   "created_by",        limit: 255
   end
 
   add_index "milestone_wrappers", ["milestone_id"], name: "index_milestone_wrappers_on_milestone_id", using: :btree
