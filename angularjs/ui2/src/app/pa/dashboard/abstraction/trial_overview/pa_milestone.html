@@ -9,7 +9,6 @@
                     <thead>
                         <th>Submission Number</th>
                         <th>Milestone</th>
-                        <th>Milestone Date</th>
                         <th>Comment</th>
                         <th>Creation Date</th>
                     </thead>
@@ -17,7 +16,6 @@
                         <tr ng-repeat="milestone in milestoneView.curTrial.milestone_wrappers track by $index">
                             <td>{{milestone.submission.submission_num}}</td>
                             <td>{{milestone.milestone.name}}</td>
-                            <td>{{milestone.milestone_date}}</td>
                             <td>{{milestone.comment}}</td>
                             <td>{{milestone.created_at}}</td>
                         </tr>
@@ -53,24 +51,6 @@
                                 </select>
                                 <span class="help-block" ng-show="ctrpbtn.milestone_form.needsAttention(milestone_form.milestone)">
                                     Milestone is Required
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.milestone_form.needsAttention(milestone_form.milestone_date)}">
-                            <label class="control-label col-xs-12 col-sm-3">Date:</label>
-                            <div class="col-xs-12 col-sm-3">
-                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" name="milestone_date" datepicker-popup="{{milestoneView.dateFormat}}" ng-model="milestoneView.milestone_date"
-                                           ng-click="milestoneView.openCalendar($event, 'milestone_date')" is-open="milestoneView.milestone_date_opened" datepicker-options="milestoneView.dateOptions" close-text="Close" required>
-                                    <span class="input-group-btn">
-                                        <button restriction-field type="button" class="btn btn-primary" ng-click="milestoneView.openCalendar($event, 'milestone_date')">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                                <span class="help-block" ng-show="ctrpbtn.milestone_form.needsAttention(milestone_form.milestone_date)">
-                                    Date is Required
                                 </span>
                             </div>
                         </div>
