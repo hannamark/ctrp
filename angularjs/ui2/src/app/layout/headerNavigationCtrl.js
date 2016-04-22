@@ -27,6 +27,10 @@
         vm.currrentState = $state;
         vm.navbarIsActive = navbarIsActive;
 
+        vm.userRequestAdmin = function(params) {
+            UserService.userRequestAdmin(params);
+        };
+
         vm.toggleCurationMode = function() {
             // console.log('toggling curation mode: ' + vm.isCurationEnabled);
             // vm.isCurationEnabled = !vm.isCurationEnabled;

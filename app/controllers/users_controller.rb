@@ -48,6 +48,21 @@ class UsersController < ApplicationController
 
   end
 
+  def request_admin_access
+    begin
+      mail_template = MailTemplate.find_by_code('USER_ADMIN_REQUEST')
+
+      mail_template.body_html.sub!('${username}', params[:username])
+
+      CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+
+      @success = [true]
+    rescue  Exception => e
+      logger.warn "USER ADMIN REQUEST: Email delivery error = #{e}"
+      @success = [false]
+    end
+  end
+
   def disapprove
       # When an ADMIN disapproves of the user request for privileges, the role is set to nill
       # and the approved field is set to false
@@ -142,6 +157,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status_id, :approved)
+      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status_id, :approved)
     end
 end
