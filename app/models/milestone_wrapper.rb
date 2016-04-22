@@ -13,6 +13,7 @@
 #  submission_id     :integer
 #  comment           :text
 #  milestone_type_id :integer
+#  created_by        :string(255)
 #
 # Indexes
 #
