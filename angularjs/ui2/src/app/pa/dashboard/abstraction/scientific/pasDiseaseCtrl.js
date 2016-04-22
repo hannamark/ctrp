@@ -27,6 +27,7 @@
 
         vm.setAddMode = function(mode) {
             vm.addMode = mode;
+            $scope.added_disease_form.$setPristine();
         };
 
         vm.toggleAll = function() {
