@@ -14,9 +14,22 @@
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
         vm.milestoneArr = milestoneObj;
+        vm.showRejectionReason = false;
 
         vm.setAddMode = function(mode) {
             vm.addMode = mode;
+        };
+
+        vm.watchOption = function() {
+            var rejectionOptions = vm.milestoneArr.filter(findRejectionOptions);
+            for (var i = 0; i < rejectionOptions.length; i++) {
+                if (rejectionOptions[i].id === vm.milestone_id) {
+                    vm.showRejectionReason = true;
+                    break;
+                } else {
+                    vm.showRejectionReason = false;
+                }
+            }
         };
 
         vm.saveMilestone = function() {
@@ -27,6 +40,9 @@
             var milestoneWrapperObj = {};
             milestoneWrapperObj.milestone_id = vm.milestone_id;
             milestoneWrapperObj.comment = vm.comment;
+            if (vm.showRejectionReason) {
+                milestoneWrapperObj.comment = vm.rejection_reason + ' ' + milestoneWrapperObj.comment;
+            }
             vm.curTrial.milestone_wrappers_attributes.push(milestoneWrapperObj);
 
             // An outer param wrapper is needed for nested attributes to work
@@ -52,6 +68,15 @@
         /****************************** implementations **************************/
 
         function activate() {
+        }
+
+        // Return true if the option is rejection option
+        function findRejectionOptions(option) {
+            if (option.code === 'SRJ' || option.code === 'LRD') {
+                return true;
+            } else {
+                return false;
+            }
         }
     } //paMilestoneCtrl
 })();
