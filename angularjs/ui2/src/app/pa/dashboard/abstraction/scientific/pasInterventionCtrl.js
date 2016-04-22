@@ -153,8 +153,12 @@
             }
 
             function resetLookupForm(form) {
+                var curIndex = vm.curInterventionObj.index;
+                if (curIndex !== undefined) {
+                    editIntervention(curIndex);
+                    return;
+                }
                 vm.curInterventionObj = _newInterventionObj();
-                console.info('resetting form: ', form);
             }
 
             function watchInterventionList() {

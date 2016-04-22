@@ -39,6 +39,7 @@
 #  user_status_id              :integer
 #  phone                       :string
 #  city                        :string
+#  domain                      :string
 #
 # Indexes
 #
