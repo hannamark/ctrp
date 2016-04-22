@@ -7,9 +7,9 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasDiseaseCtrl', pasDiseaseCtrl);
 
-    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'DiseaseService', '$window', 'trialDetailObj', 'TrialService'];
+    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'DiseaseService', '$window', 'trialDetailObj', 'TrialService', '$anchorScroll', '$location'];
 
-    function pasDiseaseCtrl($scope, $state, toastr, DiseaseService, $window, trialDetailObj, TrialService) {
+    function pasDiseaseCtrl($scope, $state, toastr, DiseaseService, $window, trialDetailObj, TrialService, $anchorScroll, $location) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
@@ -28,6 +28,11 @@
         vm.setAddMode = function(mode) {
             vm.addMode = mode;
             $scope.added_disease_form.$setPristine();
+
+            if (!mode) {
+                $location.hash('section_top');
+                $anchorScroll();
+            }
         };
 
         vm.toggleAll = function() {
