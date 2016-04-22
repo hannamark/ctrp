@@ -37,7 +37,7 @@ And I can select a Milestone from the list:
 |Initial Abstraction Verified Date|
 |On-going Abstraction Verified Date|
 |Late Rejection Date| 
-And I can enter the date
+And the current datetime will be associated with the milestone
 And I can enter a comment
 Then the information will be associated with the trial
  
@@ -54,7 +54,7 @@ Then the information will be associated with the trial
       | Out of Scope |
       | Duplicate |
       | Other  |
-    And I have to enter a Date
+    And the current datetime will be associated with the milestone
     And I have to enter a comment in the comment box
     And both the rejection reason and the rejection comment will be displayed in the comment column of Trial Milestones table
 
@@ -67,7 +67,7 @@ Then I can view the trail milestone information for the current (most recent) su
 |Milestone|
 |Milestone Date and Time| 
 |Comment|
-|Creator (Username)|
+|Creator (Last Name, First Name)|
 |Creation Date (Date and Time)|
 
 Scenario: #4 I view any submission trial milestones
@@ -80,7 +80,7 @@ Then I can view the trail milestone information for the selected submission numb
 |Milestone|
 |Milestone Date and Time| 
 |Comment|
-|Creator (Username)|
+|Creator (Last Name, First Name)|
 |Creation Date (Date and Time)|
 
 Scenario Outline:#5 Trial Milestones Recording Rules
@@ -232,7 +232,7 @@ Scenario Outline: #5 Trials Milestones validation rules
     And I can Add Milestone Type
      
       |Milestone  |
-      |Date       |
+      |Datetime (automatically associated)|
       |Comment    |
     And I can enter multiple Milestones per trial for the <MilestoneType> and milestone comment won't be required
     	
