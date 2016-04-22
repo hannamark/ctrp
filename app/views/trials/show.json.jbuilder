@@ -201,6 +201,30 @@ json.diseases do
   end
 end
 
+json.milestone_wrappers do
+  json.array!(@trial.milestone_wrappers) do |milestone|
+    json.extract! milestone, :id, :milestone_date, :trial_id, :comment, :created_at
+
+    if milestone.milestone.present?
+      json.milestone do
+        json.extract! milestone.milestone, :id, :name, :code
+      end
+    end
+
+    if milestone.submission.present?
+      json.submission do
+        json.extract! milestone.submission, :id, :submission_num
+      end
+    end
+
+    if milestone.milestone_type.present?
+      json.milestone_type do
+        json.extract! milestone.milestone_type, :id, :name, :code
+      end
+    end
+  end
+end
+
 json.sitesu_sites do
   json.array!(@trial.sitesu_sites) do |ps|
     json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization, :current_status_name, :site_pi

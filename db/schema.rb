@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160421173647) do
+ActiveRecord::Schema.define(version: 20160422153714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,7 +282,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
     t.string   "code",             limit: 255
     t.string   "thesaurus_id",     limit: 255
     t.string   "display_name",     limit: 255
-    t.string   "parent_preferred", limit: 255
+    t.text     "parent_preferred"
     t.integer  "trial_id"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
@@ -448,22 +448,18 @@ ActiveRecord::Schema.define(version: 20160421173647) do
   end
 
   create_table "interventions", force: :cascade do |t|
-    t.string   "name",                            limit: 255
-    t.string   "other_name",                      limit: 255
+    t.string   "name",                 limit: 255
+    t.string   "other_name",           limit: 255
     t.text     "description"
-    t.integer  "intervention_type_cancer_gov_id"
-    t.integer  "intervention_type_ct_gov_id"
     t.integer  "intervention_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
-    t.string   "uuid",                            limit: 255
-    t.integer  "lock_version",                                default: 0
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
     t.integer  "index"
   end
 
-  add_index "interventions", ["intervention_type_cancer_gov_id"], name: "index_interventions_on_intervention_type_cancer_gov_id", using: :btree
-  add_index "interventions", ["intervention_type_ct_gov_id"], name: "index_interventions_on_intervention_type_ct_gov_id", using: :btree
   add_index "interventions", ["intervention_type_id"], name: "index_interventions_on_intervention_type_id", using: :btree
   add_index "interventions", ["trial_id"], name: "index_interventions_on_trial_id", using: :btree
 
@@ -547,6 +543,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
     t.string   "name",                  limit: 255
     t.string   "record_status",         limit: 255
     t.integer  "biomarker_use_id"
+    t.integer  "biomarker_purpose_id"
     t.integer  "trial_id"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
@@ -559,6 +556,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
     t.integer  "cadsr_marker_id"
   end
 
+  add_index "markers", ["biomarker_purpose_id"], name: "index_markers_on_biomarker_purpose_id", using: :btree
   add_index "markers", ["biomarker_use_id"], name: "index_markers_on_biomarker_use_id", using: :btree
   add_index "markers", ["cadsr_marker_id"], name: "index_markers_on_cadsr_marker_id", using: :btree
   add_index "markers", ["trial_id"], name: "index_markers_on_trial_id", using: :btree
@@ -592,6 +590,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
     t.integer  "submission_id"
     t.text     "comment"
     t.integer  "milestone_type_id"
+    t.string   "created_by",        limit: 255
   end
 
   add_index "milestone_wrappers", ["milestone_id"], name: "index_milestone_wrappers_on_milestone_id", using: :btree
@@ -1484,6 +1483,7 @@ ActiveRecord::Schema.define(version: 20160421173647) do
   add_foreign_key "marker_assay_type_associations", "markers"
   add_foreign_key "marker_biomarker_purpose_associations", "biomarker_purposes"
   add_foreign_key "marker_biomarker_purpose_associations", "markers"
+  add_foreign_key "markers", "biomarker_purposes"
   add_foreign_key "markers", "biomarker_uses"
   add_foreign_key "markers", "cadsr_markers"
   add_foreign_key "markers", "trials"

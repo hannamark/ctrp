@@ -7,7 +7,7 @@
 #  code             :string(255)
 #  thesaurus_id     :string(255)
 #  display_name     :string(255)
-#  parent_preferred :string(255)
+#  parent_preferred :text
 #  trial_id         :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
