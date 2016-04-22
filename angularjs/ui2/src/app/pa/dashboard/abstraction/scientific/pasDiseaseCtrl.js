@@ -27,7 +27,8 @@
 
         vm.setAddMode = function(mode) {
             vm.addMode = mode;
-            $scope.added_disease_form.$setPristine();
+            $scope.search_disease_form.$setPristine();
+            vm.resetDiseases();
 
             if (!mode) {
                 $location.hash('section_top');
