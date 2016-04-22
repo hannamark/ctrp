@@ -491,6 +491,10 @@ form label {
     border-radius: 0 6px 6px 6px;*/
 }
 
+.dropdown-menu li a:hover {
+    cursor: pointer;
+}
+
 .dropdown-submenu:hover>.dropdown-menu {
     display: block;
 }

@@ -272,13 +272,23 @@
         };
 
         this.getUserDetailsByUsername = function (username) {
-            //var username2 = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         }; //getUserByName
 
         this.getCurrentUserDetails = function () {
             var username = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
+        };
+
+        this.userRequestAdmin = function (params) {
+            PromiseTimeoutService.postDataExpectObj('/ctrp/users/request_admin/' + params.username, params)
+                .then(function (data) {
+                    if(data[0].success) {
+                        toastr.success('Success', 'Your Request for Admin Access has been sent.');
+                    } else {
+                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error');
+                    }
+                });
         };
 
         /**
@@ -333,11 +343,9 @@
 
         this.upsertUser = function (userObj) {
             //update an existing user
-            var configObj = {}; //empty config
-
+            var configObj = {};
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
-
-        }; //upsertUser
+        };
 
         this.upsertUserSignup = function (userObj) {
             //update an existing user
@@ -408,12 +416,7 @@
             var objIndex = _.findIndex(writeModesArray, queryObj);
 
             return objIndex > -1;
-
-            // var writeModeObj = writeModesArray[objIndex];
-            // var writeModeObj = _.findWhere(writeModesArray, queryObj);
-            // console.log('found the writeModeObj', writeModeObj);
-            // return writeModeObj[completeSectionNameKey];
-        }
+        };
 
 
         /**

@@ -93,6 +93,8 @@ Rails.application.routes.draw do
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
     post '/users/search' => 'users#search'
+    post '/users/request_admin/:username' => 'users#request_admin_access'
+
     # All the User routes(non-devise) should be accessed by username
     # rather that "id" in order to prevent exposing the "id"
     resources :users, param: :username do
