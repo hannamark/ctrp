@@ -63,6 +63,9 @@ config/environments/production.rb
 # Ignore cucumber tests dir
 /tests/features/output
 
+# Ignore cucumber tests cred
+/tests/features/testConfig
+
 # Ignore local config document
 /config_ahmed.js
 
