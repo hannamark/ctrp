@@ -17,7 +17,7 @@ Then I can view the Trial History Information each Update for a trial ordered by
 |Action (Acknowledge)|
 |Comment|
 |Update Acknowldegement Date|
-|User ID (of reviewer)|
+|Last Name, First Name (of reviewer)|
 
 Scenario: #2 I can Acknowledge Protocol Trial Updates
 Given I am logged into the CTRP Protocol Abstraction application
@@ -70,7 +70,7 @@ And any of the following fields of interest were updated
 |Trials.Brief_Title|
 |Trials.Official_Title|
 |eligibility criteria (multiple) other_criteria.criteria_type, other_criteria.criteria_desc |
-|arms_groups (multiple) arms_groups.label,type,description, intervention_id intervention_types.code, name |
+|arms_groups (multiple) arms_groups.label,type, description|
 And I am on the Trial History Information for Updates Screen
 Then the Action fields will display "Acknowledge"
 And the trial update will need to be acknowldeged
