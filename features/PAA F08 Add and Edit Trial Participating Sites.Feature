@@ -7,11 +7,11 @@ Scenario Outline: #1 I can add one or more a participating sites for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I have selected an organization <Organization name> with the Organization look up
+And I have entered the program code <Site Specific Program Code>
 And I have entered or edited the Local Trial Identifier <Local Trial Identifier>
 And I have selected one or more Site Recruitment Status <Site Recruitment Status>
 And I have selected one or more Site Recruitment status date <Site Recruitment Status Date>
 And I have entered Site Recruitment status comments <Site Recruitment status comments>
-And I have entered the program code <Site Specific Program Code>
 And I have entered a Target Accrual Number <Target Accrual Number>
 And I have selected one or more Investigators <Site Principal Investigator> for each Participating Site with the person look up
 And I have selected the role for each investigator <Site Principal Investigator Role>
@@ -34,9 +34,9 @@ And the Participating Site table can be sorted by
 |Organization Name|
 Examples:
 |Organization name    |Org City|Org State    |Org Country  |Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext |e-mail address|Warning/Error|Message|
-|Boston Medical Center|Boston  |Massachussets|United States|3849504     |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Jane Doe             |212-123-4567  |1234|jane@mayo.com |             |Participating Site Has been Updated|
-#|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-sep-2015                 |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com   |             |Participating Site Has been Updated|
-#|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-Sep-2015                 |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |1111|<null>        |             |Participating Site Has been Updated|
+|Boston Medical Center|Boston  |Massachussets|United States|3849504     |123                   |Approved               |30-September-2015           |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Jane Doe             |212-123-4567  |1234|jane@mayo.com |             |Participating Site Has been Updated|
+#|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-September-2015           |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com   |             |Participating Site Has been Updated|
+#|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-September-2015           |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |1111|<null>        |             |Participating Site Has been Updated|
 
 Scenario Outline: #2 I can edit a participating site for a trial
 Given I am logged into the CTRP Protocol Abstraction application

@@ -150,6 +150,7 @@
             }
 
             vm.currentSubGroup= {};
+            $scope.sg_form.$setPristine();
         }
 
         /**

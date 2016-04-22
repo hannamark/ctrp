@@ -173,7 +173,7 @@
                                         </div>
                                     </div>
                                     <div class="row table-responsive" ng-show="psView.siteRecruitmentGrid.length > 0">
-                                        <table class="table table-bordered table-striped table-hover">
+                                        <table id="site_recruitment_tbl" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <th width="10%" class="text-center">Status Date</th>
                                                 <th width="10%">Status</th>
@@ -321,7 +321,7 @@
                                 </div>
 
                                 <div class="row table-responsive" ng-show="psView.investigatorGrid.length" ng-class="{'top-offset-xs': !psView.current_investigator.edit }">
-                                    <table class="table table-bordered table-striped table-hover">
+                                    <table id="investigator_tbl" class="table table-bordered table-striped table-hover">
                                         <thead>
                                             <th width="10%">PO ID</th>
                                             <th>Last Name</th>
@@ -489,7 +489,7 @@
     <div class="panel-body">
         <!--<legend class="sub-bordered">List of Participating Sites:</legend>-->
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
+            <table id="list_participating_site_tbl" class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
                 <thead>
                 <th>PO ID</th>
                 <th>PO Name</th>
