@@ -5,7 +5,7 @@
             <div class="panel-title">Arms Group Details</div>
         </div>
         <div class="panel-body">
-            <form name="arm_form" role="form" class="form-horizontal" novalidate ctrp-submit="armView.updateTrial()">
+            <form role="form" class="form form-horizontal" name="arm_form" novalidate ctrp-submit="armView.updateTrial()">
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
                     <legend class="sub-bordered">Arms Group</legend>
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.label)}">

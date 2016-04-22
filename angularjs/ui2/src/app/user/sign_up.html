@@ -121,45 +121,6 @@
                                 <span class="form-control-feedback feedback-height-sm" ng-show="userView.searchParams.name.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.organization_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="signup_form.organization_name.$error.required">Organization Name is Required</span>
                             </div>
-<<<<<<< HEAD
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.role)}">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-eye-open"></i>
-                                    </span>
-                                    <select class="form-control input-sm" id="role" ng-model="userView.userObj.local_user.role" name="role" required>
-                                        <option value="" ng-selected="userView.userObj.local_user.role == ''">Select a role</option>
-                                        <option ng-repeat="role in userView.rolesArr track by $index" value="{{role}}" ng-selected="userView.userObj.local_user.role === role">{{role}}</option>
-                                    </select>
-                                </div>
-                                <span class="form-control-feedback select-feedback feedback-height-sm" ng-show="userView.userObj.local_user.role.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.role)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                <span class="help-block" ng-show="signup_form.role.$error.required">Role is Required</span>
-                            </div>
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.email)}">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-envelope"></i>
-                                    </span>
-                                    <input name="email" type="email" class="form-control input-sm" ng-model="userView.userObj.local_user.email" placeholder="Email" required>
-                                </div>
-                                <span class="form-control-feedback feedback-height-sm" ng-show="userView.userObj.local_user.email.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.email) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                <span class="help-block" ng-show="signup_form.email.$error.required">Email is Required</span>
-                            </div>
-                            <div id="buttonBar" class="form-group">
-                                <div class="btn-toolbar">
-                                    <button type="submit" class="btn btn-primary pull-right">
-                                        <i class="glyphicon glyphicon-ok"></i> Save
-                                    </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="userView.reset()">
-                                        <i class="glyphicon glyphicon-remove"></i> Reset
-                                    </button>
-                                    <button type="button" class="btn btn-default pull-right" id="cancel_btn" back-button>
-                                     <i class="glyphicon glyphicon-remove"></i> Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-=======
                         </div>
                     </div>
 
@@ -176,7 +137,6 @@
                                 <span class="help-block" ng-show="userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1 && !userView.userObj.local_user.selected_functions.length">Functionality is Required</span>
                             </fieldset>
                         </div>
->>>>>>> develop
                     </div>
 
                     <input type="submit" value="Register" class="btn btn-primary btn-block" ng-disabled="signup_form.$invalid || (userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1 && !userView.userObj.local_user.selected_functions.length) || (!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.local_user.password !== userView.userObj.local_user.password_confirmation)">
