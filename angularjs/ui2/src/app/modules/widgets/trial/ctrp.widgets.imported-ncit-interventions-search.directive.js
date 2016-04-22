@@ -46,10 +46,12 @@
           vm.searchResults = _initResultsObj();
           vm.gridOptions = _getGridOptions();
           vm.curSelectedRow = '';
+          $scope.submitted = false; // form submitted?
 
           $scope.$on('$destroy', function() {vm.curSelectedRow = '';}); // clean up
 
           function lookupInterventions(params) {
+              $scope.submitted = true;
               if (params.intervention_name.length === 0) {
                   vm.errorMsg = 'Intervention Name is Required';
                   return;
@@ -68,6 +70,7 @@
           };
 
          function resetSearch() {
+              $scope.submitted = false;
               vm.searchParams = _getSearchParams();
               vm.gridOptions.data = [];
               vm.gridOptions.totalItems = null;
