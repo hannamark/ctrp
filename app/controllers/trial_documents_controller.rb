@@ -75,6 +75,10 @@ class TrialDocumentsController < ApplicationController
     send_file @trial_document.file.url, filename: @trial_document.file_name
   end
 
+  def deleted_documents
+    @deleted_documents - TrialDocument.where("trial_id= ? AND status= ?",params[:trial_id], "deleted")
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trial_document

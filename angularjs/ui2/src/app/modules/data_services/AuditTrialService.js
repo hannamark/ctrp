@@ -17,31 +17,15 @@
 
 
 
-        var initOrgSearchParams = {
-            name : '',
-            alias: true,
-            wc_search: true,
-            // po_id : '',
-            ctrp_id : '',
-            source_context : '',
-            source_id : '',
-            source_status : '',
-            family_name : '',
-            address : '',
-            address2 : '',
-            city : '',
-            state_province : '',
-            country : '', //default country ? United States ?
-            email : '',
-            postal_code : '',
-            phone: '',
-
+        var initAuditsSearchParams = {
             //for pagination and sorting
             sort: '',
             order: '',
             rows: 5,
             start: 1
-        }; //initial Organization Search Parameters
+        }; //initial Audits Search Parameters
+
+
 
         var updatesGridOptions = {
             rowTemplate: '<div>'+
@@ -111,7 +95,9 @@
                 {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*'},
                 {field: 'submission_type_list', displayName: 'Type',enableSorting:true, cellTemplate:'<div ng-repeat="item in row.entity[col.field]">{{item}}</div>'},
                 {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '100', width: '*',
-                    cellTemplate: '<div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a></div>'},
+                    cellTemplate: '<div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a> {{doc.source_document}}</div>'},
+                {field: 'milestone', displayName: 'Current Milestone',enableSorting:true, cellTemplate:'<div ng-repeat="item in row.entity[col.field]">{{item}}</div>'},
+
 
 
 

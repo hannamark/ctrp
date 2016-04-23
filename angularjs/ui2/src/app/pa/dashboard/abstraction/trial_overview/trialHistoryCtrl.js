@@ -53,7 +53,7 @@
             vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
             vm.updatesGridOptions.data = null;
             vm.updatesGridOptions.totalItems = null;
-            loadTrialUpdates();
+            //loadTrialUpdates();
 
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
@@ -68,7 +68,7 @@
             vm.trialHistoryObj = {trial_id: trialId};
 
             AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
-                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                console.log('received search results ***: ' + JSON.stringify(data.trial_versions));
                 var i =0
                 for(i = 0; i < data.trial_versions.length; i++){
                     data.trial_versions[i].subGridOptions = {
