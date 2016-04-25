@@ -23,6 +23,9 @@
         vm.interventionList = [];
         vm.trial_interventions = [];
         vm.interventional = false;
+        vm.sortableListener = {};
+        vm.sortableListener.stop = dragItemCallback;
+
         if(vm.curTrial.research_category.name=='Interventional') {
             vm.interventional = true;
         }
@@ -222,7 +225,31 @@
 
         };
 
+        /**
+         * Callback for dragging item around
+         * @param  {[type]} event [description]
+         * @param  {[type]} ui    [description]
+         * @return {[type]}       [description]
+         */
+        function dragItemCallback(event, ui) {
+            var item = ui.item.scope().item;
+            var fromIndex = ui.item.sortable.index;
+            var toIndex = ui.item.sortable.dropindex;
 
+            vm.curTrial.arms_groups_attributes = _labelSortableIndex(vm.curTrial.arms_groups);
+
+            // Code for optimizing the save
+            /**for (var i = 0; i < vm.curTrial.arms_groups.length; i++) {
+                if(vm.curTrial.arms_groups[i].index !=i) {
+                    var obj = {};
+                    obj.id = vm.curTrial.arms_groups[i].id;
+                    obj.index = i;
+                    vm.curTrial.arms_groups_attributes.push(obj);
+                }
+            }**/
+
+            vm.saveTrial();
+        }
     } //pasArmsGroupsCtrl
 
 })();
