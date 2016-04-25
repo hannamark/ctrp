@@ -570,7 +570,7 @@ class Trial < TrialBase
         if mail_template.present? && !trial_submitter_email.nil?
           ## populate the mail_template with data for trial update
           mail_template.from = 'ncictro@mail.nih.gov'
-          mail_template.to = 'ivytony@gmail.com' # trial_submitter_email  # TODO: change to trial_submitter_email
+          mail_template.to = trial_submitter_email
           mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
