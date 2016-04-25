@@ -52,6 +52,8 @@
 
         function resetForm() {
             _getTrialDetailCopy();
+            vm.addOtherCriterionFormShown = false;
+            vm.otherCriterion.edit = false;
         }
 
         function updateCriteria(showToastr) {

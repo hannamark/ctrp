@@ -311,6 +311,6 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       And I am on the Search Clinical Trials Screen
       And select search
       Then the search results will display a list of the trials 
-      And the trail list will be paganiated  
+      And the trial list will be paganiated  
 	
 	

@@ -89,13 +89,13 @@
                                 <!-- fieldset for Site Recruitment -->
                                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
                                     <legend class="sub-bordered">Site Recruitment</legend>
-                                    <div class="row search-calendar-grid-sm">
+                                    <div class="row table-responsive search-calendar-grid">
                                         <table class="table table-striped table-condensed">
                                             <thead>
                                                 <th width="15%" class="min-width-md">Status Date</th>
                                                 <th width="15%" class="min-width-lg">Status</th>
                                                 <th>Comment</th>
-                                                <th width="10%" ng-if="psView.current_site_recruitment.edit">Cance/Confirm</th>
+                                                <th width="10%" ng-if="psView.current_site_recruitment.edit">Cancel/Confirm</th>
                                                 <th width="10%" ng-if="!psView.current_site_recruitment.edit"></th>
                                             </thead>
                                             <tbody>
@@ -173,7 +173,7 @@
                                         </div>
                                     </div>
                                     <div class="row table-responsive" ng-show="psView.siteRecruitmentGrid.length > 0">
-                                        <table class="table table-bordered table-striped table-hover">
+                                        <table id="site_recruitment_tbl" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <th width="10%" class="text-center">Status Date</th>
                                                 <th width="10%">Status</th>
@@ -250,14 +250,6 @@
                                 -->
                                 <div class="form-group has-feedback">
                                     <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">Investigator Name:</label>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <input type="text" id="principal_investigator" name="principal_investigator" class="form-control input-sm" ng-model="psView.principalInvestigator.name" readonly placeholder="Principal Investigator">
-        <!--
-                                        <span ng-show="!psView.investigatorGrid.length">
-                                            <span class="help-block">One or more Investigators are required</span>
-                                        </span>
-        -->
-                                    </div>
                                     <div class="col-xs-12 col-sm-5">
                                         <!-- <button class="btn btn-primary">Look Up Person</button> -->
                                         <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
@@ -321,7 +313,7 @@
                                 </div>
 
                                 <div class="row table-responsive" ng-show="psView.investigatorGrid.length" ng-class="{'top-offset-xs': !psView.current_investigator.edit }">
-                                    <table class="table table-bordered table-striped table-hover">
+                                    <table id="investigator_tbl" class="table table-bordered table-striped table-hover">
                                         <thead>
                                             <th width="10%">PO ID</th>
                                             <th>Last Name</th>
@@ -489,7 +481,7 @@
     <div class="panel-body">
         <!--<legend class="sub-bordered">List of Participating Sites:</legend>-->
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
+            <table id="list_participating_site_tbl" class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
                 <thead>
                 <th>PO ID</th>
                 <th>PO Name</th>

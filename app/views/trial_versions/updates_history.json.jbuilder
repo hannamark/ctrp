@@ -22,7 +22,7 @@ json.trial_versions do
       puts  other_ids
 
 
-      if !other_ids.nil?
+      if !other_ids.nil? && other_ids.size !=0
         Hash h = Hash.new
         h[:updated_filed]="Other Protocol Identifiers";
 
@@ -70,7 +70,7 @@ json.trial_versions do
       puts "Grants "
       puts grants
 
-      if !grants.nil?
+      if !grants.nil? && grants.size !=0
         Hash h = Hash.new
         h[:updated_filed]="Grant Information(Inst Code, Funding , SNo)";
 
@@ -122,7 +122,7 @@ json.trial_versions do
 
       trial_statuses = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "TrialStatusWrapper",submission_version.transaction_id) if submission_version
 
-      if !trial_statuses.nil?
+      if !trial_statuses.nil? && trial_statuses.size !=0
         Hash h = Hash.new
         h[:updated_filed]="Trial Status (Status, Date)";
         trial_statuses_string_N = ""

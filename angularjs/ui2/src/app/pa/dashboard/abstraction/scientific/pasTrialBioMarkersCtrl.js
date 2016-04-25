@@ -454,9 +454,9 @@
                 vm.isAssayTypeOtherChecked = false
                 vm.isEvalTypeOtherChecked = false;
                 vm.disableBtn = false;
-                
-
             }
+
+            $scope.marker_form.$setPristine();
         }
 
         /**

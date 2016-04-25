@@ -201,6 +201,10 @@
     height: 50px;
 }
 
+table td > div.input-group.datepicker {
+    position: static;
+}
+
 .animated-item {
     -webkit-transition: all linear 0.5s;
     -o-transition: all linear 0.5s;
@@ -487,6 +491,10 @@ form label {
     border-radius: 0 6px 6px 6px;*/
 }
 
+.dropdown-menu li a:hover {
+    cursor: pointer;
+}
+
 .dropdown-submenu:hover>.dropdown-menu {
     display: block;
 }
@@ -645,6 +653,10 @@ h5 {
     right: 5px;
 }
 
+.has-feedback .form-control  {
+    padding-right: 20px;
+}
+
 .feedback-height-sm {
     line-height: 25px;
 }
@@ -728,6 +740,11 @@ h5 {
 .ui-grid-cell {
     line-height: 1em;
     height: 22px !important;
+}
+
+.grid-medium-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 40px !important;
 }
 
 .grid-large-cell .ui-grid-cell {
@@ -1004,9 +1021,6 @@ a.btn-file:hover {
     vertical-align: middle !important;
 }
 
-.td-date {
-    min-width: 5%;
-}
 .td-time {
     min-width: 6%;
 }
@@ -1016,7 +1030,7 @@ a.btn-file:hover {
 
 body.identification  a.menu-identification,
 body.history a.menu-history,
-body.milestones a.menu-milestones,
+body.milestone a.menu-milestone,
 body.on-hold-info a.menu-on-hold-info,
 body.view-tsr a.menu-view-tsr,
 body.assign-ownership a.menu-assign-ownership,

@@ -34,6 +34,22 @@
                         </div>
                     </div>
 
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.domain)}">
+                        <label class="control-label col-xs-12 col-sm-3">Domain:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <select name="domain" id="domain"
+                                    class="form-control input-sm"
+                                    ng-model="userDetailView.userDetails.domain"
+                                    ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
+                                    required>
+                                <option value="">Select a domain</option>
+                                <option ng-repeat="item in userDetailView.domainArr" value="{{item}}">{{item}}</option>
+                            </select>
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.domain" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.domain) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="help-block" ng-show="userDetail_form.domain.$error.required">Domain is Required</span>
+                        </div>
+                    </div>
+
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.role)}">
                         <label class="control-label col-xs-12 col-sm-3">Role:</label>
                         <div class="col-xs-12 col-sm-6">

@@ -495,7 +495,11 @@
                     if(!exists){
                         // New Investigator
                         participating_site_investigator._destroy = false;
+                        vm.current_investigator = participating_site_investigator;
                         vm.investigatorGrid.push(participating_site_investigator);
+                        vm.current_investigator.uiEdit = true;
+                        vm.current_investigator.new = true;
+                        //vm.investigatorGrid[index].uiEdit = true;
                     }
                     vm.principalInvestigator = {name: '', array: []};
                 }
@@ -552,6 +556,7 @@
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In editInvestigator");
             vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
+            console.log("In editInvestigator vm.current_investigator =" + JSON.stringify(vm.current_investigator));
             vm.current_investigator.uiEdit = true;
             vm.investigatorGrid[index].uiEdit = true;
 

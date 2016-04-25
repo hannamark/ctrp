@@ -53,7 +53,7 @@
             vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
             vm.updatesGridOptions.data = null;
             vm.updatesGridOptions.totalItems = null;
-            //loadTrialUpdates();
+            loadTrialUpdates();
 
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
@@ -80,9 +80,10 @@
                         data: data.trial_versions[i].friends
                     }
                 }
-
-                vm.updatesGridOptions.data = data.trial_versions;
-                vm.updatesGridOptions.totalItems = data.trial_versions["length"];
+                if (data.trial_versions.length != 0) {
+                    vm.updatesGridOptions.data = data.trial_versions;
+                    vm.updatesGridOptions.totalItems = data.trial_versions["length"];
+                }
             }).catch(function (err) {
                 console.log('Getting trial updates failed');
             }).finally(function () {

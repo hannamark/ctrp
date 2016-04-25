@@ -1,5 +1,6 @@
 json.extract! @user,
               :id,
+              :domain,
               :username,
               :email,
               :first_name,

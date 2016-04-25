@@ -36,6 +36,7 @@
         <ul class="dropdown-menu" role="menu">
             <li><a ui-sref="main.userDetail({username : headerView.username })">Edit User Profile</a></li>
             <li><a ui-sref="main.users">User Portal</a></li>
+            <li><a ng-click="headerView.userRequestAdmin({username : headerView.username})">Request for Admin Access</a></li>
         </ul>
     </li>
 </ul>

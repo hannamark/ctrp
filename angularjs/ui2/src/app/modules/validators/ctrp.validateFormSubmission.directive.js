@@ -59,12 +59,18 @@
                             return false;
                         }
 
+                        /* Used in PA:
+                           formController.$setPristine sets $submitted property to false.
+                           Setting this.attempted based on $submitted value allows for resetting
+                           a CRUD form when list/CRUD views are displayed separately in the UI
+                        */
+
                         if (fieldModelController) {
-                            return fieldModelController.$invalid &&
+                            return formController.$submitted && fieldModelController.$invalid &&
                                 (fieldModelController.$dirty || this.attempted);
                         } else {
                             return formController &&
-                                formController.$invalid &&
+                                formController.$submitted && formController.$invalid &&
                                 (formController.$dirty || this.attempted);
                         }
                     }; //needsAttention

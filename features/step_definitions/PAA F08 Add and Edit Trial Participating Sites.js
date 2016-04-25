@@ -48,6 +48,9 @@ var abstractionRegulatoryInfoFDAA = require('../support/abstractionRegulatoryInf
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 //Participating Site
 var abstractionParticipatingSite = require('../support/abstractionParticipating');
+////Registry
+//var regTrialDate = require('../support/registerTrial');
+
 
 
 //
@@ -75,6 +78,7 @@ module.exports = function() {
     var searchOrg = new OrgPage();
     var organizationSearch = new orgSearch();
     var addTrial = new addTrialPage();
+    //var regDate = new regTrialDate();
     //var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
     var searchPeople = new searchPeoplePage();
@@ -132,11 +136,10 @@ module.exports = function() {
     var tblOptionI = '';
     var tblOptionJ = '';
     var tblOptionK = '';
-    var tblOptionADup = '';
-    var tblOptionBDup = '';
-    var tblOptionCDup = '';
-    var tblOptionDDup = '';
-    var tblOptionEDup = '';
+    var dateDay = '';
+    var dateMonth = '';
+    var dateYear = '';
+
 
     /*
      Scenario Outline: #1 I can add one or more a participating sites for a trial
@@ -200,6 +203,11 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^I have entered the program code (.*)$/, function (SiteSpecificProgramCode, callback) {
+        participatingSite.setProgramCode(SiteSpecificProgramCode);
+        browser.sleep(25).then(callback);
+    });
+
     this.Given(/^I have entered or edited the Local Trial Identifier (.*)$/, function (LocalTrialIdentifier, callback) {
         participatingSite.setIdentifier(LocalTrialIdentifier);
         browser.sleep(25).then(callback);
@@ -211,38 +219,48 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected one or more Site Recruitment status date (.*)$/, function (SiteRecruitmentStatusDate, callback) {
-        participatingSite.setStatusDate(SiteRecruitmentStatusDate);
+        participatingSite.clickStatusDate();
+        var dateSplit = SiteRecruitmentStatusDate.toString().split("-");
+        dateDay = dateSplit[0];
+        dateMonth = dateSplit[1];
+        dateYear = dateSplit[2];
+        addTrial.clickAddTrialDateFieldDifferentYear(dateYear, dateMonth, dateDay);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have entered Site Recruitment status comments (.*)$/, function (SiteRecruitmentStatusComments, callback) {
-        participatingSite.setStatusDate(SiteRecruitmentStatusDate);
+        participatingSite.setSiteRecruitmentComment(SiteRecruitmentStatusComments);
+        participatingSite.clickSiteRecruitmentAdd();
+        participatingSite.clickSaveButton();
         browser.sleep(2500).then(callback);
     });
 
-    this.Given(/^I have entered the program code (.*)$/, function (SiteSpecificProgramCode, callback) {
-        participatingSite.setProgramCode(SiteSpecificProgramCode);
-        browser.sleep(25).then(callback);
-    });
-
     this.Given(/^I have entered a Target Accrual Number (.*)$/, function (TargetAccrualNumber, callback) {
-        console.log("Dev team did not implemented this feature on the participating site");
+        console.log("Dev team did not implemented this feature on the participating site tab");
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected one or more Investigators (.*) for each Participating Site with the person look up$/, function (SitePrincipalInvestigator, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.clickInvestigatorsTab();
+        trialCollaborators.waitForElement(participatingSite.investigatorName, "Investigators Name - Read only - Field");
+        participatingSite.clickSearchPersons();
+        //trialDetails.clickSearchPersonsButtonByIndex('0');
+        searchOrg.clickExactSearch('true');
+        searchPeople.setPersonFirstName(personFNmB);
+        searchOrg.clickSearchButton();
+        searchOrg.selectOrgModelItem();
+        searchOrg.clickOrgModelConfirm();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected the role for each investigator (.*)$/, function (SitePrincipalInvestigatorRole, table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.editInvestigatorByFirstName(personFNmB);
+        browser.sleep(2500).then(callback);
     });
 
     this.Given(/^I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have edited the phone number for the investigator contact (.*)$/, function (Phone, callback) {
