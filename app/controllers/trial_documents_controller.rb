@@ -87,6 +87,6 @@ class TrialDocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_document_params
-      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :added_by_id, :trial_id, :status, :replaced_doc_id)
+      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :source_document,:added_by_id, :trial_id, :status, :replaced_doc_id)
     end
 end

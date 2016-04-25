@@ -635,7 +635,7 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
-                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status, :added_by_id, :why_deleted],
+                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document, :file, :_destroy, :status, :added_by_id, :why_deleted],
                                   interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_cancer_gov_id, :intervention_type_ct_gov_id, :index, :_destroy],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
