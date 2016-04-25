@@ -21,7 +21,7 @@
             //for pagination and sorting
             sort: '',
             order: '',
-            rows: 5,
+            rows: 15,
             start: 1
         }; //initial Audits Search Parameters
 
@@ -41,7 +41,7 @@
             enableSelectAll: false,
             //enableRowSelection: false,
             paginationPageSizes: [5, 10],
-            paginationPageSize: 5,
+            paginationPageSize: 15,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
@@ -53,14 +53,16 @@
 
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div>{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
                 {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
                 {
                     name: 'Acknowledge ',
                     cellTemplate: '<div class="text-center"> <div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row,\'updates\')">Acknowledge</button></div><div ng-hide="(row.entity.acknowledge != \'Yes\')">Acknowledged</div></div>'
                 },
                 {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*',
+                cellTemplate: '<div>{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
                 {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
 
             ]
