@@ -993,7 +993,7 @@ MailTemplate.find_or_create_by(
                             <p>Participating Site status: ${partSiteStatus}</p>
                             <p>Trial Related Documents: ${trialRelatedDocuments}</p>
 
-                            <p>Next Steps:</p>
+                            <p><b>NEXT STEPS:</b></p>
                             <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
                             <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
                             </body></html>'
@@ -1024,7 +1024,7 @@ MailTemplate.find_or_create_by(
                             <p>Amendment Number: ${trialAmendNumber}</p>
                             <p>Amendment Date: ${trialAmendmentDate}</p>
 
-                            <p>Next Steps:</p>
+                            <p><b>NEXT STEPS:</b></p>
                             <p>The Clinical Trials Reporting Office (CTRO) staff is reviewing the amended information to ensure that it meets all of the requirements for registration in the CTRP system. The CTRO will send you a separate email that indicates whether they have accepted or rejected your trial within two (2) business days.</p>
                             <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
                             <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
@@ -1052,7 +1052,7 @@ MailTemplate.find_or_create_by(
                             <p><b>Dear ${SubmitterName}</b>,</p>
                             <p>You have saved a draft of the trial identified above for submission to the NCI Clinical Trials Reporting Program (CTRP).</p>
 
-                            <p>Next Steps:</p>
+                            <p><b>NEXT STEPS:</b></p>
                             <p>To retrieve and complete your submission, use the "Search Saved Drafts" feature on the "Search Trials" page in the CTRP Registration application.</p>
                             <p>Clinical Trials Reporting Office (CTRO) staff will not access or process your trial until you have completed the submission. </p>
                             <p><b>Important!</b> You can save your draft for a maximum of 30 days.</p>
