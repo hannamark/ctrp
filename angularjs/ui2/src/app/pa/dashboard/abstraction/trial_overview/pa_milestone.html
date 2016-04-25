@@ -4,6 +4,11 @@
             <div class="panel-title">Trial Milestones</div>
         </div>
         <div class="panel-body">
+            <label for="submission_num">Submission Number: </label>
+            <select id="submission_num" name="submission_num" ng-model="milestoneView.submission_num"
+                    ng-options="submissionNum as submissionNum for submissionNum in milestoneView.curTrial.submission_nums">
+            </select>
+
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover" ng-show="milestoneView.curTrial.milestone_wrappers.length">
                     <thead>
@@ -13,7 +18,7 @@
                         <th>Creation Date</th>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="milestone in milestoneView.curTrial.milestone_wrappers track by $index">
+                        <tr ng-repeat="milestone in milestoneView.curTrial.milestone_wrappers track by $index" ng-if="milestone.submission.submission_num === milestoneView.submission_num">
                             <td>{{milestone.submission.submission_num}}</td>
                             <td>{{milestone.milestone.name}}</td>
                             <td>{{milestone.comment}}</td>

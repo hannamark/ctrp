@@ -13,6 +13,7 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
+        vm.submission_num = vm.curTrial.current_submission_num;
         vm.milestoneArr = milestoneObj;
         vm.showRejectionReason = false;
 

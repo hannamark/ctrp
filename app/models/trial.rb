@@ -387,6 +387,20 @@ class Trial < TrialBase
     checked_out
   end
 
+  def submission_nums
+    self.submissions.pluck('submission_num').uniq
+  end
+
+  # Most recent non-update submission
+  def current_submission
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
+    else
+      return nil
+    end
+  end
+
   private
 
   def save_history
