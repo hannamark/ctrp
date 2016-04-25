@@ -141,7 +141,11 @@ And I am on the Search Clinical Trials Screen
 And I know the search Parameters of trial
 When I select an organization from the organization name search look-ahead
 And select a search option
-Then the search results will display trials where the organization selected is either lead organization, sponsor, or participating site
+Then the search results will display trials where the organization type is
+
+      |Lead Organization  |
+      |Sponsor  |
+      |Organization Type  |
 
 Scenario: #10 I can search for clinical trials by associated organization role
 Given I am logged into the CTRP Registration application
