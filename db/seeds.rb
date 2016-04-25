@@ -948,6 +948,8 @@ AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pi
 
 AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
 
+AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'Federated User Functions', value: 'see big value', big_value: 'Submit Trials')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 
 ########## SEEDING MAIL TEMPLATES STARTS ##########

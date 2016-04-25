@@ -125,6 +125,7 @@
             getHolderTypes: getHolderTypes,
             getSubmissionTypes: getSubmissionTypes,
             getSubmissionMethods: getSubmissionMethods,
+            getInvestigatorTypes: getInvestigatorTypes,
             getNih: getNih,
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
@@ -308,6 +309,12 @@
         function getSiteRecruitementStatuses() {
             console.log("In getSiteRecruitementStatuses");
             return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
+        }
+
+        function getInvestigatorTypes() {
+            // TODO: check if hardcoding is OK
+            var investigator_types = [{"name":"Principal Investigator"},{"name":"Sub-Investigator"}];
+            return investigator_types;
         }
 
         // Validation logic for Other Trial Identifier
