@@ -985,15 +985,16 @@ MailTemplate.find_or_create_by(
                             <p><b>Dear ${SubmitterName}</b>,</p>
                             <p>The NCI Clinical Trials Reporting Program (CTRP) received updates for the trial identified above.</p>
                             <p><b>Update Information: </b></p>
-                            <p>Other Identifiers: ${otherIdentifiers}</p>
-                            <p>Grant Information: ${grantInformation}</p>
-                            <p>Trial Status: ${trialStatus}</p>
-                            <p>Start Date and Type: ${startDate} ${startDateType}</p>
-                            <p>Primary Completion Date and Type: ${primaryCompDate} ${primaryCompType}</p>
-                            <p>Participating Site status: ${partSiteStatus}</p>
-                            <p>Trial Related Documents: ${trialRelatedDocuments}</p>
+                            <p>Other Identifiers: new identifier(s) added</p>
+                            <p>Grant Information: Added</p>
+                            <p>Trial Status: Added</p>
+                            <p>Trial Status Date: Added</p>
+                            <p>Start Date and Type: Added</p>
+                            <p>Primary Completion Date and Type: Added</p>
+                            <p>Participating Site status: Added</p>
+                            <p>Trial Related Documents: Added</p>
 
-                            <p>Next Steps:</p>
+                            <p><b>NEXT STEPS:</b></p>
                             <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
                             <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
                             </body></html>'
@@ -1010,11 +1011,14 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
-                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+
                                 <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${lead_organization}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
-                                <p><b>Submitting Organization: </b>${submitting_organization}</p>
-                                <p><b>Submission Date: </b>${submissionDate}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>NCT ID: </b>${nctId}</p>
+                                <p><b>CTEP ID: </b>${ctepId}</p>
+                                <p><b>DCP ID: </b>${dcpId}</p>
                             </div>
                             <hr>
                             <p>Date: ${CurrentDate}</p>
@@ -1024,7 +1028,7 @@ MailTemplate.find_or_create_by(
                             <p>Amendment Number: ${trialAmendNumber}</p>
                             <p>Amendment Date: ${trialAmendmentDate}</p>
 
-                            <p>Next Steps:</p>
+                            <p><b>NEXT STEPS:</b></p>
                             <p>The Clinical Trials Reporting Office (CTRO) staff is reviewing the amended information to ensure that it meets all of the requirements for registration in the CTRP system. The CTRO will send you a separate email that indicates whether they have accepted or rejected your trial within two (2) business days.</p>
                             <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
                             <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
@@ -1052,7 +1056,7 @@ MailTemplate.find_or_create_by(
                             <p><b>Dear ${SubmitterName}</b>,</p>
                             <p>You have saved a draft of the trial identified above for submission to the NCI Clinical Trials Reporting Program (CTRP).</p>
 
-                            <p>Next Steps:</p>
+                            <p><b>NEXT STEPS:</b></p>
                             <p>To retrieve and complete your submission, use the "Search Saved Drafts" feature on the "Search Trials" page in the CTRP Registration application.</p>
                             <p>Clinical Trials Reporting Office (CTRO) staff will not access or process your trial until you have completed the submission. </p>
                             <p><b>Important!</b> You can save your draft for a maximum of 30 days.</p>
