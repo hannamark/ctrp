@@ -974,7 +974,7 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
-                                <p><b>NCI Trial ID: </b>${trialIdentifiers}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialId}</p>
                                 <p><b>Lead Organization Trial ID: </b>${trialIdentifiers}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
                                 <p><b>Submitting Organization: </b>${submitting_organization}</p>
@@ -1010,7 +1010,7 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
-                                <p><b>NCI Trial ID: </b>${trialIdentifiers}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialId}</p>
                                 <p><b>Lead Organization Trial ID: </b>${trialIdentifiers}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
                                 <p><b>Submitting Organization: </b>${submitting_organization}</p>
@@ -1042,7 +1042,7 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
-                                <p><b>Lead Organization Trial ID: </b>${trialIdentifiers}</p>
+                                <p><b>Lead Organization Trial ID: </b>${leadProtocolId}</p>
                                 <p><b>Lead Organization: </b>${leadOrganizationName}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
                                 <p><b>Submission Date: </b>${submissionDate}</p>
