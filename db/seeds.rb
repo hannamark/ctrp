@@ -969,20 +969,20 @@ MailTemplate.find_or_create_by(
     name: 'Trial Update',
     from: 'noreply@ctrp.nci.nih.gov',
     to: '${trialSubmitterEmail}',
-    subject: 'NCI CTRP: Trial RECORD UPDATED for ${nciTrialIdentifier}, ${leadProtocolId}',
+    subject: 'NCI CTRP: Trial RECORD UPDATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
-                                <p><b>NCI Trial ID: </b>${nciTrialId}</p>
-                                <p><b>Lead Organization Trial ID: </b>${trialIdentifiers}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
                                 <p><b>Submitting Organization: </b>${submitting_organization}</p>
                                 <p><b>Submission Date: </b>${submissionDate}</p>
                             </div>
                             <hr>
                             <p>Date: ${CurrentDate}</p>
-                            <p>Dear ${SubmitterName},</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
                             <p>The NCI Clinical Trials Reporting Program (CTRP) received updates for the trial identified above.</p>
                             <p><b>Update Information: </b></p>
                             <p>Other Identifiers: ${otherIdentifiers}</p>
@@ -1005,20 +1005,20 @@ MailTemplate.find_or_create_by(
     name: 'Trial Amendment',
     from: 'noreply@ctrp.nci.nih.gov',
     to: '${trialAmendSubmitterEmail}',
-    subject: 'NCI CTRP: Trial AMENDMENT ${trialAmendNumber} for ${nciTrialIdentifier}, ${leadProtocolId}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${trialAmendNumber} for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
-                                <p><b>NCI Trial ID: </b>${nciTrialId}</p>
-                                <p><b>Lead Organization Trial ID: </b>${trialIdentifiers}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
                                 <p><b>Submitting Organization: </b>${submitting_organization}</p>
                                 <p><b>Submission Date: </b>${submissionDate}</p>
                             </div>
                             <hr>
                             <p>Date: ${CurrentDate}</p>
-                            <p>Dear ${SubmitterName},</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
                             <p>The NCI Clinical Trials Reporting Program (CTRP) received the amendment you submitted for the trial identified above.</p>
                             <p><b>Amendment Information: </b></p>
                             <p>Amendment Number: ${trialAmendNumber}</p>
@@ -1037,19 +1037,19 @@ MailTemplate.find_or_create_by(
     name: 'Trial Draft',
     from: 'noreply@ctrp.nci.nih.gov',
     to: '${trialSubmitterEmail}',
-    subject: 'NCI CTRP: Trial RECORD SAVED as DRAFT for ${leadProtocolId}',
+    subject: 'NCI CTRP: Trial RECORD SAVED as DRAFT for ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
-                                <p><b>Lead Organization Trial ID: </b>${leadProtocolId}</p>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
                                 <p><b>Lead Organization: </b>${leadOrganizationName}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
                                 <p><b>Submission Date: </b>${submissionDate}</p>
                             </div>
                             <hr>
                             <p>Date: ${CurrentDate}</p>
-                            <p>Dear ${SubmitterName},</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
                             <p>You have saved a draft of the trial identified above for submission to the NCI Clinical Trials Reporting Program (CTRP).</p>
 
                             <p>Next Steps:</p>
