@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', '$location', '$anchorScroll'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, $location, $anchorScroll) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
 
         var vm = this;
 
@@ -46,6 +46,7 @@
         vm.investigatorArray = [];
         vm.selectedContactTypePI = false;
         vm.centralContactTypes = centralContactTypes.types;
+        vm.investigatorTypes = investigatorTypes;
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
                //console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
@@ -201,6 +202,17 @@
                                 }
                             }
                         }
+                        vm.investigatorArray = [];
+                        if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
+                            for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
+                                var id = vm.currentParticipatingSite.participating_site_investigators[i].id;
+                                var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
+
+                                vm.investigatorArray.push({"id": id, "name": name});
+                                //console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
+                            }
+                        }
+
                         vm.current_site_recruitment = {};
                         PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                         $scope.$emit('updatedInChildScope', {});
@@ -560,9 +572,9 @@
             vm.current_investigator.uiEdit = true;
             vm.investigatorGrid[index].uiEdit = true;
 
-            if (!vm.current_investigator.investigator_type){
-                vm.current_investigator.investigator_type = "Principal Investigator";
-            }
+           // if (!vm.current_investigator.investigator_type){
+           //     vm.current_investigator.investigator_type = "Principal Investigator";
+           // }
 
             if(vm.current_investigator.id) {
                 vm.current_investigator.edit = true;
