@@ -1,4 +1,4 @@
-  @PA @Global
+ @PA @Global
   
   Feature:  PAS F10 Add, Edit and Delete Interventions
 As a CTRP Scientific Abstractor, I can add, Edit and Delete Trial Interventions 
@@ -7,7 +7,7 @@ Scenario: #1 I can add Trial Interventions
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I have clicked on Interventions 
-And The Intervention Screen Opens
+And The Interventions Screen Opens
 When I have clicked on the Add button to add Interventions
 Then the Add Intervention screen opens
 When I have clicked on the Look Up button to select an Intervention Name 
@@ -19,32 +19,37 @@ Then the intervention name type will be displayed
 
       |Preferred Name                |
       |Other Names                   |
-      |Cancer.gov Type               |
-      |ClinicalTrial.gov Type        |
+      |Intervention Type             |
       |Description                   |
       |Action                        |
 
 And I will select an Intervention Name by clicking on the Select button on the Action column
 And the selected intervention name will be added to the Intervention name field
 And I have entered the Intervention Description in the provided box
-And other names will be added in the other Names field
+And other names will be added in the othAspiriner Names field
 And the <InterventionType> will be populated from the intervention results table if not null
       |InterventionType|
-      |Cancer.gov Type  |
-      |ClinicalTrial.gov Type |
+      |Drug|
+      |Device|
+      |Biological/Vaccine|
+      |Procedure/Surgery|
+      |Radiation|
+      |Behavioral|
+      |Genetic|
+      |Dietary Supplement|
+      |Other |
       
       
 When the value of <InterventionType> is null 
 Then the <InterventionType> field will be blank and grayed out
-And only the Super Abstractor can edit to add <InterventionType>
+And only the Super Abstractor can edit to add or modify an <InterventionType>
 When I click on the save button to add the Intervention
-Then the intervention type will be added to the intervention table with fields below
+Then the selected intervention will be added to the intervention table with fields below
 
       |Name  |
       |Other Names  |
       |Description  |
-      |Cancer.gov Type  |
-      |ClinicalTrial.gov Type  |
+      |Intervention Type  |
       |Edit  |
       |Delete  |
 
@@ -92,8 +97,12 @@ Then the intervention type will be added to the intervention table with fields b
      Given I know which Intervention name I want to edit 
      When I have Clicked on the edit button on the edit column for the selected intervention name
      Then the edit intervention screen opens
-     And I can make my changes 
-     And I can save my changes 
+     And I the intervention Name is not editable
+     And the other Names are not Editable
+     And I can add or update Intervention Description
+     And Only the super abstractor can add and edit Intervention type
+     When I click on the save button
+     Then the changes made will be saved to the selected Intervention
 
   Scenario:#7 I can delete one or multiple Interventions
     Given I know which Intervention name I want to delete
