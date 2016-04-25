@@ -39,6 +39,7 @@
 
             vm.curTrial.milestone_wrappers_attributes = [];
             var milestoneWrapperObj = {};
+            milestoneWrapperObj.submission_id = vm.curTrial.current_submission_id;
             milestoneWrapperObj.milestone_id = vm.milestone_id;
             milestoneWrapperObj.comment = vm.comment;
             if (vm.showRejectionReason) {
