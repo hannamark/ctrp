@@ -569,24 +569,54 @@ class Trial < TrialBase
         trial_submitter_email = trial_owner.nil? ? nil : trial_owner.user.email
         if mail_template.present? && !trial_submitter_email.nil?
           ## populate the mail_template with data for trial update
-          ## TODO: populate mail_template
-          mail_template.to = 'ivytony@gmail.com' # trial_submitter_email
+          mail_template.from = 'ncictro@mail.nih.gov'
+          mail_template.to = 'ivytony@gmail.com' # trial_submitter_email  # TODO: change to trial_submitter_email
           mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
           mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
           mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
           mail_template.body_html.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
-          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', self.lead_org.id) if self.lead_org.present?
+          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', self.lead_org.id.to_s) if self.lead_org.present?
           mail_template.body_html.sub!('${submitting_organization}', self.lead_org.name) if self.lead_org.present?
           mail_template.body_html.sub!('${submissionDate}', last_submission.submission_date.strftime('%d-%b-%Y')) if last_submission.submission_date.present?
-
+          mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+          mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
         end
+
       elsif last_sub_type.code == 'AMD' && self.edit_type != 'verify'
         mail_template = MailTemplate.find_by_code('TRIAL_AMEND')
         if mail_template.present?
           ## populate the mail_template with data for trial amendment
-          #TODO: populate mail_template
+          mail_template.from = 'ncictro@mail.nih.gov'
+          mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+          mail_template.subject.sub!('${trialAmendNumber}', self.submissions.last.amendment_num) if self.submissions.last.present?
+          mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
+          mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+          mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
+          mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
+          mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
+          mail_template.body_html.sub!('${lead_organization}', self.lead_org.name) if self.lead_org.present?
+          mail_template.body_html.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', self.lead_org.id.to_s) if self.lead_org.present?
+
+          # find all those identifiers and populate the fields in the email template
+          nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
+          ctep_origin_id = ProtocolIdOrigin.find_by_code('CTEP').id
+          dcp_origin_id = ProtocolIdOrigin.find_by_code('DCP').id
+          nctIdentifier = self.other_ids.any?{|a| a.protocol_id_origin_id == nct_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == nct_origin_id} : nil
+          ctepIdentifier = self.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
+          dcpIdentifier = self.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
+
+          mail_template.body_html.sub!('${nctId}', nctIdentifier.protocol_id.nil? ? '' : nctIdentifier.protocol_id) if nctIdentifier.present?
+          mail_template.body_html.sub!('${ctepId}', ctepIdentifier.protocol_id.nil? ? '' : ctepIdentifier.protocol_id) if ctepIdentifier.present?
+          mail_template.body_html.sub!('${dcpId}', dcpIdentifier.protocol_id.nil? ? '' : dcpIdentifier.protocol_id) if dcpIdentifier.present?
+
+          mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+          mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
+          mail_template.body_html.sub!('${trialAmendNumber}', self.submissions.last.amendment_num) if self.submissions.last.present?
+          mail_template.body_html.sub!('${trialAmendmentDate}', Date.strptime(self.submissions.last.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y")) if self.submissions.last.present?
+
         end
       end
 
