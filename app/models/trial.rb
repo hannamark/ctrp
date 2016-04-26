@@ -388,6 +388,20 @@ class Trial < TrialBase
     checked_out
   end
 
+  def submission_nums
+    self.submissions.pluck('submission_num').uniq
+  end
+
+  # Most recent non-update submission
+  def current_submission
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
+    else
+      return nil
+    end
+  end
+
   private
 
   def save_history
@@ -659,7 +673,7 @@ class Trial < TrialBase
         logger.warn "email delivery error = #{e}"
       end
       ## save the mail sending to mail log
-      if mail_template.to.nil? || !mail_template.to.include? "@"
+      if mail_template.to.nil? || !mail_template.to.include?("@")
         # recipient email not replaced with actual email address (user does not have email)
         mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
       end

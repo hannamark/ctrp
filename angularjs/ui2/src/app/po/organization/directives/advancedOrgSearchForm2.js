@@ -142,7 +142,7 @@
                         // search from the modal can only search against 'Active' in 'CTRP' context
                         $scope.searchParams.source_context = 'CTRP';
                     }
-                    
+            
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
                         if ($scope.showGrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;

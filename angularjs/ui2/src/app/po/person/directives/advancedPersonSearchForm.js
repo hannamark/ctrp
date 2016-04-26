@@ -124,7 +124,11 @@
 
                 if(!isEmptySearch) { //skip searching if empty search
                     $scope.searching = true;
-
+                    if ($scope.usedInModal) {
+                        // in modal, search against CTRP context and Active people!
+                        $scope.searchParams.source_context = 'CTRP';
+                        $scope.searchParams.source_status = 'Active';
+                    }
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
                         // console.log('received data for person search: ' + JSON.stringify(data));
                         if ($scope.showGrid && data.data.people) {

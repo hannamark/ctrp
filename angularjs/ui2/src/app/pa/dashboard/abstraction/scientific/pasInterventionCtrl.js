@@ -145,6 +145,8 @@
 
             function editIntervention(index) {
                 vm.showInterventionForm = true;
+                vm.isCancerGovTypeListEnabled = false; // disallow editing type
+                vm.isCTGovTypeListEnabled = false; // disallow editing type
                 vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = angular.copy(vm.trialDetailObj.interventions[index]);
                 vm.curInterventionObj.edit = true;
