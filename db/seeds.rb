@@ -1047,7 +1047,7 @@ MailTemplate.find_or_create_by(
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
                             <div>
                                 <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
-                                <p><b>Lead Organization: </b>${leadOrganizationName}</p>
+                                <p><b>Lead Organization: </b>${lead_organization}</p>
                                 <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
                                 <p><b>Submission Date: </b>${submissionDate}</p>
                             </div>
