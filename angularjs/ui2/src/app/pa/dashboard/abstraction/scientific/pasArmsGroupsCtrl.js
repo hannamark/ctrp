@@ -14,6 +14,8 @@
                                      MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
+        console.log("INTERVENTIONS = " + JSON.stringify(trialDetailObj.interventions));
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
@@ -54,6 +56,8 @@
             if(vm.currentArmsGroup) {
                 vm.curTrial.arms_groups_attributes = [];
                 vm.currentArmsGroup.intervention_text = "";
+                console.log("vm.interventionList.length ="+ vm.interventionList.length);
+                console.log("vm.interventionList ="+ JSON.stringify(vm.interventionList.length));
                 if(vm.interventionList.length > 0){
                     for (var i = 0; i < vm.interventionList.length; i++) {
                         vm.currentArmsGroup.intervention_text = vm.currentArmsGroup.intervention_text + vm.interventionList[i].id + ",";
@@ -152,6 +156,7 @@
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
+            vm.interventionList = vm.currentArmsGroup.arms_groups_interventions;
             vm.currentArmsGroup.edit = true;
             vm.currentArmsGroupIndex = idx;
             vm.intervention_array = new Array();
@@ -162,6 +167,7 @@
                 console.log("vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
                 console.log("vm.intervention_array="+JSON.stringify(vm.intervention_array));
             }
+            // Show the list of Trial interventions with the checkbox selected if they are assigned to the Arms Group
             var temp_intervention = {};
             for (var i = 0; i < vm.curTrial.interventions.length; i++) {
                for (var j = 0; j < vm.intervention_array.length; j++) {
