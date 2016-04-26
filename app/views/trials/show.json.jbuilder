@@ -12,7 +12,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :brief_title, :brief_summary, :objective, :detailed_description, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
-              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :uuid
+              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :submission_nums, :uuid
 
 json.other_ids do
   json.array!(@trial.other_ids) do |id|
@@ -206,7 +206,7 @@ end
 
 json.milestone_wrappers do
   json.array!(@trial.milestone_wrappers) do |milestone|
-    json.extract! milestone, :id, :milestone_date, :trial_id, :comment, :created_at
+    json.extract! milestone, :id, :milestone_date, :trial_id, :comment, :created_at, :created_by
 
     if milestone.milestone.present?
       json.milestone do
@@ -334,3 +334,6 @@ if @trial.other_ids.present?
   end
   json.nct_trial_id nct_trial_id
 end
+
+json.current_submission_num @trial.current_submission.submission_num if @trial.current_submission.present?
+json.current_submission_id @trial.current_submission.id if @trial.current_submission.present?
