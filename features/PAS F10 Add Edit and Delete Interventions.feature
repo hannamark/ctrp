@@ -94,15 +94,19 @@ Scenario: #3 Intervention Desciption field Characters Rule
      When I have Clicked on the edit button on the edit column for the selected intervention name
      Then the edit intervention screen opens
      And I can edit editable fields
+     
+      | Intervention Description |
+
      When I click on the save button
      Then the changes made will be saved to the selected Intervention
      
       Scenario:#7 Intervention fields Edition rules
-    Given I am on the Edit Intervention screen
+    Given I am logged in as a superabstractor 
+    And I am on the Edit Intervention screen
     And the intervention name is not editable
     And I can add or update Intervention Description
     And Other Names is not editable
-    And only the super abstractor can edit and add the Intervention type
+    And I can edit and add the Intervention type
    
     
 
