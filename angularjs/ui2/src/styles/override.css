@@ -580,6 +580,10 @@ form {
     padding: 0 5px;
 }
 
+form.width-normal {
+    width: 100%;
+}
+
 .control-label {
     color: #444;
 }
