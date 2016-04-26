@@ -575,7 +575,7 @@ class Trial < TrialBase
           ## populate the mail_template with data for trial update
           mail_template.from = 'ncictro@mail.nih.gov'
           # mail_template.to = trial_registrant_email
-          mail_template.to = 'ivytony@gmail.com' #self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+          mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
           mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
@@ -629,7 +629,18 @@ class Trial < TrialBase
       mail_template = MailTemplate.find_by_code('TRIAL_DRAFT')
       if mail_template.present?
         ## populate the mail_template with data for trial draft
-        # TODO: populate mail_template
+        mail_template.from = 'ncictro@mail.nih.gov'
+        mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+        mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
+        mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
+        mail_template.body_html.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.body_html.sub!('${lead_organization}', self.lead_org.name) if self.lead_org.present?
+        mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', self.lead_org.id.to_s) if self.lead_org.present?
+        submission_date = last_submission.nil? ? '' : last_submission.submission_date.strftime('%d-%b-%Y')
+        mail_template.body_html.sub!('${submissionDate}', submission_date)
+        mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+        mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
       end
 
     end
