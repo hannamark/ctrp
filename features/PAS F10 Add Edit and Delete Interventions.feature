@@ -11,10 +11,10 @@ And The Interventions Screen Opens
 When I have clicked on the Add button to add Interventions
 Then the Add Intervention screen opens
 When I have clicked on the Look Up button to select an Intervention Name 
-Then the Search Intervention Name screen is  displayed
+Then the Search Interventions screen is  displayed
 And I enter an intervention name (Intervention Name Example: Aspirin)
 When I have clicked on the search button
-Then the intervention name type will be displayed
+Then the intervention information will be displayed
  
 
       |Preferred Name                |
@@ -23,11 +23,13 @@ Then the intervention name type will be displayed
       |Description                   |
       |Action                        |
 
-And I will select an Intervention Name by clicking on the Select button on the Action column
-And the selected intervention name will be added to the Intervention name field
+When I select an Intervention Name by clicking on the Select button on the Action column
+Then the Add Intervention screen displays
+And the selected intervention name will be populated in the Intervention name field
 And I have entered the Intervention Description in the provided box
-And other names will be added in the othAspiriner Names field
-And the <InterventionType> will be populated from the intervention results table if not null
+And other names will be populated in the other Names field
+When the <InterventionType> is not null
+Then the <InterventionType> will be populated from the intervention results table
       |InterventionType|
       |Drug|
       |Device|
@@ -42,7 +44,6 @@ And the <InterventionType> will be populated from the intervention results table
       
 When the value of <InterventionType> is null 
 Then the <InterventionType> field will be blank and grayed out
-And only the Super Abstractor can edit to add or modify an <InterventionType>
 When I click on the save button to add the Intervention
 Then the selected intervention will be added to the intervention table with fields below
 
@@ -53,10 +54,14 @@ Then the selected intervention will be added to the intervention table with fiel
       |Edit  |
       |Delete  |
 
+ 
+
+And only the Super Abstractor can edit to add or modify an <InterventionType>
+
 
 
   Scenario: #2 Intervention Search Screen Mandatory field
-    Given I am on the the Search Intervention Name screen 
+    Given I am on the the Search Interventions screen 
     When an Intervention name is not entered
     And I have clicked on the Search Button
    Then an error message will be displayed
@@ -75,7 +80,7 @@ Then the selected intervention will be added to the intervention table with fiel
      
 
     Scenario: #4 I can search Interventions when Exact Match Only is used
-    Given I am on the Search Interventions section
+    Given I am on the Search Interventions screen
      When the exact Match Only box is checked
      Then only the exact Intervention name should be displayed 
      When The exact Match Only box is NOT checked 
@@ -84,28 +89,33 @@ Then the selected intervention will be added to the intervention table with fiel
      
      
      Scenario: #5 I can search Interventions when Include Synonym search is used
-    Given I am on the Search Interventions Section
+    Given I am on the Search Interventions Screen
      When Include Synonym box is checked
-     And Intervention Name is an other Name 
-     And that Other Name is not the preferred Name
-     Then the intervention name should be displayed in the Other Names column
+     Then the search Intervention results will include preferred names where the intervention term is in the other names 
      When the Intervention name synonym is NOT checked 
-     Then the Intervention name will not be displayed 
+     Then the search intervention results will only include entries where the intervention term in the preferred term 
   
    
     Scenario:#6 I can edit Interventions
-     Given I know which Intervention name I want to edit 
+     Given I am on the intervention Screen 
      When I have Clicked on the edit button on the edit column for the selected intervention name
      Then the edit intervention screen opens
-     And I the intervention Name is not editable
+     And  the intervention Name is not editable
      And the other Names are not Editable
+     And the intervention Type is not editable
      And I can add or update Intervention Description
      And Only the super abstractor can add and edit Intervention type
      When I click on the save button
      Then the changes made will be saved to the selected Intervention
+     
+      Scenario:#7 field not editable
+    Given 
+     When 
+     Then 
+
 
   Scenario:#7 I can delete one or multiple Interventions
-    Given I know which Intervention name I want to delete
+    Given I am on the intervention screen
      When I have selected the delete box from the delete column for the selected intervention name
      And I have clicked on the delete button
      Then I have to confirm by cliking on the Ok button to remove selected intervention from the study
@@ -115,7 +125,7 @@ Then the selected intervention will be added to the intervention table with fiel
      And I should not get the message <Record(s) Deleted>
      
        Scenario: #8 I can delete all Intervention
-        Given I want to delete all recorded Intervention 
+        Given I am on the intervention screen
         When I click on the select all button 
         Then All interventions will be selected in the delete column 
         When I have clicked on the delete button 
@@ -132,7 +142,7 @@ Then the selected intervention will be added to the intervention table with fiel
     And I have the added Interventions listed 
      When I click on an Intervention row
      Then I can hold and drag to reorder the placement of an intervention 
-     And My interventions will be reordered 
+     And  the interventions will be reordered 
 
 
      
