@@ -7,11 +7,12 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('paMilestoneCtrl', paMilestoneCtrl);
 
-    paMilestoneCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'milestoneObj', 'TrialService'];
+    paMilestoneCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'milestoneObj', 'TrialService', 'userDetailObj'];
 
-    function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, milestoneObj, TrialService) {
+    function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, milestoneObj, TrialService, userDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        vm.curUser = userDetailObj;
         vm.addMode = false;
         vm.submission_num = vm.curTrial.current_submission_num;
         vm.milestoneArr = milestoneObj;
@@ -44,6 +45,10 @@
             milestoneWrapperObj.comment = vm.comment;
             if (vm.showRejectionReason) {
                 milestoneWrapperObj.comment = vm.rejection_reason + ': ' + milestoneWrapperObj.comment;
+            }
+            if (vm.curUser.first_name && vm.curUser.last_name) {
+                console.log('in');
+                milestoneWrapperObj.created_by = vm.curUser.last_name + ', ' + vm.curUser.first_name;
             }
             vm.curTrial.milestone_wrappers_attributes.push(milestoneWrapperObj);
 

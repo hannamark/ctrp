@@ -203,7 +203,7 @@ end
 
 json.milestone_wrappers do
   json.array!(@trial.milestone_wrappers) do |milestone|
-    json.extract! milestone, :id, :milestone_date, :trial_id, :comment, :created_at
+    json.extract! milestone, :id, :milestone_date, :trial_id, :comment, :created_at, :created_by
 
     if milestone.milestone.present?
       json.milestone do
