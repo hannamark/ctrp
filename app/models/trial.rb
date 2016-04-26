@@ -152,6 +152,7 @@ class Trial < TrialBase
   has_many :co_pis, through: :trial_co_pis, source: :person
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
   has_many :trial_documents, -> { order 'trial_documents.id' }
+  has_many :mail_logs, -> { order 'mail_logs.id'}
 
   # PA fields
   belongs_to :assigned_to, class_name: "User"
@@ -387,6 +388,20 @@ class Trial < TrialBase
     checked_out
   end
 
+  def submission_nums
+    self.submissions.pluck('submission_num').uniq
+  end
+
+  # Most recent non-update submission
+  def current_submission
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
+    else
+      return nil
+    end
+  end
+
   private
 
   def save_history
@@ -609,13 +624,16 @@ class Trial < TrialBase
           nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
           ctep_origin_id = ProtocolIdOrigin.find_by_code('CTEP').id
           dcp_origin_id = ProtocolIdOrigin.find_by_code('DCP').id
-          nctIdentifier = self.other_ids.any?{|a| a.protocol_id_origin_id == nct_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == nct_origin_id} : nil
-          ctepIdentifier = self.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
-          dcpIdentifier = self.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
+          nctIdentifierObj = self.other_ids.any?{|a| a.protocol_id_origin_id == nct_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == nct_origin_id} : nil
+          nctIdentifier = nctIdentifierObj.present? ? nctIdentifierObj.protocol_id : nil
+          ctepIdentifierObj = self.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
+          ctepIdentifier = ctepIdentifierObj.present? ? ctepIdentifierObj.protocol_id : nil
+          dcpIdentifierObj = self.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
+          dcpIdentifier = dcpIdentifierObj.present? ? dcpIdentifier.protocol_id : nil
 
-          mail_template.body_html.sub!('${nctId}', nctIdentifier.protocol_id.nil? ? '' : nctIdentifier.protocol_id) if nctIdentifier.present?
-          mail_template.body_html.sub!('${ctepId}', ctepIdentifier.protocol_id.nil? ? '' : ctepIdentifier.protocol_id) if ctepIdentifier.present?
-          mail_template.body_html.sub!('${dcpId}', dcpIdentifier.protocol_id.nil? ? '' : dcpIdentifier.protocol_id) if dcpIdentifier.present?
+          mail_template.body_html.sub!('${nctId}', nctIdentifier.nil? ? '' : nctIdentifier)
+          mail_template.body_html.sub!('${ctepId}', ctepIdentifier.nil? ? '' : ctepIdentifier)
+          mail_template.body_html.sub!('${dcpId}', dcpIdentifier.nil? ? '' : dcpIdentifier)
 
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
           mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
@@ -655,11 +673,11 @@ class Trial < TrialBase
         logger.warn "email delivery error = #{e}"
       end
       ## save the mail sending to mail log
-      if mail_template.to.include? "$" or !mail_template.to.include? "@"
+      if mail_template.to.nil? || !mail_template.to.include?("@")
         # recipient email not replaced with actual email address (user does not have email)
-        mail_sending_result = 'Failed, recipient email is unspecified'
+        mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
       end
-      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result)
+      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result, trial: self)
 
     end
 
