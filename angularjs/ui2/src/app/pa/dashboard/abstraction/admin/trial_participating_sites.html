@@ -330,7 +330,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
-                                            <td>{{inv.person.id}}  <span ng-bind="inv.id"></span></td>
+                                            <td>{{inv.person.id}}</td>
                                             <td>{{inv.person.lname}}</td>
                                             <td>{{inv.person.fname}}</td>
                                             <td>{{inv.investigator_type}}</td>
