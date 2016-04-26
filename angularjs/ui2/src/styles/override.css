@@ -756,6 +756,11 @@ h5 {
     height: 80px !important;
 }
 
+.grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .ui-grid-row:nth-child(even):hover .ui-grid-cell {
+    background:#2A71A5;
+    color: #FFF;
+}
+
 .ui-grid-cell .btn {
     margin: 0 auto;
     padding: 0 6px;
