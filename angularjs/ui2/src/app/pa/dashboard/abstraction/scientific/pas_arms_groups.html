@@ -119,7 +119,7 @@
                             <input type="checkbox" restriction-field ng-model="armView.selectedAllAG" ng-click="armView.checkAllAG()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                         </th>
                         </thead>
-                        <tbody>
+                        <tbody ui-sortable="armView.sortableListener" ng-model="armView.curTrial.arms_groups">
                         <tr ng-repeat="arms_group in armView.curTrial.arms_groups track by $index" class="animated-item">
                             <td>{{arms_group.label}}</td>
                             <td>{{arms_group.arms_groups_type}}</td>

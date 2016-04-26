@@ -125,7 +125,8 @@
                     _destroy: false,
                     status: 'active',
                     why_deleted: null,
-                    isPopoverOpen: false
+                    isPopoverOpen: false,
+                    source_document: 'PA'
                 };
                 return doc;
             }
