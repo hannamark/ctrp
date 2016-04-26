@@ -14,6 +14,8 @@
                                      MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
+        console.log("INTERVENTIONS = " + JSON.stringify(trialDetailObj.interventions));
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
@@ -23,6 +25,9 @@
         vm.interventionList = [];
         vm.trial_interventions = [];
         vm.interventional = false;
+        vm.sortableListener = {};
+        vm.sortableListener.stop = dragItemCallback;
+
         if(vm.curTrial.research_category.name=='Interventional') {
             vm.interventional = true;
         }
@@ -51,6 +56,8 @@
             if(vm.currentArmsGroup) {
                 vm.curTrial.arms_groups_attributes = [];
                 vm.currentArmsGroup.intervention_text = "";
+                console.log("vm.interventionList.length ="+ vm.interventionList.length);
+                console.log("vm.interventionList ="+ JSON.stringify(vm.interventionList.length));
                 if(vm.interventionList.length > 0){
                     for (var i = 0; i < vm.interventionList.length; i++) {
                         vm.currentArmsGroup.intervention_text = vm.currentArmsGroup.intervention_text + vm.interventionList[i].id + ",";
@@ -149,6 +156,7 @@
         function setEditMode(idx) {
             vm.addEditMode = true;
             vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
+            vm.interventionList = vm.currentArmsGroup.arms_groups_interventions;
             vm.currentArmsGroup.edit = true;
             vm.currentArmsGroupIndex = idx;
             vm.intervention_array = new Array();
@@ -159,6 +167,7 @@
                 console.log("vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
                 console.log("vm.intervention_array="+JSON.stringify(vm.intervention_array));
             }
+            // Show the list of Trial interventions with the checkbox selected if they are assigned to the Arms Group
             var temp_intervention = {};
             for (var i = 0; i < vm.curTrial.interventions.length; i++) {
                for (var j = 0; j < vm.intervention_array.length; j++) {
@@ -222,7 +231,31 @@
 
         };
 
+        /**
+         * Callback for dragging item around
+         * @param  {[type]} event [description]
+         * @param  {[type]} ui    [description]
+         * @return {[type]}       [description]
+         */
+        function dragItemCallback(event, ui) {
+            var item = ui.item.scope().item;
+            var fromIndex = ui.item.sortable.index;
+            var toIndex = ui.item.sortable.dropindex;
 
+            vm.curTrial.arms_groups_attributes = _labelSortableIndex(vm.curTrial.arms_groups);
+
+            // Code for optimizing the save
+            /**for (var i = 0; i < vm.curTrial.arms_groups.length; i++) {
+                if(vm.curTrial.arms_groups[i].index !=i) {
+                    var obj = {};
+                    obj.id = vm.curTrial.arms_groups[i].id;
+                    obj.index = i;
+                    vm.curTrial.arms_groups_attributes.push(obj);
+                }
+            }**/
+
+            vm.saveTrial();
+        }
     } //pasArmsGroupsCtrl
 
 })();

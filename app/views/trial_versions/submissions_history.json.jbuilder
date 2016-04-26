@@ -19,10 +19,31 @@ json.trial_versions do
 
     submission_version = TrialVersion.find_by_item_type_and_item_id("Submission", submission.id)
 
-    doc = TrialDocument.find_by_id(24)
+    docs= TrialDocument.where("submission_id = ? ",submission.id);
 
-    json.doc_id doc.id
-    json.doc_name doc.file_name
+
+    docs.each do |doc|
+     if doc.source_document == "Registry"
+       doc.source_document  = "Original"
+     else
+       doc.source_document = ""
+     end
+    end
+
+    json.docs docs
+
+    milestone = MilestoneWrapper.where("submission_id = ?", submission.id).reorder("created_at ASC").last
+
+    if milestone
+        milestone_date =  milestone.milestone_date
+        milestone_name =  Milestone.find_by_id(milestone.milestone_id).name
+        Array milestone = Array.new
+
+        milestone.push(milestone_date)
+        milestone.push(milestone_name)
+        json.milestone milestone
+    end
+
 
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160422153714) do
+ActiveRecord::Schema.define(version: 20160426183058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,22 +448,18 @@ ActiveRecord::Schema.define(version: 20160422153714) do
   end
 
   create_table "interventions", force: :cascade do |t|
-    t.string   "name",                            limit: 255
-    t.string   "other_name",                      limit: 255
+    t.string   "name",                 limit: 255
+    t.string   "other_name",           limit: 255
     t.text     "description"
-    t.integer  "intervention_type_cancer_gov_id"
-    t.integer  "intervention_type_ct_gov_id"
     t.integer  "intervention_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
-    t.string   "uuid",                            limit: 255
-    t.integer  "lock_version",                                default: 0
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
     t.integer  "index"
   end
 
-  add_index "interventions", ["intervention_type_cancer_gov_id"], name: "index_interventions_on_intervention_type_cancer_gov_id", using: :btree
-  add_index "interventions", ["intervention_type_ct_gov_id"], name: "index_interventions_on_intervention_type_ct_gov_id", using: :btree
   add_index "interventions", ["intervention_type_id"], name: "index_interventions_on_intervention_type_id", using: :btree
   add_index "interventions", ["trial_id"], name: "index_interventions_on_trial_id", using: :btree
 
@@ -478,6 +474,21 @@ ActiveRecord::Schema.define(version: 20160422153714) do
   end
 
   add_index "links", ["trial_id"], name: "index_links_on_trial_id", using: :btree
+
+  create_table "mail_logs", force: :cascade do |t|
+    t.string   "from"
+    t.string   "to"
+    t.string   "cc"
+    t.string   "bcc"
+    t.string   "subject"
+    t.text     "body"
+    t.string   "email_template_name"
+    t.integer  "email_template_id"
+    t.string   "result"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "trial_id"
+  end
 
   create_table "mail_templates", force: :cascade do |t|
     t.text     "from"
@@ -1187,6 +1198,7 @@ ActiveRecord::Schema.define(version: 20160422153714) do
     t.integer  "submission_id"
     t.string   "status",                       default: "active"
     t.string   "why_deleted"
+    t.string   "source_document",              default: "Registry"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree
@@ -1611,6 +1623,7 @@ ActiveRecord::Schema.define(version: 20160422153714) do
   create_sequence "intervention_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "mail_logs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "marker_assay_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "marker_biomarker_purpose_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

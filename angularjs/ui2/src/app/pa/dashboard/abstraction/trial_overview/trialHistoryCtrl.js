@@ -9,10 +9,10 @@
         .controller('trialHistoryCtrl', trialHistoryCtrl);
 
     trialHistoryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService'];
+        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService','HOST','DateService'];
 
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
-                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService) {
+                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService,HOST,DateService) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
@@ -29,6 +29,7 @@
         vm.submit = submit;
         vm.searchWarningMessage = '';
 
+        vm.updateParams = AuditService.getUpdateInitialSearchParams();
         //ui-grid plugin options
         vm.auditGridOptions = AuditService.getAuditsGridOptions();
         //vm.auditGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
@@ -39,6 +40,7 @@
 
         vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
 
+        $scope.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download/';
 
         activate();
 
@@ -52,6 +54,7 @@
             vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
             vm.updatesGridOptions.data = null;
             vm.updatesGridOptions.totalItems = null;
+
             loadTrialUpdates();
 
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
@@ -62,26 +65,39 @@
 
         }
 
+        vm.updatesGridOptions.onRegisterApi = function(gridApi) {
+            console.log("cbc");
+            vm.gridApi = gridApi;
+            //vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
+            vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
+                vm.updateParams.start = newPage;
+                vm.updateParams.rows = pageSize;
+                loadTrialUpdates();
+            });
+        }; //gridOptions
+
+
+
+
+
         function loadTrialUpdates() {
+            console.log("inside loads");
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
-            vm.trialHistoryObj = {trial_id: trialId};
+            vm.trialHistoryObj = {trial_id: trialId, start: vm.updateParams.start, rows: vm.updateParams.rows};
 
             AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
-                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                console.log('received search results ***: ' + JSON.stringify(data.trial_versions));
                 var i =0
                 for(i = 0; i < data.trial_versions.length; i++){
                     data.trial_versions[i].subGridOptions = {
-                                columnDefs: [
-                                    {name:"Updated Field", field:"field_name"},
-                                    {name:"Old value", field:"old_value"},
-                                    {name:"New value", field:"new_value"}
-                                ],
+
                         data: data.trial_versions[i].friends
                     }
                 }
-
-                vm.updatesGridOptions.data = data.trial_versions;
-                vm.updatesGridOptions.totalItems = data.trial_versions["length"];
+               // if (data.trial_versions.length != 0) {
+                    vm.updatesGridOptions.data = data.trial_versions;
+                    vm.updatesGridOptions.totalItems = data.total;
+                //}
             }).catch(function (err) {
                 console.log('Getting trial updates failed');
             }).finally(function () {
@@ -268,7 +284,7 @@
                     resStatus = response.server_response.status;
 
                     if (response.server_response.status === 200) {
-
+                        vm.entity.acknowledge_date = DateService.convertISODateToLocaleDateStr(vm.entity.acknowledge_date);
                         row.entity = angular.extend(row.entity, vm.entity);
 
                         toastr.clear();

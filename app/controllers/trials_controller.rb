@@ -635,7 +635,7 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
-                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype, :file, :_destroy, :status, :added_by_id, :why_deleted],
+                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
                                   interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_cancer_gov_id, :intervention_type_ct_gov_id, :index, :_destroy],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
@@ -649,7 +649,7 @@ class TrialsController < ApplicationController
                                                        marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
-                                  milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :_destroy])
+                                  milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy])
   end
 
   # Convert status code to name in validation messages

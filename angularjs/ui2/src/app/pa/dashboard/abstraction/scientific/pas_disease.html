@@ -27,7 +27,7 @@
                 </div>
            </form>
 
-           <form class="form form-horizontal" role="form" name="saved_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
+           <form class="form form-horizontal width-normal" role="form" name="saved_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
                 <div class="col-xs-12">
                     <span us-spinner="{radius: 10, length: 5}" spinner-on="diseaseView.searching"></span>
                 </div>
@@ -70,8 +70,8 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="col-sm-5">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-4">
                         <div ng-show="diseaseView.addedDiseases.length > 0" class="form-group">
                             <h4>Your Selections <span class="pull-right">{{diseaseView.addedDiseases.length}} diseases selected</span></h4>
                             <ul class="list-group">
