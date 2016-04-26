@@ -594,7 +594,7 @@ class Trial < TrialBase
         if mail_template.present?
           ## populate the mail_template with data for trial amendment
           mail_template.from = 'ncictro@mail.nih.gov'
-          mail_template.to = 'ivytony@gmail.com' # self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+          mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
           mail_template.subject.sub!('${trialAmendNumber}', self.submissions.last.amendment_num) if self.submissions.last.present?
           mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
