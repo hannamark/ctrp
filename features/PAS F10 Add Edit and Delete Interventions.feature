@@ -16,7 +16,6 @@ And I enter an intervention name (Intervention Name Example: Aspirin)
 When I have clicked on the search button
 Then the intervention information will be displayed
  
-
       |Preferred Name                |
       |Other Names                   |
       |Intervention Type             |
