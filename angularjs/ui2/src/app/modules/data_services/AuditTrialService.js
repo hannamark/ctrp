@@ -48,7 +48,12 @@
             enableFiltering: true,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
-            expandableRowTemplate: '<div class="ui-grid-no-hover" ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
+            //expandableRowTemplate: '<div class="ui-grid-no-hover" ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
+           // expandableRowTemplate: '<div ng-repeat=" row in row.entity.subGridOptions">{{row}}</div>',
+            //</div><div class="ui-grid-no-hover" ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
+            expandableRowTemplate:'innerTable.html',
+            enableExpandableRowHeader: true,
+
             expandableRowHeight: 150,
 
             columnDefs: [

@@ -1,3 +1,30 @@
+
+<script type="text/ng-template" id="innerTable.html">
+
+<table class="table table-bordered table-striped table-hover" ng-show="row.entity.subGridOptions.data.length">
+    <thead>
+    <th>Updated Field</th>
+    <th>Old Value</th>
+    <th>New Value</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="row in row.entity.subGridOptions.data">
+        <td>
+            {{row.field_name}}
+        </td>
+        <td>
+          {{row.old_value}}
+        </td>
+        <td>
+          {{row.new_value}}
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+</script>
+
+
 <script type="text/ng-template" id="acknowledgeModal.html">
     <div>
         <div class="modal-header">

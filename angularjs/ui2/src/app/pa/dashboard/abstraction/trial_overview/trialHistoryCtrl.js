@@ -90,11 +90,7 @@
                 var i =0
                 for(i = 0; i < data.trial_versions.length; i++){
                     data.trial_versions[i].subGridOptions = {
-                                columnDefs: [
-                                    {name:"Updated Field", field:"field_name"},
-                                    {name:"Old value", field:"old_value"},
-                                    {name:"New value", field:"new_value"}
-                                ],
+
                         data: data.trial_versions[i].friends
                     }
                 }
