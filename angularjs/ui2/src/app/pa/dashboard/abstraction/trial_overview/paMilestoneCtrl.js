@@ -47,7 +47,6 @@
                 milestoneWrapperObj.comment = vm.rejection_reason + ': ' + milestoneWrapperObj.comment;
             }
             if (vm.curUser.first_name && vm.curUser.last_name) {
-                console.log('in');
                 milestoneWrapperObj.created_by = vm.curUser.last_name + ', ' + vm.curUser.first_name;
             }
             vm.curTrial.milestone_wrappers_attributes.push(milestoneWrapperObj);
