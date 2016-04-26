@@ -655,7 +655,7 @@ class Trial < TrialBase
         logger.warn "email delivery error = #{e}"
       end
       ## save the mail sending to mail log
-      if mail_template.to.include? "$" or !mail_template.to.include? "@"
+      if mail_template.to.nil? or mail_template.to.include? "$" or !mail_template.to.include? "@"
         # recipient email not replaced with actual email address (user does not have email)
         mail_sending_result = 'Failed, recipient email is unspecified'
       end
