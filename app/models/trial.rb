@@ -152,6 +152,7 @@ class Trial < TrialBase
   has_many :co_pis, through: :trial_co_pis, source: :person
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
   has_many :trial_documents, -> { order 'trial_documents.id' }
+  has_many :mail_logs, -> { order 'mail_logs.id'}
 
   # PA fields
   belongs_to :assigned_to, class_name: "User"
@@ -385,6 +386,20 @@ class Trial < TrialBase
       checked_out = true
     end
     checked_out
+  end
+
+  def submission_nums
+    self.submissions.pluck('submission_num').uniq
+  end
+
+  # Most recent non-update submission
+  def current_submission
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
+    else
+      return nil
+    end
   end
 
   private
@@ -658,11 +673,11 @@ class Trial < TrialBase
         logger.warn "email delivery error = #{e}"
       end
       ## save the mail sending to mail log
-      if mail_template.to.nil? or mail_template.to.include? "$" or !mail_template.to.include? "@"
+      if mail_template.to.nil? || !mail_template.to.include?("@")
         # recipient email not replaced with actual email address (user does not have email)
-        mail_sending_result = 'Failed, recipient email is unspecified'
+        mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
       end
-      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result)
+      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result, trial: self)
 
     end
 
