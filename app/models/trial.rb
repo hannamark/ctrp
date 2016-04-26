@@ -660,7 +660,7 @@ class Trial < TrialBase
       ## save the mail sending to mail log
       if mail_template.to.nil? or mail_template.to.include? "$" or !mail_template.to.include? "@"
         # recipient email not replaced with actual email address (user does not have email)
-        mail_sending_result = 'Failed, recipient email is unspecified'
+        mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
       end
       MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result)
 
