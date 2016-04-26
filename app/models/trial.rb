@@ -625,7 +625,7 @@ class Trial < TrialBase
         end
       end
 
-    elsif self.is_draft == TRUE
+    elsif self.is_draft == TRUE && self.edit_type != 'verify'
       mail_template = MailTemplate.find_by_code('TRIAL_DRAFT')
       if mail_template.present?
         ## populate the mail_template with data for trial draft
@@ -645,13 +645,22 @@ class Trial < TrialBase
 
     end
 
+    mail_sending_result = 'Mail server failed to send'
     if mail_template.present?
       begin
         p " sending emails now!"
+        mail_sending_result = 'Success'
         CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
       rescue  Exception => e
         logger.warn "email delivery error = #{e}"
       end
+      ## save the mail sending to mail log
+      if mail_template.to.include? "$" or !mail_template.to.include? "@"
+        # recipient email not replaced with actual email address (user does not have email)
+        mail_sending_result = 'Failed, recipient email is unspecified'
+      end
+      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result)
+
     end
 
   end
