@@ -17,11 +17,11 @@
 
 
 
-        var initAuditsSearchParams = {
+        var initUpdateSearchParams = {
             //for pagination and sorting
             sort: '',
             order: '',
-            rows: 15,
+            rows: 10,
             start: 1
         }; //initial Audits Search Parameters
 
@@ -30,7 +30,7 @@
         var updatesGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
-            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' <div ng-mouseover="rowStyle={\'background-color\': \'red\'}; grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
             ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
             ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
             ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
@@ -40,8 +40,8 @@
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
-            paginationPageSizes: [5, 10],
-            paginationPageSize: 15,
+            paginationPageSizes: [10, 20],
+            paginationPageSize: 10,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
@@ -214,6 +214,7 @@
             getAudits: getAudits,
             getUpdatesGridOptions: getUpdatesGridOptions,
             getUpdates: getUpdates,
+            getUpdateInitialSearchParams:getUpdateInitialSearchParams,
             getSubmissions: getSubmissions,
             getSubmissionsGridOptions: getSubmissionsGridOptions,
             upsertSubmission:upsertSubmission
@@ -224,6 +225,10 @@
 
 
         /*********************** implementations *****************/
+
+        function getUpdateInitialSearchParams() {
+            return initUpdateSearchParams;
+        }
 
         function getAudits(obj){
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.AUDIT_HISTORY, obj);

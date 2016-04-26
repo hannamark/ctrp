@@ -262,3 +262,7 @@ json.trial_versions do
     end
 
 end
+
+json.start params[:start]
+json.rows params[:rows]
+json.total @submissions.respond_to?(:total_count) ? @submissions.total_count : @submissions.size

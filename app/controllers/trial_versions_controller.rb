@@ -61,12 +61,21 @@ def history
 end
 
   def updates_history
+ p params
+ p "$$$$$$$$$$$$$$"
   p params[:trial_id]
   ##find all versions with given trial ; extract trial id and transaction id
+  params[:start] = 1 if params[:start].blank?
+  params[:rows] = 5 if params[:rows].blank?
 
   submission_type= SubmissionType.find_by_name("Update")
 
    @submissions =Submission.where("trial_id =? AND submission_type_id=? ", params[:trial_id],submission_type.id)
+
+   p "this is count before pagination"
+   p @submissions.size
+
+   @submissions = @submissions.page(params[:start]).per(params[:rows])
 
   #@trial_versions =TrialVersion.where("item_type = ? AND item_id = ? AND event=? ", "Trial",params[:trial_id], "update").order('created_at desc')
 
