@@ -531,6 +531,10 @@ class Trial < TrialBase
     last_submission = self.submissions.last
     last_sub_type = last_submission.submission_type if last_submission.present?
     last_sub_method = last_submission.submission_method if last_submission.present?
+    last_submitter = last_submission.user if last_submission.present?
+    last_submitter_name = last_submitter.nil? ? '' : "#{last_submitter.first_name} #{last_submitter.last_name}"
+    last_submitter_name = last_submitter_name.strip!
+    last_submitter_name = 'CTRP User' if last_submitter_name.blank?
 
     mail_template = nil
 
@@ -559,18 +563,19 @@ class Trial < TrialBase
 
           mail_template.body_html.sub!('${submissionDate}', last_submission.submission_date.strftime('%d-%b-%Y')) if last_submission.submission_date.present?
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
-          mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
+          mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
           mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
         end
 
       elsif last_sub_type.code == 'UPD' && self.edit_type != 'verify'
         mail_template = MailTemplate.find_by_code('TRIAL_UPDATE')
-        trial_owner = TrialOwnership.find_by_trial_id(self.id)
-        trial_submitter_email = trial_owner.nil? ? nil : trial_owner.user.email
-        if mail_template.present? && !trial_submitter_email.nil?
+        # trial_owner = TrialOwnership.find_by_trial_id(self.id)
+        # trial_registrant_email = trial_owner.nil? ? nil : trial_owner.user.email
+        if mail_template.present?
           ## populate the mail_template with data for trial update
           mail_template.from = 'ncictro@mail.nih.gov'
-          mail_template.to = trial_submitter_email
+          # mail_template.to = trial_registrant_email
+          mail_template.to = 'ivytony@gmail.com' #self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
           mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
@@ -581,7 +586,7 @@ class Trial < TrialBase
           mail_template.body_html.sub!('${submitting_organization}', self.lead_org.name) if self.lead_org.present?
           mail_template.body_html.sub!('${submissionDate}', last_submission.submission_date.strftime('%d-%b-%Y')) if last_submission.submission_date.present?
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
-          mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
+          mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
         end
 
       elsif last_sub_type.code == 'AMD' && self.edit_type != 'verify'
@@ -613,7 +618,7 @@ class Trial < TrialBase
           mail_template.body_html.sub!('${dcpId}', dcpIdentifier.protocol_id.nil? ? '' : dcpIdentifier.protocol_id) if dcpIdentifier.present?
 
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
-          mail_template.body_html.sub!('${SubmitterName}', last_submission.user.first_name + ' ' + last_submission.user.last_name) if last_submission.user.present? && last_submission.user.first_name.present? && last_submission.user.last_name.present?
+          mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
           mail_template.body_html.sub!('${trialAmendNumber}', self.submissions.last.amendment_num) if self.submissions.last.present?
           mail_template.body_html.sub!('${trialAmendmentDate}', Date.strptime(self.submissions.last.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y")) if self.submissions.last.present?
 
