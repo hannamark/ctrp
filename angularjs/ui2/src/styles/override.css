@@ -746,9 +746,14 @@ h5 {
     height: 22px !important;
 }
 
+.grid-medium-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 40px !important;
+}
+
 .grid-large-cell .ui-grid-cell {
     line-height: 1em;
-    height: 60px !important;
+    height: 80px !important;
 }
 
 .ui-grid-cell .btn {

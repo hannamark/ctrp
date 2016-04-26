@@ -46,6 +46,9 @@
                 templateUrl: 'app/pa/dashboard/abstraction/trial_overview/trial_history.html',
                 controller:   'trialHistoryCtrl as trialHistoryView',
                 section: 'pa',
+                resolve: {
+                    DateService: 'DateService'
+                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Trial History'

@@ -54,7 +54,7 @@ end
 
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
-    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status, :why_deleted
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status, :why_deleted, :source_document
     json.set! :added_by, document.added_by_id.nil? ? '' : User.find(document.added_by_id)   #document.added_by_id
   end
 end
@@ -179,18 +179,21 @@ json.participating_sites do
 end
 
 json.arms_groups do
+  arms_groups_interventions = []
   json.array!(@trial.arms_groups) do |ag|
     json.extract! ag, :id, :label, :arms_groups_type, :description, :intervention_text, :trial_id
     if(ag.intervention_text)
-      intervention_list = ag.intervention_text.split(",");
+      intervention_list = ag.intervention_text.split(",")
       display_interventions = ""
       intervention_list.each do |i|
         intervention = Intervention.find_by_id(i)
         unless intervention.nil?
-         display_interventions = display_interventions + Intervention.find_by_id(i).name
+          display_interventions = display_interventions + " " +  intervention.name
+          arms_groups_interventions << intervention
         end
-      end
+     end
       json.display_interventions display_interventions
+      json.arms_groups_interventions arms_groups_interventions
     end
   end
 end
