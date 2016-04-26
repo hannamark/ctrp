@@ -41,7 +41,7 @@
                     <div class="col-xs-12 col-sm-4">
                         <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
                             <option value="">Select a Status</option>
-                            <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
+                            <option ng-repeat="status in sourceStatuses" value="{{status.name}}" ng-disabled="status.name !== 'Active' && usedInModal">{{status.name}}</option>
                         </select>
                     </div>
                 </div>

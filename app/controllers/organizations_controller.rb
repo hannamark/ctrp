@@ -162,10 +162,10 @@ class OrganizationsController < ApplicationController
         @organizations = @organizations.with_source_status("Active")
         @organizations = @organizations.with_source_context("CTRP")
 
-        # @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
-        # @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
-
-
+      else
+        @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
+        @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
+        
       end
       @organizations = @organizations.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @organizations = @organizations.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
