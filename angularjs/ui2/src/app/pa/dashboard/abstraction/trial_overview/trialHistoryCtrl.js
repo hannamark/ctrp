@@ -9,10 +9,10 @@
         .controller('trialHistoryCtrl', trialHistoryCtrl);
 
     trialHistoryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService'];
+        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService','HOST','DateService'];
 
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
-                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService) {
+                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService,HOST,DateService) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
@@ -39,6 +39,7 @@
 
         vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
 
+        $scope.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download/';
 
         activate();
 
@@ -67,7 +68,7 @@
             vm.trialHistoryObj = {trial_id: trialId};
 
             AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
-                console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                console.log('received search results ***: ' + JSON.stringify(data.trial_versions));
                 var i =0
                 for(i = 0; i < data.trial_versions.length; i++){
                     data.trial_versions[i].subGridOptions = {
@@ -79,9 +80,10 @@
                         data: data.trial_versions[i].friends
                     }
                 }
-
-                vm.updatesGridOptions.data = data.trial_versions;
-                vm.updatesGridOptions.totalItems = data.trial_versions["length"];
+                if (data.trial_versions.length != 0) {
+                    vm.updatesGridOptions.data = data.trial_versions;
+                    vm.updatesGridOptions.totalItems = data.trial_versions["length"];
+                }
             }).catch(function (err) {
                 console.log('Getting trial updates failed');
             }).finally(function () {
@@ -268,7 +270,7 @@
                     resStatus = response.server_response.status;
 
                     if (response.server_response.status === 200) {
-
+                        vm.entity.acknowledge_date = DateService.convertISODateToLocaleDateStr(vm.entity.acknowledge_date);
                         row.entity = angular.extend(row.entity, vm.entity);
 
                         toastr.clear();

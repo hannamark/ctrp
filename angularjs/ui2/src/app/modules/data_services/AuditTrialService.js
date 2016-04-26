@@ -15,33 +15,17 @@
                         GeoLocationService, Common, $rootScope,
                         PromiseTimeoutService,UserService,uiGridConstants,HOST) {
 
-        var downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
-        var initOrgSearchParams = {
-            name : '',
-            alias: true,
-            wc_search: true,
-            // po_id : '',
-            ctrp_id : '',
-            source_context : '',
-            source_id : '',
-            source_status : '',
-            family_name : '',
-            address : '',
-            address2 : '',
-            city : '',
-            state_province : '',
-            country : '', //default country ? United States ?
-            email : '',
-            postal_code : '',
-            phone: '',
 
+        var initAuditsSearchParams = {
             //for pagination and sorting
             sort: '',
             order: '',
-            rows: 5,
+            rows: 15,
             start: 1
-        }; //initial Organization Search Parameters
+        }; //initial Audits Search Parameters
+
+
 
         var updatesGridOptions = {
             rowTemplate: '<div>'+
@@ -57,7 +41,7 @@
             enableSelectAll: false,
             //enableRowSelection: false,
             paginationPageSizes: [5, 10],
-            paginationPageSize: 5,
+            paginationPageSize: 15,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
@@ -69,14 +53,16 @@
 
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div>{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
                 {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
                 {
                     name: 'Acknowledge ',
-                    cellTemplate: '<div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row,\'updates\')">Acknowledge</button></div>'
+                    cellTemplate: '<div class="text-center"> <div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row,\'updates\')">Acknowledge</button></div><div ng-hide="(row.entity.acknowledge != \'Yes\')">Acknowledged</div></div>'
                 },
                 {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*',
+                cellTemplate: '<div>{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
                 {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
 
             ]
@@ -95,7 +81,7 @@
             rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
-            enableRowSelection: true,
+            enableRowSelection: false,
             paginationPageSizes: [20, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
@@ -110,8 +96,11 @@
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*'},
                 {field: 'submission_type_list', displayName: 'Type',enableSorting:true, cellTemplate:'<div ng-repeat="item in row.entity[col.field]">{{item}}</div>'},
-            {name: 'doc',displayName:'Docs', enableSorting: true, minWidth: '100', width: '*',
-            cellTemplate: '<div> <a href="{{downloadBaseUrl}}/{{row.entity.doc_id}}">{{row.entity.file_name}}</a></td></div>'},
+                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a> {{doc.source_document}}</div>'},
+                {field: 'milestone', displayName: 'Current Milestone',enableSorting:true, cellTemplate:'<div ng-repeat="item in row.entity[col.field]">{{item}}</div>'},
+
+
 
 
                 {

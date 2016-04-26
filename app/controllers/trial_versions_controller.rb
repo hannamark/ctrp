@@ -75,8 +75,17 @@ end
 
   def submissions_history
 
-    @submissions =Submission.where("trial_id =? ", params[:trial_id])
-    ## find submission
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'submission_num'
+    params[:order] = 'asc' if params[:order].blank?
+
+
+    @submissions =Submission.where("trial_id =? ", params[:trial_id]).order(updated_at: :DESC)
+
+    ##pagination
+    @submissions = @submissions.group(:'submissions.id').page(params[:start]).per(params[:rows])
+
   end
 
 private

@@ -6,6 +6,20 @@
         <div class="modal-body">
             <form class="form form-horizontal">
                 <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Submission Number:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{vm.entity.submission_num}}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Submission Date:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{vm.entity.submission_date}}
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="acknowledge_comment" class="control-label col-sm-3">Comment:</label>
                     <div class="col-sm-9"><input class="form-control input-sm" type="text" name="acknowledge_comment" ng-model="vm.entity.acknowledge_comment"></div>
                 </div>
@@ -73,7 +87,7 @@
         <div class="modal-footer">
             <div class="col-sm-12">
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary pull-right" ng-click="vm.save()"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>
+                    <button class="btn btn-primary pull-right" ng-click="vm.save()"><i class="glyphicon glyphicon-ok"></i> Acknowledge </button>
                     <button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>
                 </div>
             </div>
@@ -119,7 +133,7 @@
                                 </div>
                                 <div class="row animated-item" ng-if="trialHistoryView.updatesGridOptions.data.length > 0">
                                     <div class="col-xs-12">
-                                        <div ui-grid="trialHistoryView.updatesGridOptions" ui-grid-expandable ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+                                        <div ui-grid="trialHistoryView.updatesGridOptions" ui-grid-expandable ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-medium-cell"></div>
                                     </div>
                                 </div>
                             </div>
