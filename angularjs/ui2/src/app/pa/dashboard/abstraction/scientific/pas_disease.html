@@ -4,14 +4,14 @@
             <div class="panel-title">Add Disease/Condition</div>
         </div>
         <div class="panel-body">
-            <form class="form form-horizontal" role="form" name="added_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
+            <form class="form form-horizontal" role="form" name="search_disease_form" novalidate ctrp-submit="diseaseView.searchDiseases()">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Disease/Condition:</label>
                     <div class="col-xs-12 col-sm-5">
-                        <input type="text" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.searchParams.disease_name" autofocus />
+                        <input type="text" name="protocol_id" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.searchParams.disease_name" autofocus />
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                        <button type="button" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn" ng-click="diseaseView.searchDiseases()">
+                        <button type="submit" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn">
                             <i class="glyphicon glyphicon-search"></i> Search
                         </button>
                     </div>
@@ -25,12 +25,14 @@
                         </label>
                     </div>
                 </div>
+           </form>
 
+           <form class="form form-horizontal" role="form" name="saved_disease_form" novalidate ctrp-submit="diseaseView.saveDiseases()">
                 <div class="col-xs-12">
                     <span us-spinner="{radius: 10, length: 5}" spinner-on="diseaseView.searching"></span>
                 </div>
 
-                <h4 ng-show="diseaseView.searchResult">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
+                <h4 ng-show="diseaseView.searchResult.length">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
 
                 <div class="form-group">
                     <div class="col-sm-7 table-responsive max-height-lg">
@@ -161,12 +163,12 @@
 
                 <div class="form-group no-bottom-margin">
                     <div class="btn-toolbar">
-                        <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field  ng-disabled="diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="diseaseView.setAddMode(true)">
-                            <i class="glyphicon glyphicon-plus"></i> Add Disease/Condition
-                        </button>
                         <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable"
                                 ng-show="diseaseView.existingDiseases.length">
                             <i class="glyphicon glyphicon-ok"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field  ng-disabled="diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="diseaseView.setAddMode(true)">
+                            <i class="glyphicon glyphicon-plus"></i> Add Disease/Condition
                         </button>
                         <button type="button" class="btn btn-danger pull-right" id="delete_btn" restriction-field ctrp-confirm ctrp-click="diseaseView.deleteSelected()" confirm-msg="Click OK to remove selected Disease/Condition from the study. Click Cancel to abort."
                                 ng-disabled="diseaseView.selectedNum === 0 || diseaseView.disableBtn || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="diseaseView.existingDiseases.length">

@@ -10,11 +10,8 @@ And I am on the Disease/Condition screen
 When I have selected the Add button 
 Then the Find a Disease/Condition screen displays
 And I can select Search Synonyms 
-And I can select Exact match only
-When I have started entering a term
-Then a list of type ahead terms display
 When I have entered a term
-And I have entered a second term separated by a comma
+And I have entered a second term separated by a pipe deliminator
 And click the search icon or click on Enter
 Then a list of Preferred Terms that contain the entered terms display
 And a message displays with the number of results for the terms entered 
@@ -22,8 +19,7 @@ And a message displays with the number of results for the terms entered
       |1964 results for "cancer" |
 
     When I select one or more terms from the preferred names listed by clicking on the the Add button to the right of the term
-    And I can click on "Add All" button to add all preferred terms to "Your Selections"
-    Then the selected term will be displayed in "Your Selections" 
+      Then the selected term will be displayed in "Your Selections" 
     And the message displays with the number of diseases selected on the top of "Your Selections" screen
      | 4 diseases selected|
     When I select the add button 
