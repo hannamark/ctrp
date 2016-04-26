@@ -54,12 +54,6 @@ Then the selected intervention will be added to the intervention table with fiel
       |Edit  |
       |Delete  |
 
- 
-
-And only the Super Abstractor can edit to add or modify an <InterventionType>
-
-
-
   Scenario: #2 Intervention Search Screen Mandatory field
     Given I am on the the Search Interventions screen 
     When an Intervention name is not entered
@@ -69,8 +63,7 @@ And only the Super Abstractor can edit to add or modify an <InterventionType>
       |Intervention Name is Required  |
 
 
-
-   Scenario: #3 Intervention Desciption field Characters Rule
+Scenario: #3 Intervention Desciption field Characters Rule
    Given I am on the Add Intervention screen
    And I can type 1000 characters in the Intervention description field
    When I start typing text in the Intervention Description field
