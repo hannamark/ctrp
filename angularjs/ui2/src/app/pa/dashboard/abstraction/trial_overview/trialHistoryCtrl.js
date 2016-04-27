@@ -28,6 +28,7 @@
         vm.openCalendar = openCalendar;
         vm.submit = submit;
         vm.searchWarningMessage = '';
+        vm.amendment_reasons_array = null;
 
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
         //ui-grid plugin options
@@ -139,6 +140,8 @@
                 console.log('received search results: ' + JSON.stringify(data.trial_versions));
                 vm.submissionsGridOptions.data = data.trial_versions;
                 vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
+                vm.amendment_reasons_array = data.amendement_reasons;
+                console.log("reasons" + JSON.stringify(vm.amendment_reasons_array));
             }).catch(function (err) {
                 console.log('Getting trial submissions failed');
             }).finally(function () {
@@ -239,6 +242,8 @@
 
         $scope.editRow= function(grid, row,gridType) {
 
+            console.log("**************"+JSON.stringify(vm.amendment_reasons_array));
+
             console.log(gridType);
 
 
@@ -246,7 +251,7 @@
             if(gridType == "updates") {
                 $uibModal.open({
                     templateUrl: 'acknowledgeModal.html',
-                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controller: ['$uibModalInstance', 'grid', 'row','reasonArr', ModalInstanceController],
                     controllerAs: 'vm',
                     resolve: {
                         grid: function () { return grid; },
@@ -258,11 +263,12 @@
             } else if(gridType == "submissions") {
                 $uibModal.open({
                     templateUrl: 'submissionsModal.html',
-                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controller: ['$uibModalInstance', 'grid', 'row','reasonsArr', ModalInstanceController],
                     controllerAs: 'vm',
                     resolve: {
                         grid: function () { return grid; },
-                        row: function () { return row; }
+                        row: function () { return row; },
+                        reasonsArr: function () {return vm.amendment_reasons_array;}
                     }
 
 
@@ -274,13 +280,13 @@
         }
 
         /* @ngInject */
-        function ModalInstanceController($uibModalInstance, grid, row) {
+        function ModalInstanceController($uibModalInstance, grid, row,reasonsArr) {
 
             var vm = this;
             vm.entity = angular.copy(row.entity);
             vm.submission_num = row.entity.submission_num;
             vm.submission_date = DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
-
+            vm.reasonArr = reasonsArr;
 
             vm.acknowledgeUpdate = acknowledgeUpdate;
             vm.updateSubmission = updateSubmission;
@@ -291,7 +297,6 @@
                 $event.preventDefault();
                 $event.stopPropagation();
 
-                console.log("###############");
                 if (type === 'amendment_date') {
                     vm.amendmentDateOpened = !vm.amendmentDateOpened;
                 }
@@ -345,7 +350,8 @@
 
                 var obj={'id':row.entity.id,
                     'amendment_num':vm.entity.amendment_num,
-                    'amendment_date':vm.entity.amendment_date};
+                    'amendment_date':vm.entity.amendment_date,
+                    'amendment_reason_id':vm.entity.amendment_reason_id};
 
                 var resStatus=null;
                 AuditService.upsertSubmission(obj).then(function(response) {
@@ -355,7 +361,7 @@
                         vm.entity.submission_type_list=[];
                         vm.entity.submission_type_list.push("Amendment");
                         vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));
-                        vm.entity.submission_type_list.push("Reason:" +vm.entity.amendment_num);
+                        vm.entity.submission_type_list.push("Reason:" +vm.entity.amendment_reason_id);
                         vm.entity.submission_type_list.push("Number:" +vm.entity.amendment_num);
 
 
