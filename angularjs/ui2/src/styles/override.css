@@ -1285,3 +1285,7 @@ ul.csv li:after {
 ul.csv li:last-child:after {
     content: "";
 }
+
+div[disabled] {
+    display:none;
+}

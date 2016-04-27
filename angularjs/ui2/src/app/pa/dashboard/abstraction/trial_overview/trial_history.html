@@ -1,7 +1,7 @@
 
 <script type="text/ng-template" id="innerTable.html">
-
-<table class="table table-bordered table-striped table-hover" ng-show="row.entity.subGridOptions.data.length">
+    <div class="top-offset-xss table-responsive">
+    <table class="table table-bordered table-striped table-hover" ng-show="row.entity.subGridOptions.data.length">
     <thead>
     <th>Updated Field</th>
     <th>Old Value</th>
@@ -22,6 +22,7 @@
     </tr>
     </tbody>
 </table>
+    </div>
 </script>
 
 
@@ -33,29 +34,29 @@
         <div class="modal-body">
             <form class="form form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Submission Number:</label>
+                    <label class="control-label col-xs-12 col-sm-4">Submission Number:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{vm.entity.submission_num}}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Submission Date:</label>
+                    <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
                         {{vm.entity.submission_date}}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="acknowledge_comment" class="control-label col-sm-3">Comment:</label>
-                    <div class="col-sm-9"><input class="form-control input-sm" type="text" name="acknowledge_comment" ng-model="vm.entity.acknowledge_comment"></div>
+                    <label for="acknowledge_comment" class="control-label col-sm-4">Comment:</label>
+                    <div class="col-sm-8"><input class="form-control input-sm" type="text" name="acknowledge_comment" ng-model="vm.entity.acknowledge_comment"></div>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
             <div class="col-sm-12">
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary pull-right" ng-click="vm.save()"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>
+                    <button class="btn btn-primary pull-right" ng-click="vm.acknowledgeUpdate()"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>
                     <button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>
                 </div>
             </div>
@@ -72,49 +73,54 @@
             <form class="form form-horizontal">
 
                 <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Submission Number:</label>
+                    <label class="control-label col-xs-12 col-sm-4">Submission Number:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
-                        {{vm.entity.submission_num}}
+                        {{vm.submission_num}}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Submission Date:</label>
+                    <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
-                        {{vm.entity.submission_date}}
+                        {{vm.submission_date}}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Amendment Number:</label>
+                    <label class="control-label col-xs-12 col-sm-4">Amendment Number:</label>
                     <div class=" col-xs-12 col-sm-6">
                         <input type="text" restriction-field class="form-control input-sm" id="amendment_num" ng-model="vm.entity.amendment_num">
                     </div>
                 </div>
+                <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
+                    <label class="control-label col-xs-12 col-sm-4">Amendment Reason:</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <select restriction-field ng-init="vm.entity.amendment_reason_id" class="form-control input-sm" id="amendment_reason" ng-model="vm.entity.amendment_reason_id" ng-options="amendment_reason.id as amendment_reason.name for amendment_reason in vm.reasonArr" name="amendment_reason" required>
+                            <option value="">Select a reason</option>
+                        </select>
+                    </div>
+                </div>
 
-                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.amendment_date)}">
-                    <label class="control-label col-xs-12 col-sm-3">Amendment Date:</label>
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4">Amendment Date:</label>
                     <div class="col-xs-12 col-sm-3">
                         <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                            <input type="text" class="form-control input-sm" name="amendment_date" datepicker-popup="{{vm.dateFormat}}" ng-model="vm.amendment_date"
-                                   ng-click="vm.openCalendar($event, 'amendment_date')" is-open="vm.amendment_date_opened" datepicker-options="vm.dateOptions" close-text="Close" required>
+                            <input type="text" class="form-control input-sm" name="amendment_date" datepicker-popup="{{vm.dateFormat}}" ng-model="vm.entity.amendment_date"
+                                   ng-click="vm.openCalendar($event, 'amendment_date')" is-open="vm.amendmentDateOpened" datepicker-options="vm.dateOptions" close-text="Close" required>
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-primary" ng-click="vm.openCalendar($event, 'amendment_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </button>
                                     </span>
-                        </div>
-                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.amendment_date)">
-                                    Amendment Date is Required
-                                </span>
-                    </div>
                 </div>
+                        </div>
+                    <div class="col-xs-12 col-sm-4"></div>
             </form>
         </div>
         <div class="modal-footer">
             <div class="col-sm-12">
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary pull-right" ng-click="vm.save()"><i class="glyphicon glyphicon-ok"></i> Acknowledge </button>
+                    <button class="btn btn-primary pull-right" ng-click="vm.updateSubmission()"><i class="glyphicon glyphicon-ok"></i> Update </button>
                     <button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>
                 </div>
             </div>
