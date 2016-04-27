@@ -580,6 +580,10 @@ form {
     padding: 0 5px;
 }
 
+form.width-normal {
+    width: 100%;
+}
+
 .control-label {
     color: #444;
 }
@@ -750,6 +754,12 @@ h5 {
 .grid-large-cell .ui-grid-cell {
     line-height: 1em;
     height: 80px !important;
+}
+
+.grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
+.grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
+    background:#bbb;
+    color: #444;
 }
 
 .ui-grid-cell .btn {
@@ -1259,4 +1269,19 @@ div.datepicker {
 }
 .sign_up fieldset label {
     font-weight: normal;
+}
+
+ul.csv {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul.csv li {
+    display: inline;
+}
+ul.csv li:after {
+    content: ",";
+}
+ul.csv li:last-child:after {
+    content: "";
 }

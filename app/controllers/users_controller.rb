@@ -124,21 +124,19 @@ end
     params[:order] = 'asc' if params[:order].blank?
     @users = User.all
 
-=begin
-    if params[:username].present? || params[:first_name].present? || params[:last_name].present? || params[:email].present?
-      @users = @users.select{|x| x.username && x.username.include?(params[:username])} if params[:username].present?
-      @users = @users.select{|x| x.first_name && x.first_name.include?(params[:first_name])} if params[:first_name].present?
-      @users = @users.select{|x| x.last_name && x.last_name.include?(params[:last_name])} if params[:last_name].present?
-      @users  = @users.select{|x| x.email && x.email.include?(params[:email])} if params[:email].present?
-    end
-=end
 
-    if params[:username].present? || params[:first_name].present? || params[:last_name].present? || params[:email].present?
-      @users = @users.matches_wc('username', params[:username]) if params[:username].present?
-      @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present?
-      @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present?
-      @users = @users.matches_wc('email', params[:email]) if params[:email].present?
-    end
+    @users = @users.matches_wc('username', params[:username]) if params[:username].present?
+    @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present?
+    @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present?
+    @users = @users.matches_wc('email', params[:email]) if params[:email].present?
+    @users = @users.matches_wc('site_admin', params[:site_admin])  if params[:site_admin].present?
+    @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
+
+    @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
+    @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
+
+      @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "last_name DESC, first_name ASC").group(:'users.id').page(params[:start]).per(params[:rows])
+    #end
 
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users
@@ -157,6 +155,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status_id, :approved)
+      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status_id, :approved)
     end
 end
