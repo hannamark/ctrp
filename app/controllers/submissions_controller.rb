@@ -69,6 +69,6 @@ class SubmissionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def submission_params
-    params[:submission].permit(:id,:acknowledge,:acknowledge_comment,:acknowledge_date,:acknowledged_by)
+    params[:submission].permit(:id,:amendment_num,:amendment_date,:acknowledge,:acknowledge_comment,:acknowledge_date,:acknowledged_by)
   end
 end

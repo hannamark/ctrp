@@ -1270,3 +1270,6 @@ div.datepicker {
 .sign_up fieldset label {
     font-weight: normal;
 }
+div[disabled] {
+    display:none;
+}
