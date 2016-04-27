@@ -69,6 +69,7 @@
             'AUDIT_HISTORY': '/ctrp/trial_versions/history',
             'TRIAL_UPDATES_HISTORY': '/ctrp/trial_versions/updates_history',
             'TRIAL_SUBMISSIONS_HISTORY': '/ctrp/trial_versions/submissions_history',
+            'TRIAL_DELETED_DOCUMENTS' : '/ctrp/registry/trial_documents/deleted_documents',
             'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
@@ -126,7 +127,8 @@
                 'ASSOCIATE_TRIAL': '/ctrp/associated_trials.json',
                 'NCIT_INTERVENTIONS_LOOKUP': '/ctrp/registry/trials/lookup_imported_ncit_interventions.json',
                 'INTERVENTION_TYPES': '/ctrp/registry/trials/get_intervention_types.json',
-                'SEARCH_CTRP_INTERVENTIONS': '/ctrp/registry/trials/search_ctrp_interventions.json?intervention_name={:intervention_name}'
+                'SEARCH_CTRP_INTERVENTIONS': '/ctrp/registry/trials/search_ctrp_interventions.json?intervention_name={:intervention_name}',
+                'MAIL_LOGS': '/ctrp/registry/trials/get_mail_logs.json?trial_id={:trial_id}'
             }
         })
         .constant('MESSAGES', {

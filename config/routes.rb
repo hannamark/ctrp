@@ -223,6 +223,7 @@ Rails.application.routes.draw do
           post 'lookup_imported_ncit_interventions'
           get  'get_intervention_types'
           get  'search_ctrp_interventions'
+          get  'get_mail_logs'
         end
       end
 
@@ -245,6 +246,7 @@ Rails.application.routes.draw do
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
+          post 'deleted_documents'
         end
       end
 

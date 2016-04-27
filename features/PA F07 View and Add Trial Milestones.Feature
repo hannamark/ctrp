@@ -224,43 +224,23 @@ Scenario Outline: #6 Trials Milestones validation rules
       |                                            |                                                                                                                                                                                                        |                                                                                   |
     
     
-    Scenario:#7 Multiple Milestones can be entered per Trial
+    Scenario:#7 Multiple Milestones can be entered per Trial per submission
   Given : I am logged into the CTRP Protocol Abstraction Application
    When I have selected a Trial
     And I am on the Trial Milestones Screen
     And I am on the Add Milestone Screen
     And I can Add Milestone Type
+    And I am on the same submission
      
       |Milestone  |
       |Datetime (automatically associated)|
       |Comment    |
     And I can enter multiple Milestones per trial for the <MilestoneType> and milestone comment won't be required
     	
-      |Submission Received Date                 |
-      |Submission Processing Start Date         |
-      |Validation processing Start Date         |
-      |Validation Processing Completed Date     |
-      |Ready for Validation QC date             |
-      |Validation QC Start Date                 |
-      |Validaiton QC Completed Date             |
-      |Submission Acceptance Date               |
       |Submission Terminated Date               |
       |Submission Reactivated Date              |
-      |Submission Rejection Date                |
-      |Administrative Processing Start Date     |
-      |Administrative Processing Completed Date |
-      |Ready for Administrative QC Date         |
-      |Administrative QC Start Date             |
-      |Administrative QC Completed Date         |
-      |Scientific Processing Start Date         |
-      |Scientific Processing Completion Date    |
-      |Ready for Scientific QC Date             |
-      |Scientific QC Start Date                 |
-      |Scientific QC Completed Date             |
-      |Ready for TSR Date                       |
       |Trial Summary Report Date                |
-      |Submitter Trial Summar Report Feedback   |
-      |Initial Abstraction Verified Date        |
+      |Submitter Trial Summary Report Feedback   |
       |On-going Abstraction Verified Date       |
       
      And I can enter "Late Rejection Milestone" milestone only one time during a Trial and "Late Rejection milestone" comment will be required 

@@ -28,6 +28,7 @@
         vm.openCalendar = openCalendar;
         vm.submit = submit;
         vm.searchWarningMessage = '';
+        vm.amendment_reasons_array = [];
 
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
         //ui-grid plugin options
@@ -45,8 +46,7 @@
         activate();
 
         function activate() {
-            // getTrialDetailObj();
-            //_getProcessingInfo();
+
             vm.auditGridOptions = AuditService.getAuditsGridOptions();
             vm.auditGridOptions.data =null;
             vm.auditGridOptions.totalItems = null;
@@ -54,6 +54,8 @@
             vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
             vm.updatesGridOptions.data = null;
             vm.updatesGridOptions.totalItems = null;
+            vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+            vm.updatesGridOptions.enableHorizontalScrollbar  = uiGridConstants.scrollbars.WHEN_NEEDED;
 
             loadTrialUpdates();
 
@@ -63,19 +65,52 @@
             loadTrialSubmissions();
 
 
+            vm.deleteDocsGridOptions = AuditService.getDeleteDocsGridOptions();
+            vm.deleteDocsGridOptions.data = null;
+            vm.deleteDocsGridOptions.totalItems = null;
+            loadTrialDeletedDocs();
+
         }
+
+
+
+
 
         vm.updatesGridOptions.onRegisterApi = function(gridApi) {
             console.log("cbc");
             vm.gridApi = gridApi;
-            //vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
-            vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
+
+            gridApi.expandable.on.rowExpandedStateChanged($scope,function(row){
+
+
+            });
+
+
+            var cellTemplate = '<div \
+  class="ui-grid-row-header-cell ui-grid-expandable-buttons-cell" \
+      ng-disabled="row.entity.subGridOptions.data.length == 0"> \
+  <div \
+    class="ui-grid-cell-contents"> \
+    <i \
+      ng-class="{ \'ui-grid-icon-plus-squared\' : !row.isExpanded, \'ui-grid-icon-minus-squared\' : row.isExpanded }" \
+      ng-click="grid.api.expandable.toggleRowExpansion(row.entity)"> \
+    </i> \
+  </div> \
+</div>';
+            vm.gridApi.core.addRowHeaderColumn( { name: 'rowHeaderCol', displayName: '', width: 30, cellTemplate: cellTemplate} );
+
+            //vm.updatesGridOptions.expandableRowHeight = row.entity.subGridOptions.data.length * 22;
+                //console.log("@@@@@@@@@@"+ gridApi.rowData.);
+
+                vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                 vm.updateParams.start = newPage;
                 vm.updateParams.rows = pageSize;
                 loadTrialUpdates();
             });
         }; //gridOptions
 
+        vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+        vm.updatesGridOptions.enableHorizontalScrollbar  = uiGridConstants.scrollbars.WHEN_NEEDED;
 
 
 
@@ -114,12 +149,31 @@
                 console.log('received search results: ' + JSON.stringify(data.trial_versions));
                 vm.submissionsGridOptions.data = data.trial_versions;
                 vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
+                vm.amendment_reasons_array = data.amendement_reasons;
+                console.log("reasons" + JSON.stringify(vm.amendment_reasons_array));
             }).catch(function (err) {
                 console.log('Getting trial submissions failed');
             }).finally(function () {
                 console.log('search finished');
             });
         }
+
+
+        function loadTrialDeletedDocs() {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            vm.trialHistoryObj = {trial_id: trialId};
+
+            AuditService.getDeletedDocs(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.deleted_documents));
+                vm.deleteDocsGridOptions.data = data.deleted_documents;
+                vm.deleteDocsGridOptions.totalItems = data.deleted_documents["length"];
+            }).catch(function (err) {
+                console.log('Getting trial submissions failed');
+            }).finally(function () {
+                console.log('search finished');
+            });
+        }
+
 
 
         /**
@@ -214,6 +268,8 @@
 
         $scope.editRow= function(grid, row,gridType) {
 
+            console.log("**************"+JSON.stringify(vm.amendment_reasons_array));
+
             console.log(gridType);
 
 
@@ -221,8 +277,9 @@
             if(gridType == "updates") {
                 $uibModal.open({
                     templateUrl: 'acknowledgeModal.html',
-                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controller: ['$uibModalInstance', 'grid', 'row', UpdateModalInstanceController],
                     controllerAs: 'vm',
+                    size: 'md',
                     resolve: {
                         grid: function () { return grid; },
                         row: function () { return row; }
@@ -233,11 +290,13 @@
             } else if(gridType == "submissions") {
                 $uibModal.open({
                     templateUrl: 'submissionsModal.html',
-                    controller: ['$uibModalInstance', 'grid', 'row', ModalInstanceController],
+                    controller: ['$uibModalInstance', 'grid', 'row','reasonsArr', SubmissionModalInstanceController],
                     controllerAs: 'vm',
+                    size: 'lg',
                     resolve: {
                         grid: function () { return grid; },
-                        row: function () { return row; }
+                        row: function () { return row; },
+                        reasonsArr: function () {return vm.amendment_reasons_array;}
                     }
 
 
@@ -249,26 +308,15 @@
         }
 
         /* @ngInject */
-        function ModalInstanceController($uibModalInstance, grid, row) {
+        function UpdateModalInstanceController($uibModalInstance, grid, row) {
 
             var vm = this;
             vm.entity = angular.copy(row.entity);
+            vm.submission_num = row.entity.submission_num;
+            vm.submission_date = DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
+            vm.acknowledgeUpdate = acknowledgeUpdate;
 
-
-            vm.save = save;
-            vm.amendmentDateOpened = false;
-            vm.openCalendar = openCalendar;
-
-            function openCalendar($event, type) {
-                $event.preventDefault();
-                $event.stopPropagation();
-
-                if (type === 'amendment_date') {
-                    vm.amendmentDateOpened = !vm.amendmentDateOpened;
-                }
-            }; //openCalendar
-
-            function save() {
+            function acknowledgeUpdate() {
                 vm.entity.acknowledge ="Yes";
                 vm.entity.acknowledge_date = new Date();
                 vm.entity.acknowledged_by = UserService.getLoggedInUsername();
@@ -294,7 +342,7 @@
                         })
 
                     } else {
-                        console.log("error while trying to save  bio markers" + response.server_response.status);
+                        console.log("Error " + response.server_response.status);
 
                     }
 
@@ -307,12 +355,85 @@
 
                 });
 
-                console.log(vm.entity.acknowledge_comment);
-                // Copy row values over
                 $uibModalInstance.close(row.entity);
 
 
             }
+
+        }
+
+        /* @ngInject */
+        function SubmissionModalInstanceController($uibModalInstance, grid, row,reasonsArr) {
+
+            var vm = this;
+            vm.entity = angular.copy(row.entity);
+            vm.reasonArr = reasonsArr;
+            vm.updateSubmission = updateSubmission;
+            vm.amendmentDateOpened = false;
+            vm.openCalendar = openCalendar;
+
+            function openCalendar($event, type) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                if (type === 'amendment_date') {
+                    vm.amendmentDateOpened = !vm.amendmentDateOpened;
+                }
+            }; //openCalendar
+
+
+            function updateSubmission() {
+
+                var obj={'id':row.entity.id,
+                    'amendment_num':vm.entity.amendment_num,
+                    'amendment_date':vm.entity.amendment_date,
+                    'amendment_reason_id':vm.entity.amendment_reason_id};
+
+                var resStatus=null;
+                AuditService.upsertSubmission(obj).then(function(response) {
+                    resStatus = response.server_response.status;
+
+                    if (response.server_response.status === 200) {
+                        vm.entity.submission_type_list=[];
+                        vm.entity.submission_type_list.push("Amendment");
+                        vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));
+                        vm.entity.submission_type_list.push("Reason:" +vm.entity.amendment_reason_id);
+                        vm.entity.submission_type_list.push("Number:" +vm.entity.amendment_num);
+                        vm.entity.submission_type ="Amendment";
+
+                        row.entity = angular.extend(row.entity.submission_type_list, vm.entity.submission_type_list);
+                        row.entity = angular.extend(row.entity, vm.entity);
+
+
+
+                        toastr.clear();
+                        toastr.success('Submission has been acknowledged', 'Operation Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        })
+
+                    } else {
+                        console.log("Error " + response.server_response.status);
+
+                    }
+
+                }).catch(function(err) {
+                    console.log("error acknowledging trial submission ");
+                }).finally(function() {
+                    // TODO: change the visibility here
+                    if (resStatus>210) {
+                    }
+
+                });
+
+                $uibModalInstance.close(row.entity);
+
+
+            }
+
+
+
+
         }
 
 
