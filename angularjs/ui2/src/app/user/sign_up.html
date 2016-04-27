@@ -119,7 +119,6 @@
                                            uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
                                 </div>
-                                <span class="form-control-feedback feedback-height-sm" ng-show="userView.searchParams.name.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.organization_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 <span class="help-block" ng-show="signup_form.organization_name.$error.required">Organization Name is Required</span>
                             </div>
                         </div>
