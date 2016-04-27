@@ -10,7 +10,7 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.username)}">
+                            <div class="form-group has-feedback required">
                                 <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-user"></i>
@@ -26,7 +26,7 @@
 
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.first_name)}">
+                            <div class="form-group has-feedback required">
                                 <div>
                                     <input type="text" name="first_name" id="first_name" required ng-model="userView.userObj.local_user.first_name"  class="form-control input-sm" placeholder="First Name">
                                 </div>
@@ -48,7 +48,7 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.domain)}">
+                            <div class="form-group has-feedback required">
                                 <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-eye-open"></i>
@@ -65,7 +65,7 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.email)}">
+                            <div class="form-group has-feedback required">
                                 <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-envelope"></i>
@@ -81,7 +81,7 @@
 
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.password)}">
+                            <div class="form-group has-feedback required">
                                 <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-lock"></i>
@@ -109,7 +109,7 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.organization_name)}">
+                            <div class="form-group has-feedback required">
                                 <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-tower"></i>
@@ -126,7 +126,7 @@
 
                     <div class="row" ng-if="userView.userObj.local_user.domain.length">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': !userView.userObj.local_user.selected_function.length}">
+                            <div class="form-group has-feedback required">
                                 <select class="form-control input-sm" id="functionality" ng-model="userView.userObj.local_user.selected_function" ng-disabled="!userView.selectAbleUserFunctions[userView.userObj.local_user.domain]">
                                     <option value="">Select Functionality Desired</option>
                                     <option ng-repeat="(userFunc,enabled) in userView.selectedFunctionsObj[userView.userObj.local_user.domain]" value="{{userFunc}}" ng-selected="userView.selectAbleUserFunctions[userView.userObj.local_user.domain] === 1">{{userFunc}}</option>
