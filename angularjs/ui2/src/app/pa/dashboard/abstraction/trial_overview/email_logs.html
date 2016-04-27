@@ -1,0 +1,59 @@
+<!-- <div class="row">
+    <div ng-repeat="email in emailsView.emailLogs">
+        <p>
+            <strong>{{email.subject}}</strong>
+        </p>
+        <p ng-bind-html="email.body"></p>
+
+    </div>
+</div> -->
+
+<div class="row">
+    <div class="col-xs-12 col-sm-5" id="email_list">
+        <p ng-show="emailsView.emailLogs.length == 0">
+            <strong>No emails found for this trial</strong>
+        </p>
+        <table class="table table-condensed table-hover table-striped table-bordered" st-table="emailsView.emailLogs" ng-show="emailsView.emailLogs.length > 0">
+            <thead>
+                <tr>
+                    <th st-sort="email_template_name">
+                        Type
+                    </th>
+                    <th st-sort="subject">
+                        Subject
+                    </th>
+                    <th st-sort="created_at">
+                        Time
+                    </th>
+                    <th st-sort="result">
+                        Result
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="email in emailsView.emailLogs track by $index" ng-click="emailsView.showEmailDetail($index)">
+                    <td>
+                        {{email.email_template_name}}
+                    </td>
+                    <td>
+                        {{email.subject}}
+                    </td>
+                    <td>
+                        {{email.created_at | date: "dd-MMM-yyyy H:mm"}}
+                    </td>
+                    <td>
+                        {{email.result}}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot ng-show="emailsView.emailLogs.length > 10">
+                <tr>
+                  <td class="text-center" st-pagination="" st-item-by-page="10" colspan="4"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-xs-12 col-sm-7" id="email_content">
+        <p ng-bind-html="emailsView.curEmail.body" ng-model="emailsView.curEmail.body"></p>
+    </div>
+</div>
