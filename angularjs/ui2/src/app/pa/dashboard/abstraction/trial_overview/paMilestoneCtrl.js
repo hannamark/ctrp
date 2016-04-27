@@ -30,6 +30,7 @@
                     break;
                 } else {
                     vm.showRejectionReason = false;
+                    vm.rejection_reason = '';
                 }
             }
         };

@@ -57,9 +57,6 @@
             $scope.dateFormat = DateService.getFormats()[1];
             $scope.searching = false;
 
-            console.log('current state name: ', curStateName);
-
-
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
             //console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
@@ -72,8 +69,6 @@
             $scope.curationModeEnabled = angular.isDefined($scope.curationMode) ? $scope.curationMode : $scope.curationModeEnabled;
             $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
             $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
-
-            console.info('org search used in modal: ', $scope.usedInModal);
 
             $scope.typeAheadNameSearch = function () {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
@@ -138,11 +133,12 @@
                     if (curStateName.indexOf('trial') > -1 || $scope.usedInModal) {
                         $scope.searchParams.source_status = 'Active';
                     }
-                    if ($scope.usedInModal) {
+                    if ($scope.usedInModal || $scope.userRole.indexOf('TRIAL-SUBMITTER') > -1) {
                         // search from the modal can only search against 'Active' in 'CTRP' context
+                        $scope.searchParams.source_status = 'Active';
                         $scope.searchParams.source_context = 'CTRP';
                     }
-            
+
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
                         if ($scope.showGrid && data.orgs) {
                             $scope.gridOptions.data = data.orgs;
