@@ -139,8 +139,16 @@
                         </div>
                     </div>
 
-                    <input type="submit" value="Register" class="btn btn-primary btn-block" ng-disabled="signup_form.$invalid || (userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1 && !userView.userObj.local_user.selected_functions.length) || (!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.local_user.password !== userView.userObj.local_user.password_confirmation)">
-
+                    <div id="buttonBar" class="form-group">
+                        <div class="btn-toolbar">
+                            <button type="submit"  class="btn btn-primary pull-right" ng-disabled="signup_form.$invalid || (userView.selectAbleUserFunctions[userView.userObj.local_user.domain] > 1 && !userView.userObj.local_user.selected_functions.length) || (!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.local_user.password !== userView.userObj.local_user.password_confirmation)">
+                                Register
+                            </button>
+                            <button type="reset" class="btn btn-warning pull-right" ng-click="userView.reset()">
+                                <i class="glyphicon glyphicon-remove"></i> Reset
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
