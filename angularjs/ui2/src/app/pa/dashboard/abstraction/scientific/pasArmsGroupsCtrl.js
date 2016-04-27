@@ -8,10 +8,10 @@
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
     pasArmsGroupsCtrl.$inject = ['$scope', '$state', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location'];
+        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location', 'Common'];
 
     function pasArmsGroupsCtrl($scope, $state, TrialService, PATrialService, toastr,
-                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location) {
+                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location, Common) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
@@ -22,11 +22,15 @@
         vm.selectListHandler = selectListHandler;
         vm.deleteSelected = deleteSelected;
         vm.selectedDeleteAnatomicSiteList = [];
+        vm.currentArmsGroup = {};
+        vm.currentArmsGroup.label = "";
         vm.interventionList = [];
         vm.trial_interventions = [];
         vm.interventional = false;
+        vm.duplicateLabel = false;
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
+        //vm.watchArmLabel = watchArmLabel();
 
         if(vm.curTrial.research_category.name=='Interventional') {
             vm.interventional = true;
@@ -37,6 +41,13 @@
             console.log("RELOAD");
             $state.go($state.$current, null, { reload: true });
         };
+
+        activate();
+
+        /****************** implementations below ***************/
+        function activate() {
+           // watchArmLabel();
+        }
 
         vm.checkAllAG = function () {
             if (vm.selectedAllAG) {
@@ -51,6 +62,34 @@
             });
 
         };
+
+        vm.checkDuplicates = function () {
+            var isConfirmed = false;
+            var confirmMsg = 'Click OK to add a duplicate Label.  Click Cancel to abort';
+            //check for duplicates
+            vm.duplicateLabel = false;
+            for (var j = 0; j < vm.curTrial.arms_groups.length; j++) {
+                if (vm.curTrial.arms_groups[j].label == vm.currentArmsGroup.label) {
+                    vm.duplicateLabel = true;
+                }
+            }
+            if (vm.duplicateLabel) {
+                // if OC exists already
+                Common.alertConfirm(confirmMsg).then(function(ok) {
+                    isConfirmed = ok;
+                }).catch(function(cancel) {
+                    // isConfirmed = cancel;
+                }).finally(function() {
+                    if (isConfirmed === true) {
+                        // user confirmed
+                        vm.updateTrial();
+                    } // isConfirmed
+                });
+            } else {
+                vm.updateTrial();
+            }
+
+        }
 
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
@@ -70,6 +109,7 @@
             }
             console.log("vm.curTrial.arms_groups_attributes " + JSON.stringify(vm.curTrial.arms_groups_attributes));
             vm.saveTrial();
+            vm.duplicateLabel = false;
         }
         vm.saveTrial = function(params){
             vm.disableBtn = true;
@@ -115,6 +155,7 @@
                     timeOut: 0
                 });
                 vm.selectedAllAG = false;
+
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
@@ -125,6 +166,7 @@
 
         function setAddMode(isAddMode) {
             vm.currentArmsGroup = {};
+            vm.currentArmsGroup.label = "";
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
@@ -155,6 +197,7 @@
          **/
         function setEditMode(idx) {
             vm.addEditMode = true;
+            //vm.currentArmsGroup.label = "";
             vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
             vm.interventionList = vm.currentArmsGroup.arms_groups_interventions;
             vm.currentArmsGroup.edit = true;
@@ -256,6 +299,22 @@
 
             vm.saveTrial();
         }
+
+        /**
+        function watchArmLabel() {
+            $scope.$watch(function () {
+                return vm.currentArmsGroup.label;
+            }, function (newVal, oldVal) {
+                console.log("InWatchLabel newVal=" + newVal);
+                // Go through all the arms groups in the current trial
+                for (var i = 0; i < vm.curTrial.arms_groups.length; i++) {
+                    if(vm.curTrial.arms_groups[i].label == newVal){
+                        vm.duplicateLabel = true;
+                    }
+                }
+                console.log("InWatchLabel vm.duplicateLabel=" + vm.duplicateLabel);
+            });
+        } **/
     } //pasArmsGroupsCtrl
 
 })();

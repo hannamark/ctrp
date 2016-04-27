@@ -54,6 +54,10 @@
             vm.userDetails = angular.copy(vm.userDetailsOrig);
         };
 
+        vm.userRequestAdmin = function(params) {
+            UserService.userRequestAdmin(params);
+        };
+        
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainArr = response.data[0].settings.split('||');
         }).catch(function (err) {

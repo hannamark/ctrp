@@ -9,13 +9,17 @@ json.trial_versions do
     submission_type_list.push(submission_type)
 
     if submission_type=="Amendment"
-      submission_type_list.push('Date: ' + submission.amendment_date.to_s)
-      submission_type_list.push('Reason: ' +submission.amendment_reason_id.to_s)
+     reason=AmendmentReason.find_by_id(submission.amendment_reason_id).name if submission.amendment_reason_id
+      submission_type_list.push('Date: ' + submission.amendment_date.strftime("%d-%h-%Y").to_s)
+      submission_type_list.push('Reason: ' + reason.to_s)
       submission_type_list.push('Number: '  +submission.amendment_num.to_s)
     end
 
+    p submission_type_list
+
     json.submission_type submission_type
     json.submission_type_list submission_type_list
+    json.amendment_reason_id submission.amendment_reason_id
 
     submission_version = TrialVersion.find_by_item_type_and_item_id("Submission", submission.id)
 
@@ -39,7 +43,7 @@ json.trial_versions do
         milestone_name =  Milestone.find_by_id(milestone.milestone_id).name
         Array milestone = Array.new
 
-        milestone.push(milestone_date)
+        milestone.push(milestone_date.strftime("%d-%h-%Y"))
         milestone.push(milestone_name)
         json.milestone milestone
     end
@@ -48,3 +52,5 @@ json.trial_versions do
   end
 
 end
+
+json.amendement_reasons AmendmentReason.all

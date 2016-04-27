@@ -491,7 +491,7 @@ form label {
     border-radius: 0 6px 6px 6px;*/
 }
 
-.dropdown-menu li a:hover {
+.dropdown-menu li a:hover, a.hand-hover:hover {
     cursor: pointer;
 }
 
@@ -1284,4 +1284,8 @@ ul.csv li:after {
 }
 ul.csv li:last-child:after {
     content: "";
+}
+
+div[disabled] {
+    display:none;
 }
