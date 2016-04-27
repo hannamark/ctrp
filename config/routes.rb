@@ -245,6 +245,7 @@ Rails.application.routes.draw do
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
+          post 'deleted_documents'
         end
       end
 

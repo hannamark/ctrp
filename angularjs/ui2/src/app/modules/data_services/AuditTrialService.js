@@ -100,9 +100,6 @@
                     cellTemplate: '<div class="ui-grid-cell-contents"><div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a> {{doc.source_document}}</div></div>'},
                 {field: 'milestone', displayName: 'Current Milestone',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
 
-
-
-
                 {
                     name: 'Action ',
                     cellTemplate: '<div class="text-center ui-grid-cell-contents"><button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button></div>',
@@ -112,6 +109,31 @@
             ]
         };
 
+
+        var deleteDocsGridOptions = {
+            rowTemplate: '<div>'+
+            '<div>' +
+            ' <div ng-mouseover="rowStyle={\'background-color\': \'red\'}; grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            //enableRowSelection: false,
+            paginationPageSizes: [10, 20],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            columnDefs: [
+                {name: 'file_name',pinnedLeft: true, displayName: 'File Name' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'why_deleted',displayName:'Deletion Comments', enableSorting: true, minWidth: '100', width: '*'}
+            ]
+        };
 
 
         var auditsGridOptions = {
@@ -217,7 +239,9 @@
             getUpdateInitialSearchParams:getUpdateInitialSearchParams,
             getSubmissions: getSubmissions,
             getSubmissionsGridOptions: getSubmissionsGridOptions,
-            upsertSubmission:upsertSubmission
+            upsertSubmission:upsertSubmission,
+            getDeletedDocs:getDeletedDocs,
+            getDeleteDocsGridOptions:getDeleteDocsGridOptions
         };
 
         return services;
@@ -260,8 +284,15 @@
 
         }
 
+        function getDeletedDocs(obj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_DELETED_DOCUMENTS, obj);
 
-        /**
+        }
+
+        function getDeleteDocsGridOptions() {
+            return deleteDocsGridOptions;
+        }
+                /**
          * Update submission for Updates Tab Updates
          *
          * @param obj
