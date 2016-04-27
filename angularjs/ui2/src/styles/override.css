@@ -491,7 +491,7 @@ form label {
     border-radius: 0 6px 6px 6px;*/
 }
 
-.dropdown-menu li a:hover {
+.dropdown-menu li a:hover, a.hand-hover:hover {
     cursor: pointer;
 }
 
@@ -1270,6 +1270,22 @@ div.datepicker {
 .sign_up fieldset label {
     font-weight: normal;
 }
+
+ul.csv {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul.csv li {
+    display: inline;
+}
+ul.csv li:after {
+    content: ",";
+}
+ul.csv li:last-child:after {
+    content: "";
+}
+
 div[disabled] {
     display:none;
 }

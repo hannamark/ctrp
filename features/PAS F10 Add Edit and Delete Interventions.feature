@@ -16,6 +16,7 @@ And I enter an intervention name (Intervention Name Example: Aspirin)
 When I have clicked on the search button
 Then the intervention information will be displayed
  
+
       |Preferred Name                |
       |Other Names                   |
       |Intervention Type             |
@@ -53,12 +54,6 @@ Then the selected intervention will be added to the intervention table with fiel
       |Edit  |
       |Delete  |
 
- 
-
-And only the Super Abstractor can edit to add or modify an <InterventionType>
-
-
-
   Scenario: #2 Intervention Search Screen Mandatory field
     Given I am on the the Search Interventions screen 
     When an Intervention name is not entered
@@ -68,8 +63,7 @@ And only the Super Abstractor can edit to add or modify an <InterventionType>
       |Intervention Name is Required  |
 
 
-
-   Scenario: #3 Intervention Desciption field Characters Rule
+Scenario: #3 Intervention Desciption field Characters Rule
    Given I am on the Add Intervention screen
    And I can type 1000 characters in the Intervention description field
    When I start typing text in the Intervention Description field
@@ -99,21 +93,25 @@ And only the Super Abstractor can edit to add or modify an <InterventionType>
      Given I am on the intervention Screen 
      When I have Clicked on the edit button on the edit column for the selected intervention name
      Then the edit intervention screen opens
-     And  the intervention Name is not editable
-     And the other Names are not Editable
-     And the intervention Type is not editable
-     And I can add or update Intervention Description
-     And Only the super abstractor can add and edit Intervention type
+     And I can edit editable fields
+     
+      | Intervention Description |
+
      When I click on the save button
      Then the changes made will be saved to the selected Intervention
      
-      Scenario:#7 field not editable
-    Given 
-     When 
-     Then 
-
-
-  Scenario:#7 I can delete one or multiple Interventions
+      Scenario:#7 Intervention fields Edition rules
+    Given I am logged in as a superabstractor 
+    And I am on the Edit Intervention screen
+    And the intervention name is not editable
+    And I can add or update Intervention Description
+    And Other Names is not editable
+    And I can edit and add the Intervention type
+    When I click on the save button
+    Then the changes made will be saved to the selected Intervention
+     
+   
+    Scenario:#8 I can delete one or multiple Interventions
     Given I am on the intervention screen
      When I have selected the delete box from the delete column for the selected intervention name
      And I have clicked on the delete button
@@ -123,7 +121,7 @@ And only the Super Abstractor can edit to add or modify an <InterventionType>
      Then the record won't be deleted 
      And I should not get the message <Record(s) Deleted>
      
-       Scenario: #8 I can delete all Intervention
+       Scenario: #9 I can delete all Intervention
         Given I am on the intervention screen
         When I click on the select all button 
         Then All interventions will be selected in the delete column 
@@ -136,7 +134,7 @@ And only the Super Abstractor can edit to add or modify an <InterventionType>
         And I should not get the message <Record(s) Deleted>
         
 
-      Scenario:#9 I can reorder Interventions 
+      Scenario:#10 I can reorder Interventions 
     Given I am on the Intervention Screen
     And I have the added Interventions listed 
      When I click on an Intervention row
