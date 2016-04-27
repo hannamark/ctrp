@@ -27,7 +27,7 @@
                     password_confirmation: '',
                     organization_name: '',
                     organization_id: '',
-                    selected_functions: []
+                    selected_function: ''
                 },
                 'type': vm.type
             };
@@ -62,7 +62,7 @@
                     selectedArr.push(func);
                 }
             });
-            vm.userObj.local_user.selected_functions = selectedArr;
+            vm.userObj.local_user.selected_function = '';
         };
 
         vm.searchParams = OrgService.getInitialOrgSearchParams();
