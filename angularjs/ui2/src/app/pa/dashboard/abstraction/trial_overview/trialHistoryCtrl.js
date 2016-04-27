@@ -28,7 +28,7 @@
         vm.openCalendar = openCalendar;
         vm.submit = submit;
         vm.searchWarningMessage = '';
-        vm.amendment_reasons_array = null;
+        vm.amendment_reasons_array = [];
 
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
         //ui-grid plugin options
@@ -251,7 +251,7 @@
             if(gridType == "updates") {
                 $uibModal.open({
                     templateUrl: 'acknowledgeModal.html',
-                    controller: ['$uibModalInstance', 'grid', 'row','reasonArr', ModalInstanceController],
+                    controller: ['$uibModalInstance', 'grid', 'row', UpdateModalInstanceController],
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
@@ -264,7 +264,7 @@
             } else if(gridType == "submissions") {
                 $uibModal.open({
                     templateUrl: 'submissionsModal.html',
-                    controller: ['$uibModalInstance', 'grid', 'row','reasonsArr', ModalInstanceController],
+                    controller: ['$uibModalInstance', 'grid', 'row','reasonsArr', SubmissionModalInstanceController],
                     controllerAs: 'vm',
                     size: 'lg',
                     resolve: {
@@ -282,27 +282,13 @@
         }
 
         /* @ngInject */
-        function ModalInstanceController($uibModalInstance, grid, row,reasonsArr) {
+        function UpdateModalInstanceController($uibModalInstance, grid, row) {
 
             var vm = this;
             vm.entity = angular.copy(row.entity);
             vm.submission_num = row.entity.submission_num;
             vm.submission_date = DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
-            vm.reasonArr = reasonsArr;
-
             vm.acknowledgeUpdate = acknowledgeUpdate;
-            vm.updateSubmission = updateSubmission;
-            vm.amendmentDateOpened = false;
-            vm.openCalendar = openCalendar;
-
-            function openCalendar($event, type) {
-                $event.preventDefault();
-                $event.stopPropagation();
-
-                if (type === 'amendment_date') {
-                    vm.amendmentDateOpened = !vm.amendmentDateOpened;
-                }
-            }; //openCalendar
 
             function acknowledgeUpdate() {
                 vm.entity.acknowledge ="Yes";
@@ -348,6 +334,28 @@
 
             }
 
+        }
+
+        /* @ngInject */
+        function SubmissionModalInstanceController($uibModalInstance, grid, row,reasonsArr) {
+
+            var vm = this;
+            vm.entity = angular.copy(row.entity);
+            vm.reasonArr = reasonsArr;
+            vm.updateSubmission = updateSubmission;
+            vm.amendmentDateOpened = false;
+            vm.openCalendar = openCalendar;
+
+            function openCalendar($event, type) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                if (type === 'amendment_date') {
+                    vm.amendmentDateOpened = !vm.amendmentDateOpened;
+                }
+            }; //openCalendar
+
+
             function updateSubmission() {
 
                 var obj={'id':row.entity.id,
@@ -365,7 +373,7 @@
                         vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));
                         vm.entity.submission_type_list.push("Reason:" +vm.entity.amendment_reason_id);
                         vm.entity.submission_type_list.push("Number:" +vm.entity.amendment_num);
-
+                        vm.entity.submission_type ="Amendment";
 
                         row.entity = angular.extend(row.entity.submission_type_list, vm.entity.submission_type_list);
                         row.entity = angular.extend(row.entity, vm.entity);
