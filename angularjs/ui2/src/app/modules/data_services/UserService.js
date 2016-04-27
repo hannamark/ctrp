@@ -37,9 +37,9 @@
             // affiliated_org_name: '',
 
             //for pagination and sorting
-            sort: 'updated_at',
-            order: 'DESC',
-            rows: 10,
+            sort: 'last_name',
+            order: 'ASC',
+            rows: 25,
             start: 1
         }; //initial User Search Parameters
 
@@ -52,7 +52,7 @@
             enableSelectAll: false,
             //enableRowSelection: false,
             paginationPageSizes: [10, 25, 50, 100],
-            paginationPageSize: 10,
+            paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
@@ -63,7 +63,7 @@
                 {
                     name: 'username',
                     enableSorting: true,
-                    displayName: 'Username',
+                    displayName: 'username',
                     minWidth: '100',
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
@@ -72,8 +72,18 @@
                         '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
+                    name: 'last_name',
+                    displayName: 'Last Name',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {
                     name: 'first_name',
-                    displayName: 'First',
+                    displayName: 'First Name',
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
@@ -83,18 +93,8 @@
                 },
                 {
                     name: 'middle_name',
-                    displayName: 'Middle',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'last_name',
-                    displayName: 'Last',
-                    enableSorting: true,
+                    displayName: 'Middle Name',
+                    enableSorting: false,
                     minWidth: '100',
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
@@ -111,6 +111,38 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
+                    name: 'user_organization_name',
+                    displayName: 'Organization Affiliation',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'families',
+                    displayName: 'Organization Families',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
+                    '<ul class="csv"><li ng-repeat="i in COL_FIELD CUSTOM_FILTERS"> {{i.name}}</li></ul></div>'
+                },
+                {
+                    name: 'role',
+                    displayName: 'Is Admin',
+                    enableSorting: false,
+                    minWidth: '70',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SUPER","ROLE_ADMIN","SITE_SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
+                },
+                {
+                    name: 'receive_email_notifications',
+                    displayName: 'Email Notifications',
+                    enableSorting: true,
+                    minWidth: '70',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": "OFF"}}</div>'
+                },
+                {
                     name: 'phone',
                     displayName: 'Phone',
                     enableSorting: true,
@@ -121,19 +153,17 @@
                 },
                 {
                     name: 'approved',
-                    displayName: 'Approve',
+                    displayName: 'Approved',
                     enableSorting: true,
-                    minWidth: '25',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved" ng-click="grid.appScope.changeUserApproval(row)"></label></div>'
+                    width: '90',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label for="{{row.entity.id}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved" ng-click="grid.appScope.changeUserApproval(row)"></label></div>'
                 },
                 {
                     name: 'user_status',
                     displayName: 'Status',
                     enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status.name}}">{{row.entity.user_status.name}}</div>'
+                    width: '90',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
                 }
             ]
         };
@@ -164,14 +194,12 @@
 
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
                 .then(function (data) {
-                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
                         console.info('user id: ', data);
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
                         LocalCacheService.cacheItem('user_id', data.user_id); // cache user id
                         _setAppVersion(data.app_version);
-                        // LocalCacheService.cacheItem('app_version', data.application_version);
                         LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
                         //array of write_modes for each area (e.g. pa or po)
@@ -182,7 +210,6 @@
 
                         $timeout(function () {
                             openGsaModal();
-                           // $state.go('main.gsa');
                         }, 500);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -228,14 +255,8 @@
          * @returns Array of JSON objects
          */
         this.searchUsers = function (searchParams) {
-            //toastr.success('Success', 'Successful in UserService, searchUsers');
-            console.log('User searchparams: ' + JSON.stringify(searchParams));
-            // if (!!searchParams) {
-            // toastr.success('Success', 'Successful in UserService, searchUsers');
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
-            // console.log('User List: ' + JSON.stringify(user_list));
             return user_list;
-            // }
         }; //searchUsers
 
         /**
@@ -326,11 +347,11 @@
         };
 
         this.getAppVersion = function () {
-            return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
+            return LocalCacheService.getCacheWithKey('app_version');
         };
 
         this.getAppRelMilestone = function () {
-            return LocalCacheService.getCacheWithKey('app_rel_milestone'); // || appRelMilestone;
+            return LocalCacheService.getCacheWithKey('app_rel_milestone');
         };
 
         this.getLoginBulletin = function () {
@@ -349,7 +370,7 @@
 
         this.upsertUserSignup = function (userObj) {
             //update an existing user
-            var configObj = {}; //empty config
+            var configObj = {};
             console.log('userObj = ' + JSON.stringify(userObj));
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
@@ -463,7 +484,6 @@
         }
 
         function openGsaModal() {
-            console.log('1 st openning modal instance???');
 
             (function() {
                 var modalInstance = $uibModal.open({
@@ -475,11 +495,10 @@
                         UserService: 'UserService',
                         gsaObj: function (UserService) {
                             return UserService.getGsa();
-                        },
+                        }
                     }
 
                 });
-
 
                 modalInstance.result.then(function () {
                     console.log('modal closed, TODO redirect');

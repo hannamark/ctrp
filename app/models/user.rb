@@ -78,15 +78,37 @@ class  User < ActiveRecord::Base
   scope :matches, -> (column, value) { where("users.#{column} = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("users.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    join_clause  = "LEFT JOIN organizations user_org ON user_org.id = users.organization_id "
+    join_clause += "LEFT JOIN family_memberships on family_memberships.organization_id = user_org.id "
+    join_clause += "LEFT JOIN families on family_memberships.family_id = families.id "
+    join_clause += "LEFT JOIN user_statuses on users.user_status_id = user_statuses.id"
+    str_len = 0
+
+    if column != "site_admin"
+      str_len = value.length
+    end
+
+    column_str = ""
+    if column == "user_organization_name"
+      column_str = "user_org.name"
+    elsif column == "organization_family"
+      column_str = "families.name"
+    else column != "site_admin"
+      column_str = "users.#{column}"
+    end
+
+    if column == "site_admin"
+      joins(join_clause).where("users.role in ('ROLE_SUPER', 'ROLE_ADMIN', 'SITE_SU')")
+    elsif column == 'user_status_id'
+      joins(join_clause).where("users.user_status_id = #{value}")
+    elsif value[0] == '*' && value[str_len - 1] != '*'
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}")
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("users.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+      joins(join_clause).where("#{column_str} ilike ?", "#{value[0..str_len - 2]}%")
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("users.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      where("users.#{column} ilike ?", "#{value}")
+      joins(join_clause).where("#{column_str} ilike ?", "#{value}")
     end
   }
 

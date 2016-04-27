@@ -246,7 +246,3 @@ Scenario Outline: #6 Trials Milestones validation rules
      And I can enter "Late Rejection Milestone" milestone only one time during a Trial and "Late Rejection milestone" comment will be required 
      When I click on the Add Milestone button
      Then the added milestone will be displayed on the Trial Milestones table with no errors
-     
-    
-
-  
