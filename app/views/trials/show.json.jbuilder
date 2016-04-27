@@ -12,7 +12,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :brief_title, :brief_summary, :objective, :detailed_description, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
-              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :uuid
+              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :submission_nums, :uuid
 
 json.other_ids do
   json.array!(@trial.other_ids) do |id|
@@ -54,7 +54,7 @@ end
 
 json.trial_documents do
   json.array!(@trial.trial_documents) do |document|
-    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status, :why_deleted
+    json.extract! document, :id, :file, :file_name, :document_type, :document_subtype, :is_latest, :created_at, :updated_at, :added_by_id, :status, :why_deleted, :source_document
     json.set! :added_by, document.added_by_id.nil? ? '' : User.find(document.added_by_id)   #document.added_by_id
   end
 end
@@ -179,18 +179,21 @@ json.participating_sites do
 end
 
 json.arms_groups do
+  arms_groups_interventions = []
   json.array!(@trial.arms_groups) do |ag|
     json.extract! ag, :id, :label, :arms_groups_type, :description, :intervention_text, :trial_id
     if(ag.intervention_text)
-      intervention_list = ag.intervention_text.split(",");
+      intervention_list = ag.intervention_text.split(",")
       display_interventions = ""
       intervention_list.each do |i|
         intervention = Intervention.find_by_id(i)
         unless intervention.nil?
-         display_interventions = display_interventions + Intervention.find_by_id(i).name
+          display_interventions = display_interventions + " " +  intervention.name
+          arms_groups_interventions << intervention
         end
-      end
+     end
       json.display_interventions display_interventions
+      json.arms_groups_interventions arms_groups_interventions
     end
   end
 end
@@ -203,7 +206,7 @@ end
 
 json.milestone_wrappers do
   json.array!(@trial.milestone_wrappers) do |milestone|
-    json.extract! milestone, :id, :milestone_date, :trial_id, :comment, :created_at
+    json.extract! milestone, :id, :milestone_date, :trial_id, :comment, :created_at, :created_by
 
     if milestone.milestone.present?
       json.milestone do
@@ -331,3 +334,6 @@ if @trial.other_ids.present?
   end
   json.nct_trial_id nct_trial_id
 end
+
+json.current_submission_num @trial.current_submission.submission_num if @trial.current_submission.present?
+json.current_submission_id @trial.current_submission.id if @trial.current_submission.present?

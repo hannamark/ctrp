@@ -250,14 +250,6 @@
                                 -->
                                 <div class="form-group has-feedback">
                                     <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">Investigator Name:</label>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <input type="text" id="principal_investigator" name="principal_investigator" class="form-control input-sm" ng-model="psView.principalInvestigator.name" readonly placeholder="Principal Investigator">
-        <!--
-                                        <span ng-show="!psView.investigatorGrid.length">
-                                            <span class="help-block">One or more Investigators are required</span>
-                                        </span>
-        -->
-                                    </div>
                                     <div class="col-xs-12 col-sm-5">
                                         <!-- <button class="btn btn-primary">Look Up Person</button> -->
                                         <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
@@ -287,15 +279,19 @@
                                                 <input type="text" id="first_name" name="first_name" class="form-control input-sm" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
                                             </td>
                                             <td>
+                                                <!--div class="form-group required" ng-class="{'has-error': !ps_inv_form.investigator_type && ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.investigator_type)}"-->
+
                                                 <select name="investigator_type" id="investigator_type_select"
                                                         class="form-control input-sm"
                                                         restriction-field
                                                         ng-model="psView.current_investigator.investigator_type">
                                                     <option value="">Select a status</option>
-                                                    <option value="Principal Investigator">Principal Investigator</option>
-                                                    <option value="Sub Investigator">Sub Investigator</option>
+                                                    <option ng-repeat="option in psView.investigatorTypes" value="{{option.name}}">{{option.name}}</option>
                                                 </select>
+                                                <span class="help-block" ng-show="ps_inv_form.investigator_type.$error.required">Select a Investigator Role</span>
+                                            <!--/div-->
                                             </td>
+
 
                                             <td class="text-center">
                                                 <label>
@@ -334,7 +330,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
-                                            <td>{{inv.person.id}}  <span ng-bind="inv.id"></span></td>
+                                            <td>{{inv.person.id}}</td>
                                             <td>{{inv.person.lname}}</td>
                                             <td>{{inv.person.fname}}</td>
                                             <td>{{inv.investigator_type}}</td>
@@ -375,7 +371,7 @@
                     </md-tab-body>
                 </md-tab>
                 <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-                    <md-tab-label><span id="contact">Contact</span></md-tab-label>
+                    <md-tab-label><span id="contactTab">Contact</span></md-tab-label>
                     <md-tab-body>
                         <!-- General Contact Begin -->
                         <!-- fieldset for Central Contact -->
@@ -431,7 +427,7 @@
                                         <div class="col-xs-12 col-sm-4" ng-show="psView.currentParticipatingSite.contact_type == 'Person'">
                                             <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button>
                                         </div>
-                                      <span ng-messages="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name) && pps_contact_form.contact_name.$error">
+                                      <span ng-messages="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name) && ps_contact_form.contact_name.$error">
                                           <span class="help-block" ng-message="required">Central contact name is Required</span>
                                       </span>
                                     </div>

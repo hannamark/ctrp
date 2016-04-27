@@ -75,6 +75,10 @@ class TrialDocumentsController < ApplicationController
     send_file @trial_document.file.url, filename: @trial_document.file_name
   end
 
+  def deleted_documents
+    @deleted_documents = TrialDocument.where("trial_id= ? AND status= ?",params[:trial_id], "deleted")
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trial_document
@@ -83,6 +87,6 @@ class TrialDocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_document_params
-      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :added_by_id, :trial_id, :status, :replaced_doc_id)
+      params.require(:trial_document).permit(:file, :file_name, :document_type, :document_subtype, :source_document,:added_by_id, :trial_id, :status, :replaced_doc_id)
     end
 end

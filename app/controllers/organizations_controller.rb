@@ -127,8 +127,6 @@ class OrganizationsController < ApplicationController
   end
 
   def search
-    p "**********>"
-    p params[:wc_search]
     # Pagination/sorting params initialization
     Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
@@ -137,6 +135,10 @@ class OrganizationsController < ApplicationController
     params[:order] = 'asc' if params[:order].blank?
     # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
     params[:alias] = true if !params.has_key?(:alias)
+
+    if parse_request_header
+      wrapper_authenticate_user
+    end
 
     # Scope chaining, reuse the scope definition
     if params[:name].present? || params[:source_context].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present? || params[:updated_by].present? || params[:date_range_arr].present?
@@ -155,8 +157,8 @@ class OrganizationsController < ApplicationController
 
       @organizations = @organizations.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present?
 
-
-      if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER")
+      if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
+          @current_user.role == "ROLE_ADMIN")
         @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
         @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
 

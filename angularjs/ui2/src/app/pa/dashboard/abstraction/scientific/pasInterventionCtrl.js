@@ -9,12 +9,12 @@
         .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes', 'UserService'];
+        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes', 'UserService','$location', '$anchorScroll'];
 
     pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance', 'PATrialService'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes, UserService) {
+        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes, UserService, $location, $anchorScroll) {
 
             var vm = this;
             vm.interventionTypesByCategory = {
@@ -73,11 +73,19 @@
                 console.info('after split: ', vm.interventionTypesByCategory);
             }
 
-            function addIntervention() {
-                // console.info('showing intervention');
-                vm.showInterventionForm = true;
-                vm.upsertBtnDisabled = false;
-                vm.curInterventionObj = _newInterventionObj();
+            function addIntervention(addModeValue) {
+                if (!(typeof addModeValue === 'undefined' || addModeValue === null)) {
+                    vm.showInterventionForm = addModeValue;
+                    $location.hash('section_top');
+                    $anchorScroll();
+                } else {
+                    // console.info('showing intervention');
+                    vm.showInterventionForm = true;
+                    vm.upsertBtnDisabled = false;
+                    vm.curInterventionObj = _newInterventionObj();
+                }
+
+                $scope.intervention_form.$setPristine();
             }
 
             function upsertIntervention(inventionObj) {
@@ -109,8 +117,9 @@
                 vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
                 vm.deleteBtnDisabled = true;
                 vm.upsertBtnDisabled = true;
+                vm.deleteAll = false;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
-                    console.info('res after upsert: ', res);
+                    // console.info('res after upsert: ', res);
                     if (res.server_response.status === 200) {
                         vm.trialDetailObj = res;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
@@ -127,13 +136,17 @@
                 }).catch(function(err) {
                     console.error('trial upsert error: ', err);
                 }).finally(function() {
+                    console.info('hiding intervention form now!');
+                    vm.curInterventionObj = null;
                     vm.showInterventionForm = false; // hide the form
-                    resetLookupForm();
+                    // resetLookupForm();
                 });
             }
 
             function editIntervention(index) {
                 vm.showInterventionForm = true;
+                vm.isCancerGovTypeListEnabled = false; // disallow editing type
+                vm.isCTGovTypeListEnabled = false; // disallow editing type
                 vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = angular.copy(vm.trialDetailObj.interventions[index]);
                 vm.curInterventionObj.edit = true;

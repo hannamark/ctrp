@@ -16,13 +16,16 @@ json.trial_versions do
 
     Array updated_fields_array = Array.new
 
+    ##bbased on internal source fields of interest will be changed
+    ##internal_source_id
+
+    internal_source_id = Trial.find_by_id(submission.trial_id).internal_source_id
+
+    if !internal_source_id.nil? && internal_source_id == InternalSource.find_by_name("CTRP").id
+
       other_ids = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "OtherId",submission_version.transaction_id) if submission_version
 
-      puts "Other Ids"
-      puts  other_ids
-
-
-      if !other_ids.nil?
+      if !other_ids.nil? && other_ids.size !=0
         Hash h = Hash.new
         h[:updated_filed]="Other Protocol Identifiers";
 
@@ -70,7 +73,7 @@ json.trial_versions do
       puts "Grants "
       puts grants
 
-      if !grants.nil?
+      if !grants.nil? && grants.size !=0
         Hash h = Hash.new
         h[:updated_filed]="Grant Information(Inst Code, Funding , SNo)";
 
@@ -122,7 +125,7 @@ json.trial_versions do
 
       trial_statuses = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "TrialStatusWrapper",submission_version.transaction_id) if submission_version
 
-      if !trial_statuses.nil?
+      if !trial_statuses.nil? && trial_statuses.size !=0
         Hash h = Hash.new
         h[:updated_filed]="Trial Status (Status, Date)";
         trial_statuses_string_N = ""
@@ -247,6 +250,39 @@ json.trial_versions do
          updated_fields_array.push(h)
        end
      end
+    elsif !internal_source_id.nil? && internal_source_id == InternalSource.find_by_name("ClinicalTrials.gov Import").id
+
+      trial_version = TrialVersion.find_by_item_type_and_transaction_id("Trial", submission_version.transaction_id) if submission_version
+
+      # |Trials.Brief_Title|
+      brief_title_N = trial_version.object_changes["brief_title"]?  trial_version.object_changes["brief_title"][1] : nil
+      brief_title_O = trial_version.object_changes["brief_title"]?  trial_version.object_changes["brief_title"][0] : nil
+
+      if brief_title_N || brief_title_O
+        Hash h = Hash.new
+        h[:updated_filed]="Brief Title"
+        h[:old_value] = brief_title_O
+        h[:new_value] = brief_title_N
+        updated_fields_array.push(h)
+      end
+
+      official_title_N = trial_version.object_changes["official_title"]?  trial_version.object_changes["brief_title"][1] : nil
+      official_title_O = trial_version.object_changes["official_title"]?  trial_version.object_changes["brief_title"][0] : nil
+
+      if official_title_N || official_title_O
+        Hash h = Hash.new
+        h[:updated_filed]="Official Title"
+        h[:old_value] = official_title_O
+        h[:new_value] = official_title_N
+        updated_fields_array.push(h)
+      end
+
+
+      #|Trials.Official_Title|
+     #|eligibility criteria (multiple) other_criteria.criteria_type, other_criteria.criteria_desc |
+     #|arms_groups (multiple) arms_groups.label,type, description|
+    end
+
 
 
 
@@ -262,3 +298,7 @@ json.trial_versions do
     end
 
 end
+
+json.start params[:start]
+json.rows params[:rows]
+json.total @submissions.respond_to?(:total_count) ? @submissions.total_count : @submissions.size

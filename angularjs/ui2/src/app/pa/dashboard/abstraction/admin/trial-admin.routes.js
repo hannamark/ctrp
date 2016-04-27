@@ -148,6 +148,9 @@
                     siteRecruitmentStatusesObj: function(PATrialService) {
                         return PATrialService.getSiteRecruitementStatuses();
                     },
+                    investigatorTypes: function(PATrialService) {
+                        return PATrialService.getInvestigatorTypes();
+                    },
                     centralContactTypes: function(PATrialService) {
                         return PATrialService.getCentralContactTypes();
                     }
