@@ -65,7 +65,16 @@
             loadTrialSubmissions();
 
 
+            vm.deleteDocsGridOptions = AuditService.getDeleteDocsGridOptions();
+            vm.deleteDocsGridOptions.data = null;
+            vm.deleteDocsGridOptions.totalItems = null;
+            loadTrialDeletedDocs();
+
         }
+
+
+
+
 
         vm.updatesGridOptions.onRegisterApi = function(gridApi) {
             console.log("cbc");
@@ -148,6 +157,23 @@
                 console.log('search finished');
             });
         }
+
+
+        function loadTrialDeletedDocs() {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+            vm.trialHistoryObj = {trial_id: trialId};
+
+            AuditService.getDeletedDocs(vm.trialHistoryObj).then(function (data) {
+                console.log('received search results: ' + JSON.stringify(data.deleted_documents));
+                vm.deleteDocsGridOptions.data = data.deleted_documents;
+                vm.deleteDocsGridOptions.totalItems = data.deleted_documents["length"];
+            }).catch(function (err) {
+                console.log('Getting trial submissions failed');
+            }).finally(function () {
+                console.log('search finished');
+            });
+        }
+
 
 
         /**

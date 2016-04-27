@@ -6,6 +6,7 @@ json.deleted_documents do
     json.file_name deleted_doc.file_name
     json.why_deleted deleted_doc.why_deleted
 
+
   end
 
   end

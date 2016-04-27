@@ -92,10 +92,9 @@
             }
 
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
-            $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
-
+            $scope.curationModeEnabled = angular.isDefined($scope.curationMode) ? $scope.curationMode : $scope.curationModeEnabled;
+            $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
+            $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
 
             $scope.searchPeople = function (newSearchFlag) {
                 if (newSearchFlag === 'fromStart') {

@@ -138,6 +138,7 @@
         <div class="panel-heading">
             <div class="panel-title">Trial History</div>
         </div>
+
         <div class="panel-body">
             <md-tabs md-dynamic-height md-border-bottom md-selected="trialHistoryView.tabIndex">
                 <md-tab>
@@ -156,6 +157,22 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- list of trial deleted docs  -->
+                            <div class="row" ng-class="{'top-offset-xs': trialHistoryView.deleteDocsGridOptions.data.length > 0 }">
+                            <div class="col-xs-12">
+                                <div class="row" ng-if="trialHistoryView.deleteDocsGridOptions.totalItems != null">
+                                    <p><h4>Total {{trialHistoryView.deleteDocsGridOptions.totalItems}} deleted docs found</h4></p>
+                                </div>
+                                <div class="row animated-item" ng-if="trialHistoryView.deleteDocsGridOptions.data.length > 0">
+                                    <div class="col-xs-12">
+                                        <div ui-grid="trialHistoryView.deleteDocsGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </md-tab-body>
                 </md-tab>
 

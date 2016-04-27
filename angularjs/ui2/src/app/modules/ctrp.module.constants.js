@@ -69,6 +69,7 @@
             'AUDIT_HISTORY': '/ctrp/trial_versions/history',
             'TRIAL_UPDATES_HISTORY': '/ctrp/trial_versions/updates_history',
             'TRIAL_SUBMISSIONS_HISTORY': '/ctrp/trial_versions/submissions_history',
+            'TRIAL_DELETED_DOCUMENTS' : '/ctrp/registry/trial_documents/deleted_documents',
             'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
