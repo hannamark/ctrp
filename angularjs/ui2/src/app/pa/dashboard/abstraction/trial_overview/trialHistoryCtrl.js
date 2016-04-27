@@ -363,7 +363,7 @@
                         vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));
                         vm.entity.submission_type_list.push("Reason:" +vm.entity.amendment_reason_id);
                         vm.entity.submission_type_list.push("Number:" +vm.entity.amendment_num);
-
+                        vm.entity.submission_type ="Amendment";
 
                         row.entity = angular.extend(row.entity.submission_type_list, vm.entity.submission_type_list);
                         row.entity = angular.extend(row.entity, vm.entity);

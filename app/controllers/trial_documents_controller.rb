@@ -76,7 +76,7 @@ class TrialDocumentsController < ApplicationController
   end
 
   def deleted_documents
-    @deleted_documents - TrialDocument.where("trial_id= ? AND status= ?",params[:trial_id], "deleted")
+    @deleted_documents = TrialDocument.where("trial_id= ? AND status= ?",params[:trial_id], "deleted")
   end
 
   private
