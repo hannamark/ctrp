@@ -107,10 +107,11 @@ Scenario: #3 Intervention Desciption field Characters Rule
     And I can add or update Intervention Description
     And Other Names is not editable
     And I can edit and add the Intervention type
+    When I click on the save button
+    Then the changes made will be saved to the selected Intervention
+     
    
-    
-
-  Scenario:#8 I can delete one or multiple Interventions
+    Scenario:#8 I can delete one or multiple Interventions
     Given I am on the intervention screen
      When I have selected the delete box from the delete column for the selected intervention name
      And I have clicked on the delete button
