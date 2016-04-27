@@ -81,6 +81,18 @@ class TrialsController < ApplicationController
     end
   end
 
+  # get mail logs for a given trial id
+  def get_mail_logs
+    @mail_logs = []
+    if params.has_key?(:trial_id)
+      @mail_logs = MailLog.where(:trial_id => params[:trial_id])
+    end
+
+    respond_to do |format|
+      format.json { render :json => @mail_logs }
+    end
+  end
+
   def search_trial_with_nci_id
 
     if params.has_key?(:nci_id)

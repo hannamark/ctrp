@@ -161,7 +161,8 @@
             lookupNcitInterventions: lookupNcitInterventions,
             getInterventionTypes: getInterventionTypes,
             searchCtrpInterventionsByName: searchCtrpInterventionsByName,
-            updateTrial: updateTrial
+            updateTrial: updateTrial,
+            getMailLogs: getMailLogs,
         };
 
         return services;
@@ -484,6 +485,16 @@
 
         function searchCtrpInterventionsByName(interventionName) {
             var url = URL_CONFIGS.PA.SEARCH_CTRP_INTERVENTIONS.replace(/\s*\{.*?\}\s*/g, interventionName);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Retrieve email logs sent out for this trialId
+         * @param  {Integer} trialId
+         * @return {Promise}
+         */
+        function getMailLogs(trialId) {
+            var url = URL_CONFIGS.PA.MAIL_LOGS.replace(/\s*\{.*?\}\s*/g, trialId);
             return PromiseTimeoutService.getData(url);
         }
 

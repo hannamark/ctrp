@@ -128,7 +128,25 @@
                     parent: 'main.pa.trialOverview',
                     label: 'Raw JSON Data'
                 }
-            });
+            })
+            .state('main.pa.trialOverview.emailLogs', {
+                url: '/trial-email-logs',
+                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/email_logs.html',
+                controller: 'trialEmailLogsCtrl as emailsView',
+                section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    emailLogs: function(PATrialService, $stateParams) {
+                        var trialId = $stateParams.trialId;
+                        console.log('mail logs trialId: ' + trialId);
+                        return PATrialService.getMailLogs(trialId);
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Email Logs'
+                }
+            })
 
     } //trialAbstractionRoutes
 

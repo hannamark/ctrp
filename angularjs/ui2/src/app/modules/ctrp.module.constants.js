@@ -126,7 +126,8 @@
                 'ASSOCIATE_TRIAL': '/ctrp/associated_trials.json',
                 'NCIT_INTERVENTIONS_LOOKUP': '/ctrp/registry/trials/lookup_imported_ncit_interventions.json',
                 'INTERVENTION_TYPES': '/ctrp/registry/trials/get_intervention_types.json',
-                'SEARCH_CTRP_INTERVENTIONS': '/ctrp/registry/trials/search_ctrp_interventions.json?intervention_name={:intervention_name}'
+                'SEARCH_CTRP_INTERVENTIONS': '/ctrp/registry/trials/search_ctrp_interventions.json?intervention_name={:intervention_name}',
+                'MAIL_LOGS': '/ctrp/registry/trials/get_mail_logs.json?trial_id={:trial_id}'
             }
         })
         .constant('MESSAGES', {
