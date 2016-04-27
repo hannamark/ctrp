@@ -1289,3 +1289,7 @@ ul.csv li:last-child:after {
 div[disabled] {
     display:none;
 }
+
+.modal-body {
+    overflow: visible;
+}

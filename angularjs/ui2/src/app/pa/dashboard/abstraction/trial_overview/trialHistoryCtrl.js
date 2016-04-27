@@ -279,6 +279,7 @@
                     templateUrl: 'acknowledgeModal.html',
                     controller: ['$uibModalInstance', 'grid', 'row', UpdateModalInstanceController],
                     controllerAs: 'vm',
+                    size: 'md',
                     resolve: {
                         grid: function () { return grid; },
                         row: function () { return row; }
@@ -291,6 +292,7 @@
                     templateUrl: 'submissionsModal.html',
                     controller: ['$uibModalInstance', 'grid', 'row','reasonsArr', SubmissionModalInstanceController],
                     controllerAs: 'vm',
+                    size: 'lg',
                     resolve: {
                         grid: function () { return grid; },
                         row: function () { return row; },
