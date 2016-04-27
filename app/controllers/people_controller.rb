@@ -2,7 +2,7 @@ class PeopleController < ApplicationController
   before_action :set_person, only: [:show, :edit, :update, :destroy]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
-  skip_authorize_resource :only => [:search]
+  # skip_authorize_resource :only => [:search]
   #http_basic_authenticate_with name: "ctrpadmin", password: "Welcome02", except: :index
 
   # GET /people
@@ -129,8 +129,8 @@ class PeopleController < ApplicationController
       @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
 
 
-      if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
-          @current_user.role == "ROLE_ADMIN"
+      if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
+          @current_user.role == "ROLE_ADMIN")
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
         @people = @people.with_source_status(params[:source_status][:name]) if params[:source_status].present?
       else
