@@ -136,6 +136,8 @@ module.exports = function() {
     var tblOptionI = '';
     var tblOptionJ = '';
     var tblOptionK = '';
+    var tblRoleOptionA = '';
+    var tblRoleOptionB = '';
     var dateDay = '';
     var dateMonth = '';
     var dateYear = '';
@@ -189,6 +191,15 @@ module.exports = function() {
         commonFunctions.adminCheckOut();
         trialDoc.clickAdminDataParticipatingSites();
         trialCollaborators.waitForElement(participatingSite.addParticipatingSiteBtn , "Add Participating Site - Button");
+        participatingSite.listOfPartSteTbl.isPresent().then(function(dispC){
+            console.log('List of Participating Sites boolean status: ' + dispC);
+            if (dispC === true) {
+                participatingSite.verifyListOfParticipatingSitesTable();
+                participatingSite.selectAllListOfParticipatingSitesTable();
+                participatingSite.clickDeleteSelected();
+                participatingSite.clickDeleteSelectedOKButton();
+            }
+        });
         participatingSite.clickAddParticipatingSite();
         browser.sleep(2500).then(callback);
     });
@@ -254,18 +265,32 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected the role for each investigator (.*)$/, function (SitePrincipalInvestigatorRole, table, callback) {
-        participatingSite.editInvestigatorByFirstName(personFNmB);
-        browser.sleep(2500).then(callback);
-    });
-
-    this.Given(/^I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact$/, function (callback) {
-
+        var strVal = '';
+        selectDcoumentTableVal = table.raw();
+        strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
+        console.log('Select Document Type value(s) in the data table:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        tblRoleOptionA = tableDataSplt[0];
+        tblRoleOptionB = tableDataSplt[1];
+        participatingSite.findPrsnFNameVerfEdtDel(personFNmB, 'edit');
+        participatingSite.eidtRole.$('option:checked').getText().then(function (curntSelection){
+            if (curntSelection != SitePrincipalInvestigatorRole){
+                participatingSite.selectEditRole(SitePrincipalInvestigatorRole);
+            }
+        });
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact$/, function (callback) {
+        participatingSite.checkSetAsPrimaryContact();
+        participatingSite.clickEditConfirm();
+        participatingSite.clickSaveButton();
+        browser.sleep(2500).then(callback);
+    });
+
     this.Given(/^I have edited the phone number for the investigator contact (.*)$/, function (Phone, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.clickContactTab();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have edited the phone number extension (.*) for the investigator contact$/, function (Ext, callback) {
