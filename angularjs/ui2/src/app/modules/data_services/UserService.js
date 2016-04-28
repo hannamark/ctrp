@@ -190,7 +190,6 @@
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
                 .then(function (data) {
                     if (data.token) {
-                        console.info('user id: ', data);
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
                         LocalCacheService.cacheItem('user_id', data.user_id); // cache user id

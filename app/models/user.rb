@@ -33,7 +33,6 @@
 #  prs_organization_name       :string
 #  receive_email_notifications :boolean
 #  role_requested              :string
-#  approved                    :boolean          default(FALSE), not null
 #  organization_id             :integer
 #  source                      :string
 #  user_status_id              :integer
@@ -43,7 +42,6 @@
 #
 # Indexes
 #
-#  index_users_on_approved              (approved)
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_organization_id       (organization_id)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
@@ -66,9 +64,6 @@ class  User < ActiveRecord::Base
 
   attr_accessor :organization_name
   attr_accessor :selected_functions
-
-  scope :approved, -> { where(approved: true) }
-  scope :not_approved, -> { where(approved: false) }
 
   #Define roles here to drive dropdown menu when adding users
   ROLES = %i[ROLE_RO ROLE_SUPER ROLE_ADMIN ROLE_CURATOR ROLE_ABSTRACTOR ROLE_ABSTRACTOR-SU ROLE_TRIAL-SUBMITTER ROLE_ACCRUAL-SUBMITTER ROLE_SITE-SU ROLE_SERVICE-REST]
@@ -124,7 +119,7 @@ class  User < ActiveRecord::Base
 
   def get_all_users_by_role
     users = []
-    if !self.role.blank? && self.approved
+    if !self.role.blank?
       # A Super Admin User can see all the Users and can approve access to the user
       if self.role == "ROLE_SUPER" && self.organization_id.blank?
         users = User.all
@@ -141,7 +136,7 @@ class  User < ActiveRecord::Base
 
   def process_approval
     # When an ADMIN approves of the user request for privileges, the role is updated
-    # if it is not already chosen and the approved field is set to true
+    # if it is not already chosen and the status is changed
     if self.role.blank?
       if self.organization_id.blank?
         self.role = "ROLE_RO"
@@ -150,17 +145,8 @@ class  User < ActiveRecord::Base
       end
     end
 
-    self.approved = true
     self.save!
 
-  end
-
-  def process_disapproval
-    unless self.role.blank?
-      self.approved = false
-      # TODO should role be nullified?
-      self.save!
-    end
   end
 
   def get_write_mode
