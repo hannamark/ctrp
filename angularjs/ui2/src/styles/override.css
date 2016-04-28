@@ -1318,3 +1318,7 @@ div[disabled] {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.small-header-text {
+    font-size: 75%;
+}
