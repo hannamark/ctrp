@@ -748,7 +748,7 @@ h5 {
 
 .grid-medium-cell .ui-grid-cell {
     line-height: 1em;
-    height: 40px !important;
+    height: 30px !important;
 }
 
 .grid-large-cell .ui-grid-cell {
@@ -757,6 +757,7 @@ h5 {
 }
 
 .grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
+
 .grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
     background:#bbb;
     color: #444;

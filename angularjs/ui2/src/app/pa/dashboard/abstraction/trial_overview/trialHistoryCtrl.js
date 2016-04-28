@@ -46,6 +46,7 @@
             vm.submissionsGridOptions.data = null;
             vm.submissionsGridOptions.totalItems = null;
             loadTrialSubmissions();
+            showDeletedDocs();
 
         }
 
@@ -147,7 +148,6 @@
 
 
         function showDeletedDocs() {
-            vm.isCollapsed != vm.isCollapsed;
             vm.deleteDocsGridOptions = AuditService.getDeleteDocsGridOptions();
             vm.deleteDocsGridOptions.data = null;
             vm.deleteDocsGridOptions.totalItems = null;
@@ -330,10 +330,6 @@
 
             }
         }
-
-
-
-
     } //trialHistoryCtrl
 
 })();
