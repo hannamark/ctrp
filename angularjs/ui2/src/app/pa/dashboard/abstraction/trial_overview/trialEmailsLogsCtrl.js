@@ -14,11 +14,13 @@
         delete emailLogs.server_response;
         // console.info('in trialEmailLogsCtrl: ', emailLogs);
         vm.emailLogs = emailLogs;
-        vm.curEmail = vm.emailLogs[0] || '';
+        showEmailDetail(0);
+
         vm.showEmailDetail = showEmailDetail;
 
         function showEmailDetail(idx) {
-            vm.curEmail = vm.emailLogs[idx];
+            vm.curEmail = vm.emailLogs[idx] || '';
+            vm.curEmail.index = idx;
             // console.info('curEmail: ', vm.curEmail);
         }
 
