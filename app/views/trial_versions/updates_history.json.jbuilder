@@ -284,10 +284,7 @@ json.trial_versions do
     end
 
 
-
-
-
-    json.friends do
+    json.fields_of_interest do
         json.array!(updated_fields_array) do |h|
           json.field_name h[:updated_filed]
           json.old_value  h[:old_value]

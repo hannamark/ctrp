@@ -15,8 +15,6 @@
                         GeoLocationService, Common, $rootScope,
                         PromiseTimeoutService,UserService,uiGridConstants,HOST) {
 
-
-
         var initUpdateSearchParams = {
             //for pagination and sorting
             sort: '',
@@ -24,8 +22,6 @@
             rows: 10,
             start: 1
         }; //initial Audits Search Parameters
-
-
 
         var updatesGridOptions = {
             rowTemplate: '<div>'+
@@ -78,7 +74,6 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            // enableFullRowSelection: true,
             enableSelectAll: false,
             enableRowSelection: false,
             paginationPageSizes: [20, 50, 100],
@@ -89,8 +84,6 @@
             enableFiltering: true,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
-
-
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*',
@@ -120,9 +113,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            // enableFullRowSelection: true,
             enableSelectAll: false,
-            //enableRowSelection: false,
             paginationPageSizes: [10, 20],
             paginationPageSize: 10,
             useExternalPagination: true,
@@ -158,11 +149,11 @@
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
-                {name: 'created_at', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'created_at', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.created_at | date: "dd-MMM-yyyy"}}</div>'},
+
                 {name: 'event', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140'},
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -307,24 +298,6 @@
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
 
         } //upsertOrg
-
-        /**
-         * Update submission for Submissions Tab Amendments
-         *
-         * @param obj
-         * @returns {*}
-         */
-       /* function upsertSubmissionAmendment(obj) {
-            if (obj.new) {
-                //return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
-            }
-
-            var configObj={};
-            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
-
-        } //upsertOrg
-        */
-
 
     }
 
