@@ -1309,3 +1309,7 @@ div[disabled] {
 .modal-body {
     overflow: visible;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
