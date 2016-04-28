@@ -20,6 +20,8 @@
         vm.amendment_reasons_array = [];
         vm.isCollapsed = false;
         vm.showDeletedDocs = showDeletedDocs;
+        vm.showDeletedDocuments=false;
+        vm.toggleText="Show deleted docs"
 
         /* Updates Tab Variables */
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
@@ -46,10 +48,23 @@
             vm.submissionsGridOptions.data = null;
             vm.submissionsGridOptions.totalItems = null;
             loadTrialSubmissions();
+            showDeletedDocs();
 
         }
 
         /*Implementations below*/
+
+        vm.toggleDeletedDocs = function toggleDeletedDocs() {
+
+            vm.showDeletedDocuments = !vm.showDeletedDocuments;
+            if (vm.toggleText == "Show deleted docs") {
+                vm.toggleText = "Hide deleted docs"
+            } else if (vm.toggleText="Hide deleted docs") {
+                vm.toggleText = "Show deleted docs"
+
+            }
+
+        }
 
 
         //** Updates Logic **//
@@ -147,7 +162,6 @@
 
 
         function showDeletedDocs() {
-            vm.isCollapsed != vm.isCollapsed;
             vm.deleteDocsGridOptions = AuditService.getDeleteDocsGridOptions();
             vm.deleteDocsGridOptions.data = null;
             vm.deleteDocsGridOptions.totalItems = null;
@@ -214,7 +228,7 @@
                     templateUrl: 'submissionsModal.html',
                     controller: ['$uibModalInstance', 'grid', 'row','reasonsArr', SubmissionModalInstanceController],
                     controllerAs: 'vm',
-                    size: 'lg',
+                    size: 'md',
                     resolve: {
                         grid: function () { return grid; },
                         row: function () { return row; },
@@ -330,10 +344,6 @@
 
             }
         }
-
-
-
-
     } //trialHistoryCtrl
 
 })();

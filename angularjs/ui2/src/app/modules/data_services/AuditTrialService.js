@@ -84,8 +84,6 @@
             enableFiltering: true,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
-
-
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*',
@@ -115,9 +113,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            // enableFullRowSelection: true,
             enableSelectAll: false,
-            //enableRowSelection: false,
             paginationPageSizes: [10, 20],
             paginationPageSize: 10,
             useExternalPagination: true,

@@ -11,8 +11,8 @@
 </script>
 
 <script type="text/ng-template" id="innerTable.html">
-    <div class="top-offset-xss table-responsive">
-    <table class="table table-bordered table-striped table-hover" ng-show="row.entity.subGridOptions.data.length">
+    <div class="col-sm-12 top-offset-xss table-responsive">
+    <table class="table table-bordered" ng-show="row.entity.subGridOptions.data.length">
     <thead>
     <th>Updated Field</th>
     <th>Old Value</th>
@@ -82,11 +82,18 @@
     <div class="modal-body">
         <form class="form form-horizontal">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4">Submission Number:</label>
                         <div class="col-xs-12 col-sm-6 form-text">
                             {{vm.submission_num}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
+                        <div class="col-xs-12 col-sm-6 form-text">
+                            {{vm.submission_date}}
                         </div>
                     </div>
 
@@ -111,14 +118,6 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-5"></div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
-                        <div class="col-xs-12 col-sm-6 form-text">
-                            {{vm.submission_date}}
-                        </div>
                     </div>
 
                     <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
@@ -169,23 +168,44 @@
                             </div>
                         </div>
 
+
+                        <!-- list of trial deleted docs  -->
+
+
+                        <!--div class="col-sm-12 top-offset-sm table-responsive">
+                            <table class="table table-bordered" ng-show="trialHistoryView.deleteDocsGridOptions.data.length">
+                                <thead>
+                                <th>File Name</th>
+                                <th>Deletion Comments</th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in trialHistoryView.deleteDocsGridOptions.data">
+                                    <td>
+                                        {{row.file_name}}
+                                    </td>
+                                    <td>
+                                        {{row.why_deleted}}
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div-->
+
+
+
                         <div class="row">
-                        <a ng-click="trialHistoryView.isCollapsed = !trialHistoryView.isCollapsed">Toggle collapse</a>
-                        <div uib-collapse="trialHistoryView.isCollapsed">
-                            <!-- list of trial deleted docs  -->
-                            <div class="row" ng-class="{'top-offset-xs': trialHistoryView.deleteDocsGridOptions.data.length > 0 }">
-                            <div class="col-xs-12">
-                                <div class="row" ng-if="trialHistoryView.deleteDocsGridOptions.totalItems != null">
-                                    <p><h4>Total {{trialHistoryView.deleteDocsGridOptions.totalItems}} deleted docs found</h4></p>
+                            <div class="col-sm-12" ng-class="{'top-offset-xs': trialHistoryView.deleteDocsGridOptions.data.length > 0 }">
+                                <div>
+                                    <h4>Total deleted docs found: {{trialHistoryView.deleteDocsGridOptions.totalItems}} <span class="small-header-text">(<a class="cursor-pointer" ng-if="trialHistoryView.deleteDocsGridOptions.totalItems != null" ng-click="trialHistoryView.toggleDeletedDocs()">{{trialHistoryView.toggleText}}</a>)</span></h4> 
+
                                 </div>
-                                <div class="row animated-item" ng-if="trialHistoryView.deleteDocsGridOptions.data.length > 0">
+                                <div class="row animated-item" ng-if="trialHistoryView.showDeletedDocuments && trialHistoryView.deleteDocsGridOptions.data.length > 0">
                                     <div class="col-xs-12">
-                                        <div ui-grid="trialHistoryView.deleteDocsGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+                                        <div ui-grid="trialHistoryView.deleteDocsGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-small"></div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                           </div>
                         </div>
 
                     </md-tab-body>
