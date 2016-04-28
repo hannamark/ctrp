@@ -82,11 +82,18 @@
     <div class="modal-body">
         <form class="form form-horizontal">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4">Submission Number:</label>
                         <div class="col-xs-12 col-sm-6 form-text">
                             {{vm.submission_num}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
+                        <div class="col-xs-12 col-sm-6 form-text">
+                            {{vm.submission_date}}
                         </div>
                     </div>
 
@@ -112,15 +119,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-5"></div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
-                        <div class="col-xs-12 col-sm-6 form-text">
-                            {{vm.submission_date}}
-                        </div>
-                    </div>
-
+                    
                     <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
                         <label class="control-label col-xs-12 col-sm-4">Amendment Reason:</label>
                         <div class="col-xs-12 col-sm-6">

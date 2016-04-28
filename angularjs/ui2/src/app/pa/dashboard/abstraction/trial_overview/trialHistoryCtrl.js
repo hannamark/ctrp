@@ -214,7 +214,7 @@
                     templateUrl: 'submissionsModal.html',
                     controller: ['$uibModalInstance', 'grid', 'row','reasonsArr', SubmissionModalInstanceController],
                     controllerAs: 'vm',
-                    size: 'lg',
+                    size: 'md',
                     resolve: {
                         grid: function () { return grid; },
                         row: function () { return row; },
