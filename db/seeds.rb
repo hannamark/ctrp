@@ -1263,7 +1263,6 @@ test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
     user.role = u["role"]
-    user.approved =  u["approve"]
     unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
       if user.username == 'ctrpsitesu2'
         user.organization = org3
@@ -1344,7 +1343,6 @@ begin
     ldap_user.role = u["role"]
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
-    ldap_user.approved = true
     ldap_user.organization = org0
     ldap_user.save(validate: false)
     #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"

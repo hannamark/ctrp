@@ -61,17 +61,6 @@
             enableHorizontalScrollbar: 2,
             columnDefs: [
                 {
-                    name: 'username',
-                    enableSorting: true,
-                    displayName: 'username',
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                        ' title="{{COL_FIELD}}">' +
-                        ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                        '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
                     name: 'last_name',
                     displayName: 'Last Name',
                     enableSorting: true,
@@ -96,9 +85,21 @@
                     displayName: 'Middle Name',
                     enableSorting: false,
                     minWidth: '100',
+                    visible: false,
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {
+                    name: 'username',
+                    enableSorting: true,
+                    displayName: 'username',
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
+                    ' title="{{COL_FIELD}}">' +
+                    ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {
@@ -112,17 +113,17 @@
                 },
                 {
                     name: 'user_organization_name',
-                    displayName: 'Organization Affiliation',
+                    displayName: 'Org. Affiliation',
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
                     name: 'families',
-                    displayName: 'Organization Families',
-                    enableSorting: true,
+                    displayName: 'Org. Families',
+                    enableSorting: false,
                     minWidth: '100',
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
@@ -131,16 +132,16 @@
                 {
                     name: 'role',
                     displayName: 'Is Admin',
-                    enableSorting: false,
-                    minWidth: '70',
+                    enableSorting: true,
+                    width: '90',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SUPER","ROLE_ADMIN","SITE_SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
                 },
                 {
                     name: 'receive_email_notifications',
-                    displayName: 'Email Notifications',
+                    displayName: 'Email Notify',
                     enableSorting: true,
-                    minWidth: '70',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": "OFF"}}</div>'
+                    width: '100',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
                 },
                 {
                     name: 'phone',
@@ -148,15 +149,9 @@
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
+                    visible: false,
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'approved',
-                    displayName: 'Approved',
-                    enableSorting: true,
-                    width: '90',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label for="{{row.entity.id}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved" ng-click="grid.appScope.changeUserApproval(row)"></label></div>'
                 },
                 {
                     name: 'user_status',
