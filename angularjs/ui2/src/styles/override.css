@@ -762,6 +762,16 @@ h5 {
     color: #444;
 }
 
+.grid-large-cell .ui-grid-row:nth-child(even) .ui-grid-cell,
+.grid-medium-cell .ui-grid-row:nth-child(even) .ui-grid-cell {
+    background: #fdfdfd;
+}
+
+.expandableRow {
+    border-bottom: 1px solid #EEE;
+    margin-top: 2px;
+}
+
 .ui-grid-cell .btn {
     margin: 0 auto;
     padding: 0 6px;
