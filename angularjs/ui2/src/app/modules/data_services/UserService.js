@@ -113,7 +113,7 @@
                 },
                 {
                     name: 'user_organization_name',
-                    displayName: 'Org. Affiliation',
+                    displayName: 'Organization',
                     enableSorting: true,
                     minWidth: '100',
                     width: '*',
@@ -122,7 +122,7 @@
                 },
                 {
                     name: 'families',
-                    displayName: 'Org. Families',
+                    displayName: 'Families',
                     enableSorting: false,
                     minWidth: '100',
                     width: '*',
@@ -131,16 +131,16 @@
                 },
                 {
                     name: 'role',
-                    displayName: 'Is Admin',
+                    displayName: 'Site Admin',
                     enableSorting: true,
-                    width: '90',
+                    width: '110',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SUPER","ROLE_ADMIN","SITE_SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
                 },
                 {
                     name: 'receive_email_notifications',
                     displayName: 'Email Notify',
                     enableSorting: true,
-                    width: '100',
+                    width: '120',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
                 },
                 {
