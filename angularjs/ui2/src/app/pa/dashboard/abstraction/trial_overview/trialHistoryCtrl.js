@@ -20,6 +20,8 @@
         vm.amendment_reasons_array = [];
         vm.isCollapsed = false;
         vm.showDeletedDocs = showDeletedDocs;
+        vm.showDeletedDocuments=false;
+        vm.toggleText="Show deleted docs"
 
         /* Updates Tab Variables */
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
@@ -51,6 +53,18 @@
         }
 
         /*Implementations below*/
+
+        vm.toggleDeletedDocs = function toggleDeletedDocs() {
+
+            vm.showDeletedDocuments = !vm.showDeletedDocuments;
+            if (vm.toggleText == "Show deleted docs") {
+                vm.toggleText = "Hide deleted docs"
+            } else if (vm.toggleText="Hide deleted docs") {
+                vm.toggleText = "Show deleted docs"
+
+            }
+
+        }
 
 
         //** Updates Logic **//
