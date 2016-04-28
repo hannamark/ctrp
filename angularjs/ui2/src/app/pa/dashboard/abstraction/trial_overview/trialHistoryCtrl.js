@@ -14,106 +14,82 @@
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
                                      $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService,HOST,DateService) {
         var vm = this;
-        vm.trialProcessingObj = {comment: '', priority: ''};
-        vm.saveProcessingInfo = saveProcessingInfo;
-        vm.resetView = resetView;
-        vm.priorities = [
-            {id: 1, name: 'High'},
-            {id: 2, name: 'Normal'},
-            {id: 3, name: 'Low'},
-        ];
+        vm.hasUserOpenedUpdates=false;
 
+        /* Submissions Tab variables */
+        vm.amendment_reasons_array = [];
+        vm.isCollapsed = false;
+        vm.showDeletedDocs = showDeletedDocs;
+
+        /* Updates Tab Variables */
+        vm.updateParams = AuditService.getUpdateInitialSearchParams();
+        vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
+
+        /* Audit Trial Tab variables */
         vm.startDateOpened = false;
         vm.endDateOpened = false;
         vm.openCalendar = openCalendar;
-        vm.submit = submit;
+        vm.loadAuditTrials = loadAuditTrials;
         vm.searchWarningMessage = '';
-        vm.amendment_reasons_array = [];
-
-        vm.updateParams = AuditService.getUpdateInitialSearchParams();
-        //ui-grid plugin options
         vm.auditGridOptions = AuditService.getAuditsGridOptions();
-        //vm.auditGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
-        //vm.auditGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
 
-        vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
-
-
-        vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
-
+        //This variable is being used by grid row to download a trial document.(Refer Audit Trial Service)
         $scope.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download/';
 
         activate();
-
         function activate() {
-
             vm.auditGridOptions = AuditService.getAuditsGridOptions();
             vm.auditGridOptions.data =null;
             vm.auditGridOptions.totalItems = null;
-
-            vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
-            vm.updatesGridOptions.data = null;
-            vm.updatesGridOptions.totalItems = null;
-            vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-            vm.updatesGridOptions.enableHorizontalScrollbar  = uiGridConstants.scrollbars.WHEN_NEEDED;
-
-            loadTrialUpdates();
 
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
             vm.submissionsGridOptions.totalItems = null;
             loadTrialSubmissions();
 
-
-            vm.deleteDocsGridOptions = AuditService.getDeleteDocsGridOptions();
-            vm.deleteDocsGridOptions.data = null;
-            vm.deleteDocsGridOptions.totalItems = null;
-            loadTrialDeletedDocs();
-
         }
 
+        /*Implementations below*/
 
 
+        //** Updates Logic **//
+        vm.showUpdates= function showUpdates() {
+
+            if(!vm.hasUserOpenedUpdates) {
+                vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
+                vm.updatesGridOptions.data = null;
+                vm.updatesGridOptions.totalItems = null;
+                vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.onRegisterApi = function (gridApi) {
+                    console.log("cbc");
+                    vm.gridApi = gridApi;
+
+                    gridApi.expandable.on.rowExpandedStateChanged($scope, function (row) {
 
 
-        vm.updatesGridOptions.onRegisterApi = function(gridApi) {
-            console.log("cbc");
-            vm.gridApi = gridApi;
+                    });
 
-            gridApi.expandable.on.rowExpandedStateChanged($scope,function(row){
+                    vm.gridApi.core.addRowHeaderColumn({
+                        name: 'rowHeaderCol',
+                        displayName: '',
+                        width: 30,
+                        cellTemplate: 'expandable_row_header_column.html'
+                    });
 
-
-            });
-
-
-            var cellTemplate = '<div \
-  class="ui-grid-row-header-cell ui-grid-expandable-buttons-cell" \
-      ng-disabled="row.entity.subGridOptions.data.length == 0"> \
-  <div \
-    class="ui-grid-cell-contents"> \
-    <i \
-      ng-class="{ \'ui-grid-icon-plus-squared\' : !row.isExpanded, \'ui-grid-icon-minus-squared\' : row.isExpanded }" \
-      ng-click="grid.api.expandable.toggleRowExpansion(row.entity)"> \
-    </i> \
-  </div> \
-</div>';
-            vm.gridApi.core.addRowHeaderColumn( { name: 'rowHeaderCol', displayName: '', width: 30, cellTemplate: cellTemplate} );
-
-            //vm.updatesGridOptions.expandableRowHeight = row.entity.subGridOptions.data.length * 22;
-                //console.log("@@@@@@@@@@"+ gridApi.rowData.);
-
-                vm.gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
-                vm.updateParams.start = newPage;
-                vm.updateParams.rows = pageSize;
+                    vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                        vm.updateParams.start = newPage;
+                        vm.updateParams.rows = pageSize;
+                        loadTrialUpdates();
+                    });
+                }; //gridOptions
+                vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
                 loadTrialUpdates();
-            });
-        }; //gridOptions
+                vm.hasUserOpenedUpdates=true;
+            }
 
-        vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-        vm.updatesGridOptions.enableHorizontalScrollbar  = uiGridConstants.scrollbars.WHEN_NEEDED;
-
-
-
+        };
 
         function loadTrialUpdates() {
             console.log("inside loads");
@@ -126,13 +102,11 @@
                 for(i = 0; i < data.trial_versions.length; i++){
                     data.trial_versions[i].subGridOptions = {
 
-                        data: data.trial_versions[i].friends
+                        data: data.trial_versions[i].fields_of_interest
                     }
                 }
-               // if (data.trial_versions.length != 0) {
                     vm.updatesGridOptions.data = data.trial_versions;
                     vm.updatesGridOptions.totalItems = data.total;
-                //}
             }).catch(function (err) {
                 console.log('Getting trial updates failed');
             }).finally(function () {
@@ -141,10 +115,10 @@
         }
 
 
+        //*** Submissions Tab Logic ***//
         function loadTrialSubmissions() {
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             vm.trialHistoryObj = {trial_id: trialId};
-
             AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
                 console.log('received search results: ' + JSON.stringify(data.trial_versions));
                 vm.submissionsGridOptions.data = data.trial_versions;
@@ -158,88 +132,35 @@
             });
         }
 
-
         function loadTrialDeletedDocs() {
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             vm.trialHistoryObj = {trial_id: trialId};
-
             AuditService.getDeletedDocs(vm.trialHistoryObj).then(function (data) {
-                console.log('received search results: ' + JSON.stringify(data.deleted_documents));
                 vm.deleteDocsGridOptions.data = data.deleted_documents;
                 vm.deleteDocsGridOptions.totalItems = data.deleted_documents["length"];
             }).catch(function (err) {
-                console.log('Getting trial submissions failed');
+                console.log('Getting trial deleted documents failed');
             }).finally(function () {
-                console.log('search finished');
             });
         }
 
 
 
-        /**
-         * Get trial detail object from parent scope
-         */
-        function getTrialDetailObj() {
-            $scope.$on(MESSAGES.TRIAL_DETAIL_SAVED, _getProcessingInfo);
+        function showDeletedDocs() {
+            vm.isCollapsed != vm.isCollapsed;
+            vm.deleteDocsGridOptions = AuditService.getDeleteDocsGridOptions();
+            vm.deleteDocsGridOptions.data = null;
+            vm.deleteDocsGridOptions.totalItems = null;
+            loadTrialDeletedDocs();
+
         }
 
 
-        function _getProcessingInfo() {
-            $timeout(function () {
-                var _defaultPriority = _.findWhere(vm.priorities, {name: $scope.$parent.paTrialOverview.trialDetailObj.process_priority}) || vm.trialProcessingObj.priority;
-                vm.trialProcessingObj = {
-                    trialId: $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId,
-                    priority: _defaultPriority || 'Normal',
-                    comment: $scope.$parent.paTrialOverview.trialDetailObj.process_comment || vm.trialProcessingObj.comment
-                };
-            }, 0);
-        }
-
-        /* implementations below */
-        function saveProcessingInfo() {
-            //console.log('processing info: ', vm.trialProcessingObj);
-            var updatedTrial = PATrialService.getCurrentTrialFromCache();
-            console.log('processing, lock_version: ' + updatedTrial.lock_version);
-            //angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
-            updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
-            updatedTrial.process_comment = vm.trialProcessingObj.comment;
-            console.log('updated trial: ', updatedTrial);
-
-            TrialService.upsertTrial(updatedTrial).then(function (res) {
-                console.log('priority and commented updated: ', res);
-                updatedTrial.lock_version = res.lock_version;
-                PATrialService.setCurrentTrial(updatedTrial);
-                $scope.$emit('updatedInChildScope', {});
-                toastr.clear();
-                toastr.success('Trial processing information has been recorded', 'Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-            });
-        }
-
-        function resetView() {
-            vm.trialProcessingObj.comment = $scope.$parent.paTrialOverview.trialDetailObj.comment || '';
-            vm.trialProcessingObj.priority = $scope.$parent.paTrialOverview.trialDetailObj.priority || '';
-        }
 
 
-        function openCalendar($event, type) {
-            $event.preventDefault();
-            $event.stopPropagation();
+    //***Audit Trial Tab Logic ***//
 
-            if (type === 'start_date') {
-                vm.startDateOpened = !vm.startDateOpened;
-            } else if (type === 'end_date') {
-                vm.endDateOpened = !vm.endDateOpened;
-            }
-        }; //openCalendar
-
-
-
-
-        function submit() {
-
+        function loadAuditTrials() {
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             var startDate = vm.start_date;
             var endDate = vm.end_date;
@@ -260,20 +181,23 @@
                 vm.searchWarningMessage='Start Date and End Date can not be null'
             }
 
+        }
+
+        function openCalendar($event, type) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            if (type === 'start_date') {
+                vm.startDateOpened = !vm.startDateOpened;
+            } else if (type === 'end_date') {
+                vm.endDateOpened = !vm.endDateOpened;
             }
+        }; //openCalendar
 
-        $scope.buttonClick = function(value) {
-            alert('Row: ' + value.submission_num);
-        };
 
+
+
+  //** ALL MODALS related to Updates and Submissions Tabs **//
         $scope.editRow= function(grid, row,gridType) {
-
-            console.log("**************"+JSON.stringify(vm.amendment_reasons_array));
-
-            console.log(gridType);
-
-
-
             if(gridType == "updates") {
                 $uibModal.open({
                     templateUrl: 'acknowledgeModal.html',
@@ -284,8 +208,6 @@
                         grid: function () { return grid; },
                         row: function () { return row; }
                     }
-
-
                 });
             } else if(gridType == "submissions") {
                 $uibModal.open({
@@ -298,35 +220,26 @@
                         row: function () { return row; },
                         reasonsArr: function () {return vm.amendment_reasons_array;}
                     }
-
-
                 });
-
             }
-
-
         }
 
         /* @ngInject */
         function UpdateModalInstanceController($uibModalInstance, grid, row) {
-
             var vm = this;
             vm.entity = angular.copy(row.entity);
             vm.submission_num = row.entity.submission_num;
             vm.submission_date = DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
             vm.acknowledgeUpdate = acknowledgeUpdate;
-
             function acknowledgeUpdate() {
                 vm.entity.acknowledge ="Yes";
                 vm.entity.acknowledge_date = new Date();
                 vm.entity.acknowledged_by = UserService.getLoggedInUsername();
-
                 var obj={'id':row.entity.id,
                     'acknowledge_comment':vm.entity.acknowledge_comment,
                     'acknowledge':vm.entity.acknowledge,
                     'acknowledge_date':vm.entity.acknowledge_date,
                     'acknowledged_by':vm.entity.acknowledged_by};
-
                 var resStatus=null;
                 AuditService.upsertSubmission(obj).then(function(response) {
                     resStatus = response.server_response.status;
@@ -347,24 +260,20 @@
                     }
 
                 }).catch(function(err) {
-                    console.log("error acknowledging trial submission ");
+                    console.log("Error while acknowledging trial submission ");
                 }).finally(function() {
                     // TODO: change the visibility here
                     if (resStatus>210) {
                     }
 
                 });
-
                 $uibModalInstance.close(row.entity);
-
-
             }
 
         }
 
         /* @ngInject */
         function SubmissionModalInstanceController($uibModalInstance, grid, row,reasonsArr) {
-
             var vm = this;
             vm.entity = angular.copy(row.entity);
             vm.reasonArr = reasonsArr;
@@ -375,24 +284,19 @@
             function openCalendar($event, type) {
                 $event.preventDefault();
                 $event.stopPropagation();
-
                 if (type === 'amendment_date') {
                     vm.amendmentDateOpened = !vm.amendmentDateOpened;
                 }
             }; //openCalendar
 
-
             function updateSubmission() {
-
                 var obj={'id':row.entity.id,
                     'amendment_num':vm.entity.amendment_num,
                     'amendment_date':vm.entity.amendment_date,
                     'amendment_reason_id':vm.entity.amendment_reason_id};
-
                 var resStatus=null;
                 AuditService.upsertSubmission(obj).then(function(response) {
                     resStatus = response.server_response.status;
-
                     if (response.server_response.status === 200) {
                         vm.entity.submission_type_list=[];
                         vm.entity.submission_type_list.push("Amendment");
@@ -400,14 +304,10 @@
                         vm.entity.submission_type_list.push("Reason:" +vm.entity.amendment_reason_id);
                         vm.entity.submission_type_list.push("Number:" +vm.entity.amendment_num);
                         vm.entity.submission_type ="Amendment";
-
                         row.entity = angular.extend(row.entity.submission_type_list, vm.entity.submission_type_list);
                         row.entity = angular.extend(row.entity, vm.entity);
-
-
-
                         toastr.clear();
-                        toastr.success('Submission has been acknowledged', 'Operation Successful!', {
+                        toastr.success('Amendment has been updated', 'Operation Successful!', {
                             extendedTimeOut: 1000,
                             timeOut: 0
                         })
@@ -418,7 +318,7 @@
                     }
 
                 }).catch(function(err) {
-                    console.log("error acknowledging trial submission ");
+                    console.log("Error while updating trial amendment");
                 }).finally(function() {
                     // TODO: change the visibility here
                     if (resStatus>210) {
@@ -428,12 +328,7 @@
 
                 $uibModalInstance.close(row.entity);
 
-
             }
-
-
-
-
         }
 
 

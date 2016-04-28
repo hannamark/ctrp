@@ -1,3 +1,14 @@
+<script type="text/ng-template" id="expandable_row_header_column.html">
+    <div class="ui-grid-row-header-cell ui-grid-expandable-buttons-cell"
+         ng-disabled="row.entity.subGridOptions.data.length == 0">
+        <div class="ui-grid-cell-contents">
+            <i
+                    ng-class="{ 'ui-grid-icon-plus-squared' : !row.isExpanded, 'ui-grid-icon-minus-squared' : row.isExpanded }"
+                    ng-click="grid.api.expandable.toggleRowExpansion(row.entity)">
+            </i>
+        </div>
+    </div>
+</script>
 
 <script type="text/ng-template" id="innerTable.html">
     <div class="top-offset-xss table-responsive">
@@ -141,7 +152,7 @@
 
         <div class="panel-body">
             <md-tabs md-dynamic-height md-border-bottom md-selected="trialHistoryView.tabIndex">
-                <md-tab>
+                <md-tab ng-click="trialHistoryView.showSubmissions()">
                     <md-tab-label>Submissions</md-tab-label>
                     <md-tab-body>
                         <!-- list of trial submissions  -->
@@ -158,7 +169,10 @@
                             </div>
                         </div>
 
-                        <!-- list of trial deleted docs  -->
+                        <div class="row">
+                        <a ng-click="trialHistoryView.isCollapsed = !trialHistoryView.isCollapsed">Toggle collapse</a>
+                        <div uib-collapse="trialHistoryView.isCollapsed">
+                            <!-- list of trial deleted docs  -->
                             <div class="row" ng-class="{'top-offset-xs': trialHistoryView.deleteDocsGridOptions.data.length > 0 }">
                             <div class="col-xs-12">
                                 <div class="row" ng-if="trialHistoryView.deleteDocsGridOptions.totalItems != null">
@@ -171,12 +185,13 @@
                                 </div>
                             </div>
                         </div>
-
+                           </div>
+                        </div>
 
                     </md-tab-body>
                 </md-tab>
 
-                <md-tab>
+                <md-tab ng-click="trialHistoryView.showUpdates()">
                     <md-tab-label>Updates</md-tab-label>
                     <md-tab-body>
                         <!-- list of trial updates  -->
@@ -210,7 +225,7 @@
                                                datepicker-options="trialHistoryView.dateOptions"
                                                close-text="Close" placeholder="Start Date" readonly />
                                                 <span class="input-group-btn">
-                                                    <button type="button" restriction-field class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'start_date')">
+                                                    <button type="button"  class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'start_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
@@ -227,7 +242,7 @@
                                                date-later-than="{{trialHistoryView.statusObj.start_date| date: 'short'}}"
                                                close-text="Close" placeholder="End Date" readonly />
                                                 <span class="input-group-btn">
-                                                    <button type="button" restriction-field class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'end_date')">
+                                                    <button type="button" class="btn btn-primary" ng-click="trialHistoryView.openCalendar($event, 'end_date')">
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
@@ -238,7 +253,7 @@
                             <div class="form-group no-bottom-margin" >
                                 <div class="col-sm-3"></div>
                                 <div class="btn-toolbar col-xs-12 col-sm-9">
-                                    <button type="button" class="btn btn-primary pull-right" id="submit_btn" ng-click="trialHistoryView.submit()" restriction-field>
+                                    <button type="button" class="btn btn-primary pull-right" id="submit_btn" ng-click="trialHistoryView.loadAuditTrials()" >
                                         <i class="glyphicon"></i> Search
                                     </button>
                                 </div>
