@@ -13,8 +13,8 @@
         <p ng-show="emailsView.emailLogs.length == 0">
             <strong>No emails found for this trial</strong>
         </p>
-        <table class="table table-condensed table-hover table-striped table-bordered" st-table="emailsView.emailLogs" ng-show="emailsView.emailLogs.length > 0">
-            <thead>
+        <table class="table table-condensed table-hover" st-table="emailsView.emailLogs" ng-show="emailsView.emailLogs.length > 0">
+            <!-- <thead>
                 <tr>
                     <th st-sort="email_template_name">
                         Type
@@ -29,9 +29,9 @@
                         Result
                     </th>
                 </tr>
-            </thead>
+            </thead> -->
             <tbody>
-                <tr ng-repeat="email in emailsView.emailLogs track by $index" ng-click="emailsView.showEmailDetail($index)">
+                <tr ng-repeat="email in emailsView.emailLogs track by $index" ng-click="emailsView.showEmailDetail($index)" ng-class="{'edit-selected': emailsView.curEmail.index == email.index}">
                     <td>
                         {{email.email_template_name}}
                     </td>
@@ -44,6 +44,9 @@
                     <td>
                         {{email.result}}
                     </td>
+                    <td class="pull-right text-vmiddle">
+                        <i class="glyphicon glyphicon-menu-right"></i>
+                    </td>
                 </tr>
             </tbody>
             <tfoot ng-show="emailsView.emailLogs.length > 10">
@@ -54,6 +57,6 @@
         </table>
     </div>
     <div class="col-xs-12 col-sm-7" id="email_content">
-        <p ng-bind-html="emailsView.curEmail.body" ng-model="emailsView.curEmail.body"></p>
+        <span ng-bind-html="emailsView.curEmail.body" ng-model="emailsView.curEmail.body"></span>
     </div>
 </div>

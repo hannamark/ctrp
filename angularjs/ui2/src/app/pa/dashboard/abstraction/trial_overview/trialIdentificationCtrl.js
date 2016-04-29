@@ -22,6 +22,7 @@
             {id: 2, name: 'Normal'},
             {id: 3, name: 'Low'},
         ];
+        vm.disableBtn = false;
 
         activate();
 
@@ -56,16 +57,25 @@
             //angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
             updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
+
+            vm.disableBtn = true;
+
             TrialService.upsertTrial(updatedTrial).then(function(res) {
-                // console.log('priority and commented updated: ', res);
-                updatedTrial.lock_version = res.lock_version;
-                PATrialService.setCurrentTrial(updatedTrial);
-                // $scope.$emit('updatedInChildScope', {});
-                toastr.clear();
-                toastr.success('Trial processing information has been recorded', 'Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
+                var status = res.server_response.status;
+
+                if (status === 200) {
+                    // console.log('priority and commented updated: ', res);
+                    updatedTrial.lock_version = res.lock_version;
+                    PATrialService.setCurrentTrial(updatedTrial);
+                    // $scope.$emit('updatedInChildScope', {});
+                    toastr.clear();
+                    toastr.success('Trial processing information has been recorded', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 

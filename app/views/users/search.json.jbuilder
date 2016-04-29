@@ -1,6 +1,6 @@
 json.users do
   json.array!(@users) do |user|
-    json.extract! user, :domain, :id, :username, :first_name, :last_name, :email, :approved, :user_status_id, :role, :receive_email_notifications
+    json.extract! user, :domain, :id, :username, :first_name, :last_name, :email, :user_status_id, :role, :receive_email_notifications
     json.user_status_name user.user_status ? user.user_status.name : ''
     json.url user_url(user, format: :json)
     if user.organization.present?
