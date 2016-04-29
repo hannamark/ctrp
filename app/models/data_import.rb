@@ -193,10 +193,10 @@ class DataImport
         trial.arms_groups << arm2
 
         # Randomely Assign User statuses
-        User.all.each do |u|
-          u.user_status = UserStatus.all[rand(0..UserStatus.all.size-1)]
-          u.save!
-        end
+        #User.all.each do |u|
+        #  u.user_status = UserStatus.all[rand(0..UserStatus.all.size-1)]
+        #  u.save!
+        #end
         #save Trial
         trial.save!
       end

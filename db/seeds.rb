@@ -1266,6 +1266,7 @@ test_users.each do |u|
  user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
  user.password = "Welcome01"
  user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+ user.user_status = UserStatus.find_by_code('ACT')
  user.save!
 end
 
@@ -1355,6 +1356,7 @@ begin
     ldap_user.last_name = u["last_name"]
     ldap_user.organization = org0
     ldap_user.save(validate: false)
+    ldap_user.user_status = UserStatus.find_by_code('ACT')
     #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
