@@ -15,21 +15,17 @@
                                   $uibModal, $timeout, $state, Common) {
 
         var vm = this;
-        // console.log('in header, current state name is: ', $state.current);
         vm.signedIn = UserService.isLoggedIn();
         vm.username = UserService.getLoggedInUsername();
         vm.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
         vm.isCurationEnabled = UserService.isCurationModeEnabled();
-        vm.isCurationModeSupported = false; //UserService.isCurationSupported();
+        vm.isCurationModeSupported = false;
         vm.warning = null;
         vm.timedout = null;
-        //vm.uiRouterState = $state;
         vm.currrentState = $state;
         vm.navbarIsActive = navbarIsActive;
 
         vm.toggleCurationMode = function() {
-            // console.log('toggling curation mode: ' + vm.isCurationEnabled);
-            // vm.isCurationEnabled = !vm.isCurationEnabled;
             UserService.saveCurationMode(vm.isCurationEnabled);
             Common.broadcastMsg(MESSAGES.CURATION_MODE_CHANGED);
         };
@@ -55,12 +51,10 @@
 
         function listenToLoginEvent() {
             $scope.$on('signedIn', function() {
-                console.log('user signed in!!');
                 pullUserInfo();
             });
 
             $scope.$on('loggedOut', function() {
-                console.log('logged out!!');
                 pullUserInfo();
                 vm.signedIn = false;
             });
@@ -71,14 +65,12 @@
             vm.signedIn = UserService.isLoggedIn();
             vm.username = UserService.getLoggedInUsername();
             vm.userRole = UserService.getUserRole().split('_')[1] || '';
-            vm.userRole = !!vm.userRole ? vm.userRole.toLowerCase() : ''; //e.g. super
+            vm.userRole = !!vm.userRole ? vm.userRole.toLowerCase() : '';
             vm.isCurationEnabled = UserService.isCurationModeEnabled();
-            // vm.isCurationModeSupported = UserService.isCurationSupported();
         } //pullUserInfo
 
         function listenToSectionWriteMode() {
             $scope.$on('isWriteModeSupported', function(evt, val) {
-                // console.log('header hears isWriteModeSupported: ', val);
                 vm.isCurationModeSupported = val || false;
                 if (!vm.isCurationModeSupported) {
                     vm.isCurationEnabled = false;

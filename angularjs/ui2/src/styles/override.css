@@ -126,6 +126,11 @@
     height: 550px;
 }
 
+.grid-small {
+    width: 100%;
+    height: 200px;
+}
+
 .ui-grid-header-cell .ui-grid-cell-contents {
     line-height: 1em;
     padding: 6px 5px;
@@ -748,7 +753,7 @@ h5 {
 
 .grid-medium-cell .ui-grid-cell {
     line-height: 1em;
-    height: 40px !important;
+    height: 35px !important;
 }
 
 .grid-large-cell .ui-grid-cell {
@@ -757,9 +762,25 @@ h5 {
 }
 
 .grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
+
 .grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
     background:#bbb;
     color: #444;
+}
+
+.grid-large-cell .ui-grid-row:nth-child(even) .ui-grid-cell,
+.grid-medium-cell .ui-grid-row:nth-child(even) .ui-grid-cell {
+    background: #fdfdfd;
+}
+
+.grid-large-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell,
+.grid-medium-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell {
+    background-color: #fdfdfd;
+}
+
+.expandableRow {
+    border-bottom: 1px solid #EEE;
+    margin-top: 2px !important;
 }
 
 .ui-grid-cell .btn {
@@ -1292,4 +1313,12 @@ div[disabled] {
 
 .modal-body {
     overflow: visible;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.small-header-text {
+    font-size: 75%;
 }

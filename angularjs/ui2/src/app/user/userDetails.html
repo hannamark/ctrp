@@ -22,9 +22,8 @@
                         <div class="col-xs-12 col-sm-6">
                             <select name="userstatus" id="userstatus"
                                 class="form-control input-sm"
-                                ng-model="userDetailView.userDetails.user_status.id"
+                                ng-model="userDetailView.userDetails.user_status_id"
                                 ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
-                                ng-change="userDetailView.checkUserStatus()"
                                 ng-options="status.id as status.name for status in userDetailView.statusArr"
                                 required>
                                 <option value="">Select a status</option>
@@ -81,14 +80,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-xs-12 col-sm-3">Middle Name</label>
+                        <label class="control-label col-xs-12 col-sm-3">Middle Name:</label>
                         <div class="col-xs-12 col-sm-6">
                             <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.middle_name" placeholder="Middle Name">
                         </div>
                     </div>
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.street_address)}">
-                        <label class="control-label col-xs-12 col-sm-3">Street Address</label>
+                        <label class="control-label col-xs-12 col-sm-3">Street Address:</label>
                         <div class="col-xs-12 col-sm-6">
                             <input type="text" class="form-control input-sm" name="street_address" required ng-model="userDetailView.userDetails.street_address" placeholder="Street Address">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.street_address.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.street_address) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -122,13 +121,13 @@
                     </div>
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.city) || ctrpbtn.userDetail_form.needsAttention(userDetail_form.zipcode)}">
-                        <label class="control-label col-xs-12 col-sm-3">City</label>
+                        <label class="control-label col-xs-12 col-sm-3">City:</label>
                         <div class="col-xs-12 col-sm-3">
                             <input name="city" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.city" placeholder="City">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.city.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.city) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                             <span class="help-block" ng-show="userDetail_form.city.$error.required">City is Required</span>
                         </div>
-                        <label class="control-label col-xs-12 col-sm-1">Zip Code</label>
+                        <label class="control-label col-xs-12 col-sm-1">Zip Code:</label>
                         <div class="col-xs-12 col-sm-2">
                             <input name="zipcode" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.zipcode" placeholder="zipcode">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.zipcode.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.zipcode) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -164,7 +163,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-xs-12 col-sm-3">PRS Organization Name</label>
+                        <label class="control-label col-xs-12 col-sm-3">PRS Organization Name:</label>
                         <div class="col-xs-12 col-sm-6">
                             <input type="text" class="form-control input-sm" ng-model="userDetailView.userDetails.prs_organization_name" placeholder="PRS Organization name">
                         </div>

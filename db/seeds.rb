@@ -1260,10 +1260,20 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
 ]
 
 test_users.each do |u|
+ user = LocalUser.new
+ user.username = u["username"]
+ user.role = u["role"]
+ user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
+ user.password = "Welcome01"
+ user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+ user.user_status = UserStatus.find_by_code('ACT')
+ user.save!
+end
+
+test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
     user.role = u["role"]
-    user.approved =  u["approve"]
     unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
       if user.username == 'ctrpsitesu2'
         user.organization = org3
@@ -1344,9 +1354,9 @@ begin
     ldap_user.role = u["role"]
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
-    ldap_user.approved = true
     ldap_user.organization = org0
     ldap_user.save(validate: false)
+    ldap_user.user_status = UserStatus.find_by_code('ACT')
     #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e
