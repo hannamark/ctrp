@@ -121,8 +121,20 @@
             enableGridMenu: true,
             enableFiltering: true,
             columnDefs: [
-                {name: 'file_name',pinnedLeft: true, displayName: 'File Name' , enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'why_deleted',displayName:'Deletion Comments', enableSorting: true, minWidth: '100', width: '*'}
+
+                {name: 'updated_at',displayName:'Deletion Date', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.updated_at | date: "dd-MMM-yyyy"}}</div>'},
+
+                {name: 'document_type',displayName:'Document Type', enableSorting: true, minWidth: '100', width: '*'},
+                {field: 'file_name',pinnedLeft: true, displayName: 'File Name' , enabledSorting: true , minWidth: '100', width: '*'},
+                    //cellTemplate: '<div class="ui-grid-cell-contents"><a href="{{grid.appScope.downloadBaseUrl}}/{{row.entity[col.field].id}}">{{row.entity[col.field].file_name}}</a> {{doc.source_document}}</div></div>'},
+
+                {name: 'original',displayName:'Original', enableSorting: true, minWidth: '100', width: '*'},
+
+                {name: 'deleted_or_revised',displayName:'Deleted/Revised', enableSorting: true, minWidth: '100', width: '*'},
+
+                {name: 'why_deleted',displayName:'Deletion Comments', enableSorting: true, minWidth: '100', width: '*'},
+
             ]
         };
 
