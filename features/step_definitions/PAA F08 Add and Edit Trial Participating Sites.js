@@ -191,7 +191,7 @@ module.exports = function() {
         commonFunctions.adminCheckOut();
         trialDoc.clickAdminDataParticipatingSites();
         trialCollaborators.waitForElement(participatingSite.addParticipatingSiteBtn , "Add Participating Site - Button");
-        participatingSite.listOfPartSteTbl.isPresent().then(function(dispC){
+        participatingSite.listOfPartSteTbl.isDisplayed().then(function(dispC){
             console.log('List of Participating Sites boolean status: ' + dispC);
             if (dispC === true) {
                 participatingSite.verifyListOfParticipatingSitesTable();
@@ -253,7 +253,7 @@ module.exports = function() {
 
     this.Given(/^I have selected one or more Investigators (.*) for each Participating Site with the person look up$/, function (SitePrincipalInvestigator, callback) {
         participatingSite.clickInvestigatorsTab();
-        trialCollaborators.waitForElement(participatingSite.investigatorName, "Investigators Name - Read only - Field");
+        //trialCollaborators.waitForElement(participatingSite.investigatorName, "Investigators Name - Read only - Field");
         participatingSite.clickSearchPersons();
         //trialDetails.clickSearchPersonsButtonByIndex('0');
         searchOrg.clickExactSearch('true');
@@ -268,11 +268,11 @@ module.exports = function() {
         var strVal = '';
         selectDcoumentTableVal = table.raw();
         strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
-        console.log('Select Document Type value(s) in the data table:[' + strVal +']');
+        console.log('Value(s) in the data table:[' + strVal +']');
         var tableDataSplt = strVal.toString().split("\n");
         tblRoleOptionA = tableDataSplt[0];
         tblRoleOptionB = tableDataSplt[1];
-        participatingSite.findPrsnFNameVerfEdtDel(personFNmB, 'edit');
+        //participatingSite.findPrsnFNameVerfEdtDel(personFNmB, 'edit');
         participatingSite.eidtRole.$('option:checked').getText().then(function (curntSelection){
             if (curntSelection != SitePrincipalInvestigatorRole){
                 participatingSite.selectEditRole(SitePrincipalInvestigatorRole);

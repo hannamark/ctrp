@@ -33,7 +33,7 @@ var abstractionParticipating = function(){
 
     var listOfPartSiteTableHdrs = new Array("PO ID", "PO Name", "Investigators", "Site Recruitment Status", "Site Recruitment Status Date", "Primary Contact", "Edit");
 
-    this.listOfPartSteTbl = element(by.css('#list_participating_site_tbl'));
+    this.listOfPartSteTbl = element(by.css('#list_participating_site_tbl tbody'));
     this.listOfPartSteTblAll = element.all(by.css('#list_participating_site_tbl tbody tr'));
 
     this.poIdlistOfPartSteTblHeadInv = element(by.css('#list_participating_site_tbl thead tr th:nth-child(01)'));
@@ -138,8 +138,6 @@ var abstractionParticipating = function(){
     this.editSetAsPrimaryContactCheck = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(5) input'));
     this.editInvestigatorCancel = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(6) button:nth-child(1)'));
     this.editInvestigatorConfirm = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(6) button:nth-child(2)'));
-
-
 
     //Save and Reset
     this.saveBtn = element(by.id('submit_processing'));
@@ -334,7 +332,14 @@ var abstractionParticipating = function(){
 
     //Investigator Edit
     this.selectEditRole = function(eRole)  {
-        helper.selectValueFromList(this.eidtRole, eRole, "Role - List field");
+        var errorMessage = 'Role field';
+        var fldName = this.eidtRole;
+        fldName.element(by.cssContainingText('option', eRole)).click();
+        console.log(errorMessage + ' ' + eRole + " Value selected");
+        fldName.$('option:checked').getText().then(function (value){
+            console.log('Value of item selected in list : ' + value.trim());
+            //expect(value.trim()).to.equal(fieldValue);
+        });
     };
 
     this.checkSetAsPrimaryContact = function (){
