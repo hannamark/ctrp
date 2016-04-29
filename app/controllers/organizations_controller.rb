@@ -115,7 +115,7 @@ class OrganizationsController < ApplicationController
         user.organization_id = org_id
         # When a User changes his organization, he must be reapproved
         if !old_org_id.nil?
-          user.user_status_id = UserStatus.find_by_code('ACT')
+          user.user_status = UserStatus.find_by_code('ACT')
         end
       end
       user.save!
