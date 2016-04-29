@@ -115,7 +115,7 @@ class OrganizationsController < ApplicationController
         user.organization_id = org_id
         # When a User changes his organization, he must be reapproved
         if !old_org_id.nil?
-          user.approved = false
+          user.user_status_id = UserStatus.find_by_code('INR').id
         end
       end
       user.save!
@@ -166,6 +166,7 @@ class OrganizationsController < ApplicationController
         # TODO need constant for Active
         @organizations = @organizations.with_source_status("Active")
         @organizations = @organizations.with_source_context("CTRP")
+
       end
       @organizations = @organizations.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @organizations = @organizations.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?

@@ -46,7 +46,7 @@
         <br/><br/>
         <li><a href="/ctrp/ui#/main/sign_in">CTRP Main</a></li>
         <% if local_user_signed_in? %>
-            <% if current_local_user.approved? %>
+            <% if current_local_user.user_status.code == 'ACT' %>
                 <li><%= link_to "List Users", users_path %></li>
                 <% if current_local_user.role == "ROLE_SUPER"  && current_local_user.organization_id.nil? %>
                     <li><%= link_to "BackOffice", backoffice_path %></li>
@@ -55,7 +55,7 @@
             <li><%= link_to "Assign Organization", search_organizations_path %></li>
         <% end %>
         <% if ldap_user_signed_in? %>
-            <% if current_ldap_user.approved? %>
+            <% if current_ldap_user.user_status.code == 'ACT' %>
                 <li><%= link_to "List Users", users_path %></li>
                 <% if current_ldap_user.role == "ROLE_SUPER" && current_ldap_user.organization_id.nil? %>
                     <li><%= link_to "BackOffice", backoffice_path %></li>
@@ -122,7 +122,7 @@
                     <% else %>
                         <td colspan="3"> &nbsp; </td>
                     <% end %>
-                    <% if user.approved == false %>
+                    <% if user.user_status.code != 'ACT' %>
                         <td colspan="3">NOT APPROVED</td>
                       <td colspan="3">
                         <!--
@@ -136,7 +136,7 @@
                         <% end %>
                       </td>
                     <% end %>
-                    <% if user.approved == true %>
+                    <% if user.user_status.code == 'ACT' %>
                         <td colspan="3">APPROVED</td>
                         <td colspan="3">
                             <!--

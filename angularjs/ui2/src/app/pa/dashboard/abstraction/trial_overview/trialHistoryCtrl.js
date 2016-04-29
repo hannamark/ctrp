@@ -21,7 +21,7 @@
         vm.isCollapsed = false;
         vm.showDeletedDocs = showDeletedDocs;
         vm.showDeletedDocuments=false;
-        vm.toggleText="Show deleted docs"
+        vm.toggleText="Show Deleted or Revised Documents"
 
         /* Updates Tab Variables */
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
@@ -57,10 +57,10 @@
         vm.toggleDeletedDocs = function toggleDeletedDocs() {
 
             vm.showDeletedDocuments = !vm.showDeletedDocuments;
-            if (vm.toggleText == "Show deleted docs") {
-                vm.toggleText = "Hide deleted docs"
-            } else if (vm.toggleText="Hide deleted docs") {
-                vm.toggleText = "Show deleted docs"
+            if (vm.toggleText == "Show Deleted or Revised Documents") {
+                vm.toggleText = "Hide Deleted or Revised Documents"
+            } else if (vm.toggleText="Hide Deleted or Revised Documents") {
+                vm.toggleText = "Show Deleted or Revised Documents"
 
             }
 

@@ -14,8 +14,6 @@
 
         $scope.changeUserStatus = function(row) {
             var userObj = {};
-
-            console.log('user row is: ', row);
             if (row && row.entity) {
                 if (row.entity.user_status.id === 4) {
                     row.entity.user_status_id = 4;
@@ -28,29 +26,11 @@
                 userObj.id = row.entity.id;
                 userObj.user = row.entity;
             }
-
             vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
             vm.upsertUser(userObj);
-        };
-
-        $scope.changeUserApproval = function(row) {
-            var userObj = {};
-            userObj.id = row.entity.id;
-            userObj.user = row.entity;
-
-            vm.upsertUser(userObj);
-            vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
         };
 
         var vm = this;
-        var userSoftDeleteColumnDef = {
-            name: 'delete',
-            displayName: 'Delete',
-            enableSorting: true,
-            width: '100',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.user_status.id" ng-true-value="4" ng-false-value="3" ng-click="grid.appScope.changeUserStatus(row)"></div>'
-        };
-
         vm.statusArr = UserService.getStatusArray();
         vm.searchParams = UserService.getInitialUserSearchParams();
 
@@ -67,7 +47,6 @@
                 vm.searchUsers();
             });
         };
-        vm.gridOptions.columnDefs.push(userSoftDeleteColumnDef);
 
         vm.searchUsers = function () {
             UserService.searchUsers(vm.searchParams).then(function (data) {
