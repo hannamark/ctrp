@@ -31,9 +31,8 @@
                             <select name="intervention_type_ct" id="intervention_type_ct"
                                     class="form-control input-sm"
                                     ng-model="interventionView.curInterventionObj.intervention_type_id"
-                                    ng-disabled="!interventionView.isCTGovTypeListEnabled"
-                                    ng-options="type.id as type.name for type in interventionView.interventionTypes"
-                            >
+                                    ng-disabled="!interventionView.isInterventionTypeListEnabled"
+                                    ng-options="type.id as type.name for type in interventionView.interventionTypes">
                                 <option value="">
                                     -- Please select an intervention type...
                                 </option>
