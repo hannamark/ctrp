@@ -28,7 +28,7 @@ And selected the IND/IDE Holder Type from a list
 |Industry|
 |NIH|
 |NCI|
-And selected the NIH Institution or NCI Division/Program Code from a list
+And selected the NCI Division/Program  from a list
 |NIH Values Below:|
 |NEI-National Eye Institute|
 |NHLBI-National Heart, Lung, and Blood Institute|
@@ -111,22 +111,22 @@ When selected values the <IND IDE Type>
 And entered the <IND IDE number>
 And I am able to select Grantor as <IND IDE Grantor>
 And I am able to select Holder Type as <IND IDE Holder Type>
-And I am able to select NIH Institution or NCI Division or Program as <NIH Institution or NCI Division or Program>
+And I am able to select NCI Division /Program as <NCI Division / Program>
 And selected Save
 Then the system will display a warning <Message> that each of values that were not entered must be entered in order to associate the IND/IDE Information for the trial
 
 Examples:
-|Does this trial have an associated IND or IDE|IND IDE Type |IND IDE number|IND IDE Grantor|IND IDE Holder Type |NIH Institution or NCI Division or Program|Message|
+|Does this trial have an associated IND or IDE|IND IDE Type |IND IDE number|IND IDE Grantor|IND IDE Holder Type |NCI Division/Program|Message|
 |No|null|null|null|null|null|null|
 |Yes|IND|77782|CDER|Investigator|null|null|
 |Yes|IND|77782|CDER|NCI|CTEP|null|
 |Yes|IND|77782|CDER|NIH|NLM-National Library of Medicine|null|
 |Yes|IND|77782|CDER|null|null|Warning - The NIH  is Required|
-|Yes|IND|77782|null|NCI|null|Warning - The IND/IDE Holder Type is Required|
+|Yes|IND|77782|null|NCI|null|Warning - The Grantor is Required|
 |Yes|IND|null|CDER|NCI|CTEP|Warning - IND/IDE number is Required|
-|Yes|IND|77782|null|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
-|Yes|IND|77782|CDER|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
-|Yes|null|77782|null|null|null|Warning - IND/IDE Type is Required|
+|Yes|IND|77782|null|null|null|Warning - The NCI Division/Program is Required|
+|Yes|IND|77782|CDER|null|null|Warning - The NCI Division/Program is Required|
+|Yes|null|77782|null|null|null|Warning - IND/IDE Holder Type is Required|
 
 
 
