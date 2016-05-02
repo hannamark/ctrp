@@ -243,6 +243,11 @@ table td > div.input-group.datepicker {
     text-decoration:line-through;
 }
 
+.grey-text {
+    color: grey;
+    font-weight: bold;
+}
+
 .nav-search-bar {
     background: #363636;
     /* fallback */
@@ -988,7 +993,6 @@ md-checkbox .md-icon {
 md-checkbox.md-default-theme.md-checked .md-icon {
     background: blue;
 }
-
 .text-vmiddle {
     display: inline-block;
     vertical-align: middle;

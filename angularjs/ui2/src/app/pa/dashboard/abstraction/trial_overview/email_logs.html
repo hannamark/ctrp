@@ -9,12 +9,12 @@
 </div> -->
 
 <div class="row">
-    <div class="col-xs-12 col-sm-5" id="email_list">
+    <div class="col-xs-12 col-sm-6" id="email_list">
         <p ng-show="emailsView.emailLogs.length == 0">
             <strong>No emails found for this trial</strong>
         </p>
         <table class="table table-condensed table-hover" st-table="emailsView.emailLogs" ng-show="emailsView.emailLogs.length > 0">
-            <!-- <thead>
+            <thead>
                 <tr>
                     <th st-sort="email_template_name">
                         Type
@@ -22,29 +22,24 @@
                     <th st-sort="subject">
                         Subject
                     </th>
-                    <th st-sort="created_at">
-                        Time
-                    </th>
                     <th st-sort="result">
                         Result
                     </th>
                 </tr>
-            </thead> -->
+            </thead>
             <tbody>
-                <tr ng-repeat="email in emailsView.emailLogs track by $index" ng-click="emailsView.showEmailDetail($index)" ng-class="{'edit-selected': emailsView.curEmail.index == email.index}">
-                    <td>
+                <tr ng-repeat="email in emailsView.emailLogs track by $index" ng-class="{'edit-selected': emailsView.curEmail.index == $index}" ng-click="emailsView.showEmailDetail($index)">
+                    <td style="vertical-align: middle;">
                         {{email.email_template_name}}
                     </td>
                     <td>
                         {{email.subject}}
-                    </td>
-                    <td>
-                        {{email.created_at | date: "dd-MMM-yyyy H:mm"}}
+                        <p class="grey-text">Sent: {{email.created_at | date: "dd-MMM-yyyy H:mm"}}</p>
                     </td>
                     <td>
                         {{email.result}}
                     </td>
-                    <td class="pull-right text-vmiddle">
+                    <td style="vertical-align: middle;">
                         <i class="glyphicon glyphicon-menu-right"></i>
                     </td>
                 </tr>
@@ -56,7 +51,16 @@
             </tfoot>
         </table>
     </div>
-    <div class="col-xs-12 col-sm-7" id="email_content">
+    <div class="col-xs-12 col-sm-6" id="email_content">
+        <p>
+            <strong>From:</strong> {{emailsView.curEmail.from}}
+        </p>
+        <p>
+            <strong>To:</strong> {{emailsView.curEmail.to}}
+        </p>
+        <p>
+            <strong>Time:</strong> {{emailsView.curEmail.created_at | date: "dd-MMM-yyyy H:mm"}}
+        </p>
         <span ng-bind-html="emailsView.curEmail.body" ng-model="emailsView.curEmail.body"></span>
     </div>
 </div>
