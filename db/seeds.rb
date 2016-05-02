@@ -1235,35 +1235,45 @@ dcp = Organization.find_or_create_by( id: 10000002,
 )
 
 
-test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
-               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "approve" => true},
-               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "approve" => true},
-               {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
-               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
-               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
-               {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "approve" => true},
-               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
-               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true},
-               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true}
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpadmin", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR"},
+               {"username" => "testercurator", "role" => "ROLE_CURATOR"},
+               {"username" => "ctrpro", "role" => "ROLE_RO"},
+               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER"},
+               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER"},
+               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER"},
+               {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER"},
+               {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU"},
+               {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU"},
+               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR"},
+               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR"},
+               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR"},
+               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU"},
+               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST"},
+               {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST"},
+               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST"},
+               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER"},
+               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER"}
 ]
+
+test_users.each do |u|
+ user = LocalUser.new
+ user.username = u["username"]
+ user.role = u["role"]
+ user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
+ user.password = "Welcome01"
+ user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+ user.user_status = UserStatus.find_by_code('ACT')
+ user.save!
+end
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
     user.role = u["role"]
-    user.approved =  u["approve"]
     unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
       if user.username == 'ctrpsitesu2'
         user.organization = org3
@@ -1344,9 +1354,9 @@ begin
     ldap_user.role = u["role"]
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
-    ldap_user.approved = true
     ldap_user.organization = org0
     ldap_user.save(validate: false)
+    ldap_user.user_status = UserStatus.find_by_code('ACT')
     #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e

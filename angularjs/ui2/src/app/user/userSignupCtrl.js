@@ -15,21 +15,25 @@
 
         $scope.signup_form = {};
 
-        vm.userObj = {
-            'local_user': {
-                domain: '',
-                username: '',
-                first_name: '',
-                last_name: '',
-                email: '',
-                password: '',
-                password_confirmation: '',
-                organization_name: '',
-                organization_id: '',
-                selected_functions: []
-            },
-            'type': vm.type
+        var UserObj = function() {
+            return {
+                'local_user': {
+                    domain: '',
+                    username: '',
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: '',
+                    organization_name: '',
+                    organization_id: '',
+                    selected_function: ''
+                },
+                'type': vm.type
+            };
         };
+
+        vm.userObj = new UserObj();
         
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
@@ -58,7 +62,7 @@
                     selectedArr.push(func);
                 }
             });
-            vm.userObj.local_user.selected_functions = selectedArr;
+            vm.userObj.local_user.selected_function = '';
         };
 
         vm.searchParams = OrgService.getInitialOrgSearchParams();
@@ -91,6 +95,10 @@
 
         vm.updateUser = function () {
             UserService.upsertUserSignup(vm.userObj);
+        };
+
+        vm.reset = function () {
+            vm.userObj = new UserObj();
         };
     }
 

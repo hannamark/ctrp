@@ -141,8 +141,13 @@ And I am on the Search Clinical Trials Screen
 And I know the search Parameters of trial
 When I select an organization from the organization name search look-ahead
 And select a search option
-Then the system will search all organization types 
-And Trials that has the selected organization name will be displayed
+Then the system will search all organization where Organization type is
+
+      |Lead Organization  |
+      |Sponsor  |
+      |Participating Site  |
+
+And Trials that has the selected organization will be displayed
 
       
 

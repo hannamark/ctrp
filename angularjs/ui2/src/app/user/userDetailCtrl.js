@@ -25,14 +25,8 @@
         vm.statusArr = UserService.getStatusArray();
         vm.rolesArr = UserService.getRolesArray();
 
-        vm.checkUserStatus = function() {
-            if (!vm.userDetails.user_status.id) {
-                vm.userDetails.user_status.id = null;
-            }
-            console.log('status is: ', vm.userDetails.user_status);
-        };
-
         vm.updateUser = function () {
+            console.log("Error in retrieving details:",vm.userDetails);
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
@@ -54,6 +48,10 @@
             vm.userDetails = angular.copy(vm.userDetailsOrig);
         };
 
+        vm.userRequestAdmin = function(params) {
+            UserService.userRequestAdmin(params);
+        };
+        
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainArr = response.data[0].settings.split('||');
         }).catch(function (err) {

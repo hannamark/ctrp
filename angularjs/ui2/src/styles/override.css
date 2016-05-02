@@ -126,6 +126,11 @@
     height: 550px;
 }
 
+.grid-small {
+    width: 100%;
+    height: 200px;
+}
+
 .ui-grid-header-cell .ui-grid-cell-contents {
     line-height: 1em;
     padding: 6px 5px;
@@ -241,6 +246,11 @@ table td > div.input-group.datepicker {
 .deleted-text, .deleted-text a{
     color:red;
     text-decoration:line-through;
+}
+
+.grey-text {
+    color: grey;
+    font-weight: bold;
 }
 
 .nav-search-bar {
@@ -491,7 +501,7 @@ form label {
     border-radius: 0 6px 6px 6px;*/
 }
 
-.dropdown-menu li a:hover {
+.dropdown-menu li a:hover, a.hand-hover:hover {
     cursor: pointer;
 }
 
@@ -748,7 +758,7 @@ h5 {
 
 .grid-medium-cell .ui-grid-cell {
     line-height: 1em;
-    height: 40px !important;
+    height: 35px !important;
 }
 
 .grid-large-cell .ui-grid-cell {
@@ -757,9 +767,25 @@ h5 {
 }
 
 .grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
+
 .grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
     background:#bbb;
     color: #444;
+}
+
+.grid-large-cell .ui-grid-row:nth-child(even) .ui-grid-cell,
+.grid-medium-cell .ui-grid-row:nth-child(even) .ui-grid-cell {
+    background: #fdfdfd;
+}
+
+.grid-large-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell,
+.grid-medium-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell {
+    background-color: #fdfdfd;
+}
+
+.expandableRow {
+    border-bottom: 1px solid #EEE;
+    margin-top: 2px !important;
 }
 
 .ui-grid-cell .btn {
@@ -988,7 +1014,6 @@ md-checkbox .md-icon {
 md-checkbox.md-default-theme.md-checked .md-icon {
     background: blue;
 }
-
 .text-vmiddle {
     display: inline-block;
     vertical-align: middle;
@@ -1284,4 +1309,20 @@ ul.csv li:after {
 }
 ul.csv li:last-child:after {
     content: "";
+}
+
+div[disabled] {
+    display:none;
+}
+
+.modal-body {
+    overflow: visible;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.small-header-text {
+    font-size: 75%;
 }

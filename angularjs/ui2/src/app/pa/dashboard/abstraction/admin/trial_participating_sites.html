@@ -295,15 +295,15 @@
 
                                             <td class="text-center">
                                                 <label>
-                                                    <input type="checkbox" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact" ng-value="{{psView.current_investigator.set_as_contact}}">
+                                                    <input type="checkbox" id="set_contact" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact" ng-value="{{psView.current_investigator.set_as_contact}}">
                                                 </label>
                                             </td>
                                              <td>
                                                  <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
-                                                    <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
+                                                    <button id="edit_remove" class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
                                                         <i class="glyphicon glyphicon-remove"></i>
                                                     </button>
-                                                    <button class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditInvestigator()" ng-disabled="psView.current_investigator.person.id == null">
+                                                    <button id="edit_ok" class="btn btn-primary" restriction-field type="button" ng-click="psView.commitEditInvestigator()" ng-disabled="psView.current_investigator.person.id == null">
                                                         <i class="glyphicon glyphicon-ok"></i>
                                                     </button>
                                                 </div>
@@ -371,7 +371,7 @@
                     </md-tab-body>
                 </md-tab>
                 <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
-                    <md-tab-label><span id="contact">Contact</span></md-tab-label>
+                    <md-tab-label><span id="contactTab">Contact</span></md-tab-label>
                     <md-tab-body>
                         <!-- General Contact Begin -->
                         <!-- fieldset for Central Contact -->

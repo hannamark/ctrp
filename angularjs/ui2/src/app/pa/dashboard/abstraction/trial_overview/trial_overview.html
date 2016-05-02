@@ -173,26 +173,26 @@
                 <div class="btn-toolbar">
                     <!-- scientific/admin checkout/in buttons -->
                     <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkout" restriction-field="ROLE_ABSTRACTOR, ROLE_ABSTRACTOR-SU, ROLE_SUPER, ROLE_ADMIN"
-                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled || paTrialOverview.adminCheckoutBtnDisabled"
+                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled || paTrialOverview.adminCheckoutBtnDisabled || paTrialOverview.disableBtn"
                         ng-click="paTrialOverview.checkoutTrial('scientificadmin')" ng-show="paTrialOverview.adminCheckoutAllowed && paTrialOverview.scientificCheckoutAllowed">Admin/Scientific Check Out</button>
                     <button type="button" class="btn btn-primary pull-right" id="admin_sci_checkin" restriction-field="ROLE_ABSTRACTOR, ROLE_ABSTRACTOR-SU, ROLE_SUPER, ROLE_ADMIN"
-                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled || paTrialOverview.adminCheckoutBtnDisabled"
+                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled || paTrialOverview.adminCheckoutBtnDisabled || paTrialOverview.disableBtn"
                         ng-click="paTrialOverview.checkinTrial('scientificadmin')" ng-show="paTrialOverview.adminCheckinAllowed && paTrialOverview.scientificCheckinAllowed">Admin/Scientific Check In</button>
 
                     <!-- scientific checkout/in buttons -->
                     <button type="button" class="btn btn-primary pull-right" id="scientific_checkout" restriction-field="ROLE_ABSTRACTOR, ROLE_ABSTRACTOR-SU, ROLE_SUPER, ROLE_ADMIN"
-                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled"
+                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled || paTrialOverview.disableBtn"
                         ng-click="paTrialOverview.checkoutTrial('scientific')" ng-show="paTrialOverview.scientificCheckoutAllowed">Scientific Check Out</button>
                     <button type="button" class="btn btn-primary pull-right" id="scientific_checkin" restriction-field="ROLE_ABSTRACTOR, ROLE_ABSTRACTOR-SU, ROLE_SUPER, ROLE_ADMIN"
-                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled"
+                        ng-disabled="paTrialOverview.scientificCheckoutBtnDisabled || paTrialOverview.disableBtn"
                         ng-click="paTrialOverview.checkinTrial('scientific')" ng-show="paTrialOverview.scientificCheckinAllowed">Scientific Check In</button>
 
                     <!-- admin checkout/in buttons -->
                     <button type="button" class="btn btn-primary pull-right" id="admin_checkout" restriction-field="ROLE_ABSTRACTOR, ROLE_ABSTRACTOR-SU, ROLE_SUPER, ROLE_ADMIN"
-                        ng-disabled="paTrialOverview.adminCheckoutBtnDisabled"
+                        ng-disabled="paTrialOverview.adminCheckoutBtnDisabled || paTrialOverview.disableBtn"
                         ng-click="paTrialOverview.checkoutTrial('admin')" ng-show="paTrialOverview.adminCheckoutAllowed">Admin Check Out</button>
                     <button type="button" class="btn btn-primary pull-right" id="admin_checkin" restriction-field="ROLE_ABSTRACTOR, ROLE_ABSTRACTOR-SU, ROLE_SUPER, ROLE_ADMIN"
-                        ng-disabled="paTrialOverview.adminCheckoutBtnDisabled"
+                        ng-disabled="paTrialOverview.adminCheckoutBtnDisabled || paTrialOverview.disableBtn"
                         ng-click="paTrialOverview.checkinTrial('admin')" ng-show="paTrialOverview.adminCheckinAllowed">Admin Check In</button>
 
                     <button type="button" class="btn btn-warning pull-right" id="back_to_search" ng-click="paTrialOverview.backToPATrialSearch()">
