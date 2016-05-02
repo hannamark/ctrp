@@ -12,7 +12,7 @@ Then I can view the Trial History Information type for Submissions and Updates f
 |Submission Date|
 |Submission Type|
 |Submitter User ID|
-|Documents| 
+|Documents (display upto 4 documents and then use popup box if more than 4.  See scenario 12)| 
 |Current Milestone (for this submission number)|
 |Action|
 
@@ -123,3 +123,15 @@ And the Comment will be "Revised"
       And I am on the Trial History Information Submission Screen
       Then the submission history will be displayed for the trial 
       And the list will be paganiated 
+
+Scenario: #12 I can view Trial History Information for Submissions with more then 4 documents in a submission
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a Trial
+And I am on the Trial History Information for Submissions Screen
+ANd the Trial History Information table is displayed
+And a submission has more than 4 documents
+Then the 4 Documents will be displayed with a function that will allow the user to popup and view all the documents for this submission.
+And I can select the Documents Pop Up Box
+And I can view all the Documents for this submission.
+
+ Display the first 4-5 documents in the column and if there are more, then display a hyperlink to a popup. The popup should show ALL the documents for that version including the first 4 which were shown in the 'document' column.
