@@ -8,7 +8,7 @@ Given I am in the CTRP Registration applicatin
 And I have selected the option to view My trials in CTRP (trials where I am listed as owner)
 When I select Action from the Available Actions
 And the current processing status type is displayed
-
+      |Verification Pending|
       |Abstraction Verified Response   |
       |Abstraction Verified No Response  |
 
