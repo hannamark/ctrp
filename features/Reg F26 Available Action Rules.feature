@@ -27,8 +27,9 @@ As any CTRP User, I can select available Actions
 
      When the Trial Processing Status is
      
-     
-      |Abstraction Verified |
+      |Verification Pending|
+      |Abstraction Verified Response |
+      |Abstraction Verified No Response|
       
       Then the Available Actions type display
       
