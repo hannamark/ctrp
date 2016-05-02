@@ -20,6 +20,7 @@ var abstractionParticipating = function(){
 
 
     var helper = new helperFunctions();
+    var self = this;
     /*
      * Participating Site object(s)
      */
@@ -134,10 +135,19 @@ var abstractionParticipating = function(){
     this.editPOID = element(by.id('person_id'));
     this.editLastName = element(by.id('last_name'));
     this.editFirstName = element(by.id('first_name'));
-    this.eidtRole = element(by.id('investigator_type_select'));
-    this.editSetAsPrimaryContactCheck = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(5) input'));
-    this.editInvestigatorCancel = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(6) button:nth-child(1)'));
-    this.editInvestigatorConfirm = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(6) button:nth-child(2)'));
+    this.eidtRole = element(by.model('psView.current_investigator.investigator_type')); //(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(4) #investigator_type_select'));
+    this.editSetAsPrimaryContactCheck = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(5) #set_contact')); //.table.table-striped.table-condensed tbody tr td:nth-child(5) input
+    this.editInvestigatorCancel = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(6) #edit_remove')); //.table.table-striped.table-condensed tbody tr td:nth-child(6) button:nth-child(1)
+    this.editInvestigatorConfirm = element(by.css('.table.table-striped.table-condensed tbody tr td:nth-child(6) #edit_ok')); //.table.table-striped.table-condensed tbody tr td:nth-child(6) button:nth-child(2)
+
+    //Contact Tab
+    this.contactType = element(by.css('#contact_type_0'));
+    this.contactPrimaryContact = element(by.css('#investigator'));
+    this.contactEmailAddress = element(by.css('#email'));
+    this.contactPhoneNumber = element(by.css('#phone'));
+    this.contactPhoneNumberExtension = element(by.css('#phone_extension'));
+
+
 
     //Save and Reset
     this.saveBtn = element(by.id('submit_processing'));
@@ -322,6 +332,10 @@ var abstractionParticipating = function(){
         helper.clickButton(this.saveBtn, "Save - Button");
     };
 
+    this.clickSaveButtonByIndex = function (getIndex) {
+        helper.clickButtonByIndex(this.saveBtn, getIndex, "Save - Button");
+    };
+
     this.clickResetButton = function () {
         helper.clickButton(this.resetBtn, "Reset - Button");
     };
@@ -342,8 +356,31 @@ var abstractionParticipating = function(){
         });
     };
 
-    this.checkSetAsPrimaryContact = function (){
-        this.checkCheckBox(this.editSetAsPrimaryContactCheck, true);
+    this.selectHelperEditRole = function(eRole)  {
+        helper.selectValueFromList(this.eidtRole, eRole, "Select Role");
+    };
+
+    this.back_checkSetAsPrimaryContact = function (){
+        var getObject = this.editSetAsPrimaryContactCheck;
+        getObject.click();
+        //this.checkCheckBox(this.editSetAsPrimaryContactCheck, true);
+    };
+
+    this.checkSetAsPrimaryContact = function(exactSearchTrueFalseValue){
+        this.editSetAsPrimaryContactCheck.isSelected().then (function(value) {
+            console.log('value of check box : ' + value);
+            console.log('value of passed exact Search' + exactSearchTrueFalseValue);
+            if (value === false && exactSearchTrueFalseValue === 'true') {
+                console.log('value of check box1' + value);
+                console.log('value of passed check box1' + exactSearchTrueFalseValue);
+                helper.clickButton(self.editSetAsPrimaryContactCheck,"Set as Primary Contact");
+            }
+            else if (value  === true && exactSearchTrueFalseValue === 'false') {
+                console.log('value of check box2' + value);
+                console.log('value of passed check box2' + exactSearchTrueFalseValue);
+                helper.clickButton(self.editSetAsPrimaryContactCheck,"Set as Primary Contact");
+            }
+        });
     };
 
     this.clickEditCancel = function(){
@@ -354,19 +391,41 @@ var abstractionParticipating = function(){
         helper.clickButton(this.editInvestigatorConfirm, "Edit Confirm - Button");
     };
 
-    this.checkCheckBox = function(obj, booleanCondition) {
+    this.checkCheckBoxa = function(obj, booleanCondition) {
         var getObject = obj;
         if (getObject.isSelected() != booleanCondition && booleanCondition) {
             getObject.isSelected().then(function (selected) {
                 if (selected) {
-                    console.log('if true then check it')
+                    console.log('if true then check it');
                     getObject.click();
                 }
             });
         } else {
             getObject.isSelected().then(function (selected) {
                 if (!selected) {
-                    console.log('if false then uncheck it')
+                    console.log('if false then uncheck it');
+                    getObject.click();
+                }
+            });
+        }
+    };
+
+    this.checkCheckBox = function(obj, booleanCondition) {
+        var getObject = obj;
+        if (getObject.isSelected() != booleanCondition) {
+            console.log('check box test');
+            getObject.isSelected().then(function (selected) {
+                console.log('selected 1: '+selected);
+                if (!selected) {
+                    console.log('if true then check it');
+                    getObject.click();
+                }
+            });
+        } else {
+            getObject.isSelected().then(function (selected) {
+                console.log('selected 2: '+selected);
+                if (selected) {
+                    console.log('if false then uncheck it');
                     getObject.click();
                 }
             });
@@ -457,7 +516,47 @@ var abstractionParticipating = function(){
         helper.clickButtonNoHeader(this.deleteSelectedCancelBtn, "Delete Selected - Cancel - Button");
     };
 
+    //Contact Tab - Action
+    this.selectType = function (getType){
+        helper.clickRadioButton(this.contactType, getType, "General Contact Type");
+    };
 
+    this.selectPrimaryContact = function (getContact){
+        helper.selectValueFromList(this.contactPrimaryContact, getContact, "Primary Contact");
+    };
+
+    this.setEmailAddress = function (getEmail){
+        helper.setValue(this.contactEmailAddress, getEmail, "Email Address");
+    };
+
+    this.setPhoneNumber = function (getPhone){
+        helper.setValue(this.contactPhoneNumber, getPhone, "Phone Number");
+    };
+
+    this.setPhoneNumberExt = function (getPhoneExt){
+        helper.setValue(this.contactPhoneNumberExtension, getPhoneExt, "Phone Number Extension");
+    };
+
+    //Contact Tab - Verification
+    this.verifyType = function (getTypeByIndx){
+        helper.getVerifyRadioSelection(this.contactType, getTypeByIndx, "Verify General Contact Type");
+    };
+
+    this.verifyPrimaryContact = function (getContact){
+        helper.getVerifyListValue(this.contactPrimaryContact, getContact, "Verify Primary Contact");
+    };
+
+    this.verifyEmailAddress = function (getEmail){
+        helper.getVerifyValue(this.contactEmailAddress, getEmail, "Verify Email Address");
+    };
+
+    this.verifyPhoneNumber = function (getPhone){
+        helper.getVerifyValue(this.contactPhoneNumber, getPhone, "Verify Phone Number");
+    };
+
+    this.verifyPhoneNumberExt = function (getPhoneExt){
+        helper.getVerifyValue(this.contactPhoneNumberExtension, getPhoneExt, "Verify Phone Number Extension");
+    };
 
     //Wait For Element : Wait
     this.waitForRegulatoryInfoElement = function (element, label) {
