@@ -290,6 +290,10 @@
         function SubmissionModalInstanceController($uibModalInstance, grid, row,reasonsArr) {
             var vm = this;
             vm.entity = angular.copy(row.entity);
+            vm.entity.submission_num = row.entity.submission_num;
+            vm.entity.submission_date = DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
+            vm.entity.amendment_num = row.entity.amendment_num;
+
             vm.reasonArr = reasonsArr;
             vm.updateSubmission = updateSubmission;
             vm.amendmentDateOpened = false;
