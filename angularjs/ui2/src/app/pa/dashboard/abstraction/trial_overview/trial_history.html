@@ -79,66 +79,92 @@
     <div class="modal-header">
         <h3 class="modal-title">Update Submission</h3>
     </div>
+    <div class="panel-body">
+        <form class="form form-horizontal" role="form" name="sub_form" novalidate ctrp-submit="vm.updateSubmission()">
     <div class="modal-body">
-        <form class="form form-horizontal">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4">Submission Number:</label>
                         <div class="col-xs-12 col-sm-6 form-text">
-                            {{vm.submission_num}}
+                            {{vm.entity.submission_num}}
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
                         <div class="col-xs-12 col-sm-6 form-text">
-                            {{vm.submission_date}}
+                            {{vm.entity.submission_date}}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-xs-12 col-sm-4">Amendment Number:</label>
-                        <div class=" col-xs-12 col-sm-6">
-                            <input type="text" restriction-field class="form-control input-sm" id="amendment_num" ng-model="vm.entity.amendment_num">
-                        </div>
+                                <label class="control-label col-xs-12 col-sm-4">Amendment Number:</label>
+                                <div class=" col-xs-12 col-sm-6">
+                                    <input type="text" restriction-field class="form-control input-sm" id="amendment_num" ng-model="vm.entity.amendment_num">
+                                </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.sub_form.needsAttention(sub_form.amendment_date)}">
                         <label class="control-label col-xs-12 col-sm-4">Amendment Date:</label>
                         <div class="col-xs-12 col-sm-3">
                             <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                <input type="text" class="form-control input-sm" name="amendment_date" datepicker-popup="{{vm.dateFormat}}" ng-model="vm.entity.amendment_date"
-                                       ng-click="vm.openCalendar($event, 'amendment_date')" is-open="vm.amendmentDateOpened" datepicker-options="vm.dateOptions" close-text="Close" required>
+                                <input type="text" class="form-control input-sm" id="amendment_date" name="amendment_date" datepicker-popup="{{vm.dateFormat}}"
+                                       ng-model="vm.entity.amendment_date"
+                                       ng-required="true"
+                                       ng-click="vm.openCalendar($event, 'amendment_date')"
+                                       is-open="vm.amendmentDateOpened"
+                                       datepicker-options="vm.dateOptions"
+                                       close-text="Close">
                                 <span class="input-group-btn">
                                     <button restriction-field type="button" class="btn btn-primary" ng-click="vm.openCalendar($event, 'amendment_date')">
                                         <i class="glyphicon glyphicon-calendar"></i>
                                     </button>
                                 </span>
                             </div>
+                             <span ng-messages="ctrpbtn.sub_form.needsAttention(sub_form.amendment_date) && sub_form.amendment_date.$error">
+                                    <span class="help-block" ng-message="required">Amendment Date is Required</span>
+                                 </span>
                         </div>
                         <div class="col-xs-12 col-sm-5"></div>
                     </div>
 
-                    <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.family_status)}">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.sub_form.needsAttention(sub_form.amendment_reason)}">
                         <label class="control-label col-xs-12 col-sm-4">Amendment Reason:</label>
                         <div class="col-xs-12 col-sm-6">
-                            <select restriction-field ng-init="vm.entity.amendment_reason_id" class="form-control input-sm" id="amendment_reason" ng-model="vm.entity.amendment_reason_id" ng-options="amendment_reason.id as amendment_reason.name for amendment_reason in vm.reasonArr" name="amendment_reason" required>
+                            <select restriction-field
+                                    ng-init="vm.entity.amendment_reason_id"
+                                    class="form-control input-sm"
+                                    id="amendment_reason"
+                                    name="amendment_reason"
+                                    ng-model="vm.entity.amendment_reason_id"
+                                    ng-required="true"
+                                    ng-options="amendment_reason.id as amendment_reason.name for amendment_reason in vm.reasonArr" name="amendment_reason">
                                 <option value="">Select a reason</option>
                             </select>
+                            <span ng-messages="ctrpbtn.sub_form.needsAttention(sub_form.amendment_reason) && sub_form.amendment_reason.$error">
+                                <span class="help-block" ng-message="required">Amendment Reason is Required</span>
+                            </span>
                         </div>
-                    </div>
                 </div>
             </div>
-        </form>
     </div>
     <div class="modal-footer">
         <div class="col-sm-12">
             <div class="btn-toolbar">
-                <button class="btn btn-primary pull-right" ng-click="vm.updateSubmission()"><i class="glyphicon glyphicon-ok"></i> Update </button>
+                <button type="submit" class="btn btn-primary pull-right" id="submit_processing">
+                    <i class="glyphicon glyphicon-ok"></i> Update
+                </button>
+
                 <button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>
             </div>
         </div>
+    </div>
+    </div>
+        </form>
+
+        </div>
+
     </div>
 </script>
 
@@ -167,32 +193,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <!-- list of trial deleted docs  -->
-
-
-                        <!--div class="col-sm-12 top-offset-sm table-responsive">
-                            <table class="table table-bordered" ng-show="trialHistoryView.deleteDocsGridOptions.data.length">
-                                <thead>
-                                <th>File Name</th>
-                                <th>Deletion Comments</th>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="row in trialHistoryView.deleteDocsGridOptions.data">
-                                    <td>
-                                        {{row.file_name}}
-                                    </td>
-                                    <td>
-                                        {{row.why_deleted}}
-                                    </td>
-
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div-->
-
-
 
                         <div class="row">
                             <div class="col-sm-12" ng-class="{'top-offset-xs': trialHistoryView.deleteDocsGridOptions.data.length > 0 }">

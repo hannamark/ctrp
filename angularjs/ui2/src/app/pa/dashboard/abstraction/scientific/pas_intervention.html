@@ -24,41 +24,22 @@
                             </button>
                         </div>
                     </div>
-                    <!-- intervention type for cancer.gov -->
+                    <!-- intervention type -->
                     <div class="form-group">
-                        <label for="intervention_type_cancer" class="control-label col-xs-12 col-sm-3">Intervention Type (Cancer.gov):</label>
-                        <div class="col-xs-12 col-sm-5">
-                            <select name="intervention_type_cancer" id="intervention_type_cancer"
-                                    class="form-control input-sm"
-                                    ng-model="interventionView.curInterventionObj.intervention_type_cancer_gov_id"
-                                    ng-disabled="!interventionView.isCancerGovTypeListEnabled"
-                                    ng-options="type.id as type.name for type in interventionView.interventionTypesByCategory.cancerGov"
-                            >
-                                <option value="">
-                                    -- Please select an intervention type (cancer.gov)...
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- end of intervention type for cancer.gov -->
-
-                    <!-- intervention type for clinicaltrials.gov -->
-                    <div class="form-group">
-                        <label for="intervention_type_ct" class="control-label col-xs-12 col-sm-3">Intervention Type (ClinicalTrials.gov):</label>
+                        <label for="intervention_type_ct" class="control-label col-xs-12 col-sm-3">Intervention Type:</label>
                         <div class="col-xs-12 col-sm-5">
                             <select name="intervention_type_ct" id="intervention_type_ct"
                                     class="form-control input-sm"
-                                    ng-model="interventionView.curInterventionObj.intervention_type_ct_gov_id"
-                                    ng-disabled="!interventionView.isCTGovTypeListEnabled"
-                                    ng-options="type.id as type.name for type in interventionView.interventionTypesByCategory.ctGov"
-                            >
+                                    ng-model="interventionView.curInterventionObj.intervention_type_id"
+                                    ng-disabled="!interventionView.isInterventionTypeListEnabled"
+                                    ng-options="type.id as type.name for type in interventionView.interventionTypes">
                                 <option value="">
-                                    -- Please select an intervention type (CT.gov)...
+                                    -- Please select an intervention type...
                                 </option>
                             </select>
                         </div>
                     </div>
-                    <!-- end of intervention type for clinicaltrials.gov -->
+                    <!-- end of intervention type -->
 
                     <div class="form-group">
                         <label for="intervention_desc" class="control-label col-xs-12 col-sm-3">Intervention Description:</label>
@@ -117,8 +98,7 @@
                                 <th class="col-sm-2">Name</th>
                                 <th>Description</th>
                                 <th class="col-sm-2">Other Names</th>
-                                <th class="col-sm-2">Cancer.gov Type</th>
-                                <th class="col-sm-2">ClinicalTrials.gov Type</th>
+                                <th class="col-sm-2">Intervention Type</th>
                                 <th class="text-center td-icon">Edit</th>
                                 <th class="text-center td-icon">
                                     <input type="checkbox" name="delete_all_inter" id="delete_all_inter" ng-model="interventionView.deleteAll" ng-change="interventionView.flagAllInterventionsForDeletion(interventionView.deleteAll)">
@@ -140,10 +120,7 @@
                                         {{t.other_name}}
                                     </td>
                                     <td>
-                                        {{t.intervention_type_cancer_name}}
-                                    </td>
-                                    <td>
-                                        {{t.intervention_type_ct_name}}
+                                        {{t.intervention_type_name}}
                                     </td>
                                     <td class="text-center td-icon">
                                         <button type="button" class="btn btn-primary" restriction-field ng-disabled="t._destroy" ng-click="interventionView.editIntervention($index)">

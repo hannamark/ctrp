@@ -61,12 +61,28 @@ Scenario Outline:#3 FDA IND/IDE Information Validation check rule
       |IND/IDE Holder Type  |
     And I have clicked on the Add IND/IDE Button
      Then A message will be displayed "IND/IDE Type,IND/IDE Number,IND/IDE Grantor and IND/IDE Holder Type are Required"
+     When I have selected the <INDIDEholder> Type as
+           |NIH|
+           |NCI|
+     And I don’t provide the NIH Institution or NCI Division/Program
+     Then I should get the error message as <Error>
+           
+     
+      |INDIDEholder  |Error  |
+      |NIH           |NIH Istitution is Required  |
+      |NCI           |NCI Division/Program Code is Required  |
 
-  Examples:
+      
+   Examples:
     |trialType                 |
     |National                  |
     |Externally Peer-Reviewed  |
     |Institutional             |
+
+  
+
+
+
 
 
 Scenario Outline: #4 I must enter FDA IND/IDE Information for applicable trials

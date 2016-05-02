@@ -20,6 +20,7 @@ json.trial_versions do
     json.submission_type submission_type
     json.submission_type_list submission_type_list
     json.amendment_reason_id submission.amendment_reason_id
+    json.amendment_num submission.amendment_num
 
     submission_version = TrialVersion.find_by_item_type_and_item_id("Submission", submission.id)
 
