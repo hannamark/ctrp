@@ -15,13 +15,12 @@
         // console.info('in trialEmailLogsCtrl: ', emailLogs);
         vm.emailLogs = emailLogs;
         showEmailDetail(0);
-
+        // actions
         vm.showEmailDetail = showEmailDetail;
 
         function showEmailDetail(idx) {
             vm.curEmail = vm.emailLogs[idx] || '';
             vm.curEmail.index = idx;
-            // console.info('curEmail: ', vm.curEmail);
         }
 
     } // trialEmailLogsCtrl
