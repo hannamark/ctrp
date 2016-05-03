@@ -1,6 +1,6 @@
 <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
-    <div class="alert alert-warning fade in">
-        <strong>{{searchWarningMessage}}</strong>
+    <div class="alert alert-warning fade in" ng-if="searchWarningMessage.length">
+        <strong>**{{searchWarningMessage}}**</strong>
     </div>
 </div>
 <div class="row">
