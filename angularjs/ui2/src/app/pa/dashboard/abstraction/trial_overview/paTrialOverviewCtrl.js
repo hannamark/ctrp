@@ -91,13 +91,21 @@
         }
 
         function checkinTrial(checkinType) {
+            vm.disableBtn = true;
+
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                // console.log('checkin result: ', res.result);
-                updateTrialDetailObj(res.result);
-                vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
-                vm.scientificCheckoutObj = Common.jsonStrToObject(res.result.scientific_checkout); // null
-                // updateTrialDetailObj(res.result);
-                showToastr(checkinType + ' checkin was successful!', 'top right')
+                var status = res.server_response.status;
+
+                if (status === 200) {
+                    // console.log('checkin result: ', res.result);
+                    updateTrialDetailObj(res.result);
+                    vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
+                    vm.scientificCheckoutObj = Common.jsonStrToObject(res.result.scientific_checkout); // null
+                    // updateTrialDetailObj(res.result);
+                    showToastr(checkinType + ' checkin was successful!', 'top right')
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 
