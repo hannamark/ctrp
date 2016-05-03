@@ -10,6 +10,11 @@
 #  uuid            :string(255)
 #  lock_version    :integer          default(0)
 #
+# Indexes
+#
+#  index_trial_funding_sources_on_organization_id  (organization_id)
+#  index_trial_funding_sources_on_trial_id         (trial_id)
+#
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 

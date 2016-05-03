@@ -17,6 +17,12 @@
 #  status           :string           default("active")
 #  why_deleted      :string
 #
+# Indexes
+#
+#  index_trial_documents_on_added_by_id    (added_by_id)
+#  index_trial_documents_on_submission_id  (submission_id)
+#  index_trial_documents_on_trial_id       (trial_id)
+#
 
 class TrialDocument < TrialBase
 

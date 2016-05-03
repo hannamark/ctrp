@@ -131,7 +131,7 @@
             getEvaluationTypes:getEvaluationTypes,
             getSpecimenTypes:getSpecimenTypes,
             getBiomarkerPurposes:getBiomarkerPurposes,
-            getBiomarkerUses:getBiomarkerUses,
+            getBiomarkerUses:getBiomarkerUses
 
         };
 

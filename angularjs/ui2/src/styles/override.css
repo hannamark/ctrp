@@ -116,6 +116,9 @@
   height: auto !important;
 }
 */
+.ui-grid-menu-button {
+    height: 24px;
+}
 
 .ui-grid-contents-wrapper {
     margin-bottom: 32px;
@@ -124,6 +127,11 @@
 .grid {
     width: 100%;
     height: 550px;
+}
+
+.grid-small {
+    width: 100%;
+    height: 200px;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
@@ -200,6 +208,12 @@
 .table-striped.table-condensed textarea.form-control {
     height: 50px;
 }
+.control-label.text-left {
+    text-align:left;
+}
+table td > div.input-group.datepicker {
+    position: static;
+}
 
 .animated-item {
     -webkit-transition: all linear 0.5s;
@@ -237,6 +251,11 @@
 .deleted-text, .deleted-text a{
     color:red;
     text-decoration:line-through;
+}
+
+.grey-text {
+    color: grey;
+    font-weight: bold;
 }
 
 .nav-search-bar {
@@ -487,6 +506,10 @@ form label {
     border-radius: 0 6px 6px 6px;*/
 }
 
+.dropdown-menu li a:hover, a.hand-hover:hover {
+    cursor: pointer;
+}
+
 .dropdown-submenu:hover>.dropdown-menu {
     display: block;
 }
@@ -572,6 +595,10 @@ form {
     padding: 0 5px;
 }
 
+form.width-normal {
+    width: 100%;
+}
+
 .control-label {
     color: #444;
 }
@@ -643,6 +670,10 @@ h5 {
 }
 .form-horizontal .has-feedback .form-control-feedback {
     right: 5px;
+}
+
+.has-feedback .form-control  {
+    padding-right: 20px;
 }
 
 .feedback-height-sm {
@@ -728,6 +759,38 @@ h5 {
 .ui-grid-cell {
     line-height: 1em;
     height: 22px !important;
+}
+
+.grid-medium-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 35px !important;
+}
+
+.grid-large-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 80px !important;
+}
+
+.grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
+
+.grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
+    background:#bbb;
+    color: #444;
+}
+
+.grid-large-cell .ui-grid-row:nth-child(even) .ui-grid-cell,
+.grid-medium-cell .ui-grid-row:nth-child(even) .ui-grid-cell {
+    background: #fdfdfd;
+}
+
+.grid-large-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell,
+.grid-medium-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell {
+    background-color: #fdfdfd;
+}
+
+.expandableRow {
+    border-bottom: 1px solid #EEE;
+    margin-top: 2px !important;
 }
 
 .ui-grid-cell .btn {
@@ -956,7 +1019,6 @@ md-checkbox .md-icon {
 md-checkbox.md-default-theme.md-checked .md-icon {
     background: blue;
 }
-
 .text-vmiddle {
     display: inline-block;
     vertical-align: middle;
@@ -999,9 +1061,6 @@ a.btn-file:hover {
     vertical-align: middle !important;
 }
 
-.td-date {
-    min-width: 5%;
-}
 .td-time {
     min-width: 6%;
 }
@@ -1011,7 +1070,7 @@ a.btn-file:hover {
 
 body.identification  a.menu-identification,
 body.history a.menu-history,
-body.milestones a.menu-milestones,
+body.milestone a.menu-milestone,
 body.on-hold-info a.menu-on-hold-info,
 body.view-tsr a.menu-view-tsr,
 body.assign-ownership a.menu-assign-ownership,
@@ -1219,13 +1278,13 @@ div.datepicker {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 }
 
-.sign_up .panel {
+.sign_up .panel, .welcome_signup .panel {
     max-width: 500px;
 }
 .sign_up form {
     width:100%;
 }
-.sign_up .centered-form{
+.sign_up .centered-form, .welcome_signup .centered-form{
     padding: 1% 0;
 }
 
@@ -1240,4 +1299,43 @@ div.datepicker {
 }
 .sign_up fieldset label {
     font-weight: normal;
+}
+
+ul.csv {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul.csv li {
+    display: inline;
+}
+ul.csv li:after {
+    content: ",";
+}
+ul.csv li:last-child:after {
+    content: "";
+}
+
+div[disabled] {
+    display:none;
+}
+
+.modal-body {
+    overflow: visible;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.small-header-text {
+    font-size: 75%;
+}
+
+.st-sort-ascent:before{
+    content: '\25B2';
+}
+
+.st-sort-descent:before{
+    content: '\25BC';
 }

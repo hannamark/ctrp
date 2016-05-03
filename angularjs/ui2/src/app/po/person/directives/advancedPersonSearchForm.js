@@ -92,10 +92,9 @@
             }
 
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
-            $scope.curationModeEnabled = $scope.curationMode === 'undefined' ? $scope.curationModeEnabled : $scope.curationMode;
-            $scope.usedInModal = $scope.usedInModal === 'undefined' ? false : $scope.usedInModal;
-            $scope.showGrid = $scope.showGrid === 'undefined' ? false : $scope.showGrid;
-
+            $scope.curationModeEnabled = angular.isDefined($scope.curationMode) ? $scope.curationMode : $scope.curationModeEnabled;
+            $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
+            $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
 
             $scope.searchPeople = function (newSearchFlag) {
                 if (newSearchFlag === 'fromStart') {
@@ -124,7 +123,11 @@
 
                 if(!isEmptySearch) { //skip searching if empty search
                     $scope.searching = true;
-
+                    if ($scope.usedInModal) {
+                        // in modal, search against CTRP context and Active people!
+                        $scope.searchParams.source_context = 'CTRP';
+                        $scope.searchParams.source_status = 'Active';
+                    }
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
                         // console.log('received data for person search: ' + JSON.stringify(data));
                         if ($scope.showGrid && data.data.people) {

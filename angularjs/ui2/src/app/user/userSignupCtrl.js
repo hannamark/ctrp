@@ -15,20 +15,25 @@
 
         $scope.signup_form = {};
 
-        vm.userObj = {
-            'local_user': {
-                domain: '',
-                username: '',
-                first_name: '',
-                last_name: '',
-                email: '',
-                password: '',
-                password_confirmation: '',
-                organization_id: '',
-                selected_functions: []
-            },
-            'type': vm.type
+        var UserObj = function() {
+            return {
+                'local_user': {
+                    domain: '',
+                    username: '',
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: '',
+                    organization_name: '',
+                    organization_id: '',
+                    selected_function: ''
+                },
+                'type': vm.type
+            };
         };
+
+        vm.userObj = new UserObj();
         
         AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
@@ -57,7 +62,7 @@
                     selectedArr.push(func);
                 }
             });
-            vm.userObj.local_user.selected_functions = selectedArr;
+            vm.userObj.local_user.selected_function = '';
         };
 
         vm.searchParams = OrgService.getInitialOrgSearchParams();
@@ -78,6 +83,7 @@
                 
                 orgNames = res.orgs.map(function (org) {
                     vm.userObj.local_user.organization_id = org.id;
+                    vm.userObj.local_user.organization_name = org.name;
                     return org.name;
                 });
 
@@ -88,19 +94,11 @@
         }; //typeAheadNameSearch
 
         vm.updateUser = function () {
-            //
             UserService.upsertUserSignup(vm.userObj);
+        };
 
-            /**
-            UserService.upsertUserSignup(vm.userObj).then(function (response) {
-                toastr.success('User ' +JSON.stringify(vm.userObj) + ' has been recorded', 'Operation Successful!');
-                console.log("Added User" + JSON.stringify(vm.userObj));
-
-            }).catch(function (err) {
-                console.log("Error in updating inserting new User " + JSON.stringify(vm.userObj));
-            });
-
-**/
+        vm.reset = function () {
+            vm.userObj = new UserObj();
         };
     }
 

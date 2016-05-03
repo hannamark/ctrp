@@ -33,12 +33,21 @@
 #  prs_organization_name       :string
 #  receive_email_notifications :boolean
 #  role_requested              :string
-#  approved                    :boolean          default(FALSE), not null
 #  organization_id             :integer
 #  source                      :string
 #  user_status_id              :integer
 #  phone                       :string
 #  city                        :string
+#  domain                      :string
+#
+# Indexes
+#
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_organization_id       (organization_id)
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_unlock_token          (unlock_token) UNIQUE
+#  index_users_on_user_status_id        (user_status_id)
+#  index_users_on_username              (username) UNIQUE
 #
 
 class  User < ActiveRecord::Base
@@ -53,8 +62,8 @@ class  User < ActiveRecord::Base
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :trials, through: :trial_ownerships
 
-  scope :approved, -> { where(approved: true) }
-  scope :not_approved, -> { where(approved: false) }
+  attr_accessor :organization_name
+  attr_accessor :selected_functions
 
   #Define roles here to drive dropdown menu when adding users
   ROLES = %i[ROLE_RO ROLE_SUPER ROLE_ADMIN ROLE_CURATOR ROLE_ABSTRACTOR ROLE_ABSTRACTOR-SU ROLE_TRIAL-SUBMITTER ROLE_ACCRUAL-SUBMITTER ROLE_SITE-SU ROLE_SERVICE-REST]
@@ -64,15 +73,35 @@ class  User < ActiveRecord::Base
   scope :matches, -> (column, value) { where("users.#{column} = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("users.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    join_clause  = "LEFT JOIN organizations user_org ON user_org.id = users.organization_id "
+    join_clause += "LEFT JOIN family_memberships on family_memberships.organization_id = user_org.id "
+    join_clause += "LEFT JOIN families on family_memberships.family_id = families.id "
+    join_clause += "LEFT JOIN user_statuses on users.user_status_id = user_statuses.id"
+    str_len = 0
+
+    if column != "site_admin" && column != "organization_id" && column != "user_status_id"
+      str_len = value.length
+    end
+
+    column_str = ""
+    if column == "user_organization_name"
+      column_str = "user_org.name"
+    elsif column == "organization_family"
+      column_str = "families.name"
+    else column != "site_admin"
+      column_str = "users.#{column}"
+    end
+
+    if column == 'user_status_id' || column == 'organization_id'
+      joins(join_clause).where("#{column_str} = #{value}")
+    elsif value[0] == '*' && value[str_len - 1] != '*'
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}")
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("users.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+      joins(join_clause).where("#{column_str} ilike ?", "#{value[0..str_len - 2]}%")
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("users.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      where("users.#{column} ilike ?", "#{value}")
+      joins(join_clause).where("#{column_str} ilike ?", "#{value}")
     end
   }
 
@@ -88,7 +117,7 @@ class  User < ActiveRecord::Base
 
   def get_all_users_by_role
     users = []
-    if !self.role.blank? && self.approved
+    if !self.role.blank?
       # A Super Admin User can see all the Users and can approve access to the user
       if self.role == "ROLE_SUPER" && self.organization_id.blank?
         users = User.all
@@ -105,7 +134,7 @@ class  User < ActiveRecord::Base
 
   def process_approval
     # When an ADMIN approves of the user request for privileges, the role is updated
-    # if it is not already chosen and the approved field is set to true
+    # if it is not already chosen and the status is changed
     if self.role.blank?
       if self.organization_id.blank?
         self.role = "ROLE_RO"
@@ -114,17 +143,8 @@ class  User < ActiveRecord::Base
       end
     end
 
-    self.approved = true
     self.save!
 
-  end
-
-  def process_disapproval
-    unless self.role.blank?
-      self.approved = false
-      # TODO should role be nullified?
-      self.save!
-    end
   end
 
   def get_write_mode
@@ -179,6 +199,11 @@ class  User < ActiveRecord::Base
                            {registry_write_mode: false},
                            {user_write_mode: true},
                            {pa_write_mode: true}]
+                        when  "ROLE_ACCOUNT-APPROVER"
+                          [{po_write_mode: false},
+                           {registry_write_mode: false},
+                           {user_write_mode: true},
+                           {pa_write_mode: false}]
                       end
   end
 

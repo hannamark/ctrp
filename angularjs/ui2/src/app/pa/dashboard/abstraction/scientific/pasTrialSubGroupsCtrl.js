@@ -4,10 +4,10 @@
         .controller('pasTrialSubGroupsCtrl', pasTrialSubGroupsCtrl);
 
     pasTrialSubGroupsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService','OutcomeMeasureService', 'toastr',
-        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj','assayTypes'];
+        'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj','assayTypes', '$location', '$anchorScroll'];
 
     function pasTrialSubGroupsCtrl($scope, TrialService, PATrialService,OutcomeMeasureService, toastr,
-                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj,assayTypes) {
+                                         MESSAGES, _, $timeout, uiGridConstants,trialDetailObj,assayTypes, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.currentSubGroup= {};
@@ -140,9 +140,17 @@
         /**
          *  Set Add Mode.
          **/
-        function setAddMode() {
-            vm.addEditMode = true;
+        function setAddMode(addEditModeValue) {
+            if (!(typeof addEditModeValue === 'undefined' || addEditModeValue === null)) {
+                vm.addEditMode = addEditModeValue;
+                $location.hash('section_top');
+                $anchorScroll();
+            } else {
+                vm.addEditMode = true;
+            }
+
             vm.currentSubGroup= {};
+            $scope.sg_form.$setPristine();
         }
 
         /**

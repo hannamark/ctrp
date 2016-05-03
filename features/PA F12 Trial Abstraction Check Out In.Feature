@@ -6,7 +6,7 @@ Scenario: #1 I can Check Out a trial for both Administration and Scientific Abst
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I have selected Check Out Both 
-Then the Trial Administration and Scientific sections (listed below) will locked out from other Abstractors until the trial is checked in
+Then the Trial Administration and Scientific sections (listed below) will not be editible by other Abstractors until the trial is checked in
 |Administrative Data (Section)|
 |General Trial Details|
 |Collaborators|
@@ -40,8 +40,8 @@ And the Scientific Check Out Date will be the current date and time
 Scenario: #2 I can Check Out a trial for Administration Abstraction
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
-And I have selected Check Out Administrative  
-Then the Trial Administration sections (listed below) will locked out from other Abstractors until the administrative sections of the trial are checked in
+And I have selected Check Out Administrative 
+Then the Trial Administration sections (listed below) will not be editible by other Abstractors until the administrative sections of the trial are checked in
 |Administrative Data (Section)|
 |General Trial Details|
 |Collaborators|
@@ -62,7 +62,7 @@ Scenario: #3 I can Check Out a trial for Scientific Abstraction
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I have selected Check Out Scientific 
-Then the Trial Scientific sections (listed below) will locked out from other Abstractors until the trial is checked in
+Then the Trial Scientific sections (listed below) will not be editible by other Abstractors until the trial is checked in
 |Scientific Data (Section)|
 |Trial Design|
 |Trial Description|
@@ -86,7 +86,7 @@ And the Administrative and Scientific Abstraction Check out User is my User ID
 And I have selected Check In Both 
 And there are no Trial Status Warnings
 And there are no Trail Abstraction Errors
-Then the Trial Administration and Scientific sections (listed below) will unlocked and to allow Abstractors to check out the trial
+Then the Trial Administration and Scientific sections (listed below) will be editible and allow Abstractors to check out the trial
 |Administrative Data (Section)|
 |General Trial Details|
 |Collaborators|
@@ -117,6 +117,8 @@ And the Check In Type will be Scientific
 And the Scientific Check In User will be my User ID
 And the Scientific Check In Date will be the current date and time
 And I must enter a Check In Comment
+And The comment will be affilliated with the Administrative Check In 
+And The comment will be affilliated with the Scientific Check In
 
 Scenario: #5 I can Check In a trial from Administration Abstraction
 Given I am logged into the CTRP Protocol Abstraction application
@@ -125,7 +127,7 @@ And the Administrative Check out User is my User ID
 And I have selected Check In Administration
 And there are no Trial Status Warnings
 And there are no Trail Abstraction Errors
-Then the Trial Administration sections (listed below) will unlocked and to allow Abstractors to check out the trial
+Then the Trial Administration sections (listed below) will be editible and allow Abstractors to check out the trial
 |Administrative Data (Section)|
 |General Trial Details|
 |Collaborators|
@@ -141,6 +143,7 @@ And the Check In Type will be Administrative
 And the Administrative Check In User will be my User ID
 And the Administrative Check In Date will be the current date and time
 And I must enter a Check In Comment
+And The comment will be affilliated with the Administrative Check In 
 
 Scenario: #6 I can Check In a trial from  Scientific Abstraction
 Given I am logged into the CTRP Protocol  Scientific application
@@ -149,7 +152,7 @@ And the  Scientific Abstraction Check out User is my User ID
 And I have selected Check In Scientific 
 And there are no Trial Status Warnings
 And there are no Trail Abstraction Errors
-Then the Trial Scientific sections (listed below) will unlocked and to allow Abstractors to check out the trial
+Then the Trial Scientific sections (listed below) will be editible and allow Abstractors to check out the trial
 |Scientific Data (Section)|
 |Trial Design|
 |Trial Description|
@@ -166,12 +169,12 @@ And the Check In Type will be Scientific
 And the Scientific Check In User will be my User ID
 And the Scientific Check In Date will be the current date and time
 And I must enter a Check In Comment
+And The comment will be affilliated with the Scientific Check In
 
 Scenario: #7 Check In comment required
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
-And I have selected Check In  
-And I select the Check Type 
+And I have selected Check In 
 And I do not enter a Comment
 Then the system will display the Error Message "Please enter a Check In comment"
 And the trail will not be checked in

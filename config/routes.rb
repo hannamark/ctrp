@@ -93,6 +93,8 @@ Rails.application.routes.draw do
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
     post '/users/search' => 'users#search'
+    post '/users/request_admin/:username' => 'users#request_admin_access'
+
     # All the User routes(non-devise) should be accessed by username
     # rather that "id" in order to prevent exposing the "id"
     resources :users, param: :username do
@@ -116,6 +118,7 @@ Rails.application.routes.draw do
         get 'index'
         post 'history'
         post 'updates_history'
+        post 'submissions_history'
       end
     end
 
@@ -220,6 +223,7 @@ Rails.application.routes.draw do
           post 'lookup_imported_ncit_interventions'
           get  'get_intervention_types'
           get  'search_ctrp_interventions'
+          get  'get_mail_logs'
         end
       end
 
@@ -242,6 +246,7 @@ Rails.application.routes.draw do
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
+          post 'deleted_documents'
         end
       end
 

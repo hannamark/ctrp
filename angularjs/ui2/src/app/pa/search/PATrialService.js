@@ -9,10 +9,10 @@
         .factory('PATrialService', PATrialService);
 
     PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload', 'TrialService',
-            '$rootScope', 'PromiseTimeoutService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
+            '$rootScope', 'PromiseTimeoutService', 'DateService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
 
     function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload, TrialService,
-            $rootScope, PromiseTimeoutService, HOST, LocalCacheService, uiGridConstants) {
+            $rootScope, PromiseTimeoutService, DateService, HOST, LocalCacheService, uiGridConstants) {
 
         var curTrial = {};
         var initTrialSearchParams = {
@@ -125,6 +125,7 @@
             getHolderTypes: getHolderTypes,
             getSubmissionTypes: getSubmissionTypes,
             getSubmissionMethods: getSubmissionMethods,
+            getInvestigatorTypes: getInvestigatorTypes,
             getNih: getNih,
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
@@ -160,7 +161,8 @@
             lookupNcitInterventions: lookupNcitInterventions,
             getInterventionTypes: getInterventionTypes,
             searchCtrpInterventionsByName: searchCtrpInterventionsByName,
-            updateTrial: updateTrial
+            updateTrial: updateTrial,
+            getMailLogs: getMailLogs,
         };
 
         return services;
@@ -310,6 +312,12 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
         }
 
+        function getInvestigatorTypes() {
+            // TODO: check if hardcoding is OK
+            var investigator_types = [{"name":"Principal Investigator"},{"name":"Sub-Investigator"}];
+            return investigator_types;
+        }
+
         // Validation logic for Other Trial Identifier
         function checkOtherId(protocolIdOriginId, protocolIdOriginName, protocolId, addedOtherIds) {
             var errorMsg = '';
@@ -378,6 +386,17 @@
          */
         function getCurrentTrialFromCache() {
             var curTrial = LocalCacheService.getCacheWithKey('current_trial_object');
+
+            _.each(curTrial.participating_sites, function (site) {
+                site.site_rec_status_wrappers = DateService.formatDateArray(site.site_rec_status_wrappers, 'status_date', 'DD-MMM-YYYY');
+                /*
+                _.each(site.site_rec_status_wrappers, function (item) {
+                    var status_date = new Date(item.status_date);
+                    item.status_date = moment(status_date).format("DD-MMM-YYYY");
+                });
+                */
+            });
+
             delete curTrial.admin_checkout;
             delete curTrial.scientific_checkout;
             return curTrial;
@@ -481,6 +500,16 @@
         }
 
         /**
+         * Retrieve email logs sent out for this trialId
+         * @param  {Integer} trialId
+         * @return {Promise}
+         */
+        function getMailLogs(trialId) {
+            var url = URL_CONFIGS.PA.MAIL_LOGS.replace(/\s*\{.*?\}\s*/g, trialId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
          * Search NCI trial in the database
          * @param  {String} nciTrialId, trial id that starts with NCI- (e.g. NCI-2014-00894)
          * @return {Promise}
@@ -559,6 +588,7 @@
                         'trial_document[document_type]': trialDocObj.document_type,
                         'trial_document[document_subtype]': trialDocObj.document_subtype,
                         'trial_document[trial_id]': trialId,
+                        'trial_document[source_document]': trialDocObj.source_document || 'PA',
                         'trial_document[file]': trialDocObj.file,
                         'replaced_doc_id': trialDocObj.replacedDocId || ''  // if not present, use empty string
                     }

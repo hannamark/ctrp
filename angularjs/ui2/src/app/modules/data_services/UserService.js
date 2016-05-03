@@ -24,119 +24,6 @@
         ];
         var rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
 
-        // Initial User Search Parameters
-        var initUserSearchParams = {
-            username: '',
-            first_name: '',
-            middle_name: '',
-            last_name: '',
-            email: '',
-            phone: '',
-            approved: '',
-            user_status_id: '',
-            // affiliated_org_name: '',
-
-            //for pagination and sorting
-            sort: 'updated_at',
-            order: 'DESC',
-            rows: 10,
-            start: 1
-        }; //initial User Search Parameters
-
-
-        var gridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            //enableRowSelection: false,
-            paginationPageSizes: [10, 25, 50, 100],
-            paginationPageSize: 10,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableGridMenu: true,
-            enableFiltering: true,
-            enableVerticalScrollbar: 2,
-            enableHorizontalScrollbar: 2,
-            columnDefs: [
-                {
-                    name: 'username',
-                    enableSorting: true,
-                    displayName: 'Username',
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                        ' title="{{COL_FIELD}}">' +
-                        ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                        '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'first_name',
-                    displayName: 'First',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'middle_name',
-                    displayName: 'Middle',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'last_name',
-                    displayName: 'Last',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'email',
-                    displayName: 'Email',
-                    enableSorting: true,
-                    minWidth: '150',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'phone',
-                    displayName: 'Phone',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'approved',
-                    displayName: 'Approve',
-                    enableSorting: true,
-                    minWidth: '25',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}"><label><input id="{{row.entity.id}}" type="checkbox" ng-model="row.entity.approved" ng-click="grid.appScope.changeUserApproval(row)"></label></div>'
-                },
-                {
-                    name: 'user_status',
-                    displayName: 'Status',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status.name}}">{{row.entity.user_status.name}}</div>'
-                }
-            ]
-        };
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -164,14 +51,11 @@
 
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
                 .then(function (data) {
-                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
-                        console.info('user id: ', data);
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
                         LocalCacheService.cacheItem('user_id', data.user_id); // cache user id
                         _setAppVersion(data.app_version);
-                        // LocalCacheService.cacheItem('app_version', data.application_version);
                         LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
                         LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
                         //array of write_modes for each area (e.g. pa or po)
@@ -182,7 +66,6 @@
 
                         $timeout(function () {
                             openGsaModal();
-                           // $state.go('main.gsa');
                         }, 500);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -228,28 +111,9 @@
          * @returns Array of JSON objects
          */
         this.searchUsers = function (searchParams) {
-            //toastr.success('Success', 'Successful in UserService, searchUsers');
-            console.log('User searchparams: ' + JSON.stringify(searchParams));
-            // if (!!searchParams) {
-            // toastr.success('Success', 'Successful in UserService, searchUsers');
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
-            // console.log('User List: ' + JSON.stringify(user_list));
             return user_list;
-            // }
         }; //searchUsers
-
-        /**
-         * get initial paramater object for people search
-         * @return initUserSearchParams
-         */
-        this.getInitialUserSearchParams = function () {
-            return initUserSearchParams;
-        }; //getInitialUserSearchParams
-
-
-        this.getGridOptions = function () {
-            return gridOptions;
-        };
 
 
         /**
@@ -272,13 +136,23 @@
         };
 
         this.getUserDetailsByUsername = function (username) {
-            //var username2 = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         }; //getUserByName
 
         this.getCurrentUserDetails = function () {
             var username = LocalCacheService.getCacheWithKey('username');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
+        };
+
+        this.userRequestAdmin = function (params) {
+            PromiseTimeoutService.postDataExpectObj('/ctrp/users/request_admin/' + params.username, params)
+                .then(function (data) {
+                    if(data[0].success) {
+                        toastr.success('Success', 'Your Request for Admin Access has been sent.');
+                    } else {
+                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error');
+                    }
+                });
         };
 
         /**
@@ -316,11 +190,11 @@
         };
 
         this.getAppVersion = function () {
-            return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
+            return LocalCacheService.getCacheWithKey('app_version');
         };
 
         this.getAppRelMilestone = function () {
-            return LocalCacheService.getCacheWithKey('app_rel_milestone'); // || appRelMilestone;
+            return LocalCacheService.getCacheWithKey('app_rel_milestone');
         };
 
         this.getLoginBulletin = function () {
@@ -333,15 +207,13 @@
 
         this.upsertUser = function (userObj) {
             //update an existing user
-            var configObj = {}; //empty config
-
+            var configObj = {};
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
-
-        }; //upsertUser
+        };
 
         this.upsertUserSignup = function (userObj) {
             //update an existing user
-            var configObj = {}; //empty config
+            var configObj = {};
             console.log('userObj = ' + JSON.stringify(userObj));
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
@@ -408,12 +280,7 @@
             var objIndex = _.findIndex(writeModesArray, queryObj);
 
             return objIndex > -1;
-
-            // var writeModeObj = writeModesArray[objIndex];
-            // var writeModeObj = _.findWhere(writeModesArray, queryObj);
-            // console.log('found the writeModeObj', writeModeObj);
-            // return writeModeObj[completeSectionNameKey];
-        }
+        };
 
 
         /**
@@ -460,7 +327,6 @@
         }
 
         function openGsaModal() {
-            console.log('1 st openning modal instance???');
 
             (function() {
                 var modalInstance = $uibModal.open({
@@ -472,11 +338,10 @@
                         UserService: 'UserService',
                         gsaObj: function (UserService) {
                             return UserService.getGsa();
-                        },
+                        }
                     }
 
                 });
-
 
                 modalInstance.result.then(function () {
                     console.log('modal closed, TODO redirect');

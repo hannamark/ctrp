@@ -9,42 +9,24 @@
         .factory('AuditService', AuditService);
 
     AuditService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants','HOST'];
 
     function AuditService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService,UserService,uiGridConstants) {
+                        PromiseTimeoutService,UserService,uiGridConstants,HOST) {
 
-        var initOrgSearchParams = {
-            name : '',
-            alias: true,
-            wc_search: true,
-            // po_id : '',
-            ctrp_id : '',
-            source_context : '',
-            source_id : '',
-            source_status : '',
-            family_name : '',
-            address : '',
-            address2 : '',
-            city : '',
-            state_province : '',
-            country : '', //default country ? United States ?
-            email : '',
-            postal_code : '',
-            phone: '',
-
+        var initUpdateSearchParams = {
             //for pagination and sorting
             sort: '',
             order: '',
-            rows: 20,
+            rows: 10,
             start: 1
-        }; //initial Organization Search Parameters
+        }; //initial Audits Search Parameters
 
         var updatesGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
-            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' <div ng-mouseover="rowStyle={\'background-color\': \'red\'}; grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
             ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
             ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
             ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
@@ -54,28 +36,105 @@
             // enableFullRowSelection: true,
             enableSelectAll: false,
             //enableRowSelection: false,
+            paginationPageSizes: [10, 20],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            expandableRowTemplate:'innerTable.html',
+            expandableRowHeight: 150,
+            enableExpandableRowHeader:false,
+
+            columnDefs: [
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
+                {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
+                {
+                    name: 'Acknowledge ',
+                    cellTemplate: '<div class="text-center ui-grid-cell-contents"><button type="button" class="btn btn-primary" restriction-field ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row,\'updates\')">Acknowledge</button><div ng-hide="(row.entity.acknowledge != \'Yes\')">Acknowledged</div>'
+                },
+                {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*',
+                cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
+                {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
+
+            ]
+        };
+
+
+        var submissionsGridOptions = {
+            rowTemplate: '<div>'+
+            '<div>' +
+            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            enableSelectAll: false,
+            enableRowSelection: false,
             paginationPageSizes: [20, 50, 100],
-            paginationPageSize: 20,
+            paginationPageSize: 10,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
-            expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
-            expandableRowHeight: 150,
-
             columnDefs: [
-                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '100', width: '5%'},
+                {name: 'submission_date',displayName:'Date', minWidth: '150', width: '15%',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
+                {field: 'submission_type_list', displayName: 'Type',minWidth: '25', width: '25%',enableSorting:true, cellTemplate:'<span class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></span>'},
+                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '45', width: '35%',
+
+                    cellTemplate: '<div class="ui-grid-cell-contents"><div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a> {{doc.source_document}}</div></div>'},
+                {field: 'milestone', displayName: 'Current Milestone', minWidth: '25',width: '15%',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
+
                 {
-                    name: 'Acknowledge ',
-                    cellTemplate: '<div><button type="button" class="btn btn-primary" ng-hide="(row.entity.acknowledge != \'No\')" ng-click="grid.appScope.editRow(grid,row)">Acknowledge</button></div>'
-                },
-                {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
+                    name: 'Action ',
+                    cellTemplate: '<div class="text-center ui-grid-cell-contents"><button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button></div>',
+                    minWidth:'10',width: '5%'
+
+                }
+            ]
+        };
+
+
+        var deleteDocsGridOptions = {
+            rowTemplate: '<div>'+
+            '<div>' +
+            ' <div ng-mouseover="rowStyle={\'background-color\': \'red\'}; grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
+            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
+            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
+            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            enableSelectAll: false,
+            paginationPageSizes: [10, 20],
+            paginationPageSize: 10,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            columnDefs: [
+
+                {name: 'updated_at',displayName:'Deletion Date', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.updated_at | date: "dd-MMM-yyyy"}}</div>'},
+
+                {name: 'document_type',displayName:'Document Type', enableSorting: true, minWidth: '100', width: '*'},
+                {field: 'file_name',pinnedLeft: true, displayName: 'File Name' , enabledSorting: true , minWidth: '100', width: '*'},
+                    //cellTemplate: '<div class="ui-grid-cell-contents"><a href="{{grid.appScope.downloadBaseUrl}}/{{row.entity[col.field].id}}">{{row.entity[col.field].file_name}}</a> {{doc.source_document}}</div></div>'},
+
+                {name: 'original',displayName:'Original', enableSorting: true, minWidth: '100', width: '*'},
+
+                {name: 'deleted_or_revised',displayName:'Deleted/Revised', enableSorting: true, minWidth: '100', width: '*'},
+
+                {name: 'why_deleted',displayName:'Deletion Comments', enableSorting: true, minWidth: '100', width: '*'},
 
             ]
         };
@@ -93,7 +152,7 @@
             rowHeight: 22,
             // enableFullRowSelection: true,
             enableSelectAll: false,
-            //enableRowSelection: false,
+            enableRowSelection: true,
             paginationPageSizes: [20, 50, 100],
             paginationPageSize: 20,
             useExternalPagination: true,
@@ -103,11 +162,11 @@
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
-                {name: 'created_at', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'created_at', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.created_at | date: "dd-MMM-yyyy"}}</div>'},
+
                 {name: 'event', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140'},
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
@@ -181,8 +240,12 @@
             getAudits: getAudits,
             getUpdatesGridOptions: getUpdatesGridOptions,
             getUpdates: getUpdates,
+            getUpdateInitialSearchParams:getUpdateInitialSearchParams,
             getSubmissions: getSubmissions,
-            upsertSubmission:upsertSubmission
+            getSubmissionsGridOptions: getSubmissionsGridOptions,
+            upsertSubmission:upsertSubmission,
+            getDeletedDocs:getDeletedDocs,
+            getDeleteDocsGridOptions:getDeleteDocsGridOptions
         };
 
         return services;
@@ -190,6 +253,10 @@
 
 
         /*********************** implementations *****************/
+
+        function getUpdateInitialSearchParams() {
+            return initUpdateSearchParams;
+        }
 
         function getAudits(obj){
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.AUDIT_HISTORY, obj);
@@ -211,13 +278,26 @@
             return updatesGridOptions;
         }
 
-        function getSubmissions(obj) {
-
+        function getSubmissionsGridOptions() {
+            return submissionsGridOptions;
         }
 
 
-        /**
-         * Update submission
+        function getSubmissions(obj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_SUBMISSIONS_HISTORY, obj);
+
+        }
+
+        function getDeletedDocs(obj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_DELETED_DOCUMENTS, obj);
+
+        }
+
+        function getDeleteDocsGridOptions() {
+            return deleteDocsGridOptions;
+        }
+                /**
+         * Update submission for Updates Tab Updates
          *
          * @param obj
          * @returns {*}
@@ -231,7 +311,6 @@
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_SUBMISSION + obj.id + '.json', obj, configObj);
 
         } //upsertOrg
-
 
     }
 

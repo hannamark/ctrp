@@ -8,21 +8,30 @@
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
     pasArmsGroupsCtrl.$inject = ['$scope', '$state', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location'];
+        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location', 'Common'];
 
     function pasArmsGroupsCtrl($scope, $state, TrialService, PATrialService, toastr,
-                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location) {
+                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location, Common) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
+        console.log("INTERVENTIONS = " + JSON.stringify(trialDetailObj.interventions));
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
         vm.selectListHandler = selectListHandler;
         vm.deleteSelected = deleteSelected;
         vm.selectedDeleteAnatomicSiteList = [];
+        vm.currentArmsGroup = {};
+        vm.currentArmsGroup.label = "";
         vm.interventionList = [];
         vm.trial_interventions = [];
         vm.interventional = false;
+        vm.duplicateLabel = false;
+        vm.sortableListener = {};
+        vm.sortableListener.stop = dragItemCallback;
+        //vm.watchArmLabel = watchArmLabel();
+
         if(vm.curTrial.research_category.name=='Interventional') {
             vm.interventional = true;
         }
@@ -32,6 +41,13 @@
             console.log("RELOAD");
             $state.go($state.$current, null, { reload: true });
         };
+
+        activate();
+
+        /****************** implementations below ***************/
+        function activate() {
+           // watchArmLabel();
+        }
 
         vm.checkAllAG = function () {
             if (vm.selectedAllAG) {
@@ -47,10 +63,40 @@
 
         };
 
+        vm.checkDuplicates = function () {
+            var isConfirmed = false;
+            var confirmMsg = 'Click OK to add a duplicate Label.  Click Cancel to abort';
+            //check for duplicates
+            vm.duplicateLabel = false;
+            for (var j = 0; j < vm.curTrial.arms_groups.length; j++) {
+                if (vm.curTrial.arms_groups[j].label == vm.currentArmsGroup.label) {
+                    vm.duplicateLabel = true;
+                }
+            }
+            if (vm.duplicateLabel) {
+                // if OC exists already
+                Common.alertConfirm(confirmMsg).then(function(ok) {
+                    isConfirmed = ok;
+                }).catch(function(cancel) {
+                    // isConfirmed = cancel;
+                }).finally(function() {
+                    if (isConfirmed === true) {
+                        // user confirmed
+                        vm.updateTrial();
+                    } // isConfirmed
+                });
+            } else {
+                vm.updateTrial();
+            }
+
+        }
+
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
                 vm.curTrial.arms_groups_attributes = [];
                 vm.currentArmsGroup.intervention_text = "";
+                console.log("vm.interventionList.length ="+ vm.interventionList.length);
+                console.log("vm.interventionList ="+ JSON.stringify(vm.interventionList.length));
                 if(vm.interventionList.length > 0){
                     for (var i = 0; i < vm.interventionList.length; i++) {
                         vm.currentArmsGroup.intervention_text = vm.currentArmsGroup.intervention_text + vm.interventionList[i].id + ",";
@@ -63,6 +109,7 @@
             }
             console.log("vm.curTrial.arms_groups_attributes " + JSON.stringify(vm.curTrial.arms_groups_attributes));
             vm.saveTrial();
+            vm.duplicateLabel = false;
         }
         vm.saveTrial = function(params){
             vm.disableBtn = true;
@@ -108,6 +155,7 @@
                     timeOut: 0
                 });
                 vm.selectedAllAG = false;
+
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             });
@@ -118,6 +166,7 @@
 
         function setAddMode(isAddMode) {
             vm.currentArmsGroup = {};
+            vm.currentArmsGroup.label = "";
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
@@ -139,6 +188,8 @@
                 $location.hash('section_top');
                 $anchorScroll();
             }
+
+            //$scope.arm_form.$setPristine();
         }
 
         /**
@@ -146,7 +197,9 @@
          **/
         function setEditMode(idx) {
             vm.addEditMode = true;
+            //vm.currentArmsGroup.label = "";
             vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
+            vm.interventionList = vm.currentArmsGroup.arms_groups_interventions;
             vm.currentArmsGroup.edit = true;
             vm.currentArmsGroupIndex = idx;
             vm.intervention_array = new Array();
@@ -157,6 +210,7 @@
                 console.log("vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
                 console.log("vm.intervention_array="+JSON.stringify(vm.intervention_array));
             }
+            // Show the list of Trial interventions with the checkbox selected if they are assigned to the Arms Group
             var temp_intervention = {};
             for (var i = 0; i < vm.curTrial.interventions.length; i++) {
                for (var j = 0; j < vm.intervention_array.length; j++) {
@@ -220,7 +274,47 @@
 
         };
 
+        /**
+         * Callback for dragging item around
+         * @param  {[type]} event [description]
+         * @param  {[type]} ui    [description]
+         * @return {[type]}       [description]
+         */
+        function dragItemCallback(event, ui) {
+            var item = ui.item.scope().item;
+            var fromIndex = ui.item.sortable.index;
+            var toIndex = ui.item.sortable.dropindex;
 
+            vm.curTrial.arms_groups_attributes = _labelSortableIndex(vm.curTrial.arms_groups);
+
+            // Code for optimizing the save
+            /**for (var i = 0; i < vm.curTrial.arms_groups.length; i++) {
+                if(vm.curTrial.arms_groups[i].index !=i) {
+                    var obj = {};
+                    obj.id = vm.curTrial.arms_groups[i].id;
+                    obj.index = i;
+                    vm.curTrial.arms_groups_attributes.push(obj);
+                }
+            }**/
+
+            vm.saveTrial();
+        }
+
+        /**
+        function watchArmLabel() {
+            $scope.$watch(function () {
+                return vm.currentArmsGroup.label;
+            }, function (newVal, oldVal) {
+                console.log("InWatchLabel newVal=" + newVal);
+                // Go through all the arms groups in the current trial
+                for (var i = 0; i < vm.curTrial.arms_groups.length; i++) {
+                    if(vm.curTrial.arms_groups[i].label == newVal){
+                        vm.duplicateLabel = true;
+                    }
+                }
+                console.log("InWatchLabel vm.duplicateLabel=" + vm.duplicateLabel);
+            });
+        } **/
     } //pasArmsGroupsCtrl
 
 })();

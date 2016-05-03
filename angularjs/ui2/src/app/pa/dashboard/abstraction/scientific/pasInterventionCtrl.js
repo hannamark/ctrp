@@ -9,29 +9,24 @@
         .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
     pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes', 'UserService'];
+        'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes', 'UserService','$location', '$anchorScroll'];
 
     pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance', 'PATrialService'];
 
     function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes, UserService) {
+        MESSAGES, _, $timeout, Common, $uibModal, interventionTypes, UserService, $location, $anchorScroll) {
 
             var vm = this;
-            vm.interventionTypesByCategory = {
-                cancerGov: [],
-                ctGov: []
-            };
-            var CANCER_GOV = 'cancer.gov';
-            var CT_GOV = 'clinicaltrials.gov';
             vm.interventionTypes = interventionTypes;
             console.info('interventionTypes: ', interventionTypes);
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
             vm.deleteBtnDisabled = true;
-
-            vm.isCancerGovTypeListEnabled = false;
-            vm.isCTGovTypeListEnabled = false;
+            vm.isInterventionTypeListEnabled = false;
+            vm.upsertBtnDisabled = true;
+            vm.sortableListener = {};
+            vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
             var isUserAllowedToSelectType = curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU'; // only super userss are allowed
 
@@ -46,7 +41,6 @@
 
             activate();
             function activate() {
-                _splitInterventionTypesByCat();
                 _getTrialDetailCopy();
                 watchInterventionList();
             }
@@ -55,26 +49,19 @@
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
             }
 
-            /**
-             * Split the intervention types array by their category names: cancer.gov or clinicaltrials.gov
-             * into their respective container in the vm.interventionTypesByCategory
-             * @return {Void}
-             */
-            function _splitInterventionTypesByCat() {
-                _.each(interventionTypes, function(type, idex) {
-                    if (type.category === CANCER_GOV) {
-                        vm.interventionTypesByCategory.cancerGov.push(type);
-                    } else if (type.category === CT_GOV) {
-                        vm.interventionTypesByCategory.ctGov.push(type);
-                    }
-                });
-                console.info('after split: ', vm.interventionTypesByCategory);
-            }
+            function addIntervention(addModeValue) {
+                if (!(typeof addModeValue === 'undefined' || addModeValue === null)) {
+                    vm.showInterventionForm = addModeValue;
+                    $location.hash('section_top');
+                    $anchorScroll();
+                } else {
+                    // console.info('showing intervention');
+                    vm.showInterventionForm = true;
+                    vm.upsertBtnDisabled = false;
+                    vm.curInterventionObj = _newInterventionObj();
+                }
 
-            function addIntervention() {
-                // console.info('showing intervention');
-                vm.showInterventionForm = true;
-                vm.curInterventionObj = _newInterventionObj();
+                $scope.intervention_form.$setPristine();
             }
 
             function upsertIntervention(inventionObj) {
@@ -89,36 +76,53 @@
                         vm.trialDetailObj.interventions.unshift(angular.copy(inventionObj));
                     }
 
-                    updateInterventions();
+                    updateInterventions(true);
                 }
             }
 
-            function updateInterventions() {
+            function _labelSortableIndex(interventionArr) {
+                var reorderedArr = _.map(interventionArr, function(inter, idx) {
+                    inter.index = idx;
+                    return inter;
+                });
+                return reorderedArr;
+            }
+
+            function updateInterventions(showToastr) {
                 console.info('interventions: ', vm.trialDetailObj.interventions);
-                vm.trialDetailObj.interventions_attributes = vm.trialDetailObj.interventions;
+                vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
+                vm.deleteBtnDisabled = true;
+                vm.upsertBtnDisabled = true;
+                vm.deleteAll = false;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
-                    console.info('res after upsert: ', res);
+                    // console.info('res after upsert: ', res);
                     if (res.server_response.status === 200) {
                         vm.trialDetailObj = res;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                         $scope.$emit('updatedInChildScope', {});
-                        toastr.clear();
-                        toastr.success('Intervention has been updated', 'Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
+                        if (showToastr) {
+                            toastr.clear();
+                            toastr.success('Intervention has been updated', 'Successful!', {
+                                extendedTimeOut: 1000,
+                                timeOut: 0
+                            });
+                        }
                         _getTrialDetailCopy();
                     }
                 }).catch(function(err) {
                     console.error('trial upsert error: ', err);
                 }).finally(function() {
+                    console.info('hiding intervention form now!');
+                    vm.curInterventionObj = null;
                     vm.showInterventionForm = false; // hide the form
-                    resetLookupForm();
+                    // resetLookupForm();
                 });
             }
 
             function editIntervention(index) {
                 vm.showInterventionForm = true;
+                vm.isInterventionTypeListEnabled = false;
+                vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = angular.copy(vm.trialDetailObj.interventions[index]);
                 vm.curInterventionObj.edit = true;
                 vm.curInterventionObj.index = index;
@@ -129,16 +133,19 @@
                     name: null,
                     other_name: null,
                     description: null,
-                    intervention_type_cancer_gov_id: null, // for cancer.gov
-                    intervention_type_ct_gov_id: null, // for clinicaltrials.gov
+                    intervention_type_id: null, // for clinicaltrials.gov
                     trial_id: vm.trialDetailObj.id,
                     edit: false
                 };
             }
 
             function resetLookupForm(form) {
+                var curIndex = vm.curInterventionObj.index;
+                if (curIndex !== undefined) {
+                    editIntervention(curIndex);
+                    return;
+                }
                 vm.curInterventionObj = _newInterventionObj();
-                console.info('resetting form: ', form);
             }
 
             function watchInterventionList() {
@@ -157,11 +164,18 @@
             }
 
             function deleteInterventions() {
-                console.info('deleting interventions');
+                // console.info('deleting interventions');
                 if (vm.trialDetailObj.interventions.length === 0) {
                     return;
                 }
-                updateInterventions();
+                updateInterventions(true);
+            }
+
+            function dragItemCallback(event, ui) {
+                var item = ui.item.scope().item;
+                var fromIndex = ui.item.sortable.index;
+                var toIndex = ui.item.sortable.dropindex;
+                updateInterventions(false); // update without showing toastr
             }
 
             var modalOpened = false;
@@ -180,14 +194,12 @@
 
                 modalInstance.result.then(function(selectedInterventionObj) {
                     // vm.selectedInterventionObj = selectedInterventionObj;
+                    console.info('selected intervention obj: ', selectedInterventionObj);
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
                     vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
-
-                    vm.curInterventionObj.intervention_type_cancer_gov_id = selectedInterventionObj.intervention_type_cancer_gov_id || '';
-                    vm.isCancerGovTypeListEnabled = vm.curInterventionObj.intervention_type_cancer_gov_id === '' && isUserAllowedToSelectType;
-                    vm.curInterventionObj.intervention_type_ct_gov_id = selectedInterventionObj.intervention_type_ct_gov_id || '';
-                    vm.isCTGovTypeListEnabled = vm.curInterventionObj.intervention_type_ct_gov_id === '' && isUserAllowedToSelectType;
+                    vm.curInterventionObj.intervention_type_id = selectedInterventionObj.intervention_type_id || '';
+                    vm.isInterventionTypeListEnabled = vm.curInterventionObj.intervention_type_id === '' && isUserAllowedToSelectType;
                     console.info('received vm.curInterventionObj: ', vm.curInterventionObj);
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
@@ -201,7 +213,7 @@
 
     function pasInterventionLookupModalCtrl($scope, $uibModalInstance, PATrialService) {
         var vm = this;
-        vm.selection = '';
+        vm.selection = {"intervention_type_id": ''};
 
         vm.cancel = function() {
             $uibModalInstance.dismiss('canceled');
@@ -212,14 +224,13 @@
             // search ctrp interventions for same name, if exists, get its intervention type id for
             // trials to use
             PATrialService.searchCtrpInterventionsByName(interventionName).then(function(searchResponse) {
-                // console.info('searchResponse: ', searchResponse);
+                console.info('searchResponse: ', searchResponse);
                 var result = searchResponse.data;
                 if (result !== null) {
-                    vm.selection.intervention_type_cancer_gov_id = result.intervention_type_cancer_gov_id;
-                    vm.selection.intervention_type_ct_gov_id = result.intervention_type_ct_gov_id;
+                    vm.selection.intervention_type_id = result.intervention_type_id;
+                    // vm.selection.intervention_type_ct_gov_id = result.intervention_type_ct_gov_id;
                 }
-                // vm.selection.intervention_type_cancer_gov_id = 13; // for test TODO: delete
-                // vm.selection.intervention_type_ct_gov_id = 1; // for test TODO: delete
+                console.info('intervention search result: ', result);
             }).catch(function(err) {
                 console.error('error in search CTRP Interventions: ', err);
             }).finally(function() {

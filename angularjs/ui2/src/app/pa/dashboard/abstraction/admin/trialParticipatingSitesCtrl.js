@@ -8,9 +8,9 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', '$location', '$anchorScroll'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, $location, $anchorScroll) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
 
         var vm = this;
 
@@ -46,6 +46,7 @@
         vm.investigatorArray = [];
         vm.selectedContactTypePI = false;
         vm.centralContactTypes = centralContactTypes.types;
+        vm.investigatorTypes = investigatorTypes;
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
                //console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
@@ -179,6 +180,9 @@
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
                         console.log("getParticipatingSiteById response.person = " + JSON.stringify(response.person));
                         if (response.server_response.status === 200) {
+
+                            response.site_rec_status_wrappers = DateService.formatDateArray(response.site_rec_status_wrappers, 'status_date', 'DD-MMM-YYYY');
+
                             vm.currentParticipatingSite = response;
                             //vm.currentParticipatingSite.lock_version = response.lock_version;
                         }
@@ -201,6 +205,17 @@
                                 }
                             }
                         }
+                        vm.investigatorArray = [];
+                        if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
+                            for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
+                                var id = vm.currentParticipatingSite.participating_site_investigators[i].id;
+                                var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
+
+                                vm.investigatorArray.push({"id": id, "name": name});
+                                //console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
+                            }
+                        }
+
                         vm.current_site_recruitment = {};
                         PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                         $scope.$emit('updatedInChildScope', {});
@@ -310,6 +325,7 @@
                         siteObj.sr_status_code = status.code;
                     }
                 });
+
                 vm.siteRecruitmentGrid.push(siteObj);
             };
             vm.validateStatus();
@@ -495,7 +511,11 @@
                     if(!exists){
                         // New Investigator
                         participating_site_investigator._destroy = false;
+                        vm.current_investigator = participating_site_investigator;
                         vm.investigatorGrid.push(participating_site_investigator);
+                        vm.current_investigator.uiEdit = true;
+                        vm.current_investigator.new = true;
+                        //vm.investigatorGrid[index].uiEdit = true;
                     }
                     vm.principalInvestigator = {name: '', array: []};
                 }
@@ -552,12 +572,13 @@
             //if (index < vm.tempTrialStatuses.length) {
             console.log("In editInvestigator");
             vm.current_investigator = angular.copy(vm.investigatorGrid[index]);
+            console.log("In editInvestigator vm.current_investigator =" + JSON.stringify(vm.current_investigator));
             vm.current_investigator.uiEdit = true;
             vm.investigatorGrid[index].uiEdit = true;
 
-            if (!vm.current_investigator.investigator_type){
-                vm.current_investigator.investigator_type = "Principal Investigator";
-            }
+           // if (!vm.current_investigator.investigator_type){
+           //     vm.current_investigator.investigator_type = "Principal Investigator";
+           // }
 
             if(vm.current_investigator.id) {
                 vm.current_investigator.edit = true;

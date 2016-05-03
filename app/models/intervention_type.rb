@@ -9,6 +9,7 @@
 #  updated_at   :datetime         not null
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
+#  category     :string
 #
 
 class InterventionType < ActiveRecord::Base
@@ -16,5 +17,6 @@ class InterventionType < ActiveRecord::Base
 
   # has_many :intervention_type_cancer_gov, :class_name => 'Intervention', :foreign_key => :intervention_type_cancer_gov_id
   # has_many :intervention_type_clinicaltrials_gov, :class_name => 'Intervention', :foreign_key => :intervention_type_ct_gov_id
+  has_many :intervention
 
 end
