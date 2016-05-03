@@ -402,6 +402,12 @@ class Trial < TrialBase
     end
   end
 
+  # Returns true if this trial contains the specified milestone with specific submission ID
+  def contains_milestone?(submission_id, milestone_id)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ? AND milestone_id = ?', self.id, submission_id, milestone_id)
+    return target.size > 0 ? true : false
+  end
+
   private
 
   def save_history
