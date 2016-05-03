@@ -13,8 +13,14 @@ json.users do
     end
   end
 end
+
+json.search_status @status
+json.search_organization @organization
+json.search_type @searchType
+
 json.start params[:start]
 json.rows params[:rows]
 json.total @users.respond_to?(:total_count) ? @users.total_count : @users.size
 json.sort params[:sort]
 json.order params[:order]
+
