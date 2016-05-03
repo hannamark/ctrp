@@ -54,6 +54,8 @@ class MilestoneWrapper < TrialBase
         MilestoneWrapper.create(milestone: Milestone.find_by_code('RVQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
       elsif self.milestone.code == 'APC'
         MilestoneWrapper.create(milestone: Milestone.find_by_code('RAQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
+      elsif self.milestone.code == 'SPC'
+        MilestoneWrapper.create(milestone: Milestone.find_by_code('RSQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
       end
     end
   end
