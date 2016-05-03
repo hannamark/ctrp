@@ -1,15 +1,14 @@
 <!-- Grid the shows all the Anatomic Sites -->
-<div class="row" id="section_top">
-    <uib-accordion close-others="false" ng-if="anatomicView.addMode">
-        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-            <uib-accordion-heading>
-                Add Anatomic Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-            </uib-accordion-heading>
-
-            <div class="form-group no-bottom-margin">
+<div class="row">
+    <div class="panel panel-default" ng-if="anatomicView.addMode">
+        <div class="panel-heading">
+            <div class="panel-title">Add Anatomic Sites</div>
+        </div>
+        <div class="panel-body">
+            <form name="anatomic_sites" class="form form-horizontal" role="form">
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
                     <legend class="sub-bordered">Select Anatomic Sites</legend>
-                    <form class="form form-horizontal" role="form">
+
                         <div class="form-group">
                             <label for="anatomic_sites" class="control-label col-xs-12 col-sm-3">Anatomic Sites: </label>
                             <div class="col-xs-12 col-sm-6">
@@ -26,21 +25,17 @@
                             <button type="button" class="btn btn-warning pull-right" ng-click="anatomicView.reset()"  restriction-field ng-disabled="anatomic.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
-                            <!--button class="btn btn-warning pull-right" id="reset_btn" ng-click="anatomicView.reset()">
-                                <i class="glyphicon glyphicon-remove"></i> Clear
-                            </button-->
                         </div>
-                    </form>
                 </fieldset>
-            </div>
-        </uib-accordion-group>
-    </uib-accordion>
+            </form>
+        </div>
+    </div>
 
-    <uib-accordion close-others="false" ng-hide="anatomicView.curTrial.anatomic_site_wrappers.length === 0 && anatomicView.addMode">
-        <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-            <uib-accordion-heading>
-                List of Anatomic Sites <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-            </uib-accordion-heading>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">List of Anatomic Sites</div>
+        </div>
+        <div class="panel-body">
             <fieldset>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">
@@ -69,17 +64,15 @@
                                 class="btn btn-danger pull-right" id="delete"
                                 restriction-field
                                 ctrp-confirm
-                                confirm-template=""
+                                confirm-msg="Click OK to remove selected Anatomic site(s) from the study. Click Cancel to abort."
                                 ctrp-click="anatomicView.deleteSelected()"
                                 ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0"
-                                ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length || !paTrialOverview.trialDetailObj.pa_editable">
+                                ng-disabled="!anatomicView.selectedDeleteAnatomicSiteList.length || !paTrialOverview.trialDetailObj.pa_sci_editable">
                             <i class="glyphicon glyphicon-trash"></i> Delete Selected
                         </button>
                     </div>
-
                 </div>
-
             </fieldset>
-        </uib-accordion-group>
-    </uib-accordion>
+        </div>
+    </div>
 </div>

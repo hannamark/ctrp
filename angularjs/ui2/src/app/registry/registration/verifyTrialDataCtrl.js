@@ -16,7 +16,7 @@
 
         vm.updateTrial = function() {
             var isConfirmed = false;
-            var confirmMsg = 'Are you sure you would like to save a Data Verification record with todays\'s date';
+            var confirmMsg = 'Are you sure you would like to save a Data Verification record with today\'s date';
             Common.alertConfirm(confirmMsg).then(function(ok) {
                 isConfirmed = ok;
 

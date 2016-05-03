@@ -125,6 +125,7 @@
             getHolderTypes: getHolderTypes,
             getSubmissionTypes: getSubmissionTypes,
             getSubmissionMethods: getSubmissionMethods,
+            getInvestigatorTypes: getInvestigatorTypes,
             getNih: getNih,
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
@@ -156,7 +157,12 @@
             searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists,
             searchNCITrial: searchNCITrial,
             lookupTrial: lookupTrial,
-            associateTrial: associateTrial
+            associateTrial: associateTrial,
+            lookupNcitInterventions: lookupNcitInterventions,
+            getInterventionTypes: getInterventionTypes,
+            searchCtrpInterventionsByName: searchCtrpInterventionsByName,
+            updateTrial: updateTrial,
+            getMailLogs: getMailLogs,
         };
 
         return services;
@@ -304,6 +310,12 @@
         function getSiteRecruitementStatuses() {
             console.log("In getSiteRecruitementStatuses");
             return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
+        }
+
+        function getInvestigatorTypes() {
+            // TODO: check if hardcoding is OK
+            var investigator_types = [{"name":"Principal Investigator"},{"name":"Sub-Investigator"}];
+            return investigator_types;
         }
 
         // Validation logic for Other Trial Identifier
@@ -471,6 +483,21 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
         }
 
+        function searchCtrpInterventionsByName(interventionName) {
+            var url = URL_CONFIGS.PA.SEARCH_CTRP_INTERVENTIONS.replace(/\s*\{.*?\}\s*/g, interventionName);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Retrieve email logs sent out for this trialId
+         * @param  {Integer} trialId
+         * @return {Promise}
+         */
+        function getMailLogs(trialId) {
+            var url = URL_CONFIGS.PA.MAIL_LOGS.replace(/\s*\{.*?\}\s*/g, trialId);
+            return PromiseTimeoutService.getData(url);
+        }
+
         /**
          * Search NCI trial in the database
          * @param  {String} nciTrialId, trial id that starts with NCI- (e.g. NCI-2014-00894)
@@ -478,6 +505,14 @@
          */
         function searchNCITrial(nciTrialId) {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_NCI_TRIAL + '?nci_id=' + nciTrialId);
+        }
+
+        /**
+         * Get a list of intervention types from CTRP/local database
+         * @return {[Promise resolved to array]} [possible values include 'Device', 'Drug', etc]
+         */
+        function getInterventionTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_TYPES);
         }
 
         /**
@@ -505,6 +540,27 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.ASSOCIATE_TRIAL, associatedTrialObj);
         }
 
+        function lookupNcitInterventions(searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.NCIT_INTERVENTIONS_LOOKUP, searchParams);
+        }
+
+        /**
+         * Update an existing trial
+         * @param  {[JSON]} trialObj - Trial detail object
+         * @return {[Promise]}
+         */
+        function updateTrial(trialObj) {
+            if (!angular.isDefined(trialObj.id)) {
+                return;
+            }
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = trialObj.id;
+            outerTrial.trial = trialObj;
+            outerTrial.trial.lock_version = getCurrentTrialFromCache().lock_version;
+            return upsertTrial(outerTrial);
+        }
+
         /**
          * Convert each trial doc object to a promise for uploading, the doc must be 'active' to be uploaded
          * @param  {JSON Object} trialDocObj
@@ -521,6 +577,7 @@
                         'trial_document[document_type]': trialDocObj.document_type,
                         'trial_document[document_subtype]': trialDocObj.document_subtype,
                         'trial_document[trial_id]': trialId,
+                        'trial_document[source_document]': trialDocObj.source_document || 'PA',
                         'trial_document[file]': trialDocObj.file,
                         'replaced_doc_id': trialDocObj.replacedDocId || ''  // if not present, use empty string
                     }

@@ -1,5 +1,6 @@
 json.extract! @user,
               :id,
+              :domain,
               :username,
               :email,
               :first_name,
@@ -19,5 +20,4 @@ json.extract! @user,
               :family_orgs,
               :user_status,
               :user_status_id,
-              :approved,
               :created_at, :updated_at

@@ -7,10 +7,10 @@
         .controller('pasAssociatedTrialCtrl', pasAssociatedTrialCtrl);
 
     pasAssociatedTrialCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'identifierTypes'];
+        'MESSAGES', '_', '$timeout', 'identifierTypes', '$location', '$anchorScroll'];
 
     function pasAssociatedTrialCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, _, $timeout, identifierTypes) {
+        MESSAGES, _, $timeout, identifierTypes, $location, $anchorScroll) {
             var vm = this;
             vm.identifierTypes = identifierTypes;
             vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
@@ -54,6 +54,7 @@
                     .then(function(res) {
                     // console.info('res in looking up trial', res);
                     vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
+                    console.log('foundTrialObj.associated_trial_id: ', res.id);
                     vm.foundTrialObj.associated_trial_id = res.id || ''; // for hyperlink only
                     vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
                     vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
@@ -69,15 +70,9 @@
             } // lookupTrial
 
             function resetTrialLookupForm(form) {
-                // form.trial_identifier.$error = null;
-                // form.identifier_type.$error = null;
                 vm.trialQueryObj = {identifierTypeId: 1, trialIdentifier: 'NCI-'};
                 vm.foundTrialObj = _initFoundTrialObj();
-                form.$setPristine();
-                form.$dirty = false;
-                form.$submitted = false;
-                form.$setValidity();
-                form.$setUntouched();
+                // TODO: reset form to $pristine, etc.
             }
 
             function _initFoundTrialObj() {
@@ -108,6 +103,8 @@
 
             function closeLookupForm() {
                 vm.showLookupForm = false;
+                $location.hash('section_top');
+                $anchorScroll();
             }
 
             /**
@@ -126,11 +123,16 @@
                 PATrialService.associateTrial(trialLookUpResult).then(function(res) {
                     if (res.server_response.status === 201) {
                         delete res.server_response;
-                        console.info('id: ', res.id);
-                        res.associated_trial_id = res.id;
+                        console.info('id: ', trialLookUpResult.associated_trial_id);
+                        res.associated_trial_id = trialLookUpResult.associated_trial_id; // res.id;
                         vm.trialDetailObj.associated_trials.unshift(res);
                         closeLookupForm();
                     }
+                    toastr.clear();
+                    toastr.success('Record Created.', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                     vm.deleteAllAssoCheckbox = false;
                 }).catch(function(err) {
                     console.error('error in associating the trial: ', err);
@@ -181,7 +183,7 @@
                         vm.deleteAllAssoCheckbox = false;
 
                         toastr.clear();
-                        toastr.success('Trial Associations have been updated', 'Successful!', {
+                        toastr.success('Record(s) deleted.', 'Operation Successful!', {
                             extendedTimeOut: 1000,
                             timeOut: 0
                         });

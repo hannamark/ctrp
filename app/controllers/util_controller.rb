@@ -1,5 +1,20 @@
 class UtilController < ApplicationController
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  before_filter :wrapper_authenticate_user, :except => [:get_app_settings_ext] unless Rails.env.test?
+
+  def get_app_settings
+    requestedSettings = params[:settings]
+    results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value : nil
+    @settings = [results]
+  end
+
+  def get_app_settings_ext
+    requestedSettings = params[:settings]
+    permittedSettings = ['USER_DOMAINS','USER_ROLES','NIH_USER_FUNCTIONS','NIHEXT_USER_FUNCTIONS','Federated_USER_FUNCTIONS']
+    if permittedSettings.include? requestedSettings
+      results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value : nil
+      @settings = [results]
+    end
+  end
 
   def get_countries
     @countries = Country.all.sort

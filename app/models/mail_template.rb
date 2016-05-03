@@ -20,4 +20,6 @@
 
 class MailTemplate < ActiveRecord::Base
   include BasicConcerns
+
+  has_many :mail_logs
 end

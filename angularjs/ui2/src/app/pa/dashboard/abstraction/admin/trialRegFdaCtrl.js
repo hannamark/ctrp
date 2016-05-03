@@ -205,6 +205,7 @@
 
         vm.watchOption = function(type) {
             if (type == 'responsible_party') {
+                vm.showSponsor = false;
                 var piOption = vm.responsiblePartyArr.filter(findPiOption);
                 var siOption = vm.responsiblePartyArr.filter(findSiOption);
                 if (piOption[0].id == vm.curTrial.responsible_party_id) {

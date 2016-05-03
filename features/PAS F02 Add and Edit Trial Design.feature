@@ -17,9 +17,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
   Examples:
   
       |From Research category  |To Research category  |field  |action (diplays OR deleted) |
-      | Interventional |Expanded Access  |Expanded Access Type  |displays |
-      | Expanded Access | Interventional  |Expanded Access Type  |deleted  |
-           
+          
       
       | Interventional or Expanded Access |Observational or Ancillary Correlative  |Secondary Purpose  | deleted |
       | Interventional or Expanded Access|Observational or Ancillary Correlative |Secondary Purpose Other| deleted |

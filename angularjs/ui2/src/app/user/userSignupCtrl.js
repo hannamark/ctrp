@@ -8,30 +8,64 @@
     angular.module('ctrp.app.user')
         .controller('userSignupCtrl', userSignupCtrl);
 
-    userSignupCtrl.$inject = ['$scope', '$http', '$window', 'toastr',
-        '$sce', '$state', '$timeout', 'UserService', 'OrgService'];
+    userSignupCtrl.$inject = ['$scope', 'AppSettingsService', 'UserService', 'OrgService'];
 
-    function userSignupCtrl($scope, $http, $window, toastr, $state, $sce, $timeout,  UserService, OrgService) {
+    function userSignupCtrl($scope, AppSettingsService,  UserService, OrgService) {
         var vm = this;
 
-        // { "local_user"=>{"username"=>"e", "email"=>"e@x.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "role"=>"ROLE_READONLY"}, "commit"=>"Sign up"}
         $scope.signup_form = {};
 
-        vm.userObj = {
-            'local_user': {
-                username: '',
-                email: '',
-                password: '',
-                password_confirmation: '',
-                organization: '',
-                role: ''
-            },
-            'type': vm.type
+        var UserObj = function() {
+            return {
+                'local_user': {
+                    domain: '',
+                    username: '',
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: '',
+                    organization_name: '',
+                    organization_id: '',
+                    selected_function: ''
+                },
+                'type': vm.type
+            };
         };
 
-        vm.rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
+        vm.userObj = new UserObj();
+        
+        AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
+            vm.domainsArr = response.data[0].settings.split('||');
+            vm.selectedFunctionsObj = [];
+            vm.selectAbleUserFunctions = [];
+            angular.forEach(vm.domainsArr, function (domain) {
+                AppSettingsService.getSettings(domain + '_USER_FUNCTIONS', true).then(function (response) {
+                    var functionsArr = response.data[0].settings.split('||');
+                    vm.selectedFunctionsObj[domain] = {};
+                    angular.forEach(functionsArr, function (func) {
+                        vm.selectAbleUserFunctions[domain] = functionsArr.length;
+                        vm.selectedFunctionsObj[domain][func] = vm.selectAbleUserFunctions[domain] > 1 ? false : true;
+                    });
+                }).catch(function (err) {
+                    console.log("Error in retrieving " + domain + "_USER_FUNCTIONS.");
+                });
+            });
+        }).catch(function (err) {
+            console.log("Error in retrieving USER_DOMAINS.");
+        });
+
+        vm.selectedUserFunctions = function(){
+            var selectedArr = [];
+            _.each( vm.selectedFunctionsObj[vm.userObj.local_user.domain], function( selected, func ) {
+                if ( selected ) {
+                    selectedArr.push(func);
+                }
+            });
+            vm.userObj.local_user.selected_function = '';
+        };
+
         vm.searchParams = OrgService.getInitialOrgSearchParams();
-        vm.masterCopy = angular.copy(vm.userObj);
 
         vm.typeAheadNameSearch = function () {
             var wildcardOrgName = vm.searchParams.name.indexOf('*') > -1 ? vm.searchParams.name : '*' + vm.searchParams.name + '*';
@@ -42,17 +76,14 @@
                 source_status: 'Active'
             };
 
-            /*
-            //for trial-related org search, use only 'Active' source status
-            if (curStateName.indexOf('trial') === -1) {
-                delete queryObj.source_status;
-            }
-            */
             return OrgService.searchOrgs(queryObj).then(function(res) {
                 //remove duplicates
                 var uniqueNames = [];
                 var orgNames = [];
+                
                 orgNames = res.orgs.map(function (org) {
+                    vm.userObj.local_user.organization_id = org.id;
+                    vm.userObj.local_user.organization_name = org.name;
                     return org.name;
                 });
 
@@ -63,23 +94,11 @@
         }; //typeAheadNameSearch
 
         vm.updateUser = function () {
-            //
             UserService.upsertUserSignup(vm.userObj);
-
-            /**
-            UserService.upsertUserSignup(vm.userObj).then(function (response) {
-                toastr.success('User ' +JSON.stringify(vm.userObj) + ' has been recorded', 'Operation Successful!');
-                console.log("Added User" + JSON.stringify(vm.userObj));
-
-            }).catch(function (err) {
-                console.log("Error in updating inserting new User " + JSON.stringify(vm.userObj));
-            });
-
-**/
         };
 
-        vm.reset = function() {
-            vm.userObj = angular.copy(vm.masterCopy);
+        vm.reset = function () {
+            vm.userObj = new UserObj();
         };
     }
 

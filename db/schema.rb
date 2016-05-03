@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160408053030) do
+ActiveRecord::Schema.define(version: 20160428201501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,7 +282,7 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.string   "code",             limit: 255
     t.string   "thesaurus_id",     limit: 255
     t.string   "display_name",     limit: 255
-    t.string   "parent_preferred", limit: 255
+    t.text     "parent_preferred"
     t.integer  "trial_id"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
@@ -369,15 +369,18 @@ ActiveRecord::Schema.define(version: 20160408053030) do
   end
 
   create_table "grants", force: :cascade do |t|
-    t.string   "funding_mechanism", limit: 255
-    t.string   "institute_code",    limit: 255
-    t.string   "nci",               limit: 255
+    t.string   "funding_mechanism",   limit: 255
+    t.string   "institute_code",      limit: 255
+    t.string   "nci",                 limit: 255
     t.integer  "trial_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uuid",              limit: 255
-    t.integer  "lock_version",                  default: 0
-    t.string   "serial_number",     limit: 255
+    t.string   "uuid",                limit: 255
+    t.integer  "lock_version",                    default: 0
+    t.string   "serial_number",       limit: 255
+    t.text     "deletion_comment"
+    t.datetime "deleted_at"
+    t.string   "deleted_by_username"
   end
 
   add_index "grants", ["trial_id"], name: "index_grants_on_trial_id", using: :btree
@@ -441,20 +444,26 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.datetime "updated_at",                           null: false
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
+    t.string   "category"
   end
 
   create_table "interventions", force: :cascade do |t|
-    t.string   "name",                 limit: 255
-    t.string   "other_name",           limit: 255
+    t.string   "name",                            limit: 255
+    t.string   "other_name",                      limit: 255
     t.text     "description"
+    t.integer  "intervention_type_cancer_gov_id"
+    t.integer  "intervention_type_ct_gov_id"
     t.integer  "intervention_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.string   "uuid",                 limit: 255
-    t.integer  "lock_version",                     default: 0
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
+    t.string   "uuid",                            limit: 255
+    t.integer  "lock_version",                                default: 0
+    t.integer  "index"
   end
 
+  add_index "interventions", ["intervention_type_cancer_gov_id"], name: "index_interventions_on_intervention_type_cancer_gov_id", using: :btree
+  add_index "interventions", ["intervention_type_ct_gov_id"], name: "index_interventions_on_intervention_type_ct_gov_id", using: :btree
   add_index "interventions", ["intervention_type_id"], name: "index_interventions_on_intervention_type_id", using: :btree
   add_index "interventions", ["trial_id"], name: "index_interventions_on_trial_id", using: :btree
 
@@ -469,6 +478,21 @@ ActiveRecord::Schema.define(version: 20160408053030) do
   end
 
   add_index "links", ["trial_id"], name: "index_links_on_trial_id", using: :btree
+
+  create_table "mail_logs", force: :cascade do |t|
+    t.string   "from"
+    t.string   "to"
+    t.string   "cc"
+    t.string   "bcc"
+    t.string   "subject"
+    t.text     "body"
+    t.string   "email_template_name"
+    t.integer  "email_template_id"
+    t.string   "result"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "trial_id"
+  end
 
   create_table "mail_templates", force: :cascade do |t|
     t.text     "from"
@@ -563,18 +587,31 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "milestone_types", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "milestone_wrappers", force: :cascade do |t|
     t.date     "milestone_date"
     t.integer  "milestone_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "uuid",           limit: 255
-    t.integer  "lock_version",               default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
     t.integer  "submission_id"
+    t.text     "comment"
+    t.integer  "milestone_type_id"
+    t.string   "created_by",        limit: 255
   end
 
   add_index "milestone_wrappers", ["milestone_id"], name: "index_milestone_wrappers_on_milestone_id", using: :btree
+  add_index "milestone_wrappers", ["milestone_type_id"], name: "index_milestone_wrappers_on_milestone_type_id", using: :btree
   add_index "milestone_wrappers", ["submission_id"], name: "index_milestone_wrappers_on_submission_id", using: :btree
   add_index "milestone_wrappers", ["trial_id"], name: "index_milestone_wrappers_on_trial_id", using: :btree
 
@@ -639,6 +676,19 @@ ActiveRecord::Schema.define(version: 20160408053030) do
 
   add_index "ncit_disease_synonyms", ["ncit_disease_code_id"], name: "index_ncit_disease_synonyms_on_ncit_disease_code_id", using: :btree
   add_index "ncit_disease_synonyms", ["ncit_status_id"], name: "index_ncit_disease_synonyms_on_ncit_status_id", using: :btree
+
+  create_table "ncit_interventions", force: :cascade do |t|
+    t.string   "preferred_name"
+    t.string   "synonyms"
+    t.text     "description"
+    t.string   "type_code"
+    t.string   "ct_gov_type_code"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "ncit_status_id"
+  end
+
+  add_index "ncit_interventions", ["preferred_name"], name: "index_ncit_interventions_on_preferred_name", using: :btree
 
   create_table "ncit_statuses", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -709,6 +759,7 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.string   "uuid",          limit: 255
     t.integer  "lock_version",              default: 0
     t.text     "criteria_desc"
+    t.integer  "index"
   end
 
   add_index "other_criteria", ["trial_id"], name: "index_other_criteria_on_trial_id", using: :btree
@@ -1030,6 +1081,7 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.datetime "updated_at",                           null: false
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
+    t.integer  "index"
   end
 
   add_index "sub_groups", ["trial_id"], name: "index_sub_groups_on_trial_id", using: :btree
@@ -1150,6 +1202,7 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.integer  "submission_id"
     t.string   "status",                       default: "active"
     t.string   "why_deleted"
+    t.string   "source_document",              default: "Registry"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree
@@ -1347,9 +1400,9 @@ ActiveRecord::Schema.define(version: 20160408053030) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                       limit: 255, default: "",    null: false
-    t.string   "username",                    limit: 255, default: "",    null: false
-    t.string   "encrypted_password",          limit: 255, default: "",    null: false
+    t.string   "email",                       limit: 255, default: "", null: false
+    t.string   "username",                    limit: 255, default: "", null: false
+    t.string   "encrypted_password",          limit: 255, default: "", null: false
     t.string   "type"
     t.string   "provider",                    limit: 255
     t.string   "uid",                         limit: 255
@@ -1357,12 +1410,12 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.string   "reset_password_token",        limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                           default: 0,     null: false
+    t.integer  "sign_in_count",                           default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",          limit: 255
     t.string   "last_sign_in_ip",             limit: 255
-    t.integer  "failed_attempts",                         default: 0,     null: false
+    t.integer  "failed_attempts",                         default: 0,  null: false
     t.string   "unlock_token",                limit: 255
     t.datetime "locked_at"
     t.datetime "created_at"
@@ -1377,15 +1430,14 @@ ActiveRecord::Schema.define(version: 20160408053030) do
     t.string   "prs_organization_name"
     t.boolean  "receive_email_notifications"
     t.string   "role_requested"
-    t.boolean  "approved",                                default: false, null: false
     t.integer  "organization_id"
     t.string   "source"
     t.integer  "user_status_id"
     t.string   "phone"
     t.string   "city"
+    t.string   "domain"
   end
 
-  add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["organization_id"], name: "index_users_on_organization_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
@@ -1450,6 +1502,7 @@ ActiveRecord::Schema.define(version: 20160408053030) do
   add_foreign_key "markers", "biomarker_uses"
   add_foreign_key "markers", "cadsr_markers"
   add_foreign_key "markers", "trials"
+  add_foreign_key "milestone_wrappers", "milestone_types"
   add_foreign_key "milestone_wrappers", "milestones"
   add_foreign_key "milestone_wrappers", "submissions"
   add_foreign_key "milestone_wrappers", "trials"
@@ -1572,6 +1625,7 @@ ActiveRecord::Schema.define(version: 20160408053030) do
   create_sequence "intervention_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "mail_logs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "marker_assay_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "marker_biomarker_purpose_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1579,12 +1633,14 @@ ActiveRecord::Schema.define(version: 20160408053030) do
   create_sequence "marker_spec_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "markers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "maskings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "milestone_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestone_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "milestones_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "name_aliases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ncit_disease_codes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ncit_disease_parents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ncit_disease_synonyms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ncit_interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ncit_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onhold_reasons_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onholds_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

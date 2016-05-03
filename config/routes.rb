@@ -93,6 +93,8 @@ Rails.application.routes.draw do
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
     post '/users/search' => 'users#search'
+    post '/users/request_admin/:username' => 'users#request_admin_access'
+
     # All the User routes(non-devise) should be accessed by username
     # rather that "id" in order to prevent exposing the "id"
     resources :users, param: :username do
@@ -115,6 +117,8 @@ Rails.application.routes.draw do
       collection do
         get 'index'
         post 'history'
+        post 'updates_history'
+        post 'submissions_history'
       end
     end
 
@@ -142,6 +146,10 @@ Rails.application.routes.draw do
 
     resources :marker_assay_type_associations
 
+
+
+    get '/app_settings/:settings' => 'util#get_app_settings'
+    get '/app_settings_ext/:settings' => 'util#get_app_settings_ext'
 
 
     get '/countries' => 'util#get_countries'
@@ -180,6 +188,7 @@ Rails.application.routes.draw do
     end
 
     scope '/registry' do
+      resources :submissions
       resources :study_sources
       resources :phases
       resources :primary_purposes
@@ -211,6 +220,10 @@ Rails.application.routes.draw do
           get  'genders'
           get  'age_units'
           get  'trial_identifier_types'
+          post 'lookup_imported_ncit_interventions'
+          get  'get_intervention_types'
+          get  'search_ctrp_interventions'
+          get  'get_mail_logs'
         end
       end
 
@@ -233,6 +246,7 @@ Rails.application.routes.draw do
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
+          post 'deleted_documents'
         end
       end
 
@@ -246,10 +260,15 @@ Rails.application.routes.draw do
       get 'sampling_methods' => 'util#get_sampling_methods'
     end
 
+
+
+
     resources :ncit_disease_codes do
       collection do
         get 'get_tree'
         post 'get_tree'
+        get 'search'
+        post 'search'
       end
     end
   end

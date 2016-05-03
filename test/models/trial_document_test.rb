@@ -15,6 +15,7 @@
 #  lock_version     :integer          default(0)
 #  submission_id    :integer
 #  status           :string           default("active")
+#  why_deleted      :string
 #
 # Indexes
 #

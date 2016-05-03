@@ -16,7 +16,8 @@
 
         var services = {
             getAllNcitDiseaseCodes: getAllNcitDiseaseCodes,
-            getNcitTree: getNcitTree
+            getNcitTree: getNcitTree,
+            searchDiseases: searchDiseases
         };
 
         return services;
@@ -31,5 +32,10 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.NCIT_TREE, treeParams);
         }
 
+        function searchDiseases(searchParams) {
+            if (!!searchParams) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_DISEASE, searchParams);
+            }
+        }
     }
 })();

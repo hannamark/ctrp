@@ -1,11 +1,10 @@
 <div class="row">
-  <uib-accordion close-others="false">
-    <uib-accordion-group is-open="paTrialOverview.accordionOpen">
-      <uib-accordion-heading>
-        General Trial Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paTrialOverview.accordionOpen, 'glyphicon-chevron-right': !paTrialOverview.accordionOpen}"></i>
-      </uib-accordion-heading>
-      <div class="row">
-        <form name="general_trial_details_form" role="form" class="form-horizontal" novalidate ctrp-submit="generalTrialDetailView.saveGeneralTrialDetails()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">General Trial Details</div>
+        </div>
+        <div class="panel-body">
+        <form name="general_trial_details_form" role="form" class="form form-horizontal" novalidate ctrp-submit="generalTrialDetailView.saveGeneralTrialDetails()">
           <!-- fieldset for Title -->
           <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
             <legend class="sub-bordered">Title and Keywords</legend>
@@ -106,25 +105,25 @@
                       </th>
                     </thead>
                     <tbody>
-                      <tr>
+                      <tr ng-class="{'edit-selected': generalTrialDetailView.leadProtocolIdEdit}">
                           <td>Lead Organization Trial ID</td>
                           <td>
                             {{generalTrialDetailView.leadProtocolId}}
                           </td>
                           <td class="text-center td-icon">
-                            <button type="button" class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()">
+                            <button type="button" class="btn btn-primary" restriction-field  ng-click="generalTrialDetailView.editLeadProtocolId()" ng-disabled="otherId._destroy || generalTrialDetailView.otherIdentifierUpdate">
                               <i class="glyphicon glyphicon-edit"></i>
                             </button>
                           </td>
                           <td class="text-center">--</td>
                       </tr>
-                      <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="otherId._destroy ? 'deleted-text' : ''">
+                      <tr ng-repeat="otherId in generalTrialDetailView.generalTrialDetailsObj.other_ids track by $index" class="animated-item" ng-class="{'deleted-text': otherId._destroy, 'edit-selected': generalTrialDetailView.otherIdentifierEditIndex === $index}">
                         <td>{{otherId.identifierName}}</td>
                         <td>
                           {{otherId.protocol_id}}
                         </td>
                         <td class="text-center td-icon">
-                          <button type="button" class="btn btn-primary" restriction-field ng-disabled="otherId._destroy" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
+                          <button type="button" class="btn btn-primary" restriction-field ng-disabled="otherId._destroy || generalTrialDetailView.otherIdentifierUpdate" ng-click="generalTrialDetailView.editTrialIdentifiers($index)">
                             <i class="glyphicon glyphicon-edit"></i>
                           </button>
                         </td>
@@ -196,60 +195,60 @@
             </div>
           </fieldset>
 
-          <!-- fieldset for Central Contact -->
-          <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
-            <legend class="sub-bordered">Contact</legend>
-            <!-- Central contact -->
-            <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3">Type:</label>
-                <div class="col-sm-9">
-                    <label ng-repeat="type in generalTrialDetailView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
-                        <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="generalTrialDetailView.centralContactType">{{type.name}}
-                    </label>
+              <!-- fieldset for Central Contact -->
+              <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <legend class="sub-bordered">Contact</legend>
+                <!-- Central contact -->
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Type:</label>
+                    <div class="col-sm-9">
+                        <label ng-repeat="type in generalTrialDetailView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
+                            <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="generalTrialDetailView.centralContactType">{{type.name}}
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div ng-hide="generalTrialDetailView.centralContactType == 'None' || generalTrialDetailView.centralContactType == ''">
-                <div class="form-group" ng-class="{'has-feedback required': generalTrialDetailView.centralContactNameRequired,'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name)}">
-                    <label for="central_contact" class="control-label col-xs-12 col-sm-3">Central Contact:</label>
+                <div ng-hide="generalTrialDetailView.centralContactType == 'None' || generalTrialDetailView.centralContactType == ''">
+                    <div class="form-group" ng-class="{'has-feedback required': generalTrialDetailView.centralContactNameRequired,'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name)}">
+                        <label for="central_contact" class="control-label col-xs-12 col-sm-3">Central Contact:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" id="central_contact_name" name="central_contact_name" class="form-control input-sm" placeholder="Central Contact"
+                            ng-disabled="generalTrialDetailView.centralContactType !== 'General'"
+                            ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].fullname"
+                            ng-required="generalTrialDetailView.centralContactNameRequired">
+                            <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name) && general_trial_details_form.central_contact_name.$error">
+                                <span class="help-block" ng-message="required">Central contact name is Required</span>
+                            </span>
+                        </div>
+                        <div class="col-xs-12 col-sm-3" ng-show="generalTrialDetailView.centralContactType == 'Person'">
+                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Address -->
+                <div class="form-group">
+                    <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" id="central_contact_name" name="central_contact_name" class="form-control input-sm" placeholder="Central Contact"
-                        ng-disabled="generalTrialDetailView.centralContactType !== 'General'"
-                        ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].fullname"
-                        ng-required="generalTrialDetailView.centralContactNameRequired">
-                        <span ng-messages="ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name) && general_trial_details_form.central_contact_name.$error">
-                            <span class="help-block" ng-message="required">Central contact name is Required</span>
-                        </span>
+                        <input type="email" id="email" name="email" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email" class="form-control input-sm" placeholder="Email">
+                        <span class="form-control-feedback" ng-show="general_trial_details_form.email.$viewValue.length > 0" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                     </div>
-                    <div class="col-xs-12 col-sm-3" ng-show="generalTrialDetailView.centralContactType == 'Person'">
-                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
+                    <div class="col-sm-3"></div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
+                        class="form-control input-sm" placeholder="Phone" ng-change="generalTrialDetailView.isValidPhoneNumber()">
+                        <span ng-show="general_trial_details_form.phone.$viewValue.length > 0" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                     </div>
+                    <div class="col-xs-12 col-sm-2">
+                        <input type="text" class="form-control input-sm" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension" placeholder="Extension">
+                    </div>
+                    <div class="col-sm-3"></div>
                 </div>
-            </div>
-
-            <!-- Email Address -->
-            <div class="form-group">
-                <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
-                <div class="col-xs-12 col-sm-6">
-                    <input type="email" id="email" name="email" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email" class="form-control input-sm" placeholder="Email">
-                    <span class="form-control-feedback" ng-show="general_trial_details_form.email.$viewValue.length > 0" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                </div>
-                <div class="col-sm-3"></div>
-            </div>
-
-            <!-- Phone Number -->
-            <div class="form-group">
-                <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
-                <div class="col-xs-12 col-sm-4">
-                    <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
-                    class="form-control input-sm" placeholder="Phone" ng-change="generalTrialDetailView.isValidPhoneNumber()">
-                    <span ng-show="general_trial_details_form.phone.$viewValue.length > 0" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
-                </div>
-                <div class="col-xs-12 col-sm-2">
-                    <input type="text" class="form-control input-sm" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension" placeholder="Extension">
-                </div>
-                <div class="col-sm-3"></div>
-            </div>
-          </fieldset>
+            </fieldset>
 
             <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                 <div class="col-sm-3"></div>
@@ -262,8 +261,7 @@
                     </button>
                 </div>
             </div>
-        </form>
-      </div>
-    </uib-accordion-group>
-  </uib-accordion>
+            </form>
+        </div>
+    </div>
 </div>

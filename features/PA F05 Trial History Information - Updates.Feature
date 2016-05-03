@@ -14,32 +14,29 @@ Then I can view the Trial History Information each Update for a trial ordered by
 |Updated Field|
 |Old Value|
 |New Value|
-|Issue Type|
-|Issue Description|
-|Issue Description Comment|
-|Action (Acknowledge Administrative, Acknowledge Scientific)|
+|Action (Acknowledge)|
 |Comment|
 |Update Acknowldegement Date|
-|User ID (of reviewer)|
+|Last Name, First Name (of reviewer)|
 
-Scenario: #2 I can Acknowledge Administrative 
+Scenario: #2 I can Acknowledge Protocol Trial Updates
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information Updates Screen
-And the Acknowledge Administrative is displayed
-When I select the action "Acknowledge Administrative"
-Then the Administrative will be acknowledged 
+And the Acknowledge is displayed
+When I select the action "Acknowledge"
+Then the Trail will be acknowledged 
 And the date of acknowldegement will be recorded
 And the User ID will be recorded
 And I can optionally add a Comment
 
-Scenario: #3 I can Acknowledge Scientific 
+Scenario: #3 I can Acknowledge Imported Trail Updates 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information Updates Screen
-And the Acknowledge Scientific is displayed
-When I select the action "Acknowledge Scientific"
-Then the Scientific will be acknowledged 
+And the Acknowledge is displayed
+When I select the action "Acknowledge "
+Then the trial will be acknowledged 
 And the date of acknowldegement will be recorded
 And the User ID will be recorded
 And I can optionally add a Comment
@@ -48,9 +45,20 @@ Scenario: #4 Protocol trial acknowledgement
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And the information source is "Protocol"
-And the trial was updated
+And any of the following fields of for a trial update were updated
+|Other Protocol Identifiers|
+|Grant Information|
+|trial status|
+|trial status date|
+|start date
+|Start date type|
+|Primary Completion Date
+|Prmary Completion Date Type|
+|completion date
+|completion date type|
+|Trial Related Documents|
 And I am on the Trial History Information for Updates Screen
-Then the Action fields will display "Acknowledge Administrative"
+Then the Action fields will display "Acknowledge"
 And the trial update will need to be acknowldeged
 
 Scenario: #5 Imported trial acknowledgement
@@ -59,12 +67,19 @@ And I have selected a Trial
 And the information source is "Imported"
 And the trial was updated
 And any of the following fields of interest were updated
-|Trials.Brief_Summary|
-|Trials.Detailed_Description|
-|Trials.Keywords|
+|Trials.Brief_Title|
+|Trials.Official_Title|
 |eligibility criteria (multiple) other_criteria.criteria_type, other_criteria.criteria_desc |
-|arms_groups (multiple) arms_groups.label,type,description, intervention_id intervention_types.code, name |
+|arms_groups (multiple) arms_groups.label,type, description|
 And I am on the Trial History Information for Updates Screen
-Then the Action fields will display "Acknowledge Scientific"
+Then the Action fields will display "Acknowledge"
 And the trial update will need to be acknowldeged
+
+
+ Scenario: #6 Paging
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I have selected a Trial
+      And I am on the Trial History Information Update Screen
+      Then the Update history will be displayed for the trial 
+      And the list will be paganiated  
 

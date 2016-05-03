@@ -12,4 +12,5 @@
 #
 
 class Milestone < TrialBase
+  include BasicConcerns
 end

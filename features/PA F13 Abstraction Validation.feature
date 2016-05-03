@@ -13,7 +13,7 @@ And the <ViewButtons> display
 |ViewButtons|
 |View XML|
 |View TSR|
-And the milestone????? is set
+And the milestone 'Ready for Trial Summary Report Date' is added to the milestone for the study
 
 
 Scenario: #2 Abstraction Validation with warnings or errors

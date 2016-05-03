@@ -205,12 +205,33 @@
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_disease.html',
                 controller: 'pasDiseaseCtrl as diseaseView',
                 resolve: {
-                    DiseaseService: 'DiseaseService'
+                    DiseaseService: 'DiseaseService',
+                    TrialService: 'TrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    }
                 },
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Disease/Condition'
+                }
+            })
+
+            .state('main.pa.trialOverview.intervention', {
+                url: '/interventions',
+                templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_intervention.html',
+                controller: 'pasInterventionCtrl as interventionView',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    interventionTypes: function(PATrialService) {
+                        return PATrialService.getInterventionTypes();
+                    }
+                },
+                section: 'pa',
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Interventions'
                 }
             });
     }

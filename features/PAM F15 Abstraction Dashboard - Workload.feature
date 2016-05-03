@@ -38,8 +38,25 @@ And will display the following fields
 |Scientific QC Completed|
 |Ready for TSR|
 |Checked Out By (Userid and check out i.e. smithj AD/SC)|
-And the default sort order is by NCI Trial id ordered from newest ID to oldest
+And the default sort order is by Submitted On Date ordered from oldest to Newest
 And the following columns can be sorted
+|NCI Trial Identifier|
+|Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
+|Submitted On|
+|Submission Date Plus 10 Business Days|
+|Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
+|Business Days Since Submitted|
+|Business Days on Hold (CTRP)|
+|Business Days on Hold (Submitter)|
+|Current On-Hold Date|
+|Accepted|
+|Admin Abstraction Completed|
+|Admin QC Completed|
+|Scientific Abstraction Completed|
+|Scientific QC Completed|
+|Ready for TSR|
+|Checked Out By (Userid and check out i.e. smithj AD/SC)|
+And the following columns can be filtered
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
 |Submitted On|

@@ -23,6 +23,12 @@ var searchTrial = function(){
     this.searchTrialStudySource = element(by.model('trialView.searchParams.study_source'));
     this.searchTrialSearchButton = element(by.id('submission_btn'));
     this.searchTrialClearButton = element(by.css('.glyphicon.glyphicon-remove'));
+    this.searchTrialByMyTrials = element(by.linkText('My Trials'));
+    this.searchTrialByAllTrials = element(by.linkText('All Trials'));
+    this.searchTrialsBySavedDrafts = element(by.linkText('Saved Drafts'));
+    this.searchTrialsActionButton = element(by.buttonText('Action'));
+    this.searchTrialsCompleteButton = element(by.linkText('Complete'));
+
 
     var helper = new helperFunctions();
 
@@ -68,6 +74,26 @@ var searchTrial = function(){
 
     this.clickSearchTrialClearButton = function(){
         helper.clickButton(this.searchTrialClearButton,"Search Trial Clear button");
+    };
+
+    this.clickSearchTrialMyTrials = function(){
+        helper.clickLink(this.searchTrialByMyTrials, "Search by My Trial option");
+    };
+
+    this.clickSearchTrialAllTrials = function(){
+        helper.clickLink(this.searchTrialByAllTrials, "Search by All Trial option");
+    };
+
+    this.clickSearchTrialSavedDrafts = function(){
+        helper.clickLink(this.searchTrialsBySavedDrafts, "Search by Saved Drafts option");
+    };
+
+    this.clickSearchTrialActionButton = function(){
+        helper.clickButton(this.searchTrialsActionButton,"Search Trial Action button");
+    };
+
+    this.clickSearchTrialCompleteOption = function(){
+        helper.clickLink(this.searchTrialsCompleteButton, "Search Trial Complete option on Action button");
     };
 };
 

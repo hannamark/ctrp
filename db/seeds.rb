@@ -52,7 +52,6 @@ FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center'
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
-StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -143,11 +142,16 @@ ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Resp
 ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
 ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
 
+Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
 Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
-Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
 Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
 Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
-Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
+Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
+Milestone.find_or_create_by(code: 'VPS', name: 'Validation Processing Start Date')
+Milestone.find_or_create_by(code: 'VPC', name: 'Validation Processing Completed Date')
+Milestone.find_or_create_by(code: 'RVQ', name: 'Ready for Validation QC Date')
+Milestone.find_or_create_by(code: 'VQS', name: 'Validation QC Start Date')
+Milestone.find_or_create_by(code: 'VQC', name: 'Validation QC Completed Date')
 Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
 Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
 Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
@@ -162,9 +166,12 @@ Milestone.find_or_create_by(code: 'RTS', name: 'Ready for Trial Summary Report D
 Milestone.find_or_create_by(code: 'TSR', name: 'Trial Summary Report Date')
 Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report Feedback Date')
 Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
-Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'ONG', name: 'On-going Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
+
+MilestoneType.find_or_create_by(code: 'ADM', name: 'Administrative')
+MilestoneType.find_or_create_by(code: 'SCI', name: 'Scientific')
+MilestoneType.find_or_create_by(code: 'GEN', name: 'General')
 
 SubmissionType.find_or_create_by(code: 'ORI', name: 'Original')
 SubmissionType.find_or_create_by(code: 'AMD', name: 'Amendment')
@@ -197,6 +204,68 @@ SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
 Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
+
+InterventionType.find_or_create_by(code: 'DRUG', name: 'Drug', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DEVI', name: 'Device', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BIOL', name: 'Biological/Vaccine', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'PROC', name: 'Procedure/Surgery', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'RAD', name: 'Radiation', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BEHA', name: 'Behavioral', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'GENE', name: 'Genetic', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DSUP', name: 'Dietary Supplement', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'OTH', name: 'Other', category: 'clinicaltrials.gov')
+
+InterventionType.find_or_create_by(code: 'DRUGC', name: 'Drug', category: 'cancer.gov')
+InterventionType.find_or_create_by(code: 'PROCC', name: 'Procedure/Surgery', category: 'cancer.gov')
+InterventionType.find_or_create_by(code: 'GENEC', name: 'Genetic', category: 'cancer.gov')
+InterventionType.find_or_create_by(code: 'OTHC', name: 'Other', category: 'cancer.gov')
+
+NcitStatus.find_or_create_by(code:'ACT',name:'Active')
+NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
+
+## seed 40 NcitIntervention records
+act = NcitStatus.find_by_code('ACT')
+NcitIntervention.create(preferred_name: 'Zafuleptine', synonyms:  'ZAFULEPTINE; Zafuleptine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: '18F-Fluoromisonidazole', synonyms:  '18F-Fluoromisonidazole; 18F-MISO; 18F-MISO; 18F-Misonidazole; 18F-fluoromisonidazole; FMISO; FMISO', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaldaride', synonyms:  'ZALDARIDE; Zaldaride', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaleplon', synonyms:  'Sonata; ZALEPLON; Zaleplon', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zalospirone Hydrochloride', synonyms:  'ZALOSPIRONE HYDROCHLORIDE; Zalospirone Hydrochloride', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaltoprofen', synonyms:  'ZALTOPROFEN; Zaltoprofen', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zalutumumab', synonyms:  'HuMax-EGFr, 2F8; Zalutumumab', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zamifenacin', synonyms:  '(R)-3-(Diphenylmethoxy)-1-(3,4-(methylenedioxy)phenethyl)piperidine; ZAMIFENACIN; Zamifenacin', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanamivir', synonyms:  '4-Guanidino-2,4-dideoxy-2,3-dehydro-N-acetylneuraminic Acid; 5-Acetamido-2,6-anhydro-3,4,5-trideoxy-4-guanidino-D-glycero-D-galacto-non-2-enonic Acid; GANA; GG 167; Relenza; Relenza; ZANAMIVIR; Zanamivir; zanamivir', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanapezil', synonyms:  'ZANAPEZIL; Zanapezil', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zankiren', synonyms:  '(S)-N-((1S,2R,3S)-1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha((Alpha-S)-Alpha(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)Hydrocinnamamido)-4-Thiazolepropionamide; 4-Thiazolepropanamide, N-(1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha-((2-(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)-1-Oxo-3-Phenylpropyl)Amino)-, (1S-(1R*,(R*(R*)),2S*,3R*))-; ZANKIREN; Zankiren', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zankiren Hydrochloride', synonyms:  '(S)-N-((1S,2R,3S)-1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha((Alpha-S)-Alpha-(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)Hydrocinnamamido)-4-Thiazolepropionamide Monohydrochloride; 4-Thiazolepropanamide, N-(1-(Cyclohexylmethyl)-2,3-Dihydroxy-5-Methylhexyl)-Alpha-((2-(((4-Methyl-1-Piperazinyl)Sulfonyl)Methyl)-1-Oxo-3-Phenylpropyl)Amino)-, Monohydrochloride, (1S-(1R*,(R*(R*)),2S*,3R*))-; ABBOTT-72517; ZANKIREN HYDROCHLORIDE; Zankiren Hydrochloride', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanolimumab', synonyms:  'Anti-CD4 Monoclonal Antibody HuMax; HuMax-CD4; ZANOLIMUMAB; Zanolimumab', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zanoterone', synonyms:  'ZANOTERONE; Zanoterone', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zapizolam', synonyms:  'ZAPIZOLAM; Zapizolam', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaprinast', synonyms:  'ZAPRINAST; Zaprinast', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zardaverine', synonyms:  'ZARDAVERINE; Zardaverine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zatebradine', synonyms:  'UL-FS49; ZATEBRADINE; Zatebradine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zatosetron', synonyms:  '5-Chloro-2,3-Dihydro-2,2-Dimethyl-N-1Alpha-H,5Alpha-H-Tropan-3Alpha-yl-7-Benzofurancarboxamide; 7-Benzofurancarboxamide, 5-Chloro-2,3-Dihydro-2,2-Dimethyl-N-(8-Methyl-8-Azabicyclo(3.2.1)Oct-3-yl)-, Endo-; LY-277359; LY277359; ZATOSETRON; Zatosetron', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zatosetron Maleate', synonyms:  '7-Benzofurancarboxamide, 5-Chloro-2,3-Dihydro-2,2-Dimethyl-N-(8-Methyl-8-Azabicyclo(3.2.1)Oct-3-yl)-, Endo-, (Z)-2-Butenedioate (1:1); LY-277359 Maleate; LY277359 Maleate; ZATOSETRON MALEATE; Zatosetron Maleate', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zaurategrast', synonyms:  'ZAURATEGRAST; Zaurategrast', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zea mays Pollen', synonyms:  'ZEA MAYS POLLEN; Zea mays Pollen', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zeaxanthin', synonyms:  '4-[18-(4-hydroxy-2,6,6-trimethyl-1-cyclohexenyl)-3,7,12,16-tetramethyl-octadeca-1,3,5,7,9,11,13,15,17-nonaenyl]-3,5,5-trimethyl-cyclohex-3-en-1-ol; ZEAXANTHIN; Zeaxanthin; Zeaxanthin', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zebularine', synonyms:  '1-beta-D-Ribofuranosyl-2(1H)-pyrimidinone; 2-Pyrimidone-1-beta-D-riboside; Pyrimidin-2-one beta-Ribofuranoside; Zebularine; Zebularine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zedoary Oil', synonyms:  'ZEDOARY OIL; Zedoary Oil', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zein', synonyms:  'ZEIN; Zein', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zelandopam', synonyms:  'ZELANDOPAM; Zelandopam', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zenarestat', synonyms:  'ZENARESTAT; Zenarestat', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zenazocine Mesylate', synonyms:  '(+/-)-1-((2R*,6S*,11s*)-1,2,3,4,5,6-Hexahydro-8-Hydroxy-3,6,11-Trimethyl-2,6-Methano-3-Benzazocin-11-Yl)-6-Methyl-3-Heptanone Methanesulfonate (Salt); 3-Heptanone, 1-(1,2,3,4,5,6-Hexahydro-8-Hydroxy-3,6,11-Trimethyl-2,6-Methano-3-Benzazocin-11-Yl)-6-Methyl-, (2Alpha,6Alpha,11s*)-(+/-)-, Methanesulfonate (Salt); WIN 42964-4; ZENAZOCINE MESYLATE; Zenazocine Mesylate', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zeniplatin', synonyms:  'CL 286,558; ZENIPLATIN; Zeniplatin; cis-(2,2-Bis(aminomethyl)-1,3-propanediol)(1,1-cyclobutanedicarboxylato)platinum', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zepastine', synonyms:  'ZEPASTINE; Zepastine', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zeranol', synonyms:  'ZERANOL; Zeranol', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zetidoline', synonyms:  'ZETIDOLINE; Zetidoline', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zhongyao Fufang', synonyms:  'Zhongyao Fufang; Zhongyaofufang', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Ziconotide', synonyms:  'Prialt; Prialt; SNX 111; SNX-111; ZICONOTIDE; Ziconotide; ziconotide', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Ziconotide Acetate', synonyms:  'Cys-Lys-Gly-Lys-Gly-Ala-Lys-Cys-Ser-Arg-Leu-Met-Tyr-Asp-Cys-Cys-Thr-Gly-Ser-Cys-Arg-Ser-Gly-Lys-Cys-Nh2 Acetate; Omega-Conotoxin M VIIa Acetate; SNX-111 Acetate; ZICONOTIDE ACETATE; Ziconotide Acetate', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zidapamide', synonyms:  'ZIDAPAMIDE; Zidapamide', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zidometacin', synonyms:  'ZIDOMETACIN; Zidometacin', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zifrosilone', synonyms:  'ZIFROSILONE; Zifrosilone', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+NcitIntervention.create(preferred_name: 'Zirconium Zr 89 Trastuzumab', synonyms:  '89Zr-Trastuzumab; Zirconium Zr 89 Trastuzumab', description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+
 
 StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
 StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
@@ -512,8 +581,6 @@ CadsrMarkerSynonym.find_or_create_by(id: 7725,alternate_name:  'Spi-B Transcript
 CadsrMarkerSynonym.find_or_create_by(id: 7723,alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 CadsrMarkerSynonym.find_or_create_by(id: 7724,alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 
-NcitStatus.find_or_create_by(code:'ACT',name:'Active')
-NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -867,6 +934,22 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INFO_URL', name: 'NCI Thesaurus page for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=NCI_Thesaurus&code=')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL', name: 'NCI Thesaurus tree for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ajax?action=search_hierarchy&ontology_node_ns=NCI_Thesaurus&ontology_display_name=NCI_Thesaurus&ontology_node_id=')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
+
+AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
+
+AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value', big_value: 'ROLE_RO||ROLE_SUPER||ROLE_ADMIN||ROLE_CURATOR||ROLE_ABSTRACTOR||ROLE_ABSTRACTOR-SU||ROLE_TRIAL-SUBMITTER||ROLE_ACCRUAL-SUBMITTER||ROLE_SITE-SU||ROLE_SERVICE-REST')
+
+AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons||Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
+
+AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
+
+AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'Federated User Functions', value: 'see big value', big_value: 'Submit Trials')
+
 ########## SEEDING APP SETTINGS ENDS ##########
 
 ########## SEEDING MAIL TEMPLATES STARTS ##########
@@ -880,6 +963,128 @@ MailTemplate.find_or_create_by(
                 body_text: 'Text version.',
                 body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br><br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
 )
+
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_UPDATE',
+    name: 'Trial Update',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${trialSubmitterEmail}',
+    subject: 'NCI CTRP: Trial RECORD UPDATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>Submitting Organization: </b>${submitting_organization}</p>
+                                <p><b>Submission Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>The NCI Clinical Trials Reporting Program (CTRP) received updates for the trial identified above.</p>
+                            <p><b>Update Information: </b></p>
+                            <p>Other Identifiers: new identifier(s) added</p>
+                            <p>Grant Information: Added</p>
+                            <p>Trial Status: Added</p>
+                            <p>Trial Status Date: Added</p>
+                            <p>Start Date and Type: Added</p>
+                            <p>Primary Completion Date and Type: Added</p>
+                            <p>Participating Site status: Added</p>
+                            <p>Trial Related Documents: Added</p>
+
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_AMEND',
+    name: 'Trial Amendment',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${trialAmendSubmitterEmail}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${trialAmendNumber} for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${lead_organization}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>NCT ID: </b>${nctId}</p>
+                                <p><b>CTEP ID: </b>${ctepId}</p>
+                                <p><b>DCP ID: </b>${dcpId}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>The NCI Clinical Trials Reporting Program (CTRP) received the amendment you submitted for the trial identified above.</p>
+                            <p><b>Amendment Information: </b></p>
+                            <p>Amendment Number: ${trialAmendNumber}</p>
+                            <p>Amendment Date: ${trialAmendmentDate}</p>
+
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>The Clinical Trials Reporting Office (CTRO) staff is reviewing the amended information to ensure that it meets all of the requirements for registration in the CTRP system. The CTRO will send you a separate email that indicates whether they have accepted or rejected your trial within two (2) business days.</p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_DRAFT',
+    name: 'Trial Draft',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${trialSubmitterEmail}',
+    subject: 'NCI CTRP: Trial RECORD SAVED as DRAFT for ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${lead_organization}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>Submission Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>You have saved a draft of the trial identified above for submission to the NCI Clinical Trials Reporting Program (CTRP).</p>
+
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>To retrieve and complete your submission, use the "Search Saved Drafts" feature on the "Search Trials" page in the CTRP Registration application.</p>
+                            <p>Clinical Trials Reporting Office (CTRO) staff will not access or process your trial until you have completed the submission. </p>
+                            <p><b>Important!</b> You can save your draft for a maximum of 30 days.</p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_REGISTRATION',
+    name: 'User Registration',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
+    subject: 'New NCI CTRP Account Request',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br>A new user account in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application.<br><br>The user information is as follows:<ul><li><b>First Name:</b> ${first_name}</li><li><b>Last Name:</b> ${last_name}</li><li><b>Affiliated Organization:</b> ${organization}</li><li><b>Email:</b> ${email}</li></ul></p><p>The user would like the following functions:${functions_list}</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ and activate user and assign role.<p></body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_ADMIN_REQUEST',
+    name: 'User Admin Request',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
+    subject: 'New NCI CTRP User Admin Request',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br><b>${username}</b>, a user in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application, is requesting admin access.</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ for the user\'s details and assign new role to grant access.<p></body></html>'
+)
+
 
 ########## SEEDING MAIL TEMPLATES ENDS ############
 
@@ -1030,35 +1235,45 @@ dcp = Organization.find_or_create_by( id: 10000002,
 )
 
 
-test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
-               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "approve" => true},
-               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "approve" => true},
-               {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
-               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
-               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
-               {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "approve" => true},
-               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true},
-               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "approve" => true},
-               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "approve" => true}
-
-
+test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpadmin", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR"},
+               {"username" => "testercurator", "role" => "ROLE_CURATOR"},
+               {"username" => "ctrpro", "role" => "ROLE_RO"},
+               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER"},
+               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER"},
+               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER"},
+               {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER"},
+               {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU"},
+               {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU"},
+               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR"},
+               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR"},
+               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR"},
+               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU"},
+               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST"},
+               {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST"},
+               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST"},
+               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER"},
+               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER"}
 ]
+
+test_users.each do |u|
+ user = LocalUser.new
+ user.username = u["username"]
+ user.role = u["role"]
+ user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
+ user.password = "Welcome01"
+ user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+ user.user_status = UserStatus.find_by_code('ACT')
+ user.save!
+end
 
 test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
     user.role = u["role"]
-    user.approved =  u["approve"]
     unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
       if user.username == 'ctrpsitesu2'
         user.organization = org3
@@ -1139,9 +1354,9 @@ begin
     ldap_user.role = u["role"]
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
-    ldap_user.approved = true
     ldap_user.organization = org0
     ldap_user.save(validate: false)
+    ldap_user.user_status = UserStatus.find_by_code('ACT')
     #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
   end
 rescue Exception => e

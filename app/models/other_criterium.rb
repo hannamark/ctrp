@@ -10,6 +10,7 @@
 #  uuid          :string(255)
 #  lock_version  :integer          default(0)
 #  criteria_desc :text
+#  index         :integer
 #
 # Indexes
 #

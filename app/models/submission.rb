@@ -44,4 +44,13 @@ class Submission < TrialBase
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
   has_many :trial_documents, -> { order 'trial_documents.id' }
+
+  before_create :set_acknowledge_as_no
+
+  private
+
+  def set_acknowledge_as_no
+      self.acknowledge = 'No'
+  end
+
 end

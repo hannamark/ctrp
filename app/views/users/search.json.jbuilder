@@ -1,12 +1,16 @@
 json.users do
   json.array!(@users) do |user|
-    json.extract! user, :id, :username,:first_name, :last_name, :email, :approved, :user_status
-    json.organization_name user.organization.nil? ? nil : user.organization.name
-    json.organization_id  user.organization.nil? ? nil : user.organization.id
-   # json.aff_orgs family.organizations.first(5) do |org|
-   #   json.name org.name
-   #end
+    json.extract! user, :domain, :id, :username, :first_name, :last_name, :email, :user_status_id, :role, :receive_email_notifications
+    json.user_status_name user.user_status ? user.user_status.name : ''
     json.url user_url(user, format: :json)
+    if user.organization.present?
+      json.user_organization_name user.organization.name
+      json.families do
+        json.array!(user.organization.families) do |family|
+          json.extract! family, :id, :name
+        end
+      end
+    end
   end
 end
 json.start params[:start]

@@ -35,7 +35,7 @@
             vm.disableBtn = true;
             //console.log("vm.addedGrants" + JSON.stringify(vm.addedGrants));
             //console.log("vm.grantNum=" + JSON.stringify(vm.grantNum));
-            if (vm.grantNum <= 0){
+            if (vm.grant_question === 'Yes' && vm.grantNum <= 0){
                 console.log("vm.grantNum = 0");
                 return;
             }
