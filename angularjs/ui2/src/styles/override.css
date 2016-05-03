@@ -116,6 +116,9 @@
   height: auto !important;
 }
 */
+.ui-grid-menu-button {
+    height: 24px;
+}
 
 .ui-grid-contents-wrapper {
     margin-bottom: 32px;
@@ -205,7 +208,9 @@
 .table-striped.table-condensed textarea.form-control {
     height: 50px;
 }
-
+.control-label.text-left {
+    text-align:left;
+}
 table td > div.input-group.datepicker {
     position: static;
 }
@@ -1325,4 +1330,12 @@ div[disabled] {
 
 .small-header-text {
     font-size: 75%;
+}
+
+.st-sort-ascent:before{
+    content: '\25B2';
+}
+
+.st-sort-descent:before{
+    content: '\25BC';
 }

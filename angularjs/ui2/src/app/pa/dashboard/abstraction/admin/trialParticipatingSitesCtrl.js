@@ -180,6 +180,9 @@
                     TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
                         console.log("getParticipatingSiteById response.person = " + JSON.stringify(response.person));
                         if (response.server_response.status === 200) {
+
+                            response.site_rec_status_wrappers = DateService.formatDateArray(response.site_rec_status_wrappers, 'status_date', 'DD-MMM-YYYY');
+
                             vm.currentParticipatingSite = response;
                             //vm.currentParticipatingSite.lock_version = response.lock_version;
                         }
@@ -322,6 +325,7 @@
                         siteObj.sr_status_code = status.code;
                     }
                 });
+
                 vm.siteRecruitmentGrid.push(siteObj);
             };
             vm.validateStatus();
