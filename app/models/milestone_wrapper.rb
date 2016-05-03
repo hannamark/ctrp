@@ -32,6 +32,7 @@ class MilestoneWrapper < TrialBase
   belongs_to :trial
 
   before_create :save_type
+  after_create :recording_triggers
 
   private
 
@@ -43,6 +44,16 @@ class MilestoneWrapper < TrialBase
         self.milestone_type = MilestoneType.find_by_code('SCI')
       else
         self.milestone_type = MilestoneType.find_by_code('GEN')
+      end
+    end
+  end
+
+  def recording_triggers
+    if self.milestone.present?
+      if self.milestone.code == 'VPC'
+        MilestoneWrapper.create(milestone: Milestone.find_by_code('RVQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
+      elsif self.milestone.code == 'APC'
+        MilestoneWrapper.create(milestone: Milestone.find_by_code('RAQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
       end
     end
   end
