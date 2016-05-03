@@ -485,10 +485,10 @@
     <div class="panel-body">
         <!--<legend class="sub-bordered">List of Participating Sites:</legend>-->
         <div class="table-responsive">
-            <table id="list_participating_site_tbl" class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
+            <table id="list_participating_site_tbl" st-table="psView.curTrial.participating_sites" class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
                 <thead>
-                <th>PO ID</th>
-                <th>PO Name</th>
+                <th st-sort="organization.id">PO ID</th>
+                <th st-sort="organization.name">PO Name</th>
                 <th>Investigators</th>
                 <th>Site Recruitment Status</th>
                 <th>Site Recruitment Status Date</th>
