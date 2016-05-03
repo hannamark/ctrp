@@ -112,10 +112,6 @@ module.exports = function() {
     var personLNmB = 'Graves';
     var personFNmC = 'Diane';
     var personLNmC = 'Roulston';
-    var buildSelectionOpton = '';
-    var indIDENmbrA = 'BBIND13794';
-    var indIDENmbrB = 'IND108498';
-    var indIDENmbrC = '102902';
     var optionA = 'Identifier Type';
     var optionB = 'Value (Click for editing)';
     var optionC = 'Deletion';
@@ -141,6 +137,10 @@ module.exports = function() {
     var dateDay = '';
     var dateMonth = '';
     var dateYear = '';
+    var primaryContactRT = '';
+    var emailAddressRT = '';
+    var phoneNumberRT = '';
+    var phoneNumberExtRT = '';
 
 
     /*
@@ -242,7 +242,7 @@ module.exports = function() {
     this.Given(/^I have entered Site Recruitment status comments (.*)$/, function (SiteRecruitmentStatusComments, callback) {
         participatingSite.setSiteRecruitmentComment(SiteRecruitmentStatusComments);
         participatingSite.clickSiteRecruitmentAdd();
-        participatingSite.clickSaveButton();
+        participatingSite.clickSaveButtonParticipating();
         browser.sleep(25).then(callback);
     });
 
@@ -287,8 +287,7 @@ module.exports = function() {
         participatingSite.findPrsnFNameVerfEdtDel(personFNmB, 'edit');
         participatingSite.checkSetAsPrimaryContact("true");
         participatingSite.clickEditConfirm();
-        participatingSite.clickSaveButton();
-        //participatingSite.clickSaveButtonByIndex('0');
+        participatingSite.clickSaveButtonInvestigators();
         browser.sleep(25).then(callback);
     });
 
@@ -308,40 +307,59 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected the �Set as Site Contact" for a central contact (.*) when the central contact for the participating site is generic$/, function (CentralContact, callback) {
-        participatingSite.selectPrimaryContact(CentralContact);
+        primaryContactRT = ''+ CentralContact +'';
+        participatingSite.clickContactTab();
+        participatingSite.selectPrimaryContact(primaryContactRT);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have added or edited the contact phone number for the contact (.*)$/, function (Phone, callback) {
-        participatingSite.clickContactTab();
-        participatingSite.setPhoneNumber(Phone);
+        phoneNumberRT = ''+ Phone +'';
+        participatingSite.setPhoneNumber(phoneNumberExtRT);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have added or edited the contact phone number extension (.*) for the contact$/, function (Ext, callback) {
-        participatingSite.setPhoneNumberExt(Ext);
+        phoneNumberExtRT = ''+ Ext +'';
+        participatingSite.setPhoneNumberExt(phoneNumberExtRT);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have added or edited the contact e\-mail for the contact (.*)$/, function (eMailAddress, callback) {
-        participatingSite.setEmailAddress(eMailAddress);
-        //participatingSite.clickSaveButtonByIndex('1');
-        browser.sleep(25).then(callback);
+        emailAddressRT = ''+ eMailAddress +'';
+        participatingSite.setEmailAddress(emailAddressRT);
+        participatingSite.clickSaveButtonContact();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the participating site information will be associated with the trial$/, function (callback) {
-
+        participatingSite.clickInvestigatorsTab();
+        participatingSite.clickParticipatingSiteTab();
+        participatingSite.clickContactTab();
+        participatingSite.verifyType('0');
+        participatingSite.verifyPrimaryContact(primaryContactRT);
+        participatingSite.verifyEmailAddress(emailAddressRT);
+        participatingSite.verifyPhoneNumber(phoneNumberRT);
+        participatingSite.verifyPhoneNumberExt(phoneNumberExtRT);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^the organization address information (.*) (.*) (.*) (.*) will be associated with the trial$/, function (OrgCity, OrgState, OrgCountry, OrgZipCode, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.clickParticipatingSiteTab();
+        helper.wait(participatingSite.orgnizationTxt, "Organization");
+        helper.wait(participatingSite.programCodeTxt, "Program Code");
+        helper.wait(participatingSite.identifierTxt, "Local Trial Identifier");
+        trialDetails.verifyTextFieldValue(participatingSite.cityTxt, OrgCity, "Verifying the Org City Name");
+        trialDetails.verifyTextFieldValue(participatingSite.stateTxt, OrgState, "Verifying the Org State Name");
+        trialDetails.verifyTextFieldValue(participatingSite.countryTxt, OrgCountry, "Verifying the Org Country Name");
+        trialDetails.verifyTextFieldValue(participatingSite.zipPostalCodeTxt, OrgZipCode, "Verifying the Org Zip Code");
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the system will display the list of participating sites ordered assending alphanumeric by participationg site name$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.clickBackToParticipatingSitesListPartcipating();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the system will display a message that the Participating Site Has been Updated (.*)$/, function (Message, callback) {

@@ -147,14 +147,21 @@ var abstractionParticipating = function(){
     this.contactPhoneNumber = element(by.css('#phone'));
     this.contactPhoneNumberExtension = element(by.css('#phone_extension'));
 
-
-
     //Save and Reset
-    this.saveBtn = element(by.id('submit_processing'));
+    this.saveParticipatingBtn = element(by.id('submit_pacticipating'));
+    this.saveInvestigatorsBtn = element(by.id('submit_investigators'));
+    this.saveContactBtn = element(by.id('submit_contact'));
     this.resetBtn = element(by.css('button[ng-disabled="psView.current_site_recruitment.edit"]'));
 
     //Back to Participating Site List
-    this.backParticipatingSiteList = element(by.id('participating_site_list'));
+    this.backParticipatingSiteListParticipating = element(by.id('participating_back'));
+    this.backParticipatingSiteListInvestigators = element(by.id('investigators_back'));
+    this.backParticipatingSiteListContact = element(by.id('contact_back'));
+
+    //Reset
+    this.resetBtnParticipating = element(by.id('participating_reset'));
+    this.resetBtnInvestigators = element(by.id('investigators_reset'));
+    this.resetBtnContact = element(by.id('contact_reset'));
 
     //page Header
     this.trialDocHeader = element(by.css('h4.panel-title'));
@@ -328,16 +335,44 @@ var abstractionParticipating = function(){
         helper.clickButton(this.addBtn, "Add - Button");
     };
 
-    this.clickSaveButton = function () {
-        helper.clickButton(this.saveBtn, "Save - Button");
+    this.clickSaveButtonParticipating = function () {
+        helper.clickButton(this.saveParticipatingBtn, "Save - Button");
+    };
+
+    this.clickSaveButtonInvestigators = function () {
+        helper.clickButton(this.saveInvestigatorsBtn, "Save - Button");
+    };
+
+    this.clickSaveButtonContact = function () {
+        helper.clickButton(this.saveContactBtn, "Save - Button");
     };
 
     this.clickSaveButtonByIndex = function (getIndex) {
         helper.clickButtonByIndex(this.saveBtn, getIndex, "Save - Button");
     };
 
-    this.clickResetButton = function () {
-        helper.clickButton(this.resetBtn, "Reset - Button");
+    this.clickResetButtonParticipating = function () {
+        helper.clickButton(this.resetBtnParticipating, "Reset - Button");
+    };
+
+    this.clickResetButtonInvestigators = function () {
+        helper.clickButton(this.resetBtnInvestigators, "Reset - Button");
+    };
+
+    this.clickResetButtonContact = function () {
+        helper.clickButton(this.resetBtnContact, "Reset - Button");
+    };
+
+    this.clickBackToParticipatingSitesListPartcipating = function (){
+        helper.clickButton(this.backParticipatingSiteListParticipating, "Back To Participating Sites List - Button");
+    };
+
+    this.clickBackToParticipatingSitesListInvestigators = function (){
+        helper.clickButton(this.backParticipatingSiteListInvestigators, "Back To Participating Sites List - Button");
+    };
+
+    this.clickBackToParticipatingSitesListContact = function (){
+        helper.clickButton(this.backParticipatingSiteListContact, "Back To Participating Sites List - Button");
     };
 
     this.clickSearchPersons = function(){
@@ -522,7 +557,12 @@ var abstractionParticipating = function(){
     };
 
     this.selectPrimaryContact = function (getContact){
-        helper.selectValueFromList(this.contactPrimaryContact, getContact, "Primary Contact");
+        //helper.selectValueFromList(this.contactPrimaryContact, getContact, "Primary Contact");
+        var fieldName = this.contactPrimaryContact;
+        var errorMessage = "Primary Contact"
+        //this.wait(fieldName, errorMessage);
+        fieldName.element(by.cssContainingText('option', getContact)).click();
+        console.log(errorMessage + ' ' + getContact + " Value selected");
     };
 
     this.setEmailAddress = function (getEmail){
