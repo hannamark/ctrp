@@ -3,7 +3,7 @@ Feature: PAS F07  Add and Edit Disease and Condition
 
 As a CTRP Scientific Abstractor, I can add and edit Disease and Condition  
 
-Scenario: #1 I can add Disease and Condition for a trial
+Scenario: #1 I can add Disease and Condition for a trial 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease/Condition screen
@@ -50,7 +50,7 @@ Then the preferred terms displays in its location in the NCIt hierarchy
 When I Click NCIt icon
 Then the NCIt page for the term displays  
      
-     Scenario: #4  Find a Disease/Condition Search Synonyms selected (03MAY2016 - added HIGHTLIGHTED for term search results)
+     Scenario: #4  Find a Disease/Condition Search Synonyms selected (03MAY2016 - added HIGHTLIGHTED for term search results; )
 Given I am on the Find a Disease/Condition screen
 When I have entered a term
 And I have selected Search Synonyms
