@@ -223,10 +223,10 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_pacticipating" restriction-field ng-disabled="psView.current_site_recruitment.edit">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit">
+                                    <button type="button" class="btn btn-warning pull-right" id="participating_reset" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)">
+                                    <button type="button" class="btn btn-warning pull-right" id="participating_back" restriction-field ng-click="psView.setAddMode(false)">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -359,10 +359,10 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_investigators" restriction-field ng-disabled="psView.current_investigator.uiEdit">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit">
+                                    <button type="button" class="btn btn-warning pull-right" id="investigator_reset" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)">
+                                    <button type="button" class="btn btn-warning pull-right" id="investigator_back" restriction-field ng-click="psView.setAddMode(false)">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -460,10 +460,10 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_contact" restriction-field>
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field>
+                                    <button type="button" class="btn btn-warning pull-right" id="contact_reset" ng-click="psView.resetParticipatingSite()" restriction-field>
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)">
+                                    <button type="button" class="btn btn-warning pull-right" id="contact_back" restriction-field ng-click="psView.setAddMode(false)">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -485,10 +485,10 @@
     <div class="panel-body">
         <!--<legend class="sub-bordered">List of Participating Sites:</legend>-->
         <div class="table-responsive">
-            <table id="list_participating_site_tbl" class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
+            <table id="list_participating_site_tbl" st-table="psView.curTrial.participating_sites" class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
                 <thead>
-                <th>PO ID</th>
-                <th>PO Name</th>
+                <th st-sort="organization.id">PO ID</th>
+                <th st-sort="organization.name">PO Name</th>
                 <th>Investigators</th>
                 <th>Site Recruitment Status</th>
                 <th>Site Recruitment Status Date</th>
