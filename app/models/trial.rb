@@ -402,10 +402,19 @@ class Trial < TrialBase
     end
   end
 
-  # Returns true if this trial contains the specified milestone with specific submission ID
+  # Return true if this trial contains the specified milestone with specific submission ID
   def contains_milestone?(submission_id, milestone_id)
     target = MilestoneWrapper.where('trial_id = ? AND submission_id = ? AND milestone_id = ?', self.id, submission_id, milestone_id)
     return target.size > 0 ? true : false
+  end
+
+  # Return validation errors for adding a milestone to a set of milestones with specific submission ID
+  def validate_milestone(submission_id, milestone_id)
+    validation_msgs = {}
+    validation_msgs[:submission_id] = submission_id
+    validation_msgs[:milestone_id] = milestone_id
+
+    return validation_msgs
   end
 
   private

@@ -202,6 +202,7 @@ Rails.application.routes.draw do
           get  'search_pa'
           post 'search_pa'
           post 'validate_status'
+          post 'validate_milestone'
           get  'get_grants_serialnumber'
           post 'get_grants_serialnumber'
           get  'get_central_contact_types'

@@ -1,5 +1,5 @@
 class TrialsController < ApplicationController
-  before_action :set_trial, only: [:show, :edit, :update, :destroy]
+  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
 
@@ -522,6 +522,10 @@ class TrialsController < ApplicationController
         @validation_msgs.append(validation_msg)
       end
     end
+  end
+
+  def validate_milestone
+    @validation_msgs = @trial.validate_milestone(params[:submission_id], params[:milestone_id])
   end
 
   def search_clinical_trials_gov_ignore_exists

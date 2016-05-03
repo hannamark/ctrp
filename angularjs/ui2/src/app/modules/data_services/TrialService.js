@@ -115,6 +115,7 @@
             checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
+            validateMilestone: validateMilestone,
             validateSrStatus: validateSrStatus,
             searchClinicalTrialsGov: searchClinicalTrialsGov,
             importClinicalTrialsGov: importClinicalTrialsGov,
@@ -989,6 +990,17 @@
         function validateStatus(statuses) {
             if (!!statuses) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_TRIAL_STATUS, statuses);
+            }
+        }
+
+        /**
+         * Get validation errors for milestones
+         *
+         * @param params
+         */
+        function validateMilestone (params) {
+            if (!!params) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_MILESTONE, params);
             }
         }
 
