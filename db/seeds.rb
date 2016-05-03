@@ -215,11 +215,6 @@ InterventionType.find_or_create_by(code: 'GENE', name: 'Genetic', category: 'cli
 InterventionType.find_or_create_by(code: 'DSUP', name: 'Dietary Supplement', category: 'clinicaltrials.gov')
 InterventionType.find_or_create_by(code: 'OTH', name: 'Other', category: 'clinicaltrials.gov')
 
-InterventionType.find_or_create_by(code: 'DRUGC', name: 'Drug', category: 'cancer.gov')
-InterventionType.find_or_create_by(code: 'PROCC', name: 'Procedure/Surgery', category: 'cancer.gov')
-InterventionType.find_or_create_by(code: 'GENEC', name: 'Genetic', category: 'cancer.gov')
-InterventionType.find_or_create_by(code: 'OTHC', name: 'Other', category: 'cancer.gov')
-
 NcitStatus.find_or_create_by(code:'ACT',name:'Active')
 NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
 

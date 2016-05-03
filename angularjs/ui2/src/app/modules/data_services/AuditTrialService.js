@@ -85,18 +85,18 @@
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
-                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*',
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '100', width: '5%'},
+                {name: 'submission_date',displayName:'Date', minWidth: '150', width: '15%',
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
-                {field: 'submission_type_list', displayName: 'Type',enableSorting:true, cellTemplate:'<span class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></span>'},
-                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '100', width: '*',
+                {field: 'submission_type_list', displayName: 'Type',minWidth: '25', width: '25%',enableSorting:true, cellTemplate:'<span class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></span>'},
+                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '45', width: '35%',
                     cellTemplate: '<div class="ui-grid-cell-contents"><div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a> {{doc.source_document}}</div></div>'},
-                {field: 'milestone', displayName: 'Current Milestone',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
+                {field: 'milestone', displayName: 'Current Milestone', minWidth: '25',width: '15%',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
 
                 {
                     name: 'Action ',
                     cellTemplate: '<div class="text-center ui-grid-cell-contents"><button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button></div>',
-                    width: '100'
+                    minWidth:'10',width: '5%'
 
                 }
             ]
