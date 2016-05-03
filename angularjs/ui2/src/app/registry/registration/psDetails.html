@@ -141,9 +141,7 @@
                                     <div>
                                         <select restriction-field class="form-control input-sm" id="sr_status" ng-model="psDetailView.sr_status_id"  ng-change="psDetailView.watchOption('sr_status')">
                                             <option value="">-Select a Trial Status-</option>
-                                            <option ng-repeat="srStatus in psDetailView.srStatusArr" value="{{srStatus.id}}">
-                                                {{srStatus.name}}
-                                            </option>
+                                            <option ng-repeat="srStatus in psDetailView.srStatusArr" value="{{srStatus.id}}">{{srStatus.name}}</option>
                                         </select>
                                     </div>
                                 </td>
