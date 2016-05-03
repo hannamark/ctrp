@@ -393,17 +393,11 @@
                                 <div class="form-group" ng-show="psView.selectedContactTypePI && psView.investigatorArray.length">
                                     <label for="investigator" class="control-label col-xs-12 col-sm-3">Primary Contact:</label>
                                     <div class="col-xs-12 col-sm-4">
-                                        <!--
-                                            <ui-select id="investigator" ng-model="psView.selectedInvestigator">
-                                                <ui-select-match placeholder="-Select Investigator-"></ui-select-match>
-                                                <ui-select-choices repeat="investigator in psView.investigatorArray">{{investigator.name}}</ui-select-choices>
-                                            </ui-select>
-                                        -->
                                         <select name="investigator" id="investigator"
                                                 class="form-control input-sm"
-                                                ng-model="psView.selectedInvestigator"
-                                                ng-options="investigator as investigator.name for investigator in psView.investigatorArray">
+                                                ng-model="psView.selectedInvestigator" ng-options="investigator as investigator.name for investigator in psView.investigatorArray track by investigator.id">
                                             <option value="">-Select Investigator-</option>
+                                            <!--<option ng-repeat="investigator in psView.investigatorArray" value="{{investigator.id}}">{{investigator.name}}</option>-->
                                         </select>
                                     </div>
                                 </div>
@@ -449,7 +443,8 @@
                                             <span ng-show="ps_contact_form.phone.$dirty" class="form-control-feedback" ng-class="!psView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.central_contacts[0].extension" placeholder="Extension">
+                                            <!--<input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.central_contacts[0].extension" placeholder="Extension">-->
+                                            <input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.extension" placeholder="Extension">
                                         </div>
                                     </div>
                                 </div>
