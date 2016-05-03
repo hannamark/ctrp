@@ -33,26 +33,32 @@
                         </div>
                         <!-- Last Name ends -->
 
-                        <!-- Organization Name-->
-                        <div class="form-group">
-                            <label for=user_organization_name" class="control-label col-sm-5">Organization Name:</label>
-                            <div class="col-sm-7">
-                                <input type="text" id="user_organization_name" class="form-control input-sm" placeholder="Organization Name" ng-model="userView.searchParams.user_organization_name" auto-focus/>
-                            </div>
-                        </div>
-                        <!-- Organization Name ends -->
-
-                        <!--Last Name-->
+                        <!--Status-->
                         <div class="form-group">
                             <label for="first_name" class="control-label col-sm-5">Status:</label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-7" ng-if="!userView.searchStatus">
                                 <select class="form-control input-sm" id="user_status_id" ng-model="userView.searchParams.user_status_id">
                                     <option value="">Select a status</option>
                                     <option ng-repeat="status in userView.statusArr" value="{{status.id}}">{{status.name}}</option>
                                 </select>
                             </div>
+                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchStatus">
+                                {{userView.searchStatus}}
+                            </div>
                         </div>
-                        <!-- Last Name ends -->
+                        <!-- Status ends -->
+
+                        <!-- Organization Name-->
+                        <div class="form-group">
+                            <label for=user_organization_name" class="control-label col-sm-5">Organization Name:</label>
+                            <div class="col-sm-7" ng-if="!userView.searchOrganization">
+                                <input type="text" id="user_organization_name" class="form-control input-sm" placeholder="Organization Name" ng-model="userView.searchParams.user_organization_name" auto-focus/>
+                            </div>
+                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganization">
+                                {{userView.searchOrganization}}
+                            </div>
+                        </div>
+                        <!-- Organization Name ends -->
                     </div>
                     <div class="col-xs-12 col-md-6">
                         <!--email-->
@@ -73,15 +79,6 @@
                         </div>
                         <!-- First Name ends -->
 
-                        <!-- Organization Family-->
-                        <div class="form-group">
-                            <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
-                            <div class="col-sm-7">
-                                <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" auto-focus/>
-                            </div>
-                        </div>
-                        <!-- Organization Family ends -->
-
                         <!-- Site Admin-->
                         <div class="form-group">
                             <label for="site_admin" class="control-label col-sm-5">Site Admin:</label>
@@ -90,6 +87,18 @@
                             </div>
                         </div>
                         <!-- Site Admin ends -->
+
+                        <!-- Organization Family-->
+                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)">
+                            <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
+                            <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
+                                <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" auto-focus/>
+                            </div>
+                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganizationFamily && userView.searchOrganizationFamily.length">
+                                {{userView.searchOrganizationFamily}}
+                            </div>
+                        </div>
+                        <!-- Organization Family ends -->
                     </div>
                 </div><!-- first row ends -->
 
