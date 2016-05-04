@@ -37,13 +37,14 @@
         };
 
         vm.saveMilestone = function () {
+            // Prevent multiple submissions
+            vm.disableBtn = true;
             TrialService.validateMilestone({"id": vm.curTrial.id, "milestone_id": vm.milestone_id, "submission_id": vm.curTrial.current_submission_id}).then(function(response) {
                 if (response.validation_msgs.error) {
                     vm.validationError = response.validation_msgs.error;
+                    vm.disableBtn = false;
                 } else {
                     vm.validationError = '';
-                    // Prevent multiple submissions
-                    vm.disableBtn = true;
 
                     vm.curTrial.milestone_wrappers_attributes = [];
                     var milestoneWrapperObj = {};
