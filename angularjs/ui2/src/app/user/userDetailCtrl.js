@@ -24,7 +24,6 @@
         vm.userRole = UserService.getUserRole();
 
         vm.updateUser = function () {
-            console.log("Error in retrieving details:",vm.userDetails);
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }

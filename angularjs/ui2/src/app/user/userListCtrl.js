@@ -13,7 +13,6 @@
     function userListCtrl($scope, userDetailObj, toastr, UserService, uiGridConstants, $location) {
 
         var vm = this;
-        vm.statusArr = UserService.getStatusArray();
         vm.curUser = userDetailObj;
 
         // Initial User Search Parameters

@@ -11,7 +11,6 @@
         'ctrp.app.user',
         'ctrp.app.layout'
     ]).run(function() {
-        console.log('ctrp.app.main is running');
     });
 
 })();

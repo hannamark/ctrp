@@ -87,7 +87,6 @@
                             $state.go('main.sign_in');
                         }, 200);
                     }
-                    $log.info('success in log out: ' + JSON.stringify(data));
                 }).catch(function (err) {
                     $log.error('error in logging out: ' + JSON.stringify(err));
                 });
