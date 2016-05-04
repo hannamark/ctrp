@@ -3,7 +3,7 @@ class UtilController < ApplicationController
 
   def get_app_settings
     requestedSettings = params[:settings]
-    results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value : nil
+    results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value.gsub("\n",'').split.join(" ") : nil
     @settings = [results]
   end
 
@@ -11,7 +11,7 @@ class UtilController < ApplicationController
     requestedSettings = params[:settings]
     permittedSettings = ['USER_DOMAINS','USER_ROLES','NIH_USER_FUNCTIONS','NIHEXT_USER_FUNCTIONS','Federated_USER_FUNCTIONS']
     if permittedSettings.include? requestedSettings
-      results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value : nil
+      results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value.gsub("\n",'').split.join(" ")  : nil
       @settings = [results]
     end
   end

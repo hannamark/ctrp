@@ -937,7 +937,21 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI The
 
 AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
 
-AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value', big_value: 'ROLE_RO||ROLE_SUPER||ROLE_ADMIN||ROLE_CURATOR||ROLE_ABSTRACTOR||ROLE_ABSTRACTOR-SU||ROLE_TRIAL-SUBMITTER||ROLE_ACCRUAL-SUBMITTER||ROLE_SITE-SU||ROLE_SERVICE-REST')
+AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value',
+                             big_value:
+                                 '[
+                                     {"id": "ROLE_RO",                "name": "RO"},
+                                     {"id": "ROLE_SUPER",             "name": "Super"},
+                                     {"id": "ROLE_ADMIN",             "name": "Admin"},
+                                     {"id": "ROLE_CURATOR",           "name": "Curator"},
+                                     {"id": "ROLE_ABSTRACTOR",        "name": "Abstractor"},
+                                     {"id": "ROLE_ABSTRACTOR-SU",     "name": "Abstractor SU"},
+                                     {"id": "ROLE_TRIAL-SUBMITTER",   "name": "Trial Submitter"},
+                                     {"id": "ROLE_ACCRUAL-SUBMITTER", "name": "Accrual Submitter"},
+                                     {"id": "ROLE_SITE-SU",           "name": "Site Administrator"},
+                                     {"id": "ROLE_SERVICE-REST",      "name": "Service Rest"}
+                                 ]'
+)
 
 AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons||Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
 
