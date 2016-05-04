@@ -937,19 +937,65 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI The
 
 AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
 
+#AUM Role Matrix (roles will be assigned per environment i.e. prod, qa, demo)
 AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value',
                              big_value:
                                  '[
-                                     {"id": "ROLE_RO",                "name": "RO"},
-                                     {"id": "ROLE_SUPER",             "name": "Super"},
-                                     {"id": "ROLE_ADMIN",             "name": "Admin"},
-                                     {"id": "ROLE_CURATOR",           "name": "Curator"},
-                                     {"id": "ROLE_ABSTRACTOR",        "name": "Abstractor"},
-                                     {"id": "ROLE_ABSTRACTOR-SU",     "name": "Abstractor SU"},
-                                     {"id": "ROLE_TRIAL-SUBMITTER",   "name": "Trial Submitter"},
-                                     {"id": "ROLE_ACCRUAL-SUBMITTER", "name": "Accrual Submitter"},
-                                     {"id": "ROLE_SITE-SU",           "name": "Site Administrator"},
-                                     {"id": "ROLE_SERVICE-REST",      "name": "Service Rest"}
+                                     {
+                                        "id": "ROLE_APPROVER",
+                                        "name": "Approver",
+                                        "assign_access": "ROLE_APPROVER,ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_RO",
+                                        "name": "Read Only",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_SUPER",
+                                        "name": "Super",
+                                        "assign_access": "ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_ADMIN",
+                                        "name": "Admin",
+                                        "assign_access": "ROLE_APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU,ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                     },
+                                     {
+                                        "id": "ROLE_CURATOR",
+                                        "name": "Curator",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ABSTRACTOR",
+                                        "name": "Abstractor",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ABSTRACTOR-SU",
+                                        "name": "Abstractor SU",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_TRIAL-SUBMITTER",
+                                        "name": "Trial Submitter",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ACCRUAL-SUBMITTER",
+                                        "name": "Accrual Submitter",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_SITE-SU",
+                                        "name": "Site Administrator",
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_SERVICE-REST",
+                                        "name": "Service Rest",
+                                        "assign_access": ""
+                                     }
                                  ]'
 )
 

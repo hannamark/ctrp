@@ -7,32 +7,16 @@
     angular.module('ctrp.module.dataservices')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', 'AppSettingsService', '$log', '$uibModal',
+    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
         '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope', 'uiGridConstants'];
 
-    function UserService(LocalCacheService, PromiseTimeoutService, AppSettingsService, $log, $uibModal,
+    function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
                          $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope, uiGridConstants) {
 
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
-        var statusArr = [
-            {id: 1, name: 'In Review'},
-            {id: 2, name: 'Active'},
-            {id: 3, name: 'Inactive'},
-            {id: 4, name: 'Deleted'}
-        ];
-        var rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
-
-
-
-        AppSettingsService.getSettings('USER_ROLES', true).then(function (response) {
-            var rolesArrStr = response.data[0].settings.toString();
-
-        }).catch(function (err) {
-            console.log("Error in retrieving USER_ROLES.");
-        });
-
+        
         /**
          * Check if the the user/viewer is logged in by checking the
          * local cache for existence of both token and username
@@ -297,14 +281,6 @@
          */
         this.saveCurationMode = function (curationMode) {
             LocalCacheService.cacheItem('curation_enabled', curationMode);
-        };
-
-        this.getStatusArray = function() {
-            return statusArr;
-        };
-
-        this.getRolesArray = function() {
-            return rolesArr;
         };
 
         /******* helper functions *********/

@@ -92,6 +92,7 @@ Rails.application.routes.draw do
 
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
+    get '/users/user_statuses' => 'user_statuses#index'
     post '/users/search' => 'users#search'
     post '/users/request_admin/:username' => 'users#request_admin_access'
 
