@@ -17,6 +17,7 @@
         vm.submission_num = vm.curTrial.current_submission_num;
         vm.milestoneArr = milestoneObj;
         vm.showRejectionReason = false;
+        vm.validationError = '';
 
         vm.setAddMode = function (mode) {
             vm.addMode = mode;
@@ -37,40 +38,43 @@
 
         vm.saveMilestone = function () {
             TrialService.validateMilestone({"id": vm.curTrial.id, "milestone_id": vm.milestone_id, "submission_id": vm.curTrial.current_submission_id}).then(function(response) {
-                console.log(response.validation_msgs);
+                if (response.validation_msgs.error) {
+                    vm.validationError = response.validation_msgs.error;
+                } else {
+                    vm.validationError = '';
+                    // Prevent multiple submissions
+                    vm.disableBtn = true;
 
-                // Prevent multiple submissions
-                vm.disableBtn = true;
-
-                vm.curTrial.milestone_wrappers_attributes = [];
-                var milestoneWrapperObj = {};
-                milestoneWrapperObj.submission_id = vm.curTrial.current_submission_id;
-                milestoneWrapperObj.milestone_id = vm.milestone_id;
-                milestoneWrapperObj.comment = vm.comment;
-                if (vm.showRejectionReason) {
-                    milestoneWrapperObj.comment = vm.rejection_reason + ': ' + milestoneWrapperObj.comment;
-                }
-                if (vm.curUser.first_name && vm.curUser.last_name) {
-                    milestoneWrapperObj.created_by = vm.curUser.last_name + ', ' + vm.curUser.first_name;
-                }
-                vm.curTrial.milestone_wrappers_attributes.push(milestoneWrapperObj);
-
-                // An outer param wrapper is needed for nested attributes to work
-                var outerTrial = {};
-                outerTrial.id = vm.curTrial.id;
-                outerTrial.trial = vm.curTrial;
-
-                TrialService.upsertTrial(outerTrial).then(function(response) {
-                    if (response.server_response.status < 300) {
-                        $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
-                        toastr.success('Milestone have been recorded', 'Operation Successful!');
-                    } else {
-                        // Enable buttons in case of backend error
-                        vm.disableBtn = false;
+                    vm.curTrial.milestone_wrappers_attributes = [];
+                    var milestoneWrapperObj = {};
+                    milestoneWrapperObj.submission_id = vm.curTrial.current_submission_id;
+                    milestoneWrapperObj.milestone_id = vm.milestone_id;
+                    milestoneWrapperObj.comment = vm.comment;
+                    if (vm.showRejectionReason) {
+                        milestoneWrapperObj.comment = vm.rejection_reason + ': ' + milestoneWrapperObj.comment;
                     }
-                }).catch(function (err) {
-                    console.log("Error in saving milestone " + JSON.stringify(outerTrial));
-                });
+                    if (vm.curUser.first_name && vm.curUser.last_name) {
+                        milestoneWrapperObj.created_by = vm.curUser.last_name + ', ' + vm.curUser.first_name;
+                    }
+                    vm.curTrial.milestone_wrappers_attributes.push(milestoneWrapperObj);
+
+                    // An outer param wrapper is needed for nested attributes to work
+                    var outerTrial = {};
+                    outerTrial.id = vm.curTrial.id;
+                    outerTrial.trial = vm.curTrial;
+
+                    TrialService.upsertTrial(outerTrial).then(function (response) {
+                        if (response.server_response.status < 300) {
+                            $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
+                            toastr.success('Milestone have been recorded', 'Operation Successful!');
+                        } else {
+                            // Enable buttons in case of backend error
+                            vm.disableBtn = false;
+                        }
+                    }).catch(function (err) {
+                        console.log("Error in saving milestone " + JSON.stringify(outerTrial));
+                    });
+                }
             }).catch(function (err) {
                 console.log("Error in validating milestone: " + err);
             });

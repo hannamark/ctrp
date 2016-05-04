@@ -408,11 +408,26 @@ class Trial < TrialBase
     return target.size > 0 ? true : false
   end
 
+  # Return true if the last milestone of the specified submission matches the milestone_code
+  def is_last_milestone?(submission_id, milestone_code)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.milestone.code == milestone_code
+      return true
+    else
+      return false
+    end
+  end
+
   # Return validation errors for adding a milestone to a set of milestones with specific submission ID
   def validate_milestone(submission_id, milestone_id)
     validation_msgs = {}
-    validation_msgs[:submission_id] = submission_id
-    validation_msgs[:milestone_id] = milestone_id
+    milestone_to_add = Milestone.find(milestone_id)
+
+    if milestone_to_add.code == 'VPS'
+      if !is_last_milestone?(submission_id, 'SRD')
+        validation_msgs[:error] = 'Submission Received Date milestone must exist'
+      end
+    end
 
     return validation_msgs
   end
