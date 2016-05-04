@@ -8,34 +8,172 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['$scope', 'toastr', 'UserService', 'uiGridConstants', '$location'];
+    userListCtrl.$inject = ['$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location'];
 
-    function userListCtrl($scope, toastr, UserService, uiGridConstants, $location) {
-
-        $scope.changeUserStatus = function(row) {
-            var userObj = {};
-            if (row && row.entity) {
-                if (row.entity.user_status.id === 4) {
-                    row.entity.user_status_id = 4;
-                    row.entity.user_status.name = 'Deleted';
-                } else {
-                    row.entity.user_status_id = 3;
-                    row.entity.user_status.name = 'Inactive';
-                }
-
-                userObj.id = row.entity.id;
-                userObj.user = row.entity;
-            }
-            vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
-            vm.upsertUser(userObj);
-        };
+    function userListCtrl($scope, userDetailObj, toastr, UserService, uiGridConstants, $location) {
 
         var vm = this;
         vm.statusArr = UserService.getStatusArray();
-        vm.searchParams = UserService.getInitialUserSearchParams();
+        vm.curUser = userDetailObj;
 
-        //ui-grid plugin options
-        vm.gridOptions = UserService.getGridOptions();
+        // Initial User Search Parameters
+        var SearchParams = function (){
+            return {
+                username: '',
+                    first_name: '',
+                middle_name: '',
+                last_name: '',
+                email: '',
+                phone: '',
+                approved: '',
+                user_status_id: '',
+                // affiliated_org_name: '',
+
+                //for pagination and sorting
+                rows: 25,
+                start: 1
+            }
+        }; //initial User Search Parameters
+
+
+        var optionOrg = {
+            name: 'user_organization_name',
+            displayName: 'Affiliated Org.',
+            enableSorting: true,
+            minWidth: '100',
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
+            '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+        };
+
+        var optionOrgFamilies = {
+            name: 'families',
+            displayName: 'Org. Family',
+            enableSorting: false,
+            minWidth: '100',
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
+            '<ul class="csv"><li ng-repeat="i in COL_FIELD CUSTOM_FILTERS"> {{i.name}}</li></ul></div>'
+        };
+
+        var optionRole = {
+            name: 'role',
+                displayName: 'Site Admin',
+            enableSorting: true,
+            width: '110',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SITE-SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
+        };
+
+        var optionEmail = {
+            name: 'receive_email_notifications',
+            displayName: 'Email Notify',
+            enableSorting: true,
+            width: '120',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
+        };
+
+        var optionPhone = {
+            name: 'phone',
+            displayName: 'Phone',
+            enableSorting: true,
+            minWidth: '100',
+            width: '*',
+            visible: false,
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+        };
+
+        var optionStatus = {
+            name: 'user_status',
+                displayName: 'Status',
+            enableSorting: true,
+            width: '90',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
+        };
+
+        var gridOptions = {
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            // enableFullRowSelection: true,
+            enableSelectAll: false,
+            //enableRowSelection: false,
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 25,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: false,
+            enableVerticalScrollbar: 2,
+            enableHorizontalScrollbar: 2,
+            columnDefs: [
+                {
+                    name: 'username',
+                    enableSorting: true,
+                    displayName: 'username',
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
+                    ' title="{{COL_FIELD}}">' +
+                    ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {
+                    name: 'first_name',
+                    displayName: 'First Name',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {
+                    name: 'last_name',
+                    displayName: 'Last Name',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {
+                    name: 'middle_name',
+                    displayName: 'Middle Name',
+                    enableSorting: false,
+                    minWidth: '100',
+                    visible: false,
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {
+                    name: 'email',
+                    displayName: 'Email',
+                    enableSorting: true,
+                    minWidth: '150',
+                    width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                }
+            ]
+        };
+
+
+
+            //ui-grid plugin options
+        vm.searchParams = new SearchParams;
+        vm.gridOptions = gridOptions;
+        if (vm.curUser.role === "ROLE_SITE-SU") {
+            vm.searchOrganization = vm.curUser.organization.name;
+            vm.searchOrganizationFamily = vm.curUser.family_orgs.length ? vm.curUser.family_orgs[0].name : '';
+            vm.searchStatus = 'Active';
+            vm.searchType = vm.curUser.role;
+            vm.gridOptions.columnDefs.push(optionRole, optionEmail, optionPhone);
+        } else {
+            vm.gridOptions.columnDefs.push(optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
+        }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.onRegisterApi = function (gridApi) {
@@ -57,10 +195,10 @@
                 console.log('Search Users failed');
             });
         }; //searchUsers
-
+        vm.searchUsers();
 
         vm.resetSearch = function () {
-            vm.searchParams = UserService.getInitialUserSearchParams();
+            vm.searchParams = new SearchParams;
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
 
@@ -68,14 +206,6 @@
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
-
-        vm.upsertUser = function(updatedUser) {
-            UserService.upsertUser(updatedUser).then(function(response) {
-                toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
-            }).catch(function(err) {
-                console.log('error in updating user');
-            });
-        }; //upsertUser
 
         /****************************** implementations **************************/
 

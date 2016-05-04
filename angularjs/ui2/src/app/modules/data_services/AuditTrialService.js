@@ -57,7 +57,7 @@
                 },
                 {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*',
-                cellTemplate: '<div>{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
+                cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
                 {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
 
             ]

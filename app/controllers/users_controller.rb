@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, :only => :index
-  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+  before_filter :wrapper_authenticate_user, only: [:search] unless Rails.env.test?
 
   attr_accessor :gsa_text
 
@@ -124,19 +124,26 @@ end
     params[:order] = 'asc' if params[:order].blank?
     @users = User.all
 
+    if current_user.role == 'ROLE_SITE-SU'
+      @users = @users.matches_wc('organization_id', current_user.organization_id)
+      @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
+      @organization =  Organization.find(current_user.organization_id).name
+      @status = 'Active'
+    end
+
+
+    @searchType = current_user.role
 
     @users = @users.matches_wc('username', params[:username]) if params[:username].present?
     @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present?
     @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present?
     @users = @users.matches_wc('email', params[:email]) if params[:email].present?
-    @users = @users.matches_wc('site_admin', params[:site_admin])  if params[:site_admin].present?
+    @users = @users.matches_wc('role', 'ROLE_SITE-SU')  if params[:site_admin].present?
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
 
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-
-      @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "last_name DESC, first_name ASC").group(:'users.id').page(params[:start]).per(params[:rows])
-    #end
+    @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id').page(params[:start]).per(params[:rows])
 
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users

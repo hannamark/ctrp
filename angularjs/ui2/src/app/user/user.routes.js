@@ -78,7 +78,10 @@
                     templateUrl: 'app/user/user_list.html',
                     controller: 'userListCtrl as userView',
                     resolve: {
-                        UserService: 'UserService'
+                        UserService: 'UserService',
+                        userDetailObj: function(UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
                     },
                     ncyBreadcrumb: {
                         label: 'User Portal'

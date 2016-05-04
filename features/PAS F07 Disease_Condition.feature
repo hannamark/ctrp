@@ -3,7 +3,7 @@ Feature: PAS F07  Add and Edit Disease and Condition
 
 As a CTRP Scientific Abstractor, I can add and edit Disease and Condition  
 
-Scenario: #1 I can add Disease and Condition for a trial
+Scenario: #1 I can add Disease and Condition for a trial 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Disease/Condition screen
@@ -36,35 +36,35 @@ And a message displays with the number of results for the terms entered
 And the Disease/Condition is associated to the trial
 And a message displays "# items found, displaying all items"
  
- Scenario:#2 I can remove Disease/Condition from " Your Selections" 
+ Scenario:#2 I can remove Disease/Condition from " Your Selections"
     Given I am on the Find Disease/Condition screen
      When I click on the remove icon on the left side of the Preferred Term in "Your Selections" 
      Then The term will be removed from "Your Selections"
      And the disease selected message decrements 
      |0 diseases selected|
      
-     Scenario: #3  Preferred Term link to NCIt
+     Scenario: #3  Preferred Term link to NCIt  (updated 03MAY2016 to add NCIt display)
 Given I have a list of Preferred Term on Find a Disease/Condition page
-And I Click NCIt icon
+When I click on the NCIt tree icon
+Then the preferred terms displays in its location in the NCIt hierarchy 
+When I Click NCIt icon
 Then the NCIt page for the term displays  
      
-     Scenario: #4  Find a Disease/Condition Search Synonyms selected 
+     Scenario: #4  Find a Disease/Condition Search Synonyms selected (03MAY2016 - added HIGHTLIGHTED for term search results; )
 Given I am on the Find a Disease/Condition screen
 When I have entered a term
 And I have selected Search Synonyms
 And I Click the search icon or click Enter 
-Then a list of Preferred Terms and Synonyms that contain the entered term displays
-And a can select a preferred term to add 
+Then a list of Preferred Terms and Synonyms that contain the entered term HIGHLIGHTED displays
+And I can select a preferred term to add 
 
 
-Scenario: #5 Add All, Link to NCIt, Reset button on Find a Disease/Condition page
+Scenario: #5 Add All, Link to NCIt, Reset button on Find a Disease/Condition page (03MAY2016 - Add all removed)
 Given I am on the Find a Disease/Condition screen
 When I click NCIt button
 Then the NCIt system displays
 When I have a list of Preferred Term
-And I click Add All button
-Then all terms in list of Preferred Term display in Your Selection section of page
-When I click Reset button
+And I click Reset button
 Then all entries in the Your Selection section and the list of Preferred Term are removed
 
 

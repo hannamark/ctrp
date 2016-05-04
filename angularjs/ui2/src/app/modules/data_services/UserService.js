@@ -7,10 +7,10 @@
     angular.module('ctrp.module.dataservices')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
+    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', 'AppSettingsService', '$log', '$uibModal',
         '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope', 'uiGridConstants'];
 
-    function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
+    function UserService(LocalCacheService, PromiseTimeoutService, AppSettingsService, $log, $uibModal,
                          $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope, uiGridConstants) {
 
         var service = this;
@@ -24,144 +24,14 @@
         ];
         var rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
 
-        // Initial User Search Parameters
-        var initUserSearchParams = {
-            username: '',
-            first_name: '',
-            middle_name: '',
-            last_name: '',
-            email: '',
-            phone: '',
-            approved: '',
-            user_status_id: '',
-            // affiliated_org_name: '',
-
-            //for pagination and sorting
-            sort: 'last_name',
-            order: 'ASC',
-            rows: 25,
-            start: 1
-        }; //initial User Search Parameters
 
 
-        var gridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            //enableRowSelection: false,
-            paginationPageSizes: [10, 25, 50, 100],
-            paginationPageSize: 25,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableGridMenu: true,
-            enableFiltering: true,
-            enableVerticalScrollbar: 2,
-            enableHorizontalScrollbar: 2,
-            columnDefs: [
-                {
-                    name: 'last_name',
-                    displayName: 'Last Name',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'first_name',
-                    displayName: 'First Name',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'middle_name',
-                    displayName: 'Middle Name',
-                    enableSorting: false,
-                    minWidth: '100',
-                    visible: false,
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'username',
-                    enableSorting: true,
-                    displayName: 'username',
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                    ' title="{{COL_FIELD}}">' +
-                    ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'email',
-                    displayName: 'Email',
-                    enableSorting: true,
-                    minWidth: '150',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'user_organization_name',
-                    displayName: 'Organization',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'families',
-                    displayName: 'Families',
-                    enableSorting: false,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
-                    '<ul class="csv"><li ng-repeat="i in COL_FIELD CUSTOM_FILTERS"> {{i.name}}</li></ul></div>'
-                },
-                {
-                    name: 'role',
-                    displayName: 'Site Admin',
-                    enableSorting: true,
-                    width: '110',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SUPER","ROLE_ADMIN","SITE_SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
-                },
-                {
-                    name: 'receive_email_notifications',
-                    displayName: 'Email Notify',
-                    enableSorting: true,
-                    width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
-                },
-                {
-                    name: 'phone',
-                    displayName: 'Phone',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    visible: false,
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'user_status',
-                    displayName: 'Status',
-                    enableSorting: true,
-                    width: '90',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
-                }
-            ]
-        };
+        AppSettingsService.getSettings('USER_ROLES', true).then(function (response) {
+            var rolesArrStr = response.data[0].settings.toString();
+
+        }).catch(function (err) {
+            console.log("Error in retrieving USER_ROLES.");
+        });
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -252,19 +122,6 @@
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
             return user_list;
         }; //searchUsers
-
-        /**
-         * get initial paramater object for people search
-         * @return initUserSearchParams
-         */
-        this.getInitialUserSearchParams = function () {
-            return initUserSearchParams;
-        }; //getInitialUserSearchParams
-
-
-        this.getGridOptions = function () {
-            return gridOptions;
-        };
 
 
         /**
