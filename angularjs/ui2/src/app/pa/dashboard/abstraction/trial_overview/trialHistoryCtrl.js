@@ -9,10 +9,10 @@
         .controller('trialHistoryCtrl', trialHistoryCtrl);
 
     trialHistoryCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService','HOST','DateService'];
+        '$timeout', '_', 'PATrialService', 'toastr','AuditService','uiGridConstants','$uibModal','UserService','HOST','DateService','userDetailObj'];
 
     function trialHistoryCtrl($scope, TrialService, MESSAGES,
-                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService,HOST,DateService) {
+                                     $timeout, _, PATrialService, toastr,AuditService,uiGridConstants,$uibModal,UserService,HOST,DateService,userDetailObj) {
         var vm = this;
         vm.hasUserOpenedUpdates=false;
 
@@ -249,6 +249,7 @@
                 vm.entity.acknowledge ="Yes";
                 vm.entity.acknowledge_date = new Date();
                 vm.entity.acknowledged_by = UserService.getLoggedInUsername();
+                console.log("userDetailObj ---- " + userDetailObj)
                 var obj={'id':row.entity.id,
                     'acknowledge_comment':vm.entity.acknowledge_comment,
                     'acknowledge':vm.entity.acknowledge,

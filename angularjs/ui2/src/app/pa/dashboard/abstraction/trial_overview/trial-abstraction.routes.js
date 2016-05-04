@@ -148,7 +148,12 @@
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'Email Logs'
+                    label: 'Email Logs',
+                    resolve: {
+                        userDetailObj: function (UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
+                    },
                 }
             })
 
