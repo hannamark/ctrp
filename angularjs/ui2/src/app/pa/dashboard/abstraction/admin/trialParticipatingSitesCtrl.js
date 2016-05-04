@@ -110,6 +110,7 @@
         vm.resetParticipatingSiteContactInfo = function() {
             vm.currentParticipatingSite.contact_name = null;
             vm.currentParticipatingSite.contact_phone =  null;
+            vm.currentParticipatingSite.extension =  null;
             vm.currentParticipatingSite.contact_email =  null;
             vm.currentParticipatingSite.contact_type = null;
         }
@@ -117,8 +118,9 @@
             console.log("IN  setParticipatingSiteContactInfo");
             var name = PersonService.extractFullName(vm.currentParticipatingSite.person);
             vm.currentParticipatingSite.contact_name = name;
-            vm.currentParticipatingSite.contact_phone =  vm.currentParticipatingSite.person.phone;
-            vm.currentParticipatingSite.contact_email =  vm.currentParticipatingSite.person.email;
+            vm.currentParticipatingSite.contact_phone =  vm.currentParticipatingSite.contact_phone ? vm.currentParticipatingSite.contact_phone : vm.currentParticipatingSite.person.phone;
+            vm.currentParticipatingSite.contact_email =  vm.currentParticipatingSite.contact_email ? vm.currentParticipatingSite.contact_email : vm.currentParticipatingSite.person.email;
+            vm.currentParticipatingSite.extension = vm.currentParticipatingSite.extension ? vm.currentParticipatingSite.extension : vm.currentParticipatingSite.person.extension;
         }
 
         vm.saveParticipatingSite = function(){
@@ -188,6 +190,7 @@
                         }
                         vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
                         vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
+                        vm.persisted_contact.extension = vm.currentParticipatingSite.extension;
                         vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
                         vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
                         vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
@@ -297,9 +300,13 @@
                 vm.po_name = vm.curTrial.participating_sites[idx].organization.po_name;
                 vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
             }
+
+            console.log('eighth and edit: ', vm.currentParticipatingSite);
+
             vm.persisted_contact = {};
             vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
             vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
+            vm.persisted_contact.extension = vm.currentParticipatingSite.extension;
             vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
             vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
             vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
@@ -308,6 +315,18 @@
             vm.initInvestigatorGrid();
             vm.validateStatus();
             vm.tabIndex = 0;
+
+            _.each(vm.investigatorGrid, function(inv) {
+                if (inv.set_as_contact) {
+                    var selectedInv = inv;
+                    console.log('contact is now: ', selectedInv);
+                    _.each(vm.investigatorArray, function(inv) {
+                        if (inv.id === selectedInv.id) {
+                            vm.selectedInvestigator = {id: inv.id, name: inv.name};
+                        }
+                    });
+                }
+            });
         }
 
         vm.initSiteRecruitmentGrid = function (){
@@ -543,6 +562,7 @@
                     if (vm.currentParticipatingSite.person && vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
                         vm.currentParticipatingSite.contact_name = null;
                         vm.currentParticipatingSite.contact_phone =  null;
+                        vm.currentParticipatingSite.extension = null;
                         vm.currentParticipatingSite.contact_email =  null;
                         vm.currentParticipatingSite.contact_type = null;
                         vm.persisted_contact.contact_name = null;
@@ -594,7 +614,7 @@
                 vm.currentParticipatingSite.person_id = vm.persisted_contact.persisted_person.id;
             }
             if(vm.currentParticipatingSite.contact_type == "PI") {
-                if (vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
+                if (vm.currentParticipatingSite.person && vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
                     vm.current_investigator.set_as_contact = true;
                 } else {
                     vm.current_investigator.set_as_contact = false;
@@ -633,6 +653,7 @@
                                  if(vm.currentParticipatingSite.person.id == vm.current_investigator.person.id){
                                      vm.currentParticipatingSite.contact_name = null;
                                      vm.currentParticipatingSite.contact_phone = null;
+                                     vm.currentParticipatingSite.extension = null;
                                      vm.currentParticipatingSite.contact_email = null;
                                      vm.currentParticipatingSite.person_id = null;
                                      vm.currentParticipatingSite.person = null;
@@ -692,12 +713,14 @@
                     if(vm.persisted_contact.contact_type == "PI"){
                         vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
                         vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
+                        vm.currentParticipatingSite.extension = vm.persisted_contact.extension;
                         vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
                         vm.currentParticipatingSite.person_id =  vm.persisted_contact.person_id;
                         vm.currentParticipatingSite.person =  vm.persisted_contact.person;
                     } else {
                         vm.currentParticipatingSite.contact_name = null;
                         vm.currentParticipatingSite.contact_phone = null;
+                        vm.currentParticipatingSite.extension = null;
                         vm.currentParticipatingSite.contact_email = null;
                         vm.currentParticipatingSite.person_id = null;
                     }
@@ -707,11 +730,13 @@
                     if(vm.persisted_contact.contact_type == "General"){
                         vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
                         vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
+                        vm.currentParticipatingSite.extension = vm.persisted_contact.extension;
                         vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
                         vm.currentParticipatingSite.person_id = null;
                     } else {
                         vm.currentParticipatingSite.contact_name = null;
                         vm.currentParticipatingSite.contact_phone = null;
+                        vm.currentParticipatingSite.extension = null;
                         vm.currentParticipatingSite.contact_email = null;
                         vm.currentParticipatingSite.person_id = null;
                     }
@@ -720,6 +745,7 @@
                     if(vm.persisted_contact.contact_type == "Person"){
                         vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
                         vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
+                        vm.currentParticipatingSite.extension = vm.persisted_contact.extension;
                         vm.currentParticipatingSite.contact_email = vm.persisted_contact.contact_email;
                         vm.currentParticipatingSite.person_id =  vm.persisted_contact.person_id;
                         vm.currentParticipatingSite.person =  vm.persisted_contact.person;
@@ -727,6 +753,7 @@
                         console.log("Initialize for Person");
                         vm.currentParticipatingSite.contact_name = null;
                         vm.currentParticipatingSite.contact_phone = null;
+                        vm.currentParticipatingSite.extension = null;
                         vm.currentParticipatingSite.contact_email = null;
                         vm.currentParticipatingSite.person_id = null;
                         vm.currentParticipatingSite.person = null;
@@ -764,6 +791,7 @@
                     personAsContact.new = true;
                     vm.currentParticipatingSite.contact_type = "Person";
                     vm.currentParticipatingSite.contact_phone = person.phone;
+                    vm.currentParticipatingSite.extension = person.extension;
                     vm.currentParticipatingSite.contact_email = person.email;
                     vm.currentParticipatingSite.person =  person;
                     vm.currentParticipatingSite.person_id =  person.id;
@@ -785,6 +813,7 @@
                         var inv = vm.currentParticipatingSite.participating_site_investigators[i].person;
                         vm.currentParticipatingSite.contact_name = PersonService.extractFullName(inv);
                         vm.currentParticipatingSite.contact_phone = inv.phone;
+                        vm.currentParticipatingSite.extension = inv.extension;
                         vm.currentParticipatingSite.contact_email = inv.email;
                         vm.currentParticipatingSite.contact_type = "PI"; // replace hardcoding
                         vm.currentParticipatingSite.person = inv;

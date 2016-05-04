@@ -195,7 +195,7 @@
                 console.log('Search Users failed');
             });
         }; //searchUsers
-
+        vm.searchUsers();
 
         vm.resetSearch = function () {
             vm.searchParams = new SearchParams;
