@@ -8,10 +8,10 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope', 'uiGridConstants'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope, uiGridConstants) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
 
         var service = this;
         var appVersion = '';
@@ -46,13 +46,13 @@
                     if (data.token) {
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
-                        LocalCacheService.cacheItem('user_id', data.user_id); // cache user id
+                        LocalCacheService.cacheItem('user_id', data.user_id);
                         _setAppVersion(data.app_version);
-                        LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
-                        LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
+                        LocalCacheService.cacheItem('user_role', data.role);
+                        LocalCacheService.cacheItem('user_type', data.user_type);
                         //array of write_modes for each area (e.g. pa or po)
                         LocalCacheService.cacheItem('write_modes', data.privileges || []);
-                        LocalCacheService.cacheItem('curation_enabled', false); //default: curation mode is off/false
+                        LocalCacheService.cacheItem('curation_enabled', false);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg('signedIn');
 
@@ -205,7 +205,6 @@
         this.upsertUserSignup = function (userObj) {
             //update an existing user
             var configObj = {};
-            console.log('userObj = ' + JSON.stringify(userObj));
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
                 .then(function (data) {
@@ -233,7 +232,6 @@
         this.upsertUserChangePassword = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            console.log('upsertUserChangePassword userObj = ' + JSON.stringify(userObj));
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
