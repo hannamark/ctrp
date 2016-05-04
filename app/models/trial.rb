@@ -686,7 +686,6 @@ class Trial < TrialBase
       begin
         p " sending emails now!"
         mail_sending_result = 'Success'
-        mail_template.to = 'ivytony@gmail.com'  # hi-jack for testing only
         CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
       rescue  Exception => e
         logger.warn "email delivery error = #{e}"
