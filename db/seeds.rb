@@ -1291,6 +1291,8 @@ test_users.each do |u|
   end
 end
 
+if !Rails.env.qa?
+
 ##Add NCICTRPDEV team
 LdapUser.delete_all
 
@@ -1354,6 +1356,8 @@ begin
   end
 rescue Exception => e
   Rails.logger.info "Exception thrown #{e.inspect}"
+end
+
 end
 
 
