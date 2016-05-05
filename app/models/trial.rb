@@ -457,6 +457,9 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'APS')
         validation_msgs[:errors].push('Administrative Processing Start Date milestone must exist')
       end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+      end
     elsif milestone_to_add.code == 'RAQ'
       if !is_last_milestone?(submission_id, 'APC')
         validation_msgs[:errors].push('Administrative Processing Completed Date milestone must exist')
@@ -469,6 +472,9 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'AQS')
         validation_msgs[:errors].push('Administrative QC Start Date milestone must exist')
       end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+      end
     elsif milestone_to_add.code == 'SPS'
       if !is_last_milestone?(submission_id, 'SAC')
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
@@ -476,6 +482,9 @@ class Trial < TrialBase
     elsif milestone_to_add.code == 'SPC'
       if !is_last_milestone?(submission_id, 'SPS')
         validation_msgs[:errors].push('Scientific Processing Start Date milestone must exist')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
       end
     elsif milestone_to_add.code == 'RSQ'
       if !is_last_milestone?(submission_id, 'SPC')
@@ -488,6 +497,9 @@ class Trial < TrialBase
     elsif milestone_to_add.code == 'SQC'
       if !is_last_milestone?(submission_id, 'SQS')
         validation_msgs[:errors].push('Scientific QC Start Date milestone must exist')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
       end
     elsif milestone_to_add.code == 'TSR'
       if !is_last_milestone?(submission_id, 'RTS')
