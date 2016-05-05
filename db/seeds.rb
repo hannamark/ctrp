@@ -1259,12 +1259,24 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
                {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER", "approve" => true}
 ]
 
+LocalUser.delete_all
+
+test_users.each do |u|
+  user = LocalUser.new
+  user.username = u["username"]
+  user.role = u["role"]
+  user.first_name = u["username"] + "_first_name"
+  user.last_name  = u["username"] + "_last_name"
+  user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
+  user.password = "Welcome01"
+  user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+  user.user_status = UserStatus.find_by_code('ACT')
+  user.save!
+end
+
 test_users.each do |u|
   user = User.find_by_username(u["username"])
   unless user.blank?
-    user.password = "Welcome01"
-    user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
-
     user.role = u["role"]
     user.approved =  u["approve"]
     unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
