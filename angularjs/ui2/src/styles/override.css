@@ -1339,3 +1339,8 @@ div[disabled] {
 .st-sort-descent:before{
     content: '\25BC';
 }
+
+.show-form-errors .ng-invalid, .show-form-errors .help-block {
+    border-color: #a94442;
+    border-width: 1px;
+}

@@ -1293,7 +1293,7 @@ dcp = Organization.find_or_create_by( id: 10000002,
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER"},
                {"username" => "ctrpsuper2", "role" => "ROLE_SUPER"},
                {"username" => "ctrpsuper3", "role" => "ROLE_SUPER"},
-               {"username" => "ctrpadmin", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN"},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR"},
                {"username" => "testercurator", "role" => "ROLE_CURATOR"},
                {"username" => "ctrpro", "role" => "ROLE_RO"},
@@ -1318,6 +1318,7 @@ test_users.each do |u|
  user = LocalUser.new
  user.username = u["username"]
  user.role = u["role"]
+ user.domain = "NIH"
  user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
  user.password = "Welcome01"
  user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
@@ -1407,6 +1408,7 @@ begin
     ldap_user.email = u["email"]
     ldap_user.username = u["email"].split("@")[0]
     ldap_user.role = u["role"]
+    ldap_user.domain = "NIH"
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
     ldap_user.organization = org0
