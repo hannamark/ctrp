@@ -300,16 +300,21 @@ class TrialsController < ApplicationController
         checkout_message = 'Scientific checkout was successful'
       end
     end
+    # Log the checkout record
+    user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
+    user_fullname.strip!
+    result = checkout_message.nil? ? 'Failed' : 'Success'
+    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id)
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkout_message => checkout_message} }
     end
   end
 
-
   def checkin_trial
     available_checkin_types = ["admin", "scientific", "scientificadmin"]
     checkin_type = params[:type].downcase
+    checkin_message = nil
 
     if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type)
 
@@ -317,18 +322,26 @@ class TrialsController < ApplicationController
 
       if checkin_type == "admin"
         @trial.update_attribute('admin_checkout', nil)
+        checkin_message = 'Admin checkin was successful'
 
       elsif checkin_type == "scientificadmin"
         @trial.update_attributes('admin_checkout': nil, 'scientific_checkout': nil)
+        checkin_message = 'Admin and Scientific checkin was successful'
 
       elsif checkin_type == "scientific"
         @trial.update_attribute('scientific_checkout', nil)
+        checkin_message = 'Scientific checkin was successful'
 
       end
     end
 
+    user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
+    user_fullname.strip!
+    result = checkin_message.nil? ? 'Failed' : 'Success'
+    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id)
+
     respond_to do |format|
-      format.json { render :json => {:result => @trial} }
+      format.json { render :json => {:result => @trial, :checkin_message => checkin_message} }
     end
 
   end

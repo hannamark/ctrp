@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160428201501) do
+ActiveRecord::Schema.define(version: 20160505195240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1164,6 +1164,18 @@ ActiveRecord::Schema.define(version: 20160428201501) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "trial_checkout_logs", force: :cascade do |t|
+    t.integer  "trial_id"
+    t.string   "abstraction_type"
+    t.string   "category"
+    t.string   "username"
+    t.string   "full_name"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "user_id"
+    t.string   "result"
+  end
+
   create_table "trial_co_lead_orgs", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "organization_id"
@@ -1683,6 +1695,7 @@ ActiveRecord::Schema.define(version: 20160428201501) do
   create_sequence "submissions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "tempgrants_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "time_perspectives_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "trial_checkout_logs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_lead_orgs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_pis_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_documents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
