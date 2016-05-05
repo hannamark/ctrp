@@ -17,7 +17,7 @@
         vm.submission_num = vm.curTrial.current_submission_num;
         vm.milestoneArr = milestoneObj;
         vm.showRejectionReason = false;
-        vm.validationError = '';
+        vm.validationErrors = [];
 
         vm.setAddMode = function (mode) {
             vm.addMode = mode;
@@ -40,11 +40,11 @@
             // Prevent multiple submissions
             vm.disableBtn = true;
             TrialService.validateMilestone({"id": vm.curTrial.id, "milestone_id": vm.milestone_id, "submission_id": vm.curTrial.current_submission_id}).then(function(response) {
-                if (response.validation_msgs.error) {
-                    vm.validationError = response.validation_msgs.error;
+                if (response.validation_msgs.errors.length > 0) {
+                    vm.validationErrors = response.validation_msgs.errors;
                     vm.disableBtn = false;
                 } else {
-                    vm.validationError = '';
+                    vm.validationErrors = [];
 
                     vm.curTrial.milestone_wrappers_attributes = [];
                     var milestoneWrapperObj = {};
