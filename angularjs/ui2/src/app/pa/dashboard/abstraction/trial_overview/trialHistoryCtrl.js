@@ -280,8 +280,7 @@
             function acknowledgeUpdate() {
                 vm.entity.acknowledge ="Yes";
                 vm.entity.acknowledge_date = new Date();
-                vm.entity.acknowledged_by = UserService.getLoggedInUsername();
-                console.log("userDetailObj ---- " + userDetailObj)
+                vm.entity.acknowledged_by = userDetailObj.first_name +" , "+ userDetailObj.last_name;
                 var obj={'id':row.entity.id,
                     'acknowledge_comment':vm.entity.acknowledge_comment,
                     'acknowledge':vm.entity.acknowledge,
