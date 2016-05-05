@@ -8,12 +8,11 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location'];
+    userListCtrl.$inject = ['$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService'];
 
-    function userListCtrl($scope, userDetailObj, toastr, UserService, uiGridConstants, $location) {
+    function userListCtrl($scope, userDetailObj, toastr, UserService, uiGridConstants, $location, AppSettingsService) {
 
         var vm = this;
-        vm.statusArr = UserService.getStatusArray();
         vm.curUser = userDetailObj;
 
         // Initial User Search Parameters
@@ -161,8 +160,14 @@
         };
 
 
+        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
+            vm.statusArr = response.data;
+        }).catch(function (err) {
+            vm.statusArr = [];
+            console.log("Error in retrieving USER_STATUSES " + err);
+        });
 
-            //ui-grid plugin options
+        //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
         if (vm.curUser.role === "ROLE_SITE-SU") {
@@ -195,7 +200,7 @@
                 console.log('Search Users failed');
             });
         }; //searchUsers
-
+        vm.searchUsers();
 
         vm.resetSearch = function () {
             vm.searchParams = new SearchParams;
@@ -205,6 +210,7 @@
             Object.keys(vm.searchParams).forEach(function (key, index) {
                 vm.searchParams[key] = '';
             });
+            vm.searchUsers();
         }; //resetSearch
 
         /****************************** implementations **************************/

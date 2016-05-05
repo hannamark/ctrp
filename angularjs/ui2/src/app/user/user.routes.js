@@ -111,7 +111,6 @@
                             return GeoLocationService.getCountryList();
                         },
                         userDetailObj : function(UserService, $stateParams) {
-                            console.log($stateParams);
                             return UserService.getUserDetailsByUsername($stateParams.username);
                         }
                     }, //resolve the promise and pass it to controller
