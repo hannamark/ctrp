@@ -443,6 +443,10 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'VQS')
         validation_msgs[:error] = 'Validation QC Start Date milestone must exist'
       end
+    elsif milestone_to_add.code == 'SAC'
+      if !is_last_milestone?(submission_id, 'VQC')
+        validation_msgs[:error] = 'Validation QC Completed Date milestone must exist'
+      end
     elsif milestone_to_add.code == 'APS'
       if !is_last_milestone?(submission_id, 'SAC')
         validation_msgs[:error] = 'Submission Acceptance Date milestone must exist'
