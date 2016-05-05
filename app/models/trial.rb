@@ -191,6 +191,7 @@ class Trial < TrialBase
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :users, through: :trial_ownerships
   has_many :anatomic_site_wrappers, -> { order 'anatomic_site_wrappers.id' }
+  has_many :trial_checkout_logs, -> { order 'trial_checkout_logs.id'}
 
   attr_accessor :edit_type
   attr_accessor :coming_from
@@ -548,10 +549,9 @@ class Trial < TrialBase
     last_sub_method = last_submission.submission_method if last_submission.present?
     last_submitter = last_submission.user if last_submission.present?
     last_submitter_name = last_submitter.nil? ? '' : "#{last_submitter.first_name} #{last_submitter.last_name}"
-    last_submitter_name = last_submitter_name.strip!
+    last_submitter_name.strip!
     last_submitter_name = 'CTRP User' if last_submitter_name.blank?
     last_submission_date = last_submission.nil? ? '' : last_submission.submission_date.strftime('%d-%b-%Y')
-#    last_submission_date = last_submission.submission_date.present? ? last_submission.submission_date.strftime('%d-%b-%Y') : ''
     lead_protocol_id = self.lead_protocol_id.present? ? self.lead_protocol_id : ''
     trial_title = self.official_title.present? ? self.official_title : ''
     nci_id = self.nci_id.present? ? self.nci_id : ''
