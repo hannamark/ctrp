@@ -1260,10 +1260,11 @@ test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => 
 ]
 
 test_users.each do |u|
-  user.password = "Welcome01"
-
   user = User.find_by_username(u["username"])
   unless user.blank?
+    user.password = "Welcome01"
+    user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+
     user.role = u["role"]
     user.approved =  u["approve"]
     unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
