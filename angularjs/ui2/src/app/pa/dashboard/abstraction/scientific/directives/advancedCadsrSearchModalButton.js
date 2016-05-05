@@ -49,12 +49,9 @@
             $scope.curationMode = false;
             $scope.selectedOrgsArray = [];
             $scope.allowOverwrite = $scope.allowOverwrite == undefined ? true : $scope.allowOverwrite;
-            //$scope.useBuiltInTemplate = $scope.useBuiltInTemplate == undefined ? false : $scope.useBuiltInTemplate;
+
             var modalOpened = false;
-            console.log('in button controller, use built-in template: ' + $scope.useBuiltInTemplate + ', maxRowSelectable:' + $scope.maxRowSelectable);
 
-
-            //console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
             $scope.searchOrgs = function(size) {
                 if (modalOpened) return; //prevent modal open twice in single click
 
@@ -86,10 +83,8 @@
                                }
                             });
 
-                            // $scope.savedSelection = $scope.savedSelection.concat(selectedOrgs);
-                            $scope.selectedOrgsArray = $scope.savedSelection; //$scope.selectedOrgsArray.concat(selectedOrgs);
+                            $scope.selectedOrgsArray = $scope.savedSelection;
                         }
-                        // console.log('modal resolved selectedOrgs: ' + JSON.stringify(selectedOrgs));
                     }
 
                     modalOpened = false;
@@ -104,7 +99,6 @@
             $scope.toggleSelection = function (index) {
                 if (index < $scope.savedSelection.length) {
                     $scope.savedSelection.splice(index, 1);
-                    // $scope.savedSelection[index]._destroy = !$scope.savedSelection[index]._destroy;
                 }
             };// toggleSelection
 
@@ -129,7 +123,6 @@
     function advancedCadsrSearchForm2ModalCtrl($scope, $uibModalInstance, maxRowSelectable) {
         var vm = this;
         vm.maxRowSelectable = maxRowSelectable || 'undefined'; //to be passed to the adv org search form
-        //console.log('in Modal, received promise maxRowSelectable: ' + vm.maxRowSelectable);
         $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedOrgsArray = [];  // orgs selected in the modal
 
@@ -153,7 +146,6 @@
         function watchOrgSearchResults() {
             $scope.$watch('orgSearchResults', function (newVal, oldVal) {
                 $scope.orgSearchResults = newVal;
-                //console.log('in Modal, orgSearchResults: ' + JSON.stringify($scope.orgSearchResults));
             }, true);
         } //watchOrgSearchResults
 
@@ -161,7 +153,6 @@
         function watchSelectedOrgs() {
             $scope.$watchCollection('selectedOrgsArray', function(newVal, oldVal) {
                 //TODO: do something here if necessary
-                // console.log('In Org search modal, selectedOrgsArray.length: ' + $scope.selectedOrgsArray.length);
             }, true);
 
         } //watchSelectedOrgs
