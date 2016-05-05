@@ -149,8 +149,6 @@
 
 
         function getOrgById(orgId) {
-            console.log('calling getOrgById in OrgService');
-            //return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
             return PromiseTimeoutService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
         } //getOrgById
 
@@ -169,7 +167,7 @@
             }
 
             //update an existing organization
-            var configObj = {}; //empty config
+            var configObj = {};
             return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + '.json', orgObj, configObj);
         } //upsertOrg
 
@@ -240,7 +238,6 @@
             return function(countryName) {
                 if (countryName) {
 
-                   // console.log('countryName: ' + countryName + ', calling GeoLocationService');
                     GeoLocationService.getStateListInCountry(countryName)
                         .then(function (response) {
                             statesOrProvinces = response;

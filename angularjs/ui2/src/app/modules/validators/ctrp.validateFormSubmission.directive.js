@@ -26,7 +26,6 @@
 
                     element.bind('submit', function(event) {
                         submitController.attempted = formController.$submitted;
-                        $log.info('form is submitted: ' + formController.$submitted);
                         if (!scope.$$phase) {
                             scope.$apply();
                         }
@@ -49,7 +48,6 @@
                     var formController = null;
 
                     this.setFormController = function(controller) {
-                        console.log('setting form controller!');
                         formController = controller;
                     };
 
