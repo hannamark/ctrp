@@ -47,7 +47,11 @@
                 controller:   'trialHistoryCtrl as trialHistoryView',
                 section: 'pa',
                 resolve: {
-                    DateService: 'DateService'
+                    DateService: 'DateService',
+                    UserService:'UserService',
+                    userDetailObj: function (UserService) {
+                        return UserService.getCurrentUserDetails();
+                    }
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
