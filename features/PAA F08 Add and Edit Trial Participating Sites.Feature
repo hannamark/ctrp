@@ -17,7 +17,8 @@ And I have selected one or more Investigators <Site Principal Investigator> for 
 And I have selected the role for each investigator <Site Principal Investigator Role> (required)
 |Principal Investigator|
 |Sub Investigator|
-And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact
+And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact 
+And I have selected a Central Contact for the Participating site (required)
 And I have edited the phone number for the investigator contact <Phone> (either the phone or e-mail is required)
 And I have edited the phone number extension <Ext> for the investigator contact
 And I have edited the contact e-mail for the contact <e-mail address> (either the phone or e-mail is required)
@@ -53,6 +54,7 @@ And I have selected the role for each investigator <Site Principal Investigator 
 |Principal Investigator|
 |Sub Investigator|
 And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact
+And I have selected a Central Contact for the Participating site
 And I have edited the phone number for the investigator contact <Phone>
 And I have edited the phone number extension <Ext> for the investigator contact
 And I have edited the contact e-mail for the contact <e-mail address>

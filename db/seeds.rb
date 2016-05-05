@@ -1318,6 +1318,8 @@ test_users.each do |u|
  user = LocalUser.new
  user.username = u["username"]
  user.role = u["role"]
+ user.first_name = u["username"] + "_first_name"
+ user.last_name  = u["username"] + "_last_name"
  user.domain = "NIH"
  user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
  user.password = "Welcome01"
