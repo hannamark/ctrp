@@ -22,11 +22,8 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
-        vm.statusArr = UserService.getStatusArray();
-        vm.rolesArr = UserService.getRolesArray();
 
         vm.updateUser = function () {
-            console.log("Error in retrieving details:",vm.userDetails);
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
@@ -52,10 +49,25 @@
             UserService.userRequestAdmin(params);
         };
         
-        AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
+        AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
             vm.domainArr = response.data[0].settings.split('||');
         }).catch(function (err) {
-            console.log("Error in retrieving USER_DOMAINS.");
+            vm.domainArr = [];
+            console.log("Error in retrieving USER_DOMAINS " + err);
+        });
+
+        AppSettingsService.getSettings({ setting: 'USER_ROLES'}).then(function (response) {
+            vm.rolesArr = JSON.parse(response.data[0].settings);
+        }).catch(function (err) {
+            vm.rolesArr = [];
+            console.log("Error in retrieving USER_ROLES " + err);
+        });
+
+        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
+            vm.statusArr = response.data;
+        }).catch(function (err) {
+            vm.statusArr = [];
+            console.log("Error in retrieving USER_STATUSES " + err);
         });
 
         /****************** implementations below ***************/

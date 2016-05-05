@@ -7,32 +7,16 @@
     angular.module('ctrp.module.dataservices')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', 'AppSettingsService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope', 'uiGridConstants'];
+    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS'];
 
-    function UserService(LocalCacheService, PromiseTimeoutService, AppSettingsService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope, uiGridConstants) {
+    function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
+                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
 
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
-        var statusArr = [
-            {id: 1, name: 'In Review'},
-            {id: 2, name: 'Active'},
-            {id: 3, name: 'Inactive'},
-            {id: 4, name: 'Deleted'}
-        ];
-        var rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
-
-
-
-        AppSettingsService.getSettings('USER_ROLES', true).then(function (response) {
-            var rolesArrStr = response.data[0].settings.toString();
-
-        }).catch(function (err) {
-            console.log("Error in retrieving USER_ROLES.");
-        });
-
+        
         /**
          * Check if the the user/viewer is logged in by checking the
          * local cache for existence of both token and username
@@ -62,13 +46,13 @@
                     if (data.token) {
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
-                        LocalCacheService.cacheItem('user_id', data.user_id); // cache user id
+                        LocalCacheService.cacheItem('user_id', data.user_id);
                         _setAppVersion(data.app_version);
-                        LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
-                        LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
+                        LocalCacheService.cacheItem('user_role', data.role);
+                        LocalCacheService.cacheItem('user_type', data.user_type);
                         //array of write_modes for each area (e.g. pa or po)
                         LocalCacheService.cacheItem('write_modes', data.privileges || []);
-                        LocalCacheService.cacheItem('curation_enabled', false); //default: curation mode is off/false
+                        LocalCacheService.cacheItem('curation_enabled', false);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg('signedIn');
 
@@ -103,7 +87,6 @@
                             $state.go('main.sign_in');
                         }, 200);
                     }
-                    $log.info('success in log out: ' + JSON.stringify(data));
                 }).catch(function (err) {
                     $log.error('error in logging out: ' + JSON.stringify(err));
                 });
@@ -222,7 +205,6 @@
         this.upsertUserSignup = function (userObj) {
             //update an existing user
             var configObj = {};
-            console.log('userObj = ' + JSON.stringify(userObj));
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
                 .then(function (data) {
@@ -250,7 +232,6 @@
         this.upsertUserChangePassword = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            console.log('upsertUserChangePassword userObj = ' + JSON.stringify(userObj));
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
@@ -297,14 +278,6 @@
          */
         this.saveCurationMode = function (curationMode) {
             LocalCacheService.cacheItem('curation_enabled', curationMode);
-        };
-
-        this.getStatusArray = function() {
-            return statusArr;
-        };
-
-        this.getRolesArray = function() {
-            return rolesArr;
         };
 
         /******* helper functions *********/
