@@ -303,7 +303,8 @@ class TrialsController < ApplicationController
     # Log the checkout record
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
-    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname) unless checkout_message.nil?
+    result = checkout_message.nil? ? 'Failed' : 'Success'
+    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id)
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkout_message => checkout_message} }
@@ -336,7 +337,8 @@ class TrialsController < ApplicationController
 
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
-    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname) unless checkin_message.nil?
+    result = checkin_message.nil? ? 'Failed' : 'Success'
+    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id)
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkin_message => checkin_message} }
