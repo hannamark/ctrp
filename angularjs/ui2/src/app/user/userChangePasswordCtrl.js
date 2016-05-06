@@ -15,11 +15,6 @@
                       $timeout,  UserService) {
         var vm = this;
 
-        // {'local_user'=>{'username'=>'abc',
-        // 'password'=>'[FILTERED]',
-        // 'password_confirmation'=>'[FILTERED]',
-        // 'current_password'=>'[FILTERED]'}}
-
          var username = UserService.getLoggedInUsername();
         toastr.success('User ' + username);
         vm.userObj = {
@@ -33,7 +28,6 @@
         };
 
         vm.updateUser = function () {
-            //
             UserService.upsertUserChangePassword(vm.userObj).then(function (response) {
                 //toastr.success('User ' + vm.userObj + ' has been recorded', 'Operation Successful!');
             }).catch(function (err) {

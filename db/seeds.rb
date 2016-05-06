@@ -937,7 +937,67 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI The
 
 AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
 
-AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value', big_value: 'ROLE_RO||ROLE_SUPER||ROLE_ADMIN||ROLE_CURATOR||ROLE_ABSTRACTOR||ROLE_ABSTRACTOR-SU||ROLE_TRIAL-SUBMITTER||ROLE_ACCRUAL-SUBMITTER||ROLE_SITE-SU||ROLE_SERVICE-REST')
+#AUM Role Matrix (roles will be assigned per environment i.e. prod, qa, demo)
+AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value',
+                             big_value:
+                                 '[
+                                     {
+                                        "id": "ROLE_APPROVER",
+                                        "name": "Approver",
+                                        "assign_access": "ROLE_APPROVER,ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_RO",
+                                        "name": "Read Only",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_SUPER",
+                                        "name": "Super",
+                                        "assign_access": "ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_ADMIN",
+                                        "name": "Admin",
+                                        "assign_access": "ROLE_APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU,ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                     },
+                                     {
+                                        "id": "ROLE_CURATOR",
+                                        "name": "Curator",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ABSTRACTOR",
+                                        "name": "Abstractor",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ABSTRACTOR-SU",
+                                        "name": "Abstractor SU",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_TRIAL-SUBMITTER",
+                                        "name": "Trial Submitter",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ACCRUAL-SUBMITTER",
+                                        "name": "Accrual Submitter",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_SITE-SU",
+                                        "name": "Site Administrator",
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_SERVICE-REST",
+                                        "name": "Service Rest",
+                                        "assign_access": ""
+                                     }
+                                 ]'
+)
 
 AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons||Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
 
@@ -1233,7 +1293,7 @@ dcp = Organization.find_or_create_by( id: 10000002,
 test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER"},
                {"username" => "ctrpsuper2", "role" => "ROLE_SUPER"},
                {"username" => "ctrpsuper3", "role" => "ROLE_SUPER"},
-               {"username" => "ctrpadmin", "role" => "ROLE_SUPER"},
+               {"username" => "ctrpadmin", "role" => "ROLE_ADMIN"},
                {"username" => "ctrpcurator", "role" => "ROLE_CURATOR"},
                {"username" => "testercurator", "role" => "ROLE_CURATOR"},
                {"username" => "ctrpro", "role" => "ROLE_RO"},
@@ -1258,6 +1318,9 @@ test_users.each do |u|
  user = LocalUser.new
  user.username = u["username"]
  user.role = u["role"]
+ user.first_name = u["username"] + "_first_name"
+ user.last_name  = u["username"] + "_last_name"
+ user.domain = "NIH"
  user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
  user.password = "Welcome01"
  user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
@@ -1347,6 +1410,7 @@ begin
     ldap_user.email = u["email"]
     ldap_user.username = u["email"].split("@")[0]
     ldap_user.role = u["role"]
+    ldap_user.domain = "NIH"
     ldap_user.first_name = u["first_name"]
     ldap_user.last_name = u["last_name"]
     ldap_user.organization = org0

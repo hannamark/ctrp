@@ -23,7 +23,6 @@
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
             vm.deleteBtnDisabled = true;
-            vm.isInterventionTypeListEnabled = false;
             vm.upsertBtnDisabled = true;
             vm.sortableListener = {};
             vm.sortableListener.stop = dragItemCallback;
@@ -47,6 +46,7 @@
 
             function _getTrialDetailCopy() {
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                vm.isInterventionTypeListEnabled = false;
             }
 
             function addIntervention(addModeValue) {
@@ -121,7 +121,7 @@
 
             function editIntervention(index) {
                 vm.showInterventionForm = true;
-                vm.isInterventionTypeListEnabled = false;
+                vm.isInterventionTypeListEnabled = isUserAllowedToSelectType;
                 vm.upsertBtnDisabled = false;
                 vm.curInterventionObj = angular.copy(vm.trialDetailObj.interventions[index]);
                 vm.curInterventionObj.edit = true;

@@ -61,6 +61,7 @@ class  User < ActiveRecord::Base
   belongs_to :user_status
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :trials, through: :trial_ownerships
+  has_many :trial_checkout_logs
 
   attr_accessor :organization_name
   attr_accessor :selected_functions

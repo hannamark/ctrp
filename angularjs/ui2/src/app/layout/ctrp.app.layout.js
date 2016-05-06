@@ -22,7 +22,6 @@
         'ui.router'
 
     ]).run(function($rootScope, $urlRouter, $state, $stateParams, $injector, UserService, LocalCacheService, toastr) {
-            console.log('ctrp.app.layout is running!');
             $rootScope.$on('stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
                 var statesNotRequiringGsa = ['main.sign_in', 'main.sign_up', 'main.gsa'];
                 if (statesNotRequiringGsa.indexOf(toState.name) === -1 &&
@@ -45,11 +44,9 @@
 
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
-                            // console.log('retrieved data from dmz: ' + JSON.stringify(data));
                             UserService.setAppVersion(data['app_version']);
                         });
                         UserService.getAppRelMilestoneFromDMZ().then(function(data) {
-                            // console.log('retrieved data from dmz: ' + JSON.stringify(data));
                             UserService.setAppRelMilestone(data['app_rel_milestone']);
                         });
                     }

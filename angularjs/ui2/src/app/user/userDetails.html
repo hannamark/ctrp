@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <fieldset restriction-field>
-                <form class="form-horizontal" role="form" name="userDetail_form" novalidate ctrp-submit="userDetailView.updateUser()">
+                <form class="form-horizontal" role="form" name="userDetail_form" novalidate  ng-class="{'show-form-errors': userDetailView.showValidation}">
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.username)}">
                         <label class="control-label col-xs-12 col-sm-3">User Name:</label>
                         <div class="col-xs-12 col-sm-6">
@@ -52,9 +52,12 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.role)}">
                         <label class="control-label col-xs-12 col-sm-3">Role:</label>
                         <div class="col-xs-12 col-sm-6">
-                            <select class="form-control input-sm" id="role" ng-model="userDetailView.userDetails.role" name="role" required ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'">
-                                <option value="" ng-selected="userDetailView.userDetails.role == ''">Select a role</option>
-                                <option ng-repeat="role in userDetailView.rolesArr track by $index" value="{{role}}" ng-selected="userDetailView.userDetails.role === role">{{role}}</option>
+                            <select class="form-control input-sm" id="role"
+                                    ng-model="userDetailView.userDetails.role" name="role"
+                                    ng-options="user_role.id as user_role.name for user_role in userDetailView.rolesArr"
+                                    ng-disabled="userDetailView.disableRows"
+                                    required>
+                                <option value="">Select a role</option>
                             </select>
                             <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.role.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.role) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                             <span class="help-block" ng-show="userDetail_form.role.$invalid">Role is Required</span>
@@ -181,9 +184,14 @@
                         <div class="col-xs-12 col-sm-3"></div>
                         <div class="btn-toolbar col-xs-12 col-sm-6">
                             <a class="hand-hover pull-left" ng-click="userDetailView.userRequestAdmin({username : userDetailView.userDetails.username})">Request for Admin Access</a>
-                            <button type="submit" class="btn btn-primary pull-right" id="save_btn">
-                                Save
+                            <button type="button" class="btn btn-primary pull-right" id="save_btn"
+                                    ng-click="userDetailView.showValidation = true"
+                                    ctrp-confirm ctrp-click="userDetailView.validateSave()"
+                                    ng-attr-confirm-off="{{userDetailView.irreversibleRoleSwitchId === undefined || userDetailView.irreversibleRoleSwitchId === userDetailView.userDetails.role}}"
+                                    confirm-msg="You are about to switch this user's role from a role that you have no permissions to re-assign once you leave this form.">
+                                <i class="glyphicon glyphicon-ok"></i>  Save
                             </button>
+
                             <button type="button" class="btn btn-warning pull-right" ng-click="userDetailView.reset()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>

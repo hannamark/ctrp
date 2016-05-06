@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F08 Add and Edit Trial Participating Sites
 
 As any CTRP PA User, I can add and edit Trial Participating Sites
@@ -6,21 +6,22 @@ As any CTRP PA User, I can add and edit Trial Participating Sites
 Scenario Outline: #1 I can add one or more a participating sites for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
-And I have selected an organization <Organization name> with the Organization look up
-And I have entered the program code <Site Specific Program Code>
+And I have selected an organization <Organization name> with the Organization look up (required)
+And I have entered the program code <Site Specific Program Code> 
 And I have entered or edited the Local Trial Identifier <Local Trial Identifier>
-And I have selected one or more Site Recruitment Status <Site Recruitment Status>
-And I have selected one or more Site Recruitment status date <Site Recruitment Status Date>
+And I have selected one or more Site Recruitment Status <Site Recruitment Status> (required)
+And I have selected one or more Site Recruitment status date <Site Recruitment Status Date> (Required)
 And I have entered Site Recruitment status comments <Site Recruitment status comments>
 And I have entered a Target Accrual Number <Target Accrual Number>
-And I have selected one or more Investigators <Site Principal Investigator> for each Participating Site with the person look up
-And I have selected the role for each investigator <Site Principal Investigator Role>
+And I have selected one or more Investigators <Site Principal Investigator> for each Participating Site with the person look up (Required)
+And I have selected the role for each investigator <Site Principal Investigator Role> (required)
 |Principal Investigator|
 |Sub Investigator|
-And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact
-And I have edited the phone number for the investigator contact <Phone>
+And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact 
+And I have selected a Central Contact for the Participating site (required)
+And I have edited the phone number for the investigator contact <Phone> (either the phone or e-mail is required)
 And I have edited the phone number extension <Ext> for the investigator contact
-And I have edited the contact e-mail for the contact <e-mail address>
+And I have edited the contact e-mail for the contact <e-mail address> (either the phone or e-mail is required)
 And I have selected the �Set as Site Contact" for a central contact <Central Contact> when the central contact for the participating site is generic
 And I have added or edited the contact phone number for the contact <Phone>
 And I have added or edited the contact phone number extension <Ext> for the contact
@@ -53,6 +54,7 @@ And I have selected the role for each investigator <Site Principal Investigator 
 |Principal Investigator|
 |Sub Investigator|
 And I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact
+And I have selected a Central Contact for the Participating site
 And I have edited the phone number for the investigator contact <Phone>
 And I have edited the phone number extension <Ext> for the investigator contact
 And I have edited the contact e-mail for the contact <e-mail address>
@@ -76,13 +78,13 @@ Scenario: #3 Delete participating site information for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I select one or more participating sites
-When select delete participationg sites
+When I select delete participationg site
 Then the Participating Site will be removed from the trial record
 
 Scenario: #4 Save participating site information for a trial 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
-When select save participating sites 
+When select save participating site 
 Then the information entered or edited on the Participating Site screen will be saved to the trial record
 
 Scenario: #5 Cancel participating site information for a trial 
@@ -143,8 +145,8 @@ Examples:
 |Wake Forest      |New York|NY       |USA        |10101       |<null>                |<null>                 |30-Sep-2015                 |comments                        |abc123                    |48                   |Sam Smith                  |Sub Investigator                |Sam Smith            |<null>        |<null>|sam@WF.com    |Error        |Participating Site Status Missing|
 |MDA              |New York|NY       |USA        |10101       |<null>                |approved               |<null>                      |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|456   |CTC@mda.com   |Error        |Participationg site status Date is Missing|
 |Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |John Doe                   |<null>                          |<null>               |212-123-4567  |567   |<null>        |warning      |Investigator Role has not been added|
-|Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |<null>                     |Principal Investigator          |<null>               |212-123-4567  |678   |<null>        |warning      |Investigator has not been added|
-|Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |John Doe                   |Principal Investigator          |<null>               |<null>        |<null>|<null>        |warning      |Contact Phone number or E-mail address has not been added|
+|Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |<null>                     |Principal Investigator          |<null>               |212-123-4567  |678   |<null>        |error        |Investigator has not been added|
+|Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |John Doe                   |Principal Investigator          |<null>               |<null>        |<null>|<null>        |error        |Contact Phone number or E-mail address has not been added|
 
 Scenario: #7 Only one site contact for a participating site - investigator
 Given I am logged into the CTRP Protocol Abstraction application
@@ -340,3 +342,11 @@ And I have selected the Participating Site Status History
 And I have selected a status to delete
 And I have not entered a Comment
 Then the will display the error "A comment must be entered"  
+
+Scenario: #13 Participating sites can not be duplicated for a trial
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Participating Site Page
+And I have selected an organization <Organization name> with the Organization look up 
+And the organization is already listed as a participating site for this this trial (duplicte PO ID)
+Then an error message will be displayed "The participating site has already been associated with this trial"
+And the duplicte participating site will not be added to this trial
