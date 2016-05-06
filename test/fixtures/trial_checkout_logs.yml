@@ -2,14 +2,14 @@
 
 one:
   trial_id: 1
-  type: 
+  abstraction_type:
   category: MyString
   username: MyString
   full_name: MyString
 
 two:
   trial_id: 1
-  type: 
+  abstraction_type: 
   category: MyString
   username: MyString
   full_name: MyString
