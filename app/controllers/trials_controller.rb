@@ -1,7 +1,7 @@
 class TrialsController < ApplicationController
   before_action :set_trial, only: [:show, :edit, :update, :destroy]
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
-  load_and_authorize_resource unless Rails.env.test?
+  # before_filter :wrapper_authenticate_user unless Rails.env.test?
+  # load_and_authorize_resource unless Rails.env.test?
 
   # GET /trials
   # GET /trials.json
@@ -90,6 +90,18 @@ class TrialsController < ApplicationController
 
     respond_to do |format|
       format.json { render :json => @mail_logs }
+    end
+  end
+
+  # retrieve trial checkout and checkin history
+  def get_trial_checkout_history
+    @checkout_history = []
+    if params.has_key?(:trial_id)
+      @checkout_history = TrialCheckoutLog.where(:trial_id => params[:trial_id])
+    end
+
+    respond_to do |format|
+      format.json { render :json => @checkout_history }
     end
   end
 
