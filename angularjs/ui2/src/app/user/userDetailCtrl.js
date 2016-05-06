@@ -48,6 +48,17 @@
         vm.userRequestAdmin = function(params) {
             UserService.userRequestAdmin(params);
         };
+
+        vm.validateSave = function() {
+            vm.showValidation = true;
+            // If form is invalid, return and let AngularJS show validation errors.
+            if ($scope.userDetail_form.$invalid) {
+                return;
+            } else {
+                vm.updateUser();
+                return;
+            }
+        };
         
         AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
             vm.domainArr = response.data[0].settings.split('||');
@@ -58,6 +69,22 @@
 
         AppSettingsService.getSettings({ setting: 'USER_ROLES'}).then(function (response) {
             vm.rolesArr = JSON.parse(response.data[0].settings);
+            vm.assignRoles = _.find(vm.rolesArr, function(obj) { return obj.id === vm.userRole }).assign_access;
+            if (vm.assignRoles.length) {
+                var rolesArr = [];
+                angular.forEach(vm.rolesArr, function(role){
+                    if (vm.assignRoles.indexOf(role.id) > -1) {
+                        rolesArr.push(role);
+                    } else if(role.id === vm.userDetails.role) {
+                        rolesArr.push(role);
+                        vm.irreversibleRoleSwitchName = role.name;
+                        vm.irreversibleRoleSwitchId = role.id;
+                    }
+                });
+                vm.rolesArr = rolesArr;
+            } else {
+                vm.disableRows = true;
+            }
         }).catch(function (err) {
             vm.rolesArr = [];
             console.log("Error in retrieving USER_ROLES " + err);

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  trial_id: 1
+  abstraction_type:
+  category: MyString
+  username: MyString
+  full_name: MyString
+
+two:
+  trial_id: 1
+  abstraction_type: 
+  category: MyString
+  username: MyString
+  full_name: MyString

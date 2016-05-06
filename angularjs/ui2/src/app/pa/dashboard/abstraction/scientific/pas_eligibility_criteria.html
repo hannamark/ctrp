@@ -271,8 +271,8 @@
                    <div class="row">
                       <div class="col-sm-3"></div>
                       <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field
-                                ctrp-confirm
+                        <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field
+                                ctrp-confirm ctrp-click="criteriaView.updateCriteria(true)"
                                 ng-attr-confirm-off="{{(criteriaView.trialDetailObj.other_criteria | findObjByAttribute:'_destroy':true).length === 0 || undefined}}"
                                 confirm-msg="Click OK to remove selected Eligibility Criteria(s) from the study. Click Cancel to abort." ng-disabled="criteriaView.addOtherCriterionFormShown">
                           <i class="glyphicon glyphicon-ok"></i>  Save
