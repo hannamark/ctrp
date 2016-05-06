@@ -155,12 +155,12 @@ var abstractionParticipating = function(){
 
     //Back to Participating Site List
     this.backParticipatingSiteListParticipating = element(by.id('participating_back'));
-    this.backParticipatingSiteListInvestigators = element(by.id('investigators_back'));
+    this.backParticipatingSiteListInvestigators = element(by.id('investigator_back'));
     this.backParticipatingSiteListContact = element(by.id('contact_back'));
 
     //Reset
     this.resetBtnParticipating = element(by.id('participating_reset'));
-    this.resetBtnInvestigators = element(by.id('investigators_reset'));
+    this.resetBtnInvestigators = element(by.id('investigator_reset'));
     this.resetBtnContact = element(by.id('contact_reset'));
 
     //page Header

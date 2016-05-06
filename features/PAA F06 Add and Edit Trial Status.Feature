@@ -58,7 +58,7 @@ And have entered or edited the Trial On Hold Reason Comments with the trial stat
 |Administratively Complete|
 |Withdrawn|
 |Temporarily Closed to Accrual|
-| Temporarily Closed to Accrual and Intervention|
+|Temporarily Closed to Accrual and Intervention|
 And have entered or edited the any Additional Trial Status Comments
 When I select Save
 Then the trial status and dates will be checked against validation rules and associated with the trial
@@ -67,9 +67,9 @@ And a warning will be displayed for the incorrect status transitions, dates and 
 Scenario: #3 Cancel Trial Status
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status screen
-When I select Reset
+When I select Reset at the trial status screen
 Then the information entered or edited on the Trial Status screen will not be saved to the trial record 
-And the screen will be refreshed with the existing data
+And the screen will be refreshed with the existing data trial status data
 
 Scenario: #4 PA Trial Status Comments (Trial Status)
 Given I am logged into the CTRP Protocol Abstraction application
