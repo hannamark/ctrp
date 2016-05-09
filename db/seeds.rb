@@ -1289,137 +1289,141 @@ dcp = Organization.find_or_create_by( id: 10000002,
                                        email: "ncictrpdev@mail.nih.gov"
 )
 
+if !Rails.env.qa?
 
-test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER"},
-               {"username" => "ctrpsuper2", "role" => "ROLE_SUPER"},
-               {"username" => "ctrpsuper3", "role" => "ROLE_SUPER"},
-               {"username" => "ctrpadmin", "role" => "ROLE_SUPER"},
-               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR"},
-               {"username" => "testercurator", "role" => "ROLE_CURATOR"},
-               {"username" => "ctrpro", "role" => "ROLE_RO"},
-               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER"},
-               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER"},
-               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER"},
-               {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER"},
-               {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU"},
-               {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU"},
-               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR"},
-               {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR"},
-               {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR"},
-               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU"},
-               {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST"},
-               {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST"},
-               {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST"},
-               {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER"},
-               {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER"}
-]
+  test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER"},
+                 {"username" => "ctrpsuper2", "role" => "ROLE_SUPER"},
+                 {"username" => "ctrpsuper3", "role" => "ROLE_SUPER"},
+                 {"username" => "ctrpadmin", "role" => "ROLE_ADMIN"},
+                 {"username" => "ctrpcurator", "role" => "ROLE_CURATOR"},
+                 {"username" => "testercurator", "role" => "ROLE_CURATOR"},
+                 {"username" => "ctrpro", "role" => "ROLE_RO"},
+                 {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER"},
+                 {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER"},
+                 {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER"},
+                 {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER"},
+                 {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU"},
+                 {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU"},
+                 {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR"},
+                 {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR"},
+                 {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR"},
+                 {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU"},
+                 {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST"},
+                 {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST"},
+                 {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST"},
+                 {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER"},
+                 {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER"}
+  ]
 
-test_users.each do |u|
- user = LocalUser.new
- user.username = u["username"]
- user.role = u["role"]
- user.first_name = u["username"] + "_first_name"
- user.last_name  = u["username"] + "_last_name"
- user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
- user.password = "Welcome01"
- user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
- user.user_status = UserStatus.find_by_code('ACT')
- user.save!
-end
-
-test_users.each do |u|
-  user = User.find_by_username(u["username"])
-  unless user.blank?
-    user.role = u["role"]
-    unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
-      if user.username == 'ctrpsitesu2'
-        user.organization = org3
-      else
-        user.organization = org0
-      end
-    end
-    if user.role == "ROLE_SERVICE-REST"
-      case user.username
-        when "ctepservice"
-          user.organization = ctep
-
-        when "dcpservice"
-          user.organization = dcp
-
-        when "ccrservice"
-          user.organization = ccr
-      end
-    end
-    user.save!
-    #puts "Updated role of user = #{user.username}, role = #{user.role}"
+  test_users.each do |u|
+   user = LocalUser.new
+   user.username = u["username"]
+   user.role = u["role"]
+   user.first_name = u["username"] + "_first_name"
+   user.last_name  = u["username"] + "_last_name"
+   user.domain = "NIH"
+   user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
+   user.password = "Welcome01"
+   user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+   user.user_status = UserStatus.find_by_code('ACT')
+   user.save!
   end
-end
 
-##Add NCICTRPDEV team
-LdapUser.delete_all
+  test_users.each do |u|
+    user = User.find_by_username(u["username"])
+    unless user.blank?
+      user.role = u["role"]
+      unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
+        if user.username == 'ctrpsitesu2'
+          user.organization = org3
+        else
+          user.organization = org0
+        end
+      end
+      if user.role == "ROLE_SERVICE-REST"
+        case user.username
+          when "ctepservice"
+            user.organization = ctep
 
-charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Charlie", "last_name" => "Shive" }
-mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Mahesh", "last_name" => "Yelisetti" }
-shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shilpi", "last_name" => "Singh" }
-shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shamim", "last_name" => "Ahmed" }
-murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Murali", "last_name" => "Dulla" }
-tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Tony", "last_name" => "Wang" }
-shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
-sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
-hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
-radhika = {"email" => "tekumall@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
-vasu = {"email" => "nalluruvn@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Vasu", "last_name" => "Nalluru"}
-barry = {"email" => "alkisbd@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Barry", "last_name" => "Alkis"}
+          when "dcpservice"
+            user.organization = dcp
 
-
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika, vasu, barry]
-
-##Add CTRP Business Analysts
-
-joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Joe", "last_name" => "Martucci" }
-michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Michael", "last_name" => "Izbicki"}
-sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sandy", "last_name" => "Lightbody" }
-susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Susan", "last_name" => "Nonemaker"  }
-sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sophia", "last_name" => "Rarhai"  }
-
-ba_users = [joe, michael, sandy, susan, sophia]
-
-##Add CTRO and Curator users
-
-stephanie = {"email" => "whitleys@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
-kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
-andrea = {"email" => "mooreaj@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
-graysonra = {"email" => "graysonra@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
-
-ctro_users = [stephanie, kirsten, andrea, graysonra]
-
-#Add Fed users
-
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
-gene = {"email" => "krausg@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Gene", "last_name" => "Kraus" }
-
-fed_users = [jose, gene]
-
-all_users = ncictrpdev_users + ba_users + ctro_users + fed_users
-
-## Save the users by bypassing validation. We want to save the user without the password
-begin
-  all_users.each do |u|
-    ldap_user = LdapUser.new
-    ldap_user.email = u["email"]
-    ldap_user.username = u["email"].split("@")[0]
-    ldap_user.role = u["role"]
-    ldap_user.first_name = u["first_name"]
-    ldap_user.last_name = u["last_name"]
-    ldap_user.organization = org0
-    ldap_user.save(validate: false)
-    ldap_user.user_status = UserStatus.find_by_code('ACT')
-    #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
+          when "ccrservice"
+            user.organization = ccr
+        end
+      end
+      user.save!
+      #puts "Updated role of user = #{user.username}, role = #{user.role}"
+    end
   end
-rescue Exception => e
-  Rails.logger.info "Exception thrown #{e.inspect}"
-end
 
+  ##Add NCICTRPDEV team
+  LdapUser.delete_all
+
+  charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Charlie", "last_name" => "Shive" }
+  mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Mahesh", "last_name" => "Yelisetti" }
+  shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shilpi", "last_name" => "Singh" }
+  shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shamim", "last_name" => "Ahmed" }
+  murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Murali", "last_name" => "Dulla" }
+  tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Tony", "last_name" => "Wang" }
+  shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
+  sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
+  hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
+  radhika = {"email" => "tekumall@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
+  vasu = {"email" => "nalluruvn@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Vasu", "last_name" => "Nalluru"}
+  barry = {"email" => "alkisbd@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Barry", "last_name" => "Alkis"}
+
+
+  ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika, vasu, barry]
+
+  ##Add CTRP Business Analysts
+
+  joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Joe", "last_name" => "Martucci" }
+  michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Michael", "last_name" => "Izbicki"}
+  sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sandy", "last_name" => "Lightbody" }
+  susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Susan", "last_name" => "Nonemaker"  }
+  sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sophia", "last_name" => "Rarhai"  }
+
+  ba_users = [joe, michael, sandy, susan, sophia]
+
+  ##Add CTRO and Curator users
+
+  stephanie = {"email" => "whitleys@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
+  kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
+  andrea = {"email" => "mooreaj@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
+  graysonra = {"email" => "graysonra@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
+
+  ctro_users = [stephanie, kirsten, andrea, graysonra]
+
+  #Add Fed users
+
+  jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
+  gene = {"email" => "krausg@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Gene", "last_name" => "Kraus" }
+
+  fed_users = [jose, gene]
+
+  all_users = ncictrpdev_users + ba_users + ctro_users + fed_users
+
+  ## Save the users by bypassing validation. We want to save the user without the password
+  begin
+    all_users.each do |u|
+      ldap_user = LdapUser.new
+      ldap_user.email = u["email"]
+      ldap_user.username = u["email"].split("@")[0]
+      ldap_user.role = u["role"]
+      ldap_user.domain = "NIH"
+      ldap_user.first_name = u["first_name"]
+      ldap_user.last_name = u["last_name"]
+      ldap_user.organization = org0
+      ldap_user.save(validate: false)
+      ldap_user.user_status = UserStatus.find_by_code('ACT')
+      #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
+    end
+  rescue Exception => e
+    Rails.logger.info "Exception thrown #{e.inspect}"
+  end
+
+end
 
 #Line to include seeds from passed environment variable
 puts "Begin seeding environment-specfic data"

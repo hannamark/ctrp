@@ -93,6 +93,18 @@ class TrialsController < ApplicationController
     end
   end
 
+  # retrieve trial checkout and checkin history
+  def get_trial_checkout_history
+    @checkout_history = []
+    if params.has_key?(:trial_id)
+      @checkout_history = TrialCheckoutLog.where(:trial_id => params[:trial_id])
+    end
+
+    respond_to do |format|
+      format.json { render :json => @checkout_history }
+    end
+  end
+
   def search_trial_with_nci_id
 
     if params.has_key?(:nci_id)
