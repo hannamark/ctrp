@@ -81,13 +81,23 @@
                     label: 'Trial Milestones'
                 }
             })
-            .state('main.pa.trialOverview.onHoldInfo', {
-                url: '/on-hold-info',
-                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/on_hold_info.html',
+            .state('main.pa.trialOverview.onhold', {
+                url: '/onhold',
+                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/pa_onhold.html',
+                controller: 'paOnholdCtrl as onholdView',
+                resolve: {
+                    TrialService: 'TrialService',
+                    trialDetailObj: function ($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    onholdReasonObj: function (TrialService) {
+                        return TrialService.getOnholdReasons();
+                    }
+                },
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'On Hold Info'
+                    label: 'Trial On Hold Info'
                 }
             })
             .state('main.pa.trialOverview.viewTSR', {

@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-
-
   resources :marker_biomarker_purpose_associations
 
   resources :accrual_disease_terms
@@ -236,6 +234,7 @@ Rails.application.routes.draw do
       resources :trial_statuses
       resources :processing_statuses
       resources :milestones
+      resources :onhold_reasons
       resources :research_categories
       resources :site_recruitment_statuses
       resources :anatomic_sites

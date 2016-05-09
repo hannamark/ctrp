@@ -220,6 +220,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :markers, allow_destroy: true
   accepts_nested_attributes_for :diseases, allow_destroy: true
   accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :onholds, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'

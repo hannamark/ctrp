@@ -107,6 +107,7 @@
             getSrStatuses: getSrStatuses,
             getTrialStatusById: getTrialStatusById,
             getMilestones: getMilestones,
+            getOnholdReasons: getOnholdReasons,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getAcceptedFileTypesForRegistry: getAcceptedFileTypesForRegistry,
@@ -331,6 +332,10 @@
 
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
+        }
+
+        function getOnholdReasons() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ONHOLD_REASONS);
         }
 
         function getHolderTypes() {

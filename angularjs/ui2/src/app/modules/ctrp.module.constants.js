@@ -93,6 +93,7 @@
             },
 
             'MILESTONES': '/ctrp/registry/milestones.json',
+            'ONHOLD_REASONS': '/ctrp/registry/onhold_reasons.json',
             'PROCESSING_STATUSES': '/ctrp/registry/processing_statuses.json',
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
