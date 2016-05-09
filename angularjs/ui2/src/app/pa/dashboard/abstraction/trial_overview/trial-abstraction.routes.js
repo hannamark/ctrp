@@ -122,7 +122,15 @@
             .state('main.pa.trialOverview.checkoutHistory', {
                 url: '/check-out-history',
                 templateUrl: 'app/pa/dashboard/abstraction/trial_overview/check_out_history.html',
+                controller: 'checkoutHistoryCtrl as coHistoryView',
                 section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    checkoutHistoryArr: function(PATrialService, $stateParams) {
+                        var trialId = $stateParams.trialId;
+                        return PATrialService.getTrialCheckoutHistory(trialId);
+                    }
+                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Check Out History'
