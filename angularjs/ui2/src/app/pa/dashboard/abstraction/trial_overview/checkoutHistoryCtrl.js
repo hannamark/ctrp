@@ -35,7 +35,7 @@
         function getColumnDefs() {
             var columns = [
                 {headerName: 'Type', width: 200, field: 'abstraction_type', cellRenderer: _renderCellType},
-                {headerName: 'Date/Time', width: 190, field: 'created_at', cellRenderer: _renderCellDate},
+                {headerName: 'Date/Time', width: 150, field: 'created_at', cellRenderer: _renderCellDate},
                 {headerName: 'User', width: 150, field: 'username'},
                 {headerName: 'Checkout/Checkin', width: 160, field: 'category'},
                 {headerName: 'Check In Comment', width: 300, field: 'checkin_comment', cellRenderer: _renderToolTip}
