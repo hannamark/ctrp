@@ -7,13 +7,15 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('paOnholdCtrl', paOnholdCtrl);
 
-    paOnholdCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'onholdReasonObj', 'TrialService'];
+    paOnholdCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'onholdReasonObj', 'TrialService', 'DateService'];
 
-    function paOnholdCtrl($scope, $state, toastr, trialDetailObj, onholdReasonObj, TrialService) {
+    function paOnholdCtrl($scope, $state, toastr, trialDetailObj, onholdReasonObj, TrialService, DateService) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
         vm.onholdReasonArr = onholdReasonObj;
+        vm.onhold_date_opened = false;
+        vm.offhold_date_opened = false;
 
         vm.setAddMode = function (mode) {
             vm.addMode = mode;
@@ -27,6 +29,20 @@
             vm.onhold_date = vm.curTrial.onholds[index].onhold_date;
             vm.offhold_date = vm.curTrial.onholds[index].offhold_date;
         };
+
+        vm.dateFormat = DateService.getFormats()[1];
+        vm.dateOptions = DateService.getDateOptions();
+        vm.today = DateService.today();
+        vm.openCalendar = function ($event, type) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            if (type === 'onhold_date') {
+                vm.onhold_date_opened = !vm.onhold_date_opened;
+            } else if (type === 'offhold_date') {
+                vm.offhold_date_opened = !vm.offhold_date_opened;
+            }
+        }; //openCalendar
 
         vm.saveOnhold = function () {
             // Prevent multiple submissions
@@ -66,6 +82,18 @@
         /****************************** implementations **************************/
 
         function activate() {
+            convertDate();
         }
-    } //paMilestoneCtrl
+
+        function convertDate() {
+            angular.forEach(vm.curTrial.onholds, function (onhold) {
+                if (onhold.onhold_date) {
+                    onhold.onhold_date = DateService.convertISODateToLocaleDateStr(onhold.onhold_date);
+                }
+                if (onhold.offhold_date) {
+                    onhold.offhold_date = DateService.convertISODateToLocaleDateStr(onhold.offhold_date);
+                }
+            });
+        }
+    } //paOnholdCtrl
 })();
