@@ -19,12 +19,24 @@
             vm.addMode = mode;
         };
 
+        vm.setEditMode = function (index) {
+            vm.addMode = true;
+            vm.onhold_id = vm.curTrial.onholds[index].id;
+            vm.onhold_reason_id = vm.curTrial.onholds[index].onhold_reason.id;
+            vm.onhold_desc = vm.curTrial.onholds[index].onhold_desc;
+            vm.onhold_date = vm.curTrial.onholds[index].onhold_date;
+            vm.offhold_date = vm.curTrial.onholds[index].offhold_date;
+        };
+
         vm.saveOnhold = function () {
             // Prevent multiple submissions
             vm.disableBtn = true;
 
             vm.curTrial.onholds_attributes = [];
             var onholdObj = {};
+            if (vm.onhold_id) {
+                onholdObj.id = vm.onhold_id;
+            }
             onholdObj.onhold_reason_id = vm.onhold_reason_id;
             onholdObj.onhold_desc = vm.onhold_desc;
             onholdObj.onhold_date = vm.onhold_date;

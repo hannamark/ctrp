@@ -11,6 +11,7 @@
                         <th>On Hold Reason Description</th>
                         <th>On Hold Date</th>
                         <th>Off Hold Date</th>
+                        <th>Edit</th>
                     </thead>
                     <tbody>
                         <tr ng-repeat="onhold in onholdView.curTrial.onholds track by $index">
@@ -18,6 +19,11 @@
                             <td>{{onhold.onhold_desc}}</td>
                             <td>{{onhold.onhold_date}}</td>
                             <td>{{onhold.offhold_date}}</td>
+                            <td class="text-center td-icon">
+                                <button class="btn btn-primary" restriction-field ng-click="onholdView.setEditMode($index)">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -61,6 +67,8 @@
                                 <textarea restriction-field class="form-control input-sm" id="onhold_desc" name="onhold_desc" ng-model="onholdView.onhold_desc"></textarea>
                             </div>
                         </div>
+
+                        <input type="hidden" ng-model="onholdView.onhold_id">
                     </fieldset>
 
                     <div class="form-group no-bottom-margin">
