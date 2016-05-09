@@ -2,7 +2,7 @@
  * Created by wus4 on 5/9/16.
  */
 
-(function() {
+(function () {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
         .controller('paOnholdCtrl', paOnholdCtrl);
