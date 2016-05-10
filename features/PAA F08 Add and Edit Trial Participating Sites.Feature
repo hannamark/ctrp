@@ -33,10 +33,11 @@ And the Participating Site table can be sorted by
 |Organiztion ID|
 |Organization Name|
 Examples:
-|Organization name    |Org City|Org State    |Org Country  |Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Contact Type|Central Contact      |Phone         |Ext |e-mail address|Warning/Error|Message|
-|Boston Medical Center|Boston  |Massachussets|United States|3849504     |123                   |Approved               |30-September-2015           |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Site PI     |Jane Doe             |212-123-4567  |1234|jane@mayo.com |             |Participating Site Has been Updated|
-#|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-September-2015           |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Generic     |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com   |             |Participating Site Has been Updated|
-#|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-September-2015           |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Person      |Jane Doe             |212-123-4567  |1111|<null>        |             |Participating Site Has been Updated|
+|Organization name    |Org City|Org State    |Org Country  |Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext |e-mail address  |Warning/Error|Message|
+|Boston Medical Center|Boston  |Massachussets|United States|3849504     |123                   |Approved               |30-September-2015           |Free Text                       |48                        |100                  |Kristi Graves              |Principal Investigator          |Kristi Graves        |212-123-4567  |1234|kristi@mayo.com |             |Participating Site Has been Updated|
+#|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-September-2015           |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com     |             |Participating Site Has been Updated|
+#|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-September-2015           |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |1111|<null>          |             |Participating Site Has been Updated|
+
 
 Scenario Outline: #1a I can add one or more participating sites to a trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -79,6 +80,17 @@ And I can add or edit the phone number for the investigator contact <Phone>
 And I can add or edit the phone number extension <Ext> for the investigator contact
 And I can add or edit the contact e-mail for the contact <e-mail address> 
 Then the participating site information will be associated with the trial
+And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial
+And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
+And the system will display a message that the Participating Site Has been Updated <Message>
+|Organiztion ID|
+|Organization Name|
+Examples:
+|Organization name|Org City|Org State|Org Country|Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext  |e-mail address  |Warning/Error|Message|
+|Mayo             |New York|NY       |USA        |10101       |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Kristi Graves        |212-123-4567  |2222 |kristi@mayo.com |             |Participating Site Has been Updated|
+|MD Anderson      |New York|NY       |USA        |10101       |123a                  |approved               |30-sep-2015                 |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|3333 |CTC@mda.com     |             |Participating Site Has been Updated|
+|Wake Forest      |Trenton |NJ       |USA        |10101       |123b                  |approved               |30-Sep-2015                 |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |4444 |<null>          |             |Participating Site Has been Updated|
+
 
 Scenario: #3 Delete participating site information for a trial
 Given I am logged into the CTRP Protocol Abstraction application

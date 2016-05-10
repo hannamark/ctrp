@@ -31,6 +31,7 @@
         'ui.bootstrap.pagination',
         'ui.bootstrap.alert',
         'ngMaterial',
+        'agGrid',
         'toastr',
         'ngFileUpload',
         'angularMoment',
