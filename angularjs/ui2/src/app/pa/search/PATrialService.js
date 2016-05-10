@@ -163,6 +163,7 @@
             searchCtrpInterventionsByName: searchCtrpInterventionsByName,
             updateTrial: updateTrial,
             getMailLogs: getMailLogs,
+            getTrialCheckoutHistory: getTrialCheckoutHistory,
         };
 
         return services;
@@ -506,6 +507,11 @@
          */
         function getMailLogs(trialId) {
             var url = URL_CONFIGS.PA.MAIL_LOGS.replace(/\s*\{.*?\}\s*/g, trialId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        function getTrialCheckoutHistory(trialId) {
+            var url = URL_CONFIGS.PA.CHECKOUT_HISTORY.replace(/\s*\{.*?\}\s*/g, trialId);
             return PromiseTimeoutService.getData(url);
         }
 
