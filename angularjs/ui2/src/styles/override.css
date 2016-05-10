@@ -1339,3 +1339,10 @@ div[disabled] {
 .st-sort-descent:before{
     content: '\25BC';
 }
+
+.cellbg-green {
+    color: green;
+}
+.cellbg-red {
+    color: red;
+}
