@@ -48,7 +48,7 @@
                 <form class="form form-horizontal" role="form" name="onhold_form" novalidate ctrp-submit="onholdView.saveOnhold()">
                     <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">On Hold Details</legend>
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.onhold_form.needsAttention(onhold_form.milestone)}">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.onhold_form.needsAttention(onhold_form.onhold_reason)}">
                             <label for="onhold_reason" class="control-label col-xs-12 col-sm-3">On Hold Reason:</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select restriction-field class="form-control input-sm" id="onhold_reason" name="onhold_reason" ng-model="onholdView.onhold_reason_id"
@@ -76,9 +76,9 @@
                             </div>
                         </div>
 
-                        <div ng-if="onholdView.onhold_id" class="form-group has-feedback">
+                        <div ng-if="onholdView.onhold_id" class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.onhold_form.needsAttention(onhold_form.offhold_dummy1) || ctrpbtn.onhold_form.needsAttention(onhold_form.offhold_dummy2)}">
                             <label class="control-label col-xs-12 col-sm-3">Off Hold Date:</label>
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-6">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control input-sm" name="offhold_date" datepicker-popup="{{onholdView.dateFormat}}" ng-model="onholdView.offhold_date"
                                            ng-click="onholdView.openCalendar($event, 'offhold_date')" is-open="onholdView.offhold_date_opened" datepicker-options="onholdView.dateOptions" close-text="Close">
@@ -88,6 +88,14 @@
                                         </button>
                                     </span>
                                 </div>
+                                <input type="hidden" name="offhold_dummy1" ng-model="trialDetailView.dummyField" ng-required="onholdView.validateOffholdDate1()">
+                                <span class="help-block" ng-show="ctrpbtn.onhold_form.needsAttention(onhold_form.offhold_dummy1)">
+                                    Off-hold dates must be only past or current dates
+                                </span>
+                                <input type="hidden" name="offhold_dummy2" ng-model="trialDetailView.dummyField" ng-required="onholdView.validateOffholdDate2()">
+                                <span class="help-block" ng-show="ctrpbtn.onhold_form.needsAttention(onhold_form.offhold_dummy2)">
+                                    Off-hold dates must be the same or after the on-hold dates
+                                </span>
                             </div>
                         </div>
 

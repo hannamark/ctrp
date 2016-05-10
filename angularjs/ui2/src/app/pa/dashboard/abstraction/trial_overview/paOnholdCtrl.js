@@ -58,7 +58,28 @@
             if (type === 'offhold_date') {
                 vm.offhold_date_opened = !vm.offhold_date_opened;
             }
-        }; //openCalendar
+        };
+
+        // PA F08 Scenario #7 validation
+        vm.validateOffholdDate1 = function () {
+            var offholdDate = new Date(vm.offhold_date);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (offholdDate.getTime() > today.getTime()) {
+                return true;
+            }
+            return false;
+        };
+
+        // PA F08 Scenario #7 validation
+        vm.validateOffholdDate2 = function () {
+            var onholdDate = new Date(vm.onhold_date);
+            var offholdDate = new Date(vm.offhold_date);
+            if (onholdDate.getTime() > offholdDate.getTime()) {
+                return true;
+            }
+            return false;
+        };
 
         vm.saveOnhold = function () {
             // Prevent multiple submissions
