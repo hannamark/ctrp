@@ -187,14 +187,32 @@
                             <button type="button" class="btn btn-primary pull-right" id="save_btn"
                                     ng-click="userDetailView.showValidation = true"
                                     ctrp-confirm ctrp-click="userDetailView.validateSave()"
-                                    ng-attr-confirm-off="{{userDetailView.irreversibleRoleSwitchId === undefined || userDetailView.irreversibleRoleSwitchId === userDetailView.userDetails.role}}"
-                                    confirm-msg="You are about to switch this user's role from a role that you have no permissions to re-assign once you leave this form.">
+                                    ng-attr-confirm-off="{{userDetailView.confirmSave()}}"
+                                    confirm-msg="{{userDetailView.confirmMsg}}">
                                 <i class="glyphicon glyphicon-ok"></i>  Save
                             </button>
 
                             <button type="button" class="btn btn-warning pull-right" ng-click="userDetailView.reset()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="userDetailView.trialGridOptions.data.length > 0">
+                        <div class="btn-toolbar col-xs-12 col-sm-12"><h4>Trials owned by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}:</h4></div>
+                        <div class="btn-toolbar col-xs-12 col-sm-12">
+
+                            <!-- list of Users -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row animated-item">
+                                        <div ui-grid="userDetailView.trialGridOptions"  ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row top-offset-xs" ng-if="userDetailView.trialGridOptions.totalItems != null"></div>
+                            <div class="row top-offset-xs"></div>
+
                         </div>
                     </div>
                 </form>

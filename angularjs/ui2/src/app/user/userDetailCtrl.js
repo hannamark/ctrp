@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.app.user')
+    angular.module('ctrp.app.user', ['ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter'])
         .controller('userDetailCtrl', userDetailCtrl);
 
     userDetailCtrl.$inject = ['UserService','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
@@ -47,6 +47,13 @@
 
         vm.userRequestAdmin = function(params) {
             UserService.userRequestAdmin(params);
+        };
+
+        vm.confirmSave = function() {
+            if (vm.irreversibleRoleSwitchId === undefined || vm.irreversibleRoleSwitchId === vm.userDetails.role) {
+                vm.confirmMsg = "You are about to switch this user's role from a role that you have no permissions to re-assign once you leave this form.";
+                return true;
+            }
         };
 
         vm.validateSave = function() {
@@ -96,6 +103,102 @@
             vm.statusArr = [];
             console.log("Error in retrieving USER_STATUSES " + err);
         });
+
+        /**** USER TRIALS *****/
+        // Initial User Search Parameters
+        var TrialSearchParams = function (){
+            return {
+                user_id: vm.userDetails.id,
+                rows: 25,
+                start: 1
+            }
+        }; //initial User Search Parameters
+
+        var trialGridOptions = {
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 25,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableFiltering: false,
+            enableVerticalScrollbar: 2,
+            enableHorizontalScrollbar: 2,
+            columnDefs: [
+                {
+                    name: 'nci_id',
+                    enableSorting: true,
+                    displayName: 'NCI ID',
+                    width: '120'
+                },
+                {
+                    name: 'official_title',
+                    displayName: 'Official Title',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*'
+                },
+                {
+                    name: 'start_date',
+                    displayName: 'Start',
+                    enableSorting: true,
+                    width: '100'
+                },
+                {
+                    name: 'comp_date',
+                    displayName: 'Complete',
+                    enableSorting: false,
+                    width: '100'
+                }
+            ],
+            enableGridMenu: true,
+            enableSelectAll: true,
+            exporterCsvFilename: 'myFile.csv',
+            exporterPdfDefaultStyle: {fontSize: 9},
+            exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+            exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+            exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+            exporterPdfFooter: function ( currentPage, pageCount ) {
+                return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+            },
+            exporterPdfCustomFormatter: function ( docDefinition ) {
+                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+                return docDefinition;
+            },
+            exporterPdfOrientation: 'portrait',
+            exporterPdfPageSize: 'LETTER',
+            exporterPdfMaxGridWidth: 500,
+            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+            onRegisterApi: function(gridApi){
+                $scope.gridApi = gridApi;
+            }
+        };
+
+        //ui-grid plugin options
+        vm.trialSearchParams = new TrialSearchParams;
+        vm.trialGridOptions = trialGridOptions;
+
+        vm.getUserTrials = function () {
+            UserService.getUserTrials(vm.trialSearchParams).then(function (data) {
+                vm.trialGridOptions.data = data['trial_ownerships'];
+                vm.trialGridOptions.totalItems =  data.total;
+
+
+                $scope.export = function(){
+                    if ($scope.export_format == 'csv') {
+                        var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
+                        $scope.gridApi.exporter.csvExport( $scope.export_row_type, $scope.export_column_type, myElement );
+                    } else if ($scope.export_format == 'pdf') {
+                        $scope.gridApi.exporter.pdfExport( $scope.export_row_type, $scope.export_column_type );
+                    };
+                };
+            }).catch(function (err) {
+                console.log('Get User Trials failed');
+            });
+        }; //searchUsers
+        vm.getUserTrials();
 
         /****************** implementations below ***************/
         var activate = function() {
