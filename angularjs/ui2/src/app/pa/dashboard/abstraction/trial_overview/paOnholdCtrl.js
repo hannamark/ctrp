@@ -14,11 +14,14 @@
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
         vm.onholdReasonArr = onholdReasonObj;
-        vm.onhold_date_opened = false;
         vm.offhold_date_opened = false;
 
         vm.setAddMode = function (mode) {
             vm.addMode = mode;
+            if (mode) {
+                vm.onhold_date = DateService.today();
+                vm.onhold_date = DateService.convertISODateToLocaleDateStr(vm.onhold_date);
+            }
         };
 
         vm.setEditMode = function (index) {
@@ -37,9 +40,7 @@
             $event.preventDefault();
             $event.stopPropagation();
 
-            if (type === 'onhold_date') {
-                vm.onhold_date_opened = !vm.onhold_date_opened;
-            } else if (type === 'offhold_date') {
+            if (type === 'offhold_date') {
                 vm.offhold_date_opened = !vm.offhold_date_opened;
             }
         }; //openCalendar

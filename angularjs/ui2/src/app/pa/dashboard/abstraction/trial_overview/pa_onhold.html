@@ -52,7 +52,8 @@
                             <label for="onhold_reason" class="control-label col-xs-12 col-sm-3">On Hold Reason:</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select restriction-field class="form-control input-sm" id="onhold_reason" name="onhold_reason" ng-model="onholdView.onhold_reason_id"
-                                        ng-options="onholdReason.id as onholdReason.name for onholdReason in onholdView.onholdReasonArr" required>
+                                        ng-options="onholdReason.id as onholdReason.name for onholdReason in onholdView.onholdReasonArr"
+                                        ng-disabled="onholdView.onhold_id" required>
                                     <option value="">-Select a On Hold Reason-</option>
                                 </select>
                                 <span class="help-block" ng-show="ctrpbtn.onhold_form.needsAttention(onhold_form.onhold_reason)">
@@ -64,26 +65,18 @@
                         <div class="form-group has-feedback">
                             <label class="control-label col-xs-12 col-sm-3">On Hold Reason Description:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea restriction-field class="form-control input-sm" id="onhold_desc" name="onhold_desc" ng-model="onholdView.onhold_desc"></textarea>
+                                <textarea restriction-field class="form-control input-sm" id="onhold_desc" name="onhold_desc" ng-model="onholdView.onhold_desc" ng-disabled="onholdView.onhold_id"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group has-feedback">
                             <label class="control-label col-xs-12 col-sm-3">On Hold Date:</label>
-                            <div class="col-xs-12 col-sm-3">
-                                <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" name="onhold_date" datepicker-popup="{{onholdView.dateFormat}}" ng-model="onholdView.onhold_date"
-                                           ng-click="onholdView.openCalendar($event, 'onhold_date')" is-open="onholdView.onhold_date_opened" datepicker-options="onholdView.dateOptions" close-text="Close">
-                                    <span class="input-group-btn">
-                                        <button restriction-field type="button" class="btn btn-primary" ng-click="onholdView.openCalendar($event, 'onhold_date')">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </button>
-                                    </span>
-                                </div>
+                            <div class="col-xs-12 col-sm-3 form-text">
+                                {{onholdView.onhold_date}}
                             </div>
                         </div>
 
-                        <div class="form-group has-feedback">
+                        <div ng-if="onholdView.onhold_id" class="form-group has-feedback">
                             <label class="control-label col-xs-12 col-sm-3">Off Hold Date:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
