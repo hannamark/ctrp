@@ -21,6 +21,12 @@
             if (mode) {
                 vm.onhold_date = DateService.today();
                 vm.onhold_date = DateService.convertISODateToLocaleDateStr(vm.onhold_date);
+            } else {
+                $scope.onhold_form.$setPristine();
+                vm.onhold_id = null;
+                vm.onhold_reason_id = null;
+                vm.onhold_desc = null;
+                vm.offhold_date = null;
             }
         };
 
@@ -31,6 +37,15 @@
             vm.onhold_desc = vm.curTrial.onholds[index].onhold_desc;
             vm.onhold_date = vm.curTrial.onholds[index].onhold_date;
             vm.offhold_date = vm.curTrial.onholds[index].offhold_date;
+        };
+
+        vm.resetOnhold = function () {
+            if (vm.onhold_id) {
+                vm.offhold_date = null;
+            } else {
+                vm.onhold_reason_id = null;
+                vm.onhold_desc = null;
+            }
         };
 
         vm.dateFormat = DateService.getFormats()[1];
