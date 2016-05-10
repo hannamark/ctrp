@@ -103,10 +103,10 @@
 
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" ng-disabled="onholdView.disableBtn">
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="onholdView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="onholdView.resetOnhold()" ng-disabled="onholdView.disableBtn">
+                            <button type="button" class="btn btn-warning pull-right" id="reset_btn" restriction-field ng-click="onholdView.resetOnhold()" ng-disabled="onholdView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                             <button type="button" class="btn btn-warning pull-right" id="back_btn" restriction-field ng-click="onholdView.setAddMode(false)" ng-disabled="onholdView.disableBtn">
