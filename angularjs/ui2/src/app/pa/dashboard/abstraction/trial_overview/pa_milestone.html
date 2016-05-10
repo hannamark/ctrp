@@ -95,10 +95,10 @@
 
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" ng-disabled="milestoneView.disableBtn">
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="milestoneView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="milestoneView.resetMilestone()" ng-disabled="milestoneView.disableBtn">
+                            <button type="button" class="btn btn-warning pull-right" id="reset_btn" restriction-field ng-click="milestoneView.resetMilestone()" ng-disabled="milestoneView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                             <button type="button" class="btn btn-warning pull-right" id="back_btn" restriction-field ng-click="milestoneView.setAddMode(false)" ng-disabled="milestoneView.disableBtn">
