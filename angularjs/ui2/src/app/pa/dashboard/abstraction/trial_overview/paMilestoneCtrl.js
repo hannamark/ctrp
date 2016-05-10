@@ -21,6 +21,10 @@
 
         vm.setAddMode = function (mode) {
             vm.addMode = mode;
+            if (!mode) {
+                $scope.milestone_form.$setPristine();
+                vm.resetMilestone();
+            }
         };
 
         vm.watchOption = function () {
@@ -34,6 +38,13 @@
                     vm.rejection_reason = '';
                 }
             }
+        };
+
+        vm.resetMilestone = function () {
+            vm.milestone_id = null;
+            vm.showRejectionReason = false;
+            vm.rejection_reason = null;
+            vm.comment = null;
         };
 
         vm.saveMilestone = function () {
