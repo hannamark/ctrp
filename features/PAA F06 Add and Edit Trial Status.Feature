@@ -25,11 +25,11 @@ And I have selected a trial status from the list of:
 |Approved for marketing � Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
-And I have selected the Trial Start Date Type of �Actual� , �Anticipated�
+And I have selected the Trial Start Date Type of "Actual" , "Anticipated"
 And I have entered or selected a Primary Completion Date
-And I have selected the Primary Completion Date Type of �Actual� , �Anticipated�, "NA"
+And I have selected the Primary Completion Date Type of "Actual" , "Anticipated", "NA"
 And I have entered or selected a Completion Date
-And I have selected the Completion Date Type of �Actual� , �Anticipated�
+And I have selected the Completion Date Type of "Actual" , "Anticipated"
 And have entered or edited the Trial On Hold Reason Comments when the trial status is:
 |Administratively Complete|
 |Withdrawn|
@@ -48,11 +48,11 @@ Given I have selected trail
 And I have selected a trial status 
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
-And I have selected the Trial Start Date Type of �Actual� , �Anticipated�
+And I have selected the Trial Start Date Type of "Actual" , "Anticipated"
 And I have entered or selected a Primary Completion Date
-And I have selected the Primary Completion Date Type of �Actual� , �Anticipated� , "NA"
+And I have selected the Primary Completion Date Type of "Actual" , "Anticipated" , "NA"
 And I have entered or selected a Completion Date
-And I have selected the Completion Date Type of �Actual� , �Anticipated�
+And I have selected the Completion Date Type of "Actual" , "Anticipated"
 And have entered or edited the Trial Status Comments
 And have entered or edited the Trial On Hold Reason Comments with the trial status is:
 |Administratively Complete|
@@ -125,7 +125,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Given I have selected trail
 And the Clinical Research Category is not Expanded Access
-Then the trial status� will not be selectable: 
+Then the trial status will not be selectable:
 |Available |
 |No longer available|
 |Temporarily not available|
@@ -383,19 +383,19 @@ And the Trial Information source is "Protocol"
 When Current Trial Status is <TrialStatusType>
 Then The Trial date Type is <DateType>
      
-     Examples:
-          
-      |<TrialStatusType                         |<DateType>  |
-      |Active                                   |Trial Start Date must be Actual   |
-      |Enrolling by Invitation                  |Trial Start Date must be Actual  |
-      |Closed to Accrual                        |Trial Start Date must be Actual    |
-      |Closed to Accrual and Intervention       |Trial Start Date must be Actual   |
-      |Temp Closed to Accrual                   |Trial Start Date must be Actual   |
-      |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual   |
-      |Complete                                 |All date types must be Actual     |
-      |Administratively Complete                |Trial Start Date must be Actual   |
-      |In Review                                |Trial Start Date could be Actual or Anticipated |
-      |Approved                                 |Trial Start Date could be Actual or Anticipated   |
+Examples:
+
+|TrialStatusType                          |DateType  |
+|Active                                   |Trial Start Date must be Actual   |
+|Enrolling by Invitation                  |Trial Start Date must be Actual  |
+|Closed to Accrual                        |Trial Start Date must be Actual    |
+|Closed to Accrual and Intervention       |Trial Start Date must be Actual   |
+|Temp Closed to Accrual                   |Trial Start Date must be Actual   |
+|Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual   |
+|Complete                                 |All date types must be Actual     |
+|Administratively Complete                |Trial Start Date must be Actual   |
+|In Review                                |Trial Start Date could be Actual or Anticipated |
+|Approved                                 |Trial Start Date could be Actual or Anticipated   |
      
      
 Scenario: #21 Rules for Study Date types
