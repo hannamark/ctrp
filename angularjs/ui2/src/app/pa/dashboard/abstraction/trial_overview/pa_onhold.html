@@ -68,7 +68,12 @@
                         <div class="form-group has-feedback">
                             <label class="control-label col-xs-12 col-sm-3">On Hold Reason Description:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <textarea restriction-field class="form-control input-sm" id="onhold_desc" name="onhold_desc" ng-model="onholdView.onhold_desc" ng-disabled="onholdView.onhold_id"></textarea>
+                                <textarea restriction-field class="form-control input-sm" id="onhold_desc" name="onhold_desc"
+                                          ng-model="onholdView.onhold_desc" ng-disabled="onholdView.onhold_id" maxlength="4000" ng-maxlength="4000">
+                                </textarea>
+                                <span class="help-block" ng-show="onhold_form.onhold_desc.$dirty">
+                                    {{4000 - onhold_form.onhold_desc.$viewValue.length}} characters left
+                                </span>
                             </div>
                         </div>
 
