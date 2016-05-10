@@ -56,6 +56,9 @@
                                         ng-disabled="onholdView.onhold_id" required>
                                     <option value="">-Select a On Hold Reason-</option>
                                 </select>
+                                <span class="help-block">
+                                    "Pending" Reasons are for the CTRO, "Submission" Reasons are for the Submitter
+                                </span>
                                 <span class="help-block" ng-show="ctrpbtn.onhold_form.needsAttention(onhold_form.onhold_reason)">
                                     The On Hold Reason must be entered to place trial on hold
                                 </span>
