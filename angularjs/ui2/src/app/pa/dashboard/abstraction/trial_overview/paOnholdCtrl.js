@@ -13,6 +13,7 @@
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
+        vm.showAddBtn = true;
         vm.onholdReasonArr = onholdReasonObj;
         vm.offhold_date_opened = false;
 
@@ -119,7 +120,19 @@
         /****************************** implementations **************************/
 
         function activate() {
+            showHideAddBtn();
             convertDate();
+        }
+
+        function showHideAddBtn() {
+            for (var i = 0; i < vm.curTrial.onholds.length; i++) {
+                if (!vm.curTrial.onholds[i].offhold_date) {
+                    console.log('in');
+                    vm.showAddBtn = false;
+                    return;
+                }
+            }
+            vm.showAddBtn = true;
         }
 
         function convertDate() {

@@ -20,7 +20,7 @@
                             <td>{{onhold.onhold_date}}</td>
                             <td>{{onhold.offhold_date}}</td>
                             <td class="text-center td-icon">
-                                <button class="btn btn-primary" restriction-field ng-click="onholdView.setEditMode($index)">
+                                <button ng-hide="onhold.offhold_date" class="btn btn-primary" restriction-field ng-click="onholdView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
@@ -31,7 +31,7 @@
 
             <div class="form-group no-bottom-margin">
                 <div class="btn-toolbar">
-                    <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field ng-click="onholdView.setAddMode(true)">
+                    <button ng-if="onholdView.showAddBtn" type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field ng-click="onholdView.setAddMode(true)">
                         <i class="glyphicon glyphicon-plus"></i> Add On Hold
                     </button>
                 </div>
