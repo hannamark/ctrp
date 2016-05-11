@@ -4,7 +4,15 @@
             <div class="panel-title">Check Out History</div>
         </div>
         <div class="panel-body">
-            <strong>Placeholder ....</strong>
+            <div class="row" ng-show="coHistoryView.gridOptions.rowData.length === 0">
+                <strong>No Checkout/Checkin records found</strong>
+            </div>
+            <div class="row" ng-show="coHistoryView.gridOptions.rowData.length > 0">
+                <div style="width: 100%;"
+                     ag-grid="coHistoryView.gridOptions"
+                     class="ag-fresh ag-basic">
+                </div>
+            </div>
         </div>
     </div>
 </div>

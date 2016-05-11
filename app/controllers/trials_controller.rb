@@ -1,5 +1,5 @@
 class TrialsController < ApplicationController
-  before_action :set_trial, only: [:show, :edit, :update, :destroy]
+  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
 
@@ -549,6 +549,10 @@ class TrialsController < ApplicationController
     end
   end
 
+  def validate_milestone
+    @validation_msgs = @trial.validate_milestone(params[:submission_id], params[:milestone_id])
+  end
+
   def search_clinical_trials_gov_ignore_exists
     @search_result = {}
 
@@ -686,7 +690,8 @@ class TrialsController < ApplicationController
                                                        marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
-                                  milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy])
+                                  milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
+                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy])
   end
 
   # Convert status code to name in validation messages

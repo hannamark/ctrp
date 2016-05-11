@@ -112,10 +112,6 @@ module.exports = function() {
     var personLNmB = 'Graves';
     var personFNmC = 'Diane';
     var personLNmC = 'Roulston';
-    var buildSelectionOpton = '';
-    var indIDENmbrA = 'BBIND13794';
-    var indIDENmbrB = 'IND108498';
-    var indIDENmbrC = '102902';
     var optionA = 'Identifier Type';
     var optionB = 'Value (Click for editing)';
     var optionC = 'Deletion';
@@ -136,9 +132,15 @@ module.exports = function() {
     var tblOptionI = '';
     var tblOptionJ = '';
     var tblOptionK = '';
+    var tblRoleOptionA = '';
+    var tblRoleOptionB = '';
     var dateDay = '';
     var dateMonth = '';
     var dateYear = '';
+    var primaryContactRT = '';
+    var emailAddressRT = '';
+    var phoneNumberRT = '';
+    var phoneNumberExtRT = '';
 
 
     /*
@@ -189,8 +191,17 @@ module.exports = function() {
         commonFunctions.adminCheckOut();
         trialDoc.clickAdminDataParticipatingSites();
         trialCollaborators.waitForElement(participatingSite.addParticipatingSiteBtn , "Add Participating Site - Button");
+        participatingSite.listOfPartSteTbl.isDisplayed().then(function(dispC){
+            console.log('List of Participating Sites boolean status: ' + dispC);
+            if (dispC === true) {
+                participatingSite.verifyListOfParticipatingSitesTable();
+                participatingSite.selectAllListOfParticipatingSitesTable();
+                participatingSite.clickDeleteSelected();
+                participatingSite.clickDeleteSelectedOKButton();
+            }
+        });
         participatingSite.clickAddParticipatingSite();
-        browser.sleep(2500).then(callback);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected an organization (.*) with the Organization look up$/, function (OrganizationName, callback) {
@@ -231,8 +242,8 @@ module.exports = function() {
     this.Given(/^I have entered Site Recruitment status comments (.*)$/, function (SiteRecruitmentStatusComments, callback) {
         participatingSite.setSiteRecruitmentComment(SiteRecruitmentStatusComments);
         participatingSite.clickSiteRecruitmentAdd();
-        participatingSite.clickSaveButton();
-        browser.sleep(2500).then(callback);
+        participatingSite.clickSaveButtonParticipating();
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have entered a Target Accrual Number (.*)$/, function (TargetAccrualNumber, callback) {
@@ -242,7 +253,7 @@ module.exports = function() {
 
     this.Given(/^I have selected one or more Investigators (.*) for each Participating Site with the person look up$/, function (SitePrincipalInvestigator, callback) {
         participatingSite.clickInvestigatorsTab();
-        trialCollaborators.waitForElement(participatingSite.investigatorName, "Investigators Name - Read only - Field");
+        //trialCollaborators.waitForElement(participatingSite.investigatorName, "Investigators Name - Read only - Field");
         participatingSite.clickSearchPersons();
         //trialDetails.clickSearchPersonsButtonByIndex('0');
         searchOrg.clickExactSearch('true');
@@ -250,67 +261,105 @@ module.exports = function() {
         searchOrg.clickSearchButton();
         searchOrg.selectOrgModelItem();
         searchOrg.clickOrgModelConfirm();
-        browser.sleep(25).then(callback);
-    });
-
-    this.Given(/^I have selected the role for each investigator (.*)$/, function (SitePrincipalInvestigatorRole, table, callback) {
-        participatingSite.editInvestigatorByFirstName(personFNmB);
         browser.sleep(2500).then(callback);
     });
 
-    this.Given(/^I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact$/, function (callback) {
+    this.Given(/^I have selected the role for each investigator (.*)$/, function (SitePrincipalInvestigatorRole, table, callback) {
+        console.log('Site Principal Investigator Role: ['+ SitePrincipalInvestigatorRole + ']');
+        var strVal = '';
+        selectDcoumentTableVal = table.raw();
+        strVal = selectDcoumentTableVal.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        tblRoleOptionA = tableDataSplt[0];
+        tblRoleOptionB = tableDataSplt[1];
+        //helper.selectValueFromList(participatingSite.eidtRole, SitePrincipalInvestigatorRole, "Select Role");
+        participatingSite.eidtRole.$('option:checked').getText().then(function (curntSelection){
+            console.log('Current Role Selected as:['+curntSelection+']');
+            if (curntSelection != SitePrincipalInvestigatorRole){
+                //participatingSite.selectEditRole(SitePrincipalInvestigatorRole);
+            }
+        });
+        browser.sleep(25).then(callback);
+    });
 
+    this.Given(/^I have selected the �Set as Site Contact" for an investigator when the investigator is the Participating site contact$/, function (callback) {
+        participatingSite.findPrsnFNameVerfEdtDel(personFNmB, 'edit');
+        participatingSite.checkSetAsPrimaryContact("true");
+        participatingSite.clickEditConfirm();
+        participatingSite.clickSaveButtonInvestigators();
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have edited the phone number for the investigator contact (.*)$/, function (Phone, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have edited the phone number extension (.*) for the investigator contact$/, function (Ext, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have edited the contact e\-mail for the contact (.*)$/, function (eMailAddress, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected the �Set as Site Contact" for a central contact (.*) when the central contact for the participating site is generic$/, function (CentralContact, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        primaryContactRT = ''+ CentralContact +'';
+        participatingSite.clickContactTab();
+        participatingSite.selectPrimaryContact(primaryContactRT);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have added or edited the contact phone number for the contact (.*)$/, function (Phone, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        phoneNumberRT = ''+ Phone +'';
+        participatingSite.setPhoneNumber(phoneNumberExtRT);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have added or edited the contact phone number extension (.*) for the contact$/, function (Ext, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        phoneNumberExtRT = ''+ Ext +'';
+        participatingSite.setPhoneNumberExt(phoneNumberExtRT);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have added or edited the contact e\-mail for the contact (.*)$/, function (eMailAddress, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        emailAddressRT = ''+ eMailAddress +'';
+        participatingSite.setEmailAddress(emailAddressRT);
+        participatingSite.clickSaveButtonContact();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the participating site information will be associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.clickInvestigatorsTab();
+        participatingSite.clickParticipatingSiteTab();
+        participatingSite.clickContactTab();
+        participatingSite.verifyType('0');
+        participatingSite.verifyPrimaryContact(primaryContactRT);
+        participatingSite.verifyEmailAddress(emailAddressRT);
+        participatingSite.verifyPhoneNumber(phoneNumberRT);
+        participatingSite.verifyPhoneNumberExt(phoneNumberExtRT);
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the organization address information (.*) (.*) (.*) (.*) will be associated with the trial$/, function (OrgCity, OrgState, OrgCountry, OrgZipCode, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.clickParticipatingSiteTab();
+        helper.wait(participatingSite.orgnizationTxt, "Organization");
+        helper.wait(participatingSite.programCodeTxt, "Program Code");
+        helper.wait(participatingSite.identifierTxt, "Local Trial Identifier");
+        trialDetails.verifyTextFieldValue(participatingSite.cityTxt, OrgCity, "Verifying the Org City Name");
+        trialDetails.verifyTextFieldValue(participatingSite.stateTxt, OrgState, "Verifying the Org State Name");
+        trialDetails.verifyTextFieldValue(participatingSite.countryTxt, OrgCountry, "Verifying the Org Country Name");
+        trialDetails.verifyTextFieldValue(participatingSite.zipPostalCodeTxt, OrgZipCode, "Verifying the Org Zip Code");
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the system will display the list of participating sites ordered assending alphanumeric by participationg site name$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        participatingSite.clickBackToParticipatingSitesListPartcipating();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Given(/^the system will display a message that the Participating Site Has been Updated (.*)$/, function (Message, callback) {

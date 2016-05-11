@@ -107,6 +107,7 @@
             getSrStatuses: getSrStatuses,
             getTrialStatusById: getTrialStatusById,
             getMilestones: getMilestones,
+            getOnholdReasons: getOnholdReasons,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
             getAcceptedFileTypesForRegistry: getAcceptedFileTypesForRegistry,
@@ -115,6 +116,7 @@
             checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
+            validateMilestone: validateMilestone,
             validateSrStatus: validateSrStatus,
             searchClinicalTrialsGov: searchClinicalTrialsGov,
             importClinicalTrialsGov: importClinicalTrialsGov,
@@ -330,6 +332,10 @@
 
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
+        }
+
+        function getOnholdReasons() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ONHOLD_REASONS);
         }
 
         function getHolderTypes() {
@@ -989,6 +995,17 @@
         function validateStatus(statuses) {
             if (!!statuses) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_TRIAL_STATUS, statuses);
+            }
+        }
+
+        /**
+         * Get validation errors for milestones
+         *
+         * @param params
+         */
+        function validateMilestone (params) {
+            if (!!params) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_MILESTONE, params);
             }
         }
 
