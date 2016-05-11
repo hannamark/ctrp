@@ -308,6 +308,10 @@
             vm.validateStatus();
             vm.tabIndex = 0;
 
+            if (!vm.currentParticipatingSite.contact_type) {
+                vm.currentParticipatingSite.contact_type = 'General';
+            }
+
             _.each(vm.investigatorGrid, function(inv) {
                 if (inv.set_as_contact) {
                     var selectedInv = inv;
