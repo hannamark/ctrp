@@ -733,7 +733,8 @@ class Trial < TrialBase
           ## populate the mail_template with data for trial amendment
           mail_template.from = 'ncictro@mail.nih.gov'
           mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
-          mail_template.subject.sub!('${trialAmendNumber}', self.submissions.last.amendment_num) if self.submissions.last.present?
+          last_amend_num = last_submission.nil? ? '' : (last_submission.amendment_num.present? ? last_submission.amendment_num : '')
+          mail_template.subject.sub!('${trialAmendNumber}', last_amend_num)
           mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
@@ -761,14 +762,11 @@ class Trial < TrialBase
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
           mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
 
-          # find out the trial amend num and date
-          trial_amend_num = ''
-          trial_amend_date = ''
-          if self.submissions.last.present?
-            trial_amend_num = self.submissions.last.amendment_num
-            trial_amend_date = Date.strptime(self.submissions.last.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y")
-          end
-          mail_template.body_html.sub!('${trialAmendNumber}', trial_amend_num)
+          # if !last_submission.nil? and last_submission.amendment_date
+          #   trial_amend_date = Date.strptime(last_submission.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y")
+          # end
+          trial_amend_date = last_submission.nil? ? '' : (last_submission.amendment_date.present? ? Date.strptime(last_submission.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y") : '')
+          mail_template.body_html.sub!('${trialAmendNumber}', last_amend_num)
           mail_template.body_html.sub!('${trialAmendmentDate}', trial_amend_date)
 
         end
@@ -807,7 +805,7 @@ class Trial < TrialBase
         # recipient email not replaced with actual email address (user does not have email)
         mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
       end
-      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result, trial: self)
+      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, mail_template: mail_template, result: mail_sending_result, trial: self)
 
     end
 
