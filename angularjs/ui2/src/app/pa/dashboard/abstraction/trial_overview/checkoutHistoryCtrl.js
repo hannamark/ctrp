@@ -7,13 +7,19 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('checkoutHistoryCtrl', checkoutHistoryCtrl);
 
-    checkoutHistoryCtrl.$inject = ['$scope', 'checkoutHistoryArr', '$filter', '_'];
+    checkoutHistoryCtrl.$inject = ['$scope', 'checkoutHistoryArr', '$filter', '_', '$timeout'];
 
-    function checkoutHistoryCtrl($scope, checkoutHistoryArr, $filter, _) {
+    function checkoutHistoryCtrl($scope, checkoutHistoryArr, $filter, _, $timeout) {
         var vm = this;
+        delete checkoutHistoryArr.server_response;
         console.info('history: ', checkoutHistoryArr);
+        vm.checkoutHistoryArr = checkoutHistoryArr;
         vm.gridOptions = getGridOptions();
-
+        /*
+        $timeout(function() {
+            vm.gridOptions.api.setRowData(vm.checkoutHistoryArr);
+        }, 100);
+        */
         // TODO: grid listen to the checkin checkout event in trial overview
 
         function getGridOptions() {
