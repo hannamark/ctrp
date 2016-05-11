@@ -220,6 +220,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :markers, allow_destroy: true
   accepts_nested_attributes_for :diseases, allow_destroy: true
   accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :onholds, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
@@ -401,6 +402,117 @@ class Trial < TrialBase
     else
       return nil
     end
+  end
+
+  # Return true if this trial contains the specified milestone with specific submission ID
+  def contains_milestone?(submission_id, milestone_id)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ? AND milestone_id = ?', self.id, submission_id, milestone_id)
+    return target.size > 0 ? true : false
+  end
+
+  # Return true if the last milestone of the specified submission matches the milestone_code
+  def is_last_milestone?(submission_id, milestone_code)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.milestone.code == milestone_code
+      return true
+    else
+      return false
+    end
+  end
+
+  # Return validation errors for adding a milestone to a set of milestones with specific submission ID
+  def validate_milestone(submission_id, milestone_id)
+    validation_msgs = {}
+    validation_msgs[:errors] = []
+    milestone_to_add = Milestone.find(milestone_id)
+
+    if milestone_to_add.code == 'VPS'
+      if !is_last_milestone?(submission_id, 'SRD')
+        validation_msgs[:errors].push('Submission Received Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'VPC'
+      if !is_last_milestone?(submission_id, 'VPS')
+        validation_msgs[:errors].push('Validation Processing Start Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'RVQ'
+      if !is_last_milestone?(submission_id, 'VPC')
+        validation_msgs[:errors].push('Validation Processing Completed Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'VQS'
+      if !is_last_milestone?(submission_id, 'RVQ')
+        validation_msgs[:errors].push('Ready for Validation QC Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'VQC'
+      if !is_last_milestone?(submission_id, 'VQS')
+        validation_msgs[:errors].push('Validation QC Start Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'SAC'
+      if !is_last_milestone?(submission_id, 'VQC')
+        validation_msgs[:errors].push('Validation QC Completed Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'APS'
+      if !is_last_milestone?(submission_id, 'SAC')
+        validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'APC'
+      if !is_last_milestone?(submission_id, 'APS')
+        validation_msgs[:errors].push('Administrative Processing Start Date milestone must exist')
+      end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+      end
+    elsif milestone_to_add.code == 'RAQ'
+      if !is_last_milestone?(submission_id, 'APC')
+        validation_msgs[:errors].push('Administrative Processing Completed Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'AQS'
+      if !is_last_milestone?(submission_id, 'RAQ')
+        validation_msgs[:errors].push('Ready for Administrative QC Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'AQC'
+      if !is_last_milestone?(submission_id, 'AQS')
+        validation_msgs[:errors].push('Administrative QC Start Date milestone must exist')
+      end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+      end
+    elsif milestone_to_add.code == 'SPS'
+      if !is_last_milestone?(submission_id, 'SAC')
+        validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'SPC'
+      if !is_last_milestone?(submission_id, 'SPS')
+        validation_msgs[:errors].push('Scientific Processing Start Date milestone must exist')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
+      end
+    elsif milestone_to_add.code == 'RSQ'
+      if !is_last_milestone?(submission_id, 'SPC')
+        validation_msgs[:errors].push('Scientific Processing Completed Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'SQS'
+      if !is_last_milestone?(submission_id, 'RSQ')
+        validation_msgs[:errors].push('Ready for Scientific QC Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'SQC'
+      if !is_last_milestone?(submission_id, 'SQS')
+        validation_msgs[:errors].push('Scientific QC Start Date milestone must exist')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
+      end
+    elsif milestone_to_add.code == 'TSR'
+      if !is_last_milestone?(submission_id, 'RTS')
+        validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'STS'
+      if !is_last_milestone?(submission_id, 'TSR')
+        validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
+      end
+    end
+
+    return validation_msgs
   end
 
   private
