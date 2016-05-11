@@ -35,7 +35,6 @@
               /* implementations below */
               function linkerFn(scope, element, attrs, ngModelCtrl) {
                   $compile(element.contents())(scope);
-                  console.info('in linkerFn of the personSearchModalButton2');
                   var modalOpened = false;
 
                   element.bind('click', function() {
@@ -59,7 +58,6 @@
                           modalOpened = false;
                       }, function() {
                           // modal cancelled or closed
-                          console.error('person search modal cancelled or closed by user');
                           modalOpened = false;
                       }); // result.then
                   }); // bind click
