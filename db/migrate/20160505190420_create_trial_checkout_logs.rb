@@ -6,8 +6,12 @@ class CreateTrialCheckoutLogs < ActiveRecord::Migration
       t.string :category
       t.string :username
       t.string :full_name
+      t.references :trial, index: true
+      t.references :user, index: true
 
       t.timestamps null: false
     end
+    add_foreign_key :trial_checkout_logs, :trials
+    add_foreign_key :trial_checkout_logs, :users
   end
 end
