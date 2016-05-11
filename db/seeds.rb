@@ -576,6 +576,16 @@ CadsrMarkerSynonym.find_or_create_by(id: 7725,alternate_name:  'Spi-B Transcript
 CadsrMarkerSynonym.find_or_create_by(id: 7723,alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 CadsrMarkerSynonym.find_or_create_by(id: 7724,alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 
+OnholdReason.find_or_create_by(code: 'SIC', name: 'Submission Incomplete')
+OnholdReason.find_or_create_by(code: 'SIM', name: 'Submission Incomplete - Missing Documents')
+OnholdReason.find_or_create_by(code: 'SIG', name: 'Submission Invalid Grant')
+OnholdReason.find_or_create_by(code: 'SOT', name: 'Submission Other (Submitter)')
+OnholdReason.find_or_create_by(code: 'PCR', name: 'Pending CTRO Review')
+OnholdReason.find_or_create_by(code: 'PDC', name: 'Pending Disease Curation')
+OnholdReason.find_or_create_by(code: 'PPC', name: 'Pending Person Curation')
+OnholdReason.find_or_create_by(code: 'POC', name: 'Pending Organization Curation')
+OnholdReason.find_or_create_by(code: 'PIC', name: 'Pending Intervention Curation')
+OnholdReason.find_or_create_by(code: 'POT', name: 'Pending Other (CTRO)')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
