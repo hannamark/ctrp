@@ -22,9 +22,9 @@
                 rowModelType: 'pagination',
                 columnDefs: getColumnDefs(),
                 enableColResize: true,
-                enableSorting: true,
+                enableSorting: false,
                 enableFilter: true,
-                rowHeight: 25,
+                rowHeight: 30,
                 angularCompileRows: true,
                 suppressRowClickSelection: true
             };
@@ -34,21 +34,38 @@
 
         function getColumnDefs() {
             var columns = [
-                {headerName: 'Type', width: 200, field: 'abstraction_type', cellRenderer: _renderCellType},
-                {headerName: 'Date/Time', width: 150, field: 'created_at', cellRenderer: _renderCellDate},
-                {headerName: 'User', width: 150, field: 'username'},
-                {headerName: 'Checkout/Checkin', width: 160, field: 'category'},
-                {headerName: 'Check In Comment', width: 300, field: 'checkin_comment', cellRenderer: _renderToolTip}
+                {headerName: 'Type', field: 'abstraction_type', cellRenderer: _renderCellType},
+                {headerName: 'Date/Time', field: 'created_at', cellRenderer: _renderCellDate},
+                {headerName: 'User', field: 'username'},
+                {headerName: 'Checkout/Checkin', field: 'category', cellClassRules: {
+                    'cellbg-red': function(params) {return params.value === 'Checkout'},
+                    'cellbg-green': function(params) {return params.value === 'Checkin'}
+                }, cellRenderer: _renderCheckoutIcon},
+                {headerName: 'Check In Comment',field: 'checkin_comment', cellRenderer: _renderToolTip},
             ];
 
             return columns;
+        }
+
+        function _renderCheckoutIcon(params) {
+            if (!angular.isDefined(params.value)) {
+                return '';
+            }
+            var category = $filter('toProperCase')(params.value);
+            var renderedText = category;
+            if (category === 'Checkout') {
+                renderedText += ' <i class="glyphicon glyphicon-log-out"></i>';
+            } else if (category === 'Checkin') {
+                renderedText += ' <i class="glyphicon glyphicon-log-in"></i>'
+            }
+            return '<span>' + renderedText + '</span>';
         }
 
         function _renderToolTip(params) {
             if (!angular.isDefined(params.value)) {
                 return '';
             }
-            return '<span title="Tooltip">' + params.value +'</span>';
+            return '<span uib-tooltip="' + params.value + '">' + params.value +'</span>';
         }
 
         function _renderCellType(params) {

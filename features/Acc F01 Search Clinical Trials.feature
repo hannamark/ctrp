@@ -11,7 +11,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |Trial Submitter  |
       |Site Accrual Submitter  |
       |Organization Family Accrual Submitter  |
-   When I log in to Accrual Application
+   When I login into the Accrual Application
    Then the list of Trials to which I have been granted access will be displayed automatically 
    
 
@@ -27,7 +27,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
     And I can search specific Trial
      When I have entered an NCI Trial Identifier
      And I have entered a ClinicalTrials.gov ID
-     And I have entered a Trial's Official Title using wildcards and keywords ????
+     And I have entered a Trial's Official Title using wildcards and keywords 
      And I have clicked on the Search Trials Button
      Then the searched trial will be displayed 
      When the user does not have accrual access for the searched NCI Trial Identifier 
@@ -44,7 +44,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |ICD10  |
       |ICD9  |
       |ICD-O-3  |
-    And the note "Value Change to SDC" will be displayed under the 
+    And the note "Value Change to "Accrual Disease Terminology"" will be displayed under the 
     When the Accrual Disease Terminology Type is ICD-O-3
     Then the add Study Subject Screen will display the fields type
     
@@ -62,7 +62,29 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |Participating Site  |
       |User who created  |
       |Last Updated Date/Time  |
-
+    When The Accrual Disease Terminology Type is 
+         
+      |SDC  |
+      |ICD10  |
+      |ICD9  |
+     
+     Then the add Study Subject Screen will display the fields type
+    
+      |Study Subject ID  |
+      |Study Subject Birth Date(MM/YYYY)  |
+      |Study Subject Gender  |
+      |Study Subject Race  |
+      |Study Subject Ethnicity  |
+      |Study Subject Country  |
+      |Study Subject Zip Code  |
+      |Registration Date  |
+      |Study Subject method of Payment  |
+      |Disease  |
+      |Participating Site  |
+      |User who created  |
+      |Last Updated Date/Time  |
+     
+     
      Scenario:# I can search Sites in a Trial
     Given I am on the Add Study Subject
     And the Accrual Disease Terminology Type is ICD-O-3
@@ -84,7 +106,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |System  |
       |Menu Display Name  |
       |Select  |
-      And I can search site types using the search field ?????
+  
      When I click on the select button for a site
      Then the selected Site will be added to the site field
      When I click on the cancel button 
@@ -92,7 +114,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
     
       Scenario:#2 I can choose Trial information to be displayed on the list of trials
     Given I am on the Trial Search screen
-     When I have clicked on the Choose column drop down button on the Search field
+     When I have clicked on the Choose column drop down button to filter displayed Trial Information
      Then A drop down list of Trial Information type displays
      
       |NCI Trial Identifier  |
@@ -107,7 +129,12 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
      When I don't check a box
      Then the trial information column won't be displayed on the trial list
 
-     
+       Scenario: I can sort Trial displayed information using a sort capabilities for all columns 
+       Given I am on the Trial Search screen
+     When I click on the selected trial information column 
+     Then Trial Information will be sorted ascendingly or descendingly 
+
+
 
     Scenario: #3 I can view study subjects for Complete Trials
       Given I am on the Trial Search screen 
@@ -128,7 +155,8 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |Participating Site  |
       |Study Subject Birth Date (MM/YYYY)  |
  
-     And the list of Study Subjects will be displayed with the data type
+    When Study Subjects were added to the trial
+    Then the list of Study Subjects will be displayed with the data type
      
      
       |Study Subject ID  |
@@ -137,13 +165,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
       |Last Update Date/Time  |
       |Actions  |
   
-    Scenario: #4 I can filter Accrual Search results
-    Given I am logged in to the Accrual Application
-    When I type one or more characters contained in any of the fields 
-    Then the list is filtered as I type subsequent characters 
-    
-   
-  Scenario:#5 I Can search Study Subject for a complete Trial
+     Scenario:#5 I Can search Study Subject for a complete Trial
     Given I am on the Search Study Subject Screen
      And I have entered a unique Study Subject ID
      And I have selected a Participating Site

@@ -8,7 +8,7 @@ one:
   subject: MyString
   body: MyText
   email_template_name: MyString
-  email_template_id: 1
+  mail_template_id: 1
   result: MyString
 
 two:
@@ -19,5 +19,5 @@ two:
   subject: MyString
   body: MyText
   email_template_name: MyString
-  email_template_id: 1
+  mail_template_id: 1
   result: MyString

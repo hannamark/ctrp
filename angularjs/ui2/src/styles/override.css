@@ -1344,3 +1344,9 @@ div[disabled] {
     border-color: #a94442;
     border-width: 1px;
 }
+.cellbg-green {
+    color: green;
+}
+.cellbg-red {
+    color: red;
+}

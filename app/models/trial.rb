@@ -663,7 +663,7 @@ class Trial < TrialBase
     last_submitter_name = last_submitter.nil? ? '' : "#{last_submitter.first_name} #{last_submitter.last_name}"
     last_submitter_name.strip!
     last_submitter_name = 'CTRP User' if last_submitter_name.blank?
-    last_submission_date = last_submission.nil? ? '' : last_submission.submission_date.strftime('%d-%b-%Y')
+    last_submission_date = last_submission.nil? ? '' : (last_submission.submission_date.nil? ? '' : last_submission.submission_date.strftime('%d-%b-%Y'))
     lead_protocol_id = self.lead_protocol_id.present? ? self.lead_protocol_id : ''
     trial_title = self.official_title.present? ? self.official_title : ''
     nci_id = self.nci_id.present? ? self.nci_id : ''
