@@ -38,8 +38,8 @@
          * Broastcast message to other components
          * @param message
          */
-        this.broadcastMsg = function(message) {
-            $rootScope.$broadcast(message, {});
+        this.broadcastMsg = function(message, data) {
+            $rootScope.$broadcast(message, {data: data});
         }; //broadcastMsg
 
 

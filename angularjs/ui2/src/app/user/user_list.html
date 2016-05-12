@@ -1,6 +1,6 @@
 <div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
     <div class="alert alert-warning fade in" ng-if="searchWarningMessage.length">
-        <strong>**{{searchWarningMessage}}**</strong>
+        <strong>{{searchWarningMessage}}</strong>
     </div>
 </div>
 <div class="row">
@@ -87,18 +87,6 @@
                             </div>
                         </div>
                         <!-- Site Admin ends -->
-
-                        <!-- Organization Family-->
-                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)">
-                            <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
-                            <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
-                                <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" auto-focus/>
-                            </div>
-                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganizationFamily && userView.searchOrganizationFamily.length">
-                                {{userView.searchOrganizationFamily}}
-                            </div>
-                        </div>
-                        <!-- Organization Family ends -->
                     </div>
                 </div><!-- first row ends -->
 
