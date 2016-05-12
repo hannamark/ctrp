@@ -25,7 +25,20 @@ var abstractionTrailStatuses = function(){
      * Trial Status object(s)
      */
 
-    //Trial Status
+    //Trial Statuses
+    this.statuesesStatusDate = element(by.model('trialStatusView.statusObj.status_date'));
+    this.statuesesStatus = element(by.model('trialStatusView.statusObj.trial_status_id')); //by.id('status_select')
+    this.statuesesComment = element(by.model('trialStatusView.statusObj.comment'));
+    this.statuesesWhyStoped = element(by.model('trialStatusView.statusObj.why_stopped'));
+    this.statuesesAdd = element();
+
+    this.tblStatusDate = element();
+    this.tblStatus = element();
+    this.tblComment = element();
+    this.tblWhyStoped = element();
+    this.tblErrorsWarning = element();
+    this.tblEdit = element();
+    this.tblDelete = element();
 
 
 
