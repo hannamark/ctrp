@@ -5,16 +5,17 @@
 (function () {
     'use strict';
 
-    angular.module('ctrp.app.user', ['ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter'])
+    angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService','uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
 
-    function userDetailCtrl(UserService, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
         var vm = this;
 
         $scope.userDetail_form = {};
         vm.userDetails = userDetailObj;
+        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.userDetailsOrig = angular.copy(userDetailObj);
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
@@ -113,8 +114,70 @@
                 start: 1
             }
         }; //initial User Search Parameters
+        
+        $scope.showAllTrialsModal = false;
+        $scope.showSelectedTrialsModal = false;
 
-        var trialGridOptions = {
+        $scope.toggleModal = function(){
+            $scope.showModal = !$scope.showModal;
+        };
+        vm.demoOptions = {
+            title: 'Demo: Recent World Cup Winners',
+            filterPlaceHolder: 'Start typing to filter the lists below.',
+            labelAll: 'All Items',
+            labelSelected: 'Selected Items',
+            helpMessage: ' Click items to transfer them between fields.',
+            /* angular will use this to filter your lists */
+            orderProperty: 'name',
+            /* this contains the initial list of all items (i.e. the left side) */
+            items: [{'id': '50', 'name': 'Germany'}, {'id': '45', 'name': 'Spain'}, {'id': '66', 'name': 'Italy'}, {'id': '30', 'name' : 'Brazil' }, {'id': '41', 'name': 'France' }, {'id': '34', 'name': 'Argentina'}],
+            /* this list should be initialized as empty or with any pre-selected items */
+            selectedItems: []
+        };
+
+        var GridMenuItems = function () {
+            var menuArr =
+                [
+                    {
+                        title: 'Transfer Ownership All Trials',
+                        order: 1,
+                        action: function ($event) {
+                            $scope.showAllTrialsModal = true;
+                            console.log("Send userid, orgid")
+                        }
+                    },
+                    {
+                        title: 'Transfer Ownership Selected Trials',
+                        order: 2,
+                        action: function ($event) {
+                            $scope.showSelectedTrialsModal = true;
+                            console.log("Send ownership id")
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of All Trials',
+                        order: 3,
+                        action: function ($event) {
+                            $scope.showAllTrialsModal = true;
+                            console.log("Send userid, orgid")
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of Selected Trials',
+                        order: 4,
+                        action: function ($event) {
+                            $scope.showSelectedTrialsModal = true;
+                            console.log("Send ownership id")
+                        }
+                    }
+                ];
+            return menuArr;
+        };
+        vm.export_row_type = "visible";
+        vm.export_column_type = "visible";
+        vm.searchParams = new TrialSearchParams;
+        vm.viewCount = vm.searchParams.start + vm.searchParams.rows - 1;
+        vm.gridOptions = {
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -141,63 +204,60 @@
                 },
                 {
                     name: 'start_date',
-                    displayName: 'Start',
+                    displayName: 'Start Date',
                     enableSorting: true,
-                    width: '100'
+                    width: '110'
                 },
                 {
                     name: 'comp_date',
-                    displayName: 'Complete',
+                    displayName: 'Complete Date',
                     enableSorting: false,
-                    width: '100'
+                    width: '150'
                 }
             ],
+            enableRowHeaderSelection : true,
             enableGridMenu: true,
             enableSelectAll: true,
             exporterCsvFilename: 'myFile.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
-            exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
             exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
-            exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Trials owned by ' + vm.userDetails.username + ':', style: 'headerStyle' },
             exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+                return { text: vm.userDetails.username + ' owns a total of ' + vm.gridOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
             },
             exporterPdfCustomFormatter: function ( docDefinition ) {
                 docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
+            exporterMenuAllData: false,
+            exporterMenuPdfAll: true,
             exporterPdfOrientation: 'portrait',
             exporterPdfPageSize: 'LETTER',
             exporterPdfMaxGridWidth: 500,
-            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
-            onRegisterApi: function(gridApi){
-                $scope.gridApi = gridApi;
-            }
+            gridMenuCustomItems: UserService.isCurationModeEnabled() ? new GridMenuItems() : []
         };
 
-        //ui-grid plugin options
-        vm.trialSearchParams = new TrialSearchParams;
-        vm.trialGridOptions = trialGridOptions;
+        vm.gridOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
+            vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                vm.searchParams.start = newPage;
+                vm.searchParams.rows = pageSize;
+                vm.getUserTrials();
+            });
+        };
 
         vm.getUserTrials = function () {
-            UserService.getUserTrials(vm.trialSearchParams).then(function (data) {
-                vm.trialGridOptions.data = data['trial_ownerships'];
-                vm.trialGridOptions.totalItems =  data.total;
+            UserService.getUserTrials(vm.searchParams).then(function (data) {
+                vm.gridOptions.data = data['trial_ownerships'];
+                vm.gridOptions.totalItems =  data.total;
 
-
-                $scope.export = function(){
-                    if ($scope.export_format == 'csv') {
-                        var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
-                        $scope.gridApi.exporter.csvExport( $scope.export_row_type, $scope.export_column_type, myElement );
-                    } else if ($scope.export_format == 'pdf') {
-                        $scope.gridApi.exporter.pdfExport( $scope.export_row_type, $scope.export_column_type );
-                    };
-                };
             }).catch(function (err) {
                 console.log('Get User Trials failed');
             });
-        }; //searchUsers
+        };
         vm.getUserTrials();
 
         /****************** implementations below ***************/
@@ -234,5 +294,55 @@
 
 
         } //listenToStatesProvinces
+
+
+        /**
+         * callback function for sorting UI-Grid columns
+         * @param grid
+         * @param sortColumns
+         */
+        function sortChangedCallBack(grid, sortColumns) {
+
+            if (sortColumns.length === 0) {
+                console.log('removing sorting');
+                //remove sorting
+                vm.searchParams.sort = '';
+                vm.searchParams.order = '';
+            } else {
+                vm.searchParams.sort = sortColumns[0].name; //sort the column
+                switch (sortColumns[0].sort.direction) {
+                    case uiGridConstants.ASC:
+                        vm.searchParams.order = 'ASC';
+                        break;
+                    case uiGridConstants.DESC:
+                        vm.searchParams.order = 'DESC';
+                        break;
+                    case undefined:
+                        break;
+                }
+            }
+
+            //do the search with the updated sorting
+            vm.getUserTrials();
+        } //sortChangedCallBack
+
+        $scope.export = function(){
+            if ($scope.export_format == 'csv') {
+                var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
+                $scope.gridApi.exporter.csvExport( $scope.export_row_type, $scope.export_column_type, myElement );
+            } else if ($scope.export_format == 'pdf') {
+                $scope.gridApi.exporter.pdfExport( $scope.export_row_type, $scope.export_column_type );
+            };
+        };
+
+        //Listen to the write-mode switch
+        $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+            vm.gridOptions.enableRowHeaderSelection = vm.isCurationEnabled;
+            if (UserService.isCurationModeEnabled()) {
+                vm.gridOptions.gridMenuCustomItems = new GridMenuItems();
+            } else {
+                vm.gridOptions.gridMenuCustomItems = [];
+            }
+        });
     }
 })();

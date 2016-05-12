@@ -12,8 +12,15 @@ class TrialOwnershipsController < ApplicationController
 
   # GET /trial_ownerships/search.json
   def search
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:rows] = 10 if params[:rows].blank?
+    params[:sort] = 'comp_date' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+
     @trial_ownerships = TrialOwnership.all
     @trial_ownerships = @trial_ownerships.matches('user_id', params[:user_id])
+    @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}").page(params[:start]).per(params[:rows])
 
     @trial_ownerships
   end
