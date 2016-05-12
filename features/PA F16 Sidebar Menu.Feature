@@ -38,7 +38,7 @@ Then the sidebar menu will be displayed expanded:
 |Diseases / Conditions|
 |Data Table 4 Anatomic Sites|
 |Outcome Measures|
-|Sub-Groups Stratification Criteria|
+|Sub-Groups Stratification|
 |Biomarkers|
 |Completion (Section)|
 |Abstraction Validation|
