@@ -65,25 +65,26 @@
             $state.go('main.paTrialSearch');
         } //backToPATrialSearch
 
+        function _parseCheckoutinObjects(serverResponse, type) {
+            console.info('type: ', type);
+            vm.adminCheckoutObj = Common.jsonStrToObject(serverResponse.result.admin_checkout);
+            vm.scientificCheckoutObj = Common.jsonStrToObject(serverResponse.result.scientific_checkout);
+            Common.broadcastMsg(MESSAGES.TRIALS_CHECKOUT_IN_SIGNAL);
+        }
+
         function checkoutTrial(checkoutType) {
             // To prevent multiple submissions before Ajax call is completed
             vm.disableBtn = true;
 
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                // console.log('checkout result: ', res.result);
-                // console.log('checkout message: ', res.checkout_message);
                 var status = res.server_response.status;
-
                 if (status === 200) {
-
                     var checkout_message = res.checkout_message || 'Checkout was not successful, other user may have checked it out ';
                     if (res.checkout_message !== null) {
                         updateTrialDetailObj(res.result);
-                        vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
-                        vm.scientificCheckoutObj = Common.jsonStrToObject(res.result.scientific_checkout);
+                        _parseCheckoutinObjects(res, checkoutType);
+                        showToastr(checkout_message, 'top right');
                     }
-
-                    showToastr(checkout_message, 'top right');
                 }
             }).finally(function() {
                 vm.disableBtn = false;
@@ -92,17 +93,13 @@
 
         function checkinTrial(checkinType) {
             vm.disableBtn = true;
-
             PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
                 var status = res.server_response.status;
-
                 if (status === 200) {
                     // console.log('checkin result: ', res.result);
                     updateTrialDetailObj(res.result);
-                    vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
-                    vm.scientificCheckoutObj = Common.jsonStrToObject(res.result.scientific_checkout); // null
-                    // updateTrialDetailObj(res.result);
-                    showToastr(checkinType + ' checkin was successful!', 'top right')
+                    _parseCheckoutinObjects(res, checkinType);
+                    showToastr(checkinType + ' checkin was successful!', 'top right');
                 }
             }).finally(function() {
                 vm.disableBtn = false;
@@ -114,9 +111,6 @@
          * @param  {JSON} data [updated trial detail object with the checkout/in records]
          */
         function updateTrialDetailObj(data) {
-            console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
-            // vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
-            // vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
             if (vm.trialDetailObj.pi && !vm.trialDetailObj.pi.fullName) {
                 vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);

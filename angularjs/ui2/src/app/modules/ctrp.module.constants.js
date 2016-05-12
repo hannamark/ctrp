@@ -141,7 +141,8 @@
             'PRIVILEGE_CHANGED': 'user_privilege_changed',
             'CURATION_MODE_CHANGED': 'curation_mode_changed',
             'DOCUMENT_UPLOADED': 'document_uploaded',
-            'TRIAL_DETAIL_SAVED': 'trial_detail_saved'
+            'TRIAL_DETAIL_SAVED': 'trial_detail_saved',
+            'TRIALS_CHECKOUT_IN_SIGNAL': 'trial_checkout_checkin',
         })
         .constant('DMZ_UTILS', {
             'APP_VERSION': '/ctrp/dmzutils/app_version.json',
