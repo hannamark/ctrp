@@ -66,7 +66,6 @@
         } //backToPATrialSearch
 
         function _parseCheckoutinObjects(serverResponse, type) {
-            console.info('type: ', type);
             vm.adminCheckoutObj = Common.jsonStrToObject(serverResponse.result.admin_checkout);
             vm.scientificCheckoutObj = Common.jsonStrToObject(serverResponse.result.scientific_checkout);
             Common.broadcastMsg(MESSAGES.TRIALS_CHECKOUT_IN_SIGNAL);
@@ -205,7 +204,6 @@
          * @return {Void}
          */
         function showToastr(message, position) {
-            console.log('showing a toastr!');
             $mdToast.show({
             template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
             parent: $document[0].querySelector('#checkoutORin_message'),
