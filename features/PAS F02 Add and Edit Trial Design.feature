@@ -204,6 +204,7 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
       | None Retained          | 
       | Samples with DNA       | 
       | Samples Without DNA    | 
+      And I can enter a value for Bio-Specimen Description
       And I can enter a value for Number of Arms/Groups
      And I can enter a value for Target Enrollment
       And I can enter a value for Final Enrollment for ClinicalTrials.gov
@@ -223,6 +224,7 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
       And I can select a value for Study Model 
       And I can select a value for Time Perspective
       And I can select a value for Bio-specimen Retention
+      And I can add or edit a value for bio-Specimen Decription
       And I can add or edit a value for Number of Arms/Groups
      And I can add or edit a value for Target Enrollment
       And I can add or edit a value for Final Enrollment for ClinicalTrials.gov
