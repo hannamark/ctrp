@@ -120,7 +120,7 @@
 
 }
 .ui-grid .ui-grid-menu-item:contains("Export all") {
- display: none;
+    display: none;
 }
 
 .ui-grid-menu-button {
@@ -1078,7 +1078,7 @@ a.btn-file:hover {
 body.identification  a.menu-identification,
 body.history a.menu-history,
 body.milestone a.menu-milestone,
-body.on-hold-info a.menu-on-hold-info,
+body.onhold a.menu-onhold,
 body.view-tsr a.menu-view-tsr,
 body.assign-ownership a.menu-assign-ownership,
 body.check-out-history a.menu-check-out-history,
@@ -1351,6 +1351,13 @@ div[disabled] {
     border-color: #a94442;
     border-width: 1px;
 }
+.cellbg-green {
+    color: green;
+}
+.cellbg-red {
+    color: red;
+}
+
 
 .ctrptransferselect label {
     margin: 10px;
