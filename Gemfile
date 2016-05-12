@@ -98,5 +98,5 @@ gem 'xml-mapping'
 gem 'prawn'
 
 #gem for RTF
-gem 'rtf', '~> 0.3.3'
+gem 'rtf'
 
