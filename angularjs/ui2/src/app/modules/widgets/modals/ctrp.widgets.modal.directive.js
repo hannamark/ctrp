@@ -4,7 +4,7 @@
     angular.module('ctrpApp.widgets')
     .directive('modal', function () {
         return {
-            template: '<div class="modal fade">' +
+            template: '<div class="modal fade modal-lg {{ modal_id }}"">' +
             '<div class="modal-dialog">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
@@ -20,7 +20,14 @@
             replace:true,
             scope:true,
             link: function postLink(scope, element, attrs) {
+                scope.modal_id = attrs.id;
+
                 scope.title = attrs.title;
+
+                scope.$watch(attrs.id, function(value){
+                    if(value == true)
+                        scope.modal_id = attrs.id;
+                });
 
                 scope.$watch(attrs.visible, function(value){
                     if(value == true)
