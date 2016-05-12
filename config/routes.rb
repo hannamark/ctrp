@@ -47,6 +47,14 @@ Rails.application.routes.draw do
 
     resources :associated_trials
 
+    resources :trial_ownerships do
+      collection do
+        get 'search'
+        post 'search'
+        post 'unique', defaults: {format: 'json'}
+      end
+    end
+
     resources :source_statuses
 
     resources :source_contexts

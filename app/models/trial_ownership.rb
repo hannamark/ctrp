@@ -19,4 +19,15 @@
 class TrialOwnership < TrialBase
   belongs_to :trial
   belongs_to :user
+
+
+  scope :matches, -> (column, value) {
+    join_clause  = "LEFT JOIN trials owned_trial ON trial_ownerships.trial_id = owned_trial.id "
+    join_clause += "LEFT JOIN users ON trial_ownerships.user_id = users.id "
+
+    if column == 'user_id'
+      joins(join_clause).where("trial_ownerships.user_id = #{value} AND trial_ownerships.trial_id is not null")
+    end
+  }
+
 end

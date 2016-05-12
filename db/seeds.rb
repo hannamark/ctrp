@@ -1425,8 +1425,8 @@ if !Rails.env.qa?
       ldap_user.first_name = u["first_name"]
       ldap_user.last_name = u["last_name"]
       ldap_user.organization = org0
-      ldap_user.save(validate: false)
       ldap_user.user_status = UserStatus.find_by_code('ACT')
+      ldap_user.save(validate: false)
       #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
     end
   rescue Exception => e
