@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService','uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService', '$uibModalStack', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
 
-    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, $uibModalStack, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -23,7 +23,10 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
-
+        vm.closeModal = function(reason) {
+            vm.showAllTrialsModal = false;
+            $uibModalStack.dismissAll(reason);
+        };
         vm.updateUser = function () {
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
@@ -118,12 +121,6 @@
 
         vm.showAllTrialsModal = false;
         vm.showSelectedTrialsModal = false;
-
-        $scope.toggleModal = function(){
-            $scope.showModal = !$scope.showModal;
-            vm.showAllTrialsModal = !vm.showAllTrialsModal;
-            vm.showSelectedTrialsModal = !vm.showSelectedTrialsModal;
-        };
 
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('ctrpApp.widgets')
-    .directive('modal', function () {
+    .directive('modal', function ($parse) {
         return {
             template: '<div class="modal fade modal-lg {{ modal_id }}"">' +
             '<div class="modal-dialog">' +
@@ -42,10 +42,11 @@
                     });
                 });
 
-                $(element).on('hidden.bs.modal', function(){
-                    scope.$apply(function(){
-                        scope.$parent[attrs.visible] = false;
-                    });
+                //Update the visible value when the dialog is closed through UI actions (Ok, cancel, etc.)
+                $(element).bind("hide.bs.modal", function () {
+                    $parse(attrs.visible).assign(scope, false);
+                    if (!scope.$$phase && !scope.$root.$$phase)
+                        scope.$apply();
                 });
             }
         };

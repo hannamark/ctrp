@@ -292,14 +292,13 @@
             var menuArr =
                 [
                     {
-                        title: 'Transfer Ownership All Trials',
+                        title: 'Transfer Trial Ownership',
                         order: 1,
                         action: function ($event) {
                             if (controller.showAllTrialsModal === false) {
                                 controller.showAllTrialsModal = true;
                             }
                             var trialIdArr = _.chain(controller.gridOptions.data).pluck(trial_id).value();
-                            console.log(trialIdArr)
                             service.getAllOrgUsers.then(function(data){
 
                                 controller.userOptions = {
