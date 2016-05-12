@@ -116,6 +116,13 @@
   height: auto !important;
 }
 */
+.ui-grid.ui-grid-hide-left .ui-grid-pinned-container-left .ui-grid-cell-contents {
+
+}
+.ui-grid .ui-grid-menu-item:contains("Export all") {
+    display: none;
+}
+
 .ui-grid-menu-button {
     height: 24px;
 }
@@ -1349,4 +1356,37 @@ div[disabled] {
 }
 .cellbg-red {
     color: red;
+}
+
+
+.ctrptransferselect label {
+    margin: 10px;
+}
+
+.ctrptransferselect .btn {
+    margin: 10px;
+}
+
+.ctrptransferselect .pool {
+    border: 1px solid #999;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 5px;
+    height: 150px;
+    overflow-y: scroll;
+}
+
+.ctrptransferselect .pool ul {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.ctrptransferselect .pool ul li {
+    width: 100%;
+    padding: 4px 8px 4px 4px;
+    border-bottom: 1px dotted #CFCFCF;
+}
+
+.ctrptransferselect .pool ul li a:hover {
+    text-decoration: none;
 }

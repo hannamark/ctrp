@@ -23,6 +23,7 @@
             'USER_GSA': '/ctrp/users/gsa',
             'SEARCH_USER': '/ctrp/users/search.json',
             'USER_LIST': '/ctrp/users.json',
+            'USER_TRIALS': '/ctrp/trial_ownerships/search.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
             'CURATE_PERSON': '/ctrp/people/curate',
@@ -140,7 +141,8 @@
             'PRIVILEGE_CHANGED': 'user_privilege_changed',
             'CURATION_MODE_CHANGED': 'curation_mode_changed',
             'DOCUMENT_UPLOADED': 'document_uploaded',
-            'TRIAL_DETAIL_SAVED': 'trial_detail_saved'
+            'TRIAL_DETAIL_SAVED': 'trial_detail_saved',
+            'TRIALS_CHECKOUT_IN_SIGNAL': 'trial_checkout_checkin',
         })
         .constant('DMZ_UTILS', {
             'APP_VERSION': '/ctrp/dmzutils/app_version.json',

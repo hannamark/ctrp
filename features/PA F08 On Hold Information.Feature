@@ -32,7 +32,7 @@ And I enter a Reason Description
 And I the will be the current Date
 Then I can select save to place the trail on hold
 And the trial processing status will be set On Hold
-And an e-mail will be sent to the trial owners for the on hold reason (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
+And an e-mail "On Hold Trial (Original Notice)" will be sent to the trial owners for the on hold reason (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
 
 Scenario: #3 Required fields for On Hold Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -62,7 +62,6 @@ And I enter the off hold date
 And I select Save
 Then I the trail will no longer be on hold
 And the trial processing status will be set Off Hold
-And an e-mail will be sent to the trial owners to tell them the trial is no longer on hold (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
 
 Scenario: #7 Off Hold Date Validaiton
 Given I am logged into the CTRP Protocol Abstraction application
