@@ -56,8 +56,9 @@
         };
 
         var optionRole = {
-            name: 'role',
-                displayName: 'Site Admin',
+            name: 'admin',
+            field: 'role',
+            displayName: 'Site Admin',
             enableSorting: true,
             width: '110',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SITE-SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
@@ -156,7 +157,26 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
-            ]
+            ],
+            enableGridMenu: true,
+            enableSelectAll: true,
+            exporterCsvFilename: 'myFile.csv',
+            exporterPdfDefaultStyle: {fontSize: 9},
+            exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+            exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+            exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+            exporterPdfFooter: function ( currentPage, pageCount ) {
+                return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+            },
+            exporterPdfCustomFormatter: function ( docDefinition ) {
+                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+                return docDefinition;
+            },
+            exporterPdfOrientation: 'portrait',
+            exporterPdfPageSize: 'LETTER',
+            exporterPdfMaxGridWidth: 500,
+            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
 

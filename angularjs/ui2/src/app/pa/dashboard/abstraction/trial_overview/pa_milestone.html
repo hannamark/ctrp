@@ -49,7 +49,7 @@
                 <form class="form form-horizontal" role="form" name="milestone_form" novalidate ctrp-submit="milestoneView.saveMilestone()">
                     <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">Milestone Details</legend>
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.milestone_form.needsAttention(milestone_form.milestone)}">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.milestone_form.needsAttention(milestone_form.milestone) || milestoneView.validationErrors.length > 0}">
                             <label for="milestone" class="control-label col-xs-12 col-sm-3">Milestone:</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select restriction-field class="form-control input-sm" id="milestone" name="milestone" ng-model="milestoneView.milestone_id"
@@ -59,6 +59,9 @@
                                 </select>
                                 <span class="help-block" ng-show="ctrpbtn.milestone_form.needsAttention(milestone_form.milestone)">
                                     Milestone is Required
+                                </span>
+                                <span class="help-block" ng-repeat="error in milestoneView.validationErrors track by $index" ng-show="milestoneView.validationErrors.length > 0">
+                                    {{error}}
                                 </span>
                             </div>
                         </div>
@@ -92,10 +95,10 @@
 
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" ng-disabled="milestoneView.disableBtn">
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="milestoneView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="milestoneView.resetMilestone()" ng-disabled="milestoneView.disableBtn">
+                            <button type="button" class="btn btn-warning pull-right" id="reset_btn" restriction-field ng-click="milestoneView.resetMilestone()" ng-disabled="milestoneView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                             <button type="button" class="btn btn-warning pull-right" id="back_btn" restriction-field ng-click="milestoneView.setAddMode(false)" ng-disabled="milestoneView.disableBtn">

@@ -202,6 +202,11 @@
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
         };
 
+        this.getUserTrials = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsers
+
         this.upsertUserSignup = function (userObj) {
             //update an existing user
             var configObj = {};

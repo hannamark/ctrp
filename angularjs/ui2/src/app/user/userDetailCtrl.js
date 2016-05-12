@@ -8,13 +8,14 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService','uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
 
-    function userDetailCtrl(UserService, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
         var vm = this;
 
         $scope.userDetail_form = {};
         vm.userDetails = userDetailObj;
+        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.userDetailsOrig = angular.copy(userDetailObj);
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
@@ -48,6 +49,24 @@
         vm.userRequestAdmin = function(params) {
             UserService.userRequestAdmin(params);
         };
+
+        vm.confirmSave = function() {
+            if (vm.irreversibleRoleSwitchId === undefined || vm.irreversibleRoleSwitchId === vm.userDetails.role) {
+                vm.confirmMsg = "You are about to switch this user's role from a role that you have no permissions to re-assign once you leave this form.";
+                return true;
+            }
+        };
+
+        vm.validateSave = function() {
+            vm.showValidation = true;
+            // If form is invalid, return and let AngularJS show validation errors.
+            if ($scope.userDetail_form.$invalid) {
+                return;
+            } else {
+                vm.updateUser();
+                return;
+            }
+        };
         
         AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
             vm.domainArr = response.data[0].settings.split('||');
@@ -58,6 +77,22 @@
 
         AppSettingsService.getSettings({ setting: 'USER_ROLES'}).then(function (response) {
             vm.rolesArr = JSON.parse(response.data[0].settings);
+            vm.assignRoles = _.find(vm.rolesArr, function(obj) { return obj.id === vm.userRole }).assign_access;
+            if (vm.assignRoles.length) {
+                var rolesArr = [];
+                angular.forEach(vm.rolesArr, function(role){
+                    if (vm.assignRoles.indexOf(role.id) > -1) {
+                        rolesArr.push(role);
+                    } else if(role.id === vm.userDetails.role) {
+                        rolesArr.push(role);
+                        vm.irreversibleRoleSwitchName = role.name;
+                        vm.irreversibleRoleSwitchId = role.id;
+                    }
+                });
+                vm.rolesArr = rolesArr;
+            } else {
+                vm.disableRows = true;
+            }
         }).catch(function (err) {
             vm.rolesArr = [];
             console.log("Error in retrieving USER_ROLES " + err);
@@ -69,6 +104,161 @@
             vm.statusArr = [];
             console.log("Error in retrieving USER_STATUSES " + err);
         });
+
+        /**** USER TRIALS *****/
+        // Initial User Search Parameters
+        var TrialSearchParams = function (){
+            return {
+                user_id: vm.userDetails.id,
+                rows: 25,
+                start: 1
+            }
+        }; //initial User Search Parameters
+        
+        $scope.showAllTrialsModal = false;
+        $scope.showSelectedTrialsModal = false;
+
+        $scope.toggleModal = function(){
+            $scope.showModal = !$scope.showModal;
+        };
+        vm.demoOptions = {
+            title: 'Demo: Recent World Cup Winners',
+            filterPlaceHolder: 'Start typing to filter the lists below.',
+            labelAll: 'All Items',
+            labelSelected: 'Selected Items',
+            helpMessage: ' Click items to transfer them between fields.',
+            /* angular will use this to filter your lists */
+            orderProperty: 'name',
+            /* this contains the initial list of all items (i.e. the left side) */
+            items: [{'id': '50', 'name': 'Germany'}, {'id': '45', 'name': 'Spain'}, {'id': '66', 'name': 'Italy'}, {'id': '30', 'name' : 'Brazil' }, {'id': '41', 'name': 'France' }, {'id': '34', 'name': 'Argentina'}],
+            /* this list should be initialized as empty or with any pre-selected items */
+            selectedItems: []
+        };
+
+        var GridMenuItems = function () {
+            var menuArr =
+                [
+                    {
+                        title: 'Transfer Ownership All Trials',
+                        order: 1,
+                        action: function ($event) {
+                            $scope.showAllTrialsModal = true;
+                            console.log("Send userid, orgid")
+                        }
+                    },
+                    {
+                        title: 'Transfer Ownership Selected Trials',
+                        order: 2,
+                        action: function ($event) {
+                            $scope.showSelectedTrialsModal = true;
+                            console.log("Send ownership id")
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of All Trials',
+                        order: 3,
+                        action: function ($event) {
+                            $scope.showAllTrialsModal = true;
+                            console.log("Send userid, orgid")
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of Selected Trials',
+                        order: 4,
+                        action: function ($event) {
+                            $scope.showSelectedTrialsModal = true;
+                            console.log("Send ownership id")
+                        }
+                    }
+                ];
+            return menuArr;
+        };
+        vm.export_row_type = "visible";
+        vm.export_column_type = "visible";
+        vm.searchParams = new TrialSearchParams;
+        vm.viewCount = vm.searchParams.start + vm.searchParams.rows - 1;
+        vm.gridOptions = {
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSize: 25,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableFiltering: false,
+            enableVerticalScrollbar: 2,
+            enableHorizontalScrollbar: 2,
+            columnDefs: [
+                {
+                    name: 'nci_id',
+                    enableSorting: true,
+                    displayName: 'NCI ID',
+                    width: '120'
+                },
+                {
+                    name: 'official_title',
+                    displayName: 'Official Title',
+                    enableSorting: true,
+                    minWidth: '100',
+                    width: '*'
+                },
+                {
+                    name: 'start_date',
+                    displayName: 'Start Date',
+                    enableSorting: true,
+                    width: '110'
+                },
+                {
+                    name: 'comp_date',
+                    displayName: 'Complete Date',
+                    enableSorting: false,
+                    width: '150'
+                }
+            ],
+            enableRowHeaderSelection : true,
+            enableGridMenu: true,
+            enableSelectAll: true,
+            exporterCsvFilename: 'myFile.csv',
+            exporterPdfDefaultStyle: {fontSize: 9},
+            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
+            exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Trials owned by ' + vm.userDetails.username + ':', style: 'headerStyle' },
+            exporterPdfFooter: function ( currentPage, pageCount ) {
+                return { text: vm.userDetails.username + ' owns a total of ' + vm.gridOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
+            },
+            exporterPdfCustomFormatter: function ( docDefinition ) {
+                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+                return docDefinition;
+            },
+            exporterMenuAllData: false,
+            exporterMenuPdfAll: true,
+            exporterPdfOrientation: 'portrait',
+            exporterPdfPageSize: 'LETTER',
+            exporterPdfMaxGridWidth: 500,
+            gridMenuCustomItems: UserService.isCurationModeEnabled() ? new GridMenuItems() : []
+        };
+
+        vm.gridOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
+            vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                vm.searchParams.start = newPage;
+                vm.searchParams.rows = pageSize;
+                vm.getUserTrials();
+            });
+        };
+
+        vm.getUserTrials = function () {
+            UserService.getUserTrials(vm.searchParams).then(function (data) {
+                vm.gridOptions.data = data['trial_ownerships'];
+                vm.gridOptions.totalItems =  data.total;
+
+            }).catch(function (err) {
+                console.log('Get User Trials failed');
+            });
+        };
+        vm.getUserTrials();
 
         /****************** implementations below ***************/
         var activate = function() {
@@ -104,5 +294,55 @@
 
 
         } //listenToStatesProvinces
+
+
+        /**
+         * callback function for sorting UI-Grid columns
+         * @param grid
+         * @param sortColumns
+         */
+        function sortChangedCallBack(grid, sortColumns) {
+
+            if (sortColumns.length === 0) {
+                console.log('removing sorting');
+                //remove sorting
+                vm.searchParams.sort = '';
+                vm.searchParams.order = '';
+            } else {
+                vm.searchParams.sort = sortColumns[0].name; //sort the column
+                switch (sortColumns[0].sort.direction) {
+                    case uiGridConstants.ASC:
+                        vm.searchParams.order = 'ASC';
+                        break;
+                    case uiGridConstants.DESC:
+                        vm.searchParams.order = 'DESC';
+                        break;
+                    case undefined:
+                        break;
+                }
+            }
+
+            //do the search with the updated sorting
+            vm.getUserTrials();
+        } //sortChangedCallBack
+
+        $scope.export = function(){
+            if ($scope.export_format == 'csv') {
+                var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
+                $scope.gridApi.exporter.csvExport( $scope.export_row_type, $scope.export_column_type, myElement );
+            } else if ($scope.export_format == 'pdf') {
+                $scope.gridApi.exporter.pdfExport( $scope.export_row_type, $scope.export_column_type );
+            };
+        };
+
+        //Listen to the write-mode switch
+        $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+            vm.gridOptions.enableRowHeaderSelection = vm.isCurationEnabled;
+            if (UserService.isCurationModeEnabled()) {
+                vm.gridOptions.gridMenuCustomItems = new GridMenuItems();
+            } else {
+                vm.gridOptions.gridMenuCustomItems = [];
+            }
+        });
     }
 })();

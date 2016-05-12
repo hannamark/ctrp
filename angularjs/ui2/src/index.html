@@ -55,7 +55,6 @@
         <script src="bower_components/angular-animate/angular-animate.js"></script>
         <script src="bower_components/angular-aria/angular-aria.js"></script>
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-        <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/angular-breadcrumb/release/angular-breadcrumb.js"></script>
         <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
         <script src="bower_components/angular-material/angular-material.js"></script>
@@ -74,6 +73,7 @@
         <script src="bower_components/lodash/dist/lodash.compat.js"></script>
         <script src="bower_components/ng-idle/angular-idle.js"></script>
         <script src="bower_components/spin.js/spin.js"></script>
+        <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/underscore/underscore.js"></script>
         <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
         <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
@@ -98,6 +98,9 @@
         <script src="bower_components/angular-tree-dnd/dist/ng-tree-dnd.min.js"></script>
         <script src="bower_components/jquery-ui/jquery-ui.js"></script>
         <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+        <script src="bower_components/csv-js/csv.js"></script>
+        <script src="bower_components/pdfmake/build/pdfmake.js"></script>
+        <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -132,6 +135,7 @@
         <script src="app/po/person/person.routes.js"></script>
         <script src="app/po/person/ModalInstancePersonCtrl.js"></script>
         <script src="app/po/person/directives/personSearch2.js"></script>
+        <script src="app/po/person/directives/personAdvSearchModalButtonAttributed.js"></script>
         <script src="app/po/person/directives/personAdvSearchModalButton.js"></script>
         <script src="app/po/person/directives/advancedPersonSearchForm.js"></script>
         <script src="app/po/organization/phoneValidator.js"></script>
@@ -163,7 +167,9 @@
         <script src="app/pa/dashboard/abstraction/trial_overview/trialEmailsLogsCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/trial_overview/trial-abstraction.routes.js"></script>
         <script src="app/pa/dashboard/abstraction/trial_overview/paTrialOverviewCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/trial_overview/paOnholdCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/trial_overview/paMilestoneCtrl.js"></script>
+        <script src="app/pa/dashboard/abstraction/trial_overview/checkoutHistoryCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/scientific/trial-scientific.routes.js"></script>
         <script src="app/pa/dashboard/abstraction/scientific/pasTrialSubGroupsCtrl.js"></script>
         <script src="app/pa/dashboard/abstraction/scientific/pasTrialOutcomeMeasuresCtrl.js"></script>
@@ -197,14 +203,15 @@
         <script src="app/modules/widgets/popover/ctrp.widgets.popover-ctrp-confirm.directive.js"></script>
         <script src="app/modules/widgets/popover/ctrp.widgets.popover-comment.directive.js"></script>
         <script src="app/modules/widgets/modals/ctrp.widgets.model.directive.js"></script>
+        <script src="app/modules/widgets/ctrp.widgets.ctrptransferselect.directive.js"></script>
         <script src="app/modules/widgets/help/HelpService.js"></script>
         <script src="app/modules/widgets/help/helpModalCtrl.js"></script>
         <script src="app/modules/widgets/help/ctrp.widgets.ctrpHelp.directive.js"></script>
         <script src="app/modules/widgets/forms/ctrp.widgets.autoFocus.directive.js"></script>
+        <script src="app/modules/widgets/filters/ctrp.widgets.filter.toProperCase.js"></script>
         <script src="app/modules/widgets/filters/ctrp.widgets.filter.reverseList.js"></script>
         <script src="app/modules/widgets/filters/ctrp.widgets.filter.props.js"></script>
         <script src="app/modules/widgets/filters/ctrp.widgets.filter.findObjByAttribute.js"></script>
-        <script src="app/modules/widgets/filters/ctrp.widgets.filter.toProperCase.js"></script>
         <script src="app/modules/widgets/ctrp.widgets.restrictionField.directive.js"></script>
         <script src="app/modules/widgets/ctrp.widgets.in-place-edit.directive.js"></script>
         <script src="app/modules/widgets/comment/ctrp.widgets.comment-push-in-panel.directive.js"></script>

@@ -222,8 +222,6 @@
                 if (nullify_index >= 0)
                    gridOptions.columnDefs.splice(nullify_index,1);
             }
-
-            console.log('user role is: ', user_role.toUpperCase());
             return gridOptions;
         }
 

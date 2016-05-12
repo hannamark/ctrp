@@ -52,15 +52,17 @@
         </table>
     </div>
     <div class="col-xs-12 col-sm-6" id="email_content">
-        <p>
-            <strong>From:</strong> {{emailsView.curEmail.from}}
-        </p>
-        <p>
-            <strong>To:</strong> {{emailsView.curEmail.to}}
-        </p>
-        <p>
-            <strong>Time:</strong> {{emailsView.curEmail.created_at | date: "dd-MMM-yyyy H:mm"}}
-        </p>
-        <span ng-bind-html="emailsView.curEmail.body" ng-model="emailsView.curEmail.body"></span>
+        <div ng-hide="emailsView.curEmail == ''">
+            <p>
+                <strong>From:</strong> {{emailsView.curEmail.from}}
+            </p>
+            <p>
+                <strong>To:</strong> <span ng-hide="emailsView.curEmail.to.indexOf('@') === -1">{{emailsView.curEmail.to}}</span>
+            </p>
+            <p>
+                <strong>Time:</strong> {{emailsView.curEmail.created_at | date: "dd-MMM-yyyy H:mm"}}
+            </p>
+            <span ng-bind-html="emailsView.curEmail.body" ng-model="emailsView.curEmail.body"></span>
+        </div>
     </div>
 </div>

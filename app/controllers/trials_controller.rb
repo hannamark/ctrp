@@ -1,5 +1,5 @@
 class TrialsController < ApplicationController
-  before_action :set_trial, only: [:show, :edit, :update, :destroy]
+  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
 
@@ -90,6 +90,18 @@ class TrialsController < ApplicationController
 
     respond_to do |format|
       format.json { render :json => @mail_logs }
+    end
+  end
+
+  # retrieve trial checkout and checkin history
+  def get_trial_checkout_history
+    @checkout_history = []
+    if params.has_key?(:trial_id)
+      @checkout_history = TrialCheckoutLog.where(:trial_id => params[:trial_id])
+    end
+
+    respond_to do |format|
+      format.json { render :json => @checkout_history }
     end
   end
 
@@ -300,16 +312,21 @@ class TrialsController < ApplicationController
         checkout_message = 'Scientific checkout was successful'
       end
     end
+    # Log the checkout record
+    user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
+    user_fullname.strip!
+    result = checkout_message.nil? ? 'Failed' : 'Success'
+    TrialCheckoutLog.create(trial: @trial, abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkout_message => checkout_message} }
     end
   end
 
-
   def checkin_trial
     available_checkin_types = ["admin", "scientific", "scientificadmin"]
     checkin_type = params[:type].downcase
+    checkin_message = nil
 
     if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type)
 
@@ -317,18 +334,26 @@ class TrialsController < ApplicationController
 
       if checkin_type == "admin"
         @trial.update_attribute('admin_checkout', nil)
+        checkin_message = 'Admin checkin was successful'
 
       elsif checkin_type == "scientificadmin"
         @trial.update_attributes('admin_checkout': nil, 'scientific_checkout': nil)
+        checkin_message = 'Admin and Scientific checkin was successful'
 
       elsif checkin_type == "scientific"
         @trial.update_attribute('scientific_checkout', nil)
+        checkin_message = 'Scientific checkin was successful'
 
       end
     end
 
+    user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
+    user_fullname.strip!
+    result = checkin_message.nil? ? 'Failed' : 'Success'
+    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id)
+
     respond_to do |format|
-      format.json { render :json => {:result => @trial} }
+      format.json { render :json => {:result => @trial, :checkin_message => checkin_message} }
     end
 
   end
@@ -524,6 +549,10 @@ class TrialsController < ApplicationController
     end
   end
 
+  def validate_milestone
+    @validation_msgs = @trial.validate_milestone(params[:submission_id], params[:milestone_id])
+  end
+
   def search_clinical_trials_gov_ignore_exists
     @search_result = {}
 
@@ -661,7 +690,8 @@ class TrialsController < ApplicationController
                                                        marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
-                                  milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy])
+                                  milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
+                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy])
   end
 
   # Convert status code to name in validation messages

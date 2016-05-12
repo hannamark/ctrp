@@ -19,8 +19,11 @@
         vm.showEmailDetail = showEmailDetail;
 
         function showEmailDetail(idx) {
-            vm.curEmail = vm.emailLogs[idx] || '';
-            vm.curEmail.index = idx;
+            vm.curEmail = '';
+            if (vm.emailLogs.length > 0) {
+                vm.curEmail = vm.emailLogs[idx];
+                vm.curEmail.index = idx;
+            }
         }
 
     } // trialEmailLogsCtrl

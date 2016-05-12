@@ -6,8 +6,8 @@
             </p>
         </div>
         <div class="row">
-            <fieldset restriction-field>
-                <form class="form-horizontal" role="form" name="userDetail_form" novalidate ctrp-submit="userDetailView.updateUser()">
+            <form class="form-horizontal" role="form" name="userDetail_form" novalidate  ng-class="{'show-form-errors': userDetailView.showValidation}">
+                <fieldset restriction-field>
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.username)}">
                         <label class="control-label col-xs-12 col-sm-3">User Name:</label>
                         <div class="col-xs-12 col-sm-6">
@@ -55,7 +55,7 @@
                             <select class="form-control input-sm" id="role"
                                     ng-model="userDetailView.userDetails.role" name="role"
                                     ng-options="user_role.id as user_role.name for user_role in userDetailView.rolesArr"
-                                    ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
+                                    ng-disabled="userDetailView.disableRows"
                                     required>
                                 <option value="">Select a role</option>
                             </select>
@@ -184,17 +184,49 @@
                         <div class="col-xs-12 col-sm-3"></div>
                         <div class="btn-toolbar col-xs-12 col-sm-6">
                             <a class="hand-hover pull-left" ng-click="userDetailView.userRequestAdmin({username : userDetailView.userDetails.username})">Request for Admin Access</a>
-                            <button type="submit" class="btn btn-primary pull-right" id="save_btn">
-                                Save
+                            <button type="button" class="btn btn-primary pull-right" id="save_btn"
+                                    ng-click="userDetailView.showValidation = true"
+                                    ctrp-confirm ctrp-click="userDetailView.validateSave()"
+                                    ng-attr-confirm-off="{{userDetailView.confirmSave()}}"
+                                    confirm-msg="{{userDetailView.confirmMsg}}">
+                                <i class="glyphicon glyphicon-ok"></i>  Save
                             </button>
+
                             <button type="button" class="btn btn-warning pull-right" ng-click="userDetailView.reset()">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                         </div>
                     </div>
-                </form>
-            </fieldset>
+                </fieldset>
+            </form>
+
+            <div class="form-group" ng-if="userDetailView.gridOptions.data.length > 0">
+                <div class="btn-toolbar col-xs-12 col-sm-12"><h4>Trials owned by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}:</h4></div>
+                <div class="btn-toolbar col-xs-12 col-sm-12">
+
+                    <!-- list of Users -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="row animated-item">
+                                <div ui-grid="userDetailView.gridOptions"  ng-class="{'ui-grid-hide-left': !userDetailView.isCurationEnabled}"
+                                     ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row top-offset-xs" ng-if="userDetailView.gridOptions.totalItems != null"></div>
+                    <div class="row top-offset-xs"></div>
+
+                </div>
+            </div>
         </div>
         <div class="row top-offset-xs"></div>
     </div>
 </div>
+<modal visible="showSelectedTrialsModal" title="Transfer Ownership Selected Trials">
+    <ctrptransferselect options="userDetailView.demoOptions"> </ctrptransferselect>
+</modal>
+
+<modal visible="showAllTrialsModal" title="Transfer Ownership All Trials">
+    <ctrptransferselect options="userDetailView.demoOptions"> </ctrptransferselect>
+    Any All
+</modal>
