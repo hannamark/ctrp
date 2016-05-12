@@ -227,6 +227,18 @@ json.milestone_wrappers do
   end
 end
 
+json.onholds do
+  json.array!(@trial.onholds) do |onhold|
+    json.extract! onhold, :id, :onhold_desc, :onhold_date, :offhold_date
+
+    if onhold.onhold_reason.present?
+      json.onhold_reason do
+        json.extract! onhold.onhold_reason, :id, :name, :code
+      end
+    end
+  end
+end
+
 json.sitesu_sites do
   json.array!(@trial.sitesu_sites) do |ps|
     json.extract! ps, :id, :protocol_id, :program_code, :organization_id, :organization, :current_status_name, :site_pi
