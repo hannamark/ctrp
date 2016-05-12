@@ -13,20 +13,23 @@
     function checkoutHistoryCtrl($scope, checkoutHistoryArr, $filter, _,
             $timeout, MESSAGES, PATrialService, $stateParams) {
         var vm = this;
-        delete checkoutHistoryArr.server_response;
         var curTrialId = $stateParams.trialId;
-        console.info('history: ', checkoutHistoryArr);
-        vm.checkoutHistoryArr = checkoutHistoryArr;
+        var pageSize = 20;
         vm.gridOptions = getGridOptions();
 
         activate();
         function activate() {
-            resizeGrid();
+            populateGrid(checkoutHistoryArr);
             listenToCheckouts();
         }
 
-        function resizeGrid() {
+        function populateGrid(arrData) {
             $timeout(function() {
+                delete arrData.server_response; // remove the field in the server response
+                vm.checkoutHistoryArr = arrData; // update the cache
+                createNewDatasource(vm.checkoutHistoryArr);
+                // vm.gridOptions.api.setRowData(vm.checkoutHistoryArr);
+                vm.gridOptions.api.refreshView();
                 vm.gridOptions.api.sizeColumnsToFit();
             }, 0);
         }
@@ -36,17 +39,15 @@
             $scope.$on(MESSAGES.TRIALS_CHECKOUT_IN_SIGNAL, function(event, data) {
                 event.preventDefault();
                 PATrialService.getTrialCheckoutHistory(curTrialId).then(function(data) {
-                    delete data.server_response;
-                    vm.gridOptions.api.setRowData(data); // update grid
-                    vm.gridOptions.api.refreshView();
-                    vm.gridOptions.api.sizeColumnsToFit();
+                    populateGrid(data);
                 });
             });
         }
 
+
         function getGridOptions() {
             var options = {
-                rowData: checkoutHistoryArr,
+                // rowData: vm.checkoutHistoryArr,
                 rowModelType: 'pagination',
                 columnDefs: getColumnDefs(),
                 enableColResize: true,
@@ -60,6 +61,28 @@
 
             return options;
         }
+
+        function onPageSizeChanged(newPageSize) {
+            console.info('newPageSize: ', newPageSize);
+            pageSize = new Number(newPageSize);
+            createNewDatasource(vm.checkoutHistoryArr);
+        }
+
+        function createNewDatasource(allRecords) {
+            if (!allRecords) {
+                return;
+            }
+            var dataSource = {
+                pageSize: pageSize,
+                getRows: function(params) {
+                    var curPage = vm.checkoutHistoryArr.slice(params.startRow, params.endRow);
+                    var lastRow = (allRecords.length <= params.endRow) ? allRecords.length : -1;
+                    params.successCallback(curPage, lastRow);
+                }
+            };
+            vm.gridOptions.api.setDatasource(dataSource);
+        }
+
 
         function getColumnDefs() {
             var columns = [
