@@ -19,7 +19,7 @@
         var SearchParams = function (){
             return {
                 username: '',
-                    first_name: '',
+                first_name: '',
                 middle_name: '',
                 last_name: '',
                 email: '',
@@ -94,14 +94,10 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            //enableRowSelection: false,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
-            enableGridMenu: true,
             enableFiltering: false,
             enableVerticalScrollbar: 2,
             enableHorizontalScrollbar: 2,
@@ -158,19 +154,23 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
             ],
-            exporterCsvFilename: 'myFile.csv',
+            enableGridMenu: true,
+            enableSelectAll: true,
+            exporterCsvFilename: 'users.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
-            exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
             exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
-            exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Users:', style: 'headerStyle' },
             exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+                return { text: currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
             },
             exporterPdfCustomFormatter: function ( docDefinition ) {
                 docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
+            exporterMenuAllData: false,
+            exporterMenuPdfAll: true,
             exporterPdfOrientation: 'portrait',
             exporterPdfPageSize: 'LETTER',
             exporterPdfMaxGridWidth: 500,
