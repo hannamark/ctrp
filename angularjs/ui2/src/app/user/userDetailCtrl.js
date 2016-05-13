@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService','uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService', '$uibModalStack', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
 
-    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, $uibModalStack, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -23,7 +23,10 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
-
+        vm.closeModal = function(reason) {
+            vm.showAllTrialsModal = false;
+            $uibModalStack.dismissAll(reason);
+        };
         vm.updateUser = function () {
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
@@ -114,65 +117,11 @@
                 start: 1
             }
         }; //initial User Search Parameters
-        
-        $scope.showAllTrialsModal = false;
-        $scope.showSelectedTrialsModal = false;
 
-        $scope.toggleModal = function(){
-            $scope.showModal = !$scope.showModal;
-        };
-        vm.demoOptions = {
-            title: 'Demo: Recent World Cup Winners',
-            filterPlaceHolder: 'Start typing to filter the lists below.',
-            labelAll: 'All Items',
-            labelSelected: 'Selected Items',
-            helpMessage: ' Click items to transfer them between fields.',
-            /* angular will use this to filter your lists */
-            orderProperty: 'name',
-            /* this contains the initial list of all items (i.e. the left side) */
-            items: [{'id': '50', 'name': 'Germany'}, {'id': '45', 'name': 'Spain'}, {'id': '66', 'name': 'Italy'}, {'id': '30', 'name' : 'Brazil' }, {'id': '41', 'name': 'France' }, {'id': '34', 'name': 'Argentina'}],
-            /* this list should be initialized as empty or with any pre-selected items */
-            selectedItems: []
-        };
 
-        var GridMenuItems = function () {
-            var menuArr =
-                [
-                    {
-                        title: 'Transfer Ownership All Trials',
-                        order: 1,
-                        action: function ($event) {
-                            $scope.showAllTrialsModal = true;
-                            console.log("Send userid, orgid")
-                        }
-                    },
-                    {
-                        title: 'Transfer Ownership Selected Trials',
-                        order: 2,
-                        action: function ($event) {
-                            $scope.showSelectedTrialsModal = true;
-                            console.log("Send ownership id")
-                        }
-                    },
-                    {
-                        title: 'Remove Ownership of All Trials',
-                        order: 3,
-                        action: function ($event) {
-                            $scope.showAllTrialsModal = true;
-                            console.log("Send userid, orgid")
-                        }
-                    },
-                    {
-                        title: 'Remove Ownership of Selected Trials',
-                        order: 4,
-                        action: function ($event) {
-                            $scope.showSelectedTrialsModal = true;
-                            console.log("Send ownership id")
-                        }
-                    }
-                ];
-            return menuArr;
-        };
+        vm.showAllTrialsModal = false;
+        vm.showSelectedTrialsModal = false;
+
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";
         vm.searchParams = new TrialSearchParams;
@@ -218,7 +167,7 @@
             enableRowHeaderSelection : true,
             enableGridMenu: true,
             enableSelectAll: true,
-            exporterCsvFilename: 'myFile.csv',
+            exporterCsvFilename: vm.userDetails.username + '-trials.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
             exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
@@ -236,7 +185,7 @@
             exporterPdfOrientation: 'portrait',
             exporterPdfPageSize: 'LETTER',
             exporterPdfMaxGridWidth: 500,
-            gridMenuCustomItems: UserService.isCurationModeEnabled() ? new GridMenuItems() : []
+            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id')
         };
 
         vm.gridOptions.onRegisterApi = function (gridApi) {
@@ -337,12 +286,7 @@
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-            vm.gridOptions.enableRowHeaderSelection = vm.isCurationEnabled;
-            if (UserService.isCurationModeEnabled()) {
-                vm.gridOptions.gridMenuCustomItems = new GridMenuItems();
-            } else {
-                vm.gridOptions.gridMenuCustomItems = [];
-            }
+            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id');
         });
     }
 })();
