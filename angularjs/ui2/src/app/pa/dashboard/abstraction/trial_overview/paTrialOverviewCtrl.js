@@ -6,14 +6,17 @@
     'use strict';
 
     angular.module('ctrp.app.pa.dashboard')
-    .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
+    .controller('paTrialOverviewCtrl', paTrialOverviewCtrl)
+    .controller('checkinModalCtrl', checkinModalCtrl); // checkin modal controller
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES', 'researchCategories',
-        '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService'];
+        '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService', '$uibModal'];
+
+    checkinModalCtrl.$inject = ['$scope', '$uibModalInstance', 'curTrialObj']; // checkin modal controller
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES, researchCategories,
-            $scope, TrialService, UserService, curTrial, _, PersonService) {
+            $scope, TrialService, UserService, curTrial, _, PersonService, $uibModal) {
 
         var vm = this;
         var curUserRole = UserService.getUserRole() || '';
@@ -91,8 +94,31 @@
         }
 
         function checkinTrial(checkinType) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/_trial_checkin_modal.html',
+                bindToController: true,
+                backdrop: 'static', // do not close modal for click outside modal
+                controller: 'checkinModalCtrl',
+                controllerAs: 'checkinModalView',
+                size: 'md',
+                resolve: {
+                    curTrialObj: vm.trialDetailObj
+                }
+            });
+            var modalOpened = true;
+            modalInstance.result.then(function(checkinComment) {
+                console.info('modal closed, comment: ', checkinComment);
+            }, function() {
+                // modal dismissed
+            });
+            modalOpened = false;
+        }
+
+        function _performTrialCheckin(checkinType, trialId, checkinComment) {
             vm.disableBtn = true;
-            PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
+            var commentText = 'experimental comment';
+            PATrialService.checkinTrial(trialId, checkinType, checkinComment).then(function(res) {
                 var status = res.server_response.status;
                 if (status === 200) {
                     // console.log('checkin result: ', res.result);
@@ -226,12 +252,6 @@
             vm.trialDetailObj.pa_editable = vm.adminCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
             vm.trialDetailObj.pa_sci_editable = vm.scientificCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
         }
-        //
-        // function _getUpdatedTrialDetailObj() {
-        //     TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
-        //         console.log('updated trialDetail obj: ', res);
-        //     });
-        // }
 
         /**
          * Find the research category name in the provided research category array
@@ -245,6 +265,35 @@
             var catName = !!catObj ? catObj.name : '';
             return catName.toLowerCase();
         }
-    }
+    } // paTrialOverviewCtrl
+
+    /**
+     * Checkin modal controller
+     */
+    function checkinModalCtrl($scope, $uibModalInstance, curTrialObj) {
+        var viewModel = this;
+        console.info('in checkin modal ctrl!');
+        viewModel.curTrialObj = curTrialObj;
+        viewModel.checkinComment = null;
+        viewModel.isTrialStatusValid = false; // TODO:
+        viewModel.isAbstractionValid = true; // TODO:
+
+        viewModel.proceedCheckin = function() {
+            $uibModalInstance.close(viewModel.checkinComment);
+        };
+        viewModel.cancel = function() {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        viewModel.viewTrialStatusHistory = function() {
+            console.info('redirecting to trial status page');
+            // TODO: redirect to trial state page
+        };
+        viewModel.viewAbstractionValidation = function() {
+            console.info('viewAbstractionValidation....');
+            // TODO: redirect to viewAbstractionValidation page
+        };
+
+    } // checkin modal controller
 
 })();
