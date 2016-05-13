@@ -119,7 +119,6 @@ end
     Rails.logger.info "In User controller params = #{params.inspect}"
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'username' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     @users = User.all

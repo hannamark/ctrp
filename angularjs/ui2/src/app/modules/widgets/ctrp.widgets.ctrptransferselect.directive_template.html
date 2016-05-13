@@ -13,10 +13,11 @@
             <div class="pool">
                 <ul>
                     <li ng-repeat="item in options.items | filter: searchTerm | orderBy: options.orderProperty">
-                        <a href="" ng-click="transfer(options.items, options.selectedItems, options.items.indexOf(item))">{{item.name}}&nbsp;&rArr; </a>
+                        <a href="" ng-click="transfer(options.items, options.selectedItems, options.items.indexOf(item))">&nbsp;&rArr; {{item.name}}</a>
                     </li>
                 </ul>
             </div>
+            <label>Total Unselected: {{options.items.length}}</label>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6">
             <label>{{options.labelSelected}}</label>
@@ -30,6 +31,7 @@
                 </ul>
             </div>
         </div>
+        <label>Total Selected: {{options.selectedItems.length}}</label>
     </div>
     <div class="row modal-footer">
         <button ng-disabled="!options.selectedItems.length"
@@ -40,7 +42,7 @@
                 confirm-msg="yououjouuo."> <i class="glyphicon glyphicon-ok"></i>  Save
         </button>
 
-        <button type="button" class="btn btn-warning pull-right" ng-click="options.reset()">
+        <button type="button" class="btn btn-warning pull-right" ng-click="searchTerm = ''; options.reset()">
             <i class="glyphicon glyphicon-remove"></i> Reset
         </button>
 
