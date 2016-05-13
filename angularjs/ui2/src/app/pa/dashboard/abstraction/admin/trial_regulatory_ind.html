@@ -36,7 +36,7 @@
                             <th>IND/IDE Number</th>
                             <th>IND/IDE Grantor</th>
                             <th>IND/IDE Holder Type</th>
-                            <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
+                            <th>NIH Institution, NCI Division/Program (if applicable)</th>
                             <th></th>
                             </thead>
                             <tbody>
@@ -76,7 +76,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div>
+                                    <div ng-class="{'has-error': trialDetailView.showAddIndIdeError && (trialDetailView.holder_type_id === '4' || trialDetailView.holder_type_id === '5') && !trialDetailView.nih_nci}">
                                         <select restriction-field class="form-control input-sm" id="nih_nci" ng-model="trialDetailView.nih_nci" ng-disabled="!trialDetailView.nihNciArr.length">
                                             <option value="">-Select-</option>
                                             <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">
@@ -110,6 +110,9 @@
                             <span class="help-block" ng-show="trialDetailView.showAddIndIdeError && !trialDetailView.holder_type_id">
                                 IND/IDE Holder Type is Required<br>
                             </span>
+                            <span class="help-block" ng-show="trialDetailView.showAddIndIdeError && (trialDetailView.holder_type_id === '4' || trialDetailView.holder_type_id === '5')">
+                                NIH Institution, NCI Division/Program is Required<br>
+                            </span>
 
                             <div class="top-offset-xs" ng-if="ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)">
                                 <span class="help-block">
@@ -124,7 +127,7 @@
                             <th>IND/IDE Number</th>
                             <th>IND/IDE Grantor</th>
                             <th>IND/IDE Holder Type</th>
-                            <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
+                            <th>NIH Institution, NCI Division/Program (if applicable)</th>
                             <th class="text-center td-icon" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">Delete</th>
                             </thead>
                             <tbody>
