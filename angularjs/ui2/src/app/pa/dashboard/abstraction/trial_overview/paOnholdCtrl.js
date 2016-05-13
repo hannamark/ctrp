@@ -127,7 +127,6 @@
         function showHideAddBtn() {
             for (var i = 0; i < vm.curTrial.onholds.length; i++) {
                 if (!vm.curTrial.onholds[i].offhold_date) {
-                    console.log('in');
                     vm.showAddBtn = false;
                     return;
                 }

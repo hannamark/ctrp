@@ -1150,6 +1150,25 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br><b>${username}</b>, a user in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application, is requesting admin access.</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ for the user\'s details and assign new role to grant access.<p></body></html>'
 )
 
+MailTemplate.find_or_create_by(
+    code: 'ONHOLD_ORIGINAL',
+    name: 'On Hold Trial (original notice)',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: 'noreply@ctrp.nci.nih.gov',
+    subject: 'NCI CTRP: Trial PROCESSING ON HOLD  for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head>
+                  <body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers}<hr>
+                    <p>Date: ${CurrentDate}</p>
+                    <p>Dear ${trialOwner},</p>
+                    <p>Processing of the NCI Clinical Trials Reporting Program (CTRP) trial identified above is on hold as of ${CurrentDate} for the following reason: <br><i>${onholdReason}</i></p>
+                    <p><b>NEXT STEPS:</b><br>
+                      Please contact us at ncictro@mail.nih.gov at your earliest convenience, but no later than close of business on ${nextDate}. We are unable to resume processing your trial without further information from you.
+                    </p>
+                    <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p>
+                    <p>Thank you for participating in the NCI Clinical</p>
+                  </body></html>'
+)
 
 ########## SEEDING MAIL TEMPLATES ENDS ############
 
@@ -1425,8 +1444,8 @@ if !Rails.env.qa?
       ldap_user.first_name = u["first_name"]
       ldap_user.last_name = u["last_name"]
       ldap_user.organization = org0
-      ldap_user.save(validate: false)
       ldap_user.user_status = UserStatus.find_by_code('ACT')
+      ldap_user.save(validate: false)
       #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
     end
   rescue Exception => e

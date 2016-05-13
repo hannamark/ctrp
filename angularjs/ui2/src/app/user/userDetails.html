@@ -6,8 +6,8 @@
             </p>
         </div>
         <div class="row">
-            <fieldset restriction-field>
-                <form class="form-horizontal" role="form" name="userDetail_form" novalidate  ng-class="{'show-form-errors': userDetailView.showValidation}">
+            <form class="form-horizontal" role="form" name="userDetail_form" novalidate  ng-class="{'show-form-errors': userDetailView.showValidation}">
+                <fieldset restriction-field>
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.username)}">
                         <label class="control-label col-xs-12 col-sm-3">User Name:</label>
                         <div class="col-xs-12 col-sm-6">
@@ -187,8 +187,8 @@
                             <button type="button" class="btn btn-primary pull-right" id="save_btn"
                                     ng-click="userDetailView.showValidation = true"
                                     ctrp-confirm ctrp-click="userDetailView.validateSave()"
-                                    ng-attr-confirm-off="{{userDetailView.irreversibleRoleSwitchId === undefined || userDetailView.irreversibleRoleSwitchId === userDetailView.userDetails.role}}"
-                                    confirm-msg="You are about to switch this user's role from a role that you have no permissions to re-assign once you leave this form.">
+                                    ng-attr-confirm-off="{{userDetailView.confirmSave()}}"
+                                    confirm-msg="{{userDetailView.confirmMsg}}">
                                 <i class="glyphicon glyphicon-ok"></i>  Save
                             </button>
 
@@ -197,9 +197,35 @@
                             </button>
                         </div>
                     </div>
-                </form>
-            </fieldset>
+                </fieldset>
+            </form>
+
+            <div class="form-group" ng-if="userDetailView.gridOptions.data.length > 0">
+                <div class="btn-toolbar col-xs-12 col-sm-12"><h4>Trials owned by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}:</h4></div>
+                <div class="btn-toolbar col-xs-12 col-sm-12">
+
+                    <!-- list of Users -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="row animated-item">
+                                <div ui-grid="userDetailView.gridOptions"  ng-class="{'ui-grid-hide-left': !userDetailView.isCurationEnabled}"
+                                     ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row top-offset-xs" ng-if="userDetailView.gridOptions.totalItems != null"></div>
+                    <div class="row top-offset-xs"></div>
+
+                </div>
+            </div>
         </div>
         <div class="row top-offset-xs"></div>
     </div>
 </div>
+<modal visible="userDetailView.showSelectedTrialsModal" title="Transfer Ownership Selected Trials" id="transferTrials">
+    <ctrptransferselect options="userDetailView.demoOptions"> </ctrptransferselect>
+</modal>
+
+<modal visible="userDetailView.showAllTrialsModal" title="Transfer Ownership All Trials" id="transferTrials">
+    <ctrptransferselect options="userDetailView.userOptions"> </ctrptransferselect>
+</modal>

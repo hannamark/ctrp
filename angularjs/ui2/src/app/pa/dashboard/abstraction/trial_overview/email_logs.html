@@ -57,7 +57,7 @@
                 <strong>From:</strong> {{emailsView.curEmail.from}}
             </p>
             <p>
-                <strong>To:</strong> {{emailsView.curEmail.to}}
+                <strong>To:</strong> <span ng-hide="emailsView.curEmail.to.indexOf('@') === -1">{{emailsView.curEmail.to}}</span>
             </p>
             <p>
                 <strong>Time:</strong> {{emailsView.curEmail.created_at | date: "dd-MMM-yyyy H:mm"}}

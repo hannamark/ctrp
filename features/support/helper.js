@@ -373,13 +373,6 @@ var helper = function() {
                 retTextAndSelectedValue = retTxtVal();
                 console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
                 actualVal = ''+ retTextAndSelectedValue +'';
-                console.log('************************************');
-                console.log('************************************');
-                console.log('Expected value:['+ expectedVal +']');
-                console.log('************************************');
-                console.log('Actual value:['+ actualVal +']');
-                console.log('************************************');
-                console.log('************************************');
                 if (expectedVal === retTextAndSelectedValue){
                     expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
@@ -411,13 +404,6 @@ var helper = function() {
                 retTextAndSelectedValue = retTxtVal();
                 console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
                 actualVal = ''+ retTextAndSelectedValue +'';
-                console.log('************************************');
-                console.log('************************************');
-                console.log('Expected value:['+ expectedVal +']');
-                console.log('************************************');
-                console.log('Actual value:['+ actualVal +']');
-                console.log('************************************');
-                console.log('************************************');
                 if (expectedVal === retTextAndSelectedValue){
                     expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');

@@ -32,7 +32,7 @@
 
             <div class="form-group no-bottom-margin">
                 <div class="btn-toolbar">
-                    <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field ng-click="milestoneView.setAddMode(true)">
+                    <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field ng-click="milestoneView.setAddMode(true)" ng-disabled="milestoneView.curTrial.submission_nums.length === 0">
                         <i class="glyphicon glyphicon-plus"></i> Add Milestone
                     </button>
                 </div>

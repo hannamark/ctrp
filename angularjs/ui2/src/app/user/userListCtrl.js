@@ -19,7 +19,7 @@
         var SearchParams = function (){
             return {
                 username: '',
-                    first_name: '',
+                first_name: '',
                 middle_name: '',
                 last_name: '',
                 email: '',
@@ -56,8 +56,9 @@
         };
 
         var optionRole = {
-            name: 'role',
-                displayName: 'Site Admin',
+            name: 'admin',
+            field: 'role',
+            displayName: 'Site Admin',
             enableSorting: true,
             width: '110',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SITE-SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
@@ -93,14 +94,10 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            //enableRowSelection: false,
             paginationPageSizes: [10, 25, 50, 100],
             paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
-            enableGridMenu: true,
             enableFiltering: false,
             enableVerticalScrollbar: 2,
             enableHorizontalScrollbar: 2,
@@ -156,7 +153,28 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
-            ]
+            ],
+            enableGridMenu: true,
+            enableSelectAll: true,
+            exporterCsvFilename: 'users.csv',
+            exporterPdfDefaultStyle: {fontSize: 9},
+            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
+            exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Users:', style: 'headerStyle' },
+            exporterPdfFooter: function ( currentPage, pageCount ) {
+                return { text: currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
+            },
+            exporterPdfCustomFormatter: function ( docDefinition ) {
+                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+                return docDefinition;
+            },
+            exporterMenuAllData: false,
+            exporterMenuPdfAll: true,
+            exporterPdfOrientation: 'portrait',
+            exporterPdfPageSize: 'LETTER',
+            exporterPdfMaxGridWidth: 500,
+            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
 
