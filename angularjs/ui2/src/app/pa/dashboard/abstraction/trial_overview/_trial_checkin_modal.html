@@ -10,20 +10,18 @@
                     <div class="form-group">
                         <label for="checkin_comment" class="control-label col-xs-12 col-sm-3">Checkin Comment:</label>
                         <div class="col-xs-12 col-sm-9">
-                            <texarea class="form-control" maxlength="4000" name="checkin_comment" id="checkin_comment" rows="5" ng-model="checkinModalView.checkinComment" required>
-
-                            </texarea>
+                            <textarea class="form-control" maxlength="4000" name="checkin_comment" id="checkin_comment" rows="5" ng-model="checkinModalView.checkinComment" required>
+                            </textarea>
                         </div>
                     </div>
                 </form>
-                <div class="row">
-                    <strong>Comment:</strong>
+                <div class="row" ng-show="!checkinModalView.isTrialStatusValid || !checkinModalView.isAbstractionValid">
                     <strong>Warnings & Errors: </strong>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="col-xs-12">
-                    <button class="btn btn-primary pull-right" ng-click="checkinModalView.proceedCheckin()">Proceed With Check-in</button>
+                    <button class="btn btn-primary pull-right" ng-click="checkinModalView.proceedCheckin()" ng-disabled="!checkinModalView.checkinComment.length">Proceed With Check-in</button>
                     <button class="btn btn-default pull-right" ng-click="checkinModalView.viewTrialStatusHistory()" ng-hide="checkinModalView.isTrialStatusValid">View Trial Status History</button>
                     <button class="btn btn-default pull-right" ng-click="checkinModalView.viewAbstractionValidation()" ng-hide="checkinModalView.isAbstractionValid">View Trial Abstraction Validation</button>
                     <button class="btn btn-danger pull-right" ng-click="checkinModalView.cancel()">

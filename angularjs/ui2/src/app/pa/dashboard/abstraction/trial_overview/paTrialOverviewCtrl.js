@@ -109,6 +109,9 @@
             var modalOpened = true;
             modalInstance.result.then(function(checkinComment) {
                 console.info('modal closed, comment: ', checkinComment);
+                if (angular.isDefined(checkinComment) && checkinComment.length > 0) {
+                    _performTrialCheckin(checkinType, vm.trialDetailObj.id, checkinComment);
+                }
             }, function() {
                 // modal dismissed
             });
@@ -275,7 +278,7 @@
         console.info('in checkin modal ctrl!');
         viewModel.curTrialObj = curTrialObj;
         viewModel.checkinComment = null;
-        viewModel.isTrialStatusValid = false; // TODO:
+        viewModel.isTrialStatusValid = true; // TODO:
         viewModel.isAbstractionValid = true; // TODO:
 
         viewModel.proceedCheckin = function() {
