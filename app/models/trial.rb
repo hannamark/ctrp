@@ -618,6 +618,13 @@ class Trial < TrialBase
       end
     end
 
+    # Duplication check
+    if !['STR', 'SRE', 'TSR', 'STS', 'ONG'].include?(milestone_to_add.code)
+      if contains_milestone?(submission_id, milestone_id)
+        validation_msgs[:errors].push('This milestone cannot be recorded multiple times')
+      end
+    end
+
     return validation_msgs
   end
 
