@@ -410,12 +410,12 @@
             return PromiseTimeoutService.getData(url);
         }
 
-        function checkinTrial(trialId, checkinType) {
+        function checkinTrial(trialId, checkinType, commentText) {
             var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
             url = url.replace('{:checkWhat}', 'checkin');
             url = url.replace('{:checkoutType}', checkinType);
             // return PromiseTimeoutService.getData(url);
-            return PromiseTimeoutService.postDataExpectObj(url, {checkin_comment: 'hello comment'});
+            return PromiseTimeoutService.postDataExpectObj(url, {checkin_comment: commentText});
         }
 
         /**
