@@ -182,9 +182,8 @@
             },
             exporterMenuAllData: false,
             exporterMenuPdfAll: true,
-            exporterPdfOrientation: 'portrait',
-            exporterPdfPageSize: 'LETTER',
-            exporterPdfMaxGridWidth: 500,
+            exporterPdfOrientation: 'landscape',
+            exporterPdfMaxGridWidth: 700,
             gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id')
         };
 

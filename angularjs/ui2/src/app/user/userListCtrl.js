@@ -171,9 +171,8 @@
             },
             exporterMenuAllData: false,
             exporterMenuPdfAll: true,
-            exporterPdfOrientation: 'portrait',
-            exporterPdfPageSize: 'LETTER',
-            exporterPdfMaxGridWidth: 500,
+            exporterPdfOrientation: 'landscape',
+            exporterPdfMaxGridWidth: 700,
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 

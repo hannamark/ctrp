@@ -288,55 +288,58 @@
 
         this.getAllOrgUsers = this.getAllOrgUsers || PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
 
+        var _createTransferUserSelect = function (controller, trialIdArr) {
+            if (controller.showAllTrialsModal === false) {
+                controller.showAllTrialsModal = true;
+            }
+            service.getAllOrgUsers.then(function (data) {
+
+                controller.userOptions = {
+                    title: '',
+                    filterPlaceHolder: 'Start typing to filter the users below.',
+                    labelAll: 'Unselected Users',
+                    labelSelected: 'Selected Users',
+                    helpMessage: ' Click on names to transfer users between selected and unselected.',
+                    orderProperty: 'name',
+                    resetItems: [],
+                    items: [],
+                    selectedItems: [],
+                    openModal: controller.showAllTrialsModal,
+                    close: function () {
+                        controller.showAllTrialsModal = false;
+                    },
+                    reset: function () {
+                        controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
+                        controller.userOptions.selectedItems = [];
+                    },
+                    save: function () {
+                        controller.showAllTrialsModal = false;
+                    }
+                };
+                _.each(data.users, function (user) {
+                    controller.userOptions.items.push({
+                        'id': user.id,
+                        'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
+                    });
+                });
+                controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
+            });
+        };
         this.TransferTrialsGridMenuItems = function (scope, controller, trial_id) {
             var menuArr =
                 [
                     {
-                        title: 'Transfer Trial Ownership',
+                        title: 'Transfer Trial Ownership for All Trials',
                         order: 1,
-                        action: function ($event) {
-                            if (controller.showAllTrialsModal === false) {
-                                controller.showAllTrialsModal = true;
-                            }
-                            var trialIdArr = _.chain(controller.gridOptions.data).pluck(trial_id).value();
-                            service.getAllOrgUsers.then(function(data){
-
-                                controller.userOptions = {
-                                    title: '',
-                                    filterPlaceHolder: 'Start typing to filter the users below.',
-                                    labelAll: 'Unselected Users',
-                                    labelSelected: 'Selected Users',
-                                    helpMessage: ' Click on names to transfer them between fields.',
-                                    orderProperty: 'name',
-                                    resetItems: [],
-                                    items: [],
-                                    selectedItems: [],
-                                    openModal: controller.showAllTrialsModal,
-                                    close: function () {
-                                        controller.showAllTrialsModal = false;
-                                    },
-                                    reset: function () {
-                                        controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
-                                        controller.userOptions.selectedItems = [];
-                                    },
-                                    save: function () {
-                                        controller.showAllTrialsModal = false;
-                                    }
-                                };
-                                _.each(data.users, function(user) {
-                                    controller.userOptions.items.push({'id': user.id, 'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'});
-                                });
-                                controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
-                            });
+                        action: function (){
+                            _createTransferUserSelect(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
                         }
                     },
                     {
-                        title: 'Transfer Ownership Selected Trials',
+                        title: 'Transfer Ownership for Selected Trials',
                         order: 2,
-                        action: function ($event) {
-                            scope.showSelectedTrialsModal = true;
-                            var trialIdArr = _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value();
-                            console.log(trialIdArr)
+                        action: function (){
+                            _createTransferUserSelect(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
                         }
                     },
                     {
