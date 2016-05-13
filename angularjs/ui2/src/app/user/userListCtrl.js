@@ -158,7 +158,6 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
             ],
-            enableSelectAll: true,
             exporterCsvFilename: 'myFile.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
