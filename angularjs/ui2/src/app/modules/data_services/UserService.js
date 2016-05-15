@@ -16,6 +16,7 @@
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
+        var orgUsers = [];
         
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -285,6 +286,93 @@
             LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
+        this.getAllOrgUsers = this.getAllOrgUsers || PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
+
+        var _createTransferUserSelect = function (controller, trialIdArr) {
+            if (controller.showAllTrialsModal === false) {
+                controller.showAllTrialsModal = true;
+            }
+            service.getAllOrgUsers.then(function (data) {
+
+                controller.userOptions = {
+                    title: '',
+                    filterPlaceHolder: 'Start typing to filter the users below.',
+                    labelAll: 'Unselected Users',
+                    labelSelected: 'Selected Users',
+                    helpMessage: ' Click on names to transfer users between selected and unselected.',
+                    orderProperty: 'name',
+                    resetItems: [],
+                    items: [],
+                    selectedItems: [],
+                    openModal: controller.showAllTrialsModal,
+                    close: function () {
+                        controller.showAllTrialsModal = false;
+                    },
+                    reset: function () {
+                        controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
+                        controller.userOptions.selectedItems = [];
+                    },
+                    save: function () {
+                        controller.showAllTrialsModal = false;
+                    }
+                };
+                _.each(data.users, function (user) {
+                    controller.userOptions.items.push({
+                        'id': user.id,
+                        'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
+                    });
+                });
+                controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
+            });
+        };
+        this.TransferTrialsGridMenuItems = function (scope, controller, trial_id) {
+            var menuArr =
+                [
+                    {
+                        title: 'Transfer Trial Ownership for All Trials',
+                        order: 1,
+                        action: function (){
+                            _createTransferUserSelect(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
+                        }
+                    },
+                    {
+                        title: 'Transfer Ownership for Selected Trials',
+                        order: 2,
+                        action: function (){
+                            _createTransferUserSelect(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of All Trials',
+                        order: 3,
+                        action: function ($event) {
+                            scope.showAllTrialsModal = true;
+                            console.log("Send userid, orgid")
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of Selected Trials',
+                        order: 4,
+                        action: function ($event) {
+                            scope.showSelectedTrialsModal = true;
+                            console.log("Send ownership id")
+                        }
+                    }
+                ];
+            if (controller.userDetails) {
+                menuArr.push(
+                    {
+                        title: 'Add Trials',
+                        order: 4,
+                        action: function ($event) {
+                            scope.showSelectedTrialsModal = true;
+                            console.log("Send ownership id")
+                        }
+                    });
+            }
+            return service.isCurationModeEnabled() ? menuArr : [];
+        };
+        
         /******* helper functions *********/
         function _setAppVersion(version) {
             if (!version) {

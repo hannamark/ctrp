@@ -90,7 +90,7 @@ Rails.application.routes.draw do
 
     resources :pa_trials
     get '/pa/trial/:trial_id/checkout/:type', to: 'trials#checkout_trial'
-    get '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
+    post '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
 
     resources :comments
     get '/instance/:uuid/comments/count(/:field)', to: 'comments#count'

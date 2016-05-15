@@ -141,6 +141,7 @@ json.participating_sites do
     json.investigator participating_site.person.present? ? participating_site.person.lname : ""
     json.contact_name participating_site.contact_name
     json.contact_phone participating_site.contact_phone
+    json.extension participating_site.extension
     json.contact_email participating_site.contact_email
     json.contact_type participating_site.contact_type
     json.protocol_id participating_site.protocol_id
