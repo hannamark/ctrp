@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', '$uibModalStack', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
 
-    function userDetailCtrl(UserService, $uibModalStack, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -23,10 +23,6 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
-        vm.closeModal = function(reason) {
-            vm.showAllTrialsModal = false;
-            $uibModalStack.dismissAll(reason);
-        };
         vm.updateUser = function () {
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
@@ -37,6 +33,8 @@
             }).catch(function(err) {
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             });
+            vm.userDetailsOrig = angular.copy(vm.userDetails);
+            vm.getUserTrials();
         };
 
         vm.isValidPhoneNumber = function(){
@@ -66,9 +64,31 @@
             if ($scope.userDetail_form.$invalid) {
                 return;
             } else {
-                vm.updateUser();
-                return;
+                if (vm.inactivatingUser || vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id ) {
+                    UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                        if (vm.gridOptions.totalItems > 0) {
+                            vm.chooseTransferTrials = true;
+                            return;
+                        } else {
+                            vm.updateUser();
+                            return;
+                        }
+                    });
+                } else {
+                    vm.updateUser();
+                    return;
+                }
             }
+        };
+
+        vm.saveWithoutTransfer = function() {
+            vm.updateUser();
+            vm.chooseTransferTrials = false;
+        };
+
+        vm.transferAllUserTrials = function() {
+            UserService.createTransferTrialsOwnership(vm);
+            vm.chooseTransferTrials = false;
         };
         
         AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
@@ -101,6 +121,7 @@
             console.log("Error in retrieving USER_ROLES " + err);
         });
 
+        vm.statusArr = [];
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
             vm.statusArr = response.data;
         }).catch(function (err) {

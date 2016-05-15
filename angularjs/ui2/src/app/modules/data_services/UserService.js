@@ -292,7 +292,7 @@
 
         this.getAllOrgUsers = this.getAllOrgUsers || PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
 
-        var _createTransferTrialsOwnership = function (controller, trialIdArr) {
+        this.createTransferTrialsOwnership = function (controller, trialIdArr) {
             service.getAllOrgUsers.then(function (data) {
                 if (controller.showAllTrialsModal === false) {
                     controller.showAllTrialsModal = true;
@@ -330,7 +330,7 @@
         };
 
 
-        var _removeTrialsOwnership = function (controller, trialIdArr) {
+        this.removeTrialsOwnership = function (controller, trialIdArr) {
             service.endUserTrialsOwnership({user_id: controller.userDetails.id, ids: trialIdArr}).then(function (data) {
 
                 console.log(data);
@@ -344,28 +344,28 @@
                         title: 'Transfer Trial Ownership for All Trials',
                         order: 1,
                         action: function (){
-                            _createTransferTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
+                            service.createTransferTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
                         }
                     },
                     {
                         title: 'Transfer Ownership for Selected Trials',
                         order: 2,
                         action: function (){
-                            _createTransferTrialsOwnership(controller, s_.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
+                            service.createTransferTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
                         }
                     },
                     {
                         title: 'Remove Ownership of All Trials',
                         order: 3,
                         action: function (){
-                            _removeTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
+                            service.removeTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
                         }
                     },
                     {
                         title: 'Remove Ownership of Selected Trials',
                         order: 4,
                         action: function (){
-                            _removeTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
+                            service.removeTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
                         }
                     }
                 ];
