@@ -142,8 +142,10 @@ end
 
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-    @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id').page(params[:start]).per(params[:rows])
-
+    @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id')
+    unless params[:rows].nil?
+      @users = @users.page(params[:start]).per(params[:rows])
+    end
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users
   end

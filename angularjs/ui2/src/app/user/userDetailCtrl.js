@@ -130,7 +130,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSizes: [10, 25, 50, 100, 1000],
             paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
@@ -198,7 +198,7 @@
         };
 
         vm.getUserTrials = function () {
-            UserService.getUserTrials(vm.searchParams).then(function (data) {
+            UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data['trial_ownerships'];
                 vm.gridOptions.totalItems =  data.total;
 
