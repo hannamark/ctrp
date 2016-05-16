@@ -107,6 +107,12 @@ var helper = function() {
         }
     };
 
+    this.clickButtonByIndex = function (button, index, errorMessage){
+        this.wait(button.get(index), errorMessage);
+        button.get(index).click();
+        console.log(errorMessage + " was clicked");
+    };
+
     this.clickButtonNoHeader = function (button, errorMessage){
         this.wait(button, errorMessage);
         button.click();
@@ -197,6 +203,12 @@ var helper = function() {
         expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
         console.log(errorMessage + " - Got value");
     };
+
+    this.getVerifyRadioSelection = function(button, fieldValue, errorMessage){
+        this.wait(button, errorMessage);
+        expect(button.get(fieldValue).isSelected()).to.eventually.equal(true);
+        console.log(errorMessage + " - Got value");
+    }
 
     this.getVerifyheader = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
@@ -361,13 +373,6 @@ var helper = function() {
                 retTextAndSelectedValue = retTxtVal();
                 console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
                 actualVal = ''+ retTextAndSelectedValue +'';
-                console.log('************************************');
-                console.log('************************************');
-                console.log('Expected value:['+ expectedVal +']');
-                console.log('************************************');
-                console.log('Actual value:['+ actualVal +']');
-                console.log('************************************');
-                console.log('************************************');
                 if (expectedVal === retTextAndSelectedValue){
                     expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
@@ -399,13 +404,6 @@ var helper = function() {
                 retTextAndSelectedValue = retTxtVal();
                 console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
                 actualVal = ''+ retTextAndSelectedValue +'';
-                console.log('************************************');
-                console.log('************************************');
-                console.log('Expected value:['+ expectedVal +']');
-                console.log('************************************');
-                console.log('Actual value:['+ actualVal +']');
-                console.log('************************************');
-                console.log('************************************');
                 if (expectedVal === retTextAndSelectedValue){
                     expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');

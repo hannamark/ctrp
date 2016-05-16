@@ -74,41 +74,49 @@
 
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
-            //console.log("In addIndIde vm.addedIndIdes=" + JSON.stringify(vm.addedIndIdes));
-            if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
-                // Check if there is a similar entry
-                for (var i = 0; i < vm.addedIndIdes.length; i++) {
-                   if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
-                       (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
-                       (vm.addedIndIdes[i].grantor == vm.grantor) &&
-                       (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
-                       return;
-                   }
+            var isValidIndIde = vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id;
+            vm.showAddIndIdeError = false;
+
+            if (isValidIndIde) {
+                if (vm.holder_type_id === '4' || vm.holder_type_id === '5') {
+                    vm.showAddIndIdeError = !vm.nih_nci ? true : false;
                 }
-                var newIndIde = {};
-                newIndIde.ind_ide_type = vm.ind_ide_type;
-                newIndIde.ind_ide_number = vm.ind_ide_number;
-                newIndIde.grantor = vm.grantor;
-                newIndIde.holder_type_id = vm.holder_type_id;
-                // For displaying name in the table
-                _.each(vm.holderTypeArr, function (holderType) {
-                    if (holderType.id == vm.holder_type_id) {
-                        newIndIde.holder_type_name = holderType.name;
+
+                if (!vm.showAddIndIdeError) {
+                    // Check if there is a similar entry
+                    for (var i = 0; i < vm.addedIndIdes.length; i++) {
+                       if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
+                           (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
+                           (vm.addedIndIdes[i].grantor == vm.grantor) &&
+                           (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
+                           return;
+                       }
                     }
-                });
-                newIndIde.nih_nci = vm.nih_nci;
-                newIndIde._destroy = false;
-                vm.addedIndIdes.push(newIndIde);
-                vm.indIdeNum++;
-                vm.ind_ide_type = null;
-                vm.ind_ide_number = null;
-                vm.grantor = null;
-                vm.holder_type_id = null;
-                vm.nih_nci = null;
-                vm.grantorArr = [];
-                vm.nihNciArr = [];
-                vm.showAddIndIdeError = false;
-                vm.addedIndIdesAll = false;
+
+                    var newIndIde = {};
+                    newIndIde.ind_ide_type = vm.ind_ide_type;
+                    newIndIde.ind_ide_number = vm.ind_ide_number;
+                    newIndIde.grantor = vm.grantor;
+                    newIndIde.holder_type_id = vm.holder_type_id;
+                    // For displaying name in the table
+                    _.each(vm.holderTypeArr, function (holderType) {
+                        if (holderType.id == vm.holder_type_id) {
+                            newIndIde.holder_type_name = holderType.name;
+                        }
+                    });
+                    newIndIde.nih_nci = vm.nih_nci;
+                    newIndIde._destroy = false;
+                    vm.addedIndIdes.push(newIndIde);
+                    vm.indIdeNum++;
+                    vm.ind_ide_type = null;
+                    vm.ind_ide_number = null;
+                    vm.grantor = null;
+                    vm.holder_type_id = null;
+                    vm.nih_nci = null;
+                    vm.grantorArr = [];
+                    vm.nihNciArr = [];
+                    vm.addedIndIdesAll = false;
+                }
             } else {
                 vm.showAddIndIdeError = true;
             }

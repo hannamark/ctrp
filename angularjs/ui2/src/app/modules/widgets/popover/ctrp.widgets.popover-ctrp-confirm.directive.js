@@ -50,13 +50,12 @@
             });
 
             element.bind('click', function(event) {
-                if (attrs.confirmOff) {
+                if (attrs.confirmOff && attrs.confirmOff !== 'false') {
                     // trigger the click action
                     scope.ngClick();
                 } else {
                     popover.event = event;
                     if (!popover.$isShown) {
-                        // console.info('popover: ', popover);
                         popover.show();
                     }
                 }
@@ -72,7 +71,6 @@
 
             function confirm() {
                 var buttonAction = $parse(attrs.ctrpClick);
-                console.info('buttonAction: ', buttonAction);
                 // buttonAction(scope, {$event: popover.event}); // trigger the click action, !not working!
                 scope.ngClick(); // trigger the click action
                 popover.hide();

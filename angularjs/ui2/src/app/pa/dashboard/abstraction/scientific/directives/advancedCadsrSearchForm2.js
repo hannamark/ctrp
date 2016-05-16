@@ -100,7 +100,6 @@
                     }).catch(function (error) {
                         console.log("error in retrieving caDSR records: " + JSON.stringify(error));
                     }).finally(function() {
-                        console.log('search finished');
                         $scope.searching = false;
                     });
                 }

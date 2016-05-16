@@ -20,6 +20,7 @@
         vm.trySubmit = function() {
             console.log('inside the person search form, trySubmit!');
         };
+        vm.selectedPerson = [];
 
         activate();
 

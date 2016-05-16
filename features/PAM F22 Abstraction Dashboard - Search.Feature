@@ -46,7 +46,7 @@ And I can select CTEP/DCP Trials
 And I can select the Information Source|
 |Protocol|
 |Imported|
-And I can select a trial milestone
+And I can select one or more trial milestones
 |Submission Received Date|
 |Submission Acceptance Date|
 |Submission Terminated Date|
@@ -69,8 +69,8 @@ And I can select a trial milestone
 |On-going Abstraction Verified Date|
 |Late Rejection Date|  
 And I can select a trail milestone type
-|Has a Milestone|
-|Has a Last Milestone|
+|Has Milestone|
+|Has as Last Milestone|
 And I can select one or more Data Table 4 Anatomic Sites (similar to grant type ahead search)
 And I can select Show Trials Ready for (check boxes)
 |Administrative Abstraction|
@@ -121,7 +121,7 @@ Then the trail abstraction sidebar menu will appear
 And the trial details screen will be displayed (see PAM F17 Abstraction Dashboard - Details)
 
 
-Scenario: #5 I can export Abstraction Dashboard On Hold into an Excel spreadsheet
+Scenario: #5 I can export Abstraction Dashboard -search into an Excel spreadsheet
 GGiven I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Dashboard On Hold Section
 When I select the export to Excel option
@@ -217,7 +217,7 @@ And will includ the following fields:
 |Late Rejection Date Added On|
 
 
-Scenario: #6 Logic for This Trial is Field
+Scenario: #6 Logic for This Trial Is field
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Dashboard WorkLoad
 When I select the export to Excel option
@@ -225,7 +225,7 @@ Then the trials in the Abstraction Dashboard WorkLoad will be exported to an Exc
 And will include the following field:
 |This Trial is|
 
-And the This Trial is field will be a concetionation of the following
+And the This Trial Is Field will be a concetionation of the following
 |Check Out Status|
 |Milestones|
 |On Hold Date|

@@ -123,6 +123,28 @@
             return dateRangeArray;
         }; //getDateRange
 
+
+        /**
+         *
+         * Returns an array after formatting date property to specified date format
+         *
+         * @param dateArray, Array
+         * @param dateKey, String
+         * @param formatString, String
+         * @returns Array
+         */
+        this.formatDateArray = function (dateArray, dateKey, dateFormat) {
+            if (!dateFormat) {
+                return;
+            }
+
+            _.each(dateArray, function (item) {
+                var d = new Date(item[dateKey]);
+                item[dateKey] = moment(d).format(dateFormat);
+            });
+
+            return dateArray;
+        }
     }
 
 })();

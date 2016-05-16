@@ -61,12 +61,12 @@ And I am on the Search Clinical Trials Screen
 And I know the search Parameters of trial
 When I select the option to search "Saved Drafts"
 Then CTRP will display all of my draft registrations that match the trial search criteria
-And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
+And the Clinical Trials Search Results will display the following sorted by "Lead Org Trial Identifier"
 |Temp Trial Identifier|
 |Title|
 |Lead Organization|
 |Lead Org Trial Identifier|
-|Action to Complete Registration
+|Action to Complete Registration|
 |Action to Delete Draft Registration|
 
 
@@ -90,7 +90,7 @@ When I select one or more trial Phase type
       |II/III |
       |III    |
       |IV     |
-      |N/A    |
+      |NA    |
 And select a search option
 Then the search results will display trials that match the Phase selected
 
@@ -98,16 +98,16 @@ Scenario: #6 I can search for pilot clinical trials
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
 And I know the search Parameters of trial
-When I select one or more Pilot option type
+When I select a Pilot type
 
-      |Yes  |
       |No  |
+      |Yes |
 
 And select a search option
 Then the search results will display trials that have the Pilot criteria equal to the option selected type
       
-      |yes  |
       |No  |
+      |Yes  |
 
 
 Scenario: #7 I can search for clinical trials by Trial Primary Purpose

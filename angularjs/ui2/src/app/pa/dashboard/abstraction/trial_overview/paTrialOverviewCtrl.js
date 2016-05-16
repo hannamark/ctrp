@@ -6,14 +6,17 @@
     'use strict';
 
     angular.module('ctrp.app.pa.dashboard')
-    .controller('paTrialOverviewCtrl', paTrialOverviewCtrl);
+    .controller('paTrialOverviewCtrl', paTrialOverviewCtrl)
+    .controller('checkinModalCtrl', checkinModalCtrl); // checkin modal controller
 
     paTrialOverviewCtrl.$inject = ['$state', '$stateParams', 'PATrialService',
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES', 'researchCategories',
-        '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService'];
+        '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService', '$uibModal'];
+
+    checkinModalCtrl.$inject = ['$scope', '$uibModalInstance', 'curTrialObj']; // checkin modal controller
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES, researchCategories,
-            $scope, TrialService, UserService, curTrial, _, PersonService) {
+            $scope, TrialService, UserService, curTrial, _, PersonService, $uibModal) {
 
         var vm = this;
         var curUserRole = UserService.getUserRole() || '';
@@ -65,25 +68,25 @@
             $state.go('main.paTrialSearch');
         } //backToPATrialSearch
 
+        function _parseCheckoutinObjects(serverResponse, type) {
+            vm.adminCheckoutObj = Common.jsonStrToObject(serverResponse.result.admin_checkout);
+            vm.scientificCheckoutObj = Common.jsonStrToObject(serverResponse.result.scientific_checkout);
+            Common.broadcastMsg(MESSAGES.TRIALS_CHECKOUT_IN_SIGNAL);
+        }
+
         function checkoutTrial(checkoutType) {
             // To prevent multiple submissions before Ajax call is completed
             vm.disableBtn = true;
 
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
-                // console.log('checkout result: ', res.result);
-                // console.log('checkout message: ', res.checkout_message);
                 var status = res.server_response.status;
-
                 if (status === 200) {
-
                     var checkout_message = res.checkout_message || 'Checkout was not successful, other user may have checked it out ';
                     if (res.checkout_message !== null) {
                         updateTrialDetailObj(res.result);
-                        vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
-                        vm.scientificCheckoutObj = Common.jsonStrToObject(res.result.scientific_checkout);
+                        _parseCheckoutinObjects(res, checkoutType);
+                        showToastr(checkout_message, 'top right');
                     }
-
-                    showToastr(checkout_message, 'top right');
                 }
             }).finally(function() {
                 vm.disableBtn = false;
@@ -91,13 +94,43 @@
         }
 
         function checkinTrial(checkinType) {
-            PATrialService.checkinTrial(vm.trialId, checkinType).then(function(res) {
-                // console.log('checkin result: ', res.result);
-                updateTrialDetailObj(res.result);
-                vm.adminCheckoutObj = Common.jsonStrToObject(res.result.admin_checkout);
-                vm.scientificCheckoutObj = Common.jsonStrToObject(res.result.scientific_checkout); // null
-                // updateTrialDetailObj(res.result);
-                showToastr(checkinType + ' checkin was successful!', 'top right')
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/_trial_checkin_modal.html',
+                bindToController: true,
+                backdrop: 'static', // do not close modal for click outside modal
+                controller: 'checkinModalCtrl',
+                controllerAs: 'checkinModalView',
+                size: 'md',
+                resolve: {
+                    curTrialObj: vm.trialDetailObj
+                }
+            });
+            var modalOpened = true;
+            modalInstance.result.then(function(checkinComment) {
+                console.info('modal closed, comment: ', checkinComment);
+                if (angular.isDefined(checkinComment) && checkinComment.length > 0) {
+                    _performTrialCheckin(checkinType, vm.trialDetailObj.id, checkinComment);
+                }
+            }, function() {
+                // modal dismissed
+            });
+            modalOpened = false;
+        }
+
+        function _performTrialCheckin(checkinType, trialId, checkinComment) {
+            vm.disableBtn = true;
+            var commentText = 'experimental comment';
+            PATrialService.checkinTrial(trialId, checkinType, checkinComment).then(function(res) {
+                var status = res.server_response.status;
+                if (status === 200) {
+                    // console.log('checkin result: ', res.result);
+                    updateTrialDetailObj(res.result);
+                    _parseCheckoutinObjects(res, checkinType);
+                    showToastr(checkinType + ' checkin was successful!', 'top right');
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 
@@ -106,9 +139,6 @@
          * @param  {JSON} data [updated trial detail object with the checkout/in records]
          */
         function updateTrialDetailObj(data) {
-            console.log('in updating trial detail obj, admin_checkout: ' + data.admin_checkout + ', scientific_checkout: ' + data.scientific_checkout);
-            // vm.trialDetailObj.admin_checkout = JSON.parse(data.admin_checkout);
-            // vm.trialDetailObj.scientific_checkout = JSON.parse(data.scientific_checkout);
 
             if (vm.trialDetailObj.pi && !vm.trialDetailObj.pi.fullName) {
                 vm.trialDetailObj.pi.fullName = PersonService.extractFullName(vm.trialDetailObj.pi);
@@ -203,7 +233,6 @@
          * @return {Void}
          */
         function showToastr(message, position) {
-            console.log('showing a toastr!');
             $mdToast.show({
             template: '<md-toast style="background-color: #6200EA"><span flex>' + message + '</span></md-toast>',
             parent: $document[0].querySelector('#checkoutORin_message'),
@@ -226,12 +255,6 @@
             vm.trialDetailObj.pa_editable = vm.adminCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
             vm.trialDetailObj.pa_sci_editable = vm.scientificCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
         }
-        //
-        // function _getUpdatedTrialDetailObj() {
-        //     TrialService.getTrialById(vm.trialDetailObj.id).then(function(res) {
-        //         console.log('updated trialDetail obj: ', res);
-        //     });
-        // }
 
         /**
          * Find the research category name in the provided research category array
@@ -245,6 +268,35 @@
             var catName = !!catObj ? catObj.name : '';
             return catName.toLowerCase();
         }
-    }
+    } // paTrialOverviewCtrl
+
+    /**
+     * Checkin modal controller
+     */
+    function checkinModalCtrl($scope, $uibModalInstance, curTrialObj) {
+        var viewModel = this;
+        console.info('in checkin modal ctrl!');
+        viewModel.curTrialObj = curTrialObj;
+        viewModel.checkinComment = null;
+        viewModel.isTrialStatusValid = true; // TODO:
+        viewModel.isAbstractionValid = true; // TODO:
+
+        viewModel.proceedCheckin = function() {
+            $uibModalInstance.close(viewModel.checkinComment);
+        };
+        viewModel.cancel = function() {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        viewModel.viewTrialStatusHistory = function() {
+            console.info('redirecting to trial status page');
+            // TODO: redirect to trial state page
+        };
+        viewModel.viewAbstractionValidation = function() {
+            console.info('viewAbstractionValidation....');
+            // TODO: redirect to viewAbstractionValidation page
+        };
+
+    } // checkin modal controller
 
 })();

@@ -191,6 +191,7 @@ class Trial < TrialBase
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :users, through: :trial_ownerships
   has_many :anatomic_site_wrappers, -> { order 'anatomic_site_wrappers.id' }
+  has_many :trial_checkout_logs, -> { order 'trial_checkout_logs.id'}
 
   attr_accessor :edit_type
   attr_accessor :coming_from
@@ -219,6 +220,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :markers, allow_destroy: true
   accepts_nested_attributes_for :diseases, allow_destroy: true
   accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :onholds, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update"'
@@ -402,6 +404,223 @@ class Trial < TrialBase
     end
   end
 
+  # Return true if this trial contains the specified milestone with specific submission ID
+  def contains_milestone?(submission_id, milestone_id)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ? AND milestone_id = ?', self.id, submission_id, milestone_id)
+    return target.size > 0 ? true : false
+  end
+
+  # Return true if the last milestone of the specified submission matches the milestone_code
+  def is_last_milestone?(submission_id, milestone_code)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.milestone.code == milestone_code
+      return true
+    else
+      return false
+    end
+  end
+
+  def active_onhold_exists?
+    self.onholds.each do |onhold|
+      if onhold.offhold_date.nil?
+        return true
+      end
+    end
+    return false
+  end
+
+  def update_need_ack?
+    self.submissions.each do |submission|
+      if submission.submission_type && submission.submission_type.code == 'UPD' && submission.acknowledge == 'No'
+        return true
+      end
+    end
+    return false
+  end
+
+  # Return validation errors for adding a milestone to a set of milestones with specific submission ID
+  def validate_milestone(submission_id, milestone_id)
+    validation_msgs = {}
+    validation_msgs[:errors] = []
+    milestone_to_add = Milestone.find(milestone_id)
+
+    if milestone_to_add.code == 'VPS'
+      if !is_last_milestone?(submission_id, 'SRD')
+        validation_msgs[:errors].push('Submission Received Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'VPC'
+      if !is_last_milestone?(submission_id, 'VPS')
+        validation_msgs[:errors].push('Validation Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'RVQ'
+      if !is_last_milestone?(submission_id, 'VPC')
+        validation_msgs[:errors].push('Validation Processing Completed Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+    elsif milestone_to_add.code == 'VQS'
+      if !is_last_milestone?(submission_id, 'RVQ')
+        validation_msgs[:errors].push('Ready for Validation QC Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'VQC'
+      if !is_last_milestone?(submission_id, 'VQS')
+        validation_msgs[:errors].push('Validation QC Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'SAC'
+      if !is_last_milestone?(submission_id, 'VQC')
+        validation_msgs[:errors].push('Validation QC Completed Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'APS'
+      if !is_last_milestone?(submission_id, 'SAC')
+        validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'APC'
+      if !is_last_milestone?(submission_id, 'APS')
+        validation_msgs[:errors].push('Administrative Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+      end
+    elsif milestone_to_add.code == 'RAQ'
+      if !is_last_milestone?(submission_id, 'APC')
+        validation_msgs[:errors].push('Administrative Processing Completed Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'AQS'
+      if !is_last_milestone?(submission_id, 'RAQ')
+        validation_msgs[:errors].push('Ready for Administrative QC Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'AQC'
+      if !is_last_milestone?(submission_id, 'AQS')
+        validation_msgs[:errors].push('Administrative QC Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+      end
+    elsif milestone_to_add.code == 'SPS'
+      if !is_last_milestone?(submission_id, 'SAC')
+        validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'SPC'
+      if !is_last_milestone?(submission_id, 'SPS')
+        validation_msgs[:errors].push('Scientific Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
+      end
+    elsif milestone_to_add.code == 'RSQ'
+      if !is_last_milestone?(submission_id, 'SPC')
+        validation_msgs[:errors].push('Scientific Processing Completed Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+    elsif milestone_to_add.code == 'SQS'
+      if !is_last_milestone?(submission_id, 'RSQ')
+        validation_msgs[:errors].push('Ready for Scientific QC Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+    elsif milestone_to_add.code == 'SQC'
+      if !is_last_milestone?(submission_id, 'SQS')
+        validation_msgs[:errors].push('Scientific QC Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
+      end
+    elsif milestone_to_add.code == 'RTS'
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'TSR'
+      if !is_last_milestone?(submission_id, 'RTS')
+        validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+    elsif milestone_to_add.code == 'STS'
+      if !is_last_milestone?(submission_id, 'TSR')
+        validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'IAV'
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'ONG'
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'LRD'
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    end
+
+    return validation_msgs
+  end
+
   private
 
   def save_history
@@ -548,8 +767,18 @@ class Trial < TrialBase
     last_sub_method = last_submission.submission_method if last_submission.present?
     last_submitter = last_submission.user if last_submission.present?
     last_submitter_name = last_submitter.nil? ? '' : "#{last_submitter.first_name} #{last_submitter.last_name}"
-    last_submitter_name = last_submitter_name.strip!
+    last_submitter_name.strip!
     last_submitter_name = 'CTRP User' if last_submitter_name.blank?
+    last_submission_date = last_submission.nil? ? '' : (last_submission.submission_date.nil? ? '' : last_submission.submission_date.strftime('%d-%b-%Y'))
+    lead_protocol_id = self.lead_protocol_id.present? ? self.lead_protocol_id : ''
+    trial_title = self.official_title.present? ? self.official_title : ''
+    nci_id = self.nci_id.present? ? self.nci_id : ''
+    org_name = ''
+    org_id = ''
+    if self.lead_org.present?
+      org_name = self.lead_org.name
+      org_id = self.lead_org.id.to_s
+    end
 
     mail_template = nil
 
@@ -561,25 +790,25 @@ class Trial < TrialBase
           mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
 
           # Populate the trial data in the email body
-          mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
-          mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+          mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
+          mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
-          mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
+          mail_template.body_html.sub!('${trialTitle}', trial_title)
 
           table = '<table border="0">'
-          table += "<tr><td><b>Lead Organization Trial ID:</b></td><td>#{self.lead_protocol_id}</td></tr>" if self.lead_protocol_id.present?
-          table += "<tr><td><b>Lead Organization:</b></td><td>#{self.lead_org.name}</td></tr>" if self.lead_org.present?
-          table += "<tr><td><b>NCI Trial ID:</b></td><td>#{self.nci_id}</td></tr>" if self.nci_id.present?
+          table += "<tr><td><b>Lead Organization Trial ID:</b></td><td>#{lead_protocol_id}</td></tr>"
+          table += "<tr><td><b>Lead Organization:</b></td><td>#{org_name}</td></tr>"
+          table += "<tr><td><b>NCI Trial ID:</b></td><td>#{nci_id}</td></tr>"
           self.other_ids.each do |other_id|
             table += "<tr><td><b>#{other_id.protocol_id_origin.name}:</b></td><td>#{other_id.protocol_id}</td></tr>"
           end
           table += '</table>'
           mail_template.body_html.sub!('${trialIdentifiers}', table)
 
-          mail_template.body_html.sub!('${submissionDate}', last_submission.submission_date.strftime('%d-%b-%Y')) if last_submission.submission_date.present?
+          mail_template.body_html.sub!('${submissionDate}', last_submission_date)
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
           mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
-          mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
+          mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
         end
 
       elsif last_sub_type.code == 'UPD' && self.edit_type != 'verify'
@@ -591,15 +820,15 @@ class Trial < TrialBase
           mail_template.from = 'ncictro@mail.nih.gov'
           # mail_template.to = trial_registrant_email
           mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
-          mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
-          mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+          mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
+          mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
-          mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
-          mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
-          mail_template.body_html.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
-          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', self.lead_org.id.to_s) if self.lead_org.present?
-          mail_template.body_html.sub!('${submitting_organization}', self.lead_org.name) if self.lead_org.present?
-          mail_template.body_html.sub!('${submissionDate}', last_submission.submission_date.strftime('%d-%b-%Y')) if last_submission.submission_date.present?
+          mail_template.body_html.sub!('${trialTitle}', trial_title)
+          mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
+          mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
+          mail_template.body_html.sub!('${submitting_organization}', org_name)
+          mail_template.body_html.sub!('${submissionDate}', last_submission_date)
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
           mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
         end
@@ -610,15 +839,16 @@ class Trial < TrialBase
           ## populate the mail_template with data for trial amendment
           mail_template.from = 'ncictro@mail.nih.gov'
           mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
-          mail_template.subject.sub!('${trialAmendNumber}', self.submissions.last.amendment_num) if self.submissions.last.present?
-          mail_template.subject.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
-          mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+          last_amend_num = last_submission.nil? ? '' : (last_submission.amendment_num.present? ? last_submission.amendment_num : '')
+          mail_template.subject.sub!('${trialAmendNumber}', last_amend_num)
+          mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
+          mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
           mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
-          mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
-          mail_template.body_html.sub!('${nciTrialIdentifier}', self.nci_id) if self.nci_id.present?
-          mail_template.body_html.sub!('${lead_organization}', self.lead_org.name) if self.lead_org.present?
-          mail_template.body_html.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
-          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', self.lead_org.id.to_s) if self.lead_org.present?
+          mail_template.body_html.sub!('${trialTitle}', trial_title)
+          mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
+          mail_template.body_html.sub!('${lead_organization}', org_name)
+          mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
 
           # find all those identifiers and populate the fields in the email template
           nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
@@ -637,8 +867,13 @@ class Trial < TrialBase
 
           mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
           mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
-          mail_template.body_html.sub!('${trialAmendNumber}', self.submissions.last.amendment_num) if self.submissions.last.present?
-          mail_template.body_html.sub!('${trialAmendmentDate}', Date.strptime(self.submissions.last.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y")) if self.submissions.last.present?
+
+          # if !last_submission.nil? and last_submission.amendment_date
+          #   trial_amend_date = Date.strptime(last_submission.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y")
+          # end
+          trial_amend_date = last_submission.nil? ? '' : (last_submission.amendment_date.present? ? Date.strptime(last_submission.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y") : '')
+          mail_template.body_html.sub!('${trialAmendNumber}', last_amend_num)
+          mail_template.body_html.sub!('${trialAmendmentDate}', trial_amend_date)
 
         end
       end
@@ -649,14 +884,13 @@ class Trial < TrialBase
         ## populate the mail_template with data for trial draft
         mail_template.from = 'ncictro@mail.nih.gov'
         mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
-        mail_template.subject.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
+        mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
         mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
-        mail_template.body_html.sub!('${trialTitle}', self.official_title) if self.official_title.present?
-        mail_template.body_html.sub!('${leadOrgTrialIdentifier}', self.lead_protocol_id) if self.lead_protocol_id.present?
-        mail_template.body_html.sub!('${lead_organization}', self.lead_org.name) if self.lead_org.present?
-        mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', self.lead_org.id.to_s) if self.lead_org.present?
-        submission_date = last_submission.nil? ? '' : last_submission.submission_date.strftime('%d-%b-%Y')
-        mail_template.body_html.sub!('${submissionDate}', submission_date)
+        mail_template.body_html.sub!('${trialTitle}', trial_title)
+        mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+        mail_template.body_html.sub!('${lead_organization}', org_name)
+        mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
+        mail_template.body_html.sub!('${submissionDate}', last_submission_date)
         mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
         mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
       end
@@ -677,7 +911,7 @@ class Trial < TrialBase
         # recipient email not replaced with actual email address (user does not have email)
         mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
       end
-      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, email_template: mail_template, result: mail_sending_result, trial: self)
+      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, mail_template: mail_template, result: mail_sending_result, trial: self)
 
     end
 

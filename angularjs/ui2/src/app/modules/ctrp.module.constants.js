@@ -23,6 +23,8 @@
             'USER_GSA': '/ctrp/users/gsa',
             'SEARCH_USER': '/ctrp/users/search.json',
             'USER_LIST': '/ctrp/users.json',
+            'USER_TRIALS': '/ctrp/trial_ownerships/search.json',
+            'USER_TRIALS_END': '/ctrp/trial_ownerships/end.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
             'CURATE_PERSON': '/ctrp/people/curate',
@@ -58,6 +60,7 @@
             'ACCEPTED_FILE_TYPES_REG': '/ctrp/registry/accepted_file_types_for_registry.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
             'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
+            'VALIDATE_MILESTONE': '/ctrp/registry/trials/validate_milestone.json',
             'VALIDATE_SR_STATUS': '/ctrp/registry/participating_sites/validate_status.json',
             'SEARCH_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/search_clinical_trials_gov.json',
             'IMPORT_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/import_clinical_trials_gov.json',
@@ -92,6 +95,7 @@
             },
 
             'MILESTONES': '/ctrp/registry/milestones.json',
+            'ONHOLD_REASONS': '/ctrp/registry/onhold_reasons.json',
             'PROCESSING_STATUSES': '/ctrp/registry/processing_statuses.json',
             'HOLDER_TYPES': '/ctrp/registry/holder_types.json',
             'NIH': '/ctrp/registry/nih.json',
@@ -128,7 +132,8 @@
                 'NCIT_INTERVENTIONS_LOOKUP': '/ctrp/registry/trials/lookup_imported_ncit_interventions.json',
                 'INTERVENTION_TYPES': '/ctrp/registry/trials/get_intervention_types.json',
                 'SEARCH_CTRP_INTERVENTIONS': '/ctrp/registry/trials/search_ctrp_interventions.json?intervention_name={:intervention_name}',
-                'MAIL_LOGS': '/ctrp/registry/trials/get_mail_logs.json?trial_id={:trial_id}'
+                'MAIL_LOGS': '/ctrp/registry/trials/get_mail_logs.json?trial_id={:trial_id}',
+                'CHECKOUT_HISTORY': '/ctrp/registry/trials/get_trial_checkout_history.json?trial_id={:trial_id}',
             }
         })
         .constant('MESSAGES', {
@@ -137,7 +142,8 @@
             'PRIVILEGE_CHANGED': 'user_privilege_changed',
             'CURATION_MODE_CHANGED': 'curation_mode_changed',
             'DOCUMENT_UPLOADED': 'document_uploaded',
-            'TRIAL_DETAIL_SAVED': 'trial_detail_saved'
+            'TRIAL_DETAIL_SAVED': 'trial_detail_saved',
+            'TRIALS_CHECKOUT_IN_SIGNAL': 'trial_checkout_checkin',
         })
         .constant('DMZ_UTILS', {
             'APP_VERSION': '/ctrp/dmzutils/app_version.json',

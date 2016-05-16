@@ -107,9 +107,8 @@ end
 
 json.interventions do
   json.array!(@trial.interventions.reorder(:index)) do |intervention|
-    json.extract! intervention, :id, :name, :description, :other_name, :lock_version, :intervention_type_id, :intervention_type_cancer_gov_id, :intervention_type_ct_gov_id, :trial_id, :index
-    json.set! :intervention_type_cancer_name, intervention.intervention_type_cancer_gov_id.nil? ? '' : InterventionType.find(intervention.intervention_type_cancer_gov_id).nil? ? '' : InterventionType.find(intervention.intervention_type_cancer_gov_id).name
-    json.set! :intervention_type_ct_name, intervention.intervention_type_ct_gov_id.nil? ? '' : InterventionType.find(intervention.intervention_type_ct_gov_id).nil? ? '' : InterventionType.find(intervention.intervention_type_ct_gov_id).name
+    json.extract! intervention, :id, :name, :description, :other_name, :lock_version, :intervention_type_id, :trial_id, :index
+    json.set! :intervention_type_name, intervention.intervention_type_id.nil? ? '' : InterventionType.find(intervention.intervention_type_id).nil? ? '' : InterventionType.find(intervention.intervention_type_id).name
   end
 end
 
@@ -142,6 +141,7 @@ json.participating_sites do
     json.investigator participating_site.person.present? ? participating_site.person.lname : ""
     json.contact_name participating_site.contact_name
     json.contact_phone participating_site.contact_phone
+    json.extension participating_site.extension
     json.contact_email participating_site.contact_email
     json.contact_type participating_site.contact_type
     json.protocol_id participating_site.protocol_id
@@ -223,6 +223,18 @@ json.milestone_wrappers do
     if milestone.milestone_type.present?
       json.milestone_type do
         json.extract! milestone.milestone_type, :id, :name, :code
+      end
+    end
+  end
+end
+
+json.onholds do
+  json.array!(@trial.onholds) do |onhold|
+    json.extract! onhold, :id, :onhold_desc, :onhold_date, :offhold_date
+
+    if onhold.onhold_reason.present?
+      json.onhold_reason do
+        json.extract! onhold.onhold_reason, :id, :name, :code
       end
     end
   end

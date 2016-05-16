@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-
-
   resources :marker_biomarker_purpose_associations
 
   resources :accrual_disease_terms
@@ -49,6 +47,14 @@ Rails.application.routes.draw do
 
     resources :associated_trials
 
+    resources :trial_ownerships do
+      collection do
+        post 'search'
+        post 'end'
+        post 'unique', defaults: {format: 'json'}
+      end
+    end
+
     resources :source_statuses
 
     resources :source_contexts
@@ -84,7 +90,7 @@ Rails.application.routes.draw do
 
     resources :pa_trials
     get '/pa/trial/:trial_id/checkout/:type', to: 'trials#checkout_trial'
-    get '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
+    post '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
 
     resources :comments
     get '/instance/:uuid/comments/count(/:field)', to: 'comments#count'
@@ -92,6 +98,7 @@ Rails.application.routes.draw do
 
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
+    get '/users/user_statuses' => 'user_statuses#index'
     post '/users/search' => 'users#search'
     post '/users/request_admin/:username' => 'users#request_admin_access'
 
@@ -202,6 +209,7 @@ Rails.application.routes.draw do
           get  'search_pa'
           post 'search_pa'
           post 'validate_status'
+          post 'validate_milestone'
           get  'get_grants_serialnumber'
           post 'get_grants_serialnumber'
           get  'get_central_contact_types'
@@ -224,6 +232,7 @@ Rails.application.routes.draw do
           get  'get_intervention_types'
           get  'search_ctrp_interventions'
           get  'get_mail_logs'
+          get  'get_trial_checkout_history'
         end
       end
 
@@ -233,6 +242,7 @@ Rails.application.routes.draw do
       resources :trial_statuses
       resources :processing_statuses
       resources :milestones
+      resources :onhold_reasons
       resources :research_categories
       resources :site_recruitment_statuses
       resources :anatomic_sites

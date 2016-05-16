@@ -35,12 +35,12 @@
 
         vm.userObj = new UserObj();
         
-        AppSettingsService.getSettings('USER_DOMAINS', true).then(function (response) {
+        AppSettingsService.getSettings({ setting: 'USER_DOMAINS', external: true}).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
             vm.selectedFunctionsObj = [];
             vm.selectAbleUserFunctions = [];
             angular.forEach(vm.domainsArr, function (domain) {
-                AppSettingsService.getSettings(domain + '_USER_FUNCTIONS', true).then(function (response) {
+                AppSettingsService.getSettings({ setting: domain + '_USER_FUNCTIONS', external: true}).then(function (response) {
                     var functionsArr = response.data[0].settings.split('||');
                     vm.selectedFunctionsObj[domain] = {};
                     angular.forEach(functionsArr, function (func) {
@@ -48,11 +48,11 @@
                         vm.selectedFunctionsObj[domain][func] = vm.selectAbleUserFunctions[domain] > 1 ? false : true;
                     });
                 }).catch(function (err) {
-                    console.log("Error in retrieving " + domain + "_USER_FUNCTIONS.");
+                    console.log("Error in retrieving " + domain + "_USER_FUNCTIONS " + err);
                 });
             });
         }).catch(function (err) {
-            console.log("Error in retrieving USER_DOMAINS.");
+            console.log("Error in retrieving USER_DOMAINS " + err);
         });
 
         vm.selectedUserFunctions = function(){

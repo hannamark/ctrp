@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160428201501) do
+ActiveRecord::Schema.define(version: 20160515030745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,22 +448,18 @@ ActiveRecord::Schema.define(version: 20160428201501) do
   end
 
   create_table "interventions", force: :cascade do |t|
-    t.string   "name",                            limit: 255
-    t.string   "other_name",                      limit: 255
+    t.string   "name",                 limit: 255
+    t.string   "other_name",           limit: 255
     t.text     "description"
-    t.integer  "intervention_type_cancer_gov_id"
-    t.integer  "intervention_type_ct_gov_id"
     t.integer  "intervention_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
-    t.string   "uuid",                            limit: 255
-    t.integer  "lock_version",                                default: 0
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
     t.integer  "index"
   end
 
-  add_index "interventions", ["intervention_type_cancer_gov_id"], name: "index_interventions_on_intervention_type_cancer_gov_id", using: :btree
-  add_index "interventions", ["intervention_type_ct_gov_id"], name: "index_interventions_on_intervention_type_ct_gov_id", using: :btree
   add_index "interventions", ["intervention_type_id"], name: "index_interventions_on_intervention_type_id", using: :btree
   add_index "interventions", ["trial_id"], name: "index_interventions_on_trial_id", using: :btree
 
@@ -487,12 +483,15 @@ ActiveRecord::Schema.define(version: 20160428201501) do
     t.string   "subject"
     t.text     "body"
     t.string   "email_template_name"
-    t.integer  "email_template_id"
     t.string   "result"
+    t.integer  "trial_id"
+    t.integer  "mail_template_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "trial_id"
   end
+
+  add_index "mail_logs", ["mail_template_id"], name: "index_mail_logs_on_mail_template_id", using: :btree
+  add_index "mail_logs", ["trial_id"], name: "index_mail_logs_on_trial_id", using: :btree
 
   create_table "mail_templates", force: :cascade do |t|
     t.text     "from"
@@ -681,13 +680,14 @@ ActiveRecord::Schema.define(version: 20160428201501) do
     t.string   "preferred_name"
     t.string   "synonyms"
     t.text     "description"
+    t.integer  "ncit_status_id"
     t.string   "type_code"
     t.string   "ct_gov_type_code"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.integer  "ncit_status_id"
   end
 
+  add_index "ncit_interventions", ["ncit_status_id"], name: "index_ncit_interventions_on_ncit_status_id", using: :btree
   add_index "ncit_interventions", ["preferred_name"], name: "index_ncit_interventions_on_preferred_name", using: :btree
 
   create_table "ncit_statuses", force: :cascade do |t|
@@ -1164,6 +1164,22 @@ ActiveRecord::Schema.define(version: 20160428201501) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "trial_checkout_logs", force: :cascade do |t|
+    t.integer  "trial_id"
+    t.string   "abstraction_type"
+    t.string   "category"
+    t.string   "username"
+    t.string   "full_name"
+    t.integer  "user_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.string   "result"
+    t.text     "checkin_comment"
+  end
+
+  add_index "trial_checkout_logs", ["trial_id"], name: "index_trial_checkout_logs_on_trial_id", using: :btree
+  add_index "trial_checkout_logs", ["user_id"], name: "index_trial_checkout_logs_on_user_id", using: :btree
+
   create_table "trial_co_lead_orgs", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "organization_id"
@@ -1228,6 +1244,7 @@ ActiveRecord::Schema.define(version: 20160428201501) do
     t.datetime "updated_at"
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
+    t.datetime "ended_at"
   end
 
   add_index "trial_ownerships", ["trial_id"], name: "index_trial_ownerships_on_trial_id", using: :btree
@@ -1495,6 +1512,8 @@ ActiveRecord::Schema.define(version: 20160428201501) do
   add_foreign_key "interventions", "intervention_types"
   add_foreign_key "interventions", "trials"
   add_foreign_key "links", "trials"
+  add_foreign_key "mail_logs", "mail_templates"
+  add_foreign_key "mail_logs", "trials"
   add_foreign_key "marker_assay_type_associations", "assay_types"
   add_foreign_key "marker_assay_type_associations", "markers"
   add_foreign_key "marker_biomarker_purpose_associations", "biomarker_purposes"
@@ -1513,6 +1532,7 @@ ActiveRecord::Schema.define(version: 20160428201501) do
   add_foreign_key "ncit_disease_parents", "ncit_statuses"
   add_foreign_key "ncit_disease_synonyms", "ncit_disease_codes"
   add_foreign_key "ncit_disease_synonyms", "ncit_statuses"
+  add_foreign_key "ncit_interventions", "ncit_statuses"
   add_foreign_key "onholds", "onhold_reasons"
   add_foreign_key "onholds", "trials"
   add_foreign_key "organizations", "source_contexts"
@@ -1545,6 +1565,8 @@ ActiveRecord::Schema.define(version: 20160428201501) do
   add_foreign_key "submissions", "submission_types"
   add_foreign_key "submissions", "trials"
   add_foreign_key "submissions", "users"
+  add_foreign_key "trial_checkout_logs", "trials"
+  add_foreign_key "trial_checkout_logs", "users"
   add_foreign_key "trial_co_lead_orgs", "organizations"
   add_foreign_key "trial_co_lead_orgs", "trials"
   add_foreign_key "trial_co_pis", "people"
@@ -1683,6 +1705,7 @@ ActiveRecord::Schema.define(version: 20160428201501) do
   create_sequence "submissions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "tempgrants_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "time_perspectives_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "trial_checkout_logs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_lead_orgs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_co_pis_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_documents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

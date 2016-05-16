@@ -9,10 +9,10 @@
         .factory('PATrialService', PATrialService);
 
     PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload', 'TrialService',
-            '$rootScope', 'PromiseTimeoutService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
+            '$rootScope', 'PromiseTimeoutService', 'DateService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
 
     function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload, TrialService,
-            $rootScope, PromiseTimeoutService, HOST, LocalCacheService, uiGridConstants) {
+            $rootScope, PromiseTimeoutService, DateService, HOST, LocalCacheService, uiGridConstants) {
 
         var curTrial = {};
         var initTrialSearchParams = {
@@ -163,6 +163,7 @@
             searchCtrpInterventionsByName: searchCtrpInterventionsByName,
             updateTrial: updateTrial,
             getMailLogs: getMailLogs,
+            getTrialCheckoutHistory: getTrialCheckoutHistory,
         };
 
         return services;
@@ -386,6 +387,17 @@
          */
         function getCurrentTrialFromCache() {
             var curTrial = LocalCacheService.getCacheWithKey('current_trial_object');
+
+            _.each(curTrial.participating_sites, function (site) {
+                site.site_rec_status_wrappers = DateService.formatDateArray(site.site_rec_status_wrappers, 'status_date', 'DD-MMM-YYYY');
+                /*
+                _.each(site.site_rec_status_wrappers, function (item) {
+                    var status_date = new Date(item.status_date);
+                    item.status_date = moment(status_date).format("DD-MMM-YYYY");
+                });
+                */
+            });
+
             delete curTrial.admin_checkout;
             delete curTrial.scientific_checkout;
             return curTrial;
@@ -398,11 +410,12 @@
             return PromiseTimeoutService.getData(url);
         }
 
-        function checkinTrial(trialId, checkinType) {
+        function checkinTrial(trialId, checkinType, commentText) {
             var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
             url = url.replace('{:checkWhat}', 'checkin');
             url = url.replace('{:checkoutType}', checkinType);
-            return PromiseTimeoutService.getData(url);
+            // return PromiseTimeoutService.getData(url);
+            return PromiseTimeoutService.postDataExpectObj(url, {checkin_comment: commentText});
         }
 
         /**
@@ -495,6 +508,11 @@
          */
         function getMailLogs(trialId) {
             var url = URL_CONFIGS.PA.MAIL_LOGS.replace(/\s*\{.*?\}\s*/g, trialId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        function getTrialCheckoutHistory(trialId) {
+            var url = URL_CONFIGS.PA.CHECKOUT_HISTORY.replace(/\s*\{.*?\}\s*/g, trialId);
             return PromiseTimeoutService.getData(url);
         }
 

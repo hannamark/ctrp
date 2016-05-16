@@ -57,8 +57,9 @@
                 },
                 {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*',
-                cellTemplate: '<div>{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
-                {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '100', width: '*'}
+                cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
+                {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '150', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'}
 
             ]
         };
@@ -85,18 +86,18 @@
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
-                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'submission_date',displayName:'Date', enableSorting: true, minWidth: '100', width: '*',
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '100', width: '5%'},
+                {name: 'submission_date',displayName:'Date', minWidth: '100', width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
-                {field: 'submission_type_list', displayName: 'Type',enableSorting:true, cellTemplate:'<span class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></span>'},
-                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '100', width: '*',
+                {field: 'submission_type_list', displayName: 'Type',minWidth: '150', width: '25%',enableSorting:true, cellTemplate:'<span class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></span>'},
+                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '250', width: '35%',
                     cellTemplate: '<div class="ui-grid-cell-contents"><div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a> {{doc.source_document}}</div></div>'},
-                {field: 'milestone', displayName: 'Current Milestone',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
+                {field: 'milestone', displayName: 'Current Milestone', minWidth: '150',width: '20%',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
 
                 {
                     name: 'Action ',
                     cellTemplate: '<div class="text-center ui-grid-cell-contents"><button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button></div>',
-                    width: '100'
+                    minWidth:'10',width: '5%'
 
                 }
             ]

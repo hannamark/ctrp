@@ -8,161 +8,16 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope', 'uiGridConstants'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS'];
 
     function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope, uiGridConstants) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
 
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
-        var statusArr = [
-            {id: 1, name: 'In Review'},
-            {id: 2, name: 'Active'},
-            {id: 3, name: 'Inactive'},
-            {id: 4, name: 'Deleted'}
-        ];
-        var rolesArr = ['ROLE_RO', 'ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_CURATOR', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_TRIAL-SUBMITTER', 'ROLE_ACCRUAL-SUBMITTER', 'ROLE_SITE-SU', 'ROLE_SERVICE-REST'];
-
-        // Initial User Search Parameters
-        var initUserSearchParams = {
-            username: '',
-            first_name: '',
-            middle_name: '',
-            last_name: '',
-            email: '',
-            phone: '',
-            approved: '',
-            user_status_id: '',
-            // affiliated_org_name: '',
-
-            //for pagination and sorting
-            sort: 'last_name',
-            order: 'ASC',
-            rows: 25,
-            start: 1
-        }; //initial User Search Parameters
-
-
-        var gridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            //enableRowSelection: false,
-            paginationPageSizes: [10, 25, 50, 100],
-            paginationPageSize: 25,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableGridMenu: true,
-            enableFiltering: true,
-            enableVerticalScrollbar: 2,
-            enableHorizontalScrollbar: 2,
-            columnDefs: [
-                {
-                    name: 'last_name',
-                    displayName: 'Last Name',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'first_name',
-                    displayName: 'First Name',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'middle_name',
-                    displayName: 'Middle Name',
-                    enableSorting: false,
-                    minWidth: '100',
-                    visible: false,
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'username',
-                    enableSorting: true,
-                    displayName: 'username',
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                    ' title="{{COL_FIELD}}">' +
-                    ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'email',
-                    displayName: 'Email',
-                    enableSorting: true,
-                    minWidth: '150',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'user_organization_name',
-                    displayName: 'Organization',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'families',
-                    displayName: 'Families',
-                    enableSorting: false,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
-                    '<ul class="csv"><li ng-repeat="i in COL_FIELD CUSTOM_FILTERS"> {{i.name}}</li></ul></div>'
-                },
-                {
-                    name: 'role',
-                    displayName: 'Site Admin',
-                    enableSorting: true,
-                    width: '110',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SUPER","ROLE_ADMIN","SITE_SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
-                },
-                {
-                    name: 'receive_email_notifications',
-                    displayName: 'Email Notify',
-                    enableSorting: true,
-                    width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
-                },
-                {
-                    name: 'phone',
-                    displayName: 'Phone',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    visible: false,
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'user_status',
-                    displayName: 'Status',
-                    enableSorting: true,
-                    width: '90',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
-                }
-            ]
-        };
-
+        var orgUsers = [];
+        
         /**
          * Check if the the user/viewer is logged in by checking the
          * local cache for existence of both token and username
@@ -192,13 +47,13 @@
                     if (data.token) {
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
-                        LocalCacheService.cacheItem('user_id', data.user_id); // cache user id
+                        LocalCacheService.cacheItem('user_id', data.user_id);
                         _setAppVersion(data.app_version);
-                        LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
-                        LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
+                        LocalCacheService.cacheItem('user_role', data.role);
+                        LocalCacheService.cacheItem('user_type', data.user_type);
                         //array of write_modes for each area (e.g. pa or po)
                         LocalCacheService.cacheItem('write_modes', data.privileges || []);
-                        LocalCacheService.cacheItem('curation_enabled', false); //default: curation mode is off/false
+                        LocalCacheService.cacheItem('curation_enabled', false);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg('signedIn');
 
@@ -233,7 +88,6 @@
                             $state.go('main.sign_in');
                         }, 200);
                     }
-                    $log.info('success in log out: ' + JSON.stringify(data));
                 }).catch(function (err) {
                     $log.error('error in logging out: ' + JSON.stringify(err));
                 });
@@ -252,19 +106,6 @@
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
             return user_list;
         }; //searchUsers
-
-        /**
-         * get initial paramater object for people search
-         * @return initUserSearchParams
-         */
-        this.getInitialUserSearchParams = function () {
-            return initUserSearchParams;
-        }; //getInitialUserSearchParams
-
-
-        this.getGridOptions = function () {
-            return gridOptions;
-        };
 
 
         /**
@@ -365,7 +206,6 @@
         this.upsertUserSignup = function (userObj) {
             //update an existing user
             var configObj = {};
-            console.log('userObj = ' + JSON.stringify(userObj));
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
                 .then(function (data) {
@@ -393,11 +233,19 @@
         this.upsertUserChangePassword = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            console.log('upsertUserChangePassword userObj = ' + JSON.stringify(userObj));
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
+        this.getUserTrialsOwnership = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsOwnership
 
+        this.endUserTrialsOwnership = function (searchParams) {
+            var user_end_results = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_END, searchParams);
+            return user_end_results;
+        }; //endUsersTrialsOwnership
+        
         /**
          * Check if the curation mode is supported for the user role
          *
@@ -442,14 +290,105 @@
             LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
-        this.getStatusArray = function() {
-            return statusArr;
+        this.getAllOrgUsers = function () {
+            return service.allOrgUsers || _getAllOrgUser();
+        };
+        var _getAllOrgUser = function () {
+            service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
+            return service.allOrgUsers;
         };
 
-        this.getRolesArray = function() {
-            return rolesArr;
+        this.createTransferTrialsOwnership = function (controller, trialIdArr) {
+            service.getAllOrgUsers().then(function (data) {
+                if (controller.showAllTrialsModal === false) {
+                    controller.showAllTrialsModal = true;
+                }
+                controller.userOptions = {
+                    title: '',
+                    filterPlaceHolder: 'Start typing to filter the users below.',
+                    labelAll: 'Unselected Users',
+                    labelSelected: 'Selected Users',
+                    helpMessage: ' Click on names to transfer users between selected and unselected.',
+                    orderProperty: 'name',
+                    resetItems: [],
+                    items: [],
+                    selectedItems: [],
+                    openModal: controller.showAllTrialsModal,
+                    close: function () {
+                        controller.showAllTrialsModal = false;
+                    },
+                    reset: function () {
+                        controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
+                        controller.userOptions.selectedItems = [];
+                    },
+                    save: function () {
+                        controller.showAllTrialsModal = false;
+                    }
+                };
+                _.each(data.users, function (user) {
+                    controller.userOptions.items.push({
+                        'id': user.id,
+                        'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
+                    });
+                });
+                controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
+            });
         };
 
+
+        this.removeTrialsOwnership = function (controller, trialIdArr) {
+            service.endUserTrialsOwnership({user_id: controller.userDetails.id, ids: trialIdArr}).then(function (data) {
+
+                console.log(data);
+            });
+        };
+        
+        this.TransferTrialsGridMenuItems = function (scope, controller, trial_id) {
+            var menuArr =
+                [
+                    {
+                        title: 'Transfer Trial Ownership for All Trials',
+                        order: 1,
+                        action: function (){
+                            service.createTransferTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
+                        }
+                    },
+                    {
+                        title: 'Transfer Ownership for Selected Trials',
+                        order: 2,
+                        action: function (){
+                            service.createTransferTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of All Trials',
+                        order: 3,
+                        action: function (){
+                            service.removeTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of Selected Trials',
+                        order: 4,
+                        action: function (){
+                            service.removeTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
+                        }
+                    }
+                ];
+            if (controller.userDetails) {
+                menuArr.push(
+                    {
+                        title: 'Add Trials',
+                        order: 4,
+                        action: function ($event) {
+                            scope.showSelectedTrialsModal = true;
+                            console.log("Send ownership id")
+                        }
+                    });
+            }
+            return service.isCurationModeEnabled() ? menuArr : [];
+        };
+        
         /******* helper functions *********/
         function _setAppVersion(version) {
             if (!version) {

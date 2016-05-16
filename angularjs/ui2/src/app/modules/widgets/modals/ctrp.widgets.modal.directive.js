@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('ctrpApp.widgets')
-    .directive('modal', function () {
+    .directive('modal', function ($parse) {
         return {
-            template: '<div class="modal fade">' +
+            template: '<div class="modal fade modal-lg {{ modal_id }}"">' +
             '<div class="modal-dialog">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
@@ -20,7 +20,14 @@
             replace:true,
             scope:true,
             link: function postLink(scope, element, attrs) {
+                scope.modal_id = attrs.id;
+
                 scope.title = attrs.title;
+
+                scope.$watch(attrs.id, function(value){
+                    if(value == true)
+                        scope.modal_id = attrs.id;
+                });
 
                 scope.$watch(attrs.visible, function(value){
                     if(value == true)
@@ -35,10 +42,11 @@
                     });
                 });
 
-                $(element).on('hidden.bs.modal', function(){
-                    scope.$apply(function(){
-                        scope.$parent[attrs.visible] = false;
-                    });
+                //Update the visible value when the dialog is closed through UI actions (Ok, cancel, etc.)
+                $(element).bind("hide.bs.modal", function () {
+                    $parse(attrs.visible).assign(scope, false);
+                    if (!scope.$$phase && !scope.$root.$$phase)
+                        scope.$apply();
                 });
             }
         };

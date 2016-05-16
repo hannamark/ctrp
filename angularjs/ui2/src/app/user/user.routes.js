@@ -78,7 +78,10 @@
                     templateUrl: 'app/user/user_list.html',
                     controller: 'userListCtrl as userView',
                     resolve: {
-                        UserService: 'UserService'
+                        UserService: 'UserService',
+                        userDetailObj: function(UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
                     },
                     ncyBreadcrumb: {
                         label: 'User Portal'
@@ -108,7 +111,6 @@
                             return GeoLocationService.getCountryList();
                         },
                         userDetailObj : function(UserService, $stateParams) {
-                            console.log($stateParams);
                             return UserService.getUserDetailsByUsername($stateParams.username);
                         }
                     }, //resolve the promise and pass it to controller

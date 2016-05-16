@@ -47,7 +47,11 @@
                 controller:   'trialHistoryCtrl as trialHistoryView',
                 section: 'pa',
                 resolve: {
-                    DateService: 'DateService'
+                    DateService: 'DateService',
+                    UserService:'UserService',
+                    userDetailObj: function (UserService) {
+                        return UserService.getCurrentUserDetails();
+                    }
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
@@ -77,13 +81,23 @@
                     label: 'Trial Milestones'
                 }
             })
-            .state('main.pa.trialOverview.onHoldInfo', {
-                url: '/on-hold-info',
-                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/on_hold_info.html',
+            .state('main.pa.trialOverview.onhold', {
+                url: '/onhold',
+                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/pa_onhold.html',
+                controller: 'paOnholdCtrl as onholdView',
+                resolve: {
+                    TrialService: 'TrialService',
+                    trialDetailObj: function ($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    onholdReasonObj: function (TrialService) {
+                        return TrialService.getOnholdReasons();
+                    }
+                },
                 section: 'pa',
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
-                    label: 'On Hold Info'
+                    label: 'Trial On Hold Info'
                 }
             })
             .state('main.pa.trialOverview.viewTSR', {
@@ -118,7 +132,15 @@
             .state('main.pa.trialOverview.checkoutHistory', {
                 url: '/check-out-history',
                 templateUrl: 'app/pa/dashboard/abstraction/trial_overview/check_out_history.html',
+                controller: 'checkoutHistoryCtrl as coHistoryView',
                 section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    checkoutHistoryArr: function(PATrialService, $stateParams) {
+                        var trialId = $stateParams.trialId;
+                        return PATrialService.getTrialCheckoutHistory(trialId);
+                    }
+                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Check Out History'
