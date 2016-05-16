@@ -23,12 +23,21 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find_by_username(params[:user][:username])
+    initalUserRole = @user.role
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
 
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @user.update_attributes(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        if user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU'
+          begin
+            mail_template = MailTemplate.find_by_code('SITE-ADMIN-ACCESS-GRANTED')
+            CtrpMailer.general_email(mail_template.from, @user.email, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+          rescue  Exception => e
+            logger.warn "SITE-ADMIN-ACCESS-GRANTED: Email delivery error = #{e}"
+          end
+        end
+        format.html { redirect_to @user, notice: 'User was successfully updated.' + initalUserRole }
         format.json { render json: @user}
       else
         format.html { render :edit }
@@ -142,8 +151,10 @@ end
 
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-    @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id').page(params[:start]).per(params[:rows])
-
+    @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id')
+    unless params[:rows].nil?
+      @users = @users.page(params[:start]).per(params[:rows])
+    end
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users
   end

@@ -94,7 +94,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSizes: [10, 25, 50, 100, 1000],
             paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
@@ -159,10 +159,10 @@
             exporterCsvFilename: 'users.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
-            exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+            exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
             exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Users:', style: 'headerStyle' },
             exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
+                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
             },
             exporterPdfCustomFormatter: function ( docDefinition ) {
                 docDefinition.styles.headerStyle = { fontSize: 22, bold: true };

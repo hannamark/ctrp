@@ -14,14 +14,15 @@ class TrialOwnershipsController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'comp_date' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
     @trial_ownerships = TrialOwnership.all
     @trial_ownerships = @trial_ownerships.matches('user_id', params[:user_id])
-    @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}").page(params[:start]).per(params[:rows])
-
+    @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}")
+    unless params[:rows].nil?
+      @trial_ownerships = @trial_ownerships.page(params[:start]).per(params[:rows])
+    end
     @trial_ownerships
   end
 
@@ -37,6 +38,24 @@ class TrialOwnershipsController < ApplicationController
 
   # GET /trial_ownerships/1/edit
   def edit
+  end
+
+  # POST /trial_ownerships/end
+  # POST /trial_ownerships/end.json
+  def end
+    @results_msgs = 'fail'
+    begin
+      toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
+      unless params[:ids].nil?
+        toEnd = toEnd.where(:trial_id => params[:ids])
+      end
+      toEnd.update_all(:ended_at => Time.now)
+      @results_msgs = 'success'
+    rescue
+      puts "Error ending trial ownership"
+    ensure
+      @results_msgs
+    end
   end
 
   # POST /trial_ownerships
