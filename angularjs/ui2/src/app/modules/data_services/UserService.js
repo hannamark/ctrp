@@ -290,10 +290,16 @@
             LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
-        this.getAllOrgUsers = this.getAllOrgUsers || PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
+        this.getAllOrgUsers = function () {
+            return service.allOrgUsers || _getAllOrgUser();
+        };
+        var _getAllOrgUser = function () {
+            service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
+            return service.allOrgUsers;
+        };
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers.then(function (data) {
+            service.getAllOrgUsers().then(function (data) {
                 if (controller.showAllTrialsModal === false) {
                     controller.showAllTrialsModal = true;
                 }
