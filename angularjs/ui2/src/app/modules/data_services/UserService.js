@@ -322,6 +322,7 @@
                         controller.userOptions.selectedItems = [];
                     },
                     save: function () {
+                        service.removeTrialsOwnership(controller, trialIdArr)
                         controller.showAllTrialsModal = false;
                     }
                 };

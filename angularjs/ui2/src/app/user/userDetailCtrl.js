@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope','countryList','GeoLocationService', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, GeoLocationService, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -219,7 +219,7 @@
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
-            exporterMenuAllData: false,
+            exporterMenuAllData: true,
             exporterMenuPdfAll: true,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700,
@@ -235,8 +235,21 @@
                 vm.getUserTrials();
             });
         };
-
+        vm.gridOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, allSearchParams).then(
+                function (data) {
+                    vm.gridOptions.useExternalPagination = false;
+                    vm.gridOptions.useExternalSorting = false;
+                    vm.gridOptions.data = data['trial_ownerships'];
+                }
+            );
+        };
         vm.getUserTrials = function () {
+            vm.gridOptions.useExternalPagination = true;
+            vm.gridOptions.useExternalSorting = true;
             UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data['trial_ownerships'];
                 vm.gridOptions.totalItems =  data.total;
@@ -277,7 +290,7 @@
 
             $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
                 vm.states = [];
-            })
+            });
 
 
         } //listenToStatesProvinces
@@ -312,15 +325,6 @@
             //do the search with the updated sorting
             vm.getUserTrials();
         } //sortChangedCallBack
-
-        $scope.export = function(){
-            if ($scope.export_format == 'csv') {
-                var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
-                $scope.gridApi.exporter.csvExport( $scope.export_row_type, $scope.export_column_type, myElement );
-            } else if ($scope.export_format == 'pdf') {
-                $scope.gridApi.exporter.pdfExport( $scope.export_row_type, $scope.export_column_type );
-            };
-        };
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
