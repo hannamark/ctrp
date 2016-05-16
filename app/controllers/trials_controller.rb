@@ -327,8 +327,9 @@ class TrialsController < ApplicationController
     available_checkin_types = ["admin", "scientific", "scientificadmin"]
     checkin_type = params[:type].downcase
     checkin_message = nil
+    checkin_comment = params[:checkin_comment].present? ? params[:checkin_comment] : nil
 
-    if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type)
+    if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type) and checkin_comment.present?
 
       @trial = Trial.find(params[:trial_id])
 
@@ -350,7 +351,7 @@ class TrialsController < ApplicationController
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
     result = checkin_message.nil? ? 'Failed' : 'Success'
-    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id)
+    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id, checkin_comment: checkin_comment)
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkin_message => checkin_message} }

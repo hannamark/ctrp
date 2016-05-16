@@ -24,6 +24,7 @@
             'SEARCH_USER': '/ctrp/users/search.json',
             'USER_LIST': '/ctrp/users.json',
             'USER_TRIALS': '/ctrp/trial_ownerships/search.json',
+            'USER_TRIALS_END': '/ctrp/trial_ownerships/end.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
             'CURATE_PERSON': '/ctrp/people/curate',

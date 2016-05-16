@@ -21,6 +21,7 @@ json.contact_name @participating_site.contact_name
 json.contact_phone @participating_site.contact_phone
 json.contact_email @participating_site.contact_email
 json.contact_type @participating_site.contact_type
+json.extension @participating_site.extension
 json.protocol_id @participating_site.protocol_id
 json.program_code @participating_site.program_code
 json.local_trial_identifier @participating_site.local_trial_identifier
