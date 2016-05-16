@@ -7,6 +7,7 @@
 #  user_id      :integer
 #  created_at   :datetime
 #  updated_at   :datetime
+#  ended_at     :datetime
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
 #

@@ -203,11 +203,6 @@
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
         };
 
-        this.getUserTrials = function (searchParams) {
-            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, searchParams);
-            return user_list;
-        }; //searchUsers
-
         this.upsertUserSignup = function (userObj) {
             //update an existing user
             var configObj = {};
@@ -241,7 +236,16 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
+        this.getUserTrialsOwnership = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsOwnership
 
+        this.endUserTrialsOwnership = function (searchParams) {
+            var user_end_results = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_END, searchParams);
+            return user_end_results;
+        }; //endUsersTrialsOwnership
+        
         /**
          * Check if the curation mode is supported for the user role
          *
@@ -286,14 +290,19 @@
             LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
-        this.getAllOrgUsers = this.getAllOrgUsers || PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
+        this.getAllOrgUsers = function () {
+            return service.allOrgUsers || service.getAllOrgUserNow();
+        };
+        this.getAllOrgUserNow = function () {
+            service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
+            return service.allOrgUsers;
+        };
 
-        var _createTransferUserSelect = function (controller, trialIdArr) {
-            if (controller.showAllTrialsModal === false) {
-                controller.showAllTrialsModal = true;
-            }
-            service.getAllOrgUsers.then(function (data) {
-
+        this.createTransferTrialsOwnership = function (controller, trialIdArr) {
+            service.getAllOrgUsers().then(function (data) {
+                if (controller.showAllTrialsModal === false) {
+                    controller.showAllTrialsModal = true;
+                }
                 controller.userOptions = {
                     title: '',
                     filterPlaceHolder: 'Start typing to filter the users below.',
@@ -325,6 +334,15 @@
                 controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
             });
         };
+
+
+        this.removeTrialsOwnership = function (controller, trialIdArr) {
+            service.endUserTrialsOwnership({user_id: controller.userDetails.id, ids: trialIdArr}).then(function (data) {
+
+                console.log(data);
+            });
+        };
+        
         this.TransferTrialsGridMenuItems = function (scope, controller, trial_id) {
             var menuArr =
                 [
@@ -332,30 +350,28 @@
                         title: 'Transfer Trial Ownership for All Trials',
                         order: 1,
                         action: function (){
-                            _createTransferUserSelect(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
+                            service.createTransferTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
                         }
                     },
                     {
                         title: 'Transfer Ownership for Selected Trials',
                         order: 2,
                         action: function (){
-                            _createTransferUserSelect(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
+                            service.createTransferTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
                         }
                     },
                     {
                         title: 'Remove Ownership of All Trials',
                         order: 3,
-                        action: function ($event) {
-                            scope.showAllTrialsModal = true;
-                            console.log("Send userid, orgid")
+                        action: function (){
+                            service.removeTrialsOwnership(controller, _.chain(controller.gridOptions.data).pluck(trial_id).value());
                         }
                     },
                     {
                         title: 'Remove Ownership of Selected Trials',
                         order: 4,
-                        action: function ($event) {
-                            scope.showSelectedTrialsModal = true;
-                            console.log("Send ownership id")
+                        action: function (){
+                            service.removeTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck(trial_id).value());
                         }
                     }
                 ];
@@ -418,7 +434,7 @@
                 });
 
                 modalInstance.result.then(function () {
-                    console.log('modal closed, TODO redirect');
+                    //console.log('modal closed, TODO redirect');
                 });
             })();
 

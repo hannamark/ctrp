@@ -1150,6 +1150,17 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br><b>${username}</b>, a user in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application, is requesting admin access.</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ for the user\'s details and assign new role to grant access.<p></body></html>'
 )
 
+
+MailTemplate.find_or_create_by(
+    code: 'SITE-ADMIN-ACCESS-GRANTED',
+    name: 'Trial Registration',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${adminAccessRecepient}',
+    subject: 'Site Administrator Access Has Been Granted',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>You have been granted Site Administrator Access.</p></body></html>'
+)
+
 MailTemplate.find_or_create_by(
     code: 'ONHOLD_ORIGINAL',
     name: 'On Hold Trial (original notice)',

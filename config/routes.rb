@@ -49,8 +49,8 @@ Rails.application.routes.draw do
 
     resources :trial_ownerships do
       collection do
-        get 'search'
         post 'search'
+        post 'end'
         post 'unique', defaults: {format: 'json'}
       end
     end
