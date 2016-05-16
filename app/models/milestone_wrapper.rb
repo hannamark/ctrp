@@ -69,10 +69,20 @@ class MilestoneWrapper < TrialBase
       elsif self.milestone.code == 'RTS'
         self.trial.verification_date = self.created_at
         self.trial.save
+      elsif self.milestone.code == 'TSR'
+        vfp = ProcessingStatus.find_by_code('VFP')
+        if self.submission.present? && vfp.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: vfp, submission: self.submission, trial: self.trial)
+        end
       elsif self.milestone.code == 'IAV'
         self.trial.verification_date = self.created_at
         self.trial.save
       elsif self.milestone.code == 'ONG'
+        avr = ProcessingStatus.find_by_code('AVR')
+        sts = Milestone.find_by_code('STS')
+        if self.submission.present? && avr.present? && sts.present? && self.trial.current_process_status_code(self.submission.id) == 'VNR' && self.trial.contains_milestone?(self.submission.id, sts.id)
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: avr, submission: self.submission, trial: self.trial)
+        end
         self.trial.verification_date = self.created_at
         self.trial.save
       end

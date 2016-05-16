@@ -420,6 +420,15 @@ class Trial < TrialBase
     end
   end
 
+  def current_process_status_code(submission_id)
+    target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.processing_status.present?
+      return target.processing_status.code
+    else
+      return nil
+    end
+  end
+
   def active_onhold_exists?
     self.onholds.each do |onhold|
       if onhold.offhold_date.nil?
