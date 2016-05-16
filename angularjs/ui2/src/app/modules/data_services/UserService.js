@@ -291,9 +291,9 @@
         };
 
         this.getAllOrgUsers = function () {
-            return service.allOrgUsers || _getAllOrgUser();
+            return service.allOrgUsers || service.getAllOrgUserNow();
         };
-        var _getAllOrgUser = function () {
+        this.getAllOrgUserNow = function () {
             service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json');
             return service.allOrgUsers;
         };
@@ -434,7 +434,7 @@
                 });
 
                 modalInstance.result.then(function () {
-                    console.log('modal closed, TODO redirect');
+                    //console.log('modal closed, TODO redirect');
                 });
             })();
 

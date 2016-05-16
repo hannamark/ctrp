@@ -23,8 +23,8 @@
                             <select name="userstatus" id="userstatus"
                                 class="form-control input-sm"
                                 ng-model="userDetailView.userDetails.user_status_id"
-                                ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
-                                ng-options="status.id as status.name for status in userDetailView.statusArr"
+                                ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_SITE-SU'"
+                                ng-options="status.id as status.name for status in (userDetailView.statusArrForROLESITESU || userDetailView.statusArr)"
                                 required>
                                 <option value="">Select a status</option>
                             </select>

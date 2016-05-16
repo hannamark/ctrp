@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope','countryList','GeoLocationService', 'AppSettingsService'];
 
-    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, GeoLocationService, AppSettingsService) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -23,7 +23,7 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
-        vm.updateUser = function () {
+        vm.updateUser = function (redirect) {
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
@@ -34,7 +34,12 @@
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             });
             vm.userDetailsOrig = angular.copy(vm.userDetails);
-            vm.getUserTrials();
+            vm.chooseTransferTrials = false;
+            if (redirect) {
+                $state.go('main.users');
+            } else {
+                vm.getUserTrials();
+            }
         };
 
         vm.isValidPhoneNumber = function(){
@@ -82,8 +87,16 @@
         };
 
         vm.saveWithoutTransfer = function() {
-            vm.updateUser();
-            vm.chooseTransferTrials = false;
+            var redirect = false;
+            if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
+                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
+                
+                if (vm.userRole == 'ROLE_SITE-SU') {
+                    //because site admin loses accessibility to user
+                    redirect = true;
+                }
+            }
+            vm.updateUser(redirect);
         };
 
         vm.transferAllUserTrials = function() {
@@ -124,6 +137,11 @@
         vm.statusArr = [];
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
             vm.statusArr = response.data;
+            if (vm.userRole == 'ROLE_SITE-SU') {
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INA'], item.code);
+                });
+            }
         }).catch(function (err) {
             vm.statusArr = [];
             console.log("Error in retrieving USER_STATUSES " + err);
