@@ -490,7 +490,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Validation QC Completed Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APS'
-      if !is_last_milestone?(submission_id, 'SAC')
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APC'
@@ -540,7 +541,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
       end
     elsif milestone_to_add.code == 'SPS'
-      if !is_last_milestone?(submission_id, 'SAC')
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'SPC'
@@ -591,14 +593,17 @@ class Trial < TrialBase
       if active_onhold_exists?
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
     elsif milestone_to_add.code == 'STS'
       if !is_last_milestone?(submission_id, 'TSR')
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
       end
-      if update_need_ack?
-        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
-      end
     elsif milestone_to_add.code == 'IAV'
+      if !is_last_milestone?(submission_id, 'RTS')
+        validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
+      end
       if active_onhold_exists?
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
