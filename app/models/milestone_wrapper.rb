@@ -66,6 +66,15 @@ class MilestoneWrapper < TrialBase
         if self.submission.present? && aqc.present? && self.trial.contains_milestone?(self.submission.id, aqc.id)
           MilestoneWrapper.create(milestone: Milestone.find_by_code('RTS'), submission: self.submission, trial: self.trial, created_by: self.created_by)
         end
+      elsif self.milestone.code == 'RTS'
+        self.trial.verification_date = self.created_at
+        self.trial.save
+      elsif self.milestone.code == 'IAV'
+        self.trial.verification_date = self.created_at
+        self.trial.save
+      elsif self.milestone.code == 'ONG'
+        self.trial.verification_date = self.created_at
+        self.trial.save
       end
     end
   end
