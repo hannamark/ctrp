@@ -599,6 +599,9 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'RTS')
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
+      if ['SUB', 'AMS', 'ACC', 'REJ'].include?(current_process_status_code(submission_id))
+        validation_msgs[:errors].push('Cannot be recorded because the most current processing status is "Submitted", "Amendment Submitted", "Accepted" or "Rejected')
+      end
       if active_onhold_exists?
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
