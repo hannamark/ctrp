@@ -681,7 +681,7 @@ class Trial < TrialBase
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: new_submission)
-      
+
       # Populate Submission ID for documents uploaded in draft stage
       self.trial_documents.each do |doc|
         doc.submission = new_submission
