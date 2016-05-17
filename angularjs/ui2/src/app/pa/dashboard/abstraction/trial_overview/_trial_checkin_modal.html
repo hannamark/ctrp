@@ -36,7 +36,7 @@
             <div class="modal-footer">
                 <div class="row top-buffer no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
-                        <button class="btn btn-primary pull-right" id="proceed_checkin_btn" ng-click="checkinModalView.proceedCheckin()" ng-disabled="!checkinModalView.checkinComment.length">Proceed With Check-in</button>
+                        <button class="btn btn-primary pull-right" id="proceed_checkin_btn" ng-click="checkinModalView.proceedCheckin()" ng-disabled="!checkinModalView.checkinComment.length || checkinModalView.isValidatingStatus">Proceed With Check-in</button>
                         <button class="btn btn-default pull-right" id="abstraction_view_btn" ng-click="checkinModalView.viewAbstractionValidation()" ng-hide="checkinModalView.isAbstractionValid">View Trial Abstraction Validation</button>
                         <button class="btn btn-danger pull-right" id="checkin_cancel_btn" ng-click="checkinModalView.cancel()">
                             <i class="glyphicon glyphicon-remove"></i> Cancel
