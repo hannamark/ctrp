@@ -25,6 +25,8 @@
             'USER_LIST': '/ctrp/users.json',
             'USER_TRIALS': '/ctrp/trial_ownerships/search.json',
             'USER_TRIALS_END': '/ctrp/trial_ownerships/end.json',
+            'USER_TRIALS_TRANSFER': '/ctrp/trial_ownerships/transfer.json',
+            'USER_TRIALS_CREATE': '/ctrp/trial_ownerships.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
             'CURATE_PERSON': '/ctrp/people/curate',

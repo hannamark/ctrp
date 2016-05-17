@@ -47,7 +47,7 @@ class TrialOwnershipsController < ApplicationController
     begin
       toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
       unless params[:ids].nil?
-        toEnd = toEnd.where(:trial_id => params[:ids])
+        toEnd = toEnd.where(:id => params[:ids])
       end
       toEnd.update_all(:ended_at => Time.now)
       @results_msgs = 'success'
@@ -75,6 +75,33 @@ class TrialOwnershipsController < ApplicationController
         format.json { render json: @trial_ownership.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # POST /trial_ownerships/transfer
+  # POST /trial_ownerships/transfer.json
+  def transfer
+    idsToEnd = params[:ids]
+    ownerUserId = params[:from_user_id]
+    if idsToEnd && idsToEnd.length > 0
+      toEnd = TrialOwnership.where(id: idsToEnd)
+      toEnd.update_all(:ended_at => Time.now)
+
+      params[:transfers].each do |transfer|
+        TrialOwnership.create(trial_id: transfer["trial_id"], user_id: transfer["user_id"])
+      end
+    elsif ownerUserId
+      toEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
+      trialIds = toEnd.pluck(:trial_id)
+      toEnd.update_all(:ended_at => Time.now)
+      params[:transfers].each do |transfer|
+        trialIds.each do |trial|
+          TrialOwnership.create(trial_id: trial, user_id: transfer["user_id"])
+        end
+      end
+    end
+
+    @results_msgs = 'success'
+    @results_msgs
   end
 
   # PATCH/PUT /trial_ownerships/1

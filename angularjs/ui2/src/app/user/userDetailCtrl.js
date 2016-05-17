@@ -170,7 +170,7 @@
             totalItems: null,
             rowHeight: 22,
             paginationPageSizes: [10, 25, 50, 100, 1000],
-            paginationPageSize: 25,
+            paginationPageSize: 10,
             useExternalPagination: true,
             useExternalSorting: true,
             enableFiltering: false,
@@ -223,7 +223,7 @@
             exporterMenuPdfAll: true,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700,
-            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id')
+            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm)
         };
 
         vm.gridOptions.onRegisterApi = function (gridApi) {
@@ -328,7 +328,7 @@
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id');
+            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
 })();
