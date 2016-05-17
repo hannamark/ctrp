@@ -17,7 +17,7 @@
 
         var vm = this;
         console.log('trialStatuses: ', trialStatuses);
-        vm.trialStatuses = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
+        vm.trialStatusDict = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
         vm.startDateRequired = true;
@@ -88,12 +88,10 @@
 
                 // convert the trial_status_id to status name
                 vm.tempTrialStatuses = _.map(vm.trialDetailObj.trial_status_wrappers, function(status) {
-                    var curStatusObj = _.findWhere(vm.trialStatuses, {id: status.trial_status_id});
+                    var curStatusObj = _.findWhere(vm.trialStatusDict, {id: status.trial_status_id});
                     status.trial_status_name = curStatusObj.name || '';
                     status.trial_status_code = curStatusObj.code || '';
                     status._destroy = false;
-                    // status.status_date is in this format "YYYY-mm-DD" (e.g. "2009-12-03")
-                    // transform it to the format ("DD-MMM-YYYY", e.g. "03-Dec-2009")
                     status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
                     delete status.trial_status; // delete the trial_status object
                     delete status.updated_at;
@@ -131,7 +129,7 @@
                 var clonedStatusObj = angular.copy(vm.statusObj);
                 // clonedStatusObj.status_date = clonedStatusObj.status_date.toISOString(); // ISOString for POST to backend
                 clonedStatusObj.status_date = DateService.convertISODateToLocaleDateStr(clonedStatusObj.status_date); // for display in table
-                var selectedStatus = _.findWhere(vm.trialStatuses, {id: clonedStatusObj.trial_status_id});
+                var selectedStatus = _.findWhere(vm.trialStatusDict, {id: clonedStatusObj.trial_status_id});
 
                 if (!!selectedStatus) {
                     clonedStatusObj.trial_status_name = selectedStatus.name;
@@ -165,10 +163,12 @@
          */
         function _validateStatusesDelegate(statusArr) {
             if (statusArr.length === 0) return;
+            console.info('validating status: ', statusArr);
 
             TrialService.validateStatus({"statuses": statusArr}).then(function(res) {
                 if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
                     vm.statusValidationMsgs = res.validation_msgs;
+                    console.info('status validation msg: ', vm.statusValidationMsgs);
                     _.each(vm.tempTrialStatuses, function(status, index) {
                         if (status._destroy) {
                             vm.statusValidationMsgs.splice(index, 0, {});
@@ -222,7 +222,7 @@
                 // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
                 // format date from 'yyyy-mm-DD' to 'yyyy-MMM-DD' (e.g. from 2009-12-03 to 03-Feb-2009)
                 vm.statusObj.status_date = DateService.convertISODateToLocaleDateStr(vm.statusObj.status_date);
-                var selectedStatus = _.findWhere(vm.trialStatuses, {id: vm.statusObj.trial_status_id});
+                var selectedStatus = _.findWhere(vm.trialStatusDict, {id: vm.statusObj.trial_status_id});
                 if (!!selectedStatus) {
                     vm.statusObj.trial_status_name = selectedStatus.name;
                     vm.statusObj.trial_status_code = selectedStatus.code;
@@ -355,7 +355,7 @@
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
                 if (newVal) {
                     vm.statusObj.why_stopped = '';
-                    var selectedStatus = _.findWhere(vm.trialStatuses, {id: newVal});
+                    var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
                     var statusName = selectedStatus.name || '';
                     if (_.contains(statusesForWhyStopped, statusName.toLowerCase())) {
                         vm.showWhyStoppedField = true;
@@ -381,7 +381,7 @@
             'approved for marketing'
         ];
         function _disableItemsInTrialStatusList() {
-            vm.trialStatuses = _.map(vm.trialStatuses, function(status) {
+            vm.trialStatusDict = _.map(vm.trialStatusDict, function(status) {
                 status.disabled = _.contains(nonSelectableStatuses, status.name.toLowerCase());
                 return status;
             });
