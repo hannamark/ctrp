@@ -28,10 +28,13 @@
                             Amendment Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
                         </uib-accordion-heading>
 
-                        <div class="form-group">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.amendment_num)}">
                             <label class="control-label col-xs-12 col-sm-3">Amendment Number:</label>
                             <div class=" col-xs-12 col-sm-6">
-                                <input type="text" restriction-field class="form-control input-sm" id="amendment_num" ng-model="trialDetailView.amendment_num">
+                                <input type="text" restriction-field class="form-control input-sm" id="amendment_num" name="amendment_num" ng-model="trialDetailView.amendment_num" required>
+                                <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.amendment_num)">
+                                    Amendment Number is Required
+                                </span>
                             </div>
                         </div>
 
