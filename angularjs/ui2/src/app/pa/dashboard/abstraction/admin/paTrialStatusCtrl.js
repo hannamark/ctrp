@@ -85,20 +85,7 @@
                 // load comments for the trial with the field name {commentField}
                 _loadComments(commentField);
                 _convertDates();
-
-                // convert the trial_status_id to status name
-                vm.tempTrialStatuses = _.map(vm.trialDetailObj.trial_status_wrappers, function(status) {
-                    var curStatusObj = _.findWhere(vm.trialStatusDict, {id: status.trial_status_id});
-                    status.trial_status_name = curStatusObj.name || '';
-                    status.trial_status_code = curStatusObj.code || '';
-                    status._destroy = false;
-                    status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
-                    delete status.trial_status; // delete the trial_status object
-                    delete status.updated_at;
-                    delete status.created_at;
-                    return status;
-                });
-
+                vm.tempTrialStatuses = PATrialService.annotateTrialStatusWithNameAndCode(vm.trialDetailObj.trial_status_wrappers, vm.trialStatusDict);
                 validateStatuses();
             }, 0);
         } // _getTrialDetailCopy

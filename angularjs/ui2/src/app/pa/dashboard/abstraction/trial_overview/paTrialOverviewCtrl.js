@@ -13,7 +13,8 @@
         '$mdToast', '$document', '$timeout', 'Common', 'MESSAGES', 'researchCategories',
         '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService', '$uibModal'];
 
-    checkinModalCtrl.$inject = ['$scope', '$uibModalInstance', 'curTrialObj']; // checkin modal controller
+    checkinModalCtrl.$inject = ['$scope', '$uibModalInstance', 'curTrialObj', 'trialStatusDict',
+        'PATrialService', 'TrialService']; // checkin modal controller
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES, researchCategories,
             $scope, TrialService, UserService, curTrial, _, PersonService, $uibModal) {
@@ -103,7 +104,8 @@
                 controllerAs: 'checkinModalView',
                 size: 'md',
                 resolve: {
-                    curTrialObj: vm.trialDetailObj
+                    curTrialObj: vm.trialDetailObj,
+                    trialStatusDict: TrialService.getTrialStatuses(),
                 }
             });
             var modalOpened = true;
@@ -215,7 +217,6 @@
                         curUserRole === 'ROLE_ADMIN');
 
                     _checkEditableStatus();
-
                     if (!!newVal) {
                         // ROLE_SUPER can override the checkout button
                         vm.scientificCheckoutBtnDisabled = vm.curUser !== checkedoutByUsername &&
@@ -243,7 +244,7 @@
 
         function watchUpdatesInChildrenScope() {
             $scope.$on('updatedInChildScope', function() {
-                console.info('updatedInChildScope, getting current trial now!');
+                // console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
                 _checkEditableStatus();
                 updateTrialDetailObj(vm.trialDetailObj);
@@ -263,7 +264,6 @@
          * @return {String}                     research category name (lower case), could be empty if not found
          */
         function _getResearchCategory(researchCategoryArr, researchCatId) {
-
             var catObj = _.findWhere(researchCategoryArr, {id: researchCatId});
             var catName = !!catObj ? catObj.name : '';
             return catName.toLowerCase();
@@ -273,14 +273,20 @@
     /**
      * Checkin modal controller
      */
-    function checkinModalCtrl($scope, $uibModalInstance, curTrialObj) {
+    function checkinModalCtrl($scope, $uibModalInstance, curTrialObj, trialStatusDict,
+            PATrialService, TrialService) {
         var viewModel = this;
-        console.info('in checkin modal ctrl!');
         viewModel.curTrialObj = curTrialObj;
         viewModel.checkinComment = null;
-        viewModel.isTrialStatusValid = true; // TODO:
+        viewModel.isValidatingStatus = true;
+        viewModel.isTrialStatusValid = true;
         viewModel.isAbstractionValid = true; // TODO:
+        var annotatedTrialStatuses = PATrialService.annotateTrialStatusWithNameAndCode(curTrialObj.trial_status_wrappers, trialStatusDict);
 
+        activate();
+        function activate() {
+            validateTrialStatuses(annotatedTrialStatuses);
+        }
         viewModel.proceedCheckin = function() {
             $uibModalInstance.close(viewModel.checkinComment);
         };
@@ -296,6 +302,21 @@
             console.info('viewAbstractionValidation....');
             // TODO: redirect to viewAbstractionValidation page
         };
+
+        function validateTrialStatuses(annotatedStatusArr) {
+            viewModel.isValidatingStatus = true;
+            TrialService.validateStatus({"statuses": annotatedStatusArr}).then(function(res) {
+                if (res.validation_msgs && angular.isArray(res.validation_msgs) && res.validation_msgs.length > 0) {
+                    viewModel.isTrialStatusValid = false;
+                } else {
+                    viewModel.isTrialStatusValid = true;
+                }
+            }).catch(function(err) {
+                console.error('error in validating status: ', err);
+            }).finally(function() {
+                viewModel.isValidatingStatus = false;
+            });
+        }
 
     } // checkin modal controller
 

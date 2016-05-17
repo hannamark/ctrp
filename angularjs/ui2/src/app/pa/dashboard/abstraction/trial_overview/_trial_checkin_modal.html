@@ -7,10 +7,14 @@
             </div>
             <div class="modal-body">
                 <form class="form form-horizontal" role="form" name="checkin_form" novalidate>
-                    <div class="row top-buffer" ng-show="!checkinModalView.isTrialStatusValid || !checkinModalView.isAbstractionValid">
-                        <label for="" class="control-label col-xs-12 col-sm-5">Warnings & Errors:</label>
-                        <div class="col-xs-12 col-sm-7">
-                            
+                    <div class="row" ng-show="!checkinModalView.isTrialStatusValid || !checkinModalView.isAbstractionValid">
+                        <div class="col-xs-12">
+                            <ul>
+                                <li class="text-danger" ng-hide="checkinModalView.isValidatingStatus || checkinModalView.isTrialStatusValid">
+                                    <strong>There are Trial Status Warnings with this trial</strong> (<a ui-sref="main.pa.trialOverview.paTrialStatus" ng-click="checkinModalView.cancel()">View Trial Status History</a>)
+                                </li>
+
+                            </ul>
                         </div>
                     </div>
                     <div class="row top-buffer">
@@ -30,7 +34,6 @@
                 <div class="row top-buffer no-bottom-margin">
                     <div class="btn-toolbar col-xs-12">
                         <button class="btn btn-primary pull-right" id="proceed_checkin_btn" ng-click="checkinModalView.proceedCheckin()" ng-disabled="!checkinModalView.checkinComment.length">Proceed With Check-in</button>
-                        <button class="btn btn-default pull-right" id="view_trial_status_btn" ng-click="checkinModalView.viewTrialStatusHistory()" ng-hide="checkinModalView.isTrialStatusValid">View Trial Status History</button>
                         <button class="btn btn-default pull-right" id="abstraction_view_btn" ng-click="checkinModalView.viewAbstractionValidation()" ng-hide="checkinModalView.isAbstractionValid">View Trial Abstraction Validation</button>
                         <button class="btn btn-danger pull-right" id="checkin_cancel_btn" ng-click="checkinModalView.cancel()">
                             <i class="glyphicon glyphicon-remove"></i> Cancel
