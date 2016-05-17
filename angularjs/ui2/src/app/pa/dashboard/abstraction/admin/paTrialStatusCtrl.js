@@ -150,12 +150,9 @@
          */
         function _validateStatusesDelegate(statusArr) {
             if (statusArr.length === 0) return;
-            console.info('validating status: ', statusArr);
-
             TrialService.validateStatus({"statuses": statusArr}).then(function(res) {
                 if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
                     vm.statusValidationMsgs = res.validation_msgs;
-                    console.info('status validation msg: ', vm.statusValidationMsgs);
                     _.each(vm.tempTrialStatuses, function(status, index) {
                         if (status._destroy) {
                             vm.statusValidationMsgs.splice(index, 0, {});
