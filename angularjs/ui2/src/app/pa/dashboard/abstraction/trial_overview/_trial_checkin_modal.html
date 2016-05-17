@@ -25,7 +25,7 @@
                             <span ng-show="checkin_form.checkin_comment.$dirty">
                                 {{4000 - checkin_form.checkin_comment.$viewValue.length}} characters left
                             </span>
-                            <span ng-messages="checkin_form.checkin_comment.$error">
+                            <span ng-messages="checkin_form.checkin_comment.$dirty && checkin_form.checkin_comment.$error">
                                 <span class="help-block" ng-message="required">Check-in Comment is Required</span>
                             </span>
                         </div>
