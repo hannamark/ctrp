@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userListCtrl($scope, userDetailObj, toastr, UserService, uiGridConstants, $location, AppSettingsService) {
+    function userListCtrl(PromiseTimeoutService, $scope, userDetailObj, toastr, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS ) {
 
         var vm = this;
         vm.curUser = userDetailObj;
@@ -169,13 +169,12 @@
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
-            exporterMenuAllData: false,
+            exporterMenuAllData: true,
             exporterMenuPdfAll: true,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700,
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
-
 
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
             vm.statusArr = response.data;
@@ -207,8 +206,21 @@
                 vm.searchUsers();
             });
         };
-
+        vm.gridOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
+                function (data) {
+                    vm.gridOptions.useExternalPagination = false;
+                    vm.gridOptions.useExternalSorting = false;
+                    vm.gridOptions.data = data['users'];
+                }
+            );
+        };
         vm.searchUsers = function () {
+            vm.gridOptions.useExternalPagination = true;
+            vm.gridOptions.useExternalSorting = true;
             UserService.searchUsers(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data['users'];
                 vm.gridOptions.totalItems =  data.total;
