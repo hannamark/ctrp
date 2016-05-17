@@ -241,6 +241,7 @@ class CreateTrialSummaryReportService
     principle_investigator.nil? ? principle_investigator = nil : principle_investigator = principle_investigator.fname + " " + principle_investigator.mname + " " + principle_investigator.lname
     investigator.nil? ? investigator = nil : investigator = investigator.fname + " " + investigator.mname + " " + investigator.lname
 
+
     h.store("Investigator", investigator)
     h.store("Investigator Title", @trial.investigator_title)
     h.store("Investigator Affilliation", investigator_affiliation)
@@ -623,15 +624,24 @@ def generate_participating_sites_table
     participating_site_investigators = col.participating_site_investigators
 
     participating_site_investigators.each do |col|
-      investigator_name = Person.find_by_id(col.person_id).name
-      investigator_type = col.investigator_type.name
+      col.person_id.nil? ? investigator = nil : investigator = Person.find_by_id(col.person_id)
+      investigator_name = nil
+      if investigator.nil?
+        investigator = nil
+      else
+        investigator_name = investigator.fname if investigator.fname
+        investigator_name = " " + investigator.mname if investigator.mname
+        investigator_name = " " + investigator.lname if investigator.lname
+      end
 
-      array[i][4] << "." +investigator_name + " - " + investigator_type
+      investigator_type = col.investigator_type
+      investigator_name = investigator_name + " - " + investigator_type if investigator_type
+
+
+      array[i][4] <<  "." + investigator_name
       array[i][4].line_break
 
     end
-
-
 
     i = i+1
   end
@@ -644,49 +654,7 @@ end
     return RTF::Colour.new(240,200,200)
   end
 
-  def trial_params
-      params.require(:trial).permit(:nci_id, :lead_protocol_id, :allocation_id, :official_title, :acronym, :pilot, :research_category_id,
-                                    :primary_purpose_other, :secondary_purpose_other, :investigator_title, :intervention_model_id, :accept_vol, :min_age, :max_age, :min_age_unit_id, :max_age_unit_id, :gender_id,
-                                    :program_code, :grant_question, :start_date, :start_date_qual, :primary_comp_date, :num_of_arms, :biospecimen_retention_id, :biospecimen_desc,
-                                    :primary_comp_date_qual, :comp_date, :comp_date_qual, :ind_ide_question, :masking_id, :masking_role_caregiver,
-                                    :masking_role_investigator, :masking_role_outcome_assessor, :masking_role_subject,
-                                    :intervention_indicator, :sec801_indicator, :data_monitor_indicator, :history, :study_pop_desc, :sampling_method,
-                                    :study_source_id, :phase_id, :primary_purpose_id, :secondary_purpose_id, :study_model_id, :study_model_other,
-                                    :accrual_disease_term_id, :responsible_party_id, :lead_org_id, :pi_id, :sponsor_id, :time_perspective_id, :time_perspective_other,
-                                    :investigator_id, :investigator_aff_id, :is_draft, :edit_type, :lock_version, :intervention_name,
-                                    :brief_title, :brief_summary, :objective, :detailed_description, :study_classification_id, :target_enrollment, :final_enrollment,
-                                    :process_priority, :process_comment, :nci_specific_comment, :nih_nci_div, :nih_nci_prog, :keywords,
-                                    :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
-                                    other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
-                                    alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                    arms_groups_attributes: [:id, :label, :arms_groups_type, :description, :intervention_text, :trial_id, :_destroy],
-                                    central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
-                                    trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
-                                    collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],
-                                    grants_attributes: [:id, :funding_mechanism, :institute_code, :serial_number, :nci, :_destroy],
-                                    trial_status_wrappers_attributes: [:id, :status_date, :why_stopped, :trial_status_id,
-                                                                       :comment, :_destroy],
-                                    ind_ides_attributes: [:id, :ind_ide_type, :ind_ide_number, :grantor, :holder_type_id,
-                                                          :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
-                                    oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
-                                    associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
-                                    trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
-                                    interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :_destroy],
-                                    other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
-                                    submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
-                                    sub_groups_attributes:[:id,:index,:label,:description,:_destroy],
-                                    anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
-                                    outcome_measures_attributes: [:id, :index,:title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
-                                    markers_attributes: [:id,:name,:protocol_marker_name,:biomarker_use_id,:evaluation_type_other,:assay_type_other,:_destroy,:record_status,
-                                                         :specimen_type_other,:cadsr_marker_id,
-                                                         marker_eval_type_associations_attributes:[:id,:evaluation_type_id,:_destroy],
-                                                         marker_assay_type_associations_attributes:[:id,:assay_type_id,:_destroy],
-                                                         marker_spec_type_associations_attributes:[:id,:specimen_type_id,:_destroy],
-                                                         marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
-                                    diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
-                                    milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
-                                    onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy])
-  end
+
 
 
 
