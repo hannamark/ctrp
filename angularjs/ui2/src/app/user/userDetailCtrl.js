@@ -152,7 +152,7 @@
         var TrialSearchParams = function (){
             return {
                 user_id: vm.userDetails.id,
-                rows: 25,
+                rows: 10,
                 start: 1
             }
         }; //initial User Search Parameters
