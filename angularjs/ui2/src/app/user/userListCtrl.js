@@ -37,7 +37,7 @@
 
         var optionOrg = {
             name: 'user_organization_name',
-            displayName: 'Affiliated Org.',
+            displayName: 'Organizational Affiliation',
             enableSorting: true,
             minWidth: '100',
             width: '*',
@@ -47,7 +47,7 @@
 
         var optionOrgFamilies = {
             name: 'families',
-            displayName: 'Org. Family',
+            displayName: 'Organization Family',
             enableSorting: false,
             minWidth: '100',
             width: '*',
@@ -58,7 +58,7 @@
         var optionRole = {
             name: 'admin',
             field: 'role',
-            displayName: 'Site Admin',
+            displayName: 'Site Administrator Privileges',
             enableSorting: true,
             width: '110',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SITE-SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
@@ -66,7 +66,7 @@
 
         var optionEmail = {
             name: 'receive_email_notifications',
-            displayName: 'Email Notify',
+            displayName: 'e-mails',
             enableSorting: true,
             width: '120',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
@@ -105,7 +105,7 @@
                 {
                     name: 'username',
                     enableSorting: true,
-                    displayName: 'username',
+                    displayName: 'Username',
                     minWidth: '100',
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +

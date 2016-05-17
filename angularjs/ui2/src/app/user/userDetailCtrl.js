@@ -86,20 +86,29 @@
             }
         };
 
-        vm.saveWithoutTransfer = function() {
+        vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
-                
+
                 if (vm.userRole == 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
                 }
             }
+            return redirect;
+        };
+
+        vm.saveWithoutTransfer = function() {
+            var redirect = vm.checkForOrgChange();
+            if (redirect) {
+                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
+            }
             vm.updateUser(redirect);
+            vm.chooseTransferTrials = false;
         };
 
         vm.transferAllUserTrials = function() {
+            vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
             vm.chooseTransferTrials = false;
         };
@@ -152,7 +161,7 @@
         var TrialSearchParams = function (){
             return {
                 user_id: vm.userDetails.id,
-                rows: 25,
+                rows: 10,
                 start: 1
             }
         }; //initial User Search Parameters
@@ -170,7 +179,7 @@
             totalItems: null,
             rowHeight: 22,
             paginationPageSizes: [10, 25, 50, 100, 1000],
-            paginationPageSize: 25,
+            paginationPageSize: 10,
             useExternalPagination: true,
             useExternalSorting: true,
             enableFiltering: false,
@@ -223,7 +232,7 @@
             exporterMenuPdfAll: true,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700,
-            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id')
+            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm)
         };
 
         vm.gridOptions.onRegisterApi = function (gridApi) {
@@ -328,7 +337,7 @@
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id');
+            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
 })();

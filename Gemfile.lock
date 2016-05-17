@@ -230,6 +230,7 @@ GEM
       nokogiri
       roo (>= 2.0.0beta1, < 3)
       spreadsheet (> 0.9.0)
+    rtf (0.3.3)
     ruby-ole (1.2.11.8)
     rubyzip (1.1.7)
     rufus-scheduler (3.1.10)
@@ -312,6 +313,7 @@ DEPENDENCIES
   rest-client
   roo
   roo-xls
+  rtf
   rufus-scheduler
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
@@ -322,3 +324,6 @@ DEPENDENCIES
   web-console (~> 2.0)
   wicked
   xml-mapping
+
+BUNDLED WITH
+   1.10.5

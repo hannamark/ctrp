@@ -212,7 +212,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="row animated-item">
-                                <div ui-grid="userDetailView.gridOptions"  ng-class="{'ui-grid-hide-left': !userDetailView.isCurationEnabled}"
+                                <div ui-grid="userDetailView.gridOptions"  class="user-detail-grid"
                                      ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
                             </div>
                         </div>
@@ -230,7 +230,7 @@
     <ctrptransferselect options="userDetailView.userOptions"> </ctrptransferselect>
 </modal>
 
-<modal visible="userDetailView.chooseTransferTrials" title="Inactivate User and Transfer Ownership?" id="transferInactiveUserTrials">
+<modal visible="userDetailView.chooseTransferTrials" title="Change Transfer Ownership?" id="transferInactiveUserTrials">
     <div id="chooseTransferTrials">The trial(s) owned by this user will need to be reassigned to a new owner.</div>
     <div class="row modal-footer">
         <div class="btn-toolbar col-xs-12 col-sm-12">
@@ -248,6 +248,6 @@
     </div>
 </modal>
 
-<modal visible="userDetailView.showAllTrialsModal" title="Transfer Ownership All Trials" id="transferTrials">
+<modal visible="userDetailView.showAllTrialsModal" title="Transfer Ownership of Trials" id="transferTrials">
     <ctrptransferselect options="userDetailView.userOptions"> </ctrptransferselect>
 </modal>

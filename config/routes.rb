@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     resources :trial_ownerships do
       collection do
         post 'search'
+        post 'transfer'
         post 'end'
         post 'unique', defaults: {format: 'json'}
       end
@@ -256,6 +257,7 @@ Rails.application.routes.draw do
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
+          get  'download_tsr_in_rtf/:trial_id' => 'trial_documents#download_tsr_in_rtf'
           post 'deleted_documents'
         end
       end
