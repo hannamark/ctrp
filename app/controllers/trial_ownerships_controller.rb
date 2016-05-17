@@ -87,7 +87,9 @@ class TrialOwnershipsController < ApplicationController
       toEnd.update_all(:ended_at => Time.now)
 
       params[:transfers].each do |transfer|
-        TrialOwnership.create(trial_id: transfer["trial_id"], user_id: transfer["user_id"])
+        if !TrialOwnership.exists?(trial_id: transfer["trial_id"], user_id: transfer["user_id"], ended_at: nil)
+          TrialOwnership.create(trial_id: transfer["trial_id"], user_id: transfer["user_id"])
+        end
       end
     elsif ownerUserId
       toEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
@@ -95,7 +97,9 @@ class TrialOwnershipsController < ApplicationController
       toEnd.update_all(:ended_at => Time.now)
       params[:transfers].each do |transfer|
         trialIds.each do |trial|
-          TrialOwnership.create(trial_id: trial, user_id: transfer["user_id"])
+          if !TrialOwnership.exists?(trial_id: trial, user_id: transfer["user_id"], ended_at: nil)
+            TrialOwnership.create(trial_id: trial, user_id: transfer["user_id"])
+          end
         end
       end
     end
