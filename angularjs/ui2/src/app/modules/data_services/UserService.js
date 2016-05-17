@@ -347,8 +347,13 @@
 
                         service.transferUserTrialsOwnership(searchParams).then(function (data) {
                             if(data.results === 'success') {
-                                controller.showAllTrialsModal === false;
-                                controller.getUserTrials();
+                                if (controller.passiveTransferMode) {
+                                    controller.passiveTransferMode = false;
+                                    controller.updateUser(controller.checkForOrgChange());
+                                } else {
+                                    controller.showAllTrialsModal === false;
+                                    controller.getUserTrials();
+                                }
                             }
                         });
                     }

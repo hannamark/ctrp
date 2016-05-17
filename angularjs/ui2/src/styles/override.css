@@ -1360,7 +1360,7 @@ div[disabled] {
 
 
 .user-detail-grid.ui-grid {
-    height: 282px;
+    max-height: 282px;
 }
 .ctrptransferselect label {
     margin: 10px;

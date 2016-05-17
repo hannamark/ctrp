@@ -86,20 +86,29 @@
             }
         };
 
-        vm.saveWithoutTransfer = function() {
+        vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
-                
+
                 if (vm.userRole == 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
                 }
             }
+            return redirect;
+        };
+
+        vm.saveWithoutTransfer = function() {
+            var redirect = vm.checkForOrgChange();
+            if (redirect) {
+                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
+            }
             vm.updateUser(redirect);
+            vm.chooseTransferTrials = false;
         };
 
         vm.transferAllUserTrials = function() {
+            vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
             vm.chooseTransferTrials = false;
         };
