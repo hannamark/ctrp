@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES','$scope','countryList','GeoLocationService', 'AppSettingsService'];
+    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope','countryList','GeoLocationService', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $scope, countryList, GeoLocationService, AppSettingsService) {
+    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, GeoLocationService, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -23,7 +23,7 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
-        vm.updateUser = function () {
+        vm.updateUser = function (redirect) {
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
@@ -34,7 +34,12 @@
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             });
             vm.userDetailsOrig = angular.copy(vm.userDetails);
-            vm.getUserTrials();
+            vm.chooseTransferTrials = false;
+            if (redirect) {
+                $state.go('main.users');
+            } else {
+                vm.getUserTrials();
+            }
         };
 
         vm.isValidPhoneNumber = function(){
@@ -82,8 +87,16 @@
         };
 
         vm.saveWithoutTransfer = function() {
-            vm.updateUser();
-            vm.chooseTransferTrials = false;
+            var redirect = false;
+            if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
+                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
+                
+                if (vm.userRole == 'ROLE_SITE-SU') {
+                    //because site admin loses accessibility to user
+                    redirect = true;
+                }
+            }
+            vm.updateUser(redirect);
         };
 
         vm.transferAllUserTrials = function() {
@@ -124,6 +137,11 @@
         vm.statusArr = [];
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
             vm.statusArr = response.data;
+            if (vm.userRole == 'ROLE_SITE-SU') {
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INA'], item.code);
+                });
+            }
         }).catch(function (err) {
             vm.statusArr = [];
             console.log("Error in retrieving USER_STATUSES " + err);
@@ -201,7 +219,7 @@
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
-            exporterMenuAllData: false,
+            exporterMenuAllData: true,
             exporterMenuPdfAll: true,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700,
@@ -217,8 +235,21 @@
                 vm.getUserTrials();
             });
         };
-
+        vm.gridOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, allSearchParams).then(
+                function (data) {
+                    vm.gridOptions.useExternalPagination = false;
+                    vm.gridOptions.useExternalSorting = false;
+                    vm.gridOptions.data = data['trial_ownerships'];
+                }
+            );
+        };
         vm.getUserTrials = function () {
+            vm.gridOptions.useExternalPagination = true;
+            vm.gridOptions.useExternalSorting = true;
             UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data['trial_ownerships'];
                 vm.gridOptions.totalItems =  data.total;
@@ -259,7 +290,7 @@
 
             $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
                 vm.states = [];
-            })
+            });
 
 
         } //listenToStatesProvinces
@@ -294,15 +325,6 @@
             //do the search with the updated sorting
             vm.getUserTrials();
         } //sortChangedCallBack
-
-        $scope.export = function(){
-            if ($scope.export_format == 'csv') {
-                var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
-                $scope.gridApi.exporter.csvExport( $scope.export_row_type, $scope.export_column_type, myElement );
-            } else if ($scope.export_format == 'pdf') {
-                $scope.gridApi.exporter.pdfExport( $scope.export_row_type, $scope.export_column_type );
-            };
-        };
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {

@@ -24,7 +24,7 @@
                             <td>{{milestone.milestone.name}}</td>
                             <td>{{milestone.comment}}</td>
                             <td>{{milestone.created_by}}</td>
-                            <td>{{milestone.created_at}}</td>
+                            <td>{{milestone.created_at | date: 'dd-MMM-yyyy H:mm'}}</td>
                         </tr>
                     </tbody>
                 </table>
