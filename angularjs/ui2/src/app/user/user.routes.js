@@ -84,6 +84,7 @@
                         }
                     },
                     ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
                         label: 'User Portal'
                     }
                 })
@@ -115,6 +116,7 @@
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
+                        parent: 'main.users',
                         label: 'User Profile'
                     }
                 });
