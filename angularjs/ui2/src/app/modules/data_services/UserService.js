@@ -358,10 +358,12 @@
                     }
                 };
                 _.each(data.users, function (user) {
-                    controller.userOptions.items.push({
-                        'id': user.id,
-                        'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
-                    });
+                    if(user.id !== controller.userDetails.id) {
+                        controller.userOptions.items.push({
+                            'id': user.id,
+                            'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
+                        });
+                    }
                 });
                 controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
             });
