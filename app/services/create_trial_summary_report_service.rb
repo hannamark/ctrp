@@ -60,6 +60,19 @@ class CreateTrialSummaryReportService
 
 
 
+
+    @document.paragraph(@styles['PS_NORMAL']) do |p2|
+      p2.foreground(@foreground_th_text_color) << 'Trial Summary Report'
+      p2.line_break()
+      p2 << 'Date:'
+      p2.line_break()
+      p2  << 'Record Verification Date:'
+      p2.line_break()
+    end
+
+
+
+
     @document.page_break
     generate_trial_title_table
     @document.page_break
@@ -72,7 +85,6 @@ class CreateTrialSummaryReportService
     generate_regulatory_information_table
     @document.page_break
     trial_design_table
-
     @document.page_break
 
     generate_trial_description_table
@@ -115,13 +127,7 @@ class CreateTrialSummaryReportService
 
     @document.page_break
 
-
-
-
-
-
-
-    #And the file name will be "TSR_""CTRP Trial ID""_""Current Date YYYY-MM-DD""-
+      #And the file name will be "TSR_""CTRP Trial ID""_""Current Date YYYY-MM-DD""-
     # "Current Time HHMM(24hr)""_""Current Submission Type (O for original and A for amendment""_""Amendment Number (for amendments)"<examples>
 
     temp_file = Tempfile.new(['Sample2',".rtf"])
@@ -771,8 +777,6 @@ class CreateTrialSummaryReportService
 
           i = i+1
         end
-
-         #@document << @participating_sites_table.to_rtf
 
       end
 end
