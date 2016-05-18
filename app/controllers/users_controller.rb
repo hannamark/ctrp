@@ -148,7 +148,7 @@ end
     @users = @users.matches_wc('email', params[:email]) if params[:email].present?
     @users = @users.matches_wc('role', 'ROLE_SITE-SU')  if params[:site_admin].present?
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
-
+    @users = @users.matches_wc('organization_id', params[:organization_id]) if params[:organization_id].present?
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
     @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id')
@@ -172,6 +172,9 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status_id)
+      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username,
+                                   :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
+                                   :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
+                                   :phone, :user_status_id)
     end
 end

@@ -246,7 +246,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
-  after_save :send_email
+  #after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -259,6 +259,8 @@ class Trial < TrialBase
         actions.append('update')
         actions.append('amend')
         actions.append('verify-data')
+        actions.append('view-tsr')
+
       end
     end
 
@@ -420,6 +422,15 @@ class Trial < TrialBase
     end
   end
 
+  def current_process_status_code(submission_id)
+    target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.processing_status.present?
+      return target.processing_status.code
+    else
+      return nil
+    end
+  end
+
   def active_onhold_exists?
     self.onholds.each do |onhold|
       if onhold.offhold_date.nil?
@@ -490,7 +501,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Validation QC Completed Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APS'
-      if !is_last_milestone?(submission_id, 'SAC')
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APC'
@@ -540,7 +552,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
       end
     elsif milestone_to_add.code == 'SPS'
-      if !is_last_milestone?(submission_id, 'SAC')
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'SPC'
@@ -588,17 +601,23 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'RTS')
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
+      if ['SUB', 'AMS', 'ACC', 'REJ'].include?(current_process_status_code(submission_id))
+        validation_msgs[:errors].push('Cannot be recorded because the most current processing status is "Submitted", "Amendment Submitted", "Accepted" or "Rejected')
+      end
       if active_onhold_exists?
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'STS'
       if !is_last_milestone?(submission_id, 'TSR')
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
       end
-      if update_need_ack?
-        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
-      end
     elsif milestone_to_add.code == 'IAV'
+      if !is_last_milestone?(submission_id, 'RTS')
+        validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
+      end
       if active_onhold_exists?
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
@@ -615,6 +634,13 @@ class Trial < TrialBase
     elsif milestone_to_add.code == 'LRD'
       if update_need_ack?
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    end
+
+    # Duplication check
+    if !['STR', 'SRE', 'TSR', 'STS', 'ONG'].include?(milestone_to_add.code)
+      if contains_milestone?(submission_id, milestone_id)
+        validation_msgs[:errors].push('This milestone cannot be recorded multiple times')
       end
     end
 

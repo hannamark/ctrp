@@ -11,9 +11,9 @@
         .controller('ModalInstancePersonCtrl', ModalInstancePersonCtrl);
 
 
-    ModalInstancePersonCtrl.$inject = ['$modalInstance', 'PersonService', 'personId', '$timeout'];
+    ModalInstancePersonCtrl.$inject = ['$uibModalInstance', 'PersonService', 'personId', '$timeout'];
 
-    function ModalInstancePersonCtrl($modalInstance, PersonService, personId, $timeout) {
+    function ModalInstancePersonCtrl($uibModalInstance, PersonService, personId, $timeout) {
         var vm = this;
         vm.modalTitle = "Please confirm";
         vm.deletionStatus = "";
@@ -34,7 +34,7 @@
         };
 
         vm.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
 
 
@@ -45,9 +45,9 @@
             $timeout(function() {
                 if (parseInt(httpStatusCode) > 206) {
                     //failed deletion is treated the same as cancel
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 } else {
-                    $modalInstance.close('delete');
+                    $uibModalInstance.close('delete');
                 }
             }, 2500);
         }

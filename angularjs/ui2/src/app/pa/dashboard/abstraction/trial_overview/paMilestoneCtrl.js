@@ -97,15 +97,6 @@
         /****************************** implementations **************************/
 
         function activate () {
-            convertDate();
-        }
-
-        function convertDate() {
-            angular.forEach(vm.curTrial.milestone_wrappers, function (milestone) {
-                if (milestone.created_at) {
-                    milestone.created_at = DateService.convertISODateToLocaleDateStr(milestone.created_at);
-                }
-            });
         }
 
         // Return true if the option is rejection option
