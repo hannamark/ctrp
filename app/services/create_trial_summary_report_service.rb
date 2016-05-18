@@ -54,53 +54,10 @@ class CreateTrialSummaryReportService
   @document = RTF::Document.new(RTF::Font.new(RTF::Font::MODERN, 'Helvetica'),style)
 
 
-
-
-
-   @document.page_break
-
-
-    #array1 = document.table(1,1,2000,4000,2000)
-    #array1[0][0].background(@grey) << "Trial Identification"
-
-
-
-    trial_identification_table    =@document.table(3, 3, 2000, 4000, 2000)
-    #trial_identification_table.add()
-
-=begin
-    table.border_width = 5
-    table[0][0] << 'Cell 0,0'
-    table[0][1].top_border_width = 10
-    table[0][1] << 'This is a little preamble text for '
-    table[0][1].apply(@styles['CS_HEADING']) << 'Cell 0,1'
-    table[0][1].line_break
-    table[0][1] << ' to help in examining how formatting is working.'
-    table[0][2] << 'Cell 0,2'
-    table[1][0] << 'Cell 1,0'
-    table[1][1] << 'Cell 1,1'
-    table[1][2] << 'Cell 1,2'
-    table[2][0] << 'Cell 2,0'
-    table[2][1] << 'Cell 2,1'
-    table[2][2] << 'Cell 2,2'
-=end
-
-
     ###### TSR Report start #######################
     ###############################################
     ###############################################
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
-   @document.page_break
+
 
 
     @document.page_break
@@ -238,14 +195,30 @@ class CreateTrialSummaryReportService
     @trial.investigator_id.nil? ? investigator = nil : investigator = Person.find_by_id(@trial.investigator_id)
     @trial.investigator_aff_id.nil? ? investigator_affiliation = nil : investigator_affiliation = Organization.find_by_id(@trial.investigator_aff_id).name
     @trial.pi_id.nil? ? principle_investigator = nil : principle_investigator = Person.find_by_id(@trial.pi_id)
-    principle_investigator.nil? ? principle_investigator = nil : principle_investigator = principle_investigator.fname + " " + principle_investigator.mname + " " + principle_investigator.lname
-    investigator.nil? ? investigator = nil : investigator = investigator.fname + " " + investigator.mname + " " + investigator.lname
+   # principle_investigator.nil? ? principle_investigator = nil : principle_investigator = principle_investigator.fname + " " + principle_investigator.mname + " " + principle_investigator.lname
+   # investigator.nil? ? investigator = nil : investigator = investigator.fname + " " + investigator.mname + " " + investigator.lname
+
+    if principle_investigator.nil?
+      principle_investigator = nil
+    else
+      principle_investigator_name = principle_investigator.fname if principle_investigator.fname
+      principle_investigator_name = " " + principle_investigator.mname if principle_investigator.mname
+      principle_investigator_name = " " + principle_investigator.lname if principle_investigator.lname
+    end
 
 
-    h.store("Investigator", investigator)
+    if investigator.nil?
+      investigator = nil
+    else
+      investigator_name = investigator.fname if investigator.fname
+      investigator_name = " " + investigator.mname if investigator.mname
+      investigator_name = " " + investigator.lname if investigator.lname
+    end
+
+    h.store("Investigator", investigator_name)
     h.store("Investigator Title", @trial.investigator_title)
     h.store("Investigator Affilliation", investigator_affiliation)
-    h.store("Principal Investigator",principle_investigator )
+    h.store("Principal Investigator",principle_investigator_name )
     h.store("Affilliation", "")
 
 
