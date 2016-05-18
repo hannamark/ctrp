@@ -107,6 +107,8 @@
                 }
             });
             var modalOpened = true;
+            vm.disableBtn = true;
+
             modalInstance.result.then(function(checkinComment) {
                 console.info('modal closed, comment: ', checkinComment);
                 if (angular.isDefined(checkinComment) && checkinComment.length > 0) {
@@ -114,6 +116,8 @@
                 }
             }, function() {
                 // modal dismissed
+            }).finally(function() {
+                vm.diableBtn = false;
             });
             modalOpened = false;
         }
