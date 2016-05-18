@@ -7,12 +7,12 @@
 
     angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
-    paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
+    paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$uibModal',
 
                          'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj',
                          'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj', 'submissionTypesObj','submissionMethodsObj'];
 
-    function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
+    function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $uibModal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
                          PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj, nciProgObj, submissionTypesObj, submissionMethodsObj) {
 
