@@ -246,7 +246,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
-  after_save :send_email
+  #after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -259,6 +259,8 @@ class Trial < TrialBase
         actions.append('update')
         actions.append('amend')
         actions.append('verify-data')
+        actions.append('view-tsr')
+
       end
     end
 
@@ -420,6 +422,33 @@ class Trial < TrialBase
     end
   end
 
+  def current_process_status_code(submission_id)
+    target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.processing_status.present?
+      return target.processing_status.code
+    else
+      return nil
+    end
+  end
+
+  def active_onhold_exists?
+    self.onholds.each do |onhold|
+      if onhold.offhold_date.nil?
+        return true
+      end
+    end
+    return false
+  end
+
+  def update_need_ack?
+    self.submissions.each do |submission|
+      if submission.submission_type && submission.submission_type.code == 'UPD' && submission.acknowledge == 'No'
+        return true
+      end
+    end
+    return false
+  end
+
   # Return validation errors for adding a milestone to a set of milestones with specific submission ID
   def validate_milestone(submission_id, milestone_id)
     validation_msgs = {}
@@ -434,29 +463,57 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'VPS')
         validation_msgs[:errors].push('Validation Processing Start Date milestone must exist')
       end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
     elsif milestone_to_add.code == 'RVQ'
       if !is_last_milestone?(submission_id, 'VPC')
         validation_msgs[:errors].push('Validation Processing Completed Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
     elsif milestone_to_add.code == 'VQS'
       if !is_last_milestone?(submission_id, 'RVQ')
         validation_msgs[:errors].push('Ready for Validation QC Date milestone must exist')
       end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
     elsif milestone_to_add.code == 'VQC'
       if !is_last_milestone?(submission_id, 'VQS')
         validation_msgs[:errors].push('Validation QC Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'SAC'
       if !is_last_milestone?(submission_id, 'VQC')
         validation_msgs[:errors].push('Validation QC Completed Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APS'
-      if !is_last_milestone?(submission_id, 'SAC')
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APC'
       if !is_last_milestone?(submission_id, 'APS')
         validation_msgs[:errors].push('Administrative Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
       if self.admin_checkout.present?
         validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
@@ -465,24 +522,46 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'APC')
         validation_msgs[:errors].push('Administrative Processing Completed Date milestone must exist')
       end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
     elsif milestone_to_add.code == 'AQS'
       if !is_last_milestone?(submission_id, 'RAQ')
         validation_msgs[:errors].push('Ready for Administrative QC Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'AQC'
       if !is_last_milestone?(submission_id, 'AQS')
         validation_msgs[:errors].push('Administrative QC Start Date milestone must exist')
       end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
       if self.admin_checkout.present?
         validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
       end
     elsif milestone_to_add.code == 'SPS'
-      if !is_last_milestone?(submission_id, 'SAC')
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'SPC'
       if !is_last_milestone?(submission_id, 'SPS')
         validation_msgs[:errors].push('Scientific Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
       if self.scientific_checkout.present?
         validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
@@ -491,24 +570,77 @@ class Trial < TrialBase
       if !is_last_milestone?(submission_id, 'SPC')
         validation_msgs[:errors].push('Scientific Processing Completed Date milestone must exist')
       end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
     elsif milestone_to_add.code == 'SQS'
       if !is_last_milestone?(submission_id, 'RSQ')
         validation_msgs[:errors].push('Ready for Scientific QC Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
     elsif milestone_to_add.code == 'SQC'
       if !is_last_milestone?(submission_id, 'SQS')
         validation_msgs[:errors].push('Scientific QC Start Date milestone must exist')
       end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
       if self.scientific_checkout.present?
         validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
+      end
+    elsif milestone_to_add.code == 'RTS'
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'TSR'
       if !is_last_milestone?(submission_id, 'RTS')
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
+      if ['SUB', 'AMS', 'ACC', 'REJ'].include?(current_process_status_code(submission_id))
+        validation_msgs[:errors].push('Cannot be recorded because the most current processing status is "Submitted", "Amendment Submitted", "Accepted" or "Rejected')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
     elsif milestone_to_add.code == 'STS'
       if !is_last_milestone?(submission_id, 'TSR')
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'IAV'
+      if !is_last_milestone?(submission_id, 'RTS')
+        validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'ONG'
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'LRD'
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    end
+
+    # Duplication check
+    if !['STR', 'SRE', 'TSR', 'STS', 'ONG'].include?(milestone_to_add.code)
+      if contains_milestone?(submission_id, milestone_id)
+        validation_msgs[:errors].push('This milestone cannot be recorded multiple times')
       end
     end
 
@@ -575,7 +707,7 @@ class Trial < TrialBase
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: new_submission)
-      
+
       # Populate Submission ID for documents uploaded in draft stage
       self.trial_documents.each do |doc|
         doc.submission = new_submission

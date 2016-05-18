@@ -14,14 +14,15 @@ class TrialOwnershipsController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
     params[:sort] = 'comp_date' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
     @trial_ownerships = TrialOwnership.all
     @trial_ownerships = @trial_ownerships.matches('user_id', params[:user_id])
-    @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}").page(params[:start]).per(params[:rows])
-
+    @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}")
+    unless params[:rows].nil?
+      @trial_ownerships = @trial_ownerships.page(params[:start]).per(params[:rows])
+    end
     @trial_ownerships
   end
 
@@ -37,6 +38,24 @@ class TrialOwnershipsController < ApplicationController
 
   # GET /trial_ownerships/1/edit
   def edit
+  end
+
+  # POST /trial_ownerships/end
+  # POST /trial_ownerships/end.json
+  def end
+    @results_msgs = 'fail'
+    begin
+      toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
+      unless params[:ids].nil?
+        toEnd = toEnd.where(:id => params[:ids])
+      end
+      toEnd.update_all(:ended_at => Time.now)
+      @results_msgs = 'success'
+    rescue
+      puts "Error ending trial ownership"
+    ensure
+      @results_msgs
+    end
   end
 
   # POST /trial_ownerships
@@ -56,6 +75,37 @@ class TrialOwnershipsController < ApplicationController
         format.json { render json: @trial_ownership.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # POST /trial_ownerships/transfer
+  # POST /trial_ownerships/transfer.json
+  def transfer
+    idsToEnd = params[:ids]
+    ownerUserId = params[:from_user_id]
+    if idsToEnd && idsToEnd.length > 0
+      toEnd = TrialOwnership.where(id: idsToEnd)
+      toEnd.update_all(:ended_at => Time.now)
+
+      params[:transfers].each do |transfer|
+        if !TrialOwnership.exists?(trial_id: transfer["trial_id"], user_id: transfer["user_id"], ended_at: nil)
+          TrialOwnership.create(trial_id: transfer["trial_id"], user_id: transfer["user_id"])
+        end
+      end
+    elsif ownerUserId
+      toEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
+      trialIds = toEnd.pluck(:trial_id)
+      toEnd.update_all(:ended_at => Time.now)
+      params[:transfers].each do |transfer|
+        trialIds.each do |trial|
+          if !TrialOwnership.exists?(trial_id: trial, user_id: transfer["user_id"], ended_at: nil)
+            TrialOwnership.create(trial_id: trial, user_id: transfer["user_id"])
+          end
+        end
+      end
+    end
+
+    @results_msgs = 'success'
+    @results_msgs
   end
 
   # PATCH/PUT /trial_ownerships/1

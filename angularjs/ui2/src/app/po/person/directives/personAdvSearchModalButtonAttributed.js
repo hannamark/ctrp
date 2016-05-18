@@ -57,7 +57,7 @@
                           }
                           modalOpened = false;
                       }, function() {
-                          // modal cancelled or closed
+                          // modal dismissed
                           modalOpened = false;
                       }); // result.then
                   }); // bind click
