@@ -367,18 +367,6 @@
             });
         };
         
-        this.removeTrialsOwnerships = function (controller, trialOwnershipIdArr) {
-            var searchParams = {user_id: controller.userDetails.id};
-            if (trialOwnershipIdArr) {
-                searchParams['ids'] = trialOwnershipIdArr;
-            }
-            service.endUserTrialsOwnership(searchParams).then(function (data) {
-                if(data.results === 'success') {
-                    controller.getUserTrials();
-                }
-            });
-        };
-        
         this.TransferTrialsGridMenuItems = function (scope, controller) {
             var menuArr =
                 [
@@ -403,7 +391,7 @@
                         title: 'Remove Ownership of All Trials',
                         order: 3,
                         action: function (){
-                            service.removeTrialsOwnerships(controller);
+                            controller.confirmRemoveTrialsOwnerships();
                         }
                     },
                     {
@@ -413,7 +401,7 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
-                            service.removeTrialsOwnerships(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
                         }
                     }
                 ];

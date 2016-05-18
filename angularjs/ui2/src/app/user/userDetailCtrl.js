@@ -30,19 +30,18 @@
 
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                if (redirect) {
+                    $state.go('main.users', {}, {reload: true});
+                } else {
+                    vm.userDetailsOrig = angular.copy(vm.userDetails);
+                    vm.getUserTrials();
+                }
             }).catch(function(err) {
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             });
-            vm.userDetailsOrig = angular.copy(vm.userDetails);
             vm.chooseTransferTrials = false;
-            if (redirect) {
-                $state.reload();
-                $state.go('main.users');
-            } else {
-                vm.getUserTrials();
-            }
         };
-        vm.chooseTransferTrials = false; //need this for state reload (modal not closing completely on redirect)
+
         vm.isValidPhoneNumber = function(){
             vm.IsPhoneValid = isValidNumberPO(vm.userDetails.phone, vm.userDetails.country);
             vm.showPhoneWarning = true;
@@ -100,6 +99,7 @@
         };
 
         vm.saveWithoutTransfer = function() {
+            vm.chooseTransferTrials = false;
             var redirect = vm.checkForOrgChange();
             vm.updateUser(redirect);
         };
@@ -267,6 +267,27 @@
         };
         vm.getUserTrials();
 
+        vm.trialOwnershipRemoveIdArr = null;
+        vm.confirmRemoveTrialOwnershipsPopUp = false;
+        vm.confirmRemoveTrialsOwnerships = function (trialOwnershipIdArr) {
+            vm.confirmRemoveTrialOwnershipsPopUp = true;
+            vm.trialOwnershipRemoveIdArr = trialOwnershipIdArr;
+        };
+        vm.removeTrialsOwnerships = function () {
+            var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
+
+             var searchParams = {user_id: vm.userDetails.id};
+             if (trialOwnershipIdArr) {
+                searchParams['ids'] = trialOwnershipIdArr;
+             }
+             UserService.endUserTrialsOwnership(searchParams).then(function (data) {
+                 if(data.results === 'success') {
+                    vm.getUserTrials();
+                 }
+                 vm.trialOwnershipRemoveIdArr = null;
+             });
+            vm.confirmRemoveTrialOwnershipsPopUp = false;
+        };
         /****************** implementations below ***************/
         var activate = function() {
             if(vm.userDetails.organization_id != null) {
@@ -301,7 +322,10 @@
 
 
         } //listenToStatesProvinces
-
+        
+        $scope.$on(vm.redirectToAllUsers, function () {
+            vm.states = [];
+        });
 
         /**
          * callback function for sorting UI-Grid columns

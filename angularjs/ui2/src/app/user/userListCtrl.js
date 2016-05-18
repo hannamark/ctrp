@@ -26,9 +26,6 @@
                 phone: '',
                 approved: '',
                 user_status_id: '',
-                // affiliated_org_name: '',
-
-                //for pagination and sorting
                 rows: 25,
                 start: 1
             }
