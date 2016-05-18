@@ -351,7 +351,6 @@
                                     controller.passiveTransferMode = false;
                                     controller.updateUser(controller.checkForOrgChange());
                                 } else {
-                                    controller.showAllTrialsModal === false;
                                     controller.getUserTrials();
                                 }
                             }

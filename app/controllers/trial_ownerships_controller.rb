@@ -14,7 +14,7 @@ class TrialOwnershipsController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:sort] = 'comp_date' if params[:sort].blank?
+    params[:sort] = 'nci_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
     @trial_ownerships = TrialOwnership.all
