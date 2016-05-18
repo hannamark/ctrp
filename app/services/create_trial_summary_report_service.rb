@@ -13,12 +13,12 @@ class CreateTrialSummaryReportService
     fonts = [RTF::Font.new(RTF::Font::ROMAN, 'Times New Roman'),
              RTF::Font.new(RTF::Font::MODERN, 'Courier')]
 
-    #Colours
-  @foreground_th_text_color        =     RTF::Colour.new(138,21,21)
-  @green                           =     RTF::Colour.new(0,255,0)
-  @grey       =                          RTF::Colour.new(210,210,210)
-  @light_red  =                          RTF::Colour.new(255,175,175)
-  @red_shade  =                          RTF::Colour.new(180,0,0)
+      #Colours
+    @foreground_th_text_color        =     RTF::Colour.new(138,21,21)
+    @green                           =     RTF::Colour.new(0,255,0)
+    @grey       =                          RTF::Colour.new(210,210,210)
+    @light_red  =                          RTF::Colour.new(255,175,175)
+    @red_shade  =                          RTF::Colour.new(180,0,0)
 
 
     #Styles
@@ -74,10 +74,13 @@ class CreateTrialSummaryReportService
     trial_design_table
 
     @document.page_break
+
     generate_trial_description_table
     @document.page_break
+
     generate_interventions_table
     @document.page_break
+
     generate_arm_groups_table
     @document.page_break
 
@@ -85,21 +88,30 @@ class CreateTrialSummaryReportService
     @document.page_break
 
     #disease condition
+    generate_disease_condition_table
     @document.page_break
 
     #outcome measures
+    #generate_outcome_measures_table
+    outcome_measure_type_id = OutcomeMeasureType.find_by_name("Primary").id
+    generate_outcome_measures_table(outcome_measure_type_id,"Primary Outcome Measures")
+    @document.page_break
+
+    outcome_measure_type_id = OutcomeMeasureType.find_by_name("Secondary").id
+    generate_outcome_measures_table(outcome_measure_type_id,"Secondary Outcome Measures")
     @document.page_break
 
     #subgroups
+    generate_sub_groups_table
     @document.page_break
 
     #markers
+    generate_markers_table
     @document.page_break
 
     #Participating Sites
     generate_participating_sites_table
     @document.page_break
-
 
     @document.page_break
 
@@ -307,329 +319,447 @@ class CreateTrialSummaryReportService
   end
 
 
-  def generate_regulatory_information_table
-
-    @regulatory_info_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
-    Hash h = Hash.new
-    oversight_authorities =@trial.oversight_authorities
-    create_a_table_row(@grey,@foreground_th_text_color,"Regulatory Information")
-    create_a_table_row(@light_red, nil,"Oversight Authority")
-
-    row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-    row[0] << "Country"
-    row[1] << "Organization"
-    @document << row.to_rtf
-
-    oversight_authorities.each do |e|
-      row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-      row[0] << e.country
-      row[1] << e.organization
-      @document << row.to_rtf
-    end
-
-    Hash h = Hash.new
-    h.store("FDA Regulated Intervention?", @trial.intervention_indicator)
-    h.store("Section 801?",@trial.sec801_indicator)
-    h.store("DMC Appointed?",@trial.data_monitor_indicator)
-    h.store("IND/IDE Study?",@trial.ind_ide_question)
-
-    h.each do |k,v|
-      row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
-    end
-
-    array1 =@document.table(1,1)
-    array1[0].shading_colour = @light_red
-    array1[0][0] << "IND/IDE"
-
-    array1 =@document.table(1,5)
-    array1[0].shading_colour = @grey
-    array1[0][0] << "Type"
-    array1[0][1] << "Grantor"
-    array1[0][2] << "Number"
-    array1[0][3] << "Holder Type"
-    #array1[0][4] << "Holder"
-
-    ind_ides = @trial.ind_ides
-
-    ind_ides.each do |ind_ide|
-      row = RTF::TableRowNode.new(@regulatory_info_table, 4)
-      row[0] << ind_ide.ind_ide_type
-      row[1] << ind_ide.grantor
-      row[2] << ind_ide.ind_ide_number
-      row[3] << HolderType.find_by_id(ind_ide.holder_type_id).name
-      @document << row.to_rtf
-    end
-
-    array1 =@document.table(1,1)
-    array1[0].shading_colour = @light_red
-    array1[0][0] << "Human Subject Safety"
-
-    Hash h = Hash.new
-    @trial.board_approval_status_id.nil? ? board_approval_status = "N/A" : board_approval_status = BoardApprovalStatus.find_by_id(@trial.board_approval_status_id).name
-    h.store("Board Approval Status", board_approval_status)
-    h.store("Board Approval Number",@trial.board_approval_num)
-    h.store("Board",@trial.board_name)
-    @trial.board_affiliation_id.nil? ? org =nil : org = Organization.find_by_id(@trial.board_affiliation_id)
-
-    org.nil? ? address = "N/A" : address = org.address
-    org.nil? ? phone = "N/A" : phone = org.phone
-
-
-    h.store("Address",address)
-    h.store("Phone", phone)
-
-    h.each do |k,v|
-      row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
-    end
-  end
-
-
-  def trial_design_table
-    array1 =@document.table(1,1)
-    array1[0].shading_colour = @light_red
-    array1[0][0] << "Trial Design"
-
-    Hash h = Hash.new
-    #h.store("Type", board_approval_status)
-    @trial.primary_purpose_id.nil? ? primary_purpose="N/A" : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
-    @trial.secondary_purpose_id.nil? ? secondary_purpose="N/A" : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
-    @trial.phase_id.nil? ? phase="N/A" : phase = Phase.find_by_id(@trial.phase_id).name
-    @trial.intervention_model_id.nil? ? interventional_model="N/A" : interventional_model = InterventionModel.find_by_id(@trial.intervention_model_id).name
-    @trial.masking_id.nil? ? masking="N/A" : masking = Masking.find_by_id(@trial.intervention_model_id).name
-    @trial.allocation_id.nil? ? allocation="N/A" : allocation = Allocation.find_by_id(@trial.allocation_id).name
-    @trial.study_classification_id.nil? ? classification="N/A" : classification = StudyClassification.find_by_id(@trial.study_classification_id).name
-
-    h.store("Primary Purpose",primary_purpose)
-    h.store("Secondary Purpose",secondary_purpose)
-    h.store("Phase",phase)
-    h.store("Intervention Model",interventional_model)
-    h.store("Number of Arms",@trial.num_of_arms.to_s)
-    h.store("Masking",masking)
-    h.store("Allocation",allocation)
-    h.store("Classification",classification)
-    h.store("Target Enrollment",@trial.target_enrollment)
+        def generate_regulatory_information_table
+
+          @regulatory_info_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
+          Hash h = Hash.new
+          oversight_authorities =@trial.oversight_authorities
+          create_a_table_row(@grey,@foreground_th_text_color,"Regulatory Information")
+          create_a_table_row(@light_red, nil,"Oversight Authority")
+
+          row = RTF::TableRowNode.new(@regulatory_info_table, 2)
+          row[0] << "Country"
+          row[1] << "Organization"
+          @document << row.to_rtf
+
+          oversight_authorities.each do |e|
+            row = RTF::TableRowNode.new(@regulatory_info_table, 2)
+            row[0] << e.country
+            row[1] << e.organization
+            @document << row.to_rtf
+          end
+
+          Hash h = Hash.new
+          h.store("FDA Regulated Intervention?", @trial.intervention_indicator)
+          h.store("Section 801?",@trial.sec801_indicator)
+          h.store("DMC Appointed?",@trial.data_monitor_indicator)
+          h.store("IND/IDE Study?",@trial.ind_ide_question)
+
+          h.each do |k,v|
+            row = RTF::TableRowNode.new(@regulatory_info_table, 2)
+            row[0] << k
+            row[1] << v
+            @document << row.to_rtf
+          end
+
+          array1 =@document.table(1,1)
+          array1[0].shading_colour = @light_red
+          array1[0][0] << "IND/IDE"
+
+          array1 =@document.table(1,5)
+          array1[0].shading_colour = @grey
+          array1[0][0] << "Type"
+          array1[0][1] << "Grantor"
+          array1[0][2] << "Number"
+          array1[0][3] << "Holder Type"
+          #array1[0][4] << "Holder"
+
+          ind_ides = @trial.ind_ides
+
+          ind_ides.each do |ind_ide|
+            row = RTF::TableRowNode.new(@regulatory_info_table, 4)
+            row[0] << ind_ide.ind_ide_type
+            row[1] << ind_ide.grantor
+            row[2] << ind_ide.ind_ide_number
+            row[3] << HolderType.find_by_id(ind_ide.holder_type_id).name
+            @document << row.to_rtf
+          end
+
+          array1 =@document.table(1,1)
+          array1[0].shading_colour = @light_red
+          array1[0][0] << "Human Subject Safety"
+
+          Hash h = Hash.new
+          @trial.board_approval_status_id.nil? ? board_approval_status = "N/A" : board_approval_status = BoardApprovalStatus.find_by_id(@trial.board_approval_status_id).name
+          h.store("Board Approval Status", board_approval_status)
+          h.store("Board Approval Number",@trial.board_approval_num)
+          h.store("Board",@trial.board_name)
+          @trial.board_affiliation_id.nil? ? org =nil : org = Organization.find_by_id(@trial.board_affiliation_id)
+
+          org.nil? ? address = "N/A" : address = org.address
+          org.nil? ? phone = "N/A" : phone = org.phone
+
+
+          h.store("Address",address)
+          h.store("Phone", phone)
+
+          h.each do |k,v|
+            row = RTF::TableRowNode.new(@regulatory_info_table, 2)
+            row[0] << k
+            row[1] << v
+            @document << row.to_rtf
+          end
+        end
+
+
+        def trial_design_table
+          array1 =@document.table(1,1)
+          array1[0].shading_colour = @light_red
+          array1[0][0] << "Trial Design"
+
+          Hash h = Hash.new
+          #h.store("Type", board_approval_status)
+          @trial.primary_purpose_id.nil? ? primary_purpose="N/A" : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
+          @trial.secondary_purpose_id.nil? ? secondary_purpose="N/A" : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
+          @trial.phase_id.nil? ? phase="N/A" : phase = Phase.find_by_id(@trial.phase_id).name
+          @trial.intervention_model_id.nil? ? interventional_model="N/A" : interventional_model = InterventionModel.find_by_id(@trial.intervention_model_id).name
+          @trial.masking_id.nil? ? masking="N/A" : masking = Masking.find_by_id(@trial.intervention_model_id).name
+          @trial.allocation_id.nil? ? allocation="N/A" : allocation = Allocation.find_by_id(@trial.allocation_id).name
+          @trial.study_classification_id.nil? ? classification="N/A" : classification = StudyClassification.find_by_id(@trial.study_classification_id).name
+
+          h.store("Primary Purpose",primary_purpose)
+          h.store("Secondary Purpose",secondary_purpose)
+          h.store("Phase",phase)
+          h.store("Intervention Model",interventional_model)
+          h.store("Number of Arms",@trial.num_of_arms.to_s)
+          h.store("Masking",masking)
+          h.store("Allocation",allocation)
+          h.store("Classification",classification)
+          h.store("Target Enrollment",@trial.target_enrollment)
 
-    h.each do |k,v|
-      row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
-    end
+          h.each do |k,v|
+            row = RTF::TableRowNode.new(@regulatory_info_table, 2)
+            row[0] << k
+            row[1] << v
+            @document << row.to_rtf
+          end
 
-  end
+        end
 
-  def generate_trial_description_table
-    @trial_description_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
+        def generate_trial_description_table
+          @trial_description_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
 
-    create_a_table_row(@grey,@foreground_th_text_color,"Trial Description")
-    create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
+          create_a_table_row(@grey,@foreground_th_text_color,"Trial Description")
+          create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
 
-    create_a_table_row_node(@trial_description_table,@trial.brief_title)
+          create_a_table_row_node(@trial_description_table,@trial.brief_title)
 
-    create_a_table_row(@light_red,@foreground_th_text_color,"Brief Summary")
-    create_a_table_row_node(@trial_description_table,@trial.brief_summary)
+          create_a_table_row(@light_red,@foreground_th_text_color,"Brief Summary")
+          create_a_table_row_node(@trial_description_table,@trial.brief_summary)
 
-    create_a_table_row(@light_red,@foreground_th_text_color,"Objectives")
-    create_a_table_row_node(@trial_description_table,@trial.objective)
+          create_a_table_row(@light_red,@foreground_th_text_color,"Objectives")
+          create_a_table_row_node(@trial_description_table,@trial.objective)
 
-    create_a_table_row(@light_red,@foreground_th_text_color,"Detailed Description")
-    create_a_table_row_node(@trial_description_table,@trial.detailed_description)
+          create_a_table_row(@light_red,@foreground_th_text_color,"Detailed Description")
+          create_a_table_row_node(@trial_description_table,@trial.detailed_description)
 
-    create_a_table_row(@light_red,@foreground_th_text_color,"Other Details")
-    row = RTF::TableRowNode.new(@summary_4_information_table, 2)
-    row[0] << "Keywords"
-    row[1] << @trial.keywords
-    @document << row.to_rtf
-  end
+          create_a_table_row(@light_red,@foreground_th_text_color,"Other Details")
+          row = RTF::TableRowNode.new(@summary_4_information_table, 2)
+          row[0] << "Keywords"
+          row[1] << @trial.keywords
+          @document << row.to_rtf
+        end
 
 
-  def generate_interventions_table
-    @interventions_table = RTF::TableNode.new(nil, 3, 4, 100, 100)
-    create_a_table_row(@grey,@foreground_th_text_color,"Intervention(s)")
+        def generate_interventions_table
+          @interventions_table = RTF::TableNode.new(nil, 3, 4, 100, 100)
+          create_a_table_row(@grey,@foreground_th_text_color,"Intervention(s)")
 
-    row = RTF::TableRowNode.new(@interventions_table, 4)
-    row[0] << "Type"
-    row[1] << "Name"
-    row[2] << "Alternate Name"
-    row[3] << "Description"
-    @document << row.to_rtf
+          row = RTF::TableRowNode.new(@interventions_table, 4)
+          row[0] << "Type"
+          row[1] << "Name"
+          row[2] << "Alternate Name"
+          row[3] << "Description"
+          @document << row.to_rtf
 
-    interventions = @trial.interventions
+          interventions = @trial.interventions
 
 
-    interventions.each do |col|
-      row = RTF::TableRowNode.new(@interventions_table, 4)
-      col.intervention_type_id.nil? ? type = nil :  type = InterventionType.find_by_id(col.intervention_type_id).name
-      row[0] << type
-      row[1] <<  col.name
-      row[2] << col.other_name
-      row[3] << col.description
-      @document << row.to_rtf
-    end
-  end
+          interventions.each do |col|
+            row = RTF::TableRowNode.new(@interventions_table, 4)
+            col.intervention_type_id.nil? ? type = nil :  type = InterventionType.find_by_id(col.intervention_type_id).name
+            row[0] << type
+            row[1] <<  col.name
+            row[2] << col.other_name
+            row[3] << col.description
+            @document << row.to_rtf
+          end
+        end
 
 
 
-def generate_arm_groups_table
+      def generate_arm_groups_table
 
-    @arm_groups_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
+          @arm_groups_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
 
-    create_a_table_row(@grey,@foreground_th_text_color,"Arm/Group(s)")
+          create_a_table_row(@grey,@foreground_th_text_color,"Arm/Group(s)")
 
-    row = RTF::TableRowNode.new(@interventions_table, 3)
+          row = RTF::TableRowNode.new(@interventions_table, 3)
 
-    row[0] << "Arm Type"
-    row[1] << "Label"
-    row[2] << "Description"
-    @document << row.to_rtf
+          row[0] << "Arm Type"
+          row[1] << "Label"
+          row[2] << "Description"
+          @document << row.to_rtf
 
-    arms_groups = @trial.arms_groups
+          arms_groups = @trial.arms_groups
 
-    arms_groups.each do |col|
-      row = RTF::TableRowNode.new(@arm_groups_table, 3)
-      row[0] << col.arms_groups_type
-      row[1] <<  col.label
-      row[2] << col.description
-      @document << row.to_rtf
-    end
-    create_a_table_row(@grey,@foreground_th_text_color,"Interventions")
+          arms_groups.each do |col|
+            row = RTF::TableRowNode.new(@arm_groups_table, 3)
+            row[0] << col.arms_groups_type
+            row[1] <<  col.label
+            row[2] << col.description
+            @document << row.to_rtf
+          end
+          create_a_table_row(@grey,@foreground_th_text_color,"Interventions")
 
-    row = RTF::TableRowNode.new(@arm_groups_table, 2)
-    row[0] << "Name"
-    row[1] << "Description"
-    @document << row.to_rtf
+          row = RTF::TableRowNode.new(@arm_groups_table, 2)
+          row[0] << "Name"
+          row[1] << "Description"
+          @document << row.to_rtf
 
-    interventions = @trial.interventions
-    interventions.each do |col|
-      row = RTF::TableRowNode.new(@arm_groups_table, 2)
-      row[0] <<  col.name
-      row[1] << col.description
-      @document << row.to_rtf
-    end
+          interventions = @trial.interventions
+          interventions.each do |col|
+            row = RTF::TableRowNode.new(@arm_groups_table, 2)
+            row[0] <<  col.name
+            row[1] << col.description
+            @document << row.to_rtf
+          end
 
-end
-
-  def generate_eligibility_criteria_table
-
-    @eligibility_criteria_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
-
-    create_a_table_row(@grey,@foreground_th_text_color,"Eligibility Criteria")
-
-    @trial.gender_id.nil? ? gender= "" : gender = Gender.find_by_id(@trial.gender_id).name
-    @trial.min_age_unit_id.nil? ? min_age = @trial.min_age.to_s : min_age = @trial.min_age.to_s + "  " + AgeUnit.find_by_id(@trial.min_age_unit_id).name
-    @trial.max_age_unit_id.nil? ? max_age = @trial.max_age.to_s : max_age = @trial.max_age.to_s + "  " + AgeUnit.find_by_id(@trial.max_age_unit_id).name
-
-    Hash h = Hash.new
-    h.store("Accepts Healthy Volunteers?",@trial.accept_vol)
-    h.store("Gender",gender)
-    h.store("Minimum Age",min_age)
-    h.store("Maximum Age",max_age)
-
-    h.each do |k,v|
-      row = RTF::TableRowNode.new(@eligibility_criteria_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
-    end
-
-    create_a_table_row(@light_red,@foreground_th_text_color,"Inclusion Criteria")
-
-    create_a_table_row(@light_red,@foreground_th_text_color,"Exclusion Criteria")
-
-
-  end
-
-
-def generate_participating_sites_table
-  @participating_sites_table = RTF::TableNode.new(nil, 5, 5,10)
-  #@participating_sites_table[0].shading_colour = @grey
-
-  create_a_table_row(@grey,@foreground_th_text_color,"Participating Sites")
-
-
-
-  participating_sites = @trial.participating_sites
-  num_of_rows = participating_sites.size
-
-  array = @document.table(num_of_rows+1,5,10)
-  array[0].shading_colour = @light_red
-
-  array[0][0].foreground(@foreground_th_text_color) << "Facility"
-  array[0][1].foreground(@foreground_th_text_color) << "Contact"
-  array[0][2].foreground(@foreground_th_text_color) << "Recruitment Status & Date(s)"
-  array[0][3].foreground(@foreground_th_text_color) << "Target Accrual"
-  array[0][4].foreground(@foreground_th_text_color) << "Investigator(s)"
-   i=1
-
-  participating_sites.each do |col|
-    #row = nil
-    #row = RTF::TableRowNode.new(@participating_sites_table, 5)
-    col.organization_id.nil? ? facility = nil :  facility = Organization.find_by_id(col.organization_id).name
-    col.contact_name.nil? ? contact_name = "" : contact_name = col.contact_name
-    array[i][0] << facility
-
-    array[i][1] << "Name: "
-    array[i][1] << contact_name
-    array[i][1].line_break
-    array[i][1] << "Email: "
-
-    array[i][1] << col.contact_email
-    array[i][1].line_break
-    array[i][1] << "Phone: "
-
-    array[i][1] << col.contact_phone
-    array[i][1].line_break
-    array[i][1] << "Ext: "
-
-    array[i][1] << col.extension
-
-    col.site_rec_status_wrappers.present? ? current_site_recruitment_status = col.site_rec_status_wrappers.last.site_recruitment_status.name + " as of " + col.site_rec_status_wrappers.last.status_date.to_s: current_site_recruitment_status = nil
-
-    array[i][2] << current_site_recruitment_status
-    array[i][3] << @trial.target_enrollment
-
-    participating_site_investigators = col.participating_site_investigators
-
-    participating_site_investigators.each do |col|
-      col.person_id.nil? ? investigator = nil : investigator = Person.find_by_id(col.person_id)
-      investigator_name = nil
-      if investigator.nil?
-        investigator = nil
-      else
-        investigator_name = investigator.fname if investigator.fname
-        investigator_name = " " + investigator.mname if investigator.mname
-        investigator_name = " " + investigator.lname if investigator.lname
       end
 
-      investigator_type = col.investigator_type
-      investigator_name = investigator_name + " - " + investigator_type if investigator_type
+      def generate_eligibility_criteria_table
+
+        @eligibility_criteria_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
+
+        create_a_table_row(@grey,@foreground_th_text_color,"Eligibility Criteria")
+
+        @trial.gender_id.nil? ? gender= "" : gender = Gender.find_by_id(@trial.gender_id).name
+        @trial.min_age_unit_id.nil? ? min_age = @trial.min_age.to_s : min_age = @trial.min_age.to_s + "  " + AgeUnit.find_by_id(@trial.min_age_unit_id).name
+        @trial.max_age_unit_id.nil? ? max_age = @trial.max_age.to_s : max_age = @trial.max_age.to_s + "  " + AgeUnit.find_by_id(@trial.max_age_unit_id).name
+
+        Hash h = Hash.new
+        h.store("Accepts Healthy Volunteers?",@trial.accept_vol)
+        h.store("Gender",gender)
+        h.store("Minimum Age",min_age)
+        h.store("Maximum Age",max_age)
+
+        h.each do |k,v|
+          row = RTF::TableRowNode.new(@eligibility_criteria_table, 2)
+          row[0] << k
+          row[1] << v
+          @document << row.to_rtf
+        end
+
+        create_a_table_row(@light_red,@foreground_th_text_color,"Inclusion Criteria")
+
+        create_a_table_row(@light_red,@foreground_th_text_color,"Exclusion Criteria")
 
 
-      array[i][4] <<  "." + investigator_name
-      array[i][4].line_break
-
-    end
-
-    i = i+1
-  end
-
-   #@document << @participating_sites_table.to_rtf
-
-end
-
-  def getColor
-    return RTF::Colour.new(240,200,200)
-  end
+      end
 
 
+       def generate_disease_condition_table
+         @disease_condition_table = RTF::TableNode.new(nil, 5, 5,10)
+         create_a_table_row(@grey,@foreground_th_text_color,"Disease/Condition")
+         diseases = @trial.diseases
+         num_of_rows = diseases.size
+
+         array = @document.table(num_of_rows,1,10)
+         i=0
+         diseases.each do |col|
+           array[i][0] << col.name
+           array[i][0].line_break
+           i = i+1
+         end
+       end
 
 
+        def generate_outcome_measures_table(outcome_measure_type_id,text)
+          create_a_table_row(@grey,@foreground_th_text_color,text)
+          oms = @trial.outcome_measures
+          primary_oms = oms.where("outcome_measure_type_id = ? ", outcome_measure_type_id)
+          num_of_rows = primary_oms.size
+
+          array = @document.table(num_of_rows+1,4,10)
+          array[0].shading_colour = @light_red
+
+          array[0][0].foreground(@foreground_th_text_color) << "Title"
+          array[0][1].foreground(@foreground_th_text_color) << "Description"
+          array[0][2].foreground(@foreground_th_text_color) << "Time Frame"
+          array[0][3].foreground(@foreground_th_text_color) << "Safety Issue?"
+          i=1
+
+          primary_oms.each do |col|
+
+            array[i][0] << col.title
+            array[i][0].line_break
+
+            array[i][1] << col.description
+            array[i][1].line_break
+
+            array[i][2] << col.time_frame
+            array[i][2].line_break
+
+            array[i][3] << col.safety_issue
+            array[i][3].line_break
+
+            i = i+1
+          end
+
+        end
+
+        def generate_sub_groups_table
+          create_a_table_row(@grey,@foreground_th_text_color,"Sub-groups Stratification Criteria")
+          sub_groups = @trial.sub_groups
+          num_of_rows = sub_groups.size
+
+          array = @document.table(num_of_rows+1,2,10)
+          array[0].shading_colour = @light_red
+
+          array[0][0].foreground(@foreground_th_text_color) << "Label"
+          array[0][1].foreground(@foreground_th_text_color) << "Description"
+          i=1
+
+          sub_groups.each do |col|
+
+            array[i][0] << col.label
+            array[i][0].line_break
+
+            array[i][1] << col.description
+            array[i][1].line_break
+
+            i = i+1
+          end
+        end
+
+        def generate_markers_table
+          create_a_table_row(@grey,@foreground_th_text_color,"Markers")
+          markers = @trial.markers
+          num_of_rows = markers.size
+
+          array = @document.table(num_of_rows+1,6,10)
+          array[0].shading_colour = @light_red
+
+          array[0][0].foreground(@foreground_th_text_color) << "Marker Name"
+          array[0][1].foreground(@foreground_th_text_color) << "Evaluation Type"
+          array[0][2].foreground(@foreground_th_text_color) << "Assay Type"
+          array[0][3].foreground(@foreground_th_text_color) << "Biomarker Use"
+          array[0][4].foreground(@foreground_th_text_color) << "Biomarker Purpose"
+          array[0][5].foreground(@foreground_th_text_color) << "Specimen Type"
+
+          i=1
+
+          markers.each do |col|
+
+            array[i][0] << col.name
+            array[i][0].line_break
 
 
+            marker_eval_type_associations = col.marker_eval_type_associations
+            marker_eval_type_associations.each do |col|
+              col.evaluation_type_id.nil? ? evaluation_type = nil :  evaluation_type = EvaluationType.find_by_id(col.evaluation_type_id).name
+              array[i][1] << evaluation_type
+              array[i][1].line_break
+            end
+
+            marker_assay_type_associations = col.marker_assay_type_associations
+            marker_assay_type_associations.each do |col|
+              col.assay_type_id.nil? ? assay_type = nil :  assay_type = AssayType.find_by_id(col.assay_type_id).name
+              array[i][2] << assay_type
+              array[i][2].line_break
+            end
+
+
+            col.biomarker_use_id.nil? ? biomarker_use_name= nil : biomarker_use_name = BiomarkerUse.find_by_id(col.biomarker_use_id).name
+            array[i][3] << biomarker_use_name
+            array[i][3].line_break
+
+            biomarker_purposes = col.marker_biomarker_purpose_associations
+            biomarker_purposes.each do |col|
+              col.biomarker_purpose_id.nil? ? biomarker_purpose_name = nil :  biomarker_purpose_name = BiomarkerPurpose.find_by_id(col.biomarker_purpose_id).name
+              array[i][4] << biomarker_purpose_name
+              array[i][4].line_break
+            end
+
+            marker_spec_type_associations = col.marker_spec_type_associations
+            marker_spec_type_associations.each do |col|
+              col.specimen_type_id.nil? ? specimen_type = nil :  specimen_type = SpecimenType.find_by_id(col.specimen_type_id).name
+              array[i][5] << specimen_type
+              array[i][5].line_break
+            end
+
+            i = i+1
+          end
+
+        end
+
+      def generate_participating_sites_table
+        @participating_sites_table = RTF::TableNode.new(nil, 5, 5,10)
+        #@participating_sites_table[0].shading_colour = @grey
+
+        create_a_table_row(@grey,@foreground_th_text_color,"Participating Sites")
+
+        participating_sites = @trial.participating_sites
+        num_of_rows = participating_sites.size
+
+        array = @document.table(num_of_rows+1,5,10)
+        array[0].shading_colour = @light_red
+
+        array[0][0].foreground(@foreground_th_text_color) << "Facility"
+        array[0][1].foreground(@foreground_th_text_color) << "Contact"
+        array[0][2].foreground(@foreground_th_text_color) << "Recruitment Status & Date(s)"
+        array[0][3].foreground(@foreground_th_text_color) << "Target Accrual"
+        array[0][4].foreground(@foreground_th_text_color) << "Investigator(s)"
+         i=1
+
+        participating_sites.each do |col|
+          #row = nil
+          #row = RTF::TableRowNode.new(@participating_sites_table, 5)
+          col.organization_id.nil? ? facility = nil :  facility = Organization.find_by_id(col.organization_id).name
+          col.contact_name.nil? ? contact_name = "" : contact_name = col.contact_name
+          array[i][0] << facility
+
+          array[i][1] << "Name: "
+          array[i][1] << contact_name
+          array[i][1].line_break
+          array[i][1] << "Email: "
+
+          array[i][1] << col.contact_email
+          array[i][1].line_break
+          array[i][1] << "Phone: "
+
+          array[i][1] << col.contact_phone
+          array[i][1].line_break
+          array[i][1] << "Ext: "
+
+          array[i][1] << col.extension
+
+          col.site_rec_status_wrappers.present? ? current_site_recruitment_status = col.site_rec_status_wrappers.last.site_recruitment_status.name + " as of " + col.site_rec_status_wrappers.last.status_date.to_s: current_site_recruitment_status = nil
+
+          array[i][2] << current_site_recruitment_status
+          array[i][3] << @trial.target_enrollment
+
+          participating_site_investigators = col.participating_site_investigators
+          participating_site_investigators.each do |col|
+            col.person_id.nil? ? investigator = nil : investigator = Person.find_by_id(col.person_id)
+            investigator_name = nil
+            if investigator.nil?
+              investigator = nil
+            else
+              investigator_name = investigator.fname if investigator.fname
+              investigator_name = " " + investigator.mname if investigator.mname
+              investigator_name = " " + investigator.lname if investigator.lname
+            end
+            investigator_type = col.investigator_type
+            investigator_name = investigator_name + " - " + investigator_type if investigator_type
+            array[i][4] << investigator_name
+            array[i][4].line_break
+          end
+
+          i = i+1
+        end
+
+         #@document << @participating_sites_table.to_rtf
+
+      end
 end
