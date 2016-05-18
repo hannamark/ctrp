@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope','countryList','GeoLocationService', 'AppSettingsService', 'URL_CONFIGS'];
+    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope', 'countryList', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, GeoLocationService, AppSettingsService, URL_CONFIGS) {
+    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -36,12 +36,13 @@
             vm.userDetailsOrig = angular.copy(vm.userDetails);
             vm.chooseTransferTrials = false;
             if (redirect) {
+                $state.reload();
                 $state.go('main.users');
             } else {
                 vm.getUserTrials();
             }
         };
-
+        vm.chooseTransferTrials = false; //need this for state reload (modal not closing completely on redirect)
         vm.isValidPhoneNumber = function(){
             vm.IsPhoneValid = isValidNumberPO(vm.userDetails.phone, vm.userDetails.country);
             vm.showPhoneWarning = true;
@@ -89,7 +90,7 @@
         vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-
+                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 if (vm.userRole == 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
@@ -100,17 +101,12 @@
 
         vm.saveWithoutTransfer = function() {
             var redirect = vm.checkForOrgChange();
-            if (redirect) {
-                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
-            }
             vm.updateUser(redirect);
-            vm.chooseTransferTrials = false;
         };
 
         vm.transferAllUserTrials = function() {
             vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
-            vm.chooseTransferTrials = false;
         };
         
         AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
@@ -190,26 +186,28 @@
                     name: 'nci_id',
                     enableSorting: true,
                     displayName: 'NCI ID',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
                     width: '120'
                 },
                 {
-                    name: 'official_title',
-                    displayName: 'Official Title',
+                    name: 'lead_protocol_id',
+                    displayName: 'Lead Protocol Id',
                     enableSorting: true,
-                    minWidth: '100',
+                    width: '155'
+                },
+                {
+                    name: 'official_title',
+                    displayName: 'Official Title for Trial',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+                    enableSorting: true,
                     width: '*'
                 },
                 {
-                    name: 'start_date',
-                    displayName: 'Start Date',
-                    enableSorting: true,
-                    width: '110'
-                },
-                {
-                    name: 'comp_date',
-                    displayName: 'Complete Date',
+                    name: 'lead_org_name',
+                    displayName: 'Lead Organization for Trial',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: false,
-                    width: '150'
+                    width: '*'
                 }
             ],
             enableRowHeaderSelection : true,

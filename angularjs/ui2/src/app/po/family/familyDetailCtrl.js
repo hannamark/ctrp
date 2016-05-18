@@ -7,9 +7,9 @@
     angular.module('ctrp.app.po')
         .controller('familyDetailCtrl', familyDetailCtrl);
     familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','toastr',
-        '$scope', '$state', 'Common', '$modal'];
+        '$scope', '$state', 'Common', '$uibModal'];
     function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
-                              OrgService, DateService, toastr, $scope, $state, Common, $modal ) {
+                              OrgService, DateService, toastr, $scope, $state, Common, $uibModal ) {
         var vm = this;
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         console.log('familyDetailObj: ' + JSON.stringify(familyDetailObj));
@@ -170,7 +170,7 @@
 
             if (!vm.curFamily.new) {
                 vm.confirmDelete = function (size) {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         animation: true,
                         templateUrl: 'delete_confirm_template.html',
                         controller: 'ModalInstanceFamilyCtrl as vm',

@@ -1358,10 +1358,6 @@ div[disabled] {
     color: red;
 }
 
-
-.user-detail-grid.ui-grid {
-    max-height: 282px;
-}
 .ctrptransferselect label {
     margin: 10px;
 }
