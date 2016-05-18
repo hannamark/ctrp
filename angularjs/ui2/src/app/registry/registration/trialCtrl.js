@@ -8,12 +8,14 @@
     angular.module('ctrp.app.registry').controller('trialCtrl', trialCtrl);
 
     trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj'];
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj','HOST'];
 
     function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
-                       studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj) {
+                       studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,HOST) {
 
         var vm = this;
+        $scope.downloadTSRUrl = HOST + '/ctrp/registry/trial_documents/download_tsr_in_rtf';
+
         vm.searchParams = TrialService.getInitialTrialSearchParams();
         vm.studySourceArr = studySourceObj;
         vm.phaseArr = phaseObj;

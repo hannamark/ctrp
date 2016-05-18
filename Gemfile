@@ -98,5 +98,5 @@ gem 'xml-mapping'
 gem 'prawn'
 
 #gem for RTF
-gem 'rtf'
-
+gem 'rtf', '~> 0.3.2'
+gem 'clbustos-rtf', '~> 0.5.0'
