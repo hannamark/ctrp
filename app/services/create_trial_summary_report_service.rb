@@ -128,9 +128,22 @@ class CreateTrialSummaryReportService
     temp_file << @document.to_rtf
 
     today_date = Date.today()
-    @trial.nci_id.nil? ? nci_id = "N/A" : nci_id = @trial.nci_id
-    file_name = "TSR_" + nci_id + "_" + today_date.strftime("%d-%h-%Y").to_s+".rtf"
+    time = Time.now
 
+    @trial.nci_id.nil? ? nci_id = "N/A" : nci_id = @trial.nci_id
+    file_name = "TSR_" + nci_id + "_" + time.strftime("%d-%h-%Y").to_s+ "-" + time.strftime("%H %M").to_s
+    cur_submission = @trial.submissions.last
+    cur_submission.nil? ? cur_submission_type=nil : cur_submission_type = cur_submission.submission_type
+    if !cur_submission_type.nil?
+      if cur_submission_type.name == "Amendment"
+        amendment_number = cur_submission.amendment_num
+        file_name = file_name + "_" + "A" + "_"+ amendment_number.to_s
+      elsif cur_submission_type.name == "Original"
+        file_name = file_name + "_" + "O"
+      end
+    end
+
+    file_name = file_name + ".rtf"
     trial_document_params = {:file => temp_file, :document_type =>"Trial Summary Report", :file_name => file_name,:trial_id => @trial_id}
     td = TrialDocument.new(trial_document_params)
     td.save!
