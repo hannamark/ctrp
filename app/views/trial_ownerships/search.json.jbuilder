@@ -11,6 +11,8 @@ json.trial_ownerships do
     json.official_title trial_ownership.trial ? trial_ownership.trial.official_title : ''
     json.start_date trial_ownership.trial ? trial_ownership.trial.start_date : ''
     json.comp_date trial_ownership.trial ? trial_ownership.trial.comp_date : ''
+    json.lead_protocol_id trial_ownership.trial ? trial_ownership.trial.lead_protocol_id : ''
+    json.lead_org_name trial_ownership.trial && trial_ownership.trial.lead_org ? trial_ownership.trial.lead_org.name : ''
 
   end
 end
