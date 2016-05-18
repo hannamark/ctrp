@@ -46,30 +46,25 @@
         };
 
         var optionOrgFamilies = {
-            name: 'families',
+            name: 'organization_family_name',
             displayName: 'Organization Family',
             enableSorting: false,
             minWidth: '100',
-            width: '*',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
-            '<ul class="csv"><li ng-repeat="i in COL_FIELD CUSTOM_FILTERS"> {{i.name}}</li></ul></div>'
+            width: '*'
         };
 
         var optionRole = {
-            name: 'admin',
-            field: 'role',
+            name: 'admin_role',
             displayName: 'Site Administrator Privileges',
             enableSorting: true,
-            width: '110',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SITE-SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
+            width: '110'
         };
 
         var optionEmail = {
             name: 'receive_email_notifications',
             displayName: 'e-mails',
             enableSorting: true,
-            width: '120',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
+            width: '120'
         };
 
         var optionPhone = {
