@@ -13,6 +13,7 @@ json.trial_ownerships do
     json.comp_date trial_ownership.trial ? trial_ownership.trial.comp_date : ''
     json.lead_protocol_id trial_ownership.trial ? trial_ownership.trial.lead_protocol_id : ''
     json.lead_org_name trial_ownership.trial && trial_ownership.trial.lead_org ? trial_ownership.trial.lead_org.name : ''
+    json.lead_org_id trial_ownership.trial && trial_ownership.trial.lead_org ? trial_ownership.trial.lead_org.id : ''
 
   end
 end
