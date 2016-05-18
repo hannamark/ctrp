@@ -259,6 +259,8 @@ class Trial < TrialBase
         actions.append('update')
         actions.append('amend')
         actions.append('verify-data')
+        actions.append('view-tsr')
+
       end
     end
 
