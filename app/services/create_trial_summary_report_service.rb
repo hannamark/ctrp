@@ -500,7 +500,7 @@ class CreateTrialSummaryReportService
           h.store("Masking",masking)
           h.store("Allocation",allocation)
           h.store("Classification",classification)
-          h.store("Target Enrollment",@trial.target_enrollment)
+          h.store("Target Enrollment",@trial.target_enrollment.to_s)
 
 
           array =@document.table(h.length,2,4000,4000)
@@ -843,7 +843,7 @@ class CreateTrialSummaryReportService
           col.site_rec_status_wrappers.present? ? current_site_recruitment_status = col.site_rec_status_wrappers.last.site_recruitment_status.name + " as of " + col.site_rec_status_wrappers.last.status_date.to_s: current_site_recruitment_status = nil
 
           array[i][2] << current_site_recruitment_status
-          array[i][3] << @trial.target_enrollment
+          array[i][3] << @trial.target_enrollment.to_s
 
           participating_site_investigators = col.participating_site_investigators
           participating_site_investigators.each do |col|
