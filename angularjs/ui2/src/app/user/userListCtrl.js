@@ -76,7 +76,7 @@
 
         var optionStatus = {
             name: 'user_status',
-                displayName: 'Status',
+            displayName: 'Status',
             enableSorting: true,
             width: '90',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
@@ -180,7 +180,7 @@
         vm.gridOptions = gridOptions;
         if (vm.curUser.role === "ROLE_SITE-SU") {
             vm.searchOrganization = vm.curUser.organization.name;
-            vm.searchOrganizationFamily = vm.curUser.family_orgs.length ? vm.curUser.family_orgs[0].name : '';
+            vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(optionRole, optionEmail, optionPhone);
