@@ -169,8 +169,8 @@ class CreateTrialSummaryReportService
     end
 
   def create_a_table_row_node(table,text)
-    row = RTF::TableRowNode.new(table, 1)
-    array =@document.table(1, 1,8000)
+    array =@document.table(1,1,8000)
+    array.border_width =10
     array[0][0] << text
   end
 
@@ -502,17 +502,21 @@ class CreateTrialSummaryReportService
           h.store("Target Enrollment",@trial.target_enrollment)
 
 
+          array =@document.table(h.length,2,4000,4000)
+          array.border_width =10
+          i = 0
+
+
+
           h.each do |k,v|
-            row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-            row[0] << k
-            row[1] << v
-#            @document << row.to_rtf
+            array[i][0] << k
+            array[i][1] << v
+            i = i +1
           end
 
         end
 
         def generate_trial_description_table
-          @trial_description_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
 
           create_a_table_row(@grey,@foreground_th_text_color,"Trial Description")
           create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
@@ -529,35 +533,38 @@ class CreateTrialSummaryReportService
           create_a_table_row_node(@trial_description_table,@trial.detailed_description)
 
           create_a_table_row(@light_red,@foreground_th_text_color,"Other Details")
-          row = RTF::TableRowNode.new(@summary_4_information_table, 2)
-          row[0] << "Keywords"
-          row[1] << @trial.keywords
-          #@document << row.to_rtf
+          array =@document.table(1,2,4000,4000)
+          array.border_width =10
+          array[0][0] << "Keywords"
+          array[0][1] << @trial.keywords
+
         end
 
 
         def generate_interventions_table
-          @interventions_table = RTF::TableNode.new(nil, 3, 4, 100, 100)
           create_a_table_row(@grey,@foreground_th_text_color,"Intervention(s)")
 
-          row = RTF::TableRowNode.new(@interventions_table, 4)
-          row[0] << "Type"
-          row[1] << "Name"
-          row[2] << "Alternate Name"
-          row[3] << "Description"
-          @document << row.to_rtf
+          array =@document.table(1,4,2000,2000,2000,2000)
+          array.border_width =10
+          array[0][0] << "Type"
+          array[0][1] << "Name"
+          array[0][2] << "Alternate Name"
+          array[0][3] << "Description"
 
           interventions = @trial.interventions
-
+          interventions_num = 0
+          interventions_num = interventions.size if interventions
+          array =@document.table(interventions_num, 4,2000,2000,2000,2000)
+          array.border_width =10
+          i = 0
 
           interventions.each do |col|
-            row = RTF::TableRowNode.new(@interventions_table, 4)
             col.intervention_type_id.nil? ? type = nil :  type = InterventionType.find_by_id(col.intervention_type_id).name
-            row[0] << type
-            row[1] <<  col.name
-            row[2] << col.other_name
-            row[3] << col.description
-            @document << row.to_rtf
+            array[i][0] << type
+            array[i][1] <<  col.name
+            array[i][2] << col.other_name
+            array[i][3] << col.description
+            i = i +1
           end
         end
 
@@ -574,7 +581,7 @@ class CreateTrialSummaryReportService
           row[0] << "Arm Type"
           row[1] << "Label"
           row[2] << "Description"
-          @document << row.to_rtf
+          #@document << row.to_rtf
 
           arms_groups = @trial.arms_groups
 
