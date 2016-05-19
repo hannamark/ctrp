@@ -75,11 +75,14 @@
             } else {
                 if (vm.inactivatingUser || vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                        if (vm.gridOptions.totalItems > 0) {
+                        if (vm.gridOptions.totalItems > 0
+                                && (vm.userRole === 'ROLE_SITE-SU'
+                                    || vm.userRole === 'ROLE_SITE-SU'
+                                        || vm.userRole === 'ROLE_SITE-SU')) {
                             vm.chooseTransferTrials = true;
                             return;
                         } else {
-                            vm.updateUser();
+                            vm.updateUser(vm.checkForOrgChange());
                             return;
                         }
                     });
@@ -93,10 +96,15 @@
         vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
-                if (vm.userRole == 'ROLE_SITE-SU') {
+                if (vm.userRole === 'ROLE_SITE-SU' || vm.userRole === 'ROLE_SITE-SU' || vm.userRole === 'ROLE_SITE-SU') {
+                    vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
+                }
+                if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
+                } else if (vm.userRole !== 'ROLE_SITE-SU' && vm.userRole !== 'ROLE_SITE-SU' && vm.userRole !== 'ROLE_SITE-SU') {
+                    vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id = vm.userDetailsOrig.organization_id;
+                    vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].name = 'Request has been sent';
                 }
             }
             return redirect;
