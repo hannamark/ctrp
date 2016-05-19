@@ -26,9 +26,6 @@
                 phone: '',
                 approved: '',
                 user_status_id: '',
-                // affiliated_org_name: '',
-
-                //for pagination and sorting
                 rows: 25,
                 start: 1
             }
@@ -46,30 +43,25 @@
         };
 
         var optionOrgFamilies = {
-            name: 'families',
+            name: 'organization_family_name',
             displayName: 'Organization Family',
             enableSorting: false,
             minWidth: '100',
-            width: '*',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
-            '<ul class="csv"><li ng-repeat="i in COL_FIELD CUSTOM_FILTERS"> {{i.name}}</li></ul></div>'
+            width: '*'
         };
 
         var optionRole = {
-            name: 'admin',
-            field: 'role',
+            name: 'admin_role',
             displayName: 'Site Administrator Privileges',
             enableSorting: true,
-            width: '110',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SITE-SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
+            width: '110'
         };
 
         var optionEmail = {
             name: 'receive_email_notifications',
             displayName: 'e-mails',
             enableSorting: true,
-            width: '120',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
+            width: '120'
         };
 
         var optionPhone = {
@@ -84,7 +76,7 @@
 
         var optionStatus = {
             name: 'user_status',
-                displayName: 'Status',
+            displayName: 'Status',
             enableSorting: true,
             width: '90',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
@@ -188,7 +180,7 @@
         vm.gridOptions = gridOptions;
         if (vm.curUser.role === "ROLE_SITE-SU") {
             vm.searchOrganization = vm.curUser.organization.name;
-            vm.searchOrganizationFamily = vm.curUser.family_orgs.length ? vm.curUser.family_orgs[0].name : '';
+            vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(optionRole, optionEmail, optionPhone);

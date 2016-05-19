@@ -1358,10 +1358,6 @@ div[disabled] {
     color: red;
 }
 
-
-.user-detail-grid.ui-grid {
-    max-height: 282px;
-}
 .ctrptransferselect label {
     margin: 10px;
 }
@@ -1405,4 +1401,8 @@ div[disabled] {
 .transferTrials .modal-dialog {
     width: 90% !important;
     max-width: 1000px;
+}
+
+.dir-modal-body .ctrptransferselect {
+    margin: 10px 20px;
 }

@@ -113,7 +113,7 @@
                                    <td>
                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                            <input type="text" class="form-control input-sm" restriction-field
-                                                  datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
+                                                  uib-datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.effective_date" is-open="org.opened_effective"
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'effective')" />
@@ -127,7 +127,7 @@
                                    <td>
                                        <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                            <input type="text" class="form-control input-sm" restriction-field
-                                                  datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
+                                                  uib-datepicker-popup="{{familyDetailView.dateFormat}}" show-weeks="false"
                                                   ng-model="org.expiration_date" is-open="org.opened_expiration"
                                                   datepicker-options="familyDetailView.dateOptions"
                                                   ng-required="false" close-text="Close" ng-disabled="org._destroy" ng-click="familyDetailView.openCalendar($event, $index, 'expiration')" />

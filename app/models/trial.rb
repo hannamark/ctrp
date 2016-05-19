@@ -246,7 +246,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
-  #after_save :send_email
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -516,7 +516,7 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
       if self.admin_checkout.present?
-        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Administrative processing')
       end
     elsif milestone_to_add.code == 'RAQ'
       if !is_last_milestone?(submission_id, 'APC')
@@ -549,7 +549,7 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
       if self.admin_checkout.present?
-        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Administrative processing')
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Administrative processing')
       end
     elsif milestone_to_add.code == 'SPS'
       sac = Milestone.find_by_code('SAC')
@@ -564,7 +564,7 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
       if self.scientific_checkout.present?
-        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Scientific processing')
       end
     elsif milestone_to_add.code == 'RSQ'
       if !is_last_milestone?(submission_id, 'SPC')
@@ -588,7 +588,7 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
       if self.scientific_checkout.present?
-        validation_msgs[:errors].push('Cannot be recorded if if Trail is checked out for Scientific processing')
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Scientific processing')
       end
     elsif milestone_to_add.code == 'RTS'
       if active_onhold_exists?

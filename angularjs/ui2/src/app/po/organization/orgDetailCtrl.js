@@ -9,11 +9,11 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal',
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal',
         'GeoLocationService'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
-                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal) {
         var vm = this;
         $scope.organization_form = {};
         vm.addedNameAliases = [];
@@ -301,7 +301,7 @@
 
         function prepareModal() {
             vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'delete_confirm_template.html',
                     controller: 'ModalInstanceCtrl as vm',

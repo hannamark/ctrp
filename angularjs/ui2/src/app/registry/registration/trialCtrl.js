@@ -7,10 +7,10 @@
 
     angular.module('ctrp.app.registry').controller('trialCtrl', trialCtrl);
 
-    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$modal',
+    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$uibModal',
                          'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj','HOST'];
 
-    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $modal,
+    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $uibModal,
                        studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,HOST) {
 
         var vm = this;

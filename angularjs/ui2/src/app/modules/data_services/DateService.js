@@ -62,6 +62,7 @@
          */
         this.convertISODateToLocaleDateStr = function(isoDate) {
             var dateStr = '';
+            /*
             if (!!isoDate) {
                 var date = new Date(isoDate);
                 //adjust timezone offset * 600000 ms
@@ -73,6 +74,20 @@
                 var monthNum = date.getMonth() + 1;
                 var month = monthsDict[monthNum];
                 dateStr = day + '-' + month + '-' + year;
+            }
+            */
+            if (!!isoDate) {
+                var date = moment(isoDate, 'YYYY-MM-DDTHH:mm:ss.SSSSZ');
+                try {
+                    date = date.toDate();
+                    var day = ('0' + date.getDate()).slice(-2);
+                    var year = date.getFullYear();
+                    var monthNum = date.getMonth() + 1;
+                    var month = monthsDict[monthNum];
+                    dateStr = day + '-' + month + '-' + year;
+                } catch (err) {
+                    console.error('error parsing date: ', err);
+                }
             }
             return dateStr;
         }; //convertISODateToLocale

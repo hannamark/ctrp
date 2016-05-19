@@ -109,13 +109,14 @@
                 }
             });
             var modalOpened = true;
+            vm.disableBtn = true;
             modalInstance.result.then(function(checkinComment) {
                 console.info('modal closed, comment: ', checkinComment);
                 if (angular.isDefined(checkinComment) && checkinComment.length > 0) {
                     _performTrialCheckin(checkinType, vm.trialDetailObj.id, checkinComment);
                 }
             }, function() {
-                // modal dismissed
+                vm.disableBtn = false;
             });
             modalOpened = false;
         }
