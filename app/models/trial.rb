@@ -246,7 +246,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
-  #after_save :send_email
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
