@@ -33,6 +33,7 @@
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
                 if (redirect) {
+                    UserService.allOrgUsers = null;
                     $timeout(function() {
                         $state.go('main.users', {}, {reload: true});
                     }, 500);

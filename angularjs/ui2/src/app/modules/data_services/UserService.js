@@ -418,7 +418,11 @@
                         }
                     });
             }
-            return service.isCurationModeEnabled() ? menuArr : [];
+            var curUserRole = service.getUserRole();
+            return (service.isCurationModeEnabled()
+                        && (curUserRole === 'ROLE_SUPER'
+                                || curUserRole === 'ROLE_ADMIN'
+                                    || curUserRole === 'ROLE_SITESU')) ? menuArr : [];
         };
         
         /******* helper functions *********/
