@@ -663,7 +663,6 @@ class CreateTrialSummaryReportService
 
 
        def generate_disease_condition_table
-         @disease_condition_table = RTF::TableNode.new(nil, 5, 5,10)
          create_a_table_row(@grey,@foreground_th_text_color,"Disease/Condition")
          diseases = @trial.diseases
          num_of_rows = diseases.size
@@ -684,7 +683,7 @@ class CreateTrialSummaryReportService
           primary_oms = oms.where("outcome_measure_type_id = ? ", outcome_measure_type_id)
           num_of_rows = primary_oms.size
 
-          array = @document.table(num_of_rows+1,4,10)
+          array = @document.table(num_of_rows+1,4,2000,2000,2000,2000)
           array[0].shading_colour = @light_red
 
           array[0][0].foreground(@foreground_th_text_color) << "Title"
@@ -717,7 +716,7 @@ class CreateTrialSummaryReportService
           sub_groups = @trial.sub_groups
           num_of_rows = sub_groups.size
 
-          array = @document.table(num_of_rows+1,2,10)
+          array = @document.table(num_of_rows+1,2,4000,4000)
           array[0].shading_colour = @light_red
 
           array[0][0].foreground(@foreground_th_text_color) << "Label"
@@ -741,7 +740,7 @@ class CreateTrialSummaryReportService
           markers = @trial.markers
           num_of_rows = markers.size
 
-          array = @document.table(num_of_rows+1,6,10)
+          array = @document.table(num_of_rows+1,6,1350,1330,1330,1330,1330,1330)
           array[0].shading_colour = @light_red
 
           array[0][0].foreground(@foreground_th_text_color) << "Marker Name"
@@ -798,15 +797,14 @@ class CreateTrialSummaryReportService
         end
 
       def generate_participating_sites_table
-        @participating_sites_table = RTF::TableNode.new(nil, 5, 5,10)
-        #@participating_sites_table[0].shading_colour = @grey
 
         create_a_table_row(@grey,@foreground_th_text_color,"Participating Sites")
 
         participating_sites = @trial.participating_sites
         num_of_rows = participating_sites.size
 
-        array = @document.table(num_of_rows+1,5,10)
+        array = @document.table(num_of_rows+1,5,1600,1600,1600,1600,1600)
+        array.border_width =10
         array[0].shading_colour = @light_red
 
         array[0][0].foreground(@foreground_th_text_color) << "Facility"
@@ -817,8 +815,7 @@ class CreateTrialSummaryReportService
          i=1
 
         participating_sites.each do |col|
-          #row = nil
-          #row = RTF::TableRowNode.new(@participating_sites_table, 5)
+
           col.organization_id.nil? ? facility = nil :  facility = Organization.find_by_id(col.organization_id).name
           col.contact_name.nil? ? contact_name = "" : contact_name = col.contact_name
           array[i][0] << facility
