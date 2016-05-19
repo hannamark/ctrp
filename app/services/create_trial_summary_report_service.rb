@@ -571,43 +571,50 @@ class CreateTrialSummaryReportService
 
 
       def generate_arm_groups_table
-
-          @arm_groups_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
-
           create_a_table_row(@grey,@foreground_th_text_color,"Arm/Group(s)")
 
-          row = RTF::TableRowNode.new(@interventions_table, 3)
-
-          row[0] << "Arm Type"
-          row[1] << "Label"
-          row[2] << "Description"
-          #@document << row.to_rtf
+          array =@document.table(1,3,2800,2600,2600)
+          array.border_width =10
+          array[0][0] << "Arm Type"
+          array[0][1] << "Label"
+          array[0][2] << "Description"
 
           arms_groups = @trial.arms_groups
-
+          arms_groups_num = 0
+          arms_groups_num = arms_groups.size if arms_groups
+          array =@document.table(arms_groups_num, 3,2800,2600,2600)
+          array.border_width =10
+          i = 0
+          i = 0
           arms_groups.each do |col|
-            row = RTF::TableRowNode.new(@arm_groups_table, 3)
-            row[0] << col.arms_groups_type
-            row[1] <<  col.label
-            row[2] << col.description
-            @document << row.to_rtf
+            array[i][0] << col.arms_groups_type
+            array[i][1] <<  col.label
+            array[i][2] << col.description
+            i=i+1
           end
+
           create_a_table_row(@grey,@foreground_th_text_color,"Interventions")
 
-          row = RTF::TableRowNode.new(@arm_groups_table, 2)
-          row[0] << "Name"
-          row[1] << "Description"
-          @document << row.to_rtf
+          array =@document.table(1,2,4000,4000)
+          array.border_width =10
+          array[0][0] << "Name"
+          array[0][1] << "Description"
+
 
           interventions = @trial.interventions
+          interventions_num = 0
+          interventions_num = interventions.size if interventions
+          array =@document.table(interventions_num, 2,4000,4000)
+          array.border_width =10
+          i = 0
           interventions.each do |col|
-            row = RTF::TableRowNode.new(@arm_groups_table, 2)
-            row[0] <<  col.name
-            row[1] << col.description
-            @document << row.to_rtf
-          end
+            array[i][0] <<  col.name
+            array[i][1] << col.description
+            i = i +1
+           end
 
       end
+
 
       def generate_eligibility_criteria_table
 
