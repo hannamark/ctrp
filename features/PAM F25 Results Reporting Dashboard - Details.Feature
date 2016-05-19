@@ -232,35 +232,58 @@ Scenario: #16 I can add a Record Change in the Results Reporting Dashboard -Deta
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial on the CTRP Results Reporting Dashboard
 And I select Add in the Record Change section 
-Then I can enter a 
-|Change Type|
-|Action Taken|
+Then I can select a change type from the list of:
+|Data Discrepancies|
+|Major Changes|
+|Minor Changes|
+And I can enter a Change
+And I can enter an Action Taken
 And select Save 
 And the Change Type will be associated with the trial record
+And the Change will be associated with the trial record
 And the Action Taken will be associated with the trial record
 And my name will be associated with the Trial record
 And the current date will be associated with the trial record
 
-Scenario: #17 I can edit a Record Change in the Results Reporting Dashboard -Details
+Scenario: #17 I can add more then one Record Change in the Results Reporting Dashboard -Details
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial on the CTRP Results Reporting Dashboard
+And I select Add in the Record Change section 
+Then I can select a change type from the list of:
+|Data Discrepancies|
+|Major Changes|
+|Minor Changes|
+And I can enter a Change
+And I can enter an Action Taken
+And select Save 
+And the Change Type will be associated with the trial record
+And the Change will be associated with the trial record
+And the Action Taken will be associated with the trial record
+And my name will be associated with the Trial record
+And the current date will be associated with the trial record
+
+Scenario: #18 I can edit a Record Change in the Results Reporting Dashboard -Details
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial on the CTRP Results Reporting Dashboard
 And I select a record in the Record Change section 
-Then I can edit the Change Type
+Then I can select a different Change Type
+And I can edit the change
 And I can edit the Action Taken
 And select Save 
 And the Change Type will be associated with the trial record
+And the Change will be associated with the trial record
 And the Action Taken will be associated with the trial record
 And my name will be associated with the Trial record
 And the current date will be associated with the trial record
 
-Scenario: #18 I can delete a Record Change in the Results Reporting Dashboard -Details
+Scenario: #19 I can delete a Record Change in the Results Reporting Dashboard -Details
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial on the CTRP Results Reporting Dashboard
 And I select a record in the Record Change section 
 And I select Delete
 Then the selected Record will be deleted from the trial 
 
-Scenario: #19 I can edit the XML Error and Action Taken Log in the Results Reporting Dashboard -Details
+Scenario: #20 I can edit the XML Error and Action Taken Log in the Results Reporting Dashboard -Details
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial on the CTRP Results Reporting Dashboard
 And I have selected an error on the XML Error and Action Taken Log
@@ -276,7 +299,7 @@ And the information will be save to the trial
 And my name will be associated with the Trial record
 And the current date will be associated with the trial record
 
-Scenario: #20 I can edit the Final Record Clean Up and Release information in the Results Reporting Dashboard -Details
+Scenario: #21 I can edit the Final Record Clean Up and Release information in the Results Reporting Dashboard -Details
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial on on the CTRP Results Reporting Dashboard
 And I have select Yes/No for each of the following actions
@@ -289,3 +312,14 @@ And I have select Yes/No for each of the following actions
 And Select Save
 And the information will be save to the trial
 And my name will be associated with the Trial record
+
+Scenario: #22 Record Change Help
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial on the CTRP Results Reporting Dashboard
+And I select Add in the Record Change section 
+And I select Record Help
+Then a pop up window will be displayed with he followiong message:
+|Change Type|Description|Action/State|
+|Data Discrepancies|Status, Status Dates, Accrual|Status matches, dates match, final enrollment entered into PA, etc|
+|Major Changes|Changes in the intent of the protocol  e.g., changes in eligibility criteria,  addition of a new intervention and/or treatment arm, etc|Not addressed, sent to CTEP or DCP PIO, waiting for comment, made change in draft clinicaltrials.gov record, etc| 
+|Minor Changes|Formatting changes and or clarifications that do not change meaning or intent, e.g., spelling an acronym, inserting punctuation, changing formatting, etc|Not addressed, sent to CTEP or DCP PIO, waiting for comment, made change in draft clinicaltrials.gov record, etc| 
