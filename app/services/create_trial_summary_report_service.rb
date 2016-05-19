@@ -423,7 +423,7 @@ class CreateTrialSummaryReportService
           array[0].shading_colour = @light_red
           array[0][0] << "IND/IDE"
 
-          array =@document.table(1,5,1600,1600,1600,1600,1600)
+          array =@document.table(1,4,2000,2000,2000,2000)
           array.border_width =10
           array[0].shading_colour = @grey
           array[0][0] << "Type"
@@ -434,14 +434,14 @@ class CreateTrialSummaryReportService
           ind_ides = @trial.ind_ides
           ind_ides_num = 0
           ind_ides_num = ind_ides.size if ind_ides
-          array =@document.table(ind_ides_num, 2,4000,4000)
+          array =@document.table(ind_ides_num, 4,2000,2000,2000,2000)
           array.border_width =10
           i = 0
           ind_ides.each do |ind_ide|
-            array[i][0] << ind_ide.ind_ide_type
-            array[i][1] << ind_ide.grantor
-            array[i][2] << ind_ide.ind_ide_number
-            array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
+            ind_ide.ind_ide_type.nil? ? array[i][0] << ind_ide.ind_ide_type="" : array[i][0] << ind_ide.ind_ide_type
+            ind_ide.grantor.nil? ? array[i][1] << ind_ide.grantor="" : array[i][1] << ind_ide.grantor
+            ind_ide.ind_ide_number.nil? ? array[i][2] << ind_ide.ind_ide_number="" : array[i][2] << ind_ide.ind_ide_number
+            ind_ide.holder_type_id.nil? ?  array[i][3]="" : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
             i = i +1
           end
 
