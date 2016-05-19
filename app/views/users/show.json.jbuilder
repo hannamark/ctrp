@@ -21,3 +21,5 @@ json.extract! @user,
               :user_status,
               :user_status_id,
               :created_at, :updated_at
+
+json.org_families @user.organization.present? && @user.organization.families.present? ? @user.organization.families : []
