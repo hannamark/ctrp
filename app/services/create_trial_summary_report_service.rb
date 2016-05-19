@@ -667,7 +667,8 @@ class CreateTrialSummaryReportService
          diseases = @trial.diseases
          num_of_rows = diseases.size
 
-         array = @document.table(num_of_rows,1,10)
+         array = @document.table(num_of_rows,1,8000)
+         array.border_width =10
          i=0
          diseases.each do |col|
            array[i][0] << col.name
@@ -685,6 +686,7 @@ class CreateTrialSummaryReportService
 
           array = @document.table(num_of_rows+1,4,2000,2000,2000,2000)
           array[0].shading_colour = @light_red
+          array.border_width =10
 
           array[0][0].foreground(@foreground_th_text_color) << "Title"
           array[0][1].foreground(@foreground_th_text_color) << "Description"
@@ -718,6 +720,7 @@ class CreateTrialSummaryReportService
 
           array = @document.table(num_of_rows+1,2,4000,4000)
           array[0].shading_colour = @light_red
+          array.border_width =10
 
           array[0][0].foreground(@foreground_th_text_color) << "Label"
           array[0][1].foreground(@foreground_th_text_color) << "Description"
@@ -742,6 +745,7 @@ class CreateTrialSummaryReportService
 
           array = @document.table(num_of_rows+1,6,1350,1330,1330,1330,1330,1330)
           array[0].shading_colour = @light_red
+          array.border_width =10
 
           array[0][0].foreground(@foreground_th_text_color) << "Marker Name"
           array[0][1].foreground(@foreground_th_text_color) << "Evaluation Type"
