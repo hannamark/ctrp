@@ -412,7 +412,7 @@ class CreateTrialSummaryReportService
 
           array =@document.table(4, 2,4000,4000)
           array.border_width =10
-
+          i=0
           h.each do |k,v|
             array[i][0] << k
             array[i][1] << v
