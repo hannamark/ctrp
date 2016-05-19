@@ -215,8 +215,9 @@ class CreateTrialSummaryReportService
 
     other_ids.each do |oid|
       pid = ProtocolIdOrigin.find_by_id(oid.protocol_id_origin_id)
-      array[i][0] << oid.protocol_id
-      array[i][1] << pid.name
+      array[i][1] << oid.protocol_id
+      array[i][0] << pid.name
+      i=i+1
     end
   end
 
