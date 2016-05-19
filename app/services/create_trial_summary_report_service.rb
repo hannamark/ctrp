@@ -51,7 +51,7 @@ class CreateTrialSummaryReportService
      style.top_margin = 3000
 
 
-  @document = RTF::Document.new(RTF::Font.new(RTF::Font::MODERN, 'Helvetica'),style)
+  @document = RTF::Document.new(RTF::Font.new(RTF::Font::MODERN, 'Helvetica'))
 
 
     ###### TSR Report start #######################
@@ -73,62 +73,64 @@ class CreateTrialSummaryReportService
 
 
 
-    @document.page_break
+    line_break   = @document.table(1, 1) 
     generate_trial_title_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
     generate_trial_identification_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
     generate_general_trial_details
-    @document.page_break
+    line_break   = @document.table(1, 1) 
     generate_summary_4_information_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
     generate_regulatory_information_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
     trial_design_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     generate_trial_description_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     generate_interventions_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     generate_arm_groups_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     generate_eligibility_criteria_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     #disease condition
     generate_disease_condition_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     #outcome measures
     #generate_outcome_measures_table
     outcome_measure_type_id = OutcomeMeasureType.find_by_name("Primary").id
     generate_outcome_measures_table(outcome_measure_type_id,"Primary Outcome Measures")
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     outcome_measure_type_id = OutcomeMeasureType.find_by_name("Secondary").id
     generate_outcome_measures_table(outcome_measure_type_id,"Secondary Outcome Measures")
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     #subgroups
     generate_sub_groups_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     #markers
     generate_markers_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
     #Participating Sites
     generate_participating_sites_table
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
-    @document.page_break
+    line_break   = @document.table(1, 1) 
 
       #And the file name will be "TSR_""CTRP Trial ID""_""Current Date YYYY-MM-DD""-
     # "Current Time HHMM(24hr)""_""Current Submission Type (O for original and A for amendment""_""Amendment Number (for amendments)"<examples>
+
+
 
     temp_file = Tempfile.new(['Sample2',".rtf"])
     temp_file << @document.to_rtf
@@ -159,50 +161,62 @@ class CreateTrialSummaryReportService
   end
 
     def create_a_table_row(shading_color, forground_color,text)
-      array1 =@document.table(1,1)
+      array1 =@document.table(1,1,8000)
+      array1.border_width =10
       array1[0].shading_colour = shading_color if shading_color
       forground_color.nil? ? array1[0][0] << text : array1[0][0].foreground(forground_color) << text
+
     end
 
   def create_a_table_row_node(table,text)
     row = RTF::TableRowNode.new(table, 1)
-    row[0] << text
-    @document << row.to_rtf
+    array =@document.table(1, 1,8000)
+    array[0][0] << text
   end
 
   def generate_trial_title_table
-    array =@document.table(4, 1)
-    array.border_width =30
+    array =@document.table(4, 1,8000)
+    array.border_width =10
     array[0].shading_colour = @grey
     array[0][0].foreground(@foreground_th_text_color) << "Official Title"
-    array[1][0] << @trial.official_title
+    official_title = ""
+    official_title = @trial.official_title if @trial.official_title
 
+    array[1][0] << official_title
     array[2][0].foreground(@foreground_th_text_color) << "Acronym"
     array[2].shading_colour = @light_red
-    array[3][0] << @trial.acronym
+    acronym = ""
+    acronym = @trial.acronym if @trial.acronym
+    array[3][0] << acronym
   end
+
 
 
   def generate_trial_identification_table
     create_a_table_row(@grey,@foreground_th_text_color,"Trial Identification")
-    @trial_identification_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
+    #@trial_identification_table = RTF::TableNode.new(nil, 3, 3, 3000, 2000,2000)
+    other_ids = @trial.other_ids.reorder(:protocol_id)
+    other_ids_num =0
+    other_ids_num = other_ids.size if other_ids
+    array =@document.table(2+other_ids_num, 2,4000,4000)
+    array.border_width =10
+
 
     Hash h = Hash.new
     h.store("NCI Trial Identifier",@trial.nci_id)
     h.store("Lead Organization Identifier",@trial.lead_protocol_id)
+    i=0
     h.each do |k,v|
-      row = RTF::TableRowNode.new(@trial_identification_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
+      array[i][0] << k
+      array[i][1] << v
+      i=i+1
     end
-    other_ids = @trial.other_ids.reorder(:protocol_id)
+
+
     other_ids.each do |oid|
-      row = RTF::TableRowNode.new(@trial_identification_table, 2)
       pid = ProtocolIdOrigin.find_by_id(oid.protocol_id_origin_id)
-      row[1] << oid.protocol_id
-      row[0] << pid.name
-      @document << row.to_rtf
+      array[i][0] << oid.protocol_id
+      array[i][1] << pid.name
     end
   end
 
@@ -210,7 +224,9 @@ class CreateTrialSummaryReportService
     create_a_table_row(@grey,@foreground_th_text_color,"General Trial Details")
     create_a_table_row(@light_red,@foreground_th_text_color,"General Details")
 
-    @general_trial_details_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
+
+    array =@document.table(9, 2,4000,4000)
+    array.border_width =10
 
     Hash h = Hash.new
     @trial.research_category_id.nil? ? trail_type = nil : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
@@ -252,23 +268,26 @@ class CreateTrialSummaryReportService
     h.store("Principal Investigator",principle_investigator_name )
     h.store("Affilliation", "")
 
-
+    i=0
     h.each do |k,v|
-      row = RTF::TableRowNode.new(@general_trial_details_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
+      array[i][0] << k
+      array[i][1] << v
+      i = i+1
     end
     create_a_table_row(@light_red,@foreground_th_text_color,"Collaborators")
     create_a_table_row(@grey,@foreground_th_text_color,"Name")
 
     collaborators = @trial.collaborators
-
+    collaborators_num = 0
+    collaborators_num = collaborators.size if collaborators
+    array =@document.table(collaborators_num, 2,4000,4000)
+    array.border_width =10
+    i = 0
     collaborators.each do |col|
-      row = RTF::TableRowNode.new(@general_trial_details_table, 1)
-      row[0] << col.org_name
-      @document << row.to_rtf
+      array[i][0] << col.org_name
+      i= i+1
     end
+
     create_a_table_row(@light_red,@foreground_th_text_color,"Status/Dates")
     Hash h = Hash.new
 
@@ -292,71 +311,97 @@ class CreateTrialSummaryReportService
     h.store(primary_comp_date_qual,primary_comp_date.to_s)
     h.store(comp_date_qual,comp_date.to_s)
 
+    array =@document.table(4, 2,4000,4000)
+    array.border_width =10
 
+    i =0
     h.each do |k,v|
-      row = RTF::TableRowNode.new(@general_trial_details_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
+      array[i][0] << k
+      array[i][1] << v
+      i = i+1
     end
-
 
   end
 
   def generate_summary_4_information_table
-    @summary_4_information_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
 
     create_a_table_row(@grey,@foreground_th_text_color,"Summary 4 Information")
+
     Hash h = Hash.new
     @trial.study_source_id.nil? ? study_source = nil : study_source = StudySource.find_by_id(@trial.study_source_id).name
     h.store("Funding Category",study_source)
+    array =@document.table(1, 2,4000,4000)
+    array.border_width =10
+
+    i=0
     h.each do |k,v|
-      row = RTF::TableRowNode.new(@summary_4_information_table, 2)
-      row[0] << k
-      row[1] << v
-      @document << row.to_rtf
+      array[i][0] << k
+      array[i][1] << v
+      i = i+1
     end
+
+
+
     create_a_table_row(@light_red,@foreground_th_text_color,"Funding Sponsor/Source")
     funding_sources = @trial.trial_funding_sources
 
+    funding_sources_num = 0
+    funding_sources_num = funding_sources.size if funding_sources
+    array =@document.table(funding_sources_num, 2,4000,4000)
+    array.border_width =10
+    i = 0
+
     funding_sources.each do |col|
-      row = RTF::TableRowNode.new(@summary_4_information_table, 1)
       org_name = Organization.find_by_id(col.organization_id).name
-      row[0] << org_name
-      @document << row.to_rtf
+      array[i][0] << org_name
+      i = i+1
     end
+
     create_a_table_row(@light_red,@foreground_th_text_color,"Anatomic Site Code")
 
     anatomic_sites = @trial.anatomic_site_wrappers
+    anatomic_sites_num = 0
+    anatomic_sites_num = anatomic_sites.size if anatomic_sites
+    array =@document.table(anatomic_sites_num, 2,4000,4000)
+    array.border_width =10
+    i = 0
+
 
     anatomic_sites.each do |col|
-      row = RTF::TableRowNode.new(@summary_4_information_table, 1)
       anatomic_site_name = AnatomicSite.find_by_id(col.anatomic_site_id).name
-      row[0] << anatomic_site_name
-      @document << row.to_rtf
+      array[i][0] << anatomic_site_name
+      i = i +1
     end
   end
 
 
         def generate_regulatory_information_table
 
-          @regulatory_info_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
           Hash h = Hash.new
           oversight_authorities =@trial.oversight_authorities
           create_a_table_row(@grey,@foreground_th_text_color,"Regulatory Information")
           create_a_table_row(@light_red, nil,"Oversight Authority")
 
-          row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-          row[0] << "Country"
-          row[1] << "Organization"
-          @document << row.to_rtf
+          array =@document.table(1, 2,4000,4000)
+          array.border_width =10
+          array[0][0] << "Country"
+          array[0][1] << "Organization"
+
+
+          oversight_authorities_num = 0
+          oversight_authorities_num = oversight_authorities.size if oversight_authorities
+          array =@document.table(oversight_authorities_num, 2,4000,4000)
+          array.border_width =10
+          i = 0
 
           oversight_authorities.each do |e|
             row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-            row[0] << e.country
-            row[1] << e.organization
-            @document << row.to_rtf
+            array[i][0] << e.country
+            array[i][1] << e.organization
+            i = i+1
           end
+
+
 
           Hash h = Hash.new
           h.store("FDA Regulated Intervention?", @trial.intervention_indicator)
@@ -364,39 +409,46 @@ class CreateTrialSummaryReportService
           h.store("DMC Appointed?",@trial.data_monitor_indicator)
           h.store("IND/IDE Study?",@trial.ind_ide_question)
 
+          array =@document.table(4, 2,4000,4000)
+          array.border_width =10
+
           h.each do |k,v|
-            row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-            row[0] << k
-            row[1] << v
-            @document << row.to_rtf
+            array[i][0] << k
+            array[i][1] << v
+            i = i+1
           end
 
-          array1 =@document.table(1,1)
-          array1[0].shading_colour = @light_red
-          array1[0][0] << "IND/IDE"
+          array =@document.table(1,1,8000)
+          array.border_width =10
+          array[0].shading_colour = @light_red
+          array[0][0] << "IND/IDE"
 
-          array1 =@document.table(1,5)
-          array1[0].shading_colour = @grey
-          array1[0][0] << "Type"
-          array1[0][1] << "Grantor"
-          array1[0][2] << "Number"
-          array1[0][3] << "Holder Type"
-          #array1[0][4] << "Holder"
+          array =@document.table(1,5,1600,1600,1600,1600,1600)
+          array.border_width =10
+          array[0].shading_colour = @grey
+          array[0][0] << "Type"
+          array[0][1] << "Grantor"
+          array[0][2] << "Number"
+          array[0][3] << "Holder Type"
 
           ind_ides = @trial.ind_ides
-
+          ind_ides_num = 0
+          ind_ides_num = ind_ides.size if ind_ides
+          array =@document.table(ind_ides_num, 2,4000,4000)
+          array.border_width =10
+          i = 0
           ind_ides.each do |ind_ide|
-            row = RTF::TableRowNode.new(@regulatory_info_table, 4)
-            row[0] << ind_ide.ind_ide_type
-            row[1] << ind_ide.grantor
-            row[2] << ind_ide.ind_ide_number
-            row[3] << HolderType.find_by_id(ind_ide.holder_type_id).name
-            @document << row.to_rtf
+            array[i][0] << ind_ide.ind_ide_type
+            array[i][1] << ind_ide.grantor
+            array[i][2] << ind_ide.ind_ide_number
+            array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
+            i = i +1
           end
 
-          array1 =@document.table(1,1)
-          array1[0].shading_colour = @light_red
-          array1[0][0] << "Human Subject Safety"
+          array =@document.table(1,1,8000)
+          array.border_width =10
+          array[0].shading_colour = @light_red
+          array[0][0] << "Human Subject Safety"
 
           Hash h = Hash.new
           @trial.board_approval_status_id.nil? ? board_approval_status = "N/A" : board_approval_status = BoardApprovalStatus.find_by_id(@trial.board_approval_status_id).name
@@ -412,19 +464,22 @@ class CreateTrialSummaryReportService
           h.store("Address",address)
           h.store("Phone", phone)
 
+          array =@document.table(5,2,4000,4000)
+          array.border_width =10
+          i = 0
           h.each do |k,v|
-            row = RTF::TableRowNode.new(@regulatory_info_table, 2)
-            row[0] << k
-            row[1] << v
-            @document << row.to_rtf
+            array[i][0] << k
+            array[i][1] << v
+            i = i +1
           end
         end
 
 
         def trial_design_table
-          array1 =@document.table(1,1)
-          array1[0].shading_colour = @light_red
-          array1[0][0] << "Trial Design"
+          array =@document.table(1,1,8000)
+          array.border_width =10
+          array[0].shading_colour = @light_red
+          array[0][0] << "Trial Design"
 
           Hash h = Hash.new
           #h.store("Type", board_approval_status)
@@ -446,11 +501,12 @@ class CreateTrialSummaryReportService
           h.store("Classification",classification)
           h.store("Target Enrollment",@trial.target_enrollment)
 
+
           h.each do |k,v|
             row = RTF::TableRowNode.new(@regulatory_info_table, 2)
             row[0] << k
             row[1] << v
-            @document << row.to_rtf
+#            @document << row.to_rtf
           end
 
         end
@@ -476,7 +532,7 @@ class CreateTrialSummaryReportService
           row = RTF::TableRowNode.new(@summary_4_information_table, 2)
           row[0] << "Keywords"
           row[1] << @trial.keywords
-          @document << row.to_rtf
+          #@document << row.to_rtf
         end
 
 
