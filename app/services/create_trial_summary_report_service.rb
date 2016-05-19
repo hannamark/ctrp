@@ -618,7 +618,6 @@ class CreateTrialSummaryReportService
 
       def generate_eligibility_criteria_table
 
-        @eligibility_criteria_table = RTF::TableNode.new(nil, 3, 3, 100, 100)
 
         create_a_table_row(@grey,@foreground_th_text_color,"Eligibility Criteria")
 
@@ -632,17 +631,33 @@ class CreateTrialSummaryReportService
         h.store("Minimum Age",min_age)
         h.store("Maximum Age",max_age)
 
+        array =@document.table(h.length,2,4000,4000)
+        array.border_width =10
+        i = 0
+
         h.each do |k,v|
-          row = RTF::TableRowNode.new(@eligibility_criteria_table, 2)
-          row[0] << k
-          row[1] << v
-          @document << row.to_rtf
+          array[i][0] << k
+          array[i][1] << v
+          i = i + 1
         end
 
         create_a_table_row(@light_red,@foreground_th_text_color,"Inclusion Criteria")
+        array =@document.table(1,1,8000)
+        array.border_width =10
+        inclusion_criteria = @trial.other_criteria.where("criteria_type = ?", "Inclusion")
+        inclusion_criteria.each do |col|
+          array[0][0] << col.criteria_desc
+          array[0][0].line_break
+        end
 
         create_a_table_row(@light_red,@foreground_th_text_color,"Exclusion Criteria")
-
+        array =@document.table(1,1,8000)
+        array.border_width =10
+        exclusion_criteria = @trial.other_criteria.where("criteria_type = ?", "Exclusion")
+        exclusion_criteria.each do |col|
+          array[0][0] << col.criteria_desc
+          array[0][0].line_break
+        end
 
       end
 
