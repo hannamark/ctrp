@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope', 'countryList', 'AppSettingsService', 'URL_CONFIGS'];
+    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state', '$timeout', '$scope', 'countryList', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, AppSettingsService, URL_CONFIGS) {
+    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $timeout, $scope, countryList, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -24,6 +24,8 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
         vm.updateUser = function (redirect) {
+            vm.chooseTransferTrials = false;
+            vm.showAllTrialsModal = false;
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
@@ -31,7 +33,9 @@
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
                 if (redirect) {
-                    $state.go('main.users', {}, {reload: true});
+                    $timeout(function() {
+                        $state.go('main.users', {}, {reload: true});
+                    }, 500);
                 } else {
                     vm.userDetailsOrig = angular.copy(vm.userDetails);
                     vm.getUserTrials();
@@ -39,7 +43,6 @@
             }).catch(function(err) {
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             });
-            vm.chooseTransferTrials = false;
         };
 
         vm.isValidPhoneNumber = function(){
@@ -163,8 +166,8 @@
         }; //initial User Search Parameters
 
 
+        vm.chooseTransferTrials = false;
         vm.showAllTrialsModal = false;
-        vm.showSelectedTrialsModal = false;
 
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";
