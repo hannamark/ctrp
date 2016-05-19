@@ -79,6 +79,18 @@
                         </div>
                         <!-- First Name ends -->
 
+                        <!-- Organization Family-->
+                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)">
+                            <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
+                            <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
+                                <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" auto-focus/>
+                            </div>
+                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganizationFamily && userView.searchOrganizationFamily.length">
+                                {{userView.searchOrganizationFamily}}
+                            </div>
+                        </div>
+                        <!-- Organization Family ends -->
+
                         <!-- Site Admin-->
                         <div class="form-group">
                             <label for="site_admin" class="control-label col-sm-5">Site Admin:</label>
