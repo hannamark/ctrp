@@ -61,7 +61,8 @@
                      * @return {[type]}                      [description]
                      */
                     this.needsAttention = function(fieldModelController, attentionFlag) {
-                        if (angular.isDefined(attentionFlag)) {
+                        if (angular.isDefined(attentionFlag) && attentionFlag === true) {
+                            formController.$invalid = true;
                             return formController.$submitted && attentionFlag;
                         }
 
