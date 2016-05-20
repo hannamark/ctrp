@@ -125,6 +125,157 @@ module.exports = function() {
     var tblOptionI = '';
     var tblOptionJ = '';
     var tblOptionK = '';
+    var currentDate = '';
+    var futureDate = '';
+    var futureDateTwoMonth = '';
+    var pastDate = '';
+
+    /*
+     Scenario: #1 I can enter a trial status and trial status date for a trial
+     */
+    this.Given(/^I am on the Trial Status Screen$/, function (callback) {
+        pageMenu.homeSearchTrials.click();
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolID);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataTrialStatus();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected a trial$/, function (callback) {
+        trialCollaborators.waitForElement(trialStatus.statuesesStatusDate , "Trial Status Screen");
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected a trial status from the list of:$/, function (table, callback) {
+        tableValues = table.raw();
+        var strVal = '';
+        strVal = tableValues.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + strVal +']');
+        var tableDataSplt = strVal.toString().split("\n");
+        tblOptionB = tableDataSplt[1];
+        trialStatus.selectStatus(tblOptionB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered or selected a Current Trial Status Date$/, function (callback) {
+        currentDate = trialDoc.getCrrentDte();
+        console.log('current date: '+currentDate);
+        var dateSplit = currentDate.toString().split("-");
+        crtnDateDay = dateSplit[0];
+        crntDateMonth = dateSplit[1];
+        crntDateYear = dateSplit[2];
+        trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+        trialStatus.clickAddTrialStatus();
+        trialStatus.verifyTrialStatusTblHdr();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered or selected a Trial Start Date$/, function (callback) {
+        pastDate = trialDoc.getPastDate();
+        console.log('future date: '+futureDate);
+        var dateSplit = pastDate.toString().split("-");
+        pstDateDay = dateSplit[0];
+        pstDateMonth = dateSplit[1];
+        pstDateYear = dateSplit[2];
+        trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected the Trial Start Date Type of "([^"]*)" , "([^"]*)"$/, function (arg1, arg2, callback) {
+        console.log('Trial Start Date Type selected as: '+arg1);
+        //Selected the Date type on the previous step
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered or selected a Primary Completion Date$/, function (callback) {
+        futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+        console.log('Next two month ahead future date: '+futureDateTwoMonth);
+        var dateSplit = futureDateTwoMonth.toString().split("-");
+        futrDateDay = dateSplit[0];
+        futrDateMonth = dateSplit[1];
+        futrDateYear = dateSplit[2];
+        trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Anticipated');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected the Primary Completion Date Type of "([^"]*)" , "([^"]*)", "([^"]*)"$/, function (arg1, arg2, arg3, callback) {
+        console.log('Primary Completion Date Type selected as: '+arg2);
+        //Selected the Date type on the previous step
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered or selected a Completion Date$/, function (callback) {
+        var dateSplit = futureDateTwoMonth.toString().split("-");
+        futrDateDay = dateSplit[0];
+        futrDateMonth = dateSplit[1];
+        futrDateYear = dateSplit[2];
+        trialStatus.setCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Anticipated');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected the Completion Date Type of "([^"]*)" , "([^"]*)"$/, function (arg1, arg2, callback) {
+        console.log('Completion Date Type selected as: '+arg2);
+        //Selected the Date type on the previous step
+        var replacePastDate = trialDoc.replaceMonth(pastDate);
+        var replacePrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
+        var replaceCompletionDate = trialDoc.replaceMonth(futureDateTwoMonth);
+        trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Anticipated', replaceCompletionDate, 'Anticipated');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^have entered or edited the Trial On Hold Reason Comments when the trial status is:$/, function (table, callback) {
+        //To edit trial status utilizing trial status from (I have selected a trial status from the list of)steps
+        trialStatus.findTrialStatusVerfEdtDel(tblOptionB, 'edit');
+        var holdReasonTableValues = table.raw();
+        var strValHoldReason = '';
+        strValHoldReason = holdReasonTableValues.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + strValHoldReason +']');
+        var hldRsnTableDataSplt = strValHoldReason.toString().split("\n");
+        /* Table Reference
+         |Administratively Complete|
+         |Withdrawn|
+         |Temporarily Closed to Accrual|
+         |Temporarily Closed to Accrual and Intervention|
+         */
+        trialStatus.selectStatus(tblOptionB);
+        helper.wait_for(5000);
+        //trialStatus.setStatusComment('Status Comment due to: '+hldRsnTableDataSplt[0]);
+        //trialStatus.setWhyStudyStopped('Status Comment due to: '+hldRsnTableDataSplt[0]);
+        trialStatus.clickEditTrialStatusConfirm();
+        //trialStatus.findTrialStatusVerfEdtDel(hldRsnTableDataSplt[0], 'verify');
+        browser.sleep(2500).then(callback);
+    });
+
+    this.Given(/^have entered or edited the Trial Status Comments$/, function (callback) {
+        trialStatus.setTrialComments('Trial Status Comment '+currentDate+'');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^have entered or edited the Additional Comments$/, function (callback) {
+        trialStatus.setTrialComments('Trial Status Comment '+futureDate+'');
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I select Save$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the trial status and dates will be checked against validation rules and associated with the trial$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the trial status and date will be displayed as trial status history with any errors or warnings from the Trial Status Transition Rules$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
 
 
 

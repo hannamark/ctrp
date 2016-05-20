@@ -6,23 +6,24 @@ As any CTRP PA User, I can add and edit Trial Dates and Status
 Scenario: #1 I can enter a trial status and trial status date for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
-Given I have selected trail
+Given I have selected a trial
 And I have selected a trial status from the list of:
-|In Review| 
+|Select a status|
+|Active|
+|Administratively Complete|
 |Approved|
-|Active| 
-|Enrolling by Invitation|
-|Temporarily Closed to Accrual|
-|Temporarily Closed to Accrual and Intervention|
+|Approved for marketing###Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
+|Available###Only when Clinical Research Category is expanded access and is currently available for this treatment|
 |Closed to Accrual|
 |Closed to Accrual and Intervention|
 |Complete|
-|Administratively Complete|
+|Enrolling by Invitation|
+|In Review|
+|No longer available###Only when Clinical Research Category is expanded access and was available for this treatment previously but is not currently available and will not be available in the future|
+|Temporarily Closed to Accrual|
+|Temporarily Closed to Accrual and Intervention|
+|Temporarily not available###Only when Clinical Research Category is expanded access and is not currently available for this treatment, but is expected to be available in the future|
 |Withdrawn|
-|Available - Only when Clinical Research Category is expanded access and is currently available for this treatment|
-|No longer available � Only when Clinical Research Category is expanded access and was available for this treatment previously but is not currently available and will not be available in the future|
-|Temporarily not available � Only when Clinical Research Category is expanded access and is not currently available for this treatment, but is expected to be available in the future|
-|Approved for marketing � Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
 And I have selected the Trial Start Date Type of "Actual" , "Anticipated"
@@ -324,7 +325,7 @@ When I add a trial status from <statusFrom> to trial status <statusTo> along wit
       |Enrolling by Invitation	                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no        | WARNING: Statuses [Enrolling by Invitation] and [Temporarily Closed to Accrual and Intervention] have the same date                                                                                                                                                                                                                                                                       |
       |Enrolling by Invitation	                        |Complete	                                    |			        |yes       | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
       |Enrolling by Invitation	                        |Administratively Complete	                    |Add Stopped Reason	|yes       | WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
-              |
+
 Scenario Outline: #17f Trial Status Transition Rules - Closed to Accrual
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
@@ -415,8 +416,8 @@ When I add a trial status from <statusFrom> to trial status <statusTo> along wit
       |Temporarily Closed to Accrual and Intervention	|Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes      |   ERROR: Duplicate [Temporarily Closed to Accrual and Intervention] status is not allowed	                                                                                                                                                                                    |
       |Temporarily Closed to Accrual and Intervention	|Complete	                                    |Add Stopped Reason	|yes      |   ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [Complete]	                                                                                                                                                                        |
       |Temporarily Closed to Accrual and Intervention	|Administratively Complete	                    |Add Stopped Reason	|yes      |   WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
-   
- Scenario Outline: #17h Trial Status Transition Rules - Complete
+
+Scenario Outline: #17j Trial Status Transition Rules - Complete
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I have selected an organization 
@@ -439,7 +440,7 @@ When I add a trial status from <statusFrom> to trial status <statusTo> along wit
       |Complete	                                        |Administratively Complete	                    |Add Stopped Reason	|yes     | ERROR: Invalid status transition from [Complete] to [Administratively Complete]	                                                                                                                                                                                            |
       
 
-  Scenario Outline: #17k Trial Status Transition Rules - Administratively Complete
+Scenario Outline: #17k Trial Status Transition Rules - Administratively Complete
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I have selected an organization 
@@ -493,11 +494,9 @@ When I add a trial date <statusDateFrom> and trial status from <statusFrom> to t
    |statusDateFrom   |statusFrom	|statusDateTo                                    |statusTo	   |whyStudyStopped    |errorsWarnings	                                          |
    |Date Entered Now | Approved     |Same Date entered later                         |In Review    |                   |Warning: Invalid Transition from [Approved] to [In Review]|
    |Date Entered Now | Approved     |Different Date in the Future                    |In Review    |                   |Warning: Invalid Transition from [Approved] to [In Review]|
-   |Date Entered past| Active       |Date entered Now                                |Aproved      |                   |Warning: Invalid Transition from [Active] to [Approved]
+   |Date Entered past| Active       |Date entered Now                                |Aproved      |                   |Warning: Invalid Transition from [Active] to [Approved]   |
 
-   
-   
-   
+
 Scenario Outline: #20 Rules for Status/Dates relationships
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
@@ -544,8 +543,6 @@ And The Primary Completion Date can be earlier than the Current Trial Status Dat
 When the Primary Completion Date is Actual
 Then the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete 
 And The Completion Date is always the same as, or later than, the Primary Completion Date
-
-     
 
 Scenario: #23 Delete Trial Status Comment not null
 Given I am logged into the CTRP Protocol Abstraction application
