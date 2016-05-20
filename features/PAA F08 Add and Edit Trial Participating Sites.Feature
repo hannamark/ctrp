@@ -1,9 +1,9 @@
 ﻿@PA @global
 Feature: PAA F08 Add and Edit Trial Participating Sites
 
-As any CTRP PA User, I can add and edit Trial Participating Sites
+As any CTRP PA User, I can add a Trial Participating Sites
   @runthis
-Scenario Outline: #1 I can add one a participating site to a trial
+Scenario Outline: #1 I can add a participating site to a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I can select an organization <Organization name> with the Organization look up 
@@ -17,26 +17,27 @@ And I can select one or more Investigators <Site Principal Investigator> for eac
 And I can select the role for each investigator <Site Principal Investigator Role> 
 |Principal Investigator|
 |Sub Investigator|
-And I can select the �Set as Site Contact" for an investigator when the investigator is the Participating site contact 
 And I can select a Central Contact type for the Participating site 
 |Site PI|
 |Person|
 |Generic|
-And I can add or edit the phone number for the investigator contact <Phone> 
-And I can add or edit the phone number extension <Ext> for the investigator contact
-And I can add or edit the contact e-mail for the contact <e-mail address> 
+When Central Contact type is "Generic"
+Then I can add the phone number for the investigator contact <Phone> 
+And I can add  the phone number extension <Ext> for the investigator contact
+And I can add  the contact e-mail for the contact <e-mail address> 
 Then the participating site information will be associated with the trial
 And the organization address information <Org City> <Org State> <Org Country> <Org zip code> will be associated with the trial
-And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
+And the system will disly "Yes" with the investigator is the "Primary Contact?"<Primary Contact?>
+And the system will display the list of participating sites ordered ascending alphanumeric by participating site name
 And the system will display a message that the Participating Site Has been Updated <Message>
 And the Participating Site table can be sorted by
-|Organiztion ID|
+|Organization ID|
 |Organization Name|
 Examples:
-|Organization name    |Org City|Org State    |Org Country  |Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext |e-mail address  |Warning/Error|Message|
-|Boston Medical Center|Boston  |Massachussets|United States|3849504     |123                   |Approved               |30-September-2015           |Free Text                       |48                        |100                  |Kristi Graves              |Principal Investigator          |Kristi Graves        |212-123-4567  |1234|kristi@mayo.com |             |Participating Site Has been Updated|
-#|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-September-2015           |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com     |             |Participating Site Has been Updated|
-#|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-September-2015           |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |1111|<null>          |             |Participating Site Has been Updated|
+|CTRP ID|Organization name    |Org City|Org State    |Org Country  |Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Primary Contact?"|Central Contact      |Phone         |Ext |e-mail address  |Warning/Error|Message|
+|2222222|Boston Medical Center|Boston  |Massachussets|United States|3849504     |123                   |Approved               |30-September-2015           |Free Text                       |48                        |100                  |Kristi Graves              |Principal Investigator          |Yes              |Kristi Graves        |212-123-4567  |1234|kristi@mayo.com |             |Participating Site Has been Updated|
+#|2222212|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-September-2015           |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |No               |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com     |             |Participating Site Has been Updated|
+#|1212121|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-September-2015           |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |No               |Jane Doe             |212-123-4567  |1111|<null>          |             |Participating Site Has been Updated|
 
 
 Scenario Outline: #1a I can add one or more participating sites to a trial
@@ -48,7 +49,7 @@ Then the participating site will be associated with the trial
 Scenario Outline: #1c Participating site required fields
 Given I am logged into the CTRP Protocol Abstraction application
 And I have added a Participating Site
-Then the following fields will be requirede
+Then the following fields will be required
 |Organization| 
 |Site Recruitment Status|
 |Site Recruitment status date |
@@ -71,32 +72,31 @@ And I can edit Site Recruitment status comments for each status <Site Recruitmen
 And I can edit the Target Accrual Number <Target Accrual Number>
 And I can delete an investigator from the participation site <Site Principal Investigator> 
 And I can select a different role for each investigator <Site Principal Investigator Role> 
-And I can select the �Set as Site Contact" for a different investigator when the investigator is the Participating site contact 
-And I can select a differentn Central Contact type for the Participating site
+And I can select a different Central Contact type for the Participating site
 |Site PI|
 |Person|
 |Generic|
-And I can add or edit the phone number for the investigator contact <Phone> 
-And I can add or edit the phone number extension <Ext> for the investigator contact
-And I can add or edit the contact e-mail for the contact <e-mail address> 
+And I can edit the phone number for the investigator contact <Phone> 
+And I can edit the phone number extension <Ext> for the investigator contact
+And I can edit the contact e-mail for the contact <e-mail address> 
 Then the participating site information will be associated with the trial
 And the organization address information <Org City> <Org State> <Org Country><Org zip code> will be associated with the trial
-And the system will display the list of participating sites ordered assending alphanumeric by participationg site name
+And the system will display the list of participating sites ordered ascending alphanumeric by participating site name
 And the system will display a message that the Participating Site Has been Updated <Message>
-|Organiztion ID|
+|Organization ID|
 |Organization Name|
 Examples:
-|Organization name|Org City|Org State|Org Country|Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Central Contact      |Phone         |Ext  |e-mail address  |Warning/Error|Message|
-|Mayo             |New York|NY       |USA        |10101       |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |Kristi Graves        |212-123-4567  |2222 |kristi@mayo.com |             |Participating Site Has been Updated|
-|MD Anderson      |New York|NY       |USA        |10101       |123a                  |approved               |30-sep-2015                 |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|3333 |CTC@mda.com     |             |Participating Site Has been Updated|
-|Wake Forest      |Trenton |NJ       |USA        |10101       |123b                  |approved               |30-Sep-2015                 |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |Jane Doe             |212-123-4567  |4444 |<null>          |             |Participating Site Has been Updated|
+|CTRP ID|Organization name|Org City|Org State|Org Country|Org zip code|Local Trial Identifier|Site Recruitment Status|Site Recruitment Status Date|Site Recruitment status comments|Site Specific Program Code|Target Accrual Number|Site Principal Investigator|Site Principal Investigator Role|Primary Contact?"|Central Contact      |Phone         |Ext  |e-mail address  |Warning/Error|Message|
+|1234567|Mayo             |New York|NY       |USA        |10101       |123                   |Approved               |30-Sep-2015                 |Free Text                       |48                        |100                  |Jane Doe                   |Principal Investigator          |No               | Kristi Graves        |212-123-4567  |2222 |kristi@mayo.com |             |Participating Site Has been Updated|
+|2345678|MD Anderson      |New York|NY       |USA        |10101       |123a                  |approved               |30-sep-2015                 |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |No               |Clinical Trial Center|1-888-123-4567|3333 |CTC@mda.com     |             |Participating Site Has been Updated|
+|1231231|Wake Forest      |Trenton |NJ       |USA        |10101       |123b                  |approved               |30-Sep-2015                 |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |No               |Jane Doe             |212-123-4567  |4444 |<null>          |             |Participating Site Has been Updated|
 
 
 Scenario: #3 Delete participating site information for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I select one or more participating sites
-When I select delete participationg site
+When I select delete participating site
 Then the Participating Site will be removed from the trial record
 
 Scenario: #4 Save participating site information for a trial 
@@ -122,7 +122,7 @@ And I have Not selected an Investigator <Investigator>
 And I have Not selected a role for each investigator <Site Principal Investigator Role>
 And I have Not selected a site contact type
 And I have Not added a phone number for the investigator contact (when there is no e-mail address)<Phone>
-And I have Not added an e-mail address for the contact (shen there is no Phone #)<e-mail address>
+And I have Not added an e-mail address for the contact (when there is no Phone #)<e-mail address>
 When I select save
 Then the system will display a message that the specified fields are required for the Participating Site <Message>
 And the participating site information will not be associated with the trial
@@ -135,7 +135,7 @@ Examples:
 |Wake Forest      |New York|NY       |<null>     |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |John Doe                   |Principal Investigator          |<null>               |212-123-4567  |234   |<null>        |warning      |Address Information is Missing|
 |Wake Forest      |New York|NY       |USA        |<null>      |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |John Doe                   |Principal Investigator          |<null>               |212-123-4567  |345   |<null>        |warning      |Address Information is Missing|
 |Wake Forest      |New York|NY       |USA        |10101       |<null>                |<null>                 |30-Sep-2015                 |comments                        |abc123                    |48                   |Sam Smith                  |Sub Investigator                |Sam Smith            |<null>        |<null>|sam@WF.com    |Error        |Participating Site Status Missing|
-|MDA              |New York|NY       |USA        |10101       |<null>                |approved               |<null>                      |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|456   |CTC@mda.com   |Error        |Participationg site status Date is Missing|
+|MDA              |New York|NY       |USA        |10101       |<null>                |approved               |<null>                      |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |Clinical Trial Center|1-888-123-4567|456   |CTC@mda.com   |Error        |Participating site status Date is Missing|
 |Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |John Doe                   |<null>                          |<null>               |212-123-4567  |567   |<null>        |warning      |Investigator Role has not been added|
 |Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |<null>                     |Principal Investigator          |<null>               |212-123-4567  |678   |<null>        |error        |Investigator has not been added|
 |Wake Forest      |New York|NY       |USA        |10101       |123                   |approved               |30-Sep-2015                 |<null>                          |<null>                    |37                   |John Doe                   |Principal Investigator          |<null>               |<null>        |<null>|<null>        |error        |Contact Phone number or E-mail address has not been added|
@@ -143,7 +143,7 @@ Examples:
 Scenario: #7 Only one site contact for a participating site - investigator
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
-And I select "set as site contact" for an investigaor
+And I select "set as site contact" for an investigator
 Then the "set as site contact" will be cleared for other investigators
 And will be cleared for the site contact
 
@@ -464,10 +464,16 @@ And the organization is already listed as a participating site for this this tri
 Then an error message will be displayed "The participating site has already been associated with this trial"
 And the duplicte participating site will not be added to this trial
 
-Scenario: #14 I can selcte a Site PI from the contact page
+Scenario: #14 I can select a Site PI from the contact page
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Contact Page
 And I select the contact type "Site PI"
 Then I will be able to select from a list of the Site PI's associated with this participating site
-And the selected Site PI's Phone Number, Phone extension and e-mail address will be displayed for the contact.
+And I select a Site PI
+Then the selected Site PI's Phone Number, Phone extension and e-mail address will be displayed for the contact.
 
+Scenario: #15 I can view the Participating Site details for a Trial
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Participating Site Page
+And I select the Particiating Site 
+Then the details for the Particiating Site will be displayed (from PO Organization)
