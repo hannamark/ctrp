@@ -164,6 +164,7 @@
             updateTrial: updateTrial,
             getMailLogs: getMailLogs,
             getTrialCheckoutHistory: getTrialCheckoutHistory,
+            annotateTrialStatusWithNameAndCode: annotateTrialStatusWithNameAndCode,
         };
 
         return services;
@@ -410,11 +411,12 @@
             return PromiseTimeoutService.getData(url);
         }
 
-        function checkinTrial(trialId, checkinType) {
+        function checkinTrial(trialId, checkinType, commentText) {
             var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
             url = url.replace('{:checkWhat}', 'checkin');
             url = url.replace('{:checkoutType}', checkinType);
-            return PromiseTimeoutService.getData(url);
+            // return PromiseTimeoutService.getData(url);
+            return PromiseTimeoutService.postDataExpectObj(url, {checkin_comment: commentText});
         }
 
         /**
@@ -614,6 +616,34 @@
 
             return PromiseTimeoutService.groupPromises(promises);
         }
+
+        /**
+         * Annotate each trial status with name and code that is found in the provided trialStatusDictArr
+         * @param  {Array} trialStatusArr     [description]
+         * @param  {Array} trialStatusDictArr [description]
+         * @return {Array}                    annotated trial status array
+         */
+        function annotateTrialStatusWithNameAndCode(trialStatusArr, trialStatusDictArr) {
+            var tempStatuses = [];
+            if (!angular.isArray(trialStatusArr) || !angular.isArray(trialStatusDictArr)) {
+                return tempStatuses;
+            }
+            tempStatuses = _.map(trialStatusArr, function(status) {
+                var curStatusObj = _.findWhere(trialStatusDictArr, {id: status.trial_status_id});
+                status.trial_status_name = curStatusObj.name || '';
+                status.trial_status_code = curStatusObj.code || '';
+                status._destroy = false;
+                status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
+                delete status.trial_status; // delete the trial_status object
+                delete status.updated_at;
+                delete status.created_at;
+                return status;
+            }).filter(function(s) {
+                return !s._destroy; // only return active statuses
+            });
+
+            return tempStatuses;
+        } // annotateTrialStatusWithNameAndCode
 
         /**
          * Get grouped data objects/arrays for Trial Design,

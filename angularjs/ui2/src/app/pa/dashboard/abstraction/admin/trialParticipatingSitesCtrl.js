@@ -120,7 +120,9 @@
             vm.currentParticipatingSite.extension = vm.currentParticipatingSite.extension ? vm.currentParticipatingSite.extension : vm.currentParticipatingSite.person.extension;
         }
 
-        vm.saveParticipatingSite = function(){
+        vm.saveParticipatingSite = function(callBackString){
+            var cbString = callBackString;
+
             vm.disableBtn = true;
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
             for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
@@ -207,7 +209,6 @@
                                 var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
 
                                 vm.investigatorArray.push({"id": id, "name": name});
-                                //console.log('vm.investigatorArray' + JSON.stringify(vm.investigatorArray));
                             }
                         }
 
@@ -219,6 +220,11 @@
                             extendedTimeOut: 5,
                             timeOut: 0
                         });
+
+                        if (cbString && cbString === 'editInv') {
+                            vm.editInvestigator(vm.investigatorGrid.length - 1);
+                        }
+
                     }).catch(function (err) {
                         console.log("2server_response="+JSON.stringify(response));
                     });
@@ -306,7 +312,7 @@
             vm.initSiteRecruitmentGrid();
             vm.initInvestigatorGrid();
             vm.validateStatus();
-            vm.tabIndex = 0;
+            //vm.tabIndex = 0;
 
             if (!vm.currentParticipatingSite.contact_type) {
                 vm.currentParticipatingSite.contact_type = 'General';
@@ -509,8 +515,12 @@
                         participating_site_investigator._destroy = false;
                         vm.current_investigator = participating_site_investigator;
                         vm.investigatorGrid.push(participating_site_investigator);
-                        vm.current_investigator.uiEdit = true;
-                        vm.current_investigator.new = true;
+
+                        vm.saveParticipatingSite('editInv');
+
+
+                        //vm.current_investigator.uiEdit = true;
+                        //vm.current_investigator.new = true;
                     }
                     vm.principalInvestigator = {name: '', array: []};
                 }
@@ -791,7 +801,7 @@
                             var inv = vm.currentParticipatingSite.participating_site_investigators[i].person;
                             vm.currentParticipatingSite.contact_name = PersonService.extractFullName(inv);
                             vm.currentParticipatingSite.contact_phone = newVal.id === oldVal.id && vm.currentParticipatingSite.contact_phone ? vm.currentParticipatingSite.contact_phone : inv.phone;
-                            vm.currentParticipatingSite.extension = inv.extension;
+                            vm.currentParticipatingSite.extension = newVal.id === oldVal.id && vm.currentParticipatingSite.extension? vm.currentParticipatingSite.extension : inv.extension;
                             vm.currentParticipatingSite.contact_email = newVal.id === oldVal.id && vm.currentParticipatingSite.contact_email ? vm.currentParticipatingSite.contact_email : inv.email;
                             //vm.currentParticipatingSite.contact_type = "PI"; // replace hardcoding
                             vm.currentParticipatingSite.person = inv;

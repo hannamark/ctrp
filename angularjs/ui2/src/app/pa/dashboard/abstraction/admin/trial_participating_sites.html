@@ -252,7 +252,8 @@
                                     <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">Investigator Name:</label>
                                     <div class="col-xs-12 col-sm-5">
                                         <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array" ng-disabled="psView.addEditMode"></ctrp-person-adv-search-modal-button>
+                                        <!--<ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array" ng-disabled="psView.addEditMode"></ctrp-person-adv-search-modal-button>-->
+                                        <button class="btn btn-primary" person-search-modal-button2 ng-model="psView.principalInvestigator.array" restriction-field ng-disabled="psView.current_investigator.edit">Search Persons</button>
                                     </div>
                                 </div>
 

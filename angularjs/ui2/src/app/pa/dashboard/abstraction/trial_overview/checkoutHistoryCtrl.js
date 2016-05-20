@@ -16,6 +16,7 @@
         var curTrialId = $stateParams.trialId;
         var pageSize = 20;
         vm.gridOptions = getGridOptions();
+        vm.disableBtn = false;
 
         activate();
         function activate() {
@@ -38,8 +39,16 @@
         function listenToCheckouts() {
             $scope.$on(MESSAGES.TRIALS_CHECKOUT_IN_SIGNAL, function(event, data) {
                 event.preventDefault();
+                vm.disableBtn = true;
+
                 PATrialService.getTrialCheckoutHistory(curTrialId).then(function(data) {
-                    populateGrid(data);
+                    var status = data.server_response.status;
+
+                    if (status === 200) {
+                        populateGrid(data);
+                    }
+                }).finally(function() {
+                    vm.disableBtn = false;
                 });
             });
         }

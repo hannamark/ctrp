@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511153559) do
+ActiveRecord::Schema.define(version: 20160515030745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1244,6 +1244,7 @@ ActiveRecord::Schema.define(version: 20160511153559) do
     t.datetime "updated_at"
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
+    t.datetime "ended_at"
   end
 
   add_index "trial_ownerships", ["trial_id"], name: "index_trial_ownerships_on_trial_id", using: :btree

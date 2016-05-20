@@ -7,6 +7,7 @@
 #  user_id      :integer
 #  created_at   :datetime
 #  updated_at   :datetime
+#  ended_at     :datetime
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
 #
@@ -26,7 +27,7 @@ class TrialOwnership < TrialBase
     join_clause += "LEFT JOIN users ON trial_ownerships.user_id = users.id "
 
     if column == 'user_id'
-      joins(join_clause).where("trial_ownerships.user_id = #{value} AND trial_ownerships.trial_id is not null")
+      joins(join_clause).where("trial_ownerships.user_id = #{value} AND trial_ownerships.trial_id is not null AND trial_ownerships.ended_at is null")
     end
   }
 

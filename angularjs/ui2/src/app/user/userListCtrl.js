@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userListCtrl($scope, userDetailObj, toastr, UserService, uiGridConstants, $location, AppSettingsService) {
+    function userListCtrl(PromiseTimeoutService, $scope, userDetailObj, toastr, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS ) {
 
         var vm = this;
         vm.curUser = userDetailObj;
@@ -19,16 +19,13 @@
         var SearchParams = function (){
             return {
                 username: '',
-                    first_name: '',
+                first_name: '',
                 middle_name: '',
                 last_name: '',
                 email: '',
                 phone: '',
                 approved: '',
                 user_status_id: '',
-                // affiliated_org_name: '',
-
-                //for pagination and sorting
                 rows: 25,
                 start: 1
             }
@@ -37,7 +34,7 @@
 
         var optionOrg = {
             name: 'user_organization_name',
-            displayName: 'Affiliated Org.',
+            displayName: 'Organizational Affiliation',
             enableSorting: true,
             minWidth: '100',
             width: '*',
@@ -46,30 +43,25 @@
         };
 
         var optionOrgFamilies = {
-            name: 'families',
-            displayName: 'Org. Family',
+            name: 'organization_family_name',
+            displayName: 'Organization Family',
             enableSorting: false,
             minWidth: '100',
-            width: '*',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Families">' +
-            '<ul class="csv"><li ng-repeat="i in COL_FIELD CUSTOM_FILTERS"> {{i.name}}</li></ul></div>'
+            width: '*'
         };
 
         var optionRole = {
-            name: 'admin',
-            field: 'role',
-            displayName: 'Site Admin',
+            name: 'admin_role',
+            displayName: 'Site Administrator Privileges',
             enableSorting: true,
-            width: '110',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="User has Admin Priviledges">{{["ROLE_SITE-SU"].indexOf(COL_FIELD CUSTOM_FILTERS) > -1? "Yes": "No"}}</div>'
+            width: '110'
         };
 
         var optionEmail = {
             name: 'receive_email_notifications',
-            displayName: 'Email Notify',
+            displayName: 'e-mails',
             enableSorting: true,
-            width: '120',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Receive Email Notifications">{{COL_FIELD CUSTOM_FILTERS ? "ON": (COL_FIELD CUSTOM_FILTERS === false ? "OFF": "")}}</div>'
+            width: '120'
         };
 
         var optionPhone = {
@@ -84,7 +76,7 @@
 
         var optionStatus = {
             name: 'user_status',
-                displayName: 'Status',
+            displayName: 'Status',
             enableSorting: true,
             width: '90',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
@@ -94,14 +86,10 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            //enableRowSelection: false,
-            paginationPageSizes: [10, 25, 50, 100],
+            paginationPageSizes: [10, 25, 50, 100, 1000],
             paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
-            enableGridMenu: true,
             enableFiltering: false,
             enableVerticalScrollbar: 2,
             enableHorizontalScrollbar: 2,
@@ -109,7 +97,7 @@
                 {
                     name: 'username',
                     enableSorting: true,
-                    displayName: 'username',
+                    displayName: 'Username',
                     minWidth: '100',
                     width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
@@ -160,25 +148,25 @@
             ],
             enableGridMenu: true,
             enableSelectAll: true,
-            exporterCsvFilename: 'myFile.csv',
+            exporterCsvFilename: 'users.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
-            exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
-            exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
-            exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
+            exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
+            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Users:', style: 'headerStyle' },
             exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
             },
             exporterPdfCustomFormatter: function ( docDefinition ) {
                 docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
-            exporterPdfOrientation: 'portrait',
-            exporterPdfPageSize: 'LETTER',
-            exporterPdfMaxGridWidth: 500,
+            exporterMenuAllData: true,
+            exporterMenuPdfAll: true,
+            exporterPdfOrientation: 'landscape',
+            exporterPdfMaxGridWidth: 700,
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
-
 
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
             vm.statusArr = response.data;
@@ -192,7 +180,7 @@
         vm.gridOptions = gridOptions;
         if (vm.curUser.role === "ROLE_SITE-SU") {
             vm.searchOrganization = vm.curUser.organization.name;
-            vm.searchOrganizationFamily = vm.curUser.family_orgs.length ? vm.curUser.family_orgs[0].name : '';
+            vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(optionRole, optionEmail, optionPhone);
@@ -210,8 +198,21 @@
                 vm.searchUsers();
             });
         };
-
+        vm.gridOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
+                function (data) {
+                    vm.gridOptions.useExternalPagination = false;
+                    vm.gridOptions.useExternalSorting = false;
+                    vm.gridOptions.data = data['users'];
+                }
+            );
+        };
         vm.searchUsers = function () {
+            vm.gridOptions.useExternalPagination = true;
+            vm.gridOptions.useExternalSorting = true;
             UserService.searchUsers(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data['users'];
                 vm.gridOptions.totalItems =  data.total;

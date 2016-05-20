@@ -18,9 +18,9 @@ Then the intervention information will be displayed
  
 
       |Preferred Name                |
-      |Other Names                   |
+      |Synonyms                      |
       |Intervention Type             |
-      |Description                   |
+      |Definition                    |
       |Action                        |
 
 When I select an Intervention Name by clicking on the Select button on the Action column
@@ -47,8 +47,8 @@ Then the <InterventionType> field will be blank and grayed out
 When I click on the save button to add the Intervention
 Then the selected intervention will be added to the intervention table with fields below
 
-      |Name  |
-      |Other Names  |
+      |Preferred Name  |
+      |Synonyms  |
       |Description  |
       |Intervention Type  |
       |Edit  |
@@ -84,7 +84,7 @@ Scenario: #3 Intervention Desciption field Characters Rule
      Scenario: #5 I can search Interventions when Include Synonym search is used
     Given I am on the Search Interventions Screen
      When Include Synonym box is checked
-     Then the search Intervention results will include preferred names where the intervention term is in the other names 
+     Then the search Intervention results will include preferred names where the intervention term is in the synonyms 
      When the Intervention name synonym is NOT checked 
      Then the search intervention results will only include entries where the intervention term in the preferred term 
   
@@ -105,7 +105,7 @@ Scenario: #3 Intervention Desciption field Characters Rule
     And I am on the Edit Intervention screen
     And the intervention name is not editable
     And I can add or update Intervention Description
-    And Other Names is not editable
+    And Synonyms are not editable
     And I can edit and add the Intervention type
     When I click on the save button
     Then the changes made will be saved to the selected Intervention

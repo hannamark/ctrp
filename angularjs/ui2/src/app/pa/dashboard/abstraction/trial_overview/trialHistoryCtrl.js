@@ -272,10 +272,10 @@
         function UpdateModalInstanceController($uibModalInstance, grid, row) {
             var vm = this;
             vm.entity = angular.copy(row.entity);
-            vm.submission_num = row.entity.submission_num;
-            vm.submission_date = DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
-            vm.acknowledgeUpdate = acknowledgeUpdate;
-            vm.disableBtn = false;
+            vm.submission_num     =   row.entity.submission_num;
+            vm.submission_date    =   DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
+            vm.acknowledgeUpdate  =   acknowledgeUpdate;
+            vm.disableBtn         =   false;
 
             function acknowledgeUpdate() {
                 vm.entity.acknowledge ="Yes";

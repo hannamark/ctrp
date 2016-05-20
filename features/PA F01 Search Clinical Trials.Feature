@@ -124,7 +124,8 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Search Clinical Trials Screen
       When I select one or more Identifier Types
-          |NCI |
+          |Lead Org|
+	  |CTRP (NCI)|
           |CTEP|
           |DCP|
           |CCR|
@@ -172,9 +173,11 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
   Scenario: #9 I can search for pilot clinical trials
       Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Search Clinical Trials Screen
-      *F When I select the Pilot Option:  Yes or No 
+      When I select the Pilot Option from the is to
+          |Yes|
+          |No| 
       And select search
-      *F Then the search results will display trials that have the Pilot criteria that was selected
+      Then the search results will display trials that have the Pilot criteria that was selected
 
   Scenario: #10 I can search trials by current Trial Status
       Given I am logged into the CTRP Protocol Abstraction application

@@ -103,15 +103,16 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function (response) {
-                if (response.server_response.status < 300) {
+                var status = response.server_response.status;
+
+                if (status === 200) {
                     $state.go('main.pa.trialOverview.onhold', {}, {reload: true});
                     toastr.success('On hold has been recorded', 'Operation Successful!');
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
                 }
             }).catch(function (err) {
                 console.log("Error in saving on hold " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 
@@ -127,7 +128,6 @@
         function showHideAddBtn() {
             for (var i = 0; i < vm.curTrial.onholds.length; i++) {
                 if (!vm.curTrial.onholds[i].offhold_date) {
-                    console.log('in');
                     vm.showAddBtn = false;
                     return;
                 }

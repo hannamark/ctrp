@@ -605,7 +605,7 @@ AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File T
 
 AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
+AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHLBI')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering_Commitee_Reviewed')
 
@@ -1009,7 +1009,7 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                  ]'
 )
 
-AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons||Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
+AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons, Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
 
 AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
 
@@ -1150,6 +1150,36 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br><b>${username}</b>, a user in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application, is requesting admin access.</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ for the user\'s details and assign new role to grant access.<p></body></html>'
 )
 
+
+MailTemplate.find_or_create_by(
+    code: 'SITE-ADMIN-ACCESS-GRANTED',
+    name: 'Trial Registration',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${adminAccessRecepient}',
+    subject: 'Site Administrator Access Has Been Granted',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>You have been granted Site Administrator Access.</p></body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'ONHOLD_ORIGINAL',
+    name: 'On Hold Trial (original notice)',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: 'noreply@ctrp.nci.nih.gov',
+    subject: 'NCI CTRP: Trial PROCESSING ON HOLD  for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head>
+                  <body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers}<hr>
+                    <p>Date: ${CurrentDate}</p>
+                    <p>Dear ${trialOwner},</p>
+                    <p>Processing of the NCI Clinical Trials Reporting Program (CTRP) trial identified above is on hold as of ${CurrentDate} for the following reason: <br><i>${onholdReason}</i></p>
+                    <p><b>NEXT STEPS:</b><br>
+                      Please contact us at ncictro@mail.nih.gov at your earliest convenience, but no later than close of business on ${nextDate}. We are unable to resume processing your trial without further information from you.
+                    </p>
+                    <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p>
+                    <p>Thank you for participating in the NCI Clinical</p>
+                  </body></html>'
+)
 
 ########## SEEDING MAIL TEMPLATES ENDS ############
 
@@ -1301,36 +1331,36 @@ dcp = Organization.find_or_create_by( id: 10000002,
 
 if !Rails.env.qa?
 
-  test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER"},
-                 {"username" => "ctrpsuper2", "role" => "ROLE_SUPER"},
-                 {"username" => "ctrpsuper3", "role" => "ROLE_SUPER"},
-                 {"username" => "ctrpadmin", "role" => "ROLE_ADMIN"},
-                 {"username" => "ctrpcurator", "role" => "ROLE_CURATOR"},
-                 {"username" => "testercurator", "role" => "ROLE_CURATOR"},
-                 {"username" => "ctrpro", "role" => "ROLE_RO"},
-                 {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER"},
-                 {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER"},
-                 {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER"},
-                 {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER"},
-                 {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU"},
-                 {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU"},
-                 {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR"},
-                 {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR"},
-                 {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR"},
-                 {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU"},
-                 {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST"},
-                 {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST"},
-                 {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST"},
-                 {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER"},
-                 {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER"}
+  test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
+                 {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "first_name" => "Frank", "last_name" => "Lee"},
+                 {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "first_name" => "Fiona", "last_name" => "Layman-Ligramman"},
+                 {"username" => "ctrpadmin", "role" => "ROLE_ADMIN", "first_name" => "Fifi", "last_name" => "Lineburgh"},
+                 {"username" => "ctrpcurator", "role" => "ROLE_CURATOR", "first_name" => "Fox", "last_name" => "Links-Hyphenn"},
+                 {"username" => "testercurator", "role" => "ROLE_CURATOR", "first_name" => "F", "last_name" => "Lever"},
+                 {"username" => "ctrpro", "role" => "ROLE_RO", "first_name" => "Frederick", "last_name" => "Lathiramalaynathan"},
+                 {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "first_name" => "Fred", "last_name" => "Luggz"},
+                 {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "first_name" => "Frank", "last_name" => "Layman"},
+                 {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "first_name" => "Fiona", "last_name" => "Lighthouse"},
+                 {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "first_name" => "Fifi", "last_name" => "L"},
+                 {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "first_name" => "Flower", "last_name" => "Leinmann"},
+                 {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "first_name" => "Fox", "last_name" => "Lilongwe"},
+                 {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "first_name" => "Frederick", "last_name" => "Lathiramalaynathan"},
+                 {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fils", "last_name" => "Litmus"},
+                 {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fred", "last_name" => "Lizdenburgh"},
+                 {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Frank", "last_name" => "Legal"},
+                 {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "first_name" => "Fiona", "last_name" => "Lee"},
+                 {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "first_name" => "Fifi", "last_name" => "Lever"},
+                 {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "first_name" => "Fox", "last_name" => "Layman"},
+                 {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER", "first_name" => "Frederick", "last_name" => "Links"},
+                 {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER", "first_name" => "Freed", "last_name" => "Lathiramalaynathan"}
   ]
 
   test_users.each do |u|
    user = LocalUser.new
    user.username = u["username"]
    user.role = u["role"]
-   user.first_name = u["username"] + "_first_name"
-   user.last_name  = u["username"] + "_last_name"
+   user.first_name = u["first_name"]
+   user.last_name  = u["last_name"]
    user.domain = "NIH"
    user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
    user.password = "Welcome01"

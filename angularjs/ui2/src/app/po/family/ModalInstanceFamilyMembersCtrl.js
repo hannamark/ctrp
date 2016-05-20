@@ -9,9 +9,9 @@
         .controller('ModalInstanceFamilyMembersCtrl', ModalInstanceFamilyMembersCtrl);
 
 
-    ModalInstanceFamilyMembersCtrl.$inject = ['$modalInstance', 'FamilyService', 'familyId', '$timeout'];
+    ModalInstanceFamilyMembersCtrl.$inject = ['$uibModalInstance', 'FamilyService', 'familyId', '$timeout'];
 
-    function ModalInstanceFamilyMembersCtrl($modalInstance, FamilyService, familyId, $timeout) {
+    function ModalInstanceFamilyMembersCtrl($uibModalInstance, FamilyService, familyId, $timeout) {
         var vm = this;
         vm.modalTitle = 'Family Memberships for ';
         FamilyService.getFamilyById(familyId).then(function(data) {
@@ -20,7 +20,7 @@
         });
 
         vm.close = function() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
 
         vm.aff_orgs=[];

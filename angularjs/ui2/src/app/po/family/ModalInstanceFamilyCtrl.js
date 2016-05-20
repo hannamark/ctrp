@@ -9,9 +9,9 @@
         .controller('ModalInstanceFamilyCtrl', ModalInstanceFamilyCtrl);
 
 
-    ModalInstanceFamilyCtrl.$inject = ['$modalInstance', 'FamilyService', 'familyId', '$timeout'];
+    ModalInstanceFamilyCtrl.$inject = ['$uibModalInstance', 'FamilyService', 'familyId', '$timeout'];
 
-    function ModalInstanceFamilyCtrl($modalInstance, FamilyService, familyId, $timeout) {
+    function ModalInstanceFamilyCtrl($uibModalInstance, FamilyService, familyId, $timeout) {
         var vm = this;
         vm.modalTitle = 'Please confirm';
         vm.deletionStatus = '';
@@ -28,7 +28,7 @@
         };
 
         vm.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
 
 
@@ -37,9 +37,9 @@
             $timeout(function() {
                 if (httpStatusCode > 206) {
                     //failed deletion is treated the same as cancel
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 } else {
-                    $modalInstance.close('delete');
+                    $uibModalInstance.close('delete');
                 }
             }, 2500);
         }

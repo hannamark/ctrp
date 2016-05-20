@@ -1358,13 +1358,12 @@ div[disabled] {
     color: red;
 }
 
-
 .ctrptransferselect label {
     margin: 10px;
 }
 
 .ctrptransferselect .btn {
-    margin: 10px;
+    margin-left: 5px;
 }
 
 .ctrptransferselect .pool {
@@ -1372,7 +1371,7 @@ div[disabled] {
     border-radius: 4px;
     padding: 10px;
     margin: 5px;
-    height: 150px;
+    height: 300px;
     overflow-y: scroll;
 }
 
@@ -1385,8 +1384,25 @@ div[disabled] {
     width: 100%;
     padding: 4px 8px 4px 4px;
     border-bottom: 1px dotted #CFCFCF;
+    font-size: 11px;
 }
 
 .ctrptransferselect .pool ul li a:hover {
     text-decoration: none;
+}
+.ctrptransferselect .select-content {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.transferTrials {
+    width: 100%;
+}
+.transferTrials .modal-dialog {
+    width: 90% !important;
+    max-width: 1000px;
+}
+
+.dir-modal-body .ctrptransferselect {
+    margin: 10px 20px;
 }

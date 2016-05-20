@@ -67,7 +67,7 @@
         <div class="modal-footer">
             <div class="col-sm-12">
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary pull-right" ng-click="vm.acknowledgeUpdate()"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>
+                    <button class="btn btn-primary pull-right" ng-click="vm.acknowledgeUpdate()" ng-disabled="trialHistoryView.disableBtn"><i class="glyphicon glyphicon-ok"></i> Acknowledge</button>
                     <button type="button" class="btn btn-danger pull-right" ng-click="$close()"><i class="glyphicon glyphicon-remove"></i> Close</button>
                 </div>
             </div>
@@ -152,7 +152,7 @@
     <div class="modal-footer">
         <div class="col-sm-12">
             <div class="btn-toolbar">
-                <button type="submit" class="btn btn-primary pull-right" id="submit_processing">
+                <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-disabled="trialHistoryView.disableBtn">
                     <i class="glyphicon glyphicon-ok"></i> Update
                 </button>
 
@@ -273,7 +273,7 @@
                             <div class="form-group no-bottom-margin" >
                                 <div class="col-sm-3"></div>
                                 <div class="btn-toolbar col-xs-12 col-sm-9">
-                                    <button type="button" class="btn btn-primary pull-right" id="submit_btn" ng-click="trialHistoryView.loadAuditTrials()" >
+                                    <button type="button" class="btn btn-primary pull-right" id="search_btn" ng-click="trialHistoryView.loadAuditTrials()" ng-disabled="trialHistoryView.disableBtn">
                                         <i class="glyphicon"></i> Search
                                     </button>
                                 </div>

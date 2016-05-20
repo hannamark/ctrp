@@ -54,7 +54,18 @@
                     };
 
                     /* fieldModelController is ngModel controller */
-                    this.needsAttention = function(fieldModelController) {
+                    /**
+                     * Verify the validity of the field and set form invalid or valid
+                     * @param  {Object} fieldModelController [form field]
+                     * @param  {boolean} attentionFlag        [set the form field invalid directly]
+                     * @return {[type]}                      [description]
+                     */
+                    this.needsAttention = function(fieldModelController, attentionFlag) {
+                        if (angular.isDefined(attentionFlag) && attentionFlag === true) {
+                            formController.$invalid = true;
+                            return formController.$submitted && attentionFlag;
+                        }
+
                         if (!formController) {
                             return false;
                         }
