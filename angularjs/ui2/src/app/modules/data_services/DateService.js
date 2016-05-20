@@ -77,8 +77,9 @@
             }
             */
             if (!!isoDate) {
-                var date = moment(isoDate, 'YYYY-MM-DDTHH:mm:ss.SSSSZ');
+
                 try {
+                    var date = moment(isoDate, 'YYYY-MM-DDTHH:mm:ss.SSSSZ');
                     date = date.toDate();
                     var day = ('0' + date.getDate()).slice(-2);
                     var year = date.getFullYear();
