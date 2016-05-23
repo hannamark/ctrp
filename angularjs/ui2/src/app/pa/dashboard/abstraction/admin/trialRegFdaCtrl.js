@@ -30,6 +30,8 @@
         vm.sponsor_id = null;
         vm.showSponsor = false;
         vm.sponsorName = "";
+        vm.disableBtn = false;
+
         for (var i = 0; i < responsiblePartyObj.length; i++) {
             if (responsiblePartyObj[i].code == "SPONSOR") {
                 vm.sponsor_id = responsiblePartyObj[i].id;
@@ -61,10 +63,6 @@
             });
         };
         vm.updateTrial = function() {
-            // Prevent multiple submissions
-            vm.disableBtn = true;
-            //Required values
-            console.log("vm.toaNum="+ vm.toaNum);
             if ((!vm.curTrial.responsible_party_id) || (!vm.toaNum || vm.toaNum <= 0)) {
                 return;
             }
@@ -98,6 +96,8 @@
                 vm.selectedAuthority = false;
             }
 
+            vm.disableBtn = true;
+
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
@@ -107,22 +107,26 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                if (response.server_response.status >= 200 && status <= 210) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.curTrial = response;
                     vm.addedAuthorities = vm.curTrial.oversight_authorities;
                     //console.log("2HIIIII oversight_authorities =" + JSON.stringify(vm.curTrial.oversight_authorities));
-                }
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
 
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
 
 

@@ -35,6 +35,8 @@
         vm.trialDetailObj = {};
         vm.tempTrialStatuses = [];
         vm.commentList = [];
+        vm.disableBtn = false;
+
         var commentField = 'trial-status'; // for marking comment entry
         var commentModel = 'Trial'; // model name for comment
         var statusesForWhyStopped = [
@@ -150,17 +152,26 @@
          */
         function _validateStatusesDelegate(statusArr) {
             if (statusArr.length === 0) return;
+
+            vm.disableBtn = true;
+
             TrialService.validateStatus({"statuses": statusArr}).then(function(res) {
-                if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
-                    vm.statusValidationMsgs = res.validation_msgs;
-                    _.each(vm.tempTrialStatuses, function(status, index) {
-                        if (status._destroy) {
-                            vm.statusValidationMsgs.splice(index, 0, {});
-                        }
-                    });
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
+                        vm.statusValidationMsgs = res.validation_msgs;
+                        _.each(vm.tempTrialStatuses, function(status, index) {
+                            if (status._destroy) {
+                                vm.statusValidationMsgs.splice(index, 0, {});
+                            }
+                        });
+                    }
                 }
             }).catch(function(err) {
                 console.log('error in validating status');
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         } // _validateStatusesDelegate
 
@@ -231,13 +242,21 @@
          * @return {Promise}           [resolved to an array of comments]
          */
         function _loadComments(fieldName) {
+            vm.disableBtn = true;
+
             CommentService.getComments(vm.trialDetailObj.uuid, fieldName)
                 .then(function(res) {
-                    vm.commentList = CommentService.annotateCommentIsEditable(res.comments);
-                    vm.commentList.reverse();
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.commentList = CommentService.annotateCommentIsEditable(res.comments);
+                        vm.commentList.reverse();
+                    }
                 })
                 .catch(function(err) {
                     console.log('error in retrieving comments');
+                }).finally(function() {
+                    vm.disableBtn = false;
                 });
         }
 
@@ -246,17 +265,24 @@
         */
         function createComment() {
             if (vm.commentObj.content === '') return;
+            vm.disableBtn = true;
+
             CommentService.createComment(vm.commentObj)
               .then(function(res) {
-                 console.log('posted comment, res: ', res);
-                 vm.commentObj = _initCommentObj();
-                 _loadComments(commentField);
+                  var status = res.server_response.status;
 
-                 toastr.clear();
-                 toastr.success('Your comment has been added', 'Successful!', {
-                     timeOut: 1000
-                 });
-              });
+                  if (status >= 200 && status <= 210) {
+                     vm.commentObj = _initCommentObj();
+                     _loadComments(commentField);
+
+                     toastr.clear();
+                     toastr.success('Your comment has been added', 'Successful!', {
+                         timeOut: 1000
+                     });
+                  }
+             }).finally(function() {
+                 vm.disableBtn = false;
+             });
         } //createComment
 
         function updateComment(newContent, index) {
@@ -311,23 +337,30 @@
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
+            vm.disableBtn = true;
+
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
             TrialService.upsertTrial(outerTrial).then(function(res) {
-                vm.trialDetailObj = res;
-                console.log('in trial status, res: ', res);
-                vm.trialDetailObj.lock_version = res.lock_version;
-                // delete vm.trialDetailObj.admin_checkout;
-                // delete vm.trialDetailObj.scientific_checkout;
-                PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
-                $scope.$emit('updatedInChildScope', {});
+                var status = res.server_response.status;
 
-                toastr.clear();
-                toastr.success('Trial statuses has been updated', 'Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-                _getTrialDetailCopy();
+                if (status >= 200 && status <= 210) {
+                    vm.trialDetailObj = res;
+                    vm.trialDetailObj.lock_version = res.lock_version;
+                    // delete vm.trialDetailObj.admin_checkout;
+                    // delete vm.trialDetailObj.scientific_checkout;
+                    PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial statuses has been updated', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                    _getTrialDetailCopy();
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         } // updateTrialStatuses
 
