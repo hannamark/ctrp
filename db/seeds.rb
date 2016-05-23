@@ -1009,7 +1009,7 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                  ]'
 )
 
-AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons||Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
+AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons, Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
 
 AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
 

@@ -61,7 +61,7 @@ And I have selected edit to edit the trial on hold status
 And I enter the off hold date
 And I select Save
 Then I the trail will no longer be on hold
-And the trial processing status will be set Off Hold
+And the trial processing status will be set to the processing status when the trail was placed on hold 
 
 Scenario: #7 Off Hold Date Validaiton
 Given I am logged into the CTRP Protocol Abstraction application

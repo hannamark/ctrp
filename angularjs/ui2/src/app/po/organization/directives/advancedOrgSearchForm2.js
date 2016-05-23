@@ -330,7 +330,7 @@
 
                 //get source statuses
                 OrgService.getSourceStatuses().then(function (statuses) {
-                    //console.log("received statuses: " + JSON.stringify(statuses));
+                    console.log("received statuses: ", statuses);
                     if (statuses && angular.isArray(statuses)) {
                         statuses.sort(Common.a2zComparator());
                         $scope.sourceStatuses = statuses;

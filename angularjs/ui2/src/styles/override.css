@@ -1402,3 +1402,12 @@ div[disabled] {
     width: 90% !important;
     max-width: 1000px;
 }
+
+.dir-modal-body .ctrptransferselect {
+    margin: 10px 20px;
+}
+
+.reg-users-details label {
+    font-size:14px;
+    padding-left: 0;
+}
