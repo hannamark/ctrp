@@ -13,6 +13,7 @@
     function checkoutHistoryCtrl($scope, checkoutHistoryArr, $filter, _,
             $timeout, MESSAGES, PATrialService, $stateParams) {
         var vm = this;
+        console.info('checkout history arr: ', checkoutHistoryArr);
         var curTrialId = $stateParams.trialId;
         var pageSize = 20;
         vm.gridOptions = getGridOptions();
@@ -27,12 +28,48 @@
         function populateGrid(arrData) {
             $timeout(function() {
                 delete arrData.server_response; // remove the field in the server response
-                vm.checkoutHistoryArr = arrData; // update the cache
+
+                vm.checkoutHistoryArr = _splitRecordsByType(arrData); // update the cache
                 createNewDatasource(vm.checkoutHistoryArr);
                 // vm.gridOptions.api.setRowData(vm.checkoutHistoryArr);
                 vm.gridOptions.api.refreshView();
                 vm.gridOptions.api.sizeColumnsToFit();
             }, 0);
+        }
+
+        /**
+         * Split the checkout history array by 'admin' and 'scientific' and
+         * rearrange them by time in ascending order (earlier time first -> later time last),
+         * match each checkout object with its corresponding checkin object
+         *
+         * @param  {Array} historyArr Array of checkout or checkin objects
+         * @return {Array}           rearranged checkout-checkin objects in array
+         */
+        function _splitRecordsByType(historyArr) {
+            var reorderedArr = [];
+            if (angular.isArray(historyArr)) {
+                var checkoutinRecordArr = historyArr.slice(); // array clone
+                while(checkoutinRecordArr.length > 0) {
+                    var checkoutRecord = checkoutinRecordArr.shift();
+                    var checkinRecord = {};
+                    var checkinRecordIndex = _.findIndex(checkoutinRecordArr, {abstraction_type: checkoutRecord.abstraction_type, category: 'Checkin'});
+                    if (checkinRecordIndex > -1) {
+                        checkinRecord = checkoutinRecordArr.splice(checkinRecordIndex, 1)[0];
+                    }
+
+                    var mergedRecord = {
+                        abstraction_type: checkoutRecord.abstraction_type,
+                        checkout_time: checkoutRecord.created_at,
+                        checkout_username: checkoutRecord.username,
+                        checkin_time: checkinRecord.created_at || '',
+                        checkin_username: checkinRecord.username || '',
+                        checkin_comment: checkinRecord.checkin_comment || ''
+                    };
+                    reorderedArr.push(mergedRecord);
+                }
+            } // _splitRecordsByType
+
+            return reorderedArr;
         }
 
         // grid listen to the checkin checkout event in trial overview
@@ -95,14 +132,20 @@
 
         function getColumnDefs() {
             var columns = [
-                {headerName: 'Type', width: 90, field: 'abstraction_type', cellRenderer: _renderCellType},
-                {headerName: 'Date/Time', width: 75, field: 'created_at', cellRenderer: _renderCellDate},
-                {headerName: 'User', width: 60, field: 'username'},
-                {headerName: 'Checkout/Checkin', width: 80, field: 'category', cellClassRules: {
-                    'cellbg-red': function(params) {return params.value === 'Checkout'},
-                    'cellbg-green': function(params) {return params.value === 'Checkin'}
-                }, cellRenderer: _renderCheckoutIcon},
-                {headerName: 'Check In Comment',field: 'checkin_comment', cellRenderer: _renderToolTip, suppressSizeToFit: false},
+                {headerName: 'Type', width: 60, field: 'abstraction_type', cellRenderer: _renderCellType},
+                {headerName: 'Checkout',
+                 children: [
+                     {headerName: 'Checkout Time', width: 75, field: 'checkout_time', cellRenderer: _renderCellDate},
+                     {headerName: 'Checkout User', width: 80, field: 'checkout_username', cellRenderer: _renderToolTip},
+                    ]
+                },
+                {headerName: 'Checkin',
+                 children: [
+                     {headerName: 'Checkin Time', width: 75, field: 'checkin_time', cellRenderer: _renderCellDate},
+                     {headerName: 'Checkin User', width: 80, field: 'checkin_username', cellRenderer: _renderToolTip},
+                     {headerName: 'Check In Comment',field: 'checkin_comment', cellRenderer: _renderToolTip, suppressSizeToFit: false}
+                    ]
+                }
             ];
 
             return columns;
@@ -134,15 +177,7 @@
                 return '';
             }
 
-            var formattedType = 'Unknown';
-            if (params.value.toLowerCase() === 'scientificadmin') {
-                formattedType = 'Scientific, Administrative'
-            } else if (params.value.toLowerCase().startsWith('admin')) {
-                formattedType = 'Administrative';
-            } else {
-                formattedType = $filter('toProperCase')(params.value);
-            }
-
+            var formattedType = $filter('toProperCase')(params.value);
             return formattedType;
         }
 
