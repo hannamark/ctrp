@@ -53,7 +53,7 @@
         var optionRole = {
             name: 'admin_role',
             displayName: 'Site Administrator Privileges',
-            enableSorting: true,
+            enableSorting: false,
             width: '110'
         };
 
