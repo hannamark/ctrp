@@ -169,6 +169,8 @@
         var TrialSearchParams = function (){
             return {
                 user_id: vm.userDetails.id,
+                sort: 'nci_id',
+                order: 'desc',
                 rows: 10,
                 start: 1
             }
@@ -347,10 +349,8 @@
         function sortChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                console.log('removing sorting');
-                //remove sorting
-                vm.searchParams.sort = '';
-                vm.searchParams.order = '';
+                vm.searchParams.sort = 'nci_id';
+                vm.searchParams.order = 'desc';
             } else {
                 vm.searchParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {
