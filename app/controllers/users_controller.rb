@@ -134,14 +134,7 @@ end
     end
     @users = User.all
 
-    if current_user.role == 'ROLE_SITE-SUpp'
-      @users = @users.matches_wc('organization_id', current_user.organization_id)
-      @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
-      @organization =  Organization.find(current_user.organization_id).name
-      @status = 'Active'
-    end
-
-    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN'
+    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU'
       @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
       @status = 'Active'
     end
