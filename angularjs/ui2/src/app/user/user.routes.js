@@ -88,6 +88,23 @@
                         label: 'User Portal'
                     }
                 })
+
+                .state('main.registeredUsers', {
+                    url: '/registered-users',
+                    templateUrl: 'app/user/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService',
+                        userDetailObj: function(UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'Registered CTRP Users'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: 'app/user/changePassword.html',
@@ -100,8 +117,29 @@
                     }
                 })
 
+                .state('main.regUserDetail', {
+                    url: '/reg-user-detail/:username',
+                    templateUrl: 'app/user/regUserDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
+                    resolve: {
+                        UserService: 'UserService',
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        },
+                        userDetailObj : function(UserService, $stateParams) {
+                            return UserService.getUserDetailsByUsername($stateParams.username);
+                        }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.registeredUsers',
+                        label: 'User Profile'
+                    }
+                })
+            
                 .state('main.userDetail', {
-                    url: '/userDetail/:username',
+                    url: '/user-detail/:username',
                     templateUrl: 'app/user/userDetails.html',
                     controller: 'userDetailCtrl as userDetailView',
                     section: 'user',
@@ -116,7 +154,7 @@
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
-                        parent: 'main.users',
+                        parent: 'main.registeredUsers',
                         label: 'User Profile'
                     }
                 });

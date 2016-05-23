@@ -4,7 +4,7 @@ Feature: ADMIN F05 Display Trial Ownership (Registered user Details)
 As a CTRP User I view registered user details
 
 Scenario: #1 I can view Registered User Detials
-Given I am logged into CTRP 
+Given I am logged into CTRP
 And I select the Registered User Detials
 Then I will see a list of all CTRP Users:
 | Last Name, First Name, Organization Affilliation|
@@ -42,6 +42,7 @@ And All the trials the user is a trial owner will be displayed including the fol
 |NCI Trial Identifier|
 |Lead Organization|
 |Lead Org PO ID|
+
 |Processing Priority|
 |CTEP ID|
 |DCP ID|

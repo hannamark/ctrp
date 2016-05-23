@@ -128,17 +128,23 @@ end
     Rails.logger.info "In User controller params = #{params.inspect}"
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:sort] = 'username' if params[:sort].blank?
-    params[:order] = 'asc' if params[:order].blank?
+    sortBy = params[:sort]
+    if sortBy == 'user_organization_name'
+      sortBy = 'user_org.name'
+    end
     @users = User.all
 
-    if current_user.role == 'ROLE_SITE-SU'
+    if current_user.role == 'ROLE_SITE-SUpp'
       @users = @users.matches_wc('organization_id', current_user.organization_id)
       @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
       @organization =  Organization.find(current_user.organization_id).name
       @status = 'Active'
     end
 
+    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN'
+      @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
+      @status = 'Active'
+    end
 
     @searchType = current_user.role
 
@@ -151,7 +157,8 @@ end
     @users = @users.matches_wc('organization_id', params[:organization_id]) if params[:organization_id].present?
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-    @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id')
+    @users = @users.matches_wc('user_organization_name', '*')
+    @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "username ASC")
     unless params[:rows].nil?
       @users = @users.page(params[:start]).per(params[:rows])
     end

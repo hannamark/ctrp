@@ -197,13 +197,20 @@
                 {
                     name: 'nci_id',
                     enableSorting: true,
-                    displayName: 'NCI ID',
+                    displayName: 'NCI Trial Identifier',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
-                    width: '120'
+                    width: '180'
+                },
+                {
+                    name: 'lead_org_name',
+                    displayName: 'Lead Organization',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
+                    enableSorting: false,
+                    width: '*'
                 },
                 {
                     name: 'lead_protocol_id',
-                    displayName: 'Lead Protocol Id',
+                    displayName: 'Lead Org PO ID',
                     enableSorting: true,
                     width: '155'
                 },
@@ -212,13 +219,6 @@
                     displayName: 'Official Title for Trial',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
-                    width: '*'
-                },
-                {
-                    name: 'lead_org_name',
-                    displayName: 'Lead Organization for Trial',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
-                    enableSorting: false,
                     width: '*'
                 }
             ],

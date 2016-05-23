@@ -8,12 +8,14 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$scope', 'userDetailObj', 'toastr', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userListCtrl(PromiseTimeoutService, $scope, userDetailObj, toastr, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS ) {
+    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS ) {
 
         var vm = this;
         vm.curUser = userDetailObj;
+
+        vm.registeredUsersPage = $state.includes('main.registeredUsers');
 
         // Initial User Search Parameters
         var SearchParams = function (){
@@ -27,6 +29,8 @@
                 approved: '',
                 user_status_id: '',
                 rows: 25,
+                sort: vm.registeredUsersPage ? 'last_name' : 'username',
+                order: 'asc',
                 start: 1
             }
         }; //initial User Search Parameters
@@ -77,9 +81,65 @@
         var optionStatus = {
             name: 'user_status',
             displayName: 'Status',
-            enableSorting: true,
+            enableSorting: false,
             width: '90',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
+        };
+
+        var userName = {
+            name: 'username',
+            enableSorting: true,
+            displayName: 'Username',
+            minWidth: '100',
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
+                ' title="{{COL_FIELD}}">' +
+                ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
+                '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+        };
+
+        var firstName = {
+            name: 'first_name',
+            displayName: 'First Name',
+            enableSorting: true,
+            minWidth: '100',
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+                '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+        };
+
+        var lastName = {
+            name: 'last_name',
+            displayName: 'Last Name',
+            enableSorting: true,
+            minWidth: '100',
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+                '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+        };
+
+        var middleName = {
+            name: 'middle_name',
+            displayName: 'Middle Name',
+            enableSorting: false,
+            minWidth: '100',
+            visible: false,
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+                '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+        };
+
+        var userEmail = {
+            name: 'email',
+            displayName: 'Email',
+            enableSorting: true,
+            minWidth: '150',
+            width: '*',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                '{{COL_FIELD CUSTOM_FILTERS}}</div>'
         };
 
         var gridOptions = {
@@ -93,59 +153,7 @@
             enableFiltering: false,
             enableVerticalScrollbar: 2,
             enableHorizontalScrollbar: 2,
-            columnDefs: [
-                {
-                    name: 'username',
-                    enableSorting: true,
-                    displayName: 'Username',
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                    ' title="{{COL_FIELD}}">' +
-                    ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'first_name',
-                    displayName: 'First Name',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'last_name',
-                    displayName: 'Last Name',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'middle_name',
-                    displayName: 'Middle Name',
-                    enableSorting: false,
-                    minWidth: '100',
-                    visible: false,
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'email',
-                    displayName: 'Email',
-                    enableSorting: true,
-                    minWidth: '150',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                }
-            ],
+            columnDefs: [],
             enableGridMenu: true,
             enableSelectAll: true,
             exporterCsvFilename: 'users.csv',
@@ -178,14 +186,17 @@
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
-        if (vm.curUser.role === "ROLE_SITE-SU") {
+        if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
+            vm.searchParams.organization_id = vm.curUser.organization_id;
             vm.searchOrganization = vm.curUser.organization.name;
             vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(optionRole, optionEmail, optionPhone);
-        } else {
-            vm.gridOptions.columnDefs.push(optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionRole, optionEmail, optionPhone);
+        } else if (!vm.registeredUsersPage){
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
+        } else if (vm.registeredUsersPage) {
+            vm.gridOptions.columnDefs.push(lastName, firstName, middleName, optionOrg);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -244,10 +255,8 @@
         function sortChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                console.log('removing sorting');
-                //remove sorting
-                vm.searchParams.sort = '';
-                vm.searchParams.order = '';
+                vm.searchParams.sort = 'username';
+                vm.searchParams.order = 'asc';
             } else {
                 vm.searchParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {
