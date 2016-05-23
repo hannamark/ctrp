@@ -96,7 +96,7 @@
                 vm.deleteAll = false;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
                     // console.info('res after upsert: ', res);
-                    if (res.server_response.status === 200) {
+                    if (res.server_response.status >= 200 && status <= 210) {
                         vm.trialDetailObj = res;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                         $scope.$emit('updatedInChildScope', {});

@@ -63,7 +63,7 @@
             TrialService.upsertTrial(updatedTrial).then(function(res) {
                 var status = res.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     // console.log('priority and commented updated: ', res);
                     updatedTrial.lock_version = res.lock_version;
                     PATrialService.setCurrentTrial(updatedTrial);

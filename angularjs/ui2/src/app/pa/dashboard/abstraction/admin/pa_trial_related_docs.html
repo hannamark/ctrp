@@ -5,7 +5,7 @@
         </div>
         <div class="panel-body">
             <form name="trial_docs_form" role="form" class="form form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments('true', 'trial_docs_form')">
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialRelatedDocsView.disableBtn">
                     <legend class="sub-bordered">Trial Related Documents</legend>
                     <div class="form-group">
                         <div class="table-responsive">
@@ -128,11 +128,11 @@
                 </div>
                <div class="btn-toolbar">
                  <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field
-                     ng-disabled="trialRelatedDocsView.saveBtnDisabled || !paTrialOverview.trialDetailObj.pa_editable"
+                     ng-disabled="trialRelatedDocsView.disableBtn || !paTrialOverview.trialDetailObj.pa_editable"
                      ng-click="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
                    <i class="glyphicon glyphicon-ok"></i> Save
                  </button>
-                 <button ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>
+                 <button ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialRelatedDocsView.disableBtn" type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialRelatedDocsView.resetForm()" restriction-field>
                   <i class="glyphicon glyphicon-remove"></i> Reset
                  </button>
                 <div id="warning_message"></div>

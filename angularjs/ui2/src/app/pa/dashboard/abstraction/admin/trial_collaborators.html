@@ -8,7 +8,7 @@
                   novalidate ctrp-submit="trialDetailView.updateTrial()"
                   ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
 
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" ng-if="trialDetailView.addMode"> 
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn" ng-if="trialDetailView.addMode"> 
                     <legend class="sub-bordered">Add Collaborators</legend>
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                         <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
@@ -30,10 +30,10 @@
                     </div>
                     <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                         <div class="btn-toolbar">
-                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
+                            <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="trialDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field>
+                            <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field ng-disabled="trialDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Cancel
                             </button>
                         </div>
@@ -81,12 +81,12 @@
             </table>
 
             <div class="btn-toolbar">
-                <button type="button" class="btn btn-primary pull-right" id="add" restriction-field ng-click="trialDetailView.setAddMode()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <button type="button" class="btn btn-primary pull-right" id="add" restriction-field ng-click="trialDetailView.setAddMode()" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <i class="glyphicon glyphicon-plus"></i> Add Collaborator
                 </button>
                 <button type="button" class="btn btn-danger pull-right" id="delete"
                         restriction-field ctrp-confirm
-                        confirm-msg="Click OK to remove selected Collaborator(s) from the study. Click Cancel to abort." ctrp-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable" ng-show="trialDetailView.curTrial.collaborators.length">
+                        confirm-msg="Click OK to remove selected Collaborator(s) from the study. Click Cancel to abort." ctrp-click="trialDetailView.deleteSelected()" ng-disabled="!trialDetailView.selectedDeleteCollaboratorsList.length || !paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn" ng-show="trialDetailView.curTrial.collaborators.length">
                     <i class="glyphicon glyphicon-trash"></i> Delete Selected
                 </button>
             </div>

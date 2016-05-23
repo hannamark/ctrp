@@ -34,7 +34,7 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                if (response.server_response.status === 200) {
+                if (response.server_response.status >= 200 && status <= 210) {
                     vm.curTrial = response;
                     vm.curTrial.lock_version = response.lock_version || '';
                 }

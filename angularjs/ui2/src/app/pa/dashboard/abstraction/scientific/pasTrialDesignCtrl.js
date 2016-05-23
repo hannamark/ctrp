@@ -156,7 +156,7 @@
          */
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
-                if (res.server_response.status === 200) {
+                if (res.server_response.status >= 200 && status <= 210) {
                     vm.interventionModels = res.models || [];
                 }
             });
@@ -164,7 +164,7 @@
 
         function _fetchAllocations() {
             PATrialService.getAllocations().then(function(res) {
-                if (res.server_response.status === 200) {
+                if (res.server_response.status >= 200 && status <= 210) {
                     vm.allocations = res.allocations || [];
                     vm.allocations;
                 }
@@ -173,7 +173,7 @@
 
         function _fetchStudyClassifications() {
             PATrialService.getStudyClassifications().then(function(res) {
-                if (res.server_response.status === 200) {
+                if (res.server_response.status >= 200 && status <= 210) {
                     vm.studyClassifications = res.data || [];
                     vm.studyClassifications;
                 }
@@ -222,7 +222,7 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
             PATrialService.upsertTrial(outerTrial).then(function(res) {
 
-                if (res.server_response.status === 200) {
+                if (res.server_response.status >= 200 && status <= 210) {
                     vm.trialDetailObj = res;
                     vm.trialDetailObj.lock_version = res.lock_version;
                     // delete vm.trialDetailObj.admin_checkout;

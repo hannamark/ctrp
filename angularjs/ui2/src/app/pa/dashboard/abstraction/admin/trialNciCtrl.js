@@ -25,6 +25,7 @@
         vm.addedFses = [];
         vm.selectedFsArray = [];
         vm.study_source_id = vm.curTrial.study_source_id;
+        vm.disableBtn = false;
 
         vm.isSponsorNci = false;
         if(trialDetailObj["sponsor"] != null) {
@@ -52,12 +53,14 @@
         //vm.nih_nci_prog = trialDetailObj.nih_nci_prog;
 
         vm.updateTrial = function () {
-            // Prevent multiple submissions
-            vm.disableBtn = true;
            //Required values
            if ((vm.fsNum == 0) || (!vm.study_source_id)) {
                 return;
             }
+
+            // Prevent multiple submissions
+            vm.disableBtn = true;
+
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
@@ -89,24 +92,29 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                vm.curTrial.lock_version = response.lock_version || '';
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
-                vm.curTrial.funding_sources = response["funding_sources"];
-                vm.curTrial.nih_nci_div =  response["nih_nci_div"];
-                vm.curTrial.nih_nci_prog =  response["nih_nci_prog"];
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                vm.addedFses = [];
-                vm.fsNum = 0;
-                appendFses();
-                $scope.$emit('updatedInChildScope', {});
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
+                var status = response.server_response.status;
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+                    vm.curTrial.trial_funding_sources = response["trial_funding_sources"];
+                    vm.curTrial.funding_sources = response["funding_sources"];
+                    vm.curTrial.nih_nci_div =  response["nih_nci_div"];
+                    vm.curTrial.nih_nci_prog =  response["nih_nci_prog"];
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    vm.addedFses = [];
+                    vm.fsNum = 0;
+                    appendFses();
+                    $scope.$emit('updatedInChildScope', {});
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
 
 

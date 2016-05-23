@@ -36,6 +36,8 @@
       vm.sponsor = {name: '', array: []};
       vm.leadProtocolId = '';
       vm.leadProtocolIdEdit = false;
+      vm.disableBtn = false;
+
       var otherIdsClone = [];
       var regex = new RegExp('-', 'g');
 
@@ -74,6 +76,8 @@
       /* implementations below */
       function saveGeneralTrialDetails() {
           var outerTrial = {};
+          vm.disableBtn = true;
+
           if (JSON.stringify(vm.generalTrialDetailsObj.central_contacts[0]) !== '{}') {
               var typeObject = _.findWhere(vm.centralContactTypes, {name: vm.centralContactType});
 
@@ -98,8 +102,10 @@
           // get the most updated lock_version
           outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
           TrialService.upsertTrial(outerTrial).then(function(res) {
+              var status = res.server_response.status;
               toastr.clear();
-              if (res.server_response.status === 200) {
+
+              if (status >= 200 && status <= 210) {
                   vm.generalTrialDetailsObj = res;
                   vm.generalTrialDetailsObj.lock_version = res.lock_version;
                   PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
@@ -109,9 +115,9 @@
                       timeOut: 0
                   });
                   getTrialDetailCopy();
-              } else {
-                  toastr.error('Error', 'There are errors in the submitted data');
               }
+          }).finally(function() {
+              vm.disableBtn = false;
           });
       }
 

@@ -296,7 +296,7 @@
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 resStatus = response.server_response.status;
 
-                if (response.server_response.status === 200) {
+                if (response.server_response.status >= 200 && status <= 210) {
 
                     vm.curTrial.lock_version = response.lock_version || '';
                     vm.curTrial.bio_markers = response["bio_markers"];

@@ -175,7 +175,7 @@
                 outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
                 vm.deleteBtnDisabled = true;
                 PATrialService.upsertTrial(outerTrial).then(function(res) {
-                    if (res.server_response.status === 200) {
+                    if (res.server_response.status >= 200 && status <= 210) {
                         vm.trialDetailObj = res;
                         vm.trialDetailObj.lock_version = res.lock_version;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache

@@ -108,7 +108,7 @@
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                if (response.server_response.status === 200) {
+                if (response.server_response.status >= 200 && status <= 210) {
                     vm.curTrial = response;
                     vm.addedAuthorities = vm.curTrial.oversight_authorities;
                     //console.log("2HIIIII oversight_authorities =" + JSON.stringify(vm.curTrial.oversight_authorities));
