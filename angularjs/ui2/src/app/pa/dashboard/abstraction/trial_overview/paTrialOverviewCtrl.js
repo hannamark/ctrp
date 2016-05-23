@@ -295,11 +295,6 @@
         viewModel.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
-
-        viewModel.viewTrialStatusHistory = function() {
-            console.info('redirecting to trial status page');
-            // TODO: redirect to trial state page
-        };
         viewModel.viewAbstractionValidation = function() {
             console.info('viewAbstractionValidation....');
             // TODO: redirect to viewAbstractionValidation page
