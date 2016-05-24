@@ -17,40 +17,40 @@
                 resolve: {
                     TrialService: 'TrialService',
                     PATrialService: 'PATrialService',
-                    studySourceObj: function(TrialService) {
+                    studySourceObj: function (TrialService) {
                         return TrialService.getStudySources();
                     },
-                    phaseObj: function(TrialService) {
+                    phaseObj: function (TrialService) {
                         return TrialService.getPhases();
                     },
-                    primaryPurposeObj: function(TrialService) {
+                    primaryPurposeObj: function (TrialService) {
                         return TrialService.getPrimaryPurposes();
                     },
-                    trialStatusObj: function(TrialService) {
+                    trialStatusObj: function (TrialService) {
                         return TrialService.getTrialStatuses();
                     },
-                    protocolIdOriginObj: function(TrialService) {
+                    protocolIdOriginObj: function (TrialService) {
                         return TrialService.getProtocolIdOrigins();
                     },
-                    milestoneObj: function(PATrialService) {
+                    milestoneObj: function (PATrialService) {
                         return PATrialService.getMilestones();
                     },
-                    researchCategoriesObj: function(PATrialService) {
+                    researchCategoriesObj: function (PATrialService) {
                         return PATrialService.getResearchCategories();
                     },
-                    nciDivObj: function(PATrialService) {
+                    nciDivObj: function (PATrialService) {
                         return PATrialService.getNciDiv();
                     },
-                    nciProgObj: function(PATrialService) {
+                    nciProgObj: function (PATrialService) {
                         return PATrialService.getNciProg();
                     },
-                    submissionTypesObj: function(PATrialService) {
+                    submissionTypesObj: function (PATrialService) {
                         return PATrialService.getSubmissionTypes();
                     },
-                    submissionMethodsObj: function(PATrialService) {
+                    submissionMethodsObj: function (PATrialService) {
                         return PATrialService.getSubmissionMethods();
                     },
-                    processingStatusObj: function(PATrialService) {
+                    processingStatusObj: function (PATrialService) {
                         return PATrialService.getProcessingStatuses();
                     }
                 },
