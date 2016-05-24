@@ -378,7 +378,6 @@ class CreateTrialSummaryReportService
 
         def generate_regulatory_information_table
 
-          Hash h = Hash.new
           oversight_authorities =@trial.oversight_authorities
           create_a_table_row(@grey,@foreground_th_text_color,"Regulatory Information")
           create_a_table_row(@light_red, nil,"Oversight Authority")
@@ -672,7 +671,7 @@ class CreateTrialSummaryReportService
          array.border_width =10
          i=0
          diseases.each do |col|
-           array[i][0] << col.name
+           array[i][0] << col.display_name
            array[i][0].line_break
            i = i+1
          end
