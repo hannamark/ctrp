@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160515030745) do
+ActiveRecord::Schema.define(version: 20160524154308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -679,7 +679,7 @@ ActiveRecord::Schema.define(version: 20160515030745) do
   create_table "ncit_interventions", force: :cascade do |t|
     t.string   "preferred_name"
     t.string   "synonyms"
-    t.text     "description"
+    t.text     "definition"
     t.integer  "ncit_status_id"
     t.string   "type_code"
     t.string   "ct_gov_type_code"

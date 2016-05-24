@@ -302,7 +302,7 @@
         };
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers({'organization_id': controller.userDetails.organization_id}).then(function (data) {
+            service.getAllOrgUsers({'organization_id': controller.userDetails.organization_id, 'family_users' : true}).then(function (data) {
                 if (controller.showAllTrialsModal === false) {
                     controller.showAllTrialsModal = true;
                 }
