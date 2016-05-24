@@ -96,7 +96,7 @@
         vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                if (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER' || vm.userRole === 'ROLE_SITE-SU') {
+                if (vm.gridOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER' || vm.userRole === 'ROLE_SITE-SU')) {
                     vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 }
                 if (vm.userRole === 'ROLE_SITE-SU') {

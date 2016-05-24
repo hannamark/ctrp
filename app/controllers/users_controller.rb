@@ -134,6 +134,16 @@ end
     end
     @users = User.all
 
+    if params[:organization_id].present? && params[:family_users]
+      currentFamilyMemberships =  Organization.find(params[:organization_id]).family_memberships
+      currentFamily =  Organization.find(params[:organization_id]).family_memberships[0] if currentFamilyMemberships.present?
+      currentFamilyId =  Organization.find(params[:organization_id]).family_memberships[0].family_id if currentFamily.present?
+      @users = @users.matches_wc('organization_family_id', currentFamilyId) if currentFamilyId.present?
+      @users = @users.matches_wc('organization_id', params[:organization_id]) if !currentFamilyId.present?
+    elsif params[:organization_id].present?
+      @users = @users.matches_wc('organization_id', params[:organization_id])
+    end
+
     if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU'
       @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
       @status = 'Active'
@@ -147,7 +157,6 @@ end
     @users = @users.matches_wc('email', params[:email]) if params[:email].present?
     @users = @users.matches_wc('role', 'ROLE_SITE-SU')  if params[:site_admin].present?
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
-    @users = @users.matches_wc('organization_id', params[:organization_id]) if params[:organization_id].present?
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
     @users = @users.matches_wc('user_organization_name', '*')
