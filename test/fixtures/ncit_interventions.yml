@@ -22,13 +22,13 @@
 one:
   preferred_name: MyString
   synonyms: MyString
-  description: MyText
+  definition: MyText
   type_code: MyString
   ct_gov_type_code: MyString
 
 two:
   preferred_name: MyString
   synonyms: MyString
-  description: MyText
+  definition: MyText
   type_code: MyString
   ct_gov_type_code: MyString
