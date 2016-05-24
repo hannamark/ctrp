@@ -157,6 +157,7 @@
                       enableSorting: true,
                       enableFiltering: true,
                       sort: {direction: 'asc', priority: 1},
+                      cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>'
                   },
                   {
                       name:'synonyms',
@@ -164,6 +165,7 @@
                       width:'35%',
                       enableSorting: true,
                       enableFiltering: true,
+                      cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>'
                   },
                   {
                       name: 'definition',
@@ -171,6 +173,7 @@
                       width: '*',
                       enableSorting: false,
                       enableFiltering: false,
+                      cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>'
                   }
               ];
           }
