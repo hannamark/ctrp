@@ -270,6 +270,8 @@ Rails.application.routes.draw do
       get 'accepted_file_types_for_registry' => 'util#get_accepted_file_types_for_registry'
       get 'accepted_file_types' => 'util#get_accepted_file_types'
       get 'sampling_methods' => 'util#get_sampling_methods'
+
+      resources :internal_sources
     end
 
 
