@@ -1406,3 +1406,8 @@ div[disabled] {
 .dir-modal-body .ctrptransferselect {
     margin: 10px 20px;
 }
+
+.reg-users-details label {
+    font-size:14px;
+    padding-left: 0;
+}

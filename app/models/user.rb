@@ -80,7 +80,7 @@ class  User < ActiveRecord::Base
     join_clause += "LEFT JOIN user_statuses on users.user_status_id = user_statuses.id"
     str_len = 0
 
-    if column != "site_admin" && column != "organization_id" && column != "user_status_id"
+    if column != "site_admin" && column != "organization_id" && column != "user_status_id" && column != "organization_family_id"
       str_len = value.length
     end
 
@@ -95,6 +95,8 @@ class  User < ActiveRecord::Base
 
     if column == 'user_status_id' || column == 'organization_id'
       joins(join_clause).where("#{column_str} = #{value}")
+    elsif column == 'organization_family_id'
+      joins(join_clause).where("family_memberships.family_id = #{value}")
     elsif value[0] == '*' && value[str_len - 1] != '*'
       joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}")
     elsif value[0] != '*' && value[str_len - 1] == '*'
