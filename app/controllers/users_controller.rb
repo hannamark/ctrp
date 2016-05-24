@@ -128,17 +128,16 @@ end
     Rails.logger.info "In User controller params = #{params.inspect}"
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:sort] = 'username' if params[:sort].blank?
-    params[:order] = 'asc' if params[:order].blank?
+    sortBy = params[:sort]
+    if sortBy == 'user_organization_name'
+      sortBy = 'user_org.name'
+    end
     @users = User.all
 
-    if current_user.role == 'ROLE_SITE-SU'
-      @users = @users.matches_wc('organization_id', current_user.organization_id)
+    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU'
       @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
-      @organization =  Organization.find(current_user.organization_id).name
       @status = 'Active'
     end
-
 
     @searchType = current_user.role
 
@@ -148,10 +147,11 @@ end
     @users = @users.matches_wc('email', params[:email]) if params[:email].present?
     @users = @users.matches_wc('role', 'ROLE_SITE-SU')  if params[:site_admin].present?
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
-
+    @users = @users.matches_wc('organization_id', params[:organization_id]) if params[:organization_id].present?
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-    @users = @users.order(params[:sort] ? "#{params[:sort]} #{params[:order]}" : "username ASC").group(:'users.id')
+    @users = @users.matches_wc('user_organization_name', '*')
+    @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "username ASC")
     unless params[:rows].nil?
       @users = @users.page(params[:start]).per(params[:rows])
     end
@@ -172,6 +172,9 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username, :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role, :street_address, :organization_id, :country, :state, :prs_organization_name, :city, :phone, :user_status_id)
+      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username,
+                                   :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
+                                   :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
+                                   :phone, :user_status_id)
     end
 end

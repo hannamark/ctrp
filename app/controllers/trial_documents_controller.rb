@@ -1,5 +1,9 @@
+
 class TrialDocumentsController < ApplicationController
+
   before_action :set_trial_document, only: [:show, :edit, :update, :destroy, :download]
+  #before_filter :wrapper_authenticate_user unless Rails.env.test?
+
 
   # GET /trial_documents
   # GET /trial_documents.json
@@ -74,6 +78,29 @@ class TrialDocumentsController < ApplicationController
   def download
     send_file @trial_document.file.url, filename: @trial_document.file_name
   end
+
+  def download_tsr_in_rtf
+
+    trial_document_id = generate_tsr_with_create_trial_summary_report_service
+    if trial_document_id
+      @trial_document =TrialDocument.find_by_id(trial_document_id)
+      send_file @trial_document.file.url, filename: @trial_document.file_name
+
+    else
+
+    end
+    #@trial_document = TrialDocument.find_by_trial_id_and_document_type(params[:trial_d],"application/rtf")
+    #@trial_document = TrialDocument.find_by_trial_id_and_document_type_and_status(params[:trial_d],"Trial Summary Report","active");
+
+  end
+
+  def generate_tsr_with_create_trial_summary_report_service
+
+    CreateTrialSummaryReportService.new({
+                                            trial_id: params[:trial_id]
+                                       }).generate_tsr_in_rtf
+  end
+
 
   def deleted_documents
     @deleted_documents = TrialDocument.where("trial_id= ? AND status = ? OR status = ?",params[:trial_id], "deleted","inactive")

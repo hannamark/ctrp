@@ -4,14 +4,14 @@
     angular.module('ctrpApp.widgets')
     .directive('modal', function ($parse) {
         return {
-            template: '<div class="modal fade modal-lg {{ modal_id }}"">' +
+            template: '<div class="modal fade {{ modal_id }}">' +
             '<div class="modal-dialog">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-            '<h4 class="modal-title">{{ title }}</h4>' +
+            '<h3 class="modal-title">{{ title }}</h3>' +
             '</div>' +
-            '<div class="modal-body" ng-transclude></div>' +
+            '<div class="dir-modal-body" ng-transclude></div>' +
             '</div>' +
             '</div>' +
             '</div>',

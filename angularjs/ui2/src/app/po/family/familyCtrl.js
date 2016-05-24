@@ -9,10 +9,10 @@
         .controller('familyCtrl', familyCtrl);
 
     familyCtrl.$inject = ['FamilyService', 'uiGridConstants', '$scope', '$rootScope',
-        'Common','familyStatusObj','familyTypeObj','$modal'];
+        'Common','familyStatusObj','familyTypeObj','$uibModal'];
 
     function familyCtrl(FamilyService, uiGridConstants, $scope, $rootScope,
-                        Common,familyStatusObj,familyTypeObj, $modal) {
+                        Common,familyStatusObj,familyTypeObj, $uibModal) {
 
         var vm = this;
 

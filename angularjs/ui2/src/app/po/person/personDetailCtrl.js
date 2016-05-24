@@ -9,10 +9,10 @@
         .controller('personDetailCtrl', personDetailCtrl);
 
     personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES',
-        '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
+        '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$uibModal', 'OrgService', 'poAffStatuses', '_'];
 
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES,
-                              $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
+                              $scope, Common, sourceStatusObj,sourceContextObj, $state, $uibModal, OrgService, poAffStatuses, _) {
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
@@ -337,7 +337,7 @@
 
         function prepareModal() {
             vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'delete_confirm_template.html',
                     controller: 'ModalInstancePersonCtrl as vm',

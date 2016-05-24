@@ -37,8 +37,9 @@
         <button ng-disabled="!options.selectedItems.length"
                 type="button" class="btn btn-primary pull-right ng-isolate-scope"
                 id="save_btn"
-                ctrp-confirm="" ctrp-click="options.save()"
+                ctrp-confirm ctrp-click="options.save(); options.close()"
                 ng-attr-confirm-off="false"
+                ng-if="options.type === 'users'"
                 confirm-msg="You have selected to transfer ownership of the trials to the Selected User(s) above."> <i class="glyphicon glyphicon-ok"></i>  Save
         </button>
 

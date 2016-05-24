@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state','$scope','countryList','GeoLocationService', 'AppSettingsService', 'URL_CONFIGS'];
+    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state', '$timeout', '$scope', 'countryList', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $scope, countryList, GeoLocationService, AppSettingsService, URL_CONFIGS) {
+    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $timeout, $scope, countryList, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -24,22 +24,26 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
         vm.updateUser = function (redirect) {
+            vm.chooseTransferTrials = false;
+            vm.showAllTrialsModal = false;
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
 
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                if (redirect) {
+                    UserService.allOrgUsers = null;
+                    $timeout(function() {
+                        $state.go('main.users', {}, {reload: true});
+                    }, 500);
+                } else {
+                    vm.userDetailsOrig = angular.copy(vm.userDetails);
+                    vm.getUserTrials();
+                }
             }).catch(function(err) {
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             });
-            vm.userDetailsOrig = angular.copy(vm.userDetails);
-            vm.chooseTransferTrials = false;
-            if (redirect) {
-                $state.go('main.users');
-            } else {
-                vm.getUserTrials();
-            }
         };
 
         vm.isValidPhoneNumber = function(){
@@ -71,11 +75,14 @@
             } else {
                 if (vm.inactivatingUser || vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                        if (vm.gridOptions.totalItems > 0) {
+                        if (vm.gridOptions.totalItems > 0
+                                && (vm.userRole === 'ROLE_ADMIN'
+                                    || vm.userRole === 'ROLE_SUPER'
+                                        || vm.userRole === 'ROLE_SITE-SU')) {
                             vm.chooseTransferTrials = true;
                             return;
                         } else {
-                            vm.updateUser();
+                            vm.updateUser(vm.checkForOrgChange());
                             return;
                         }
                     });
@@ -86,22 +93,32 @@
             }
         };
 
-        vm.saveWithoutTransfer = function() {
+        vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
-                
-                if (vm.userRole == 'ROLE_SITE-SU') {
+                if (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER' || vm.userRole === 'ROLE_SITE-SU') {
+                    vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
+                }
+                if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
+                } else if (vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER') {
+                    vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id = vm.userDetailsOrig.organization_id;
+                    vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].name = 'Request has been sent';
                 }
             }
+            return redirect;
+        };
+
+        vm.saveWithoutTransfer = function() {
+            vm.chooseTransferTrials = false;
+            var redirect = vm.checkForOrgChange();
             vm.updateUser(redirect);
         };
 
         vm.transferAllUserTrials = function() {
+            vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
-            vm.chooseTransferTrials = false;
         };
         
         AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
@@ -152,14 +169,16 @@
         var TrialSearchParams = function (){
             return {
                 user_id: vm.userDetails.id,
-                rows: 25,
+                sort: 'nci_id',
+                order: 'desc',
+                rows: 10,
                 start: 1
             }
         }; //initial User Search Parameters
 
 
+        vm.chooseTransferTrials = false;
         vm.showAllTrialsModal = false;
-        vm.showSelectedTrialsModal = false;
 
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";
@@ -170,7 +189,7 @@
             totalItems: null,
             rowHeight: 22,
             paginationPageSizes: [10, 25, 50, 100, 1000],
-            paginationPageSize: 25,
+            paginationPageSize: 10,
             useExternalPagination: true,
             useExternalSorting: true,
             enableFiltering: false,
@@ -180,27 +199,29 @@
                 {
                     name: 'nci_id',
                     enableSorting: true,
-                    displayName: 'NCI ID',
-                    width: '120'
+                    displayName: 'NCI Trial Identifier',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+                    width: '180'
                 },
                 {
-                    name: 'official_title',
-                    displayName: 'Official Title',
-                    enableSorting: true,
-                    minWidth: '100',
+                    name: 'lead_org_name',
+                    displayName: 'Lead Organization',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
+                    enableSorting: false,
                     width: '*'
                 },
                 {
-                    name: 'start_date',
-                    displayName: 'Start Date',
+                    name: 'lead_protocol_id',
+                    displayName: 'Lead Org PO ID',
                     enableSorting: true,
-                    width: '110'
+                    width: '155'
                 },
                 {
-                    name: 'comp_date',
-                    displayName: 'Complete Date',
-                    enableSorting: false,
-                    width: '150'
+                    name: 'official_title',
+                    displayName: 'Official Title for Trial',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+                    enableSorting: true,
+                    width: '*'
                 }
             ],
             enableRowHeaderSelection : true,
@@ -223,7 +244,7 @@
             exporterMenuPdfAll: true,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700,
-            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id')
+            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm)
         };
 
         vm.gridOptions.onRegisterApi = function (gridApi) {
@@ -260,6 +281,27 @@
         };
         vm.getUserTrials();
 
+        vm.trialOwnershipRemoveIdArr = null;
+        vm.confirmRemoveTrialOwnershipsPopUp = false;
+        vm.confirmRemoveTrialsOwnerships = function (trialOwnershipIdArr) {
+            vm.confirmRemoveTrialOwnershipsPopUp = true;
+            vm.trialOwnershipRemoveIdArr = trialOwnershipIdArr;
+        };
+        vm.removeTrialsOwnerships = function () {
+            var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
+
+             var searchParams = {user_id: vm.userDetails.id};
+             if (trialOwnershipIdArr) {
+                searchParams['ids'] = trialOwnershipIdArr;
+             }
+             UserService.endUserTrialsOwnership(searchParams).then(function (data) {
+                 if(data.results === 'success') {
+                    vm.getUserTrials();
+                 }
+                 vm.trialOwnershipRemoveIdArr = null;
+             });
+            vm.confirmRemoveTrialOwnershipsPopUp = false;
+        };
         /****************** implementations below ***************/
         var activate = function() {
             if(vm.userDetails.organization_id != null) {
@@ -294,7 +336,10 @@
 
 
         } //listenToStatesProvinces
-
+        
+        $scope.$on(vm.redirectToAllUsers, function () {
+            vm.states = [];
+        });
 
         /**
          * callback function for sorting UI-Grid columns
@@ -304,10 +349,8 @@
         function sortChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                console.log('removing sorting');
-                //remove sorting
-                vm.searchParams.sort = '';
-                vm.searchParams.order = '';
+                vm.searchParams.sort = 'nci_id';
+                vm.searchParams.order = 'desc';
             } else {
                 vm.searchParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {
@@ -328,7 +371,7 @@
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm, 'trial_id');
+            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
 })();
