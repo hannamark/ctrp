@@ -26,15 +26,12 @@
         vm.trialStatusArr = trialStatusObj;
         vm.milestoneArr = milestoneObj;
         vm.processingStatusArr = processingStatusObj;
-        //console.log("processing status = " + JSON.stringify(processingStatusObj));
         vm.protocolIdOriginArr = protocolIdOriginObj;
         vm.researchCategoriesArr = researchCategoriesObj;
         vm.nciDivArr = nciDivObj;
         vm.nciProgArr = nciProgObj;
-        //console.log("nciProgObj = " + JSON.stringify(nciProgObj));
         vm.submissionTypesArr = submissionTypesObj;
         vm.submissionMethodsArr = submissionMethodsObj;
-        console.log("submissionMethodsObj = " + JSON.stringify(submissionMethodsObj));
         vm.gridScope=vm;
         vm.searching = false;
 
