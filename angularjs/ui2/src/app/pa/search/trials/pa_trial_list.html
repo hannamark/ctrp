@@ -203,7 +203,7 @@
                         <div class="form-group">
                             <label for="internal_source" class="control-label col-xs-12 col-sm-5">Information Source: </label>
                             <div class="col-xs-12 col-sm-7">
-                                <ui-select multiple id="internal_source" ng-model="trialView.searchParams.internal_source">
+                                <ui-select multiple id="internal_source" ng-model="trialView.searchParams.internal_sources">
                                     <ui-select-match placeholder="-Select Information Sources-">{{$item.name}}</ui-select-match>
                                     <ui-select-choices repeat="internalSource in trialView.internalSourceArr">{{internalSource.name}}</ui-select-choices>
                                 </ui-select>
