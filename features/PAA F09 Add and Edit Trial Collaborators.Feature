@@ -11,10 +11,10 @@ When a list of unique organizations including my organization, the organizations
 Then I can select an organization from the list of organization
 And the selected organization will be associated to the trail as a Trial Collaborator
 And the system will list 
-  |PO ID|
+  |CTRP ID|
   |Name|
   |Deletion|
-And the organizations will be displyed orderd assending alphanumeric by Collaborator Name
+And the organizations will be displayed ordered ascending alphanumeric by Collaborator Name
 
 Scenario: #2 I can edit a Collaborator for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -22,10 +22,10 @@ And I am on the Trial Collaborators screen
 And the list of collaborators is displayed
 Then I can edit the name of a collaborator that does not have a CTRP organization ID
 And the system will list
-  |PO ID|
+  |CTRP ID|
   |Name|
   |Deletion|
-And the edited organizations will be displyed orderd assending alphanumeric by Collaborator Name
+And the edited organizations will be displayed ordered ascending alphanumeric by Collaborator Name
 
 Scenario: #3 I can Delete one or more Collaborators for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -46,3 +46,4 @@ And I am on the Trial Collaborators screen
 When I select Reset Collaborator
 Then the information entered or edited on the Collaborators screen will not be saved to the trial record 
 And the Trial Collaborators screen will be refreshed with the existing list of Collaborators data
+

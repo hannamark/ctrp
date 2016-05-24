@@ -302,7 +302,7 @@
         };
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers({'organization_id': controller.userDetails.organization_id}).then(function (data) {
+            service.getAllOrgUsers({'organization_id': controller.userDetails.organization_id, 'family_users' : true}).then(function (data) {
                 if (controller.showAllTrialsModal === false) {
                     controller.showAllTrialsModal = true;
                 }
@@ -418,7 +418,11 @@
                         }
                     });
             }
-            return service.isCurationModeEnabled() ? menuArr : [];
+            var curUserRole = service.getUserRole();
+            return (service.isCurationModeEnabled()
+                        && (curUserRole === 'ROLE_SUPER'
+                                || curUserRole === 'ROLE_ADMIN'
+                                    || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
         
         /******* helper functions *********/
