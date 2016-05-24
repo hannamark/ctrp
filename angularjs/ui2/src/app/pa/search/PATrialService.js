@@ -165,6 +165,7 @@
             getMailLogs: getMailLogs,
             getTrialCheckoutHistory: getTrialCheckoutHistory,
             annotateTrialStatusWithNameAndCode: annotateTrialStatusWithNameAndCode,
+            getInternalSources: getInternalSources
         };
 
         return services;
@@ -681,6 +682,10 @@
             promises.push(getProcessingStatuses());
 
             return PromiseTimeoutService.groupPromises(promises);
+        }
+
+        function getInternalSources() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERNAL_SOURCES);
         }
 
     }

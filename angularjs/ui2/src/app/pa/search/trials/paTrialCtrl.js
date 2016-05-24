@@ -8,13 +8,14 @@
     angular.module('ctrp.app.pa').controller('paTrialCtrl', paTrialCtrl);
 
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$uibModal',
-
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj',
-                         'PATrialService', 'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj', 'nciProgObj', 'submissionTypesObj','submissionMethodsObj'];
+        'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj', 'PATrialService',
+        'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj',
+        'nciProgObj', 'submissionTypesObj', 'submissionMethodsObj', 'internalSourceObj'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $uibModal,
-                         studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,
-                         PATrialService, milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj, nciProgObj, submissionTypesObj, submissionMethodsObj) {
+                         studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj, PATrialService,
+                         milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj, 
+                         nciProgObj, submissionTypesObj, submissionMethodsObj, internalSourceObj) {
 
         var vm = this;
         var fromStateName = $state.fromState.name || '';
@@ -32,6 +33,7 @@
         vm.nciProgArr = nciProgObj;
         vm.submissionTypesArr = submissionTypesObj;
         vm.submissionMethodsArr = submissionMethodsObj;
+        vm.internalSourceArr = internalSourceObj;
         vm.gridScope = vm;
         vm.searching = false;
 

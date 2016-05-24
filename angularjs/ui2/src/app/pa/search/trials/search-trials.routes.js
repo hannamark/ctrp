@@ -52,6 +52,9 @@
                     },
                     processingStatusObj: function (PATrialService) {
                         return PATrialService.getProcessingStatuses();
+                    },
+                    internalSourceObj: function (PATrialService) {
+                        return PATrialService.getInternalSources();
                     }
                 },
                 ncyBreadcrumb: {
