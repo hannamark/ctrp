@@ -161,9 +161,16 @@
                   {
                       name:'synonyms',
                       headerName: 'Other Names',
-                      width:'*',
+                      width:'35%',
                       enableSorting: true,
                       enableFiltering: true,
+                  },
+                  {
+                      name: 'definition',
+                      headerName: 'Definition',
+                      width: '*',
+                      enableSorting: false,
+                      enableFiltering: false,
                   }
               ];
           }
