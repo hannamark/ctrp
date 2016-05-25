@@ -172,9 +172,10 @@
           vm.otherIdentifier.protocol_id_origin_id = parseInt(vm.otherIdentifier.protocol_id_origin_id);
           // boolean
           var condition = {'protocol_id_origin_id': vm.otherIdentifier.protocol_id_origin_id};
-          var otherIdExists = _.findIndex(vm.generalTrialDetailsObj.other_ids, condition) > -1;
-          if (otherIdExists) {
-              // if the identifier exists, return
+          var otherIdObj = _.findWhere(vm.generalTrialDetailsObj.other_ids, condition);
+          // Other Identifier allows duplication
+          if (angular.isDefined(otherIdObj) && otherIdObj.identifierName.indexOf('Other') === -1) {
+              // if the identifier exists (excluding 'Other Identifier'), Return
               vm.otherIdErrorMsg = 'Identifier already exists';
               return;
           }
