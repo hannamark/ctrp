@@ -16,8 +16,7 @@
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
-        var orgUsers = [];
-        
+
         /**
          * Check if the the user/viewer is logged in by checking the
          * local cache for existence of both token and username
@@ -302,7 +301,7 @@
         };
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers({'organization_id': controller.userDetails.organization_id, 'family_users' : true}).then(function (data) {
+            service.getAllOrgUsers({'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id, 'family_users' : true}).then(function (data) {
                 if (controller.showAllTrialsModal === false) {
                     controller.showAllTrialsModal = true;
                 }
@@ -318,6 +317,7 @@
                     items: [],
                     selectedItems: [],
                     openModal: controller.showAllTrialsModal,
+                    showSave: trialIdArr && trialIdArr.length,
                     close: function () {
                         controller.showAllTrialsModal = false;
                     },
@@ -358,7 +358,7 @@
                     }
                 };
                 _.each(data.users, function (user) {
-                    if(user.id !== controller.userDetails.id) {
+                    if(user.id !== (controller.userDetails ? controller.userDetails.id : null)) {
                         controller.userOptions.items.push({
                             'id': user.id,
                             'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
