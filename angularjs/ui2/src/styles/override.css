@@ -778,7 +778,7 @@ h5 {
 
 .grid-large-cell .ui-grid-cell {
     line-height: 1em;
-    height: 88px !important;
+    height: 110px !important;
 }
 
 .grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
