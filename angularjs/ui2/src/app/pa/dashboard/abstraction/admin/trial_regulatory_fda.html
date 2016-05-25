@@ -9,7 +9,7 @@
             </span>
 
             <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
-                <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <legend class="sub-bordered">Responsible Party:</legend>
 
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.responsible_party_id)}">
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <legend class="sub-bordered">Trial Oversight Authority</legend>
                     <div class="form-group">
                         <div class="col-sm-2"></div>
@@ -154,7 +154,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <legend class="sub-bordered">Indicators</legend>
 
                     <div class="form-group">
@@ -212,10 +212,10 @@
                 </fieldset>
                 <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                     <div class="btn-toolbar">
-                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field>
+                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="trialDetailView.disableBtn">
                             <i class="glyphicon glyphicon-ok"></i> Save
                         </button>
-                        <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field>
+                        <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field ng-disabled="trialDetailView.disableBtn">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                     </div>

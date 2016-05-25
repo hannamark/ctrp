@@ -19,8 +19,7 @@
         vm.nihNciArr = [];
         vm.addedIndIdes = [];
         vm.showAddIndIdeError = false;
-
-        console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+        vm.disableBtn = false;
 
         vm.reload = function() {
             $state.go($state.$current, null, { reload: true });
@@ -45,19 +44,22 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
+                var status = response.server_response.status;
 
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-                console.log("error in updating trial " + JSON.stringify(outerTrial));
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
-
         }
 
 
@@ -154,13 +156,21 @@
                 var nihOption = vm.holderTypeArr.filter(findNihOption);
                 if (nciOption[0].id == vm.holder_type_id) {
                     TrialService.getNci().then(function (response) {
-                        vm.nihNciArr = response;
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.nihNciArr = response;
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving NCI Division/Program code.");
                     });
                 } else if (nihOption[0].id == vm.holder_type_id) {
                     TrialService.getNih().then(function (response) {
-                        vm.nihNciArr = response;
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.nihNciArr = response;
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving NIH Institution code.");
                     });

@@ -1406,20 +1406,26 @@ div[disabled] {
     float: left;
 }
 
-.ctrptransferselect .ms-col1 {
+.ctrptransferselect .ms-col1, .ctrptransferselect .ms-col5 {
     float: left;
 }
-.ctrptransferselect .ms-col2 {
+.ctrptransferselect .ms-col2, .ctrptransferselect .ms-col6 {
     float: right;
 }
-.ctrptransferselect .ms-col3 {
+.ctrptransferselect .ms-col5 {
+    padding-left: 20px;
+ }
+.ctrptransferselect .ms-col3, .ctrptransferselect .ms-col7 {
     width: 99%;
     padding-left: 20px;
     float: left;
 }
-.ctrptransferselect a span.ms-col1 {
+.ctrptransferselect a span.ms-col1, .ctrptransferselect a span.ms-col5 {
     color: #666;
     font-weight:bold;
+}
+.ctrptransferselect a span.ms-col6 {
+    color: #666;
 }
 .ctrptransferselect input.search-term {
     width: 99%;
@@ -1435,6 +1441,13 @@ div[disabled] {
 
 .assign-trial-ownership h2 {
     padding-left: 10px;
+}
+
+.assign-trial-ownership .btn-toolbar {
+    padding-right: 15px;
+}
+.assign-trial-ownership .ctrptransferselect .pool {
+    height: 400px;
 }
 
 .dir-modal-body .ctrptransferselect {

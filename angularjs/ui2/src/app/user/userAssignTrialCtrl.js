@@ -13,7 +13,7 @@
     function userAssignTrialCtrl($scope, userDetailObj, TrialService, UserService) {
         var vm = this;
         vm.curUser = userDetailObj;
-        vm.allTrials = TrialService.getAllTrials();
-        UserService.createTransferTrialsOwnership(vm)
+        UserService.createTransferTrialsOwnership(vm);
+        TrialService.createTransferTrialsOwnership(vm);
     }
 })();

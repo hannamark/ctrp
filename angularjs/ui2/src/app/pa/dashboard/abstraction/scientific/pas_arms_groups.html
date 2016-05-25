@@ -6,7 +6,7 @@
         </div>
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="arm_form" novalidate ctrp-submit="armView.checkDuplicates()">
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || armView.disableBtn"> 
                     <legend class="sub-bordered">Arms Group</legend>
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.label)}">
                     <!--div class="form-group"-->
@@ -60,7 +60,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset class="sub-bordered" >
+                <fieldset class="sub-bordered" ng-disabled="armView.disableBtn">
                     <legend class="sub-bordered">Intervention Assignment</legend>
                         <table class="table table-bordered table-striped table-hover" ng-show="armView.trial_interventions.length">
                             <thead>
@@ -86,13 +86,13 @@
 
                 <div class="form-group no-bottom-margin">
                     <div class="btn-toolbar" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                        <button type="submit" class="btn btn-primary pull-right" id="submission_btn">
+                        <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-disabled="armView.disableBtn">
                             <i class="glyphicon glyphicon-ok"></i> Save
                         </button>
                         <button type="button" class="btn btn-warning pull-right" ng-click="armView.reload()" restriction-field>
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
-                        <button type="button" class="btn btn-warning pull-right" id="arms_groups_list" restriction-field ng-click="armView.setAddMode(false)">
+                        <button type="button" class="btn btn-warning pull-right" id="arms_groups_list" restriction-field ng-click="armView.setAddMode(false)" ng-disabled="armView.disableBtn">
                             <i class="glyphicon glyphicon-arrow-left"></i> Back to Arms Groups List
                         </button>
                     </div>

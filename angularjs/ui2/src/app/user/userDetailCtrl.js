@@ -25,7 +25,8 @@
         vm.userRole = UserService.getUserRole();
         vm.updateUser = function (redirect) {
             vm.chooseTransferTrials = false;
-            vm.showAllTrialsModal = false;
+            vm.showTransferTrialsModal = false;
+            vm.showAddTrialsModal = false;
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
@@ -181,7 +182,8 @@
 
 
         vm.chooseTransferTrials = false;
-        vm.showAllTrialsModal = false;
+        vm.showTransferTrialsModal = false;
+        vm.showAddTrialsModal = false;
 
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";

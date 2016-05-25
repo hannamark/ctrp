@@ -115,7 +115,7 @@
             AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     console.log('received search results ***: ' + JSON.stringify(data.trial_versions));
 
                     for (var i = 0; i < data.trial_versions.length; i++) {
@@ -146,7 +146,7 @@
             AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     console.log('received search results: ' + JSON.stringify(data.trial_versions));
                     vm.submissionsGridOptions.data = data.trial_versions;
                     vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
@@ -171,7 +171,7 @@
             AuditService.getDeletedDocs(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     vm.deleteDocsGridOptions.data = data.deleted_documents;
                     vm.deleteDocsGridOptions.totalItems = data.deleted_documents["length"];
                 }
@@ -209,7 +209,7 @@
                 AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
                     var status = data.server_response.status;
 
-                    if (status === 200) {
+                    if (status >= 200 && status <= 210) {
                         console.log('received search results: ' + JSON.stringify(data.trial_versions));
                         vm.auditGridOptions.data = data.trial_versions;
                         vm.auditGridOptions.totalItems = data.trial_versions["length"];
@@ -317,7 +317,7 @@
                 AuditService.upsertSubmission(obj).then(function(res) {
                     var status = res.server_response.status;
 
-                    if (status === 200) {
+                    if (status >= 200 && status <= 210) {
                         vm.entity.acknowledge_date = DateService.convertISODateToLocaleDateStr(vm.entity.acknowledge_date);
                         row.entity = angular.extend(row.entity, vm.entity);
 
@@ -376,7 +376,7 @@
                 AuditService.upsertSubmission(obj).then(function(res) {
                     var status = res.server_response.status;
 
-                    if (status === 200) {
+                    if (status >= 200 && status <= 210) {
                         vm.entity.submission_type_list=[];
                         vm.entity.submission_type_list.push("Amendment");
                         vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));

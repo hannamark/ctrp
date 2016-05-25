@@ -7,10 +7,10 @@
     angular.module('ctrp.module.dataservices')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
+    UserService.$inject = ['LocalCacheService', 'TrialService', 'PromiseTimeoutService', '$log', '$uibModal',
         '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS'];
 
-    function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
+    function UserService(LocalCacheService, TrialService, PromiseTimeoutService, $log, $uibModal,
                          $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
 
         var service = this;
@@ -302,8 +302,8 @@
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
             service.getAllOrgUsers({'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id, 'family_users' : true}).then(function (data) {
-                if (controller.showAllTrialsModal === false) {
-                    controller.showAllTrialsModal = true;
+                if (controller.showTransferTrialsModal === false) {
+                    controller.showTransferTrialsModal = true;
                 }
                 controller.userOptions = {
                     title: '',
@@ -316,10 +316,10 @@
                     resetItems: [],
                     items: [],
                     selectedItems: [],
-                    openModal: controller.showAllTrialsModal,
+                    openModal: controller.showTransferTrialsModal,
                     showSave: trialIdArr && trialIdArr.length,
                     close: function () {
-                        controller.showAllTrialsModal = false;
+                        controller.showTransferTrialsModal = false;
                     },
                     reset: function () {
                         controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
@@ -412,11 +412,11 @@
             if (controller.userDetails) {
                 menuArr.push(
                     {
-                        title: 'Add Trials',
+                        title: 'Add Ownership of Trials',
                         order: 4,
                         action: function ($event) {
                             scope.showSelectedTrialsModal = true;
-                            console.log("Send ownership id")
+                            TrialService.createTransferTrialsOwnership(controller);
                         }
                     });
             }
