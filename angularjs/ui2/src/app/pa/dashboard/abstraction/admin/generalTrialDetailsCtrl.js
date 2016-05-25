@@ -30,6 +30,7 @@
       vm.updateTrialIdentifier = updateTrialIdentifier;
       vm.editLeadProtocolId = editLeadProtocolId;
       vm.deleteAllOtherIdentifiers = deleteAllOtherIdentifiers;
+      vm.saveBtnDisabled = false;
 
       vm.leadOrg = {name: '', array: []};
       vm.principalInvestigator = {name: '', array: []};
@@ -48,6 +49,14 @@
       vm.centralContactType = ''; // default to None
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
+      // identifiers allowing for duplication
+      var duplicateAllowedIds = vm.protocolIdOriginArr.filter(function(pId) {
+          var idName = pId.name.toLowerCase();
+          return idName.indexOf('other') > -1 ||
+                idName.indexOf('duplicate nci') > -1 ||
+                idName.indexOf('obsolete') > -1;
+      }).map(function(idObj) { return idObj.name});
+
       vm.centralContactTypes = centralContactTypes.types;
 
       activate();
@@ -97,6 +106,7 @@
           outerTrial.trial = vm.generalTrialDetailsObj;
           // get the most updated lock_version
           outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+          vm.saveBtnDisabled = true;
           TrialService.upsertTrial(outerTrial).then(function(res) {
               toastr.clear();
               if (res.server_response.status === 200) {
@@ -112,6 +122,11 @@
               } else {
                   toastr.error('Error', 'There are errors in the submitted data');
               }
+          }).catch(function(err) {
+              // handle err
+              console.error('error in updating trial details: ', err);
+          }).finally(function() {
+              vm.saveBtnDisabled = false;
           });
       }
 
@@ -173,8 +188,8 @@
           // boolean
           var condition = {'protocol_id_origin_id': vm.otherIdentifier.protocol_id_origin_id};
           var otherIdObj = _.findWhere(vm.generalTrialDetailsObj.other_ids, condition);
-          // Other Identifier allows duplication
-          if (angular.isDefined(otherIdObj) && otherIdObj.identifierName.indexOf('Other') === -1) {
+
+          if (angular.isDefined(otherIdObj) && !_.contains(duplicateAllowedIds, otherIdObj.identifierName)) {
               // if the identifier exists (excluding 'Other Identifier'), Return
               vm.otherIdErrorMsg = 'Identifier already exists';
               return;
