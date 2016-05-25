@@ -24,8 +24,7 @@ json.trial_versions do
 
     submission_version = TrialVersion.find_by_item_type_and_item_id("Submission", submission.id)
 
-    docs= TrialDocument.where("submission_id = ? ",submission.id);
-
+    docs= TrialDocument.where("submission_id = ? and document_type != ? ",submission.id,"TSR");
 
     docs.each do |doc|
      if doc.source_document == "Registry"
@@ -34,8 +33,10 @@ json.trial_versions do
        doc.source_document = ""
      end
     end
-
+    json.first_four_docs docs.first(4)
     json.docs docs
+    json.docs_size docs.size
+
 
     milestone = MilestoneWrapper.where("submission_id = ?", submission.id).reorder("created_at ASC").last
 

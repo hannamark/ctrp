@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160524154308) do
+ActiveRecord::Schema.define(version: 20160525015644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1219,6 +1219,8 @@ ActiveRecord::Schema.define(version: 20160524154308) do
     t.string   "status",                       default: "active"
     t.string   "why_deleted"
     t.string   "source_document",              default: "Registry"
+    t.string   "deleted_by"
+    t.date     "deletion_date"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree

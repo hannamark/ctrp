@@ -74,29 +74,34 @@
             ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
             enableColumnResizing: true,
             totalItems: null,
-            rowHeight: 22,
+            rowHeight: 88,
             enableSelectAll: false,
             enableRowSelection: false,
-            paginationPageSizes: [20, 50, 100],
-            paginationPageSize: 10,
+            paginationPageSizes: [10, 25, 50],
+            paginationPageSize: 5,
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
-            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
-            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableVerticalScrollbar: 1,// uiGridConstants.scrollbars.WHEN_NEEDED,
+            enableHorizontalScrollbar:1,// uiGridConstants.scrollbars.WHEN_NEEDED,
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '110', width: '*'},
                 {name: 'submission_date',displayName:'Date', minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
                 {field: 'submission_type_list', displayName: 'Type',minWidth: '150', width: '*',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
-                {field: 'docs',displayName:'Documents', enableSorting: true, minWidth: '250', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents"><div ng-repeat="doc in row.entity[col.field]"> <a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a> {{doc.source_document}}</div></div>'},
+                {field: 'first_four_docs',displayName:'Documents', enableSorting: true, minWidth: '250', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents">' +
+                    '<ul ng-repeat="doc in row.entity[col.field]"><li><a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a>  {{doc.source_document}} </li></ul>' +
+                    '<a class="cursor-pointer" ng-show="(row.entity.docs_size > 4)" ng-click="grid.appScope.showTrialDocuments(grid,row)">Show more ...</a>'+
+                    '</div>'},
                 {field: 'milestone', displayName: 'Current Milestone', minWidth: '250',width: '*',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
 
                 {
                     name: 'Action ',
-                    cellTemplate: '<div class="text-center ui-grid-cell-contents"><button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button></div>',
+                    cellTemplate: '<div class="text-center ui-grid-cell-contents">' +
+                    '<button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button>' +
+                    '</div>',
                     minWidth:'10',width: '95'
 
                 }
@@ -123,8 +128,11 @@
             enableFiltering: true,
             columnDefs: [
 
-                {name: 'updated_at',displayName:'Deletion Date', enableSorting: true, minWidth: '100', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.updated_at | date: "dd-MMM-yyyy"}}</div>'},
+                {name: 'deletion_date',displayName:'Deletion Date', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.deletion_date | date: "dd-MMM-yyyy"}}</div>'},
+
+                {name: 'deleted_by',displayName:'Deleted by Username', enableSorting: true, minWidth: '100', width: '*'},
+
 
                 {name: 'document_type',displayName:'Document Type', enableSorting: true, minWidth: '100', width: '*'},
                 {field: 'file_name',pinnedLeft: true, displayName: 'File Name' , enabledSorting: true , minWidth: '100', width: '*'},
