@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160524154308) do
+ActiveRecord::Schema.define(version: 20160525151827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,15 +99,14 @@ ActiveRecord::Schema.define(version: 20160524154308) do
   end
 
   create_table "arms_groups", force: :cascade do |t|
-    t.string   "label",             limit: 255
+    t.string   "label",            limit: 255
     t.text     "description"
     t.integer  "trial_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.string   "uuid",              limit: 255
-    t.integer  "lock_version",                  default: 0
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
     t.string   "arms_groups_type"
-    t.string   "intervention_text"
   end
 
   add_index "arms_groups", ["trial_id"], name: "index_arms_groups_on_trial_id", using: :btree
@@ -458,8 +457,10 @@ ActiveRecord::Schema.define(version: 20160524154308) do
     t.string   "uuid",                 limit: 255
     t.integer  "lock_version",                     default: 0
     t.integer  "index"
+    t.integer  "arms_group_id"
   end
 
+  add_index "interventions", ["arms_group_id"], name: "index_interventions_on_arms_group_id", using: :btree
   add_index "interventions", ["intervention_type_id"], name: "index_interventions_on_intervention_type_id", using: :btree
   add_index "interventions", ["trial_id"], name: "index_interventions_on_trial_id", using: :btree
 
@@ -1509,6 +1510,7 @@ ActiveRecord::Schema.define(version: 20160524154308) do
   add_foreign_key "grants", "trials"
   add_foreign_key "ind_ides", "holder_types"
   add_foreign_key "ind_ides", "trials"
+  add_foreign_key "interventions", "arms_groups"
   add_foreign_key "interventions", "intervention_types"
   add_foreign_key "interventions", "trials"
   add_foreign_key "links", "trials"
