@@ -34,7 +34,7 @@
         <label>Total Selected: {{options.selectedItems.length}}</label>
     </div>
     <div class="row modal-footer">
-        <button ng-disabled="!options.selectedItems.length"
+        <button ng-disabled="!options.selectedItems.length"  ng-if="options.showSave"
                 type="button" class="btn btn-primary pull-right ng-isolate-scope"
                 id="save_btn"
                 ctrp-confirm ctrp-click="options.save(); options.close()"

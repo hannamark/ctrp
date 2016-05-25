@@ -141,6 +141,9 @@
                         vm.irreversibleRoleSwitchName = role.name;
                         vm.irreversibleRoleSwitchId = role.id;
                     }
+                    if (role.id === vm.userDetails.role) {
+                        vm.currentRoleName = role.name;
+                    }
                 });
                 vm.rolesArr = rolesArr;
             } else {
