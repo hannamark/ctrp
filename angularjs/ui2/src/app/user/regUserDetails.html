@@ -1,0 +1,77 @@
+<div class="row-fluid">
+    <div class="col-xs-12 drop-shadow">
+        <div class="row">
+            <p>
+                <h4>CTRP User Details</h4>
+            </p>
+        </div>
+        <div class="row reg-users-details">
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">First Name:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.first_name}}</div>
+                <label class="col-sm-3">Last Name:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.last_name}}</div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">Middle Name:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.middle_name}}</div>
+                <label class="col-sm-3">User Name:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.username}}</div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">Role:</label>
+                <div class="col-sm-9">{{(userDetailView.rolesArr | findObjByAttribute:'id':userDetailView.userDetails.role)[0].name}}</div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">Street Address:</label>
+                <div class="col-sm-9">{{userDetailView.userDetails.street_address}}</div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">City:</label>
+                <div class="col-sm-3">{{serDetailView.userDetails.city}}</div>
+                <label class="col-sm-3">Zip Code:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.zipcode}}</div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">State:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.state}}</div>
+
+                <label class="col-sm-3">Country:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.country}}</div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">Email:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.email}}</div>
+                <label class="col-sm-3">Phone:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.phone}}</div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">PRS Organization Name:</label>
+                <div class="col-sm-6">{{userDetailView.userDetails.prs_organization_name}}</div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12">
+                <label class="col-sm-3">Affiliated Organization ID:</label>
+                <div class="col-sm-3">{{userDetailView.userDetails.organization_id}}</div>
+
+                <label class="col-sm-3">Affiliated Organization:</label>
+                <div class="col-sm-3">{{userDetailView.selectedOrgsArray[userDetailView.selectedOrgsArray.length-1].name}}</div>
+            </div>
+        </div>
+        <div ng-if="userDetailView.gridOptions.data.length > 0">
+            <h4>Trials owned by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}:</h4>
+            <!-- list of Users -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row animated-item">
+                        <div ui-grid="userDetailView.gridOptions"  class="user-detail-grid"
+                             ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row top-offset-xs" ng-if="userDetailView.gridOptions.totalItems != null"></div>
+        </div>
+        <div class="row top-offset-xs" ng-if="userDetailView.gridOptions.data.length === 0"></div>
+    </div>
+</div>

@@ -71,7 +71,8 @@ json.trials do
     end
     json.nih_nci_div trial.nih_nci_div.present? ? trial.nih_nci_div : nil
     json.nih_nci_prog trial.nih_nci_prog.present? ? trial.nih_nci_prog : nil
-
+    json.internal_source trial.internal_source.present? ? trial.internal_source.name : nil
+    
     json.url trial_url(trial, format: :json)
     #json.actions trial.actions
   end

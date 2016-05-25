@@ -302,7 +302,7 @@
         };
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers({'organization_id': controller.userDetails.organization_id}).then(function (data) {
+            service.getAllOrgUsers({'organization_id': controller.userDetails.organization_id, 'family_users' : true}).then(function (data) {
                 if (controller.showAllTrialsModal === false) {
                     controller.showAllTrialsModal = true;
                 }
@@ -358,24 +358,14 @@
                     }
                 };
                 _.each(data.users, function (user) {
-                    controller.userOptions.items.push({
-                        'id': user.id,
-                        'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
-                    });
+                    if(user.id !== controller.userDetails.id) {
+                        controller.userOptions.items.push({
+                            'id': user.id,
+                            'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
+                        });
+                    }
                 });
                 controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
-            });
-        };
-        
-        this.removeTrialsOwnerships = function (controller, trialOwnershipIdArr) {
-            var searchParams = {user_id: controller.userDetails.id};
-            if (trialOwnershipIdArr) {
-                searchParams['ids'] = trialOwnershipIdArr;
-            }
-            service.endUserTrialsOwnership(searchParams).then(function (data) {
-                if(data.results === 'success') {
-                    controller.getUserTrials();
-                }
             });
         };
         
@@ -403,7 +393,7 @@
                         title: 'Remove Ownership of All Trials',
                         order: 3,
                         action: function (){
-                            service.removeTrialsOwnerships(controller);
+                            controller.confirmRemoveTrialsOwnerships();
                         }
                     },
                     {
@@ -413,7 +403,7 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
-                            service.removeTrialsOwnerships(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
                         }
                     }
                 ];
@@ -428,7 +418,11 @@
                         }
                     });
             }
-            return service.isCurationModeEnabled() ? menuArr : [];
+            var curUserRole = service.getUserRole();
+            return (service.isCurationModeEnabled()
+                        && (curUserRole === 'ROLE_SUPER'
+                                || curUserRole === 'ROLE_ADMIN'
+                                    || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
         
         /******* helper functions *********/

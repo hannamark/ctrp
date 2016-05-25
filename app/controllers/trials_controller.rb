@@ -316,7 +316,13 @@ class TrialsController < ApplicationController
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
     result = checkout_message.nil? ? 'Failed' : 'Success'
-    TrialCheckoutLog.create(trial: @trial, abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    if checkout_type == "scientificadmin"
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: 'admin', category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: 'scientific', category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    else
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    end
+
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkout_message => checkout_message} }
@@ -351,7 +357,13 @@ class TrialsController < ApplicationController
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
     result = checkin_message.nil? ? 'Failed' : 'Success'
-    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id, checkin_comment: checkin_comment)
+    if checkin_type == "scientificadmin"
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: 'admin', category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type:  'scientific', category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+    else
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+    end
+
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkin_message => checkin_message} }
@@ -395,6 +407,7 @@ class TrialsController < ApplicationController
         end
       end
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
+      @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields

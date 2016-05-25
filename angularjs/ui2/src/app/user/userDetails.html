@@ -231,7 +231,7 @@
 </modal>
 
 <modal visible="userDetailView.chooseTransferTrials" title="Change Transfer Ownership?" id="transferInactiveUserTrials">
-    <div id="chooseTransferTrials">The trial(s) owned by this user will need to be reassigned to a new owner.</div>
+    <div id="chooseTransferTrials" class="modal-body">The trial(s) owned by this user will need to be reassigned to a new owner.</div>
     <div class="row modal-footer">
         <div class="btn-toolbar col-xs-12 col-sm-12">
             <div class="col-xs-12 col-sm-6">
@@ -250,4 +250,20 @@
 
 <modal visible="userDetailView.showAllTrialsModal" title="Transfer Ownership of Trials" id="transferTrials">
     <ctrptransferselect options="userDetailView.userOptions"> </ctrptransferselect>
+</modal>
+
+<modal visible="userDetailView.confirmRemoveTrialOwnershipsPopUp" title="Please confirm" id="confirmRemoveTrials">
+    <div class="modal-body">You have chosen to remove some or all trial(s) from this user.</div>
+    <div class="modal-footer">
+        <div class="btn-toolbar">
+            <button type="button" class="btn btn-primary pull-right" id="cancelRemOwn"
+                    ng-click="userDetailView.confirmRemoveTrialOwnershipsPopUp = false"><i class="glyphicon glyphicon-ok"></i>
+                    Cancel
+            </button>
+            <button type="button" class="btn btn-danger pull-right"  id="remOwn"
+                    ng-click="userDetailView.removeTrialsOwnerships()"><i class="glyphicon glyphicon-ok"></i>
+                    Remove Ownership
+            </button>
+        </div>
+    </div>
 </modal>

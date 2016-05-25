@@ -246,7 +246,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
-  #after_save :send_email
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -1161,6 +1161,23 @@ class Trial < TrialBase
 
   scope :is_draft, -> (value) {
     joins(:users).where("users.username = ? AND trials.is_draft = ?", value, true)
+  }
+
+  scope :with_internal_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "internal_sources.code = ?"
+      else
+        q += " OR internal_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:internal_source).where(conditions)
   }
 
   scope :sort_by_col, -> (params) {

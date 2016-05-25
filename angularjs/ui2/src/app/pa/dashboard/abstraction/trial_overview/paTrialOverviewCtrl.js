@@ -110,16 +110,13 @@
             });
             var modalOpened = true;
             vm.disableBtn = true;
-
             modalInstance.result.then(function(checkinComment) {
                 console.info('modal closed, comment: ', checkinComment);
                 if (angular.isDefined(checkinComment) && checkinComment.length > 0) {
                     _performTrialCheckin(checkinType, vm.trialDetailObj.id, checkinComment);
                 }
             }, function() {
-                // modal dismissed
-            }).finally(function() {
-                vm.diableBtn = false;
+                vm.disableBtn = false;
             });
             modalOpened = false;
         }
@@ -298,11 +295,6 @@
         viewModel.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
-
-        viewModel.viewTrialStatusHistory = function() {
-            console.info('redirecting to trial status page');
-            // TODO: redirect to trial state page
-        };
         viewModel.viewAbstractionValidation = function() {
             console.info('viewAbstractionValidation....');
             // TODO: redirect to viewAbstractionValidation page
@@ -312,7 +304,15 @@
             viewModel.isValidatingStatus = true;
             TrialService.validateStatus({"statuses": annotatedStatusArr}).then(function(res) {
                 if (res.validation_msgs && angular.isArray(res.validation_msgs) && res.validation_msgs.length > 0) {
-                    viewModel.isTrialStatusValid = false;
+
+                    res.validation_msgs.forEach(function(msg) {
+                        if ((msg.errors && msg.errors.length > 0) ||
+                                (msg.warnings && msg.warnings.length > 0)) {
+
+                                    viewModel.isTrialStatusValid = false;
+                                    return;
+                            }
+                    }); // forEach
                 } else {
                     viewModel.isTrialStatusValid = true;
                 }
