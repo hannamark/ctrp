@@ -6,7 +6,7 @@
         <div class="panel-body">
             <form name="associated_trials_form" role="form" class="form form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()">
                 <!-- fieldset for eligibility criteria -->
-                <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm">
+                <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm || assoTrialsView.disableBtn">
                     <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type)}">
                         <label for="identifier_type" class="control-label col-xs-12 col-sm-3">Identifier Type:</label>
                         <div class="col-xs-12 col-sm-4">
@@ -42,8 +42,7 @@
                            </span>
                         </div>
                         <div class="col-xs-12 col-sm-2">
-                            <button type="submit" class="btn btn-primary"
-                                    ng-disabled="assoTrialsView.lookupBtnDisabled">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="glyphicon glyphicon-search"></i> Look Up Trial
                             </button>
                         </div>
@@ -60,6 +59,13 @@
                         <div class="col-xs-12 col-sm-9 form-text">{{assoTrialsView.foundTrialObj.official_title}}</div>
                     </div>
 
+                    <div class="form-group has-feedback has-error">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-5">
+                            <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
+                        </div>
+                    </div>
+
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
                             <button type="button" class="btn btn-primary pull-right" ng-disabled="assoTrialsView.foundTrialObj.official_title.length==0" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">
@@ -71,7 +77,6 @@
                             <button type="button" class="btn btn-warning pull-right" id="oc_site_list" restriction-field ng-click="assoTrialsView.closeLookupForm()">
                                 <i class="glyphicon glyphicon-arrow-left"></i> Back to Associated Trials List
                             </button>
-                            <span class="help-block">{{assoTrialsView.associationErrorMsg}}</span>
                         </div>
                     </div>
                 </fieldset>
@@ -84,7 +89,7 @@
             <div class="panel-title">List of Associated Trials</div>
         </div>
         <div class="panel-body">
-            <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="!assoTrialsView.showLookupForm">
+            <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || assoTrialsView.disableBtn" ng-show="!assoTrialsView.showLookupForm">
                 <div class="table-responsive">
                     <table st-table="assoTrialsView.trialDetailObj.associated_trials" class="table table-striped table-hover table-bordered" ng-hide="assoTrialsView.trialDetailObj.associated_trials.length === 0">
                         <thead>
@@ -137,7 +142,7 @@
                             ctrp-click="assoTrialsView.deleteTrialAssociations()"
                             ng-show="assoTrialsView.trialDetailObj.associated_trials.length > 0"
                             ng-disabled="assoTrialsView.deleteBtnDisabled || !paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <i class="glyphicon glyphicon-trash"></i>  Delete Selected
+                            <i class="glyphicon glyphicon-trash"></i> Delete Selected
                         </button>
                     </div>
                 </div>
