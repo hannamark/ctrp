@@ -76,7 +76,7 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 And I can view the Trial Status Transition Rules Information text "Refer to the Trial Status Transition Rules" displayed in the Trial Statuses section below the Trial Statuses Table
 When I have clicked on the Trial Status Transition Rules text
-And Trial Status Transition Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Accrual+Status+Transitions"
+And Trial Status Transition Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Status+Values"
 Then the Trial Status Transition Rules user guide page will be displayed
 
 Scenario: #5 PA Trial Status Rules for Start and Completion Dates Rules
