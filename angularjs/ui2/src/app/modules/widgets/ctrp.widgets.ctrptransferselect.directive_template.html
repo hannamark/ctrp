@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <h4>{{options.title}}<small>&nbsp;{{options.helpMessage}}</small> </h4>
-            <input class="form-control" placeholder="{{options.filterPlaceHolder}}" ng-model="searchTerm">
+            <input class="form-control search-term" placeholder="{{options.filterPlaceHolder}}" ng-model="searchTerm">
         </div>
     </div>
     <div class="row select-content">
@@ -12,8 +12,8 @@
                     class="btn btn-primary btn-xs" ng-click="transfer(options.items, options.selectedItems, -1)"> Select All </button>
             <div class="pool">
                 <ul>
-                    <li ng-repeat="item in options.items | filter: searchTerm | orderBy: options.orderProperty">
-                        <a href="" ng-click="transfer(options.items, options.selectedItems, options.items.indexOf(item))">&nbsp;&rArr; {{item.name}}</a>
+                    <li class="clearfix" ng-repeat="item in options.items | filter: searchTerm | orderBy: options.orderProperty">
+                        <a href="" title="Select {{item.col1}}" ng-click="transfer(options.items, options.selectedItems, options.items.indexOf(item))"><span class="ms-col0">&nbsp;&rArr;</span> <span class="ms-col1">{{item.col1}}</span><span class="ms-col2">{{item.col2}}</span><span class="ms-col3">{{item.col3}}</span></a>
                     </li>
                 </ul>
             </div>
@@ -25,8 +25,8 @@
                     class="btn btn-warning btn-xs" ng-click="transfer(options.selectedItems, options.items, -1)"> Deselect All </button>
             <div class="pool">
                 <ul>
-                    <li ng-repeat="item in options.selectedItems | orderBy: options.orderProperty">
-                        <a href="" ng-click="transfer(options.selectedItems, options.items, options.selectedItems.indexOf(item))"> &lArr;&nbsp;{{item.name}}</a>
+                    <li class="clearfix" ng-repeat="item in options.selectedItems | orderBy: options.orderProperty">
+                        <a href="" title="Unselect {{item.col1}}" ng-click="transfer(options.selectedItems, options.items, options.selectedItems.indexOf(item))"><span class="ms-col0">&lArr;&nbsp;</span> <span class="ms-col1">{{item.col1}}</span><span class="ms-col2">{{item.col2}}</span><span class="ms-col3">{{item.col3}}</span></a>
                     </li>
                 </ul>
             </div>
