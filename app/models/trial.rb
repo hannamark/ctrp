@@ -702,7 +702,7 @@ class Trial < TrialBase
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: new_submission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: new_submission, created_by: 'CTRP application')
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
@@ -765,7 +765,7 @@ class Trial < TrialBase
       latest_submission.submission_method = sub_method
 
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission, created_by: 'CTRP application')
 
       ams = ProcessingStatus.find_by_code('AMS')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
