@@ -13,7 +13,15 @@
             <div class="pool">
                 <ul>
                     <li class="clearfix" ng-repeat="item in options.items | filter: searchTerm | orderBy: options.orderProperty">
-                        <a href="" title="Select {{item.col1}}" ng-click="transfer(options.items, options.selectedItems, options.items.indexOf(item))"><span class="ms-col0">&nbsp;&rArr;</span> <span class="ms-col1">{{item.col1}}</span><span class="ms-col2">{{item.col2}}</span><span class="ms-col3">{{item.col3}}</span></a>
+                        <a href="" title="Select {{item.col1}}" ng-click="transfer(options.items, options.selectedItems, options.items.indexOf(item))">
+                            <span class="ms-col0">&nbsp;&rArr;</span>
+                            <span class="clearfix"><span ng-if="item.col1" class="ms-col1">{{item.col1}}</span><span ng-if="item.col2" class="ms-col2">{{item.col2}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col3" class="ms-col3">{{item.col3}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col4" class="ms-col4">{{item.col4}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col5" class="ms-col5">{{item.col5}}</span><span ng-if="item.col6" class="ms-col6">{{item.col6}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col7" class="ms-col7">{{item.col7}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col8" class="ms-col8">{{item.col8}}</span></span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -26,7 +34,15 @@
             <div class="pool">
                 <ul>
                     <li class="clearfix" ng-repeat="item in options.selectedItems | orderBy: options.orderProperty">
-                        <a href="" title="Unselect {{item.col1}}" ng-click="transfer(options.selectedItems, options.items, options.selectedItems.indexOf(item))"><span class="ms-col0">&lArr;&nbsp;</span> <span class="ms-col1">{{item.col1}}</span><span class="ms-col2">{{item.col2}}</span><span class="ms-col3">{{item.col3}}</span></a>
+                        <a href="" title="Unselect {{item.col1}}" ng-click="transfer(options.selectedItems, options.items, options.selectedItems.indexOf(item))">
+                            <span class="ms-col0">&lArr;&nbsp;</span>
+                            <span class="clearfix"><span ng-if="item.col1" class="ms-col1">{{item.col1}}</span><span ng-if="item.col2" class="ms-col2">{{item.col2}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col3" class="ms-col3">{{item.col3}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col4" class="ms-col4">{{item.col4}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col5" class="ms-col5">{{item.col5}}</span><span ng-if="item.col6" class="ms-col6">{{item.col6}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col7" class="ms-col7">{{item.col7}}</span></span>
+                            <span class="clearfix"><span ng-if="item.col8" class="ms-col8">{{item.col8}}</span></span>
+                        </a>
                     </li>
                 </ul>
             </div>
