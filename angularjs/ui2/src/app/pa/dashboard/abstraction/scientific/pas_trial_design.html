@@ -304,7 +304,8 @@
                     <!-- end of Biospecimen Retention -->
 
                     <!-- description biospecimenRetention -->
-                    <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.trialDetailObj.biospecimen_retention_id">
+                    <div class="form-group" ng-show="designView.isObservational || designView.isAncillary">
+                    <!-- <div class="form-group" ng-show="(designView.isObservational || designView.isAncillary) && designView.trialDetailObj.biospecimen_retention_id"> -->
                         <label for="biospecimen_desc" class="control-label col-xs-12 col-sm-4">Bio-specimen Description:</label>
                         <div class="col-xs-12 col-sm-5">
                             <textarea class="form-control"
