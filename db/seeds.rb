@@ -16,28 +16,26 @@ require 'roo'
 #Person.delete_all
 puts "Begin seeding"
 
+############## SEEDING STATIC DATA BEGINS ##################
+# NOTE:: In this section insert seeds for static data ,for example source_statuses, family_statuses.It will load minimum required data to create entities for fresh installation of app.So seed file purpose will be served.
+#This might be useful in production app also.
+
 puts "Seeding static members"
 
 SourceContext.find_or_create_by(code: 'CTEP', name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP', name: 'CTRP')
 SourceContext.find_or_create_by(code: 'NLM', name: 'NLM')
+
 SourceStatus.find_or_create_by(code: 'ACT', name: 'Active')
 SourceStatus.find_or_create_by(code: 'PEND', name: 'Pending')
 SourceStatus.find_or_create_by(code: 'INACT', name: 'InActive')
 SourceStatus.find_or_create_by(code: 'NULLIFIED', name: 'Nullified')
+
 FamilyRelationship.find_or_create_by(code: 'ORG', name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF', name: 'Affiliation')
-InternalSource.find_or_create_by(code: 'CTGI', name: 'ClinicalTrials.gov Import')
-InternalSource.find_or_create_by(code: 'CTRP', name: 'CTRP')
 
-
-
-
-############## SEEDING STATIC DATA BEGINS ##################
-# NOTE:: In this section insert seeds for static data ,for example source_statuses, family_statuses.It will load minimum required data to create entities for fresh installation of app.So seed file purpose will be served.
-#This might be useful in production app also.
-
-#source_statuses
+InternalSource.find_or_create_by(code: 'IMP', name: 'Import')
+InternalSource.find_or_create_by(code: 'PRO', name: 'Protocol')
 
 #family_statuses
 FamilyStatus.find_or_create_by(code:'ACTIVE',name:'Active')
