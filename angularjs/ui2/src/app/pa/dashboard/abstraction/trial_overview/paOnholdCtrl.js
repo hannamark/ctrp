@@ -21,7 +21,6 @@
             vm.addMode = mode;
             if (mode) {
                 vm.onhold_date = DateService.today();
-                vm.onhold_date = DateService.convertISODateToLocaleDateStr(vm.onhold_date);
             } else {
                 $scope.onhold_form.$setPristine();
                 vm.onhold_id = null;
@@ -122,7 +121,6 @@
 
         function activate() {
             showHideAddBtn();
-            convertDate();
         }
 
         function showHideAddBtn() {
@@ -133,17 +131,6 @@
                 }
             }
             vm.showAddBtn = true;
-        }
-
-        function convertDate() {
-            angular.forEach(vm.curTrial.onholds, function (onhold) {
-                if (onhold.onhold_date) {
-                    onhold.onhold_date = DateService.convertISODateToLocaleDateStr(onhold.onhold_date);
-                }
-                if (onhold.offhold_date) {
-                    onhold.offhold_date = DateService.convertISODateToLocaleDateStr(onhold.offhold_date);
-                }
-            });
         }
     } //paOnholdCtrl
 })();
