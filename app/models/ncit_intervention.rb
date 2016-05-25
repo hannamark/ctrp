@@ -43,7 +43,7 @@ class NcitIntervention < ActiveRecord::Base
         Zip::File.open("../../storage/ncit_interventions/#{file_name}") do |zipfile|
           zipfile.each do |entry|
             xml = Nokogiri::XML(entry.get_input_stream.read)
-
+            i = 0
             # Search for label as preferred name
             xml.xpath('//owl:Class[@rdf:about]').each do |node|
               # extract preferred_name and synonyms
@@ -56,13 +56,18 @@ class NcitIntervention < ActiveRecord::Base
                 synonyms = synonyms.sub(';', '') # remove the first semi-colon
                 # intervention_type_code = intervention_types.sample # generate a random intervention type code
                 #p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}" # , type_code: #{intervention_type_code}
-                # p "NcitIntervention.create(preferred_name: #{name}, synonyms: #{synonyms}, description: #{nil}, type_code: #{nil}, ct_gov_type_code: #{nil}, ncit_status: #{act})"
 
                 ## extract the definition field
                 definition = node.css('P97').xpath('ncicp:ComplexDefinition/ncicp:def-definition')
                 definition = definition.present? ? definition.text : nil
                 # p "definition is: #{definition}"
-                NcitIntervention.create(preferred_name: name, synonyms: synonyms, definition: definition, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+                if i < 40
+                  i += 1
+                  p "NcitIntervention.create(preferred_name: #{name}, synonyms: #{synonyms}, definition: #{definition}, type_code: #{nil}, ct_gov_type_code: #{nil}, ncit_status: #{act})"
+                end
+
+
+                # NcitIntervention.create(preferred_name: name, synonyms: synonyms, definition: definition, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
               end
 
             end
