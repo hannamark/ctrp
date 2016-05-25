@@ -11,7 +11,7 @@
                         <input type="text" name="protocol_id" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.searchParams.disease_name" autofocus />
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                        <button type="submit" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn">
+                        <button type="submit" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn || diseaseView.searching">
                             <i class="glyphicon glyphicon-search"></i> Search
                         </button>
                     </div>

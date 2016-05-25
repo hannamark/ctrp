@@ -196,15 +196,16 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                if (response.server_response.status < 300) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Diseases have been recorded', 'Operation Successful!');
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
                 }
             }).catch(function(err) {
                 console.log("Error in saving diseases " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 

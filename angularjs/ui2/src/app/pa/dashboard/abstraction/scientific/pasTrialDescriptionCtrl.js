@@ -14,6 +14,7 @@
                                      MESSAGES, _, $timeout, trialDetailObj) {
         var vm = this;
         vm.curTrial = trialDetailObj;
+        vm.disableBtn = false;
 
         vm.reload = function() {
             console.log("RELOAD");
@@ -34,18 +35,23 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                if (response.server_response.status >= 200 && status <= 210) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.curTrial = response;
                     vm.curTrial.lock_version = response.lock_version || '';
+
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                 }
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
             }).catch(function(err) {
                 console.log('error in updating trial ' + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
 
         }//saveTrial
