@@ -71,21 +71,21 @@ When I select Reset at the trial status screen
 Then the information entered or edited on the Trial Status screen will not be saved to the trial record 
 And the screen will be refreshed with the existing data trial status data
 
-Scenario: #4 PA Trial Accrual Status Transitions Rules 
+Scenario: #4 PA Trial Status Transition Rules 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
-And I can view the Trial Accrual Status Rules Information text "Please refer to the Trial Accrual Status Transitions" displayed in the Trial Statuses section
-When I have clicked on the Trial Date Rules Info Button "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Accrual+Status+Transitions"
-Then the Trial Date Rules user guide page will be displayed
+And I can view the Trial Status Transition Rules Information text "Refer to the Trial Status Transition Rules" displayed in the Trial Statuses section below the Trial Statuses Table
+When I have clicked on the Trial Status Transition Rules text
+And Trial Status Transition Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Status+Transitions"
+Then the Trial Status Transition Rules user guide page will be displayed
 
-
-
-Scenario: #5 PA Trial Date Rules (Completion Dates)
+Scenario: #5 PA Trial Status Rules for Start and Completion Dates Rules
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
-And I can view the Trial Date Rules Information text "Please refer to the Trial Status Rules for Start and Completion Dates Rules" displayed in the Trial Dates section
-When I have clicked on the Trial Date Rules Info Button "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Date+Rules"
-Then the Trial Date Rules user guide page will be displayed
+And I can view the Trial Status Rules for Start and Completion DatesRules Information text "Refer to the Trial Status Rules for Start and Completion Dates Rules" displayed in the Trial Dates section
+When I have clicked on the Trial Status Rules for Start and Completion Dates text
+And the Trial Status Rules for Start and Completion Dates Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Date+Rules"
+Then the Trial Status Rules for Start and Completion Dates Rules user guide page will be displayed
 
 
 
