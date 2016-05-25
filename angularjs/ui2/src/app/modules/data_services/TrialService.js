@@ -1108,8 +1108,6 @@
                 'protocol_id':'*',
                 'searchType': 'All Trials'
             }).then(function (data) {
-                console.log(data.trials)
-
                 if (controller.showAddTrialsModal === false) {
                     controller.showAddTrialsModal = true;
                 }
