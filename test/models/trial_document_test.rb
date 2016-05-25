@@ -16,6 +16,7 @@
 #  submission_id    :integer
 #  status           :string           default("active")
 #  why_deleted      :string
+#  source_document  :string           default("Registry")
 #
 # Indexes
 #

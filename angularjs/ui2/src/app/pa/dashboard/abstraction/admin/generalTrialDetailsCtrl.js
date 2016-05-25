@@ -50,6 +50,14 @@
       vm.centralContactType = ''; // default to None
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
+      // identifiers allowing for duplication
+      var duplicateAllowedIds = vm.protocolIdOriginArr.filter(function(pId) {
+          var idName = pId.name.toLowerCase();
+          return idName.indexOf('other') > -1 ||
+                idName.indexOf('duplicate nci') > -1 ||
+                idName.indexOf('obsolete') > -1;
+      }).map(function(idObj) { return idObj.name});
+
       vm.centralContactTypes = centralContactTypes.types;
 
       activate();
@@ -116,6 +124,9 @@
                   });
                   getTrialDetailCopy();
               }
+          }).catch(function(err) {
+              // handle err
+              console.error('error in updating trial details: ', err);
           }).finally(function() {
               vm.disableBtn = false;
           });
@@ -178,9 +189,10 @@
           vm.otherIdentifier.protocol_id_origin_id = parseInt(vm.otherIdentifier.protocol_id_origin_id);
           // boolean
           var condition = {'protocol_id_origin_id': vm.otherIdentifier.protocol_id_origin_id};
-          var otherIdExists = _.findIndex(vm.generalTrialDetailsObj.other_ids, condition) > -1;
-          if (otherIdExists) {
-              // if the identifier exists, return
+          var otherIdObj = _.findWhere(vm.generalTrialDetailsObj.other_ids, condition);
+
+          if (angular.isDefined(otherIdObj) && !_.contains(duplicateAllowedIds, otherIdObj.identifierName)) {
+              // if the identifier exists (excluding 'Other Identifier'), Return
               vm.otherIdErrorMsg = 'Identifier already exists';
               return;
           }

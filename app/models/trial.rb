@@ -1163,6 +1163,23 @@ class Trial < TrialBase
     joins(:users).where("users.username = ? AND trials.is_draft = ?", value, true)
   }
 
+  scope :with_internal_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "internal_sources.code = ?"
+      else
+        q += " OR internal_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:internal_source).where(conditions)
+  }
+
   scope :sort_by_col, -> (params) {
     column = params[:sort]
     order = params[:order]

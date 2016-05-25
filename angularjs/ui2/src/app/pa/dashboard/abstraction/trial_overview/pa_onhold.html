@@ -17,8 +17,8 @@
                         <tr ng-repeat="onhold in onholdView.curTrial.onholds track by $index">
                             <td>{{onhold.onhold_reason.name}}</td>
                             <td>{{onhold.onhold_desc}}</td>
-                            <td>{{onhold.onhold_date}}</td>
-                            <td>{{onhold.offhold_date}}</td>
+                            <td>{{onhold.onhold_date | date: 'dd-MMM-yyyy'}}</td>
+                            <td>{{onhold.offhold_date | date: 'dd-MMM-yyyy'}}</td>
                             <td class="text-center td-icon">
                                 <button ng-hide="onhold.offhold_date" class="btn btn-primary" restriction-field ng-click="onholdView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
@@ -80,7 +80,7 @@
                         <div class="form-group has-feedback">
                             <label class="control-label col-xs-12 col-sm-3">On Hold Date:</label>
                             <div class="col-xs-12 col-sm-3 form-text">
-                                {{onholdView.onhold_date}}
+                                {{onholdView.onhold_date | date: 'dd-MMM-yyyy'}}
                             </div>
                         </div>
 
