@@ -9,6 +9,7 @@
 #  updated_at   :datetime
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
+#  ended_at     :datetime
 #
 # Indexes
 #
