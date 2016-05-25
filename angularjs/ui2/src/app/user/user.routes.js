@@ -85,7 +85,24 @@
                     },
                     ncyBreadcrumb: {
                         parent: 'main.defaultContent',
-                        label: 'User Portal'
+                        label: 'User Management'
+                    }
+                })
+
+                .state('main.assignTrials', {
+                    url: '/assign-trial-ownership',
+                    templateUrl: 'app/user/assign_trials_user_list.html',
+                    controller: 'userAssignTrialCtrl as trialOwnershipView',
+                    resolve: {
+                        UserService: 'UserService',
+                        TrialService: 'TrialService',
+                        userDetailObj: function(UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.users',
+                        label: 'Assign Trial Ownership'
                     }
                 })
 
