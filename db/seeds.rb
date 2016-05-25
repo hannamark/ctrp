@@ -949,9 +949,9 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                              big_value:
                                  '[
                                      {
-                                        "id": "ROLE_APPROVER",
-                                        "name": "Approver",
-                                        "assign_access": "ROLE_APPROVER,ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                        "id": "ROLE_ACCOUNT-APPROVER",
+                                        "name": "Account Approver",
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
                                      },
                                      {
                                         "id": "ROLE_RO",
@@ -966,7 +966,7 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_ADMIN",
                                         "name": "Admin",
-                                        "assign_access": "ROLE_APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU,ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU,ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
                                      },
                                      {
                                         "id": "ROLE_CURATOR",
