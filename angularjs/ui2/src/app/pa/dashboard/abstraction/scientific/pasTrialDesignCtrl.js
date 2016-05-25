@@ -76,6 +76,9 @@
                     vm.isObservational = vm.researchCategoryTitle.toLowerCase().indexOf('observation') > -1;
                     vm.isAncillary = vm.researchCategoryTitle.toLowerCase().indexOf('ancillary') > -1;
 
+                    // restore the last saved trial detail object upon changes in research category
+                    vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                    vm.trialDetailObj.research_category_id = newVal; // set to the new selection of research category
                     // fetch intervention models
                     if ((vm.isInterventional || vm.isExpandedAccess) && vm.interventionModels.length === 0) {
                         _fetchInterventionModels();

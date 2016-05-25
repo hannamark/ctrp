@@ -74,8 +74,8 @@
                 vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
                 vm.updatesGridOptions.data = null;
                 vm.updatesGridOptions.totalItems = null;
-                vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-                vm.updatesGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableVerticalScrollbar = 1;// uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableHorizontalScrollbar = 1;//uiGridConstants.scrollbars.WHEN_NEEDED;
                 vm.updatesGridOptions.onRegisterApi = function (gridApi) {
                     console.log("cbc");
                     vm.gridApi = gridApi;
@@ -98,8 +98,8 @@
                         loadTrialUpdates();
                     });
                 }; //gridOptions
-                vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-                vm.updatesGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableVerticalScrollbar = 1;//uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableHorizontalScrollbar = 1; // uiGridConstants.scrollbars.WHEN_NEEDED;
                 loadTrialUpdates();
                 vm.hasUserOpenedUpdates=true;
             }
@@ -241,6 +241,31 @@
 
 
   //** ALL MODALS related to Updates and Submissions Tabs **//
+
+        $scope.showTrialDocuments= function(grid, row,gr) {
+                $uibModal.open({
+                    templateUrl: 'showTrialDocsOnModal.html',
+                    controller: ['$uibModalInstance', 'grid', 'row', ShowTrialDocumentsModalInstanceController],
+                    controllerAs: 'vm',
+                    size: 'md',
+                    resolve: {
+                        grid: function () { return grid; },
+                        row: function () { return row; }
+                    }
+                });
+
+        }
+
+        /* @ngInject */
+        function ShowTrialDocumentsModalInstanceController($uibModalInstance, grid, row) {
+            var vm = this;
+            vm.entity = angular.copy(row.entity);
+            vm.docs = row.entity.docs;
+            vm.downloadBaseUrl = $scope.downloadBaseUrl;
+        }
+
+
+
         $scope.editRow= function(grid, row,gridType) {
             if(gridType == "updates") {
                 $uibModal.open({

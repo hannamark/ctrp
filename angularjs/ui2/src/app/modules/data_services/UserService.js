@@ -361,7 +361,9 @@
                     if(user.id !== (controller.userDetails ? controller.userDetails.id : null)) {
                         controller.userOptions.items.push({
                             'id': user.id,
-                            'name': user.last_name + ', ' + user.first_name + ' (' + user.email + ')'
+                            'col1': user.last_name + ', ' + user.first_name,
+                            'col2': user.email,
+                            'col3': user.user_organization_name
                         });
                     }
                 });
