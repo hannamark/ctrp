@@ -6,7 +6,7 @@
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialStatusView.updateTrialStatuses()">
                 <!-- fieldset for trial statuses -->
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialStatusView.disableBtn">
                     <legend class="sub-bordered">Trial Statuses</legend>
                     <div class="row table-responsive">
                         <table class="table table-striped table-condensed">
@@ -151,7 +151,7 @@
                 </fieldset>
                 <!-- end of fieldset for trial statuses -->
                 <!-- fieldset for trial dates -->
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialStatusView.disableBtn">
                     <legend class="sub-bordered">Trial Dates</legend>
                     <div class="form-group" ng-class="{'has-feedback required': trialStatusView.startDateRequired, 'has-error': ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date) || ctrpbtn.trial_status_form.needsAttention(trial_status_form.start_date_qual)}">
                         <label class="control-label col-xs-12 col-sm-3">Trial Start Date:</label>
@@ -285,7 +285,7 @@
                 <!-- end of fieldset for trial dates -->
 
                 <!-- fieldset for trial comment -->
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialStatusView.disableBtn">
                     <legend class="sub-bordered">Trial Comments</legend>
                     <div class = "row">
                         <div class="col-md-7">
@@ -331,10 +331,10 @@
                 <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                     <div class="col-sm-3"></div>
                     <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field> <!--  ng-disabled="!trial_status_form.$valid" -->
+                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="trialStatusView.disableBtn"> <!--  ng-disabled="!trial_status_form.$valid" -->
                             <i class="glyphicon glyphicon-ok"></i>  Save
                         </button>
-                        <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialStatusView.resetForm()" restriction-field>
+                        <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="trialStatusView.resetForm()" restriction-field ng-disabled="trialStatusView.disableBtn">
                             <i class="glyphicon glyphicon-remove"></i>  Reset
                         </button>
                     </div>

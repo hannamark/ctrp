@@ -35,6 +35,7 @@
         vm.updateOtherCriteria = updateOtherCriteria;
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
+        vm.disableBtn = false;
         //vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
         //vm.updateOtherCriteriaType = updateOtherCriteriaType;
 
@@ -63,9 +64,12 @@
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-            PATrialService.upsertTrial(outerTrial).then(function(res) {
+            vm.disableBtn = true;
 
-                if (res.server_response.status === 200) {
+            PATrialService.upsertTrial(outerTrial).then(function(res) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.trialDetailObj = res;
                     vm.trialDetailObj.lock_version = res.lock_version;
                     vm.deleteAllOCCheckbox = false;
@@ -84,6 +88,8 @@
 
             }).catch(function(err) {
                 console.error('error in updating trial design: ', err);
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 
@@ -148,7 +154,10 @@
             }
             var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Eligibility Criterion Description.  Click Cancel to abort';
+
             if (otherCriterionObj.id === undefined && isOCDescDuplicate(otherCriterionObj.criteria_desc, vm.trialDetailObj.other_criteria)) {
+                vm.disableBtn = true;
+
                 // if OC exists already
                 Common.alertConfirm(confirmMsg).then(function(ok) {
                     isConfirmed = ok;
@@ -159,6 +168,8 @@
                         // user confirmed
                         _insertOC(otherCriterionObj);
                     } // isConfirmed
+
+                    vm.disableBtn = false;
                 });
             } else {
                 _insertOC(otherCriterionObj);

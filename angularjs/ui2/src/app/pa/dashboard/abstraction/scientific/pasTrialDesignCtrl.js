@@ -34,6 +34,7 @@
         // actions:
         vm.updateTrialDesign = updateTrialDesign;
         vm.resetForm = resetForm;
+        vm.disableBtn = false;
 
         activate();
         function activate() {
@@ -76,6 +77,9 @@
                     vm.isObservational = vm.researchCategoryTitle.toLowerCase().indexOf('observation') > -1;
                     vm.isAncillary = vm.researchCategoryTitle.toLowerCase().indexOf('ancillary') > -1;
 
+                    // restore the last saved trial detail object upon changes in research category
+                    vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                    vm.trialDetailObj.research_category_id = newVal; // set to the new selection of research category
                     // fetch intervention models
                     if ((vm.isInterventional || vm.isExpandedAccess) && vm.interventionModels.length === 0) {
                         _fetchInterventionModels();
@@ -156,7 +160,9 @@
          */
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
-                if (res.server_response.status === 200) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.interventionModels = res.models || [];
                 }
             });
@@ -164,7 +170,9 @@
 
         function _fetchAllocations() {
             PATrialService.getAllocations().then(function(res) {
-                if (res.server_response.status === 200) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.allocations = res.allocations || [];
                     vm.allocations;
                 }
@@ -173,7 +181,9 @@
 
         function _fetchStudyClassifications() {
             PATrialService.getStudyClassifications().then(function(res) {
-                if (res.server_response.status === 200) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.studyClassifications = res.data || [];
                     vm.studyClassifications;
                 }
@@ -182,14 +192,22 @@
 
         function _fetchStudyModels() {
             PATrialService.getStudyModels().then(function(res) {
-                vm.studyModels = res.data || [];
-                vm.studyModels;
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.studyModels = res.data || [];
+                    vm.studyModels;
+                }
             });
         }
 
         function _fetchBiospecimenRetention() {
             PATrialService.getBiospecimenRetentions().then(function(res) {
-                vm.biospecimenRetentions = res.data || [];
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.biospecimenRetentions = res.data || [];
+                }
             });
         }
 
@@ -197,9 +215,7 @@
             $scope.$watch(function() {return vm.trialDetailObj.masking_id;}, function(newVal) {
                 var curMasking = _.findWhere(vm.maskings, {id: newVal});
                 var maskingName = !!curMasking ? curMasking.name : '';
-                console.info('maskingName: ', maskingName, newVal);
                 vm.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
-                console.info('show roles? ', vm.showMaskingRoles);
             });
         }
 
@@ -216,13 +232,15 @@
 
         function updateTrialDesign() {
             var outerTrial = {};
+            vm.disableBtn = true;
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
             PATrialService.upsertTrial(outerTrial).then(function(res) {
+                var status = res.server_response.status;
 
-                if (res.server_response.status === 200) {
+                if (status >= 200 && status <= 210) {
                     vm.trialDetailObj = res;
                     vm.trialDetailObj.lock_version = res.lock_version;
                     // delete vm.trialDetailObj.admin_checkout;
@@ -240,6 +258,8 @@
 
             }).catch(function(err) {
                 console.error('error in updating trial design: ', err);
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 

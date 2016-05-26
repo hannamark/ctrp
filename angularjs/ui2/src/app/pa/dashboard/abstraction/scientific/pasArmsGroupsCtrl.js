@@ -30,6 +30,7 @@
         vm.duplicateLabel = false;
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
+        vm.disableBtn = false;
         //vm.watchArmLabel = watchArmLabel();
 
         if(vm.curTrial.research_category.name=='Interventional') {
@@ -75,11 +76,15 @@
             }
             if (vm.duplicateLabel) {
                 // if OC exists already
+                vm.disableBtn = true;
+
                 Common.alertConfirm(confirmMsg).then(function(ok) {
                     isConfirmed = ok;
                 }).catch(function(cancel) {
                     // isConfirmed = cancel;
                 }).finally(function() {
+                    vm.disableBtn = false;
+
                     if (isConfirmed === true) {
                         // user confirmed
                         vm.updateTrial();
@@ -112,14 +117,13 @@
             vm.duplicateLabel = false;
         }
         vm.saveTrial = function(params){
-            vm.disableBtn = true;
-
             if(vm.currentArmsGroup){
                 if(!vm.currentArmsGroup.label || !vm.currentArmsGroup.description){
                     return;
                 }
             }
             var successMsg = '';
+            vm.disableBtn = true;
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
@@ -128,36 +132,38 @@
             outerTrial.trial = vm.curTrial;
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-            console.log("vm.curTrial.arms_groups_attributes " + JSON.stringify(vm.curTrial.arms_groups_attributes));
+
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                $scope.$emit('updatedInChildScope', {});
-                vm.curTrial = response;
-                //console.log("response.arms_groups="+ JSON.stringify(response.arms_groups));
-                vm.curTrial.arms_groups_attributes=[];
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                //if(vm.currentArmsGroup.new){
-                    vm.currentArmsGroup.new =false;
-                    vm.addEditMode = false;
-                //}
-                $state.go('main.pa.trialOverview.armsGroups');
+                var status = response.server_response.status;
 
-                if (params && params.del) {
-                    successMsg = 'Record(s) deleted.';
-                } else {
-                    successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    $scope.$emit('updatedInChildScope', {});
+                    vm.curTrial = response;
+                    vm.curTrial.arms_groups_attributes=[];
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    //if(vm.currentArmsGroup.new){
+                        vm.currentArmsGroup.new =false;
+                        vm.addEditMode = false;
+                    //}
+                    $state.go('main.pa.trialOverview.armsGroups');
+
+                    if (params && params.del) {
+                        successMsg = 'Record(s) deleted.';
+                    } else {
+                        successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
+                    }
+                    toastr.clear();
+                    toastr.success(successMsg, 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                    vm.selectedAllAG = false;
                 }
-                toastr.clear();
-                toastr.success(successMsg, 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-                vm.selectedAllAG = false;
-
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
 
         }//saveTrial

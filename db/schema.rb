@@ -1220,6 +1220,8 @@ ActiveRecord::Schema.define(version: 20160525151827) do
     t.string   "status",                       default: "active"
     t.string   "why_deleted"
     t.string   "source_document",              default: "Registry"
+    t.string   "deleted_by"
+    t.date     "deletion_date"
   end
 
   add_index "trial_documents", ["added_by_id"], name: "index_trial_documents_on_added_by_id", using: :btree

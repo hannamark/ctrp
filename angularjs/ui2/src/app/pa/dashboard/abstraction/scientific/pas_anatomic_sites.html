@@ -19,10 +19,10 @@
                             </div>
                         </div>
                         <div class="btn-toolbar no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
-                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="anatomicView.saveSelection()">
+                            <button type="submit" class="btn btn-primary pull-right" id="submission_btn" ng-click="anatomicView.saveSelection()" ng-disabled="anatomicView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="anatomicView.reset()"  restriction-field ng-disabled="anatomic.disableBtn">
+                            <button type="button" class="btn btn-warning pull-right" ng-click="anatomicView.reset()"  restriction-field ng-disabled="anatomicView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                         </div>
@@ -36,7 +36,7 @@
             <div class="panel-title">List of Anatomic Sites</div>
         </div>
         <div class="panel-body">
-            <fieldset>
+            <fieldset ng-disabled="anatomicView.disableBtn">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover" ng-show="anatomicView.curTrial.anatomic_site_wrappers.length > 0">
                         <thead>

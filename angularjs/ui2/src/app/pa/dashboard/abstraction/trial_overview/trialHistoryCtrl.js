@@ -74,8 +74,8 @@
                 vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
                 vm.updatesGridOptions.data = null;
                 vm.updatesGridOptions.totalItems = null;
-                vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-                vm.updatesGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableVerticalScrollbar = 1;// uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableHorizontalScrollbar = 1;//uiGridConstants.scrollbars.WHEN_NEEDED;
                 vm.updatesGridOptions.onRegisterApi = function (gridApi) {
                     console.log("cbc");
                     vm.gridApi = gridApi;
@@ -98,8 +98,8 @@
                         loadTrialUpdates();
                     });
                 }; //gridOptions
-                vm.updatesGridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-                vm.updatesGridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableVerticalScrollbar = 1;//uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.updatesGridOptions.enableHorizontalScrollbar = 1; // uiGridConstants.scrollbars.WHEN_NEEDED;
                 loadTrialUpdates();
                 vm.hasUserOpenedUpdates=true;
             }
@@ -115,7 +115,7 @@
             AuditService.getUpdates(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     console.log('received search results ***: ' + JSON.stringify(data.trial_versions));
 
                     for (var i = 0; i < data.trial_versions.length; i++) {
@@ -146,7 +146,7 @@
             AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     console.log('received search results: ' + JSON.stringify(data.trial_versions));
                     vm.submissionsGridOptions.data = data.trial_versions;
                     vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
@@ -171,7 +171,7 @@
             AuditService.getDeletedDocs(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     vm.deleteDocsGridOptions.data = data.deleted_documents;
                     vm.deleteDocsGridOptions.totalItems = data.deleted_documents["length"];
                 }
@@ -209,7 +209,7 @@
                 AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
                     var status = data.server_response.status;
 
-                    if (status === 200) {
+                    if (status >= 200 && status <= 210) {
                         console.log('received search results: ' + JSON.stringify(data.trial_versions));
                         vm.auditGridOptions.data = data.trial_versions;
                         vm.auditGridOptions.totalItems = data.trial_versions["length"];
@@ -241,6 +241,31 @@
 
 
   //** ALL MODALS related to Updates and Submissions Tabs **//
+
+        $scope.showTrialDocuments= function(grid, row,gr) {
+                $uibModal.open({
+                    templateUrl: 'showTrialDocsOnModal.html',
+                    controller: ['$uibModalInstance', 'grid', 'row', ShowTrialDocumentsModalInstanceController],
+                    controllerAs: 'vm',
+                    size: 'md',
+                    resolve: {
+                        grid: function () { return grid; },
+                        row: function () { return row; }
+                    }
+                });
+
+        }
+
+        /* @ngInject */
+        function ShowTrialDocumentsModalInstanceController($uibModalInstance, grid, row) {
+            var vm = this;
+            vm.entity = angular.copy(row.entity);
+            vm.docs = row.entity.docs;
+            vm.downloadBaseUrl = $scope.downloadBaseUrl;
+        }
+
+
+
         $scope.editRow= function(grid, row,gridType) {
             if(gridType == "updates") {
                 $uibModal.open({
@@ -292,7 +317,7 @@
                 AuditService.upsertSubmission(obj).then(function(res) {
                     var status = res.server_response.status;
 
-                    if (status === 200) {
+                    if (status >= 200 && status <= 210) {
                         vm.entity.acknowledge_date = DateService.convertISODateToLocaleDateStr(vm.entity.acknowledge_date);
                         row.entity = angular.extend(row.entity, vm.entity);
 
@@ -351,7 +376,7 @@
                 AuditService.upsertSubmission(obj).then(function(res) {
                     var status = res.server_response.status;
 
-                    if (status === 200) {
+                    if (status >= 200 && status <= 210) {
                         vm.entity.submission_type_list=[];
                         vm.entity.submission_type_list.push("Amendment");
                         vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));

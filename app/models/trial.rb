@@ -255,7 +255,7 @@ class Trial < TrialBase
     if self.users.include? self.current_user
       if self.is_draft
         actions.append('complete')
-      elsif self.internal_source && self.internal_source.code == 'CTRP'
+      elsif self.internal_source && self.internal_source.code == 'PRO'
         actions.append('update')
         actions.append('amend')
         actions.append('verify-data')
@@ -264,7 +264,7 @@ class Trial < TrialBase
       end
     end
 
-    if self.internal_source && self.internal_source.code == 'CTGI'
+    if self.internal_source && self.internal_source.code == 'IMP'
       if self.current_user.role == 'ROLE_SITE-SU'
         actions.append('manage-sites')
       else
@@ -656,9 +656,9 @@ class Trial < TrialBase
 
   def save_internal_source
     if self.edit_type == 'import'
-      self.internal_source = InternalSource.find_by_code('CTGI')
+      self.internal_source = InternalSource.find_by_code('IMP')
     else
-      self.internal_source = InternalSource.find_by_code('CTRP')
+      self.internal_source = InternalSource.find_by_code('PRO')
     end
   end
 

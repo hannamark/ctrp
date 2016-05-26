@@ -20,6 +20,7 @@
         vm.trialDetailObj = {};
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
+        vm.disableBtn = false;
 
         activate();
         function activate() {
@@ -67,22 +68,26 @@
 
             vm.selectedDeleteSubGroupsList = [];
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                var status = response.server_response.status;
 
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.sub_groups = response["sub_groups"];
-                PATrialService.setCurrentTrial(vm.curTrial);
-                $scope.$emit('updatedInChildScope', {});
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    vm.curTrial.sub_groups = response["sub_groups"];
+                    PATrialService.setCurrentTrial(vm.curTrial);
+                    $scope.$emit('updatedInChildScope', {});
 
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                })
-                vm.addEditMode=false;
-                vm.selectedAllSG = false;
-
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    })
+                    vm.addEditMode=false;
+                    vm.selectedAllSG = false;
+                }
             }).catch(function(err) {
                 console.log("error in creating or updating sub group " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };//saveSubGroup
 
@@ -118,20 +123,24 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                var status = response.server_response.status;
 
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.sub_groups = response["sub_groups"];
-                PATrialService.setCurrentTrial(vm.curTrial);
-                $scope.$emit('updatedInChildScope', {});
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    vm.curTrial.sub_groups = response["sub_groups"];
+                    PATrialService.setCurrentTrial(vm.curTrial);
+                    $scope.$emit('updatedInChildScope', {});
 
-                toastr.clear();
-                toastr.success('Record(s) deleted.', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-
+                    toastr.clear();
+                    toastr.success('Record(s) deleted.', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
             }).catch(function(err) {
                 console.log("error in creating or updating Trial sub group " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
             vm.selectedAllSG = false;
         };
@@ -201,6 +210,7 @@
             var fromIndex = ui.item.sortable.index;
             var toIndex = ui.item.sortable.dropindex;
             vm.curTrial.sub_groups_attributes=[];
+            vm.disableBtn = true;
 
             for (var i = 0; i < vm.curTrial.sub_groups.length; i++) {
                 if(vm.curTrial.sub_groups[i].index !=i) {
@@ -220,14 +230,20 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.sub_groups = response["sub_groups"];
-                PATrialService.setCurrentTrial(vm.curTrial);
-                $scope.$emit('updatedInChildScope', {});
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    vm.curTrial.sub_groups = response["sub_groups"];
+                    PATrialService.setCurrentTrial(vm.curTrial);
+                    $scope.$emit('updatedInChildScope', {});
+                }
             }).catch(function(err) {
                 console.log("error in re-ordering trial sub groups " + JSON.stringify(outerTrial));
-            });        }
-
+            }).finally(function() {
+                vm.disableBtn = false;
+            });
+        }
     }
 
 })();

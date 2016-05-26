@@ -29,24 +29,29 @@
         vm.safety_issues=['Yes','No']
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
-
-
+        vm.disableBtn = false;
 
         $scope.$on("$destroy", function() {
             for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
-                    if(vm.curTrial.outcome_measures[i].index !=i) {
-                        vm.curTrial.outcome_measures[i].index=i;
-                        var currentOM= vm.curTrial.outcome_measures[i];
-                         TrialService.upsertOutcomeMeasure(currentOM).then(function (response) {
+                if(vm.curTrial.outcome_measures[i].index !=i) {
+                    vm.curTrial.outcome_measures[i].index=i;
+                    var currentOM= vm.curTrial.outcome_measures[i];
+                    vm.disableBtn = true;
 
+                     TrialService.upsertOutcomeMeasure(currentOM).then(function (response) {
+                         var status = response.server_response.status;
+
+                         if (status >= 200 && status <= 210) {
                              PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                            vm.selectedAllOM = false;
-                        }).catch(function (err) {
-                         console.log("error in re-ordering outcome measures " + JSON.stringify(outerPS));
-                        });
-                    }
+                             vm.selectedAllOM = false;
+                         }
+                    }).catch(function (err) {
+                     console.log("error in re-ordering outcome measures " + JSON.stringify(outerPS));
+                 }).finally(function() {
+                     vm.disableBtn = false;
+                 });
+                }
             }
-
         });
 
         activate();
@@ -100,46 +105,51 @@
             console.log(vm.currentOutcomeMeasure);
 
             TrialService.upsertOutcomeMeasure(vm.currentOutcomeMeasure).then(function(response) {
-                //console.log("/n server_response="+JSON.stringify(response));
-                var newOutcomeMeasure = false;
-                if(!vm.currentOutcomeMeasure.id){
-                    // New OutcomeMeasure
-                    newOutcomeMeasure = true;
-                    vm.currentOutcomeMeasure.id = response.id;
-                }
-                if(vm.currentOutcomeMeasure.id) {
-                    //setting up "outcome measure type" on the fly to display on grid
-                    for (var i = 0; i < vm.om_types.length; i++) {
-                        if(vm.om_types[i].id == vm.currentOutcomeMeasure.outcome_measure_type_id){
-                            console.log(vm.om_types[i].name)
-                            vm.currentOutcomeMeasure.outcome_measure_type=vm.om_types[i].name;
-                        }
-                    }
+                var status = response.server_response.status;
 
-                    if(newOutcomeMeasure){
-                        vm.currentOutcomeMeasure.new = false;
-                        //vm.curTrial.outcome_measure_type=vm.curTrial.outcome_measure_type
-                        vm.curTrial.outcome_measures.push(vm.currentOutcomeMeasure);
-                        successMsg = 'Record Created.';
-                    } else {
-                        for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
-                            if (vm.curTrial.outcome_measures[i].id == vm.currentOutcomeMeasure.id) {
-                                vm.curTrial.outcome_measures[i] = vm.currentOutcomeMeasure;
+                if (status >= 200 && status <= 210) {
+                    var newOutcomeMeasure = false;
+                    if(!vm.currentOutcomeMeasure.id){
+                        // New OutcomeMeasure
+                        newOutcomeMeasure = true;
+                        vm.currentOutcomeMeasure.id = response.id;
+                    }
+                    if(vm.currentOutcomeMeasure.id) {
+                        //setting up "outcome measure type" on the fly to display on grid
+                        for (var i = 0; i < vm.om_types.length; i++) {
+                            if(vm.om_types[i].id == vm.currentOutcomeMeasure.outcome_measure_type_id){
+                                console.log(vm.om_types[i].name)
+                                vm.currentOutcomeMeasure.outcome_measure_type=vm.om_types[i].name;
                             }
                         }
-                        successMsg = 'Record Updated.';
+
+                        if(newOutcomeMeasure){
+                            vm.currentOutcomeMeasure.new = false;
+                            //vm.curTrial.outcome_measure_type=vm.curTrial.outcome_measure_type
+                            vm.curTrial.outcome_measures.push(vm.currentOutcomeMeasure);
+                            successMsg = 'Record Created.';
+                        } else {
+                            for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
+                                if (vm.curTrial.outcome_measures[i].id == vm.currentOutcomeMeasure.id) {
+                                    vm.curTrial.outcome_measures[i] = vm.currentOutcomeMeasure;
+                                }
+                            }
+                            successMsg = 'Record Updated.';
+                        }
+                        toastr.clear();
+                        toastr.success(successMsg, 'Operation Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                        vm.setToDefaultMode();
+                        PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                     }
-                    toastr.clear();
-                    toastr.success(successMsg, 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
-                    vm.setToDefaultMode();
-                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    vm.selectedAllOM = false;
                 }
-                vm.selectedAllOM = false;
             }).catch(function(err) {
                 console.log("error in creating or updating outcome measures trial " + JSON.stringify(outerPS));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };//saveOutcomeMeasure
 
@@ -169,24 +179,28 @@
             vm.disableBtn = true;
 
             TrialService.deleteOutcomeMeasure(psId).then(function(response) {
+                var status = response.status;
 
-                vm.curTrial.lock_version = response.lock_version || '';
-                $scope.$emit('updatedInChildScope', {});
-                for (var j = 0; j < vm.curTrial.outcome_measures.length; j++) {
-                    if (vm.curTrial.outcome_measures[j].id == psId){
-                        vm.curTrial.outcome_measures.splice(j, 1);
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    $scope.$emit('updatedInChildScope', {});
+                    for (var j = 0; j < vm.curTrial.outcome_measures.length; j++) {
+                        if (vm.curTrial.outcome_measures[j].id == psId){
+                            vm.curTrial.outcome_measures.splice(j, 1);
+                        }
                     }
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    toastr.clear();
+                    toastr.success('Record(s) deleted.', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
                 }
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                toastr.clear();
-                toastr.success('Record(s) deleted.', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
             }).catch(function(err) {
                 console.log("error in deleting outcome measure =" + psId);
+            }).finally(function() {
+                vm.disableBtn = false;
             });
-
         }//saveTrial
 
 
@@ -247,7 +261,6 @@
          * @return {[type]}       [description]
          */
         function dragItemCallback(event, ui) {
-
             vm.curTrial.outcome_measures_attributes=[];
 
             for (var i = 0; i < vm.curTrial.outcome_measures.length; i++) {
@@ -268,10 +281,14 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.sub_groups = response["outcome_measures"];
-                PATrialService.setCurrentTrial(vm.curTrial);
-                $scope.$emit('updatedInChildScope', {});
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    vm.curTrial.sub_groups = response["outcome_measures"];
+                    PATrialService.setCurrentTrial(vm.curTrial);
+                    $scope.$emit('updatedInChildScope', {});
+                }
             }).catch(function(err) {
                 console.log("error in re-ordering trial outcome measures " + JSON.stringify(outerTrial));
             });
