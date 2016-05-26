@@ -15,15 +15,16 @@
                                 <!-- fieldset for Organization -->
                                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || psView.disableBtn">
                                     <legend class="sub-bordered">Add Organization</legend>
-                                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization) && ps_sites_form.$submitted}">
+                                    <div class="form-group has-feedback required" ng-class="{'has-error': (ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization) && ps_sites_form.$submitted) || psView.duplicateParticipatingSite}">
                                         <label for="organization" class="control-label col-xs-12 col-sm-3">Organization:</label>
                                         <div class="col-xs-12 col-sm-4">
                                             <input type="text" id="organization" name="organization" ng-model="psView.currentParticipatingSite.organization.name" readonly class="form-control input-sm" placeholder="Organization" required>
                                             <!-- <input type="text" id="sponsor" name="organization" disabled class="form-control" placeholder="Sponsor"> -->
                                             <span class="form-control-feedback" ng-show="psView.currentParticipatingSite.organization.name"
-                                                ng-class="!ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
+                                                ng-class="!ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization) && !psView.duplicateParticipatingSite ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
                                             </span>
                                             <span class="help-block" ng-show="ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.organization)">Sponsor is Required</span>
+                                            <span class="help-block" ng-show="psView.duplicateParticipatingSite">This organization has already been used for a participating site in this trial. Please select another organization.</span>
                                         </div>
                                         <div class="col-xs-12 col-sm-5">
                                             <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
@@ -234,7 +235,7 @@
                         </form>
                     </md-tab-body>
                 </md-tab>
-                <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
+                <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name || psView.duplicateParticipatingSite">
                     <md-tab-label><span id="investigators">Investigators</span></md-tab-label>
                     <md-tab-body>
                         <form class="form form-horizontal" role="form" id="ps_inv_form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
@@ -368,7 +369,7 @@
                         </form>
                     </md-tab-body>
                 </md-tab>
-                <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name">
+                <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name || psView.duplicateParticipatingSite">
                     <md-tab-label><span id="contactTab">Contact</span></md-tab-label>
                     <md-tab-body>
                         <!-- General Contact Begin -->
