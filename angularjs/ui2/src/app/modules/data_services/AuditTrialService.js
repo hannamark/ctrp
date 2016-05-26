@@ -23,6 +23,14 @@
             start: 1
         }; //initial Audits Search Parameters
 
+        var initSubmissionSearchParams = {
+            //for pagination and sorting
+            sort: '',
+            order: '',
+            rows: 5,
+            start: 1
+
+        }
         var updatesGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
@@ -77,7 +85,7 @@
             rowHeight: 110,
             enableSelectAll: false,
             enableRowSelection: false,
-            paginationPageSizes: [10, 25, 50],
+            paginationPageSizes: [5,10, 25],
             paginationPageSize: 5,
             useExternalPagination: true,
             useExternalSorting: true,
@@ -253,7 +261,8 @@
             getSubmissionsGridOptions: getSubmissionsGridOptions,
             upsertSubmission:upsertSubmission,
             getDeletedDocs:getDeletedDocs,
-            getDeleteDocsGridOptions:getDeleteDocsGridOptions
+            getDeleteDocsGridOptions:getDeleteDocsGridOptions,
+            getSubmissionInitialSearchParams:getSubmissionInitialSearchParams
         };
 
         return services;
@@ -265,7 +274,9 @@
         function getUpdateInitialSearchParams() {
             return initUpdateSearchParams;
         }
-
+        function getSubmissionInitialSearchParams() {
+            return  initSubmissionSearchParams;
+        }
         function getAudits(obj){
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.AUDIT_HISTORY, obj);
 

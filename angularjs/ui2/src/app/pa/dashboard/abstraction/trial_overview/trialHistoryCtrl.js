@@ -27,6 +27,7 @@
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
         vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
 
+        vm.submissionParams = AuditService.getSubmissionInitialSearchParams();
         /* Audit Trial Tab variables */
         vm.startDateOpened = false;
         vm.endDateOpened = false;
@@ -36,8 +37,11 @@
         vm.auditGridOptions = AuditService.getAuditsGridOptions();
         vm.disableBtn = false;
 
+        vm.showSubmissions= showSubmissions;
+
         //This variable is being used by grid row to download a trial document.(Refer Audit Trial Service)
         $scope.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download/';
+
 
         activate();
         function activate() {
@@ -48,7 +52,17 @@
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
             vm.submissionsGridOptions.totalItems = null;
+            vm.submissionsGridOptions.onRegisterApi = function (gridApi) {
+                vm.gridApi = gridApi;
+                vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                    vm.submissionParams.start = newPage;
+                    vm.submissionParams.rows = pageSize;
+                    loadTrialSubmissions();
+                });
+            }; //gridOptions
+
             loadTrialSubmissions();
+
             showDeletedDocs();
 
         }
@@ -67,6 +81,11 @@
 
         }
 
+         function showSubmissions() {
+
+             loadTrialSubmissions();
+
+        };
 
         //** Updates Logic **//
         vm.showUpdates= function showUpdates() {
@@ -140,7 +159,7 @@
         function loadTrialSubmissions() {
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
 
-            vm.trialHistoryObj = {trial_id: trialId};
+            vm.trialHistoryObj = {trial_id: trialId,start: vm.submissionParams.start, rows: vm.submissionParams.rows};
             vm.disableBtn = true;
 
             AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {

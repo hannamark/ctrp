@@ -785,7 +785,7 @@ h5 {
 
 .grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
     background:#bbb;
-    color: #444;
+    color: darkblue;
 }
 
 .grid-large-cell .ui-grid-row:nth-child(even) .ui-grid-cell,
