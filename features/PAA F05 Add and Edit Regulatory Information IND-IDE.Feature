@@ -124,9 +124,9 @@ Examples:
 |Yes|IND|77782|CDER|null|null|Error - The IND IDE Holder Type is Required|
 |Yes|IND|77782|null|NCI|CTEP|Error - The IND IDE Grantor is Required|
 |Yes|IND|null|CDER|NCI|CTEP|Error - The IND IDE number is Required|
-|Yes|IND|77782|null|null|null|Error - The IND IDE Grantor, The IND Holder Type are Required |
+|Yes|IND|77782|null|null|null|Error - The IND IDE Grantor, The IND IDE Holder Type are Required |
 |Yes|IND|77782|CDER|NCI|null|Error - The NCI Division/Program is Required|
-|Yes|null|77782|null|null|null|Error - The IND/IDE Type, IND Grantor, IND IDE Holder are Required|
+|Yes|null|77782|null|null|null|Error - The IND/IDE Type, IND Grantor, IND IDE Holder Type are Required|
 
 
 
