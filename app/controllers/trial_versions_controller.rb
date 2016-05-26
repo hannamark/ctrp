@@ -41,21 +41,15 @@ end
 
 
 def history
-  p params
-  p request.body.read
-  @object=Hash.new
-  @object =request.body.read
-  p @object
-  #@trial = Trial.find_by_id(21)
-  #p @trial.trial_versions.last.changeset
-  #widget.versions.last.changeset
 
+  params[:start_date].nil? ? start_date =nil : start_date = params[:start_date].to_date.beginning_of_day
+  params[:end_date].nil? ? end_date=nil : end_date = params[:end_date].to_date.end_of_day
 
-  #@trial_versions =TrialVersion.where("item_type = ? AND item_id = ? ", "Trial",params[:trial_id])
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],start_date,end_date).order('created_at desc') if start_date && end_date
 
-  start_date = params[:start_date].to_date.beginning_of_day
-  end_date = params[:end_date].to_date.end_of_day
-  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],start_date,end_date).order('created_at desc')
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at > ? ", "Trial",params[:trial_id],start_date).order('created_at desc') if start_date && !end_date
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at < ? ", "Trial",params[:trial_id],end_date).order('created_at desc') if !start_date && end_date
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ?", "Trial", params[:trial_id]).order('created_at desc') if !start_date && !end_date
 
 
 end
