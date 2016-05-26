@@ -41,40 +41,27 @@ end
 
 
 def history
-  p params
-  p request.body.read
-  @object=Hash.new
-  @object =request.body.read
-  p @object
-  #@trial = Trial.find_by_id(21)
-  #p @trial.trial_versions.last.changeset
-  #widget.versions.last.changeset
 
+  params[:start_date].nil? ? start_date =nil : start_date = params[:start_date].to_date.beginning_of_day
+  params[:end_date].nil? ? end_date=nil : end_date = params[:end_date].to_date.end_of_day
 
-  #@trial_versions =TrialVersion.where("item_type = ? AND item_id = ? ", "Trial",params[:trial_id])
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],start_date,end_date).order('created_at desc') if start_date && end_date
 
-  start_date = params[:start_date].to_date.beginning_of_day
-  end_date = params[:end_date].to_date.end_of_day
-  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],start_date,end_date).order('created_at desc')
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at > ? ", "Trial",params[:trial_id],start_date).order('created_at desc') if start_date && !end_date
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at < ? ", "Trial",params[:trial_id],end_date).order('created_at desc') if !start_date && end_date
+  @trial_versions =TrialVersion.where("item_type = ? AND item_id = ?", "Trial", params[:trial_id]).order('created_at desc') if !start_date && !end_date
 
 
 end
 
   def updates_history
- p params
- p "$$$$$$$$$$$$$$"
-  p params[:trial_id]
   ##find all versions with given trial ; extract trial id and transaction id
   params[:start] = 1 if params[:start].blank?
-  params[:rows] = 5 if params[:rows].blank?
+  params[:rows]  = 10 if params[:rows].blank?
 
   submission_type= SubmissionType.find_by_name("Update")
 
    @submissions =Submission.where("trial_id =? AND submission_type_id=? ", params[:trial_id],submission_type.id)
-
-   p "this is count before pagination"
-   p @submissions.size
-
    @submissions = @submissions.page(params[:start]).per(params[:rows])
 
   #@trial_versions =TrialVersion.where("item_type = ? AND item_id = ? AND event=? ", "Trial",params[:trial_id], "update").order('created_at desc')
@@ -85,12 +72,13 @@ end
   def submissions_history
 
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 10 if params[:rows].blank?
-    params[:sort] = 'submission_num'
+    params[:rows]  = 5 if params[:rows].blank?
+    params[:sort]  = 'submission_num'
     params[:order] = 'asc' if params[:order].blank?
 
 
     @submissions =Submission.where("trial_id =? ", params[:trial_id]).order(updated_at: :DESC)
+    #@submissions = @submissions.page(params[:start]).per(params[:rows])
 
     ##pagination
     @submissions = @submissions.group(:'submissions.id').page(params[:start]).per(params[:rows])

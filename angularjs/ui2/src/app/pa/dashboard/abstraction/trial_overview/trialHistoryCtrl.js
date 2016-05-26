@@ -27,17 +27,23 @@
         vm.updateParams = AuditService.getUpdateInitialSearchParams();
         vm.updatesGridOptions = AuditService.getUpdatesGridOptions();
 
+        vm.submissionParams = AuditService.getSubmissionInitialSearchParams();
         /* Audit Trial Tab variables */
         vm.startDateOpened = false;
         vm.endDateOpened = false;
         vm.openCalendar = openCalendar;
         vm.loadAuditTrials = loadAuditTrials;
+        vm.showAuditTrials = showAuditTrials;
         vm.searchWarningMessage = '';
+
         vm.auditGridOptions = AuditService.getAuditsGridOptions();
         vm.disableBtn = false;
 
+        vm.showSubmissions= showSubmissions;
+
         //This variable is being used by grid row to download a trial document.(Refer Audit Trial Service)
         $scope.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download/';
+
 
         activate();
         function activate() {
@@ -48,7 +54,17 @@
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
             vm.submissionsGridOptions.totalItems = null;
+            vm.submissionsGridOptions.onRegisterApi = function (gridApi) {
+                vm.gridApi = gridApi;
+                vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                    vm.submissionParams.start = newPage;
+                    vm.submissionParams.rows = pageSize;
+                    loadTrialSubmissions();
+                });
+            }; //gridOptions
+
             loadTrialSubmissions();
+
             showDeletedDocs();
 
         }
@@ -65,6 +81,16 @@
 
             }
 
+        }
+
+         function showSubmissions() {
+
+             loadTrialSubmissions();
+
+        };
+
+        function showAuditTrials() {
+            loadAuditTrials();
         }
 
 
@@ -106,7 +132,6 @@
         };
 
         function loadTrialUpdates() {
-            console.log('inside loads');
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
 
             vm.trialHistoryObj = {trial_id: trialId, start: vm.updateParams.start, rows: vm.updateParams.rows};
@@ -140,7 +165,7 @@
         function loadTrialSubmissions() {
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
 
-            vm.trialHistoryObj = {trial_id: trialId};
+            vm.trialHistoryObj = {trial_id: trialId,start: vm.submissionParams.start, rows: vm.submissionParams.rows};
             vm.disableBtn = true;
 
             AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
@@ -149,7 +174,7 @@
                 if (status >= 200 && status <= 210) {
                     console.log('received search results: ' + JSON.stringify(data.trial_versions));
                     vm.submissionsGridOptions.data = data.trial_versions;
-                    vm.submissionsGridOptions.totalItems = data.trial_versions["length"];
+                    vm.submissionsGridOptions.totalItems = data.total;
                     vm.amendment_reasons_array = data.amendement_reasons;
                     console.log("reasons" + JSON.stringify(vm.amendment_reasons_array));
                 }
@@ -204,7 +229,7 @@
             vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate};
             vm.disableBtn = true;
 
-            if (startDate != null && endDate != null) {
+            //if (startDate != null && endDate != null) {
                 vm.searchWarningMessage=''
                 AuditService.getAudits(vm.trialHistoryObj).then(function (data) {
                     var status = data.server_response.status;
@@ -221,9 +246,9 @@
                     vm.searching = false;
                     vm.disableBtn = false;
                 });
-            }else{
-                vm.searchWarningMessage='Start Date and End Date can not be null'
-            }
+           // }else{
+              //  vm.searchWarningMessage='Start Date and End Date can not be null'
+            //}
 
         }
 

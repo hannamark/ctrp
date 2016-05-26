@@ -5,7 +5,7 @@
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
-    .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl);
+    .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl)
 
     paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService', '$popover',
         'Common', 'DateService', '$timeout', 'CommentService', 'documentTypes', '$mdToast',
@@ -79,9 +79,14 @@
                     }
                     $timeout(function() {
                         // apply the changes to the scope
-                        vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+                        vm.curTrialDetailObj.trial_documents[index].status = (curStatus === 'deleted') ? 'active' : 'deleted'; // toggle active and deleted
                         if (vm.curTrialDetailObj.trial_documents[index].status === 'active') {
                             vm.curTrialDetailObj.trial_documents[index].why_deleted = null;
+                            vm.curTrialDetailObj.trial_documents[index].deleted_by = null;
+                            vm.curTrialDetailObj.trial_documents[index].deletion_date = null;
+                        } else {
+                            vm.curTrialDetailObj.trial_documents[index].deleted_by = UserService.getLoggedInUsername();
+                            vm.curTrialDetailObj.trial_documents[index].deletion_date = DateService.convertISODateToLocaleDateStr(new Date().toISOString());
                         }
                     }, 0);
                 }
@@ -126,6 +131,8 @@
                     _destroy: false,
                     status: 'active',
                     why_deleted: null,
+                    deleted_by: null,
+                    deletion_date: null,
                     isPopoverOpen: false,
                     source_document: 'PA'
                 };
@@ -230,60 +237,48 @@
                     console.error('form validity: ', formName.$valid);
                     return;
                 }
-                vm.disableBtn = true;
-                PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id).then(function(res) {
-                        var status = res.server_response.status;
-
-                        if (status >= 200 && status <= 210) {
-                            if (angular.isArray(res)) {
-                                _.each(res, function(uploadedDoc, index) {
-                                    if (uploadedDoc !== null) {
-                                        // vm.curTrialDetailObj.trial_documents[index].created_at = uploadedDoc.data.created_at;
-                                        vm.curTrialDetailObj.trial_documents[index].id = uploadedDoc.data.id;
-                                        // vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
-                                        // vm.curTrialDetailObj.trial_documents[index].status = 'active';
-                                        vm.curTrialDetailObj.trial_documents[index].added_by = {username: UserService.getLoggedInUsername()};
-                                    }
-                                });
-                            }
-                            vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
-                            var outerTrial = {};
-                            outerTrial.new = false;
-                            outerTrial.id = vm.curTrialDetailObj.id;
-                            outerTrial.trial = vm.curTrialDetailObj;
-                            // get the most updated lock_version
-                            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-
-                            TrialService.upsertTrial(outerTrial).then(function(res) {
-                                var upsertStatus = res.server_response.status;
-
-                                if (upsertStatus === 200) {
-                                    vm.curTrialDetailObj = res;
-                                    vm.curTrialDetailObj.lock_version = res.lock_version;
-                                    PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
-                                    // $scope.$emit('updatedInChildScope', {});
-                                    _filterActiveDocs();
-                                    vm.curDoc = _initCurDoc();
-                                    vm.docTypeError = '';
-                                    vm.formError = '';
-                                    if (showToastr) {
-                                        toastr.clear();
-                                        toastr.success('Trial related documents have been saved', 'Successful!', {
-                                            extendedTimeOut: 1000,
-                                            timeOut: 0
-                                        });
-                                    }
+                vm.saveBtnDisabled = true;
+                PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
+                    .then(function(res) {
+                        if (angular.isArray(res)) {
+                            _.each(res, function(uploadedDoc, index) {
+                                if (uploadedDoc !== null) {
+                                    vm.curTrialDetailObj.trial_documents[index].id = uploadedDoc.data.id;
+                                    vm.curTrialDetailObj.trial_documents[index].added_by = {username: UserService.getLoggedInUsername()};
                                 }
-                            }).catch(function(err) {
-                                console.log('trial update error: ', err);
-                            }).finally(function() {
-                                vm.disableBtn = false;
                             });
                         }
+                        console.info('vm.curTrialDetailObj.trial_documents: ', vm.curTrialDetailObj.trial_documents);
+                        vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
+                        var outerTrial = {};
+                        outerTrial.new = false;
+                        outerTrial.id = vm.curTrialDetailObj.id;
+                        outerTrial.trial = vm.curTrialDetailObj;
+                        // get the most updated lock_version
+                        outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+                        TrialService.upsertTrial(outerTrial).then(function(res) {
+                            vm.curTrialDetailObj = res;
+                            vm.curTrialDetailObj.lock_version = res.lock_version;
+                            PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
+                            // $scope.$emit('updatedInChildScope', {});
+                            _filterActiveDocs();
+                            vm.curDoc = _initCurDoc();
+                            vm.docTypeError = '';
+                            vm.formError = '';
+                            if (showToastr) {
+                                toastr.clear();
+                                toastr.success('Trial related documents have been saved', 'Successful!', {
+                                    extendedTimeOut: 1000,
+                                    timeOut: 0
+                                });
+                            }
+                        }).catch(function(err) {
+                            console.log('trial update error: ', err);
+                        }).finally(function() {
+                            vm.saveBtnDisabled = false;
+                        });
                     }).catch(function(err) {
                         console.error('group promise err: ', err);
-                    }).finally(function() {
-                        vm.disableBtn = false;
                     });
             } // updatedTrial
 
@@ -297,6 +292,8 @@
                 }).map(function(filteredDoc) {
                     delete filteredDoc._destroy;
                     filteredDoc.why_deleted = filteredDoc.why_deleted || null; // initialize why_deleted field if not present
+                    filteredDoc.deleted_by = filteredDoc.deleted_by || null;
+                    filteredDoc.deletion_date = filteredDoc.deletion_date || null;
                     return filteredDoc;
                 });
             }

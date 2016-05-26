@@ -57,3 +57,7 @@ end
 
 
 json.amendement_reasons AmendmentReason.all
+
+json.start params[:start]
+json.rows params[:rows]
+json.total @submissions.respond_to?(:total_count) ? @submissions.total_count : @submissions.size

@@ -30,7 +30,7 @@ When I have selected either of the Board Approval Status� of �Submitted, Pen
   |Submission not required|
 And I have entered a Board Name
 And I have selected a Board Affiliation using the organization lookup
-Then the Board Approval Status , Board Approval Number, Board Name, Board Affiliation will be associated with the trial along with the Board Affiliation�s address (street, city, state, zip, country), Phone # and e-mail address
+Then the Board Approval Status , Board Name, Board Affiliation will be associated with the trial along with the Board Affiliation�s address (street, city, state, zip, country), Phone # and e-mail address
 
 Scenario: #3 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status of Not Required
 Given I am logged into the CTRP Protocol Abstraction application

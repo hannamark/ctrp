@@ -128,7 +128,7 @@
                 </div>
                <div class="btn-toolbar">
                  <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field
-                     ng-disabled="trialRelatedDocsView.disableBtn || !paTrialOverview.trialDetailObj.pa_editable"
+                     ng-disabled="trialRelatedDocsView.saveBtnDisabled || !paTrialOverview.trialDetailObj.pa_editable"
                      ng-click="trialRelatedDocsView.saveDocuments(true, trial_docs_form)">
                    <i class="glyphicon glyphicon-ok"></i> Save
                  </button>
