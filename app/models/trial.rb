@@ -506,7 +506,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APC'
-      if !is_last_milestone?(submission_id, 'APS')
+      aps = Milestone.find_by_code('APS')
+      if aps.present? && !contains_milestone?(submission_id, aps.id)
         validation_msgs[:errors].push('Administrative Processing Start Date milestone must exist')
       end
       if active_onhold_exists?
@@ -529,7 +530,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'AQS'
-      if !is_last_milestone?(submission_id, 'RAQ')
+      raq = Milestone.find_by_code('RAQ')
+      if raq.present? && !contains_milestone?(submission_id, raq.id)
         validation_msgs[:errors].push('Ready for Administrative QC Date milestone must exist')
       end
       if active_onhold_exists?
@@ -539,7 +541,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'AQC'
-      if !is_last_milestone?(submission_id, 'AQS')
+      aqs = Milestone.find_by_code('AQS')
+      if aqs.present? && !contains_milestone?(submission_id, aqs.id)
         validation_msgs[:errors].push('Administrative QC Start Date milestone must exist')
       end
       if active_onhold_exists?
@@ -557,7 +560,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'SPC'
-      if !is_last_milestone?(submission_id, 'SPS')
+      sps = Milestone.find_by_code('SPS')
+      if sps.present? && !contains_milestone?(submission_id, sps.id)
         validation_msgs[:errors].push('Scientific Processing Start Date milestone must exist')
       end
       if active_onhold_exists?
@@ -574,14 +578,16 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
     elsif milestone_to_add.code == 'SQS'
-      if !is_last_milestone?(submission_id, 'RSQ')
+      rsq = Milestone.find_by_code('RSQ')
+      if rsq.present? && !contains_milestone?(submission_id, rsq.id)
         validation_msgs[:errors].push('Ready for Scientific QC Date milestone must exist')
       end
       if active_onhold_exists?
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
     elsif milestone_to_add.code == 'SQC'
-      if !is_last_milestone?(submission_id, 'SQS')
+      sqs = Milestone.find_by_code('SQS')
+      if sqs.present? && !contains_milestone?(submission_id, sqs.id)
         validation_msgs[:errors].push('Scientific QC Start Date milestone must exist')
       end
       if active_onhold_exists?

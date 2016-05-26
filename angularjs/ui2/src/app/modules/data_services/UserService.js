@@ -375,15 +375,23 @@
             var menuArr =
                 [
                     {
-                        title: 'Transfer Trial Ownership for All Trials',
+                        title: 'Add Ownership of Trials',
                         order: 1,
+                        action: function ($event) {
+                            scope.showSelectedTrialsModal = true;
+                            TrialService.createTransferTrialsOwnership(controller);
+                        }
+                    },
+                    {
+                        title: 'Transfer Trial Ownership for All Trials',
+                        order: 2,
                         action: function (){
                             service.createTransferTrialsOwnership(controller);
                         }
                     },
                     {
                         title: 'Transfer Ownership for Selected Trials',
-                        order: 2,
+                        order: 3,
                         shown: function () {
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
@@ -393,14 +401,14 @@
                     },
                     {
                         title: 'Remove Ownership of All Trials',
-                        order: 3,
+                        order: 4,
                         action: function (){
                             controller.confirmRemoveTrialsOwnerships();
                         }
                     },
                     {
                         title: 'Remove Ownership of Selected Trials',
-                        order: 4,
+                        order: 5,
                         shown: function () {
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
@@ -409,17 +417,6 @@
                         }
                     }
                 ];
-            if (controller.userDetails) {
-                menuArr.push(
-                    {
-                        title: 'Add Ownership of Trials',
-                        order: 4,
-                        action: function ($event) {
-                            scope.showSelectedTrialsModal = true;
-                            TrialService.createTransferTrialsOwnership(controller);
-                        }
-                    });
-            }
             var curUserRole = service.getUserRole();
             return (service.isCurationModeEnabled()
                         && (curUserRole === 'ROLE_SUPER'
