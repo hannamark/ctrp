@@ -12,6 +12,7 @@ Then all trials that including the following will be displayed
 |Primary Completion Date |Greater Than 26-Dec-2007|
 |Clinical Research Category |Interventional|
 |Lead Organization |Not "NCI - Center for Cancer Research"|
+|Current Milestone |Not "Rejected", Not "Submission Terminated"|
  
 And will display the following fields
 |NCI ID|
@@ -34,7 +35,7 @@ And will display the following fields
 |Results Sent to PIO|
 |CTRO Trial Comparison Review (CTRO Trial Comparison Review Date and CTRO Trial Comparison Review User)|
 |CTRO Trial Comparison Approval (CTRO Trial Comparison Approval Date and CTRO Trial Comparison Approval User)| 
-|CCCT Trial Comparison Review (CCCT Trial Comparison Review Date and CCCT Trial Comparison Review User|
+|CCCT Trial Comparison Review (CCCT Trial Comparison Review Date and CCCT Trial Comparison Review User)|
 |PRS Release Date|
 |QA Comments Released Date|
 |Trial Results Published Date|
@@ -154,11 +155,12 @@ And will include the following fields:
 |DCP ID|
 |Lead Org ID|
 |Lead Organization|
+|Family (for Lead Organization)|
 |Primary Investigator (Last Name, First Name)|
 |section_801_indicator (Display Yes or No)|
-|Results Designee (all)|
-|Results Designee e-mail (all)|
-|Results Designee Phone Number (all) (Results Designee Phone number and Results Designee Phone extension)|
+|Results Designee (all: comma delimited)|
+|Results Designee e-mail  (all: comma delimited)|
+|Results Designee Phone Number  (all: comma delimited) (Results Designee Phone number and Results Designee Phone extension)|
 |Results Processing Comments|
 |Phase|
 |PCD|
