@@ -310,7 +310,7 @@ And I have select Yes/No for each of the following actions
 |Designee Access Revoked? |
 |All Changes made Action|
 And Select Save
-And the information will be save to the trial
+And the information will be saved to the trial
 And my name will be associated with the Trial record
 
 Scenario: #22 Record Change Help
@@ -318,8 +318,14 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial on the CTRP Results Reporting Dashboard
 And I select Add in the Record Change section 
 And I select Record Help
-Then a pop up window will be displayed with he followiong message:
+Then a pop up window will be displayed with he following message:
 |Change Type|Description|Action/State|
 |Data Discrepancies|Status, Status Dates, Accrual|Status matches, dates match, final enrollment entered into PA, etc|
 |Major Changes|Changes in the intent of the protocol  e.g., changes in eligibility criteria,  addition of a new intervention and/or treatment arm, etc|Not addressed, sent to CTEP or DCP PIO, waiting for comment, made change in draft clinicaltrials.gov record, etc| 
 |Minor Changes|Formatting changes and or clarifications that do not change meaning or intent, e.g., spelling an acronym, inserting punctuation, changing formatting, etc|Not addressed, sent to CTEP or DCP PIO, waiting for comment, made change in draft clinicaltrials.gov record, etc| 
+
+Scenario: #23 Sent Coversheet Email
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial on the CTRP Results Reporting Dashboard
+And I select the "Email Coversheet/Comparison" 
+Then an email entitled "Results Comparison & Cover Sheet" will be sent to the CCCT (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
