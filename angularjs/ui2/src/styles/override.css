@@ -1426,6 +1426,7 @@ div[disabled] {
 }
 .ctrptransferselect a span.ms-col6 {
     color: #666;
+    padding-left: 20px;
 }
 .ctrptransferselect input.search-term {
     width: 99%;
