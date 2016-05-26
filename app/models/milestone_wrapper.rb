@@ -52,6 +52,16 @@ class MilestoneWrapper < TrialBase
     if self.milestone.present?
       if self.milestone.code == 'VPC'
         MilestoneWrapper.create(milestone: Milestone.find_by_code('RVQ'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
+      elsif self.milestone.code == 'STR'
+        stm = ProcessingStatus.find_by_code('STM')
+        if self.submission.present? && stm.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: stm, submission: self.submission, trial: self.trial)
+        end
+      elsif self.milestone.code == 'SRE'
+        sre = ProcessingStatus.find_by_code('SRE')
+        if self.submission.present? && sre.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sre, submission: self.submission, trial: self.trial)
+        end
       elsif self.milestone.code == 'APC'
         MilestoneWrapper.create(milestone: Milestone.find_by_code('RAQ'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
       elsif self.milestone.code == 'SPC'
@@ -69,6 +79,10 @@ class MilestoneWrapper < TrialBase
       elsif self.milestone.code == 'RTS'
         self.trial.verification_date = self.created_at
         self.trial.save
+        abs = ProcessingStatus.find_by_code('ABS')
+        if self.submission.present? && abs.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: abs, submission: self.submission, trial: self.trial)
+        end
       elsif self.milestone.code == 'TSR'
         vfp = ProcessingStatus.find_by_code('VFP')
         if self.submission.present? && vfp.present?
