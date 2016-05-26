@@ -134,7 +134,8 @@
             getEvaluationTypes:getEvaluationTypes,
             getSpecimenTypes:getSpecimenTypes,
             getBiomarkerPurposes:getBiomarkerPurposes,
-            getBiomarkerUses:getBiomarkerUses
+            getBiomarkerUses:getBiomarkerUses,
+            createTransferTrialsOwnership: createTransferTrialsOwnership
 
         };
 
@@ -1100,5 +1101,54 @@
         }
 
 
+        function createTransferTrialsOwnership(controller, trialIdArr) {
+            searchTrials({
+                'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id,
+                'family_users': true,
+                'protocol_id':'*',
+                'searchType': 'All Trials'
+            }).then(function (data) {
+                if (controller.showAddTrialsModal === false) {
+                    controller.showAddTrialsModal = true;
+                }
+                controller.trialOptions = {
+                    title: '',
+                    type: 'trials',
+                    filterPlaceHolder: 'Start typing to filter the trials below.',
+                    labelAll: 'Unselected Trials',
+                    labelSelected: 'Selected Trials',
+                    helpMessage: ' Click on trial details to transfer trials between selected and unselected.',
+                    orderProperty: 'name',
+                    resetItems: [],
+                    items: [],
+                    selectedItems: [],
+                    openModal: controller.showAddTrialsModal,
+                    showSave: controller.showAddTrialsModal,
+                    close: function () {
+                        controller.showAddTrialsModal = false;
+                    },
+                    reset: function () {
+                        controller.trialOptions.items = angular.copy(controller.trialOptions.resetItems);
+                        controller.trialOptions.selectedItems = [];
+                    },
+                    save: function () {
+                        controller.showAddTrialsModal = false;
+                    }
+                };
+                _.each(data.trials, function (trial) {
+                    if(trial.id ) {
+                        controller.trialOptions.items.push({
+                            'id': trial.id,
+                            'col1': trial.nci_id,
+                            'col2': trial.lead_protocol_id,
+                            'col6': trial.lead_org,
+                            'col7': trial.official_title
+                        });
+                    }
+                });
+                controller.trialOptions.resetItems = angular.copy(controller.trialOptions.items);
+
+            });
+        }
     }
 })();

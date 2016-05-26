@@ -136,6 +136,7 @@
                 'SEARCH_CTRP_INTERVENTIONS': '/ctrp/registry/trials/search_ctrp_interventions.json?intervention_name={:intervention_name}',
                 'MAIL_LOGS': '/ctrp/registry/trials/get_mail_logs.json?trial_id={:trial_id}',
                 'CHECKOUT_HISTORY': '/ctrp/registry/trials/get_trial_checkout_history.json?trial_id={:trial_id}',
+                'INTERNAL_SOURCES': '/ctrp/registry/internal_sources.json'
             }
         })
         .constant('MESSAGES', {

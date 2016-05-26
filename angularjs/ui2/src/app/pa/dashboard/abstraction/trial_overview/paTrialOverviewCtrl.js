@@ -81,7 +81,7 @@
 
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
                 var status = res.server_response.status;
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     var checkout_message = res.checkout_message || 'Checkout was not successful, other user may have checked it out ';
                     if (res.checkout_message !== null) {
                         updateTrialDetailObj(res.result);
@@ -127,7 +127,7 @@
             PATrialService.checkinTrial(trialId, checkinType, checkinComment).then(function(res) {
                 var checkin_message = res.checkin_message || 'Checkin was not successful, other user may have checked it in already ';
                 var status = res.server_response.status;
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     // console.log('checkin result: ', res.result);
                     updateTrialDetailObj(res.result);
                     _parseCheckoutinObjects(res, checkinType);
@@ -295,11 +295,6 @@
         viewModel.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
-
-        viewModel.viewTrialStatusHistory = function() {
-            console.info('redirecting to trial status page');
-            // TODO: redirect to trial state page
-        };
         viewModel.viewAbstractionValidation = function() {
             console.info('viewAbstractionValidation....');
             // TODO: redirect to viewAbstractionValidation page
@@ -309,7 +304,15 @@
             viewModel.isValidatingStatus = true;
             TrialService.validateStatus({"statuses": annotatedStatusArr}).then(function(res) {
                 if (res.validation_msgs && angular.isArray(res.validation_msgs) && res.validation_msgs.length > 0) {
-                    viewModel.isTrialStatusValid = false;
+
+                    res.validation_msgs.forEach(function(msg) {
+                        if ((msg.errors && msg.errors.length > 0) ||
+                                (msg.warnings && msg.warnings.length > 0)) {
+
+                                    viewModel.isTrialStatusValid = false;
+                                    return;
+                            }
+                    }); // forEach
                 } else {
                     viewModel.isTrialStatusValid = true;
                 }

@@ -5,7 +5,7 @@
         </div>
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialNciView.updateTrial">
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialNciView.disableBtn">
                     <legend class="sub-bordered">Study Source</legend>
                     <div class="form-group required" ng-class="{'has-error': !trialNciView.study_source_id && ctrpbtn.trial_form.needsAttention(trial_form.study_source_id)}">
                         <label for="study_source" class="control-label col-xs-12 col-sm-4">Study Source: </label>
@@ -21,7 +21,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialNciView.disableBtn">
                     <legend class="sub-bordered">Funding Source</legend>
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                         <label class="control-label col-xs-12 col-sm-4">Data Table 4 Funding Source:</label>
@@ -47,7 +47,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialNciView.disableBtn">
                     <legend class="sub-bordered">Program Code</legend>
                     <div class="form-group">
                         <label for="program_code" class="control-label col-xs-12 col-sm-4">Program Code:</label>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                  </fieldset>
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialNciView.disableBtn">
                     <legend class="sub-bordered">NIH/NCI Identifiers</legend>
                     <div class="form-group">
                         <label for="nih_nci_div" class="control-label col-xs-12 col-sm-4">NIH/NCI Division/Department Identifier:</label>
@@ -89,7 +89,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset class="sub-bordered" restriction-field  ng-if="trialNciView.isSponsorNci">
+                <fieldset class="sub-bordered" restriction-field  ng-if="trialNciView.isSponsorNci" ng-disabled="trialNciView.disableBtn">
                     <legend class="sub-bordered">Send Trial Information to ClinicalTrials.gov</legend>
                         <div class="form-group">
                                 <label for="send_trial_flag" class="control-label col-xs-12 col-sm-6">Send Trial Information to ClinicalTrials.gov?</label>
@@ -104,7 +104,7 @@
                         </div>
                  </fieldset>
 
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialNciView.disableBtn">
                     <legend class="sub-bordered">Comments</legend>
                     <div class="form-group">
                         <label for="trial_processing_comment" class="control-label col-xs-12  col-sm-4">Comments:</label>
@@ -116,7 +116,7 @@
                 <!--div class="form-group no-bottom-margin" ng-if="trialNciView.curTrial.admin_checkout != nil"-->
                 <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                     <div class="btn-toolbar">
-                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="trialNciView.updateTrial()">Save</button>
+                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-click="trialNciView.updateTrial()" ng-disabled="trialNciView.disableBtn">Save</button>
                         <button type="button" class="btn btn-warning pull-right" ng-click="trialNciView.reload()"  restriction-field ng-disabled="trialNciView.disableBtn">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>

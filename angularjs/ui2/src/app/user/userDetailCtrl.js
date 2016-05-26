@@ -25,7 +25,8 @@
         vm.userRole = UserService.getUserRole();
         vm.updateUser = function (redirect) {
             vm.chooseTransferTrials = false;
-            vm.showAllTrialsModal = false;
+            vm.showTransferTrialsModal = false;
+            vm.showAddTrialsModal = false;
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
             }
@@ -76,8 +77,8 @@
                 if (vm.inactivatingUser || vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
                         if (vm.gridOptions.totalItems > 0
-                                && (vm.userRole === 'ROLE_SITE-SU'
-                                    || vm.userRole === 'ROLE_SITE-SU'
+                                && (vm.userRole === 'ROLE_ADMIN'
+                                    || vm.userRole === 'ROLE_SUPER'
                                         || vm.userRole === 'ROLE_SITE-SU')) {
                             vm.chooseTransferTrials = true;
                             return;
@@ -96,13 +97,13 @@
         vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                if (vm.userRole === 'ROLE_SITE-SU' || vm.userRole === 'ROLE_SITE-SU' || vm.userRole === 'ROLE_SITE-SU') {
+                if (vm.gridOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER' || vm.userRole === 'ROLE_SITE-SU')) {
                     vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 }
                 if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
-                } else if (vm.userRole !== 'ROLE_SITE-SU' && vm.userRole !== 'ROLE_SITE-SU' && vm.userRole !== 'ROLE_SITE-SU') {
+                } else if (vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER') {
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id = vm.userDetailsOrig.organization_id;
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].name = 'Request has been sent';
                 }
@@ -141,6 +142,9 @@
                         vm.irreversibleRoleSwitchName = role.name;
                         vm.irreversibleRoleSwitchId = role.id;
                     }
+                    if (role.id === vm.userDetails.role) {
+                        vm.currentRoleName = role.name;
+                    }
                 });
                 vm.rolesArr = rolesArr;
             } else {
@@ -169,6 +173,8 @@
         var TrialSearchParams = function (){
             return {
                 user_id: vm.userDetails.id,
+                sort: 'nci_id',
+                order: 'desc',
                 rows: 10,
                 start: 1
             }
@@ -176,7 +182,8 @@
 
 
         vm.chooseTransferTrials = false;
-        vm.showAllTrialsModal = false;
+        vm.showTransferTrialsModal = false;
+        vm.showAddTrialsModal = false;
 
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";
@@ -197,13 +204,20 @@
                 {
                     name: 'nci_id',
                     enableSorting: true,
-                    displayName: 'NCI ID',
+                    displayName: 'NCI Trial Identifier',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
-                    width: '120'
+                    width: '180'
+                },
+                {
+                    name: 'lead_org_name',
+                    displayName: 'Lead Organization',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
+                    enableSorting: false,
+                    width: '*'
                 },
                 {
                     name: 'lead_protocol_id',
-                    displayName: 'Lead Protocol Id',
+                    displayName: 'Lead Org PO ID',
                     enableSorting: true,
                     width: '155'
                 },
@@ -212,13 +226,6 @@
                     displayName: 'Official Title for Trial',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
-                    width: '*'
-                },
-                {
-                    name: 'lead_org_name',
-                    displayName: 'Lead Organization for Trial',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
-                    enableSorting: false,
                     width: '*'
                 }
             ],
@@ -347,10 +354,8 @@
         function sortChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                console.log('removing sorting');
-                //remove sorting
-                vm.searchParams.sort = '';
-                vm.searchParams.order = '';
+                vm.searchParams.sort = 'nci_id';
+                vm.searchParams.order = 'desc';
             } else {
                 vm.searchParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {

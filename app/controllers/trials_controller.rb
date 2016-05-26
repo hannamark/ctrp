@@ -316,7 +316,13 @@ class TrialsController < ApplicationController
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
     result = checkout_message.nil? ? 'Failed' : 'Success'
-    TrialCheckoutLog.create(trial: @trial, abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    if checkout_type == "scientificadmin"
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: 'admin', category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: 'scientific', category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    else
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    end
+
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkout_message => checkout_message} }
@@ -351,7 +357,13 @@ class TrialsController < ApplicationController
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
     result = checkin_message.nil? ? 'Failed' : 'Success'
-    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id, checkin_comment: checkin_comment)
+    if checkin_type == "scientificadmin"
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: 'admin', category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type:  'scientific', category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+    else
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+    end
+
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkin_message => checkin_message} }
@@ -368,7 +380,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
+    if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present? || params[:internal_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
@@ -395,6 +407,7 @@ class TrialsController < ApplicationController
         end
       end
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
+      @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields

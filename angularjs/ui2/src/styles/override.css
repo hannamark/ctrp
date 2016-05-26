@@ -645,6 +645,9 @@ form.width-normal {
     padding-right: 5px;
     padding-left: 10px;
 }
+h1, h2 {
+    font-size: 18px;
+}
 
 h4, h5, .panel-title {
     color: #2A71A5;
@@ -775,7 +778,7 @@ h5 {
 
 .grid-large-cell .ui-grid-cell {
     line-height: 1em;
-    height: 80px !important;
+    height: 110px !important;
 }
 
 .grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
@@ -1367,9 +1370,8 @@ div[disabled] {
 }
 
 .ctrptransferselect .pool {
-    border: 1px solid #999;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 10px;
     margin: 5px;
     height: 300px;
     overflow-y: scroll;
@@ -1384,15 +1386,50 @@ div[disabled] {
     width: 100%;
     padding: 4px 8px 4px 4px;
     border-bottom: 1px dotted #CFCFCF;
-    font-size: 11px;
+    font-size: 12px;
+    padding: 3px 15px 3px 3px;
 }
 
 .ctrptransferselect .pool ul li a:hover {
     text-decoration: none;
 }
+.ctrptransferselect .pool ul li:hover {
+    background: #ebf2f9;
+}
 .ctrptransferselect .select-content {
     margin-bottom: 20px;
     margin-top: 20px;
+}
+
+.ctrptransferselect .ms-col0 {
+    width: 20px;
+    float: left;
+}
+
+.ctrptransferselect .ms-col1, .ctrptransferselect .ms-col5 {
+    float: left;
+}
+.ctrptransferselect .ms-col2, .ctrptransferselect .ms-col6 {
+    float: right;
+}
+.ctrptransferselect .ms-col5 {
+    padding-left: 20px;
+ }
+.ctrptransferselect .ms-col3, .ctrptransferselect .ms-col7 {
+    width: 99%;
+    padding-left: 20px;
+    float: left;
+}
+.ctrptransferselect a span.ms-col1, .ctrptransferselect a span.ms-col5 {
+    color: #666;
+    font-weight:bold;
+}
+.ctrptransferselect a span.ms-col6 {
+    color: #666;
+    padding-left: 20px;
+}
+.ctrptransferselect input.search-term {
+    width: 99%;
 }
 
 .transferTrials {
@@ -1403,6 +1440,21 @@ div[disabled] {
     max-width: 1000px;
 }
 
+.assign-trial-ownership h2 {
+    padding-left: 10px;
+}
+
+.assign-trial-ownership .btn-toolbar {
+    padding-right: 15px;
+}
+.assign-trial-ownership .ctrptransferselect .pool {
+    height: 400px;
+}
+
 .dir-modal-body .ctrptransferselect {
     margin: 10px 20px;
+}
+
+.reg-users-details label {
+    padding-left: 0;
 }

@@ -255,7 +255,7 @@ class Trial < TrialBase
     if self.users.include? self.current_user
       if self.is_draft
         actions.append('complete')
-      elsif self.internal_source && self.internal_source.code == 'CTRP'
+      elsif self.internal_source && self.internal_source.code == 'PRO'
         actions.append('update')
         actions.append('amend')
         actions.append('verify-data')
@@ -264,7 +264,7 @@ class Trial < TrialBase
       end
     end
 
-    if self.internal_source && self.internal_source.code == 'CTGI'
+    if self.internal_source && self.internal_source.code == 'IMP'
       if self.current_user.role == 'ROLE_SITE-SU'
         actions.append('manage-sites')
       else
@@ -506,7 +506,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APC'
-      if !is_last_milestone?(submission_id, 'APS')
+      aps = Milestone.find_by_code('APS')
+      if aps.present? && !contains_milestone?(submission_id, aps.id)
         validation_msgs[:errors].push('Administrative Processing Start Date milestone must exist')
       end
       if active_onhold_exists?
@@ -529,7 +530,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'AQS'
-      if !is_last_milestone?(submission_id, 'RAQ')
+      raq = Milestone.find_by_code('RAQ')
+      if raq.present? && !contains_milestone?(submission_id, raq.id)
         validation_msgs[:errors].push('Ready for Administrative QC Date milestone must exist')
       end
       if active_onhold_exists?
@@ -539,7 +541,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'AQC'
-      if !is_last_milestone?(submission_id, 'AQS')
+      aqs = Milestone.find_by_code('AQS')
+      if aqs.present? && !contains_milestone?(submission_id, aqs.id)
         validation_msgs[:errors].push('Administrative QC Start Date milestone must exist')
       end
       if active_onhold_exists?
@@ -557,7 +560,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
       end
     elsif milestone_to_add.code == 'SPC'
-      if !is_last_milestone?(submission_id, 'SPS')
+      sps = Milestone.find_by_code('SPS')
+      if sps.present? && !contains_milestone?(submission_id, sps.id)
         validation_msgs[:errors].push('Scientific Processing Start Date milestone must exist')
       end
       if active_onhold_exists?
@@ -574,14 +578,16 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
     elsif milestone_to_add.code == 'SQS'
-      if !is_last_milestone?(submission_id, 'RSQ')
+      rsq = Milestone.find_by_code('RSQ')
+      if rsq.present? && !contains_milestone?(submission_id, rsq.id)
         validation_msgs[:errors].push('Ready for Scientific QC Date milestone must exist')
       end
       if active_onhold_exists?
         validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
       end
     elsif milestone_to_add.code == 'SQC'
-      if !is_last_milestone?(submission_id, 'SQS')
+      sqs = Milestone.find_by_code('SQS')
+      if sqs.present? && !contains_milestone?(submission_id, sqs.id)
         validation_msgs[:errors].push('Scientific QC Start Date milestone must exist')
       end
       if active_onhold_exists?
@@ -656,9 +662,9 @@ class Trial < TrialBase
 
   def save_internal_source
     if self.edit_type == 'import'
-      self.internal_source = InternalSource.find_by_code('CTGI')
+      self.internal_source = InternalSource.find_by_code('IMP')
     else
-      self.internal_source = InternalSource.find_by_code('CTRP')
+      self.internal_source = InternalSource.find_by_code('PRO')
     end
   end
 
@@ -702,7 +708,7 @@ class Trial < TrialBase
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: new_submission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: new_submission, created_by: 'CTRP application')
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
@@ -765,7 +771,7 @@ class Trial < TrialBase
       latest_submission.submission_method = sub_method
 
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission, created_by: 'CTRP application')
 
       ams = ProcessingStatus.find_by_code('AMS')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
@@ -1161,6 +1167,23 @@ class Trial < TrialBase
 
   scope :is_draft, -> (value) {
     joins(:users).where("users.username = ? AND trials.is_draft = ?", value, true)
+  }
+
+  scope :with_internal_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "internal_sources.code = ?"
+      else
+        q += " OR internal_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:internal_source).where(conditions)
   }
 
   scope :sort_by_col, -> (params) {

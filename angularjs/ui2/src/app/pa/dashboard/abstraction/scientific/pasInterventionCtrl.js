@@ -24,6 +24,7 @@
             vm.curInterventionObj = {};
             vm.deleteBtnDisabled = true;
             vm.upsertBtnDisabled = true;
+            vm.disableBtn = false;
             vm.sortableListener = {};
             vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
@@ -93,10 +94,12 @@
                 vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
                 vm.deleteBtnDisabled = true;
                 vm.upsertBtnDisabled = true;
+                vm.disableBtn = true;
                 vm.deleteAll = false;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
-                    // console.info('res after upsert: ', res);
-                    if (res.server_response.status === 200) {
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
                         vm.trialDetailObj = res;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                         $scope.$emit('updatedInChildScope', {});
@@ -115,6 +118,7 @@
                     console.info('hiding intervention form now!');
                     vm.curInterventionObj = null;
                     vm.showInterventionForm = false; // hide the form
+                    vm.disableBtn = false;
                     // resetLookupForm();
                 });
             }

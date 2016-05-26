@@ -46,6 +46,7 @@
             vm.cancelEdit = cancelEdit;
             vm.upsertDoc = upsertDoc; //upsertDoc;
             vm.resetForm = resetForm;
+            vm.disableBtn = false;
 
             activate();
             function activate() {
@@ -78,9 +79,14 @@
                     }
                     $timeout(function() {
                         // apply the changes to the scope
-                        vm.curTrialDetailObj.trial_documents[index].status = curStatus === 'deleted' ? 'active' : 'deleted'; // toggle active and deleted
+                        vm.curTrialDetailObj.trial_documents[index].status = (curStatus === 'deleted') ? 'active' : 'deleted'; // toggle active and deleted
                         if (vm.curTrialDetailObj.trial_documents[index].status === 'active') {
                             vm.curTrialDetailObj.trial_documents[index].why_deleted = null;
+                            vm.curTrialDetailObj.trial_documents[index].deleted_by = null;
+                            vm.curTrialDetailObj.trial_documents[index].deletion_date = null;
+                        } else {
+                            vm.curTrialDetailObj.trial_documents[index].deleted_by = UserService.getLoggedInUsername();
+                            vm.curTrialDetailObj.trial_documents[index].deletion_date = DateService.convertISODateToLocaleDateStr(new Date().toISOString());
                         }
                     }, 0);
                 }
@@ -125,6 +131,8 @@
                     _destroy: false,
                     status: 'active',
                     why_deleted: null,
+                    deleted_by: null,
+                    deletion_date: null,
                     isPopoverOpen: false,
                     source_document: 'PA'
                 };
@@ -232,18 +240,15 @@
                 vm.saveBtnDisabled = true;
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
-                        console.log('group promises res: ', res);
                         if (angular.isArray(res)) {
                             _.each(res, function(uploadedDoc, index) {
                                 if (uploadedDoc !== null) {
-                                    // vm.curTrialDetailObj.trial_documents[index].created_at = uploadedDoc.data.created_at;
                                     vm.curTrialDetailObj.trial_documents[index].id = uploadedDoc.data.id;
-                                    // vm.curTrialDetailObj.trial_documents[index] = uploadedDoc.data;
-                                    // vm.curTrialDetailObj.trial_documents[index].status = 'active';
                                     vm.curTrialDetailObj.trial_documents[index].added_by = {username: UserService.getLoggedInUsername()};
                                 }
                             });
                         }
+                        console.info('vm.curTrialDetailObj.trial_documents: ', vm.curTrialDetailObj.trial_documents);
                         vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
                         var outerTrial = {};
                         outerTrial.new = false;
@@ -253,7 +258,6 @@
                         outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
                         TrialService.upsertTrial(outerTrial).then(function(res) {
                             vm.curTrialDetailObj = res;
-                            console.log('in trial related documents, res: ', res);
                             vm.curTrialDetailObj.lock_version = res.lock_version;
                             PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
                             // $scope.$emit('updatedInChildScope', {});
@@ -288,6 +292,8 @@
                 }).map(function(filteredDoc) {
                     delete filteredDoc._destroy;
                     filteredDoc.why_deleted = filteredDoc.why_deleted || null; // initialize why_deleted field if not present
+                    filteredDoc.deleted_by = filteredDoc.deleted_by || null;
+                    filteredDoc.deletion_date = filteredDoc.deletion_date || null;
                     return filteredDoc;
                 });
             }

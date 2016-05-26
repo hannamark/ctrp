@@ -36,6 +36,8 @@
       vm.sponsor = {name: '', array: []};
       vm.leadProtocolId = '';
       vm.leadProtocolIdEdit = false;
+      vm.disableBtn = false;
+
       var otherIdsClone = [];
       var regex = new RegExp('-', 'g');
 
@@ -48,6 +50,14 @@
       vm.centralContactType = ''; // default to None
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
       vm.protocolIdOriginArr = protocolIdOriginObj;
+      // identifiers allowing for duplication
+      var duplicateAllowedIds = vm.protocolIdOriginArr.filter(function(pId) {
+          var idName = pId.name.toLowerCase();
+          return idName.indexOf('other') > -1 ||
+                idName.indexOf('duplicate nci') > -1 ||
+                idName.indexOf('obsolete') > -1;
+      }).map(function(idObj) { return idObj.name});
+
       vm.centralContactTypes = centralContactTypes.types;
 
       activate();
@@ -74,6 +84,8 @@
       /* implementations below */
       function saveGeneralTrialDetails() {
           var outerTrial = {};
+          vm.disableBtn = true;
+
           if (JSON.stringify(vm.generalTrialDetailsObj.central_contacts[0]) !== '{}') {
               var typeObject = _.findWhere(vm.centralContactTypes, {name: vm.centralContactType});
 
@@ -98,8 +110,10 @@
           // get the most updated lock_version
           outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
           TrialService.upsertTrial(outerTrial).then(function(res) {
+              var status = res.server_response.status;
               toastr.clear();
-              if (res.server_response.status === 200) {
+
+              if (status >= 200 && status <= 210) {
                   vm.generalTrialDetailsObj = res;
                   vm.generalTrialDetailsObj.lock_version = res.lock_version;
                   PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
@@ -109,9 +123,12 @@
                       timeOut: 0
                   });
                   getTrialDetailCopy();
-              } else {
-                  toastr.error('Error', 'There are errors in the submitted data');
               }
+          }).catch(function(err) {
+              // handle err
+              console.error('error in updating trial details: ', err);
+          }).finally(function() {
+              vm.disableBtn = false;
           });
       }
 
@@ -172,9 +189,10 @@
           vm.otherIdentifier.protocol_id_origin_id = parseInt(vm.otherIdentifier.protocol_id_origin_id);
           // boolean
           var condition = {'protocol_id_origin_id': vm.otherIdentifier.protocol_id_origin_id};
-          var otherIdExists = _.findIndex(vm.generalTrialDetailsObj.other_ids, condition) > -1;
-          if (otherIdExists) {
-              // if the identifier exists, return
+          var otherIdObj = _.findWhere(vm.generalTrialDetailsObj.other_ids, condition);
+
+          if (angular.isDefined(otherIdObj) && !_.contains(duplicateAllowedIds, otherIdObj.identifierName)) {
+              // if the identifier exists (excluding 'Other Identifier'), Return
               vm.otherIdErrorMsg = 'Identifier already exists';
               return;
           }
