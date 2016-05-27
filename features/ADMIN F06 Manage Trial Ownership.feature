@@ -13,7 +13,9 @@ Then the system will display all the CTRP User names that are affiliated with an
 |Email |
 |Organization|
 |Family|
-And all the trials where the Lead Organization or Participating Site is affiliated with my Organizational family including
+And all the trials where the Lead Organization is affiliated with my Organizational Family
+And the Information Source is "Protocol"
+And the NIH/NCI Division/Department Identifier is Null, including
 |NCI Trial ID|
 |Lead Org ID|
 |Organization (Lead Organization or Participating site)|
@@ -28,8 +30,9 @@ Given I am logged into CTRP
 And I have Site Administrator privileges
 When I select the Manage Trial Ownership feature
 And I have selected one or more CTRP Users from the list of CTRP Users that are affiliated with an Organization in my Family
-And I have selected one or more trials from a list of trials where either the Lead Organization is affiliated with my Organizational family
+And I have selected one or more trials from a list of trials where the Lead Organization is affiliated with my Organizational family
 And the Information Source is "Protocol"
+And the NIH/NCI Division/Department Identifier is Null
 And I have selected the "Assign" trial ownership operation
 Then the CTRP Users selected will be assigned trial ownership on the trials selected
 
