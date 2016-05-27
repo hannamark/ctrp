@@ -297,11 +297,9 @@
          */
         function _clearKeyValuePairsInTrial(keyStringArray, trialDetailObj) {
             var trialDetailObjClone = angular.copy(trialDetailObj);
-            console.log('clearing key values with array of keys: ', keyStringArray);
             if (angular.isArray(keyStringArray)) {
                 _.each(keyStringArray, function(key) {
                     if (trialDetailObjClone.hasOwnProperty(key)) {
-                        console.log('nullify key: ', key);
                         trialDetailObjClone[key] = null; // clear the value associated with the key in trial object
                     }
                 });
