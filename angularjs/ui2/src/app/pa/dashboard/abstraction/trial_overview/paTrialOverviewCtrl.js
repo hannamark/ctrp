@@ -25,7 +25,6 @@
 
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
-        console.log('curTrial: ', curTrial);
         vm.trialDetailObj = curTrial;
         vm.adminCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.admin_checkout);
         vm.scientificCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.scientific_checkout);
@@ -111,7 +110,6 @@
             var modalOpened = true;
             vm.disableBtn = true;
             modalInstance.result.then(function(checkinComment) {
-                console.info('modal closed, comment: ', checkinComment);
                 if (angular.isDefined(checkinComment) && checkinComment.length > 0) {
                     _performTrialCheckin(checkinType, vm.trialDetailObj.id, checkinComment);
                 }
@@ -296,7 +294,6 @@
             $uibModalInstance.dismiss('cancel');
         };
         viewModel.viewAbstractionValidation = function() {
-            console.info('viewAbstractionValidation....');
             // TODO: redirect to viewAbstractionValidation page
         };
 
