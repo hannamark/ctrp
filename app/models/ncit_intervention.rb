@@ -45,10 +45,14 @@ class NcitIntervention < ActiveRecord::Base
             xml = Nokogiri::XML(entry.get_input_stream.read)
             
             # Search for label as preferred name
+            i = 0
             xml.xpath('//owl:Class[@rdf:about]').each do |node|
               # extract preferred_name and synonyms
               name = node.xpath('rdfs:label').text
-              if !NcitIntervention.exists?(preferred_name: name) # no duplicate preferred_name
+
+              c_code = node.css('code')
+              c_code = c_code.present? ? c_code.text : nil
+              if !NcitIntervention.exists?(c_code: c_code) # no duplicate c_code
                 synonyms = ''
                 node.css('P90').xpath('ncicp:ComplexTerm/ncicp:term-name').each do |synonym|
                   synonyms += "; #{synonym.text}"  # concatenate each synonym
@@ -60,9 +64,12 @@ class NcitIntervention < ActiveRecord::Base
                 ## extract the definition field
                 definition = node.css('P97').xpath('ncicp:ComplexDefinition/ncicp:def-definition')
                 definition = definition.present? ? definition.text : nil
-                # p "definition is: #{definition}"
-                #  p "NcitIntervention.create(preferred_name: #{name}, synonyms: #{synonyms}, definition: #{definition}, type_code: #{nil}, ct_gov_type_code: #{nil}, ncit_status: #{act})"
-                NcitIntervention.create(preferred_name: name, synonyms: synonyms, definition: definition, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+                if i < 50
+                  p "NcitIntervention.create(preferred_name: \"#{name}\", synonyms: \"#{synonyms}\", definition: \"#{definition}\", type_code: \"nil\", ct_gov_type_code: \"nil\", ncit_status: #{act.id}, c_code: \"#{c_code}\")"
+                  i += 1
+                end
+
+                # NcitIntervention.create(preferred_name: name, synonyms: synonyms, definition: definition, type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: c_code)
               end
 
             end

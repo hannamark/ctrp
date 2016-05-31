@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525151827) do
+ActiveRecord::Schema.define(version: 20160531185606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -458,6 +458,7 @@ ActiveRecord::Schema.define(version: 20160525151827) do
     t.integer  "lock_version",                     default: 0
     t.integer  "index"
     t.integer  "arms_group_id"
+    t.string   "c_code"
   end
 
   add_index "interventions", ["arms_group_id"], name: "index_interventions_on_arms_group_id", using: :btree
@@ -686,6 +687,7 @@ ActiveRecord::Schema.define(version: 20160525151827) do
     t.string   "ct_gov_type_code"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "c_code"
   end
 
   add_index "ncit_interventions", ["ncit_status_id"], name: "index_ncit_interventions_on_ncit_status_id", using: :btree
