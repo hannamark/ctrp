@@ -62,6 +62,7 @@
                  res.server_response = null;
                  vm.searchResults = res;
                  vm.gridOptions.data = res.data;
+                 console.info('search results: ', res.data);
                  vm.gridOptions.totalItems = res.total;
               }).catch(function(err) {
                   console.error('err in the lookup: ', err);

@@ -198,9 +198,10 @@
 
                 modalInstance.result.then(function(selectedInterventionObj) {
                     // vm.selectedInterventionObj = selectedInterventionObj;
-                    console.info('selected intervention obj: ', selectedInterventionObj);
+                    // console.info('selected intervention obj: ', selectedInterventionObj);
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
+                    vm.curInterventionObj.c_code = selectedInterventionObj.c_code;
                     vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
                     vm.curInterventionObj.intervention_type_id = selectedInterventionObj.intervention_type_id || '';
                     vm.isInterventionTypeListEnabled = vm.curInterventionObj.intervention_type_id === '' && isUserAllowedToSelectType;
@@ -224,10 +225,11 @@
         };
 
         vm.confirmSelection = function() {
-            var interventionName = vm.selection.preferred_name || '';
+            // var interventionName = vm.selection.preferred_name || '';
+            var interventionCCode = vm.selection.c_code || '';
             // search ctrp interventions for same name, if exists, get its intervention type id for
             // trials to use
-            PATrialService.searchCtrpInterventionsByName(interventionName).then(function(searchResponse) {
+            PATrialService.searchCtrpInterventionsByName(interventionCCode).then(function(searchResponse) {
                 console.info('searchResponse: ', searchResponse);
                 var result = searchResponse.data;
                 if (result !== null) {
