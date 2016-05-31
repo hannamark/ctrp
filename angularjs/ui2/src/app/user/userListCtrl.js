@@ -27,7 +27,6 @@
                 email: '',
                 phone: '',
                 approved: '',
-                user_status_id: '',
                 rows: 25,
                 sort: vm.registeredUsersPage ? 'last_name' : 'username',
                 order: 'asc',
@@ -176,7 +175,7 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
+        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
             vm.statusArr = response.data;
         }).catch(function (err) {
             vm.statusArr = [];
@@ -205,6 +204,7 @@
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
+                vm.searchUsers();
             });
         };
         vm.gridOptions.exporterAllDataFn = function () {
