@@ -202,7 +202,7 @@
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
                     vm.curInterventionObj.c_code = selectedInterventionObj.c_code;
-                    vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
+                    vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.definition;
                     vm.curInterventionObj.intervention_type_id = selectedInterventionObj.intervention_type_id || '';
                     vm.isInterventionTypeListEnabled = vm.curInterventionObj.intervention_type_id === '' && isUserAllowedToSelectType;
                     console.info('received vm.curInterventionObj: ', vm.curInterventionObj);
