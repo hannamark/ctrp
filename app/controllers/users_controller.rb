@@ -129,7 +129,7 @@ end
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     sortBy = params[:sort]
-    if sortBy == 'user_organization_name'
+    if sortBy == 'organization_name'
       sortBy = 'user_org.name'
     end
     @users = User.all
@@ -157,9 +157,8 @@ end
     @users = @users.matches_wc('email', params[:email]) if params[:email].present?
     @users = @users.matches_wc('role', 'ROLE_SITE-SU')  if params[:site_admin].present?
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
-    @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
+    @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-    @users = @users.matches_wc('user_organization_name', '*')
     @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "username ASC")
     unless params[:rows].nil?
       @users = @users.page(params[:start]).per(params[:rows])

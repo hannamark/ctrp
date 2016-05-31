@@ -47,6 +47,7 @@
         vm.selectedContactTypePI = false;
         vm.centralContactTypes = centralContactTypes.types;
         vm.investigatorTypes = investigatorTypes;
+        vm.duplicateParticipatingSite = false;
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
                //console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
@@ -110,7 +111,6 @@
             vm.currentParticipatingSite.extension =  null;
             vm.currentParticipatingSite.contact_email =  null;
             vm.currentParticipatingSite.contact_type = 'General';
-
         }
         vm.setParticipatingSiteContactInfo = function() {
             var name = PersonService.extractFullName(vm.currentParticipatingSite.person);
@@ -122,6 +122,9 @@
 
         vm.saveParticipatingSite = function(callBackString){
             var cbString = callBackString;
+
+            // So user cannot save with duplicate organization id for the same trial
+            if (vm.duplicateParticipatingSite) return;
 
             vm.disableBtn = true;
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes = [];
@@ -250,6 +253,7 @@
         function watchOrganization() {
             $scope.$watchCollection(function() {return vm.selOrganization.array;}, function(newVal, oldVal) {
                 if (angular.isArray(newVal) && newVal.length > 0) {
+                    vm.duplicateParticipatingSite = validateDuplicateOrg(newVal[0].id);
                     vm.currentParticipatingSite.name = newVal[0].name;
                     vm.currentParticipatingSite.organization = newVal[0];
                     vm.currentParticipatingSite.organization_id = newVal[0].id;
@@ -932,12 +936,24 @@
             vm.principalInvestigator = {name: '', array: []};
             vm.selectedPerson = {name: '', array: []};
             vm.watchContactType();
+            vm.duplicateParticipatingSite = false;
 
             /*
             $timeout(function() {
                 getTrialDetailCopy();
             }, 0);
             */
+        }
+
+        function validateDuplicateOrg(orgId) {
+            var isDuplicate = false;
+            _.each(vm.curTrial.participating_sites, function(ps) {
+                if (orgId === ps.organization.id) {
+                    isDuplicate = true;
+                };
+            });
+
+            return isDuplicate;
         }
 
     } //trialParticipatingSitesCtrl

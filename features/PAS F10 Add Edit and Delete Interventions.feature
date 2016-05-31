@@ -19,7 +19,6 @@ Then the intervention information will be displayed
 
       |Preferred Name                |
       |Synonyms                      |
-      |Intervention Type             |
       |Definition                    |
       |Action                        |
 
@@ -29,7 +28,7 @@ And the selected intervention name will be populated in the Intervention name fi
 And I have entered the Intervention Description in the provided box
 And other names will be populated in the other Names field
 When the <InterventionType> is not null
-Then the <InterventionType> will be populated from the intervention results table
+Then the <InterventionType> will be populated 
       |InterventionType|
       |Drug|
       |Device|

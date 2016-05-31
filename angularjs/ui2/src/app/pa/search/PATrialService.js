@@ -501,8 +501,8 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
         }
 
-        function searchCtrpInterventionsByName(interventionName) {
-            var url = URL_CONFIGS.PA.SEARCH_CTRP_INTERVENTIONS.replace(/\s*\{.*?\}\s*/g, interventionName);
+        function searchCtrpInterventionsByName(cCode) {
+            var url = URL_CONFIGS.PA.SEARCH_CTRP_INTERVENTIONS.replace(/\s*\{.*?\}\s*/g, cCode);
             return PromiseTimeoutService.getData(url);
         }
 

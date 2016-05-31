@@ -1132,7 +1132,7 @@ class Trial < TrialBase
 
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
-    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = participating_sites.organization_id"
     where_clause = ""
     conditions = []
 
@@ -1143,11 +1143,14 @@ class Trial < TrialBase
           where_clause += "lead_orgs.name ilike ?"
         elsif e == 'Sponsor'
           where_clause += "sponsors.name ilike ?"
+        elsif e == 'Participating Site'
+          where_clause += "sites.name ilike ?"
         end
         conditions.push(value_exp)
       }
     else
-      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR sites.name ilike ?"
+      conditions.push(value_exp)
       conditions.push(value_exp)
       conditions.push(value_exp)
     end

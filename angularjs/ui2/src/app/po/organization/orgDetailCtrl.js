@@ -31,9 +31,11 @@
         vm.alias = '';
         vm.curationReady = false;
         vm.showPhoneWarning = false;
+        vm.disableBtn = false;
         var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
         vm.updateOrg = function () {
+            vm.disableBtn = true;
 
             // Construct nested attributes
             if (vm.addedNameAliases.length > 0) {
@@ -48,22 +50,24 @@
             outerOrg.id = vm.curOrg.id;
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
-                console.info('response: ', response);
-                var statusCode = response.status || response.server_response.status;
-                console.log('statusCode: ', statusCode);
-                if (vm.curOrg.new && statusCode === 201) {
-                    // created
-                    showToastr(vm.curOrg.name);
-                    vm.curOrg.new = false;
-                    $state.go('main.orgDetail', {orgId: response.id});
-                } else if (statusCode === 200) {
-                    // updated
-                    vm.curOrg = response;
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (vm.curOrg.new && status === 201) {
+                        // created
+                        $state.go('main.orgDetail', {orgId: response.id});
+                    } else if (status === 200) {
+                        // updated
+                        vm.curOrg = response;
+                    }
+
                     showToastr(vm.curOrg.name);
                     vm.curOrg.new = false;
                 }
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }; // updateOrg
 
@@ -134,9 +138,13 @@
                     switchSourceContext();
                 } else {
                     OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function(response) {
-                        orgContextCache[contextKey] = angular.copy(response);
-                        vm.curOrg = orgContextCache[contextKey]
-                        switchSourceContext()
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            orgContextCache[contextKey] = angular.copy(response);
+                            vm.curOrg = orgContextCache[contextKey];
+                            switchSourceContext();
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving organization during tab change.");
                     });
@@ -336,10 +344,14 @@
             vm.showUniqueWarning = false
 
             var result = OrgService.checkUniqueOrganization(searchParams).then(function (response) {
-                vm.name_unqiue = response.name_unique;
+                var status = response.server_response.status;
 
-                if(!response.name_unique && vm.curOrg.name.length > 0)
-                    vm.showUniqueWarning = true
+                if (status >= 200 && status <= 210) {
+                    vm.name_unqiue = response.name_unique;
+
+                    if(!response.name_unique && vm.curOrg.name.length > 0)
+                        vm.showUniqueWarning = true;
+                }
             }).catch(function (err) {
                 console.log("error in checking for duplicate org name " + JSON.stringify(err));
             });
@@ -350,8 +362,5 @@
             vm.showPhoneWarning = true;
             console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
-
     }
-
-
 })();

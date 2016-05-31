@@ -21,8 +21,7 @@
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.savedSelection = []; //save selected organizations
         vm.selectedOrgFilter = "";
-        //console.log("family: " + JSON.stringify(vm.curFamily));
-
+        vm.disableBtn = false;
 
         vm.updateFamily = function() {
             vm.curFamily.family_memberships_attributes = prepareFamilyMembershipsArr(vm.savedSelection); //append an array of affiliated organizations
@@ -38,16 +37,15 @@
             newFamily.new = vm.curFamily.new || '';
             newFamily.id = vm.curFamily.id || '';
             newFamily.family = vm.curFamily;
+            vm.disableBtn = true;
 
             // console.log("newFamily is: " + JSON.stringify(newFamily));
             FamilyService.upsertFamily(newFamily).then(function(response) {
-                if(response.status == 422) {
-                    toastr.error('Problem in saving family', 'Family name has already been taken');
-                    vm.curFamily.name="";
-                } else {
+                var status = response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.curFamily.new = false;
                     vm.curFamily.family_memberships = response.data.family_memberships_attributes || [];
-                    console.log('response is: ' + JSON.stringify(response));
                     $state.go('main.familyDetail', {familyId: response.data.id});
                     toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!', {
                         extendedTimeOut: 1000,
@@ -56,6 +54,8 @@
                 }
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }; // updateFamily
 
@@ -302,13 +302,14 @@
             vm.showUniqueWarning = false
 
             var result = FamilyService.checkUniqueFamily(searchParams).then(function (response) {
-                vm.name_unqiue = response.name_unique;
+                var status = response.server_response.status;
 
-                if(!response.name_unique && vm.curFamily.name.length > 0)
-                    vm.showUniqueWarning = true
+                if (status >= 200 && status <= 210) {
+                    vm.name_unqiue = response.name_unique;
 
-                console.log("Is Famiily name unique: " +  vm.name_unqiue);
-                console.log("Response is " + JSON.stringify(response));
+                    if(!response.name_unique && vm.curFamily.name.length > 0)
+                        vm.showUniqueWarning = true
+                }
             }).catch(function (err) {
                 console.log("error in checking for duplicate family name " + JSON.stringify(err));
             });

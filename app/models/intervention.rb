@@ -38,8 +38,8 @@ class Intervention < ActiveRecord::Base
 
   # update intervention types for all records with the same intervention name if the intervention type changes for this intervention
   def update_intervention_type
-    if self.name_was == self.name and self.intervention_type_id_was != self.intervention_type_id
-      Intervention.where(name: self.name).update_all(intervention_type_id: self.intervention_type_id)
+    if self.c_code_was == self.c_code and self.intervention_type_id_was != self.intervention_type_id
+      Intervention.where(c_code: self.c_code).update_all(intervention_type_id: self.intervention_type_id)
     end
   end
 
