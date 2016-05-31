@@ -602,7 +602,7 @@ AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related 
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHLBI')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering_Commitee_Reviewed')
+AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering Commitee Reviewed')
 
 AppSetting.find_or_create_by(code: 'SAMPLING_METHOD_PA', name: 'Sampling Method', value: 'Probability Sample,Non-Probability Sample', big_value: 'see value')
 

@@ -57,7 +57,7 @@ class UtilController < ApplicationController
   end
 
   def get_nih_nci_prog_pa
-    @nih_nci_prog_pa = AppSetting.find_by_code('NIH_NCI_PROG_PA').big_value.split(';')
+    @nih_nci_prog_pa = AppSetting.find_by_code('NIH_NCI_PROG_PA').big_value.split(',')
   end
 
   def get_accepted_file_types_for_registry
