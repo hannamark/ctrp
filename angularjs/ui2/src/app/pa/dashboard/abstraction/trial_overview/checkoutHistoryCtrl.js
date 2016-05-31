@@ -13,7 +13,6 @@
     function checkoutHistoryCtrl($scope, checkoutHistoryArr, $filter, _,
             $timeout, MESSAGES, PATrialService, $stateParams) {
         var vm = this;
-        console.info('checkout history arr: ', checkoutHistoryArr);
         var curTrialId = $stateParams.trialId;
         var pageSize = 20;
         vm.gridOptions = getGridOptions();
@@ -109,7 +108,6 @@
         }
 
         function onPageSizeChanged(newPageSize) {
-            console.info('newPageSize: ', newPageSize);
             pageSize = new Number(newPageSize);
             createNewDatasource(vm.checkoutHistoryArr);
         }

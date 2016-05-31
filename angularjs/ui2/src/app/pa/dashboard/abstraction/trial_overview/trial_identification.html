@@ -66,7 +66,7 @@
                                     class="form-control input-sm"
                                     ng-disabled="!paTrialOverview.trialDetailObj.pa_editable"
                                     ng-model="trialIdView.trialProcessingObj.priority" restriction-field
-                                    ng-options="priority.name for priority in trialIdView.priorities" required>
+                                    ng-options="priority.name as priority.name for priority in trialIdView.priorities" required>
                                     <option value="">
                                         Select a priority
                                     </option>

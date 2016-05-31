@@ -187,8 +187,7 @@
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
         if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
-            vm.searchParams.organization_id = vm.curUser.organization_id;
-            vm.searchOrganization = vm.curUser.organization.name;
+            vm.searchParams.organization_family_id = vm.curUser.family_orgs[0] ? vm.curUser.family_orgs[0].id : '';
             vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
@@ -206,7 +205,6 @@
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
-                vm.searchUsers();
             });
         };
         vm.gridOptions.exporterAllDataFn = function () {
@@ -229,20 +227,18 @@
                 vm.gridOptions.totalItems =  data.total;
                 $location.hash('users_search_results');
             }).catch(function (err) {
-                console.log('Search Users failed');
+                console.log('Search Users failed: ' + err);
             });
         }; //searchUsers
-        vm.searchUsers();
 
         vm.resetSearch = function () {
             vm.searchParams = new SearchParams;
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
 
-            Object.keys(vm.searchParams).forEach(function (key, index) {
+            Object.keys(vm.searchParams).forEach(function (key) {
                 vm.searchParams[key] = '';
             });
-            vm.searchUsers();
         }; //resetSearch
 
         /****************************** implementations **************************/
