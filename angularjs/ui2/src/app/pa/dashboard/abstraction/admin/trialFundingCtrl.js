@@ -24,7 +24,7 @@
         vm.serial_number = null;
         vm.grantNum = 0;
         vm.grantsInputs = {grantResults: [], disabled: true};
-        console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+        vm.disableBtn = false;
 
         vm.reload = function() {
             $state.go($state.$current, null, { reload: true });
@@ -33,8 +33,7 @@
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
             vm.disableBtn = true;
-            //console.log("vm.addedGrants" + JSON.stringify(vm.addedGrants));
-            //console.log("vm.grantNum=" + JSON.stringify(vm.grantNum));
+
             if (vm.grant_question === 'Yes' && vm.grantNum <= 0){
                 console.log("vm.grantNum = 0");
                 return;
@@ -55,29 +54,33 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.grants = response["grants"];
-                console.log("vm.grants="+JSON.stringify(vm.curTrial.grants));
-                vm.addedGrants = [];
-                vm.grantNum = 0;
-                appendGrants();
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
+                var status = response.server_response.status;
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    vm.curTrial.grants = response["grants"];
+                    console.log("vm.grants="+JSON.stringify(vm.curTrial.grants));
+                    vm.addedGrants = [];
+                    vm.grantNum = 0;
+                    appendGrants();
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
 
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
 
         }
 
         $scope.refreshGrants = function(serial_number) {
-            console.log('firing....');
+
             if (vm.funding_mechanism && vm.institute_code && serial_number.length > 1) {
                 var queryObj = {
                     "funding_mechanism": vm.funding_mechanism,
@@ -85,10 +88,13 @@
                     "serial_number": serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
+                    var status = res.server_response.status;
                     var transformedGrantsObjs = [];
                     var unique = [];
-                    console.log('res is: ', res);
-                    vm.grantsInputs.grantResults = res.tempgrants;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.grantsInputs.grantResults = res.tempgrants;
+                    }
                     /*
                      transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {
                      return tempgrant; //.serial_number;
@@ -102,7 +108,6 @@
                      vm.grantsInputs.grantResults = transformedGrantsObjs; // unique; //['13467']; // uniquesnums;
                      console.log(vm.grantsInputs.grantResults);
                      */
-
                 });
 
             }

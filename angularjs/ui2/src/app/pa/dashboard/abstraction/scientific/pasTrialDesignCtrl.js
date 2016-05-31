@@ -9,7 +9,6 @@
     function pasTrialDesignCtrl($scope, TrialService, PATrialService, toastr,
         MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings, timePerspectivesObj) {
         var vm = this;
-        console.info('groupedTrialDesignData: ', groupedTrialDesignData);
         vm.trialDetailObj = {};
         vm.trialPhases = [];
         vm.researchCategories = [];
@@ -22,6 +21,17 @@
         vm.studyClassifications = [];
         vm.timePerspectives = timePerspectivesObj.data;
         vm.biospecimenRetentions = [];
+        var INTERVENTIONAL_FIELDS = ['secondary_purpose_id', 'secondary_purpose_other',
+                                     'intervention_model_id', 'masking_id',
+                                     'masking_role_subject', 'allocation_id',
+                                     'study_classification_id',	'num_of_arms']; // fields/keys in vm.trialDetailObj
+
+        var EXPANDEDACC_FIELDS = INTERVENTIONAL_FIELDS;
+        var OBSERVATIONAL_FIELDS = ['study_model_id', 'study_model_other',
+                                    'time_perspective_id', 'time_perspective_other',
+                                    'biospecimen_retention_id',	'biospecimen_desc',];  // fields/keys in vm.trialDetailObj
+        var ANCILLARY_FIELDS = OBSERVATIONAL_FIELDS;
+
         vm.isOtherPrimaryPurpose = false;
         vm.isOtherSecondaryPurpose = false;
         vm.isOtherStudyModel = false;
@@ -34,6 +44,7 @@
         // actions:
         vm.updateTrialDesign = updateTrialDesign;
         vm.resetForm = resetForm;
+        vm.disableBtn = false;
 
         activate();
         function activate() {
@@ -69,6 +80,10 @@
         function _watchResearchCategory() {
             $scope.$watch(function() {return vm.trialDetailObj.research_category_id;},
                 function(newVal, oldVal) {
+                    if (newVal === oldVal) {
+                        return;
+                    }
+
                     var curResearchCategoryObj = _.findWhere(vm.researchCategories, {id: newVal});
                     vm.researchCategoryTitle = !!curResearchCategoryObj ? ' - ' + curResearchCategoryObj.name : '';
                     vm.isExpandedAccess = vm.researchCategoryTitle.toLowerCase().indexOf('expand') > -1;
@@ -99,8 +114,7 @@
                     if ((vm.isObservational || vm.isAncillary) && vm.biospecimenRetentions.length === 0) {
                         _fetchBiospecimenRetention()
                     }
-
-                });
+                }, true);
         } // _watchResearchCategory
 
         function _watchPrimaryPurpose() {
@@ -120,7 +134,6 @@
                 function(newVal, oldVal) {
                     if (newVal !== undefined && newVal !== null) {
                         var curSecondaryPurposeObj = _.findWhere(vm.secondaryPurposes, {id: newVal});
-                        console.info('curSecondaryPurposeObj: ', curSecondaryPurposeObj);
                         vm.isOtherSecondaryPurpose = curSecondaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
                         // reset to original data or empty
                         vm.trialDetailObj.secondary_purpose_other = _resetValueForField('secondary_purpose_other');
@@ -159,7 +172,9 @@
          */
         function _fetchInterventionModels() {
             PATrialService.getInterventionModels().then(function(res) {
-                if (res.server_response.status === 200) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.interventionModels = res.models || [];
                 }
             });
@@ -167,7 +182,9 @@
 
         function _fetchAllocations() {
             PATrialService.getAllocations().then(function(res) {
-                if (res.server_response.status === 200) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.allocations = res.allocations || [];
                     vm.allocations;
                 }
@@ -176,7 +193,9 @@
 
         function _fetchStudyClassifications() {
             PATrialService.getStudyClassifications().then(function(res) {
-                if (res.server_response.status === 200) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.studyClassifications = res.data || [];
                     vm.studyClassifications;
                 }
@@ -185,14 +204,22 @@
 
         function _fetchStudyModels() {
             PATrialService.getStudyModels().then(function(res) {
-                vm.studyModels = res.data || [];
-                vm.studyModels;
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.studyModels = res.data || [];
+                    vm.studyModels;
+                }
             });
         }
 
         function _fetchBiospecimenRetention() {
             PATrialService.getBiospecimenRetentions().then(function(res) {
-                vm.biospecimenRetentions = res.data || [];
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.biospecimenRetentions = res.data || [];
+                }
             });
         }
 
@@ -200,9 +227,7 @@
             $scope.$watch(function() {return vm.trialDetailObj.masking_id;}, function(newVal) {
                 var curMasking = _.findWhere(vm.maskings, {id: newVal});
                 var maskingName = !!curMasking ? curMasking.name : '';
-                console.info('maskingName: ', maskingName, newVal);
                 vm.showMaskingRoles = maskingName.toLowerCase().indexOf('blind') > -1;
-                console.info('show roles? ', vm.showMaskingRoles);
             });
         }
 
@@ -218,14 +243,25 @@
         }
 
         function updateTrialDesign() {
+
+            // clear field-value pairs in the trialDetailObj if the research category changes
+            // so that the old values are not saved for the new research category
+            if (vm.isObservational || vm.isAncillary) {
+                vm.trialDetailObj = _clearKeyValuePairsInTrial(INTERVENTIONAL_FIELDS, vm.trialDetailObj);
+            } else if (vm.isInterventional || vm.isExpandedAccess) {
+                vm.trialDetailObj = _clearKeyValuePairsInTrial(OBSERVATIONAL_FIELDS, vm.trialDetailObj);
+            }
+
             var outerTrial = {};
+            vm.disableBtn = true;
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
             PATrialService.upsertTrial(outerTrial).then(function(res) {
+                var status = res.server_response.status;
 
-                if (res.server_response.status === 200) {
+                if (status >= 200 && status <= 210) {
                     vm.trialDetailObj = res;
                     vm.trialDetailObj.lock_version = res.lock_version;
                     // delete vm.trialDetailObj.admin_checkout;
@@ -243,11 +279,32 @@
 
             }).catch(function(err) {
                 console.error('error in updating trial design: ', err);
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 
         function resetForm() {
             _getTrialDetailCopy();
+        }
+
+        /**
+         * Clear value associated with the keys in the provided trialDetailObj
+         *
+         * @param  {[Array of String]} keyStringArray [description]
+         * @param  {[Object]} trialDetailObj [description]
+         * @return {[Object]}                [cleared trialDetailObj clone]
+         */
+        function _clearKeyValuePairsInTrial(keyStringArray, trialDetailObj) {
+            var trialDetailObjClone = angular.copy(trialDetailObj);
+            if (angular.isArray(keyStringArray)) {
+                _.each(keyStringArray, function(key) {
+                    if (trialDetailObjClone.hasOwnProperty(key)) {
+                        trialDetailObjClone[key] = null; // clear the value associated with the key in trial object
+                    }
+                });
+            }
+            return trialDetailObjClone;
         }
 
     } //pasTrialDesignCtrl

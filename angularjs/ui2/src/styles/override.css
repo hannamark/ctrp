@@ -778,14 +778,14 @@ h5 {
 
 .grid-large-cell .ui-grid-cell {
     line-height: 1em;
-    height: 80px !important;
+    height: 110px !important;
 }
 
 .grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
 
 .grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
     background:#bbb;
-    color: #444;
+    color: darkblue;
 }
 
 .grid-large-cell .ui-grid-row:nth-child(even) .ui-grid-cell,
@@ -1406,20 +1406,27 @@ div[disabled] {
     float: left;
 }
 
-.ctrptransferselect .ms-col1 {
+.ctrptransferselect .ms-col1, .ctrptransferselect .ms-col5 {
     float: left;
 }
-.ctrptransferselect .ms-col2 {
+.ctrptransferselect .ms-col2, .ctrptransferselect .ms-col6 {
     float: right;
 }
-.ctrptransferselect .ms-col3 {
+.ctrptransferselect .ms-col5 {
+    padding-left: 20px;
+ }
+.ctrptransferselect .ms-col3, .ctrptransferselect .ms-col7 {
     width: 99%;
     padding-left: 20px;
     float: left;
 }
-.ctrptransferselect a span.ms-col1 {
+.ctrptransferselect a span.ms-col1, .ctrptransferselect a span.ms-col5 {
     color: #666;
     font-weight:bold;
+}
+.ctrptransferselect a span.ms-col6 {
+    color: #666;
+    padding-left: 20px;
 }
 .ctrptransferselect input.search-term {
     width: 99%;
@@ -1437,11 +1444,17 @@ div[disabled] {
     padding-left: 10px;
 }
 
+.assign-trial-ownership .btn-toolbar {
+    padding-right: 15px;
+}
+.assign-trial-ownership .ctrptransferselect .pool {
+    height: 400px;
+}
+
 .dir-modal-body .ctrptransferselect {
     margin: 10px 20px;
 }
 
 .reg-users-details label {
-    font-size:14px;
     padding-left: 0;
 }

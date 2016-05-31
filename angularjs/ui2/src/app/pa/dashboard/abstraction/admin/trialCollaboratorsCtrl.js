@@ -24,6 +24,7 @@
         vm.selectedDeleteCollaboratorsList = [];
         vm.collaboratorsNum = 0;
         vm.addMode=false;
+        vm.disableBtn = false;
 
         /*
          * This function is invoked when the organizations are added and saved
@@ -83,26 +84,30 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                $scope.$emit('updatedInChildScope', {});
-                vm.curTrial.collaborators = response["collaborators"];
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                if (params && params.del) {
-                    successMsg = 'Record(s) deleted.';
-                } else {
-                    successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    $scope.$emit('updatedInChildScope', {});
+                    vm.curTrial.collaborators = response["collaborators"];
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    if (params && params.del) {
+                        successMsg = 'Record(s) deleted.';
+                    } else {
+                        successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
+                    }
+                    toastr.clear();
+                    toastr.success(successMsg, 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                    vm.addMode = false;
+                    vm.selectedAllCos = false;
                 }
-                toastr.clear();
-                toastr.success(successMsg, 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-                vm.addMode = false;
-                vm.selectedAllCos = false;
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
 
         }//saveTrial

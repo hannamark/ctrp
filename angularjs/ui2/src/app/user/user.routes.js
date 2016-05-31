@@ -171,7 +171,7 @@
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
-                        parent: 'main.users',
+                        parent: 'main.registeredUsers',
                         label: 'User Profile'
                     }
                 });

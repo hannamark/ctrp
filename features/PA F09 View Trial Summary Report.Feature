@@ -6,8 +6,9 @@ As a CTRP User, I can view a trial Trial Summary Report (TSR)
 Scenario: #1 I can view a Trial Summary Report (TSR)
 Given I am in the CTRP application
 And I have selected a trial in CTRP 
-When I select the View TSR option
-Then the TSR document will downloaded 
+And I have selected the View TSR option
+And the Trial Summary Report (TSR) screen is display
+Then I can select View TSR and the TSR document will downloaded 
 And the file name will be "TSR_""CTRP Trial ID""_""Current Date YYYY-MM-DD""-"Current Time HHMM(24hr)""_""Current Submission Type (O for original and A for amendment""_""Amendment Number (for amendments)"<examples>
 
 |Examples:|

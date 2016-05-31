@@ -24,6 +24,7 @@
         vm.boardAffRequired = false;
         vm.approvalStatusRequired = false;
         vm.boardAffShown = false;
+        vm.disableBtn = false;
 
         activate();
 
@@ -110,21 +111,27 @@
             outerTrial.trial = vm.trialDetailsObj;
             // get the most updated lock_version
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-            
+            vm.disableBtn = true;
+
             TrialService.upsertTrial(outerTrial).then(function(res) {
-                console.log('res: ', res);
-                vm.trialDetailsObj = res;
-                vm.trialDetailsObj.lock_version = res.lock_version;
+                var status = res.server_response.status;
 
-                PATrialService.setCurrentTrial(vm.trialDetailsObj); // update cache
-                $scope.$emit('updatedInChildScope', {});
+                if (status >= 200 && status <= 210) {
+                    vm.trialDetailsObj = res;
+                    vm.trialDetailsObj.lock_version = res.lock_version;
 
-                toastr.clear();
-                toastr.success('Human subject safety information has been updated', 'Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-                _getTrialDetailCopy();
+                    PATrialService.setCurrentTrial(vm.trialDetailsObj); // update cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Human subject safety information has been updated', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                    _getTrialDetailCopy();
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 

@@ -72,16 +72,16 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                if (response.server_response.status < 300) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Record(s) deleted', 'Operation Successful!');
-                    vm.disableBtn = false;
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
                 }
             }).catch(function(err) {
                 console.log("Error in deleting diseases " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 
@@ -103,28 +103,33 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                if (response.server_response.status < 300) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Diseases have been updated', 'Operation Successful!');
-                    vm.disableBtn = false;
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
                 }
             }).catch(function(err) {
                 console.log("Error in updating diseases " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 
         vm.searchDiseases = function() {
             vm.searching = true;
             DiseaseService.searchDiseases(vm.searchParams).then(function(response) {
-                vm.searchResult = response.diseases;
-                vm.infoUrl = response.info_url;
-                vm.treeUrl = response.tree_url;
-                vm.searching = false;
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.searchResult = response.diseases;
+                    vm.infoUrl = response.info_url;
+                    vm.treeUrl = response.tree_url;
+                }
             }).catch(function(err) {
                 console.log("Error in searching diseases: " + err);
+            }).finally(function() {
+                vm.searching = false;
             });
         };
 
@@ -191,15 +196,16 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                if (response.server_response.status < 300) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Diseases have been recorded', 'Operation Successful!');
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
                 }
             }).catch(function(err) {
                 console.log("Error in saving diseases " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 

@@ -16,10 +16,8 @@
             vm.trialQueryObj = {identifierTypeId: '', trialIdentifier: ''}; // to be POSTed for search
             vm.trialDetailObj = {};
             vm.trialDetailObj.associated_trials = [];
-            vm.lookupBtnDisabled = false;
             vm.showLookupForm = false;
             vm.deleteAllAssoCheckbox = false;
-            vm.deleteBtnDisabled = true; // delete associated trials
 
             // actions
             vm.resetTrialLookupForm = resetTrialLookupForm;
@@ -30,6 +28,7 @@
             vm.deleteTrialAssociations = deleteTrialAssociations;
             // vm.resetAssociations = _getTrialDetailCopy;
             vm.deleteAllAssociations = deleteAllAssociations;
+            vm.disableBtn = false;
 
             activate();
             function activate() {
@@ -48,24 +47,27 @@
                     return;
                 }
 
-                vm.lookupBtnDisabled = true;
+                vm.disableBtn = true;
                 vm.associationErrorMsg = '';
+
                 PATrialService.lookupTrial(vm.trialQueryObj.trialIdentifier.trim())
                     .then(function(res) {
-                    // console.info('res in looking up trial', res);
-                    vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
-                    console.log('foundTrialObj.associated_trial_id: ', res.id);
-                    vm.foundTrialObj.associated_trial_id = res.id || ''; // for hyperlink only
-                    vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
-                    vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
-                    vm.foundTrialObj.official_title = res.official_title || '';
-                    vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
-                    vm.foundTrialObj.research_category_name = res.research_category;
-                    vm.foundTrialObj.errorMsg = res.error_msg || '';
+                        var status = res.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.foundTrialObj.trial_identifier = res.nct_id || res.nci_id;
+                            vm.foundTrialObj.associated_trial_id = res.id || ''; // for hyperlink only
+                            vm.foundTrialObj.identifierTypeStr = _.findWhere(vm.identifierTypes, {id: vm.trialQueryObj.identifierTypeId}).name; // not to be persisted
+                            vm.foundTrialObj.identifier_type_id = vm.trialQueryObj.identifierTypeId;
+                            vm.foundTrialObj.official_title = res.official_title || '';
+                            vm.foundTrialObj.researchCategory = res.research_category || null; // not to be persisted!
+                            vm.foundTrialObj.research_category_name = res.research_category;
+                            vm.foundTrialObj.errorMsg = res.error_msg || '';
+                        }
                 }).catch(function(err) {
                     console.error('err in looking up the trial: ', vm.trialQueryObj);
                 }).finally(function() {
-                    vm.lookupBtnDisabled = false;
+                    vm.disableBtn = false;
                 });
             } // lookupTrial
 
@@ -112,32 +114,33 @@
              * @param  {Object}  trialLookUpResult [description]
              * @return {Void}                   [description]
              */
-            vm.associateTrialBtnDisabled = false;
             function associateTrial(trialLookUpResult) {
                 if (_.findIndex(vm.trialDetailObj.associated_trials, {trial_identifier: trialLookUpResult.trial_identifier}) > -1) {
                         vm.associationErrorMsg = 'Error: Trial association already exists';
                     // no duplicate
                     return;
                 }
-                vm.associateTrialBtnDisabled = true; // disable the button
+                vm.disableBtn = true; // disable the button
                 PATrialService.associateTrial(trialLookUpResult).then(function(res) {
-                    if (res.server_response.status === 201) {
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
                         delete res.server_response;
-                        console.info('id: ', trialLookUpResult.associated_trial_id);
                         res.associated_trial_id = trialLookUpResult.associated_trial_id; // res.id;
                         vm.trialDetailObj.associated_trials.unshift(res);
                         closeLookupForm();
+
+                        toastr.clear();
+                        toastr.success('Record Created.', 'Operation Successful!', {
+                            extendedTimeOut: 1000,
+                            timeOut: 0
+                        });
+                        vm.deleteAllAssoCheckbox = false;
                     }
-                    toastr.clear();
-                    toastr.success('Record Created.', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
-                    vm.deleteAllAssoCheckbox = false;
                 }).catch(function(err) {
                     console.error('error in associating the trial: ', err);
                 }).finally(function(done) {
-                    vm.associateTrialBtnDisabled = false;
+                    vm.disableBtn = false;
                 });
 
             } // associateTrial
@@ -163,7 +166,6 @@
              */
 
             function deleteTrialAssociations() {
-                console.info('deleteTrialAssociations');
                 if (vm.trialDetailObj.associated_trials.length === 0) {
                     return;
                 }
@@ -173,9 +175,11 @@
                 outerTrial.id = vm.trialDetailObj.id;
                 outerTrial.trial = vm.trialDetailObj;
                 outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
-                vm.deleteBtnDisabled = true;
+                vm.disableBtn = true;
                 PATrialService.upsertTrial(outerTrial).then(function(res) {
-                    if (res.server_response.status === 200) {
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
                         vm.trialDetailObj = res;
                         vm.trialDetailObj.lock_version = res.lock_version;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
@@ -192,8 +196,7 @@
                 }).catch(function(err) {
                     console.error('trial association error: ', err);
                 }).finally(function() {
-                    console.info('trial associations have been updated');
-                    vm.deleteBtnDisabled = true;
+                    vm.disableBtn = false;
                 });
             }
         }
