@@ -226,7 +226,7 @@
             return gridOptions;
         }
 
-        function typeAheadOrgNameSearch(resObj, field) {
+        function typeAheadOrgNameSearch(resObj, field, family) {
 
             var wildcardOrgName = field.indexOf('*') > -1 ? field : '*' + field + '*';
             //search context: 'CTRP', to avoid duplicate names
@@ -235,6 +235,10 @@
                 source_context: 'CTRP',
                 source_status: 'Active'
             };
+
+            if(family && family.length){
+                queryObj['family_name'] = family
+            }
 
             return searchOrgs(queryObj).then(function(res) {
                 //remove duplicates

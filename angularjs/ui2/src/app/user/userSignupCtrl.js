@@ -66,7 +66,7 @@
         };
 
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.userObj.local_user, vm.searchParams.org_search_name)
+            return OrgService.typeAheadOrgNameSearch(vm.userObj.local_user, vm.searchParams.org_search_name);
         };
 
         vm.updateUser = function () {

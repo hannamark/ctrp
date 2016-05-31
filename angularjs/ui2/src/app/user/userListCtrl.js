@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService'];
 
-    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS ) {
+    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService) {
 
         var vm = this;
         vm.curUser = userDetailObj;
@@ -36,7 +36,7 @@
 
 
         var optionOrg = {
-            name: 'user_organization_name',
+            name: 'organization_name',
             displayName: 'Organizational Affiliation',
             enableSorting: true,
             minWidth: '100',
@@ -188,6 +188,7 @@
         if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
             vm.searchParams.organization_family_id = vm.curUser.family_orgs[0] ? vm.curUser.family_orgs[0].id : '';
             vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
+            vm.searchParams.organization_family = vm.searchOrganizationFamily;
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionRole, optionEmail, optionPhone);
@@ -240,6 +241,10 @@
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
+        vm.typeAheadParams = {};
+        vm.typeAheadNameSearch = function () {
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchParams.organization_family);
+        };
 
         /****************************** implementations **************************/
 

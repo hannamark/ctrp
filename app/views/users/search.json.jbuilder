@@ -7,7 +7,7 @@ json.users do
       json.url user_url(user, format: :json)
       org_family_name = ''
       if user.organization.present?
-        json.user_organization_name user.organization.name
+        json.organization_name user.organization.name
         json.families do
           json.array!(user.organization.families) do |family|
             json.extract! family, :id, :name
@@ -26,7 +26,7 @@ json.users do
       json.extract! user, :username, :first_name, :last_name
       json.url user_url(user, format: :json)
       if user.organization.present?
-        json.user_organization_name user.organization.name
+        json.organization_name user.organization.name
       end
     end
   end

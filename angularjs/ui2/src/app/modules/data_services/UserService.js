@@ -363,7 +363,7 @@
                             'id': user.id,
                             'col1': user.last_name + ', ' + user.first_name,
                             'col2': user.email,
-                            'col3': user.user_organization_name
+                            'col3': user.organization_name
                         });
                     }
                 });
