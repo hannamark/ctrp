@@ -23,6 +23,7 @@
             'USER_GSA': '/ctrp/users/gsa',
             'SEARCH_USER': '/ctrp/users/search.json',
             'USER_LIST': '/ctrp/users.json',
+            'USER_STATUSES': 'users/user_statuses',
             'USER_TRIALS': '/ctrp/trial_ownerships/search.json',
             'USER_TRIALS_END': '/ctrp/trial_ownerships/end.json',
             'USER_TRIALS_TRANSFER': '/ctrp/trial_ownerships/transfer.json',

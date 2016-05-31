@@ -27,7 +27,6 @@
                 email: '',
                 phone: '',
                 approved: '',
-                user_status_id: '',
                 rows: 25,
                 sort: vm.registeredUsersPage ? 'last_name' : 'username',
                 order: 'asc',
@@ -176,7 +175,7 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
+        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
             vm.statusArr = response.data;
         }).catch(function (err) {
             vm.statusArr = [];
@@ -187,8 +186,7 @@
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
         if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
-            vm.searchParams.organization_id = vm.curUser.organization_id;
-            vm.searchOrganization = vm.curUser.organization.name;
+            vm.searchParams.organization_family_id = vm.curUser.family_orgs[0] ? vm.curUser.family_orgs[0].id : '';
             vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
@@ -229,20 +227,18 @@
                 vm.gridOptions.totalItems =  data.total;
                 $location.hash('users_search_results');
             }).catch(function (err) {
-                console.log('Search Users failed');
+                console.log('Search Users failed: ' + err);
             });
         }; //searchUsers
-        vm.searchUsers();
 
         vm.resetSearch = function () {
             vm.searchParams = new SearchParams;
             vm.gridOptions.data.length = 0;
             vm.gridOptions.totalItems = null;
 
-            Object.keys(vm.searchParams).forEach(function (key, index) {
+            Object.keys(vm.searchParams).forEach(function (key) {
                 vm.searchParams[key] = '';
             });
-            vm.searchUsers();
         }; //resetSearch
 
         /****************************** implementations **************************/

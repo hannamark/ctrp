@@ -25,37 +25,31 @@ And the following fields will be will displayed for each trial
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
 |Submitted On|
-|Submission Date Plus 10 Business Days|
 |Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
-|Business Days Since Submitted|
-|Business Days on Hold (CTRP)|
-|Business Days on Hold (Submitter)|
-|Current On-Hold Date|
 |Accepted|
+|Current On-Hold Date|
 |Admin Abstraction Completed|
 |Admin QC Completed|
 |Scientific Abstraction Completed|
 |Scientific QC Completed|
-|Ready for TSR|
 |Checked Out By (Userid and check out i.e. smithj AD/SC)|
+|Ready for TSR|
+|Business Days Since Submitted|
 And the default sort order is by NCI Trial id ordered from newest ID to oldest
 And the following columns can be sorted
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
 |Submitted On|
-|Submission Date Plus 10 Business Days|
 |Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
-|Business Days Since Submitted|
-|Business Days on Hold (CTRP)|
-|Business Days on Hold (Submitter)|
-|Current On-Hold Date|
 |Accepted|
+|Current On-Hold Date|
 |Admin Abstraction Completed|
 |Admin QC Completed|
 |Scientific Abstraction Completed|
 |Scientific QC Completed|
-|Ready for TSR|
 |Checked Out By (Userid and check out i.e. smithj AD/SC)|
+|Ready for TSR|
+|Business Days Since Submitted|
 
 Scenario: #2 I can view trail details - Validate
 Given I am logged into the CTRP Protocol Abstraction application
@@ -82,19 +76,19 @@ And will includ the following fields:
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
 |Submitted On|
-|Submission Date Plus 10 Business Days|
 |Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
-|Business Days Since Submitted|
-|Business Days on Hold (CTRP)|
-|Business Days on Hold (Submitter)|
-|Current On-Hold Date|
 |Accepted|
+|Current On-Hold Date|
 |Admin Abstraction Completed|
 |Admin QC Completed|
 |Scientific Abstraction Completed|
 |Scientific QC Completed|
-|Ready for TSR|
+|Submission Date Plus 10 Business Days|
 |Checked Out By|
+|Ready for TSR|
+|Business Days Since Submitted|
+|Business Days on Hold (CTRP)|
+|Business Days on Hold (Submitter)|
 |Lead Organization|
 |Lead Org PO ID|
 |ClinicalTrials.gov Identifier|
@@ -115,7 +109,7 @@ And will includ the following fields:
 |Admin Check out Date (for admin checkout name)|
 |Scientific Check out Name|
 |Scientific Check out Date (for Scientific checkout name)|
-|CTEP/DCP|*
+|NIH/NCI Div/Dept Identifier|
 |Submitting Organization|
 |Submission Date|
 |Last Milestone|
@@ -124,7 +118,7 @@ And will includ the following fields:
 |Submission Method|
 |Processing Priority|
 |Trial Processing Comments|
-|This Trial is (LOV based on processing status, information source, Submission # and Milestone (list below))|*
+|This Trial is (LOV based on processing status, information source, Submission # and Milestone (list below))|
 |Submission Received Date|
 |Submission Received Date Added By|
 |Submission Received Date Added On|
@@ -167,7 +161,6 @@ And will includ the following fields:
 |Late Rejection Date|
 |Late Rejection Date Added By|
 |Late Rejection Date Added On|
-
 
 
 Scenario: #5 Logic for This Trial is Field

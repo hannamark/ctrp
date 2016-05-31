@@ -159,7 +159,6 @@ end
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
     @users = @users.matches_wc('user_organization_name', params[:user_organization_name])  if params[:user_organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-    @users = @users.matches_wc('user_organization_name', '*')
     @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "username ASC")
     unless params[:rows].nil?
       @users = @users.page(params[:start]).per(params[:rows])

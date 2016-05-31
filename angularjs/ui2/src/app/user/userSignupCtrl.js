@@ -65,33 +65,9 @@
             vm.userObj.local_user.selected_function = '';
         };
 
-        vm.searchParams = OrgService.getInitialOrgSearchParams();
-
         vm.typeAheadNameSearch = function () {
-            var wildcardOrgName = vm.searchParams.name.indexOf('*') > -1 ? vm.searchParams.name : '*' + vm.searchParams.name + '*';
-            //search context: 'CTRP', to avoid duplicate names
-            var queryObj = {
-                name: wildcardOrgName,
-                source_context: 'CTRP',
-                source_status: 'Active'
-            };
-
-            return OrgService.searchOrgs(queryObj).then(function(res) {
-                //remove duplicates
-                var uniqueNames = [];
-                var orgNames = [];
-                
-                orgNames = res.orgs.map(function (org) {
-                    vm.userObj.local_user.organization_id = org.id;
-                    vm.userObj.local_user.organization_name = org.name;
-                    return org.name;
-                });
-
-                return uniqueNames = orgNames.filter(function (name) {
-                    return uniqueNames.indexOf(name) === -1;
-                });
-            });
-        }; //typeAheadNameSearch
+            return OrgService.typeAheadOrgNameSearch(vm.userObj.local_user, vm.searchParams.org_search_name)
+        };
 
         vm.updateUser = function () {
             UserService.upsertUserSignup(vm.userObj);

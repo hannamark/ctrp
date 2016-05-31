@@ -134,7 +134,8 @@
             initSelectedOrg: initSelectedOrg,
             curateOrg: curateOrg,
             findContextId: findContextId,
-            checkUniqueOrganization: checkUniqueOrganization
+            checkUniqueOrganization: checkUniqueOrganization,
+            typeAheadOrgNameSearch: typeAheadOrgNameSearch
         };
 
         return services;
@@ -225,8 +226,32 @@
             return gridOptions;
         }
 
+        function typeAheadOrgNameSearch(resObj, field) {
 
+            var wildcardOrgName = field.indexOf('*') > -1 ? field : '*' + field + '*';
+            //search context: 'CTRP', to avoid duplicate names
+            var queryObj = {
+                name: wildcardOrgName,
+                source_context: 'CTRP',
+                source_status: 'Active'
+            };
 
+            return searchOrgs(queryObj).then(function(res) {
+                //remove duplicates
+                var uniqueNames = [];
+                var orgNames = [];
+
+                orgNames = res.orgs.map(function (org) {
+                    resObj.organization_id = org.id;
+                    resObj.organization_name = org.name;
+                    return org.name;
+                });
+
+                return uniqueNames = orgNames.filter(function (name) {
+                    return uniqueNames.indexOf(name) === -1;
+                });
+            });
+        }
 
         /**
          * Return a watcher for the selected country name
