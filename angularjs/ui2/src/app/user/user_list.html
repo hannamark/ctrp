@@ -51,11 +51,8 @@
                         <!-- Organization Name-->
                         <div class="form-group">
                             <label for=user_organization_name" class="control-label col-sm-5">Organization Name:</label>
-                            <div class="col-sm-7" ng-if="!userView.searchOrganization">
+                            <div class="col-sm-7">
                                 <input type="text" id="user_organization_name" class="form-control input-sm" placeholder="Organization Name" ng-model="userView.searchParams.user_organization_name" auto-focus/>
-                            </div>
-                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganization">
-                                {{userView.searchOrganization}}
                             </div>
                         </div>
                         <!-- Organization Name ends -->

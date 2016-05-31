@@ -18,9 +18,9 @@ json.users do
       json.admin_role user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN'? 'Yes': 'No'
       json.organization_family_name org_family_name.chomp(',')
       if user.receive_email_notifications then
-        json.receive_email_notifications "ON"
+        json.receive_email_notifications "Yes"
       else
-        json.receive_email_notifications user.receive_email_notifications === false ? "OFF" : "Not Set"
+        json.receive_email_notifications user.receive_email_notifications === false ? "No" : ""
       end
     else
       json.extract! user, :username, :first_name, :last_name

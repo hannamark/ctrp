@@ -1101,11 +1101,12 @@
         }
 
 
-        function createTransferTrialsOwnership(controller, trialIdArr) {
+        function createTransferTrialsOwnership(controller, userIdArr) {
             searchTrials({
                 'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id,
                 'family_users': true,
                 'protocol_id':'*',
+                'internal_sources': [{'code':'PRO'}],
                 'searchType': 'All Trials'
             }).then(function (data) {
                 if (controller.showAddTrialsModal === false) {

@@ -272,6 +272,7 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
+      @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.with_owner(@current_user.username) if params[:searchType] == 'My Trials'
