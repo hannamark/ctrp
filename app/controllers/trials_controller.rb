@@ -272,6 +272,15 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
+      if  params[:no_nih_nci_prog].present?
+        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
+      end
+      if  params[:organization_id].present?
+        familyOrganizations = FamilyMembership.where(
+            family_id: FamilyMembership.where(organization_id: params[:organization_id])[0].family_id
+        ).pluck(:organization_id)
+        @trials =  @trials.where(lead_org_id: familyOrganizations) unless @trials.blank?
+      end
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?

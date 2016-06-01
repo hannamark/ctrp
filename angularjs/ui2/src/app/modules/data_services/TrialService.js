@@ -1104,10 +1104,10 @@
         function createTransferTrialsOwnership(controller, userIdArr) {
             searchTrials({
                 'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id,
-                'family_users': true,
                 'protocol_id':'*',
                 'internal_sources': [{'code':'PRO'}],
-                'searchType': 'All Trials'
+                'searchType': 'All Trials',
+                'no_nih_nci_prog': true
             }).then(function (data) {
                 if (controller.showAddTrialsModal === false) {
                     controller.showAddTrialsModal = true;
@@ -1125,6 +1125,8 @@
                     selectedItems: [],
                     openModal: controller.showAddTrialsModal,
                     showSave: controller.showAddTrialsModal,
+                    confirmMessage: controller.userDetails ? 'You have selected to add ownership of the Selected Trial(s) above, to ' + controller.userDetails.last_name + ', '
+                                + controller.userDetails.first_name + ' (' + controller.userDetails.username + ')' + '.':'',
                     close: function () {
                         controller.showAddTrialsModal = false;
                     },
@@ -1134,6 +1136,17 @@
                     },
                     save: function () {
                         controller.showAddTrialsModal = false;
+                        var searchParams = {
+                            user_ids: [controller.userDetails.id],
+                            trial_ids: _.chain(controller.trialOptions.selectedItems).pluck('id').value()
+                        };
+
+                        PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
+                            .then(function (data) {
+                            if(data.results === 'success') {
+                                controller.getUserTrials();
+                            }
+                        });
                     }
                 };
                 _.each(data.trials, function (trial) {

@@ -317,7 +317,8 @@
                     items: [],
                     selectedItems: [],
                     openModal: controller.showTransferTrialsModal,
-                    showSave: trialIdArr && trialIdArr.length,
+                    showSave: controller.showTransferTrialsModal,
+                    confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
                     close: function () {
                         controller.showTransferTrialsModal = false;
                     },

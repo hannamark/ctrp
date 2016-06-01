@@ -56,7 +56,7 @@
                 ctrp-confirm ctrp-click="options.save(); options.close()"
                 ng-attr-confirm-off="false"
                 ng-if="options.type === 'users'"
-                confirm-msg="You have selected to transfer ownership of the trials to the Selected User(s) above."> <i class="glyphicon glyphicon-ok"></i>  Save
+                confirm-msg="{{options.confirmMessage}}"> <i class="glyphicon glyphicon-ok"></i>  Save
         </button>
 
         <button type="button" class="btn btn-warning pull-right" ng-click="searchTerm = ''; options.reset()">

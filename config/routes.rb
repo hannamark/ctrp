@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 
     resources :trial_ownerships do
       collection do
+        post 'add'
         post 'search'
         post 'transfer'
         post 'end'
