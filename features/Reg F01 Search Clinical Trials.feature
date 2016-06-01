@@ -36,12 +36,12 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |On-Hold Reason|
 
   
-  Scenario: #1a I can search for my clinical trials registered in CTRP where I am not listed as a Trial Owner
+   Scenario: #1a I can search for my clinical trials registered in CTRP where my Org is listed as participating site
   Given I am logged into the CTRP Registration application
   And I am on the Search Clinical Trials Screen
   And I know the search Parameters of trial
   When I select the option to search "My Trials"
-  Then CTRP will display imported trials where my participating site was registered 
+  Then CTRP will display imported trials where my affiliated org is registered as participating site 
   
 
 Scenario: #2 I can search all clinical trials registered in CTRP
