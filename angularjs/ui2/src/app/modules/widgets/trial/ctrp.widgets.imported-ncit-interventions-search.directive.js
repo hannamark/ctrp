@@ -62,7 +62,8 @@
                  res.server_response = null;
                  vm.searchResults = res;
                  vm.gridOptions.data = res.data;
-                 console.info('search results: ', res.data);
+                 vm.gridApi.core.refresh();
+                 // console.info('search results: ', res.data);
                  vm.gridOptions.totalItems = res.total;
               }).catch(function(err) {
                   console.error('err in the lookup: ', err);
@@ -104,6 +105,7 @@
                       vm.searchParams.rows = pageSize;
                       lookupInterventions(vm.searchParams);
                   });
+                  vm.gridApi.core.refresh();
 
                   gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
                   gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
