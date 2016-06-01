@@ -161,6 +161,15 @@
                       cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>'
                   },
                   {
+                      name:'c_code',
+                      headerName: 'C\-Code',
+                      width:'7%',
+                      enableSorting: true,
+                      enableFiltering: true,
+                      sort: {direction: 'asc', priority: 1},
+                      cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                  },
+                  {
                       name:'synonyms',
                       headerName: 'Other Names',
                       width:'35%',
