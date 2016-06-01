@@ -155,13 +155,30 @@ end
     @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present?
     @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present?
     @users = @users.matches_wc('email', params[:email]) if params[:email].present?
-    @users = @users.matches_wc('role', 'ROLE_SITE-SU')  if params[:site_admin].present?
+    @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil?
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
     @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
-    @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "username ASC")
+    if (sortBy != 'admin_role')
+      @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC")
+    else
+      temp0 = []
+      temp1 = []
+      @users.each do |user|
+        if user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR'
+          temp0.push(user)
+        else
+          temp1.push(user)
+        end
+      end
+      if params[:order].upcase == 'DESC'
+        @users = (temp0 + temp1)
+      else
+        @users = (temp1 + temp0)
+      end
+    end
     unless params[:rows].nil?
-      @users = @users.page(params[:start]).per(params[:rows])
+      @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows])
     end
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users

@@ -610,6 +610,11 @@ form.width-normal {
     color: #444;
 }
 
+.control-label.radio-line {
+    padding-right: 10px;
+    font-weight: normal;
+}
+
 .control-label.left {
     text-align: left;
 }
