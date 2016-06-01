@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601140105) do
+ActiveRecord::Schema.define(version: 20160601162210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -691,6 +691,7 @@ ActiveRecord::Schema.define(version: 20160601140105) do
     t.string   "c_code"
   end
 
+  add_index "ncit_interventions", ["c_code"], name: "index_ncit_interventions_on_c_code", using: :btree
   add_index "ncit_interventions", ["ncit_status_id"], name: "index_ncit_interventions_on_ncit_status_id", using: :btree
   add_index "ncit_interventions", ["preferred_name"], name: "index_ncit_interventions_on_preferred_name", using: :btree
 
