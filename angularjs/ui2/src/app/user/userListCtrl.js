@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService'];
 
-    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS ) {
+    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService) {
 
         var vm = this;
         vm.curUser = userDetailObj;
@@ -27,17 +27,14 @@
                 email: '',
                 phone: '',
                 approved: '',
-                user_status_id: '',
                 rows: 25,
-                sort: vm.registeredUsersPage ? 'last_name' : 'username',
-                order: 'asc',
                 start: 1
             }
         }; //initial User Search Parameters
 
 
         var optionOrg = {
-            name: 'user_organization_name',
+            name: 'organization_name',
             displayName: 'Organizational Affiliation',
             enableSorting: true,
             minWidth: '100',
@@ -57,7 +54,7 @@
         var optionRole = {
             name: 'admin_role',
             displayName: 'Site Administrator Privileges',
-            enableSorting: false,
+            enableSorting: true,
             width: '110'
         };
 
@@ -176,7 +173,7 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
+        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
             vm.statusArr = response.data;
         }).catch(function (err) {
             vm.statusArr = [];
@@ -189,9 +186,10 @@
         if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
             vm.searchParams.organization_family_id = vm.curUser.family_orgs[0] ? vm.curUser.family_orgs[0].id : '';
             vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
+            vm.searchParams.organization_family = vm.searchOrganizationFamily;
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionRole, optionEmail, optionPhone);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone);
         } else if (!vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (vm.registeredUsersPage) {
@@ -205,6 +203,7 @@
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
+                vm.searchUsers();
             });
         };
         vm.gridOptions.exporterAllDataFn = function () {
@@ -240,6 +239,10 @@
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
+        vm.typeAheadParams = {};
+        vm.typeAheadNameSearch = function () {
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchParams.organization_family);
+        };
 
         /****************************** implementations **************************/
 

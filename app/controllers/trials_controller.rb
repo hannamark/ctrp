@@ -218,8 +218,8 @@ class TrialsController < ApplicationController
   # search interventions table against the 'name' field
   def search_ctrp_interventions
     @intervention = nil
-    if params[:intervention_name].present?
-      @intervention = Intervention.find_by_name(params[:intervention_name]) # first match
+    if params[:c_code].present?
+      @intervention = Intervention.find_by_c_code(params[:c_code]) # first match
     end
 
     respond_to do |format|
@@ -393,20 +393,7 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
-      if params[:org].present?
-        if params[:org_type] == 'Lead Organization'
-          @trials = @trials.with_lead_org(params[:org])
-        elsif params[:org_type] == 'Sponsor'
-          @trials = @trials.with_sponsor(params[:org])
-        elsif params[:org_type] == 'Participating Sites'
-          # TODO handle wildcard
-          #if params[:org] != "*"
-          #  @trials = @trials.select{|trial| trial.participating_sites.by_value(params[:org])}
-          #end
-        else
-          @trials = @trials.with_any_org(params[:org])
-        end
-      end
+      @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
@@ -692,7 +679,7 @@ class TrialsController < ApplicationController
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document,:deleted_by,:deletion_date, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
-                                  interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :_destroy],
+                                  interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :c_code, :_destroy],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:index,:label,:description,:_destroy],

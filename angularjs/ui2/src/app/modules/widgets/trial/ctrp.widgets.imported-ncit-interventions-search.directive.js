@@ -62,6 +62,8 @@
                  res.server_response = null;
                  vm.searchResults = res;
                  vm.gridOptions.data = res.data;
+                 vm.gridApi.core.refresh();
+                 // console.info('search results: ', res.data);
                  vm.gridOptions.totalItems = res.total;
               }).catch(function(err) {
                   console.error('err in the lookup: ', err);
@@ -103,6 +105,7 @@
                       vm.searchParams.rows = pageSize;
                       lookupInterventions(vm.searchParams);
                   });
+                  vm.gridApi.core.refresh();
 
                   gridApi.selection.on.rowSelectionChanged($scope, rowSelectionCallBack);
                   gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
@@ -154,6 +157,15 @@
                       name:'preferred_name',
                       headerName: 'Preferred Name',
                       width:'20%',
+                      enableSorting: true,
+                      enableFiltering: true,
+                      sort: {direction: 'asc', priority: 1},
+                      cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                  },
+                  {
+                      name:'c_code',
+                      headerName: 'C\-Code',
+                      width:'7%',
                       enableSorting: true,
                       enableFiltering: true,
                       sort: {direction: 'asc', priority: 1},

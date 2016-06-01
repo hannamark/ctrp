@@ -223,23 +223,23 @@ class Trial < TrialBase
   accepts_nested_attributes_for :onholds, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
-  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
+  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
 
   before_create :save_history
   before_create :save_internal_source
@@ -604,7 +604,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'TSR'
-      if !is_last_milestone?(submission_id, 'RTS')
+      rts = Milestone.find_by_code('RTS')
+      if rts.present? && !contains_milestone?(submission_id, rts.id)
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
       if ['SUB', 'AMS', 'ACC', 'REJ'].include?(current_process_status_code(submission_id))
@@ -617,7 +618,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'STS'
-      if !is_last_milestone?(submission_id, 'TSR')
+      tsr = Milestone.find_by_code('TSR')
+      if tsr.present? && !contains_milestone?(submission_id, tsr.id)
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
       end
     elsif milestone_to_add.code == 'IAV'
@@ -1132,7 +1134,7 @@ class Trial < TrialBase
 
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
-    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = participating_sites.organization_id"
     where_clause = ""
     conditions = []
 
@@ -1143,11 +1145,14 @@ class Trial < TrialBase
           where_clause += "lead_orgs.name ilike ?"
         elsif e == 'Sponsor'
           where_clause += "sponsors.name ilike ?"
+        elsif e == 'Participating Site'
+          where_clause += "sites.name ilike ?"
         end
         conditions.push(value_exp)
       }
     else
-      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR sites.name ilike ?"
+      conditions.push(value_exp)
       conditions.push(value_exp)
       conditions.push(value_exp)
     end
