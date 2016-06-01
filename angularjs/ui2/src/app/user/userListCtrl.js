@@ -28,8 +28,6 @@
                 phone: '',
                 approved: '',
                 rows: 25,
-                sort: vm.registeredUsersPage ? 'last_name' : 'username',
-                order: 'asc',
                 start: 1
             }
         }; //initial User Search Parameters
@@ -56,7 +54,7 @@
         var optionRole = {
             name: 'admin_role',
             displayName: 'Site Administrator Privileges',
-            enableSorting: false,
+            enableSorting: true,
             width: '110'
         };
 
@@ -191,7 +189,7 @@
             vm.searchParams.organization_family = vm.searchOrganizationFamily;
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionRole, optionEmail, optionPhone);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone);
         } else if (!vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (vm.registeredUsersPage) {
