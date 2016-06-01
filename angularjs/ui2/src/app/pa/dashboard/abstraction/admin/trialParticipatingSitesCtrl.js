@@ -279,6 +279,8 @@
                 vm.addEditMode = true;
                 vm.tabIndex = 0;
                 $scope.ps_sites_form.$setPristine();
+                $scope.ps_inv_form.$setPristine();
+                $scope.ps_contact_form.$setPristine();
             }
 
             vm.currentParticipatingSite = {
@@ -339,6 +341,10 @@
                     });
                 }
             });
+
+            $scope.ps_sites_form.$setPristine();
+            $scope.ps_inv_form.$setPristine();
+            $scope.ps_contact_form.$setPristine();
         }
 
         vm.initSiteRecruitmentGrid = function (){

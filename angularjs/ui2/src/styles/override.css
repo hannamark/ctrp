@@ -1458,3 +1458,7 @@ div[disabled] {
 .reg-users-details label {
     padding-left: 0;
 }
+
+.has-error .form-control.no-validate {
+    border-color: #CCC;
+}
