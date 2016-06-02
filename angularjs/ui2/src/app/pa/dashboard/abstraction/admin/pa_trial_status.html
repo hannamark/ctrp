@@ -55,9 +55,10 @@
                                         </span>
                                     </td>
                                     <td class="col-sm-3">
-                                        <textarea rows="1" id="why_stopped" name="why_stopped" class="form-control input-sm"
-                                            ng-model="trialStatusView.statusObj.why_stopped"
+                                        <textarea class="form-control input-sm" id="why_stopped" name="why_stopped"
+                                            rows="1"
                                             ng-maxlength="160" maxlength="160"
+                                            ng-model="trialStatusView.statusObj.why_stopped"
                                             ng-disabled="!trialStatusView.showWhyStoppedField">
                                         </textarea>
                                         <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">

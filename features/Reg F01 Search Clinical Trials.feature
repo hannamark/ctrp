@@ -129,7 +129,7 @@ When I select one or more trial primary purpose type
       |Screening                |
       |Diagnostic               |
       |Health Services Research |
-      |Basic science            |
+      |Basic Science            |
       |Other                    |
 
 And select a search option
