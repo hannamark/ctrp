@@ -134,12 +134,8 @@ end
     end
     @users = User.all
 
-    if params[:organization_id].present? && params[:family_users]
-      currentFamilyMemberships =  Organization.find(params[:organization_id]).family_memberships
-      currentFamily =  Organization.find(params[:organization_id]).family_memberships[0] if currentFamilyMemberships.present?
-      currentFamilyId =  Organization.find(params[:organization_id]).family_memberships[0].family_id if currentFamily.present?
-      @users = @users.matches_wc('organization_family_id', currentFamilyId) if currentFamilyId.present?
-      @users = @users.matches_wc('organization_id', params[:organization_id]) if !currentFamilyId.present?
+    if params[:family_id].present?
+      @users = @users.matches_wc('organization_family_id', params[:family_id])
     elsif params[:organization_id].present?
       @users = @users.matches_wc('organization_id', params[:organization_id])
     end

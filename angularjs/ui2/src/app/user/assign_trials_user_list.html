@@ -8,13 +8,29 @@
     <div class="col-xs-12 drop-shadow">
         <h4>Assign Trial Ownership</h4>
         <div class="row">
-            <h2>Select Users</h2>
+            <h2>1. Select Family</h2>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <select name="family" id="family"
+                        class="form-control input-sm"
+                        ng-model="trialOwnershipView.family_id"
+                        ng-change="trialOwnershipView.getFamilyTrialsUsers()"
+                        ng-disabled="trialOwnershipView.curUser.role !== 'ROLE_SUPER' && trialOwnershipView.curUser.role !== 'ROLE_ADMIN' && trialOwnershipView.curUser.role !== 'ROLE_ABSTRACTOR'"
+                        ng-options="family.id as family.name for family in trialOwnershipView.families"
+                        required>
+                    <option value="">Select an Organization Family</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" ng-if="trialOwnershipView.family_id">
+            <h2>2. Select Users</h2>
             <ctrptransferselect options="trialOwnershipView.userOptions"> </ctrptransferselect>
-            <hr>
-            <h2>Select Trials</h2>
+        </div>
+        <hr>
+        <div class="row" ng-if="trialOwnershipView.family_id">
+            <h2>3. Select Trials</h2>
             <ctrptransferselect options="trialOwnershipView.trialOptions"> </ctrptransferselect>
         </div>
-        <div class="row btn-toolbar">
+        <div class="row btn-toolbar" ng-if="trialOwnershipView.family_id">
             <button
                     type="button" class="btn btn-primary pull-right ng-isolate-scope"
                     id="save_btn"
