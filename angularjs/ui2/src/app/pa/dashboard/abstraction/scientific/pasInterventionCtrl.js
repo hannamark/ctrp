@@ -24,6 +24,7 @@
             vm.curInterventionObj = {};
             vm.deleteBtnDisabled = true;
             vm.upsertBtnDisabled = true;
+            vm.disableBtn = false;
             vm.sortableListener = {};
             vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
@@ -93,10 +94,12 @@
                 vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
                 vm.deleteBtnDisabled = true;
                 vm.upsertBtnDisabled = true;
+                vm.disableBtn = true;
                 vm.deleteAll = false;
                 PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
-                    // console.info('res after upsert: ', res);
-                    if (res.server_response.status === 200) {
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
                         vm.trialDetailObj = res;
                         PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                         $scope.$emit('updatedInChildScope', {});
@@ -115,6 +118,7 @@
                     console.info('hiding intervention form now!');
                     vm.curInterventionObj = null;
                     vm.showInterventionForm = false; // hide the form
+                    vm.disableBtn = false;
                     // resetLookupForm();
                 });
             }
@@ -194,10 +198,11 @@
 
                 modalInstance.result.then(function(selectedInterventionObj) {
                     // vm.selectedInterventionObj = selectedInterventionObj;
-                    console.info('selected intervention obj: ', selectedInterventionObj);
+                    // console.info('selected intervention obj: ', selectedInterventionObj);
                     vm.curInterventionObj.name = selectedInterventionObj.preferred_name;
                     vm.curInterventionObj.other_name = selectedInterventionObj.synonyms;
-                    vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.description;
+                    vm.curInterventionObj.c_code = selectedInterventionObj.c_code;
+                    vm.curInterventionObj.description = vm.curInterventionObj.description || selectedInterventionObj.definition;
                     vm.curInterventionObj.intervention_type_id = selectedInterventionObj.intervention_type_id || '';
                     vm.isInterventionTypeListEnabled = vm.curInterventionObj.intervention_type_id === '' && isUserAllowedToSelectType;
                     console.info('received vm.curInterventionObj: ', vm.curInterventionObj);
@@ -220,10 +225,11 @@
         };
 
         vm.confirmSelection = function() {
-            var interventionName = vm.selection.preferred_name || '';
+            // var interventionName = vm.selection.preferred_name || '';
+            var interventionCCode = vm.selection.c_code || '';
             // search ctrp interventions for same name, if exists, get its intervention type id for
             // trials to use
-            PATrialService.searchCtrpInterventionsByName(interventionName).then(function(searchResponse) {
+            PATrialService.searchCtrpInterventionsByName(interventionCCode).then(function(searchResponse) {
                 console.info('searchResponse: ', searchResponse);
                 var result = searchResponse.data;
                 if (result !== null) {

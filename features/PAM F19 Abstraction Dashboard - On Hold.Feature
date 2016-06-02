@@ -75,19 +75,19 @@ And will includ the following fields:
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
 |Submitted On|
-|Submission Date Plus 10 Business Days|
 |Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
-|Business Days Since Submitted|
-|Business Days on Hold (CTRP)|
-|Business Days on Hold (Submitter)|
-|Current On-Hold Date|
 |Accepted|
+|Current On-Hold Date|
 |Admin Abstraction Completed|
 |Admin QC Completed|
 |Scientific Abstraction Completed|
 |Scientific QC Completed|
-|Ready for TSR|
+|Submission Date Plus 10 Business Days|
 |Checked Out By|
+|Ready for TSR|
+|Business Days Since Submitted|
+|Business Days on Hold (CTRP)|
+|Business Days on Hold (Submitter)|
 |Lead Organization|
 |Lead Org PO ID|
 |ClinicalTrials.gov Identifier|
@@ -160,7 +160,6 @@ And will includ the following fields:
 |Late Rejection Date|
 |Late Rejection Date Added By|
 |Late Rejection Date Added On|
-
 
 
 Scenario: #6 Logic for This Trial is Field

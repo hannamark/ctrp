@@ -5,15 +5,16 @@
 #  id               :integer          not null, primary key
 #  preferred_name   :string
 #  synonyms         :string
-#  description      :text
+#  definition       :text
+#  ncit_status_id   :integer
 #  type_code        :string
 #  ct_gov_type_code :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  ncit_status_id   :integer
 #
 # Indexes
 #
+#  index_ncit_interventions_on_ncit_status_id  (ncit_status_id)
 #  index_ncit_interventions_on_preferred_name  (preferred_name)
 #
 
@@ -22,13 +23,13 @@
 one:
   preferred_name: MyString
   synonyms: MyString
-  description: MyText
+  definition: MyText
   type_code: MyString
   ct_gov_type_code: MyString
 
 two:
   preferred_name: MyString
   synonyms: MyString
-  description: MyText
+  definition: MyText
   type_code: MyString
   ct_gov_type_code: MyString

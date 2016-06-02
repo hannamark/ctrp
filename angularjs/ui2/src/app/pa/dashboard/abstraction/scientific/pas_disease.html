@@ -11,7 +11,7 @@
                         <input type="text" name="protocol_id" id="protocol_id" class="form-control input-sm" ng-model="diseaseView.searchParams.disease_name" autofocus />
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                        <button type="submit" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn">
+                        <button type="submit" class="btn btn-primary" id="search_btn" ng-disabled="diseaseView.disableBtn || diseaseView.searching">
                             <i class="glyphicon glyphicon-search"></i> Search
                         </button>
                     </div>
@@ -94,7 +94,7 @@
                         <button type="button" class="btn btn-warning pull-right" id="reset_btn" restriction-field ng-disabled="!diseaseView.addedDiseases.length || diseaseView.disableBtn" ng-click="diseaseView.resetDiseases()">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
-                        <button type="button" class="btn btn-warning pull-right" id="back_btn" restriction-field ng-click="diseaseView.setAddMode(false)">
+                        <button type="button" class="btn btn-warning pull-right" id="back_btn" restriction-field ng-click="diseaseView.setAddMode(false)" ng-disabled="diseaseView.disableBtn">
                             <i class="glyphicon glyphicon-arrow-left"></i> Back to Disease List
                         </button>
                     </div>

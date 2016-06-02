@@ -23,6 +23,8 @@ json.deleted_documents do
     json.original             deleted_doc.source_document
     json.deleted_or_revised   deleted_doc.status
     json.updated_at           deleted_doc.updated_at
+    json.deleted_by           deleted_doc.deleted_by
+    json.deletion_date        deleted_doc.deletion_date
 
   end
 

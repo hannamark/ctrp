@@ -152,7 +152,7 @@ class CreateTrialSummaryReportService
     end
 
     file_name = file_name + ".rtf"
-    trial_document_params = {:file => temp_file, :document_type =>"Trial Summary Report", :file_name => file_name,:trial_id => @trial_id}
+    trial_document_params = {:file => temp_file, :document_type =>"TSR", :file_name => file_name,:trial_id => @trial_id}
     td = TrialDocument.new(trial_document_params)
     td.save!
 
@@ -250,8 +250,8 @@ class CreateTrialSummaryReportService
       principle_investigator = nil
     else
       principle_investigator_name = principle_investigator.fname if principle_investigator.fname
-      principle_investigator_name = " " + principle_investigator.mname if principle_investigator.mname
-      principle_investigator_name = " " + principle_investigator.lname if principle_investigator.lname
+      principle_investigator_name = principle_investigator_name + " " + principle_investigator.mname if principle_investigator.mname
+      principle_investigator_name = principle_investigator_name + " " + principle_investigator.lname if principle_investigator.lname
     end
 
 
@@ -259,8 +259,8 @@ class CreateTrialSummaryReportService
       investigator = nil
     else
       investigator_name = investigator.fname if investigator.fname
-      investigator_name = " " + investigator.mname if investigator.mname
-      investigator_name = " " + investigator.lname if investigator.lname
+      investigator_name = investigator_name + " " + investigator.mname if investigator.mname
+      investigator_name = investigator_name + " " + investigator.lname if investigator.lname
     end
 
     h.store("Investigator", investigator_name)
@@ -378,7 +378,6 @@ class CreateTrialSummaryReportService
 
         def generate_regulatory_information_table
 
-          Hash h = Hash.new
           oversight_authorities =@trial.oversight_authorities
           create_a_table_row(@grey,@foreground_th_text_color,"Regulatory Information")
           create_a_table_row(@light_red, nil,"Oversight Authority")
@@ -672,7 +671,7 @@ class CreateTrialSummaryReportService
          array.border_width =10
          i=0
          diseases.each do |col|
-           array[i][0] << col.name
+           array[i][0] << col.display_name
            array[i][0].line_break
            i = i+1
          end
@@ -853,8 +852,8 @@ class CreateTrialSummaryReportService
               investigator = nil
             else
               investigator_name = investigator.fname if investigator.fname
-              investigator_name = " " + investigator.mname if investigator.mname
-              investigator_name = " " + investigator.lname if investigator.lname
+              investigator_name = investigator_name +  " "  + investigator.mname if investigator.mname
+              investigator_name = investigator_name +  " "  + investigator.lname if investigator.lname
             end
             investigator_type = col.investigator_type
             investigator_name = investigator_name + " - " + investigator_type if investigator_type

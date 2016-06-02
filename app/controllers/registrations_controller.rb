@@ -3,6 +3,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(sign_up_params)
+      resource[:user_status_id] = UserStatus.find_by_code('INR').id
       if resource.save
         begin
           mail_template = MailTemplate.find_by_code('USER_REGISTRATION')

@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
                         <!-- username -->
-                        <div class="form-group">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage">
                             <label for="username" class="control-label col-sm-5">Username: </label>
                             <div class="col-sm-7">
                                 <input type="text" id="username" class="form-control input-sm" placeholder="Username" ng-model="userView.searchParams.username" auto-focus/>
@@ -34,7 +34,7 @@
                         <!-- Last Name ends -->
 
                         <!--Status-->
-                        <div class="form-group">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage">
                             <label for="first_name" class="control-label col-sm-5">Status:</label>
                             <div class="col-sm-7" ng-if="!userView.searchStatus">
                                 <select class="form-control input-sm" id="user_status_id" ng-model="userView.searchParams.user_status_id">
@@ -50,19 +50,19 @@
 
                         <!-- Organization Name-->
                         <div class="form-group">
-                            <label for=user_organization_name" class="control-label col-sm-5">Organization Name:</label>
-                            <div class="col-sm-7" ng-if="!userView.searchOrganization">
-                                <input type="text" id="user_organization_name" class="form-control input-sm" placeholder="Organization Name" ng-model="userView.searchParams.user_organization_name" auto-focus/>
-                            </div>
-                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganization">
-                                {{userView.searchOrganization}}
+                            <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
+                                       autocomplete="off" placeholder="Organization Name" ng-model="userView.searchParams.organization_name"
+                                       uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
+                                       typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
                             </div>
                         </div>
                         <!-- Organization Name ends -->
                     </div>
                     <div class="col-xs-12 col-md-6">
                         <!--email-->
-                        <div class="form-group">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage">
                             <label for="email" class="control-label col-sm-5">Email:</label>
                             <div class="col-sm-7">
                                 <input type="text" id="email" class="form-control input-sm" placeholder="email" ng-model="userView.searchParams.email" auto-focus/>
@@ -80,16 +80,18 @@
                         <!-- First Name ends -->
 
                         <!-- Site Admin-->
-                        <div class="form-group">
-                            <label for="site_admin" class="control-label col-sm-5">Site Admin:</label>
+                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                            <label for="site_admin" class="control-label col-sm-5">Site Administrator Privileges:</label>
                             <div class="col-sm-7">
-                                <input type="checkbox" id="site_admin" ng-model="userView.searchParams.site_admin" auto-focus/>
+                                <label class="control-label radio-line">Yes: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="true"/></label>
+                                <label class="control-label radio-line">No: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="false"/></label>
+                                <label class="control-label radio-line">All: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="undefined"/></label>
                             </div>
                         </div>
                         <!-- Site Admin ends -->
 
                         <!-- Organization Family-->
-                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)">
+                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0) && !userView.registeredUsersPage">
                             <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
                             <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
                                 <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" auto-focus/>

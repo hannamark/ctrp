@@ -70,12 +70,12 @@
                 vm.searching = true;
 
                 FamilyService.searchFamilies(vm.searchParams).then(function (data) {
-                    console.log('received search results: ' + JSON.stringify(data.data));
-                    vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
+                    var status = data.status;
 
-                    //console.log('vm grid: ' + JSON.stringify(vm.gridOptions.data));
-                    //console.log('received search results: ' + JSON.stringify(data.data));
-                    vm.gridOptions.totalItems = data.data.total;
+                    if (status >= 200 && status <= 210) {
+                        vm.gridOptions.data = data.data.families; //prepareGridData(data.data.orgs); //data.data.orgs;
+                        vm.gridOptions.totalItems = data.data.total;
+                    }
                 }).catch(function (err) {
                     console.log('search people failed');
                 }).finally(function() {

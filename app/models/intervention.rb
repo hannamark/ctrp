@@ -2,26 +2,24 @@
 #
 # Table name: interventions
 #
-#  id                              :integer          not null, primary key
-#  name                            :string(255)
-#  other_name                      :string(255)
-#  description                     :text
-#  intervention_type_cancer_gov_id :integer
-#  intervention_type_ct_gov_id     :integer
-#  intervention_type_id            :integer
-#  trial_id                        :integer
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
-#  uuid                            :string(255)
-#  lock_version                    :integer          default(0)
-#  index                           :integer
+#  id                   :integer          not null, primary key
+#  name                 :string(255)
+#  other_name           :string(255)
+#  description          :text
+#  intervention_type_id :integer
+#  trial_id             :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  uuid                 :string(255)
+#  lock_version         :integer          default(0)
+#  index                :integer
+#  arms_group_id        :integer
 #
 # Indexes
 #
-#  index_interventions_on_intervention_type_cancer_gov_id  (intervention_type_cancer_gov_id)
-#  index_interventions_on_intervention_type_ct_gov_id      (intervention_type_ct_gov_id)
-#  index_interventions_on_intervention_type_id             (intervention_type_id)
-#  index_interventions_on_trial_id                         (trial_id)
+#  index_interventions_on_arms_group_id         (arms_group_id)
+#  index_interventions_on_intervention_type_id  (intervention_type_id)
+#  index_interventions_on_trial_id              (trial_id)
 #
 
 class Intervention < ActiveRecord::Base
@@ -32,6 +30,7 @@ class Intervention < ActiveRecord::Base
 
   belongs_to :intervention_type
   belongs_to :trial
+  belongs_to :arms_group
 
   after_save :update_intervention_type
 
@@ -39,8 +38,8 @@ class Intervention < ActiveRecord::Base
 
   # update intervention types for all records with the same intervention name if the intervention type changes for this intervention
   def update_intervention_type
-    if self.name_was == self.name and self.intervention_type_id_was != self.intervention_type_id
-      Intervention.where(name: self.name).update_all(intervention_type_id: self.intervention_type_id)
+    if self.c_code_was == self.c_code and self.intervention_type_id_was != self.intervention_type_id
+      Intervention.where(c_code: self.c_code).update_all(intervention_type_id: self.intervention_type_id)
     end
   end
 

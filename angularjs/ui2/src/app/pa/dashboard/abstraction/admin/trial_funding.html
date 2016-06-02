@@ -5,7 +5,7 @@
         </div>
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <legend class="sub-bordered">NCI Grant</legend>
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.grant_question)}">
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <legend class="sub-bordered">Funding Mechanism</legend>
 
                     <div class="col-sm-12">
@@ -153,7 +153,7 @@
                 </fieldset>
                 <div class="form-group no-bottom-margin" ng-if="paTrialOverview.trialDetailObj.pa_editable">
                     <div class="btn-toolbar">
-                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field >
+                        <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="trialDetailView.disableBtn">
                             <i class="glyphicon glyphicon-ok"></i> Save
                         </button>
                         <button type="button" class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" restriction-field ng-disabled="trialDetailView.disableBtn">

@@ -51,24 +51,38 @@ class MilestoneWrapper < TrialBase
   def recording_triggers
     if self.milestone.present?
       if self.milestone.code == 'VPC'
-        MilestoneWrapper.create(milestone: Milestone.find_by_code('RVQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
+        MilestoneWrapper.create(milestone: Milestone.find_by_code('RVQ'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
+      elsif self.milestone.code == 'STR'
+        stm = ProcessingStatus.find_by_code('STM')
+        if self.submission.present? && stm.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: stm, submission: self.submission, trial: self.trial)
+        end
+      elsif self.milestone.code == 'SRE'
+        sre = ProcessingStatus.find_by_code('SRE')
+        if self.submission.present? && sre.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sre, submission: self.submission, trial: self.trial)
+        end
       elsif self.milestone.code == 'APC'
-        MilestoneWrapper.create(milestone: Milestone.find_by_code('RAQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
+        MilestoneWrapper.create(milestone: Milestone.find_by_code('RAQ'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
       elsif self.milestone.code == 'SPC'
-        MilestoneWrapper.create(milestone: Milestone.find_by_code('RSQ'), submission: self.submission, trial: self.trial, created_by: self.created_by)
+        MilestoneWrapper.create(milestone: Milestone.find_by_code('RSQ'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
       elsif self.milestone.code == 'AQC'
         sqc = Milestone.find_by_code('SQC')
         if self.submission.present? && sqc.present? && self.trial.contains_milestone?(self.submission.id, sqc.id)
-          MilestoneWrapper.create(milestone: Milestone.find_by_code('RTS'), submission: self.submission, trial: self.trial, created_by: self.created_by)
+          MilestoneWrapper.create(milestone: Milestone.find_by_code('RTS'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
         end
       elsif self.milestone.code == 'SQC'
         aqc = Milestone.find_by_code('AQC')
         if self.submission.present? && aqc.present? && self.trial.contains_milestone?(self.submission.id, aqc.id)
-          MilestoneWrapper.create(milestone: Milestone.find_by_code('RTS'), submission: self.submission, trial: self.trial, created_by: self.created_by)
+          MilestoneWrapper.create(milestone: Milestone.find_by_code('RTS'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
         end
       elsif self.milestone.code == 'RTS'
         self.trial.verification_date = self.created_at
         self.trial.save
+        abs = ProcessingStatus.find_by_code('ABS')
+        if self.submission.present? && abs.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: abs, submission: self.submission, trial: self.trial)
+        end
       elsif self.milestone.code == 'TSR'
         vfp = ProcessingStatus.find_by_code('VFP')
         if self.submission.present? && vfp.present?

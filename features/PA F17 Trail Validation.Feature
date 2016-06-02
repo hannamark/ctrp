@@ -157,6 +157,15 @@ When I select the Amendment Reason Code from the list:
 |Both|
 Then the selected value for  Amendment Reason Code will be associated with the trial
 
+Scenario: #18a Amendment Reason Code Required 
+Given I have selected a trial for Trail Validation 
+And I am on the Trial Validation (Submission) screen
+And the trial is an amendment 
+Then the Amendment Reason Code must be selected from the list:
+|Administrative|
+|Scientific|
+|Both|
+
 Scenario: #19 Cancel Trial Validation 
 Given I have selected a trial for Trail Validation 
 And I am on the Trial Validation (Submission) screen

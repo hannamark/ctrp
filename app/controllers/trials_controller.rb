@@ -218,8 +218,8 @@ class TrialsController < ApplicationController
   # search interventions table against the 'name' field
   def search_ctrp_interventions
     @intervention = nil
-    if params[:intervention_name].present?
-      @intervention = Intervention.find_by_name(params[:intervention_name]) # first match
+    if params[:c_code].present?
+      @intervention = Intervention.find_by_c_code(params[:c_code]) # first match
     end
 
     respond_to do |format|
@@ -272,6 +272,16 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
+      if  params[:no_nih_nci_prog].present?
+        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
+      end
+      if  params[:organization_id].present?
+        familyOrganizations = FamilyMembership.where(
+            family_id: FamilyMembership.where(organization_id: params[:organization_id])[0].family_id
+        ).pluck(:organization_id)
+        @trials =  @trials.where(lead_org_id: familyOrganizations) unless @trials.blank?
+      end
+      @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.with_owner(@current_user.username) if params[:searchType] == 'My Trials'
@@ -316,7 +326,13 @@ class TrialsController < ApplicationController
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
     result = checkout_message.nil? ? 'Failed' : 'Success'
-    TrialCheckoutLog.create(trial: @trial, abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    if checkout_type == "scientificadmin"
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: 'admin', category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: 'scientific', category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    else
+      TrialCheckoutLog.create(trial: @trial, abstraction_type: checkout_type, category: 'Checkout', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user)
+    end
+
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkout_message => checkout_message} }
@@ -351,7 +367,13 @@ class TrialsController < ApplicationController
     user_fullname = "#{@current_user.first_name} #{@current_user.last_name}"
     user_fullname.strip!
     result = checkin_message.nil? ? 'Failed' : 'Success'
-    TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user_id: @current_user.id, checkin_comment: checkin_comment)
+    if checkin_type == "scientificadmin"
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: 'admin', category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type:  'scientific', category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+    else
+      TrialCheckoutLog.create(trial_id: params[:trial_id], abstraction_type: checkin_type, category: 'Checkin', username: @current_user.username, full_name: user_fullname, result: result, user: @current_user, checkin_comment: checkin_comment)
+    end
+
 
     respond_to do |format|
       format.json { render :json => {:result => @trial, :checkin_message => checkin_message} }
@@ -368,7 +390,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
+    if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present? || params[:internal_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
@@ -380,21 +402,9 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
-      if params[:org].present?
-        if params[:org_type] == 'Lead Organization'
-          @trials = @trials.with_lead_org(params[:org])
-        elsif params[:org_type] == 'Sponsor'
-          @trials = @trials.with_sponsor(params[:org])
-        elsif params[:org_type] == 'Participating Sites'
-          # TODO handle wildcard
-          #if params[:org] != "*"
-          #  @trials = @trials.select{|trial| trial.participating_sites.by_value(params[:org])}
-          #end
-        else
-          @trials = @trials.with_any_org(params[:org])
-        end
-      end
+      @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
+      @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       # PA fields
@@ -677,8 +687,8 @@ class TrialsController < ApplicationController
                                                         :nih_nci, :expanded_access, :expanded_access_type_id, :exempt, :_destroy],
                                   oversight_authorities_attributes: [:id, :country, :organization, :_destroy],
                                   associated_trials_attributes: [:id, :trial_identifier, :identifier_type_id, :trial_id, :official_title, :research_category_name, :_destroy],
-                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
-                                  interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :_destroy],
+                                  trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document,:deleted_by,:deletion_date, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
+                                  interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :c_code, :_destroy],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
                                   submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
                                   sub_groups_attributes:[:id,:index,:label,:description,:_destroy],

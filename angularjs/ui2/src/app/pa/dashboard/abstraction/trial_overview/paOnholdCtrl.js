@@ -21,7 +21,6 @@
             vm.addMode = mode;
             if (mode) {
                 vm.onhold_date = DateService.today();
-                vm.onhold_date = DateService.convertISODateToLocaleDateStr(vm.onhold_date);
             } else {
                 $scope.onhold_form.$setPristine();
                 vm.onhold_id = null;
@@ -105,7 +104,7 @@
             TrialService.upsertTrial(outerTrial).then(function (response) {
                 var status = response.server_response.status;
 
-                if (status === 200) {
+                if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.onhold', {}, {reload: true});
                     toastr.success('On hold has been recorded', 'Operation Successful!');
                 }
@@ -122,7 +121,6 @@
 
         function activate() {
             showHideAddBtn();
-            convertDate();
         }
 
         function showHideAddBtn() {
@@ -133,17 +131,6 @@
                 }
             }
             vm.showAddBtn = true;
-        }
-
-        function convertDate() {
-            angular.forEach(vm.curTrial.onholds, function (onhold) {
-                if (onhold.onhold_date) {
-                    onhold.onhold_date = DateService.convertISODateToLocaleDateStr(onhold.onhold_date);
-                }
-                if (onhold.offhold_date) {
-                    onhold.offhold_date = DateService.convertISODateToLocaleDateStr(onhold.offhold_date);
-                }
-            });
         }
     } //paOnholdCtrl
 })();

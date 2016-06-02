@@ -21,7 +21,7 @@ json.trial_versions do
 
     internal_source_id = Trial.find_by_id(submission.trial_id).internal_source_id
 
-    if !internal_source_id.nil? && internal_source_id == InternalSource.find_by_name("CTRP").id
+    if !internal_source_id.nil? && internal_source_id == InternalSource.find_by_name("Protocol").id
 
       other_ids = TrialVersion.where("item_type = ? AND transaction_id = ?  ", "OtherId",submission_version.transaction_id) if submission_version
 

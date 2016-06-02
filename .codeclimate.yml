@@ -21,8 +21,10 @@ ratings:
   - "**.css"
   - "**.html"
 exclude_paths:
-- "test/*"
-- "tests/*"
+- "test/**/*"
+- "tests/**/*"
 - "config.js"
 - "features/*.feature"
 - "app/models/ability.rb"
+- "log/**/*"
+- "ETL/**/*"

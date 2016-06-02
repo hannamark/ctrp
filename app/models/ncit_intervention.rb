@@ -5,15 +5,16 @@
 #  id               :integer          not null, primary key
 #  preferred_name   :string
 #  synonyms         :string
-#  description      :text
+#  definition       :text
+#  ncit_status_id   :integer
 #  type_code        :string
 #  ct_gov_type_code :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  ncit_status_id   :integer
 #
 # Indexes
 #
+#  index_ncit_interventions_on_ncit_status_id  (ncit_status_id)
 #  index_ncit_interventions_on_preferred_name  (preferred_name)
 #
 
@@ -42,12 +43,16 @@ class NcitIntervention < ActiveRecord::Base
         Zip::File.open("../../storage/ncit_interventions/#{file_name}") do |zipfile|
           zipfile.each do |entry|
             xml = Nokogiri::XML(entry.get_input_stream.read)
-
+            
             # Search for label as preferred name
+            i = 0
             xml.xpath('//owl:Class[@rdf:about]').each do |node|
               # extract preferred_name and synonyms
               name = node.xpath('rdfs:label').text
-              if !NcitIntervention.exists?(preferred_name: name) # no duplicate preferred_name
+
+              c_code = node.css('code')
+              c_code = c_code.present? ? c_code.text : nil
+              if !NcitIntervention.exists?(c_code: c_code) # no duplicate c_code
                 synonyms = ''
                 node.css('P90').xpath('ncicp:ComplexTerm/ncicp:term-name').each do |synonym|
                   synonyms += "; #{synonym.text}"  # concatenate each synonym
@@ -55,8 +60,16 @@ class NcitIntervention < ActiveRecord::Base
                 synonyms = synonyms.sub(';', '') # remove the first semi-colon
                 # intervention_type_code = intervention_types.sample # generate a random intervention type code
                 #p "about to save ncit intervention, name: #{name}, synonyms: #{synonyms}" # , type_code: #{intervention_type_code}
-               # p "NcitIntervention.create(preferred_name: #{name}, synonyms: #{synonyms}, description: #{nil}, type_code: #{nil}, ct_gov_type_code: #{nil}, ncit_status: #{act})"
-                NcitIntervention.create(preferred_name: name, synonyms: synonyms, description: nil, type_code: nil, ct_gov_type_code: nil, ncit_status: act)
+
+                ## extract the definition field
+                definition = node.css('P97').xpath('ncicp:ComplexDefinition/ncicp:def-definition')
+                definition = definition.present? ? definition.text : nil
+                if i < 50
+                  p "NcitIntervention.create(preferred_name: \"#{name}\", synonyms: \"#{synonyms}\", definition: \"#{definition}\", type_code: \"nil\", ct_gov_type_code: \"nil\", ncit_status: #{act.id}, c_code: \"#{c_code}\")"
+                  i += 1
+                end
+
+                # NcitIntervention.create(preferred_name: name, synonyms: synonyms, definition: definition, type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: c_code)
               end
 
             end
