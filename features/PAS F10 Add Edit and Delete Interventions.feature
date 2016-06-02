@@ -1,7 +1,7 @@
  @PA @Global
   
   Feature:  PAS F10 Add, Edit and Delete Interventions
-As a CTRP Scientific Abstractor, I can add, Edit and Delete Trial Interventions 
+As a CTRP Abstractor, I can add, Edit and Delete Trial Interventions 
 
 Scenario: #1 I can add Trial Interventions
 Given I am logged into the CTRP Protocol Abstraction application
@@ -27,6 +27,7 @@ Then the Add Intervention screen displays
 And the selected intervention name will be populated in the Intervention name field
 And I have entered the Intervention Description in the provided box
 And other names will be populated in the other Names field
+And the <InterventionType> is identified by the NCIt C-CODE for the selected Intervention
 When the <InterventionType> is not null
 Then the <InterventionType> will be populated 
       |InterventionType|
@@ -99,7 +100,7 @@ Scenario: #3 Intervention Desciption field Characters Rule
      When I click on the save button
      Then the changes made will be saved to the selected Intervention
      
-      Scenario:#7 Intervention fields Edition rules
+      Scenario:#7 Intervention Type field Edit
     Given I am logged in as a superabstractor 
     And I am on the Edit Intervention screen
     And the intervention name is not editable

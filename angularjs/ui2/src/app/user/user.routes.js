@@ -154,7 +154,7 @@
                         label: 'User Profile'
                     }
                 })
-            
+
                 .state('main.userDetail', {
                     url: '/user-detail/:username',
                     templateUrl: 'app/user/userDetails.html',
@@ -171,7 +171,7 @@
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
-                        parent: 'main.registeredUsers',
+                        parent: 'main.defaultContent',
                         label: 'User Profile'
                     }
                 });

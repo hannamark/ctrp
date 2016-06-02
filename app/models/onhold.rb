@@ -27,6 +27,7 @@ class Onhold < ActiveRecord::Base
   belongs_to :trial
 
   after_save :send_email
+  after_save :add_processing_status
 
   private
 
@@ -93,6 +94,24 @@ class Onhold < ActiveRecord::Base
           mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
         end
         MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, mail_template: mail_template, result: mail_sending_result, trial: self.trial)
+      end
+    end
+  end
+
+  def add_processing_status
+    ohd = ProcessingStatus.find_by_code('OHD')
+    if self.offhold_date.nil?
+      # Put on hold
+      if self.trial.current_submission.present? && ohd.present?
+        ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ohd, submission: self.trial.current_submission, trial: self.trial)
+      end
+    else
+      # Put off hold
+      if self.trial.current_submission.present?
+        target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ? AND processing_status_id <> ?', self.trial.id, self.trial.current_submission.id, ohd.id).order('id').last
+        if target.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: target.processing_status, submission: self.trial.current_submission, trial: self.trial)
+        end
       end
     end
   end

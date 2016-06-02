@@ -114,7 +114,13 @@
         vm.saveWithoutTransfer = function() {
             vm.chooseTransferTrials = false;
             var redirect = vm.checkForOrgChange();
-            vm.updateUser(redirect);
+
+            UserService.endUserTrialsOwnership({user_id: vm.userDetails.id}).then(function (data) {
+                if(data.results === 'success') {
+                    vm.getUserTrials();
+                    vm.updateUser(redirect);
+                }
+            });
         };
 
         vm.transferAllUserTrials = function() {

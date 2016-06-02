@@ -7,7 +7,7 @@ json.users do
       json.url user_url(user, format: :json)
       org_family_name = ''
       if user.organization.present?
-        json.user_organization_name user.organization.name
+        json.organization_name user.organization.name
         json.families do
           json.array!(user.organization.families) do |family|
             json.extract! family, :id, :name
@@ -15,18 +15,18 @@ json.users do
           end
         end
       end
-      json.admin_role user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN'? 'Yes': 'No'
+      json.admin_role user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR'? 'Yes': 'No'
       json.organization_family_name org_family_name.chomp(',')
       if user.receive_email_notifications then
-        json.receive_email_notifications "ON"
+        json.receive_email_notifications "Yes"
       else
-        json.receive_email_notifications user.receive_email_notifications === false ? "OFF" : "Not Set"
+        json.receive_email_notifications user.receive_email_notifications === false ? "No" : ""
       end
     else
       json.extract! user, :username, :first_name, :last_name
       json.url user_url(user, format: :json)
       if user.organization.present?
-        json.user_organization_name user.organization.name
+        json.organization_name user.organization.name
       end
     end
   end

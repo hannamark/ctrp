@@ -317,7 +317,8 @@
                     items: [],
                     selectedItems: [],
                     openModal: controller.showTransferTrialsModal,
-                    showSave: trialIdArr && trialIdArr.length,
+                    showSave: controller.showTransferTrialsModal,
+                    confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
                     close: function () {
                         controller.showTransferTrialsModal = false;
                     },
@@ -363,7 +364,7 @@
                             'id': user.id,
                             'col1': user.last_name + ', ' + user.first_name,
                             'col2': user.email,
-                            'col3': user.user_organization_name
+                            'col3': user.organization_name
                         });
                     }
                 });
