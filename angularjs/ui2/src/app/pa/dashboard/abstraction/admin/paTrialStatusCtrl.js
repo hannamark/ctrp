@@ -200,7 +200,7 @@
 
         function editTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
-                vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
+                vm.statusObj = vm.tempTrialStatuses[index]; // angular.copy(vm.tempTrialStatuses[index]);
                 vm.statusObj.edit = true;
                 vm.statusObj.index = index;
                 // vm.tempTrialStatuses.splice(index, 1);
@@ -233,6 +233,7 @@
         function cancelEdit() {
             if (vm.statusObj.edit) {
                 vm.statusObj = _initStatusObj();
+                vm.showWhyStoppedField = false;
             }
         }
 
