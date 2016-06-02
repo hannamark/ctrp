@@ -129,6 +129,10 @@ module.exports = function() {
     var futureDate = '';
     var futureDateTwoMonth = '';
     var pastDate = '';
+    var replacePastDate = '';
+    var replacePrimaryDate = '';
+    var replaceCompletionDate = '';
+    var hlodReasonA = '';
 
     /*
      Scenario: #1 I can enter a trial status and trial status date for a trial
@@ -150,6 +154,7 @@ module.exports = function() {
         trialCollaborators.waitForElement(trialStatus.statuesesStatusDate , "Trial Status Screen");
         browser.sleep(25).then(callback);
     });
+
 
     this.Given(/^I have selected a trial status from the list of:$/, function (table, callback) {
         tableValues = table.raw();
@@ -221,33 +226,36 @@ module.exports = function() {
     this.Given(/^I have selected the Completion Date Type of "([^"]*)" , "([^"]*)"$/, function (arg1, arg2, callback) {
         console.log('Completion Date Type selected as: '+arg2);
         //Selected the Date type on the previous step
-        var replacePastDate = trialDoc.replaceMonth(pastDate);
-        var replacePrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
-        var replaceCompletionDate = trialDoc.replaceMonth(futureDateTwoMonth);
+        replacePastDate = trialDoc.replaceMonth(pastDate);
+        replacePrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
+        replaceCompletionDate = trialDoc.replaceMonth(futureDateTwoMonth);
         trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Anticipated', replaceCompletionDate, 'Anticipated');
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^have entered or edited the Trial On Hold Reason Comments when the trial status is:$/, function (table, callback) {
         //To edit trial status utilizing trial status from (I have selected a trial status from the list of)steps
-        trialStatus.findTrialStatusVerfEdtDel(tblOptionB, 'edit');
+        trialStatus.findTrialStatusVerfEdtDel(tblOptionB, 'edit', '');
         var holdReasonTableValues = table.raw();
         var strValHoldReason = '';
         strValHoldReason = holdReasonTableValues.toString().replace(/,/g, "\n", -1);
         console.log('Value(s) in the data table:[' + strValHoldReason +']');
         var hldRsnTableDataSplt = strValHoldReason.toString().split("\n");
+        hlodReasonA = hldRsnTableDataSplt[0];
+        hlodReasonB = hldRsnTableDataSplt[1];
+        hlodReasonC = hldRsnTableDataSplt[2];
+        hlodReasonD = hldRsnTableDataSplt[3];
         /* Table Reference
          |Administratively Complete|
          |Withdrawn|
          |Temporarily Closed to Accrual|
          |Temporarily Closed to Accrual and Intervention|
          */
-        trialStatus.selectStatus(tblOptionB);
-        helper.wait_for(5000);
-        //trialStatus.setStatusComment('Status Comment due to: '+hldRsnTableDataSplt[0]);
-        //trialStatus.setWhyStudyStopped('Status Comment due to: '+hldRsnTableDataSplt[0]);
+        trialStatus.selectStatus(hlodReasonA);
+        trialStatus.setStatusComment('Status Comment due to: '+ hlodReasonA + '');
+        trialStatus.setWhyStudyStopped('Why Study Stopped: '+ hlodReasonA + '');
         trialStatus.clickEditTrialStatusConfirm();
-        //trialStatus.findTrialStatusVerfEdtDel(hldRsnTableDataSplt[0], 'verify');
+        trialStatus.findTrialStatusVerfEdtDel(hlodReasonA, 'verify', '');
         browser.sleep(2500).then(callback);
     });
 
@@ -262,18 +270,19 @@ module.exports = function() {
     });
 
     this.When(/^I select Save$/, function (callback) {
-
-        browser.sleep(25).then(callback);
+        trialStatus.clickSave();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the trial status and dates will be checked against validation rules and associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Anticipated', replaceCompletionDate, 'Anticipated');
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the trial status and date will be displayed as trial status history with any errors or warnings from the Trial Status Transition Rules$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        var expectedErrWarnings = 'ERROR: Invalid Transition';
+        trialStatus.findTrialStatusVerfEdtDel(hlodReasonA, 'verifyErrors', expectedErrWarnings);
+        browser.sleep(25).then(callback);
     });
 
 

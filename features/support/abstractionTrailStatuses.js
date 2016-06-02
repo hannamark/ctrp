@@ -102,6 +102,7 @@ var abstractionTrailStatuses = function(){
 
     this.setStatusComment = function(getCommentValue){
       helper.setValue(this.statuesesComment, getCommentValue, 'Status comment');
+      helper.wait_for(1000);
     };
 
     this.setWhyStudyStopped = function(getWhyStoppedValue){
@@ -131,38 +132,38 @@ var abstractionTrailStatuses = function(){
         helper.verifyTableRowText(this.tblDeleteTHd, trialSttsTblHdr[6], "Delete - Table Header");
     };
 
-    this.findTrialStatusVerfEdtDel = function(exTrlStatus, what){
+    this.findTrialStatusVerfEdtDel = function(exTrlStatus, what, errWarn){
         this.trialStatusTbleAll.then(function(rows){
             console.log('Trial Statuses Total Row:['+(rows.length)+']');
             for (var i=1; i<(rows.length+1); i++){
                 if (i === 1){
                     console.log('i:['+i+']');
-                    fNm('1', exTrlStatus, what);
+                    fNm('1', exTrlStatus, what, errWarn);
                 } else if (i === 2){
                     console.log('i:['+i+']');
-                    fNm('2', exTrlStatus, what);
+                    fNm('2', exTrlStatus, what, errWarn);
                 } else if (i === 3){
                     console.log('i:['+i+']');
-                    fNm('3', exTrlStatus, what);
+                    fNm('3', exTrlStatus, what, errWarn);
                 } else if (i === 4){
                     console.log('i:['+i+']');
-                    fNm('4', exTrlStatus, what);
+                    fNm('4', exTrlStatus, what, errWarn);
                 } else if (i === 5){
                     console.log('i:['+i+']');
-                    fNm('5', exTrlStatus, what);
+                    fNm('5', exTrlStatus, what, errWarn);
                 } else if (i === 6){
                     console.log('i:['+i+']');
-                    fNm('6', exTrlStatus, what);
+                    fNm('6', exTrlStatus, what, errWarn);
                 } else if (i === 7){
                     console.log('i:['+i+']');
-                    fNm('7', exTrlStatus, what);
+                    fNm('7', exTrlStatus, what, errWarn);
                 } else if (i === 8){
                     console.log('i:['+i+']');
-                    fNm('8', exTrlStatus, what);
+                    fNm('8', exTrlStatus, what, errWarn);
                 }
             }
         });
-        function fNm(iVal, expTrialStats, whatToDo){
+        function fNm(iVal, expTrialStats, whatToDo, errWarnings){
             var tableStatus = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
             getStatus = tableStatus.getText('value');
             getStatus.then(function(Test1){
@@ -179,8 +180,9 @@ var abstractionTrailStatuses = function(){
                     } else if(whatToDo === 'verifyErrors'){
                         var errorsWarnings = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05)'));
                         getErrWrngs = errorsWarnings.getText('value');
-                        getErrWrngs.then(function(errWarn){
-                            console.log('Current Errors/Warnings: ['+errWarn+']');
+                        getErrWrngs.then(function(getErWarn){
+                            expect(errWarnings.toString()).to.eql(getErWarn.toString());
+                            console.log('Current Errors/Warnings: ['+getErWarn+']');
                         });
                     }
                 }
