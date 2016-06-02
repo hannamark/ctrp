@@ -27,7 +27,80 @@
         var fromStateName = $state.fromState.name || '';
 
         //ui-grid plugin options
-        vm.gridOptions = TrialService.getGridOptions();
+        var actionTemplate = '<div ng-if="row.entity.actions.length > 0" class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
+            + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+            + 'Action <span class="caret"></span>'
+            + '</button>'
+            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
+            + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'update-my-site\'" ui-sref="main.participatingSiteDetail({psId: row.entity.my_site_id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'manage-sites\'" ui-sref="main.manageParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'verify-data\'" ui-sref="main.verifyTrialData({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="action == \'view-tsr\'" href="{{grid.appScope.downloadTSRUrl}}/{{row.entity.id}}">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '<a ng-if="[\'add-my-site\', \'update-my-site\', \'manage-sites\', \'verify-data\', \'view-tsr\'].indexOf(action) < 0" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
+            + '</li></ul>'
+            + '</div>';
+
+        vm.gridOptions = {
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            enableRowSelection: true,
+            enableRowHeaderSelection: true,
+            paginationPageSizes: [20, 50, 100],
+            paginationPageSize: 20,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            enableGridMenu: true,
+            enableFiltering: true,
+            columnDefs: [
+                {
+                    name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '170', sort: { direction: 'asc', priority: 1},
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                },
+                {
+                    name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120', visible: false,
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'phase', enableSorting: true, minWidth: '70', width: '70'},
+                {
+                    name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'pilot', enableSorting: true, minWidth: '60', width: '60'},
+                {
+                    name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'study_source', enableSorting: true, minWidth: '170', width: '170',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '170',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {
+                    name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '100',
+                    cellTemplate: actionTemplate, cellClass: 'action-btn'
+                }
+            ]
+        };
+
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.onRegisterApi = function(gridApi) {
