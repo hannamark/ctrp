@@ -1,6 +1,6 @@
 json.trials do
   json.array!(@trials) do |trial|
-    json.extract! trial, :id, :lead_protocol_id, :nci_id, :official_title, :pilot, :my_site_id
+    json.extract! trial, :id, :lead_protocol_id, :nci_id, :official_title, :pilot, :my_site_id, :ctg_id, :start_date, :verification_date, :primary_comp_date
     json.phase trial.phase.present? ? trial.phase.name : nil
     json.purpose trial.primary_purpose.present? ? trial.primary_purpose.name : nil
     json.pi trial.pi.present? ? trial.pi.lname + ', ' + trial.pi.fname : nil
@@ -9,7 +9,10 @@ json.trials do
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
     json.current_trial_status trial.trial_status_wrappers.present? ? trial.trial_status_wrappers.last.trial_status.name : nil
     json.actions trial.actions
-    json.ctg_id trial.ctg_id
+    json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
+    json.accrual_disease_term trial.accrual_disease_term.present? ? trial.accrual_disease_term.name : nil
+    json.research_category trial.research_category.present? ? trial.research_category.name : nil
+    json.responsible_party trial.responsible_party.present? ? trial.responsible_party.name : nil
   end
 end
 json.start params[:start]

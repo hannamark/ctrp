@@ -88,8 +88,15 @@
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
+                        name: 'current_processing_status', enableSorting: false, minWidth: '220', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
                         name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
                         cellTemplate: actionTemplate, cellClass: 'action-btn'
+                    },
+                    {
+                        name: 'accrual_disease_term', displayName: 'Accrual Disease Terminology', enableSorting: false, minWidth: '90', width: '*'
                     },
                     {
                         name: 'phase', enableSorting: true, minWidth: '90', width: '*'
@@ -99,12 +106,30 @@
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
+                        name: 'research_category', enableSorting: false, minWidth: '120', width: '*'
+                    },
+                    {
+                        name: 'start_date', enableSorting: false, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
+                    },
+                    {
+                        name: 'responsible_party', enableSorting: false, minWidth: '170', width: '*'
+                    },
+                    {
                         name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
                         name: 'study_source', enableSorting: true, minWidth: '170', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'verification_date', enableSorting: false, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
+                    },
+                    {
+                        name: 'primary_comp_date', displayName: 'Primary Completion Date', enableSorting: false, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
                     }
                 ]
             } else if (newVal === 'All Trials') {
