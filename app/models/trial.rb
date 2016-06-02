@@ -669,6 +669,90 @@ class Trial < TrialBase
     end
   end
 
+  def submitter
+    ori = SubmissionType.find_by_code('ORI')
+    if ori.present?
+      original_sub = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, ori.id).first
+      if original_sub.present? && original_sub.user.present? && original_sub.user.first_name.present? && original_sub.user.last_name.present?
+        return original_sub.user.last_name + ', ' + original_sub.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_updated_at
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      last_update = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, upd.id).order('id desc').first
+      if last_update.present?
+        return last_update.created_at
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_updated_by
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      last_update = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, upd.id).order('id desc').first
+      if last_update.present? && last_update.user.present? && last_update.user.first_name.present? && last_update.user.last_name.present?
+        return last_update.user.last_name + ', ' + last_update.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_amended_at
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      last_amend = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, amd.id).order('id desc').first
+      if last_amend.present?
+        return last_amend.created_at
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_amended_by
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      last_amend = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, amd.id).order('id desc').first
+      if last_amend.present? && last_amend.user.present? && last_amend.user.first_name.present? && last_amend.user.last_name.present?
+        return last_amend.user.last_name + ', ' + last_amend.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def onhold_reason
+    self.onholds.each do |onhold|
+      if onhold.offhold_date.nil?
+        if onhold.onhold_reason.present?
+          return onhold.onhold_reason.name
+        else
+          return nil
+        end
+      end
+    end
+
+    return nil
+  end
+
   private
 
   def save_history

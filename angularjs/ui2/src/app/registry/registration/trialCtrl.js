@@ -128,8 +128,32 @@
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
                     },
                     {
+                        name: 'submitter', enableSorting: false, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
                         name: 'primary_comp_date', displayName: 'Primary Completion Date', enableSorting: false, minWidth: '120', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
+                    },
+                    {
+                        name: 'last_updated_at', enableSorting: false, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
+                    },
+                    {
+                        name: 'last_updated_by', enableSorting: false, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'last_amended_at', enableSorting: false, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
+                    },
+                    {
+                        name: 'last_amended_by', enableSorting: false, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'onhold_reason', displayName: 'On hold reason', enableSorting: false, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     }
                 ]
             } else if (newVal === 'All Trials') {
