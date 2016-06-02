@@ -1131,6 +1131,7 @@
                         controller.showAddTrialsModal = false;
                     },
                     reset: function () {
+                        controller.trialOptions.searchTerm = '';
                         controller.trialOptions.items = angular.copy(controller.trialOptions.resetItems);
                         controller.trialOptions.selectedItems = [];
                     },

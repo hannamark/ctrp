@@ -320,6 +320,7 @@
                         controller.showTransferTrialsModal = false;
                     },
                     reset: function () {
+                        controller.userOptions.searchTerm = '';
                         controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
                         controller.userOptions.selectedItems = [];
                     },

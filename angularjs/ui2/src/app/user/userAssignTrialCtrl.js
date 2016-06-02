@@ -33,5 +33,10 @@
                 TrialService.createTransferTrialsOwnership(vm);
             }
         };
+
+        vm.resetAll = function () {
+            vm.userOptions.reset();
+            vm.trialOptions.reset();
+        };
     }
 })();

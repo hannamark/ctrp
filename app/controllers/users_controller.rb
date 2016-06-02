@@ -135,7 +135,12 @@ end
     @users = User.all
 
     if params[:family_id].present?
-      @users = @users.matches_wc('organization_family_id', params[:family_id])
+      if ['ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU'].include? current_user.role
+        familyId = params[:family_id]
+      elsif
+        familyId = FamilyMembership.find_by_organization_id(current_user.organization_id).family_id
+      end
+      @users = @users.matches_wc('organization_family_id', familyId)
     elsif params[:organization_id].present?
       @users = @users.matches_wc('organization_id', params[:organization_id])
     end
