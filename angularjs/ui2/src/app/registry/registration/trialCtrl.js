@@ -67,13 +67,15 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
-                    name: 'phase', enableSorting: true, minWidth: '70', width: '70'},
+                    name: 'phase', enableSorting: true, minWidth: '70', width: '70'
+                },
                 {
                     name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {
-                    name: 'pilot', enableSorting: true, minWidth: '60', width: '60'},
+                    name: 'pilot', enableSorting: true, minWidth: '60', width: '60'
+                },
                 {
                     name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
