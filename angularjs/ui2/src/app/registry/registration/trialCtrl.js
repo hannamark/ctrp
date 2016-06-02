@@ -53,55 +53,115 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
-            columnDefs: [
-                {
-                    name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '170', sort: { direction: 'asc', priority: 1},
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'phase', enableSorting: true, minWidth: '70', width: '70'
-                },
-                {
-                    name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'pilot', enableSorting: true, minWidth: '60', width: '60'
-                },
-                {
-                    name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'study_source', enableSorting: true, minWidth: '170', width: '170',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '170',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '100',
-                    cellTemplate: actionTemplate, cellClass: 'action-btn'
-                }
-            ]
+            columnDefs: []
         };
+
+        $scope.$watch(function() {return vm.searchParams.searchType;}, function(newVal, oldVal) {
+            if (newVal === 'My Trials') {
+                vm.gridOptions.columnDefs = [
+                    {
+                        name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '*', sort: { direction: 'asc', priority: 1},
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    },
+                    {
+                        name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'phase', enableSorting: true, minWidth: '90', width: '*'
+                    },
+                    {
+                        name: 'purpose', enableSorting: true, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'pilot', enableSorting: true, minWidth: '80', width: '*'
+                    },
+                    {
+                        name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'study_source', enableSorting: true, minWidth: '170', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
+                        cellTemplate: actionTemplate, cellClass: 'action-btn'
+                    }
+                ]
+            } else if (newVal === 'All Trials') {
+                vm.gridOptions.columnDefs = [
+                    {
+                        name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '*', sort: { direction: 'asc', priority: 1},
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    },
+                    {
+                        name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'ctg_id', displayName: 'ClinicalTrials.gov ID', enableSorting: true, minWidth: '180', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
+                        cellTemplate: actionTemplate, cellClass: 'action-btn'
+                    }
+                ]
+            } else {
+                vm.gridOptions.columnDefs = [
+                    {
+                        name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '*', sort: { direction: 'asc', priority: 1},
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    },
+                    {
+                        name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {
+                        name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '*',
+                        cellTemplate: actionTemplate, cellClass: 'action-btn'
+                    }
+                ]
+            }
+        });
 
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;

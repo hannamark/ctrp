@@ -655,6 +655,20 @@ class Trial < TrialBase
     return validation_msgs
   end
 
+  def ctg_id
+    ctg = ProtocolIdOrigin.find_by_code('NCT')
+    if ctg.present?
+      ctg_id = OtherId.where('trial_id = ? AND protocol_id_origin_id = ?', self.id, ctg.id).first
+      if ctg_id.present?
+        return ctg_id.protocol_id
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
   private
 
   def save_history
