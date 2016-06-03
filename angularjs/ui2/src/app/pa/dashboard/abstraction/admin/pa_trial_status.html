@@ -61,6 +61,8 @@
                                             ng-model="trialStatusView.statusObj.why_stopped"
                                             ng-disabled="!trialStatusView.showWhyStoppedField">
                                         </textarea>
+                                        <!-- <input type="text" name="why_stopped" id="why_stopped" class="form-control input-sm"
+                                            maxlength="160" ng-model="trialStatusView.statusObj.why_stopped" ng-disabled="!trialStatusView.showWhyStoppedField" /> -->
                                         <span ng-show="trial_status_form.why_stopped.$dirty && trialStatusView.showWhyStoppedField">
                                             {{160 - trial_status_form.why_stopped.$viewValue.length}} characters left
                                         </span>
@@ -113,7 +115,7 @@
                             <th class="text-center td-icon">Delete</th>
                           </thead>
                           <tbody>
-                            <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" class="animated-item" ng-class="{'deleted-text': status._destroy, 'edit-selected': status.trial_status_id === trialStatusView.statusObj.trial_status_id}">
+                            <tr ng-repeat="status in trialStatusView.tempTrialStatuses track by $index" ng-class="{'deleted-text': status._destroy, 'edit-selected': status.trial_status_id === trialStatusView.statusObj.trial_status_id}">
                               <td>{{status.status_date}}</td>
                               <td>{{status.trial_status_name}}</td>
                               <td>{{status.comment}}</td>
