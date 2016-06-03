@@ -2,11 +2,6 @@
  * Created by singhs10 on 4/5/16.
  */
 
-/**
- * Author: singhs10
- * Date: 12/08/2015
- * Feature: Reg F13 Register Trial Documents
- */
 
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -126,7 +121,7 @@ module.exports = function() {
     this.Then(/^the CTRP application will check that all required fields have been entered$/, function (table, callback) {
 
         /****** Create Lead Organization ********/
-        projectFunctionsRegistry.createOrgforTrial(leadOrg, typeOfTrial, '0');
+        projectFunctionsRegistry.createOrgforTrial(leadOrg, typeOfTrial, '0', 'ctrptrialsubmitter');
 
         /** Stores the value of Lead Org **/
         storeLeadOrg = cukeOrganization.then(function(value) {
@@ -139,7 +134,7 @@ module.exports = function() {
         }, 10).then(function() {
 
             /****** Create Principal Investigator ********/
-            projectFunctionsRegistry.createPersonforTrial(prinInv, typeOfTrial, '0');
+            projectFunctionsRegistry.createPersonforTrial(prinInv, typeOfTrial, '0', 'ctrptrialsubmitter');
 
             /** Stores the value of Lead Org **/
             storePI = cukePerson.then(function (value) {
@@ -152,7 +147,7 @@ module.exports = function() {
             }, 10).then(function () {
 
                 /****** Create Sponsor Organization ********/
-                projectFunctionsRegistry.createOrgforTrial(sponsor, typeOfTrial, '1');
+                projectFunctionsRegistry.createOrgforTrial(sponsor, typeOfTrial, '1', 'ctrptrialsubmitter');
 
                 /** Stores the value of Sponsor Org **/
                 storeSponsorOrg = cukeOrganization.then(function (value) {
@@ -165,7 +160,7 @@ module.exports = function() {
                 }, 10).then(function () {
 
                     /****** Create Funding Source Organization ********/
-                    projectFunctionsRegistry.createOrgforTrial(fundingSrc, typeOfTrial, '2');
+                    projectFunctionsRegistry.createOrgforTrial(fundingSrc, typeOfTrial, '2', 'ctrptrialsubmitter');
 
                     /** Stores the value of Funding Source Org **/
                     storeFundingSrcOrg = cukeOrganization.then(function (value) {
@@ -429,7 +424,7 @@ module.exports = function() {
 
 
     this.When(/^I have entered the same Lead Organization Trial Identifier for a Lead Organization which exists in another Trial$/, function (callback) {
-        var leadOrgIdentifier = 'SS12 Lead';
+        var leadOrgIdentifier = 'SS LeadDup';
         var otherClinicalTrialID = 'nct12345678';
         var otherObsoleteClinicalTrialID = 'nct98765432';
         var otherIdentifier = 'abcd12356';
@@ -470,10 +465,12 @@ module.exports = function() {
         var participatingSiteDoc = '';
         var informedConsentDoc = 'testSampleDocFile.docx';
         var otherDoc = '';
-        projectFunctionsRegistry.createTrial(typeOfTrial, leadOrgIdentifier, otherClinicalTrialID, otherObsoleteClinicalTrialID, otherIdentifier, officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose,
+        var submitTrial = 'SUBMITTRIAL';
+        var userWhoWillCreateTrial = 'ctrptrialsubmitter';
+        projectFunctionsRegistry.createTrial(userWhoWillCreateTrial, typeOfTrial, leadOrgIdentifier, otherClinicalTrialID, otherObsoleteClinicalTrialID, otherIdentifier, officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose,
             accrualDisease, leadOrg, principalInv, sponsorOrg, dataTableOrg, programCode, grantOption, grantFundingMechanism, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode, trialStatus, trialComment, trialWhyStudyStopped,
             INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution, responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,
-            protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc);
+            protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc, submitTrial);
         projectFunctionsRegistry.selectTrials(typeOfTrial);
         browser.driver.wait(function () {
             console.log('wait here');

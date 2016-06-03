@@ -50,12 +50,10 @@
                         <div class="form-group">
                             <label for="org_type" class="control-label col-xs-12 col-sm-5">Organization Type: </label>
                             <div class="col-xs-12 col-sm-7">
-                                <select class="form-control input-sm" id="org_type" ng-model="trialView.searchParams.org_type">
-                                    <option value="">-Select an Organization Type-</option>
-                                    <option value="Lead Organization">Lead Organization</option>
-                                    <option value="Sponsor">Sponsor</option>
-                                    <!--<option value="Participating Site">Participating Site</option>-->
-                                </select>
+                                <ui-select multiple id="org_type" ng-model="trialView.searchParams.org_types">
+                                    <ui-select-match placeholder="-Select Organization Types-">{{$item}}</ui-select-match>
+                                    <ui-select-choices repeat="orgType in ['Lead Organization', 'Sponsor', 'Participating Site']">{{orgType}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
@@ -137,7 +135,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="principal_investigator" class="control-label col-xs-12 col-sm-5">PI: </label>
+                            <label for="principal_investigator" class="control-label col-xs-12 col-sm-5">Principal Investigator: </label>
                             <div class="col-xs-12 col-sm-7">
                                 <input type="text" id="pi" class="form-control input-sm" placeholder="Principal Investigator" ng-model="trialView.searchParams.pi" />
                             </div>

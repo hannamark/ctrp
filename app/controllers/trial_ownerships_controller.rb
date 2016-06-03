@@ -40,6 +40,26 @@ class TrialOwnershipsController < ApplicationController
   def edit
   end
 
+  # POST /trial_ownerships/add
+  # POST /trial_ownerships/add.json
+  def add
+    trialIdsToAdd = params[:trial_ids]
+    userIdsToAdd = params[:user_ids]
+
+    if trialIdsToAdd && trialIdsToAdd.length > 0 && userIdsToAdd && userIdsToAdd.length > 0
+      trialIdsToAdd.each do |trialId|
+        userIdsToAdd.each do |userId|
+          if !TrialOwnership.exists?(trial_id: trialId, user_id: userId, ended_at: nil)
+            TrialOwnership.create(trial_id: trialId, user_id: userId)
+          end
+        end
+      end
+    end
+
+    @results_msgs = 'success'
+    @results_msgs
+  end
+
   # POST /trial_ownerships/end
   # POST /trial_ownerships/end.json
   def end
@@ -47,6 +67,7 @@ class TrialOwnershipsController < ApplicationController
     begin
       toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
       unless params[:ids].nil?
+        #to only end selected
         toEnd = toEnd.where(:id => params[:ids])
       end
       toEnd.update_all(:ended_at => Time.now)
@@ -83,6 +104,7 @@ class TrialOwnershipsController < ApplicationController
     idsToEnd = params[:ids]
     ownerUserId = params[:from_user_id]
     if idsToEnd && idsToEnd.length > 0
+      #transfer selected
       toEnd = TrialOwnership.where(id: idsToEnd)
       toEnd.update_all(:ended_at => Time.now)
 
@@ -92,6 +114,7 @@ class TrialOwnershipsController < ApplicationController
         end
       end
     elsif ownerUserId
+      #transfer all
       toEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
       trialIds = toEnd.pluck(:trial_id)
       toEnd.update_all(:ended_at => Time.now)
@@ -107,6 +130,7 @@ class TrialOwnershipsController < ApplicationController
     @results_msgs = 'success'
     @results_msgs
   end
+
 
   # PATCH/PUT /trial_ownerships/1
   # PATCH/PUT /trial_ownerships/1.json

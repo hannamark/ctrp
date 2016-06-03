@@ -293,15 +293,12 @@
         };
 
         this.getAllOrgUsers = function (searchParams) {
-            return service.allOrgUsers || service.getAllOrgUsersNow(searchParams);
-        };
-        this.getAllOrgUsersNow = function (searchParams) {
             service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json', searchParams);
             return service.allOrgUsers;
         };
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers({'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id, 'family_users' : true}).then(function (data) {
+            service.getAllOrgUsers({'family_id': (controller.userDetails ? controller.userDetails.org_families[0].id: false) || controller.family_id}).then(function (data) {
                 if (controller.showTransferTrialsModal === false) {
                     controller.showTransferTrialsModal = true;
                 }
@@ -317,11 +314,13 @@
                     items: [],
                     selectedItems: [],
                     openModal: controller.showTransferTrialsModal,
-                    showSave: trialIdArr && trialIdArr.length,
+                    showSave: controller.showTransferTrialsModal,
+                    confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
                     close: function () {
                         controller.showTransferTrialsModal = false;
                     },
                     reset: function () {
+                        controller.userOptions.searchTerm = '';
                         controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
                         controller.userOptions.selectedItems = [];
                     },

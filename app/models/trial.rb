@@ -223,30 +223,30 @@ class Trial < TrialBase
   accepts_nested_attributes_for :onholds, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
-  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
-  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && internal_source.code != "IMP"'
+  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
 
   before_create :save_history
   before_create :save_internal_source
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
-  #after_save :send_email
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -604,7 +604,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'TSR'
-      if !is_last_milestone?(submission_id, 'RTS')
+      rts = Milestone.find_by_code('RTS')
+      if rts.present? && !contains_milestone?(submission_id, rts.id)
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
       if ['SUB', 'AMS', 'ACC', 'REJ'].include?(current_process_status_code(submission_id))
@@ -617,7 +618,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
     elsif milestone_to_add.code == 'STS'
-      if !is_last_milestone?(submission_id, 'TSR')
+      tsr = Milestone.find_by_code('TSR')
+      if tsr.present? && !contains_milestone?(submission_id, tsr.id)
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
       end
     elsif milestone_to_add.code == 'IAV'
@@ -651,6 +653,104 @@ class Trial < TrialBase
     end
 
     return validation_msgs
+  end
+
+  def ctg_id
+    ctg = ProtocolIdOrigin.find_by_code('NCT')
+    if ctg.present?
+      ctg_id = OtherId.where('trial_id = ? AND protocol_id_origin_id = ?', self.id, ctg.id).first
+      if ctg_id.present?
+        return ctg_id.protocol_id
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def submitter
+    ori = SubmissionType.find_by_code('ORI')
+    if ori.present?
+      original_sub = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, ori.id).first
+      if original_sub.present? && original_sub.user.present? && original_sub.user.first_name.present? && original_sub.user.last_name.present?
+        return original_sub.user.last_name + ', ' + original_sub.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_updated_at
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      last_update = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, upd.id).order('id desc').first
+      if last_update.present?
+        return last_update.created_at
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_updated_by
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      last_update = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, upd.id).order('id desc').first
+      if last_update.present? && last_update.user.present? && last_update.user.first_name.present? && last_update.user.last_name.present?
+        return last_update.user.last_name + ', ' + last_update.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_amended_at
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      last_amend = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, amd.id).order('id desc').first
+      if last_amend.present?
+        return last_amend.created_at
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_amended_by
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      last_amend = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, amd.id).order('id desc').first
+      if last_amend.present? && last_amend.user.present? && last_amend.user.first_name.present? && last_amend.user.last_name.present?
+        return last_amend.user.last_name + ', ' + last_amend.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def onhold_reason
+    self.onholds.each do |onhold|
+      if onhold.offhold_date.nil?
+        if onhold.onhold_reason.present?
+          return onhold.onhold_reason.name
+        else
+          return nil
+        end
+      end
+    end
+
+    return nil
   end
 
   private
@@ -1132,7 +1232,7 @@ class Trial < TrialBase
 
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
-    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = participating_sites.organization_id"
     where_clause = ""
     conditions = []
 
@@ -1143,11 +1243,14 @@ class Trial < TrialBase
           where_clause += "lead_orgs.name ilike ?"
         elsif e == 'Sponsor'
           where_clause += "sponsors.name ilike ?"
+        elsif e == 'Participating Site'
+          where_clause += "sites.name ilike ?"
         end
         conditions.push(value_exp)
       }
     else
-      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR sites.name ilike ?"
+      conditions.push(value_exp)
       conditions.push(value_exp)
       conditions.push(value_exp)
     end

@@ -57,7 +57,6 @@
         vm.selectedInvArray = [];
         vm.selectedIaArray = [];
         vm.selectedFsArray = [];
-        vm.isInterventional = false;
         vm.showPrimaryPurposeOther = false;
         vm.showSecondaryPurposeOther = false;
         vm.showInvestigator = false;
@@ -621,14 +620,7 @@
         });
 
         vm.watchOption = function(type) {
-            if (type == 'research_category') {
-                var intObj = vm.researchCategoryArr.filter(findIntOption);
-                if (intObj[0].id == vm.curTrial.research_category_id) {
-                    vm.isInterventional = true;
-                } else {
-                    vm.isInterventional = false;
-                }
-            } else if (type == 'primary_purpose') {
+            if (type == 'primary_purpose') {
                 var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
                 if (otherObj[0].id == vm.curTrial.primary_purpose_id) {
                     vm.showPrimaryPurposeOther = true;
@@ -864,7 +856,6 @@
                 appendEditType();
                 convertDate();
                 displayPOs();
-                rcFieldChange();
                 ppFieldChange();
                 spFieldChange();
                 rpFieldChange();
@@ -966,15 +957,6 @@
                 $timeout( function(){ vm.selectedIaArray.push(vm.curTrial.investigator_aff); }, 1500);
             }
         }
-
-        // Display/hide dynamic fields
-        function rcFieldChange() {
-            var intObj = vm.researchCategoryArr.filter(findIntOption);
-            if (intObj[0].id == vm.curTrial.research_category_id) {
-                vm.isInterventional = true;
-            }
-        }
-
 
         function ppFieldChange() {
             var otherObj = vm.primaryPurposeArr.filter(findOtherOption);
@@ -1129,14 +1111,6 @@
                 }  else if (vm.curTrial.trial_documents[i].document_type === 'Protocol Highlighted Document' && vm.curTrial.trial_documents[i].status === 'active') {
                     vm.protocolHighlightedNum++;
                 }
-            }
-        }
-
-        function findIntOption(option) {
-            if (option.code === 'INT') {
-                return true;
-            } else {
-                return false;
             }
         }
 

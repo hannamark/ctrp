@@ -272,6 +272,20 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
+      if  params[:no_nih_nci_prog].present?
+        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
+      end
+      if  params[:family_id].present?
+        if ['ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU'].include? current_user.role
+          familyId = params[:family_id]
+        elsif
+          familyId = FamilyMembership.find_by_organization_id(current_user.organization_id).family_id
+        end
+        familyOrganizations = FamilyMembership.where(
+            family_id: familyId
+        ).pluck(:organization_id)
+        @trials =  @trials.where(lead_org_id: familyOrganizations) unless @trials.blank?
+      end
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
@@ -393,20 +407,7 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
-      if params[:org].present?
-        if params[:org_type] == 'Lead Organization'
-          @trials = @trials.with_lead_org(params[:org])
-        elsif params[:org_type] == 'Sponsor'
-          @trials = @trials.with_sponsor(params[:org])
-        elsif params[:org_type] == 'Participating Sites'
-          # TODO handle wildcard
-          #if params[:org] != "*"
-          #  @trials = @trials.select{|trial| trial.participating_sites.by_value(params[:org])}
-          #end
-        else
-          @trials = @trials.with_any_org(params[:org])
-        end
-      end
+      @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])

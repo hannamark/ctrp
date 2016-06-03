@@ -2,7 +2,7 @@
 Feature: Reg F01 Search Clinical Trials
 As any CTRP User, I can search CTRP clinical trial by various criteria and trial ownership
 
-Scenario: #1 I can search for my clinical trials registered in CTRP
+Scenario: #1 I can search for my clinical trials registered in CTRP where I am listed as a Trial Owner
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen
 And I know the search Parameters of trial
@@ -35,6 +35,14 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Last Amender Name|
 |On-Hold Reason|
 
+  
+   Scenario: #1a I can search for my clinical trials registered in CTRP where my Org is listed as participating site
+  Given I am logged into the CTRP Registration application
+  And I am on the Search Clinical Trials Screen
+  And I know the search Parameters of trial
+  When I select the option to search "My Trials"
+  Then CTRP will display imported trials where my affiliated org is registered as participating site 
+  
 
 Scenario: #2 I can search all clinical trials registered in CTRP
 Given I am logged into the CTRP Registration application
@@ -121,7 +129,7 @@ When I select one or more trial primary purpose type
       |Screening                |
       |Diagnostic               |
       |Health Services Research |
-      |Basic science            |
+      |Basic Science            |
       |Other                    |
 
 And select a search option

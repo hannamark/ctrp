@@ -81,9 +81,11 @@
 
                         <!-- Site Admin-->
                         <div class="form-group" ng-if="!userView.registeredUsersPage">
-                            <label for="site_admin" class="control-label col-sm-5">Site Admin:</label>
+                            <label for="site_admin" class="control-label col-sm-5">Site Administrator Privileges:</label>
                             <div class="col-sm-7">
-                                <input type="checkbox" id="site_admin" ng-model="userView.searchParams.site_admin" auto-focus/>
+                                <label class="control-label radio-line">Yes: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="true"/></label>
+                                <label class="control-label radio-line">No: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="false"/></label>
+                                <label class="control-label radio-line">All: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="undefined"/></label>
                             </div>
                         </div>
                         <!-- Site Admin ends -->
@@ -132,7 +134,7 @@
                     <h4>User Search Results: {{userView.gridOptions.totalItems}} found</h4>
                 </div>
                 <div class="row animated-item" ng-if="userView.gridOptions.data.length > 0">
-                    <div ui-grid="userView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                    <div ui-grid="userView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" ui-grid-exporter ui-grid-move-columns class="grid"></div>
                 </div>
             </div>
         </div>
