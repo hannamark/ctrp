@@ -846,6 +846,15 @@
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
                 return errorMsg;
             }
+            if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
+                errorMsg = 'The Obsolete ClinicalTrials.gov Identifier must be unique';
+                return errorMsg;
+            }
+
+            if (protocolIdOriginCode === 'DNCI' && !/^NCI-\d{4}-\d{5}$/.test(protocolId)) {
+                errorMsg = 'Duplicate NCI Identifier must be in this format: "NCI-yyyy-nnnnn"';
+                return errorMsg;
+            }
 
             return errorMsg;
         }
