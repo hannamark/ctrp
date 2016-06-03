@@ -37,12 +37,19 @@ And I select the option to update my user account information in CTRP
 And I select the option to request Admin Access
 And the system will send an email to the site Admin(s) for the organization family for the organization that is selected for my account
 
-Scenario: #3 Admin Access for change in an organization
+Scenario: #3 Admin Access for change in an organization in Family
 Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
-When I select or change my Organizational Affiliation
+And I select or change my Organizational Affiliation
+And the selected organiziton is in my organization Family
 Then the new organization will be affilliated to my account
-And I will be asked if Admin Access is requested 
-And I can select Yes to have the system send an email to the site Admin(s) for the organization family for the organization that is selected for my account requesting that I be granted admin access
 
-
+Scenario: #4 Admin Access for change in an organization not in my Family
+Given I am logged into CTRP
+And I select the option to update my user account information in CTRP
+And I select or change my Organizational Affiliation
+And the selected organiziton is not my organization Family
+Then the new organization will be affilliated to my account
+And my role will be set to Trial Submitter
+And my status will be set to Pending
+And the system will send an email to the site Admin(s) for the organization family for the organization that is selected for my account
