@@ -1036,7 +1036,7 @@
 
         function createTransferTrialsOwnership(controller, userIdArr) {
             searchTrials({
-                'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id,
+                'family_id': (controller.userDetails ? controller.userDetails.org_families[0].id: false) || controller.family_id,
                 'protocol_id':'*',
                 'internal_sources': [{'code':'PRO'}],
                 'searchType': 'All Trials',
@@ -1064,6 +1064,7 @@
                         controller.showAddTrialsModal = false;
                     },
                     reset: function () {
+                        controller.trialOptions.searchTerm = '';
                         controller.trialOptions.items = angular.copy(controller.trialOptions.resetItems);
                         controller.trialOptions.selectedItems = [];
                     },

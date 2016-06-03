@@ -275,9 +275,14 @@ class TrialsController < ApplicationController
       if  params[:no_nih_nci_prog].present?
         @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
       end
-      if  params[:organization_id].present?
+      if  params[:family_id].present?
+        if ['ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU'].include? current_user.role
+          familyId = params[:family_id]
+        elsif
+          familyId = FamilyMembership.find_by_organization_id(current_user.organization_id).family_id
+        end
         familyOrganizations = FamilyMembership.where(
-            family_id: FamilyMembership.where(organization_id: params[:organization_id])[0].family_id
+            family_id: familyId
         ).pluck(:organization_id)
         @trials =  @trials.where(lead_org_id: familyOrganizations) unless @trials.blank?
       end

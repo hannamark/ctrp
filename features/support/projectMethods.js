@@ -186,22 +186,22 @@ var projectMethods = function() {
      * Method: Verify the item in Search Results
      * @param searchString
      ***********************************/
-
-    this.inSearchResults = function(searchString) {
-        return menuItem.searchResult.filter(function(name) {
-            return name.getText().then(function(text) {
-                return text === searchString ;
-            });
-        }).then(function(filteredElements) {
-            // Only the elements that passed the filter will be here. This is an array.
-            if (filteredElements.length > 0) {
-                return 'false';
-            }
-            else {
-                return 'true';
-            }
-        });
-    };
+    //
+    //this.inSearchResults = function(searchString) {
+    //    return menuItem.searchResult.filter(function(name) {
+    //        return name.getText().then(function(text) {
+    //            return text === searchString ;
+    //        });
+    //    }).then(function(filteredElements) {
+    //        // Only the elements that passed the filter will be here. This is an array.
+    //        if (filteredElements.length > 0) {
+    //            return 'false';
+    //        }
+    //        else {
+    //            return 'true';
+    //        }
+    //    });
+    //};
 
     this.inOrgSearchResults = function(searchString) {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function(state) {
@@ -623,9 +623,9 @@ var projectMethods = function() {
      * @param max
      * @returns {*}
      ********************************/
-    function getRandomArbitrary(min, max) {
+    this.getRandomArbitrary = function(min, max) {
         return Math.random() * (max - min) + min;
-    }
+    };
 
     /********************************
      * Method: Returns random integer
@@ -633,9 +633,9 @@ var projectMethods = function() {
      * @param max
      * @returns {*}
      ********************************/
-    function getRandomInt(min, max) {
+    this.getRandomInt = function(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    };
 
     /********************************
      * Method: Random alpha numeric string based on
