@@ -21,7 +21,10 @@ And the trial Study Souce will be listed as Industrial
 And the XML from ClinicalTrials.gov will be added to the trial related document
 And the trial milestone "Submission Received Date" will be added with the date of the import
 |Import Mappings are in CTRP AUM\Functional\Registration\ClinicalTrials Import Data Element Mapping v3.docx|
-And an email entitled "Imported Trial Record" will be sent to the CTRP import application user (Email list can be found in the shared drive under functional/registration: CTRP System Generated Emails)
+When the imported Clinical Trial does not have an Official Title 
+Then the Clinical Trial Brief Title should be displayed in the search results
+
+
 
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to import an Expanded Access trial
