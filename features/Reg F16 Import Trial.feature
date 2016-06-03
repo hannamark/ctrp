@@ -28,7 +28,7 @@ And the trial milestone "Submission Received Date" will be added with the date o
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to import an Industrial or Other Trial
 And I am on the Import ClinicalTrials.gov Trials screen
-When I have entered a NCT Number where Study Type is CT.GOV is Expanded Access
+When I have entered a NCT Number where Study Type is ClinicalTrials.gov is Expanded Access
 And the Search Studies feature indicates that the trial has not been registered in CTRP
 And the trial NCT ID, Status, and Study Title, Conditions, and Interventions are displayed
 Then I can import the trial information from ClinicalTrials.gov into CTRP
@@ -76,15 +76,27 @@ And I am on the Import ClinicalTrials.gov Trials screen
 And I have entered a NCT Number
 And I have selected the option to Import from ClinicalTrials.gov
 Then the trial information will be displayed including
-|Title|
+|Trial Identifiers (Title)| 
+|Lead Organization Trial Identifier|
+|NCI ID|
+|ClinicalTrial.gov ID|
+|Other IDs|
+|Trial Details (Title)|
+|Official Title|
 |Phase|
-|Trial Type|
+|Research Category|
 |Primary Purpose|
-|Secondary Purpose|
+|Trial Status (Title)|
+|Current Trial Status|
+|Trial Dates (Title)|
+|Trial Start Date|
+|Primary Completion Date|
+|Lead Organization (Title)|
 |Lead Organization|
+|Data Table 4 Information (Title)|
 |Study Source|
-|Funding Source|
-|Collaborators|
+|Data Table 4 Funding Sponsor/Source|
+
 And I can select the "Add My Site" function to add my site as a participating site
 
 Scenario: #6 I can enter my site information as a participating site after a trial is imported from ClinicalTrials.gov
