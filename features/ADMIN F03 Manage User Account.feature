@@ -53,3 +53,12 @@ Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
 And the system will send an email to the site Admin(s) for the organization family for the organization that is selected for my account
+
+Scenario: #5 Admin Access for change in an organization 
+Given I am logged into CTRP
+And I select the option to update my user account information in CTRP
+And I select or change my Organizational Affiliation
+Then the new organization will be affilliated to my account
+And my role will be set to Trial Submitter
+And my status will be set to Pending
+And the system will send an email to the site Admin(s) for the organization family for the organization that is selected for my account
