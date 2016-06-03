@@ -17,19 +17,18 @@ When I have entered a NCT Number
 And the Search Studies feature indicates that the trial has not been registered in CTRP
 And the trial NCT ID, Status, and Study Title, Conditions, and Interventions are displayed
 Then I can import the trial information from ClinicalTrials.gov into CTRP
+When the imported Clinical Trial does not have an Official Title 
+Then the Clinical Trial Brief Title should be displayed in the search results
 And the trial Study Souce will be listed as Industrial
 And the XML from ClinicalTrials.gov will be added to the trial related document
 And the trial milestone "Submission Received Date" will be added with the date of the import
 |Import Mappings are in CTRP AUM\Functional\Registration\ClinicalTrials Import Data Element Mapping v3.docx|
-When the imported Clinical Trial does not have an Official Title 
-Then the Clinical Trial Brief Title should be displayed in the search results
-
 
 
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
-Given I have selected the option to import an Expanded Access trial
+Given I have selected the option to import an Industrial or Other Trial
 And I am on the Import ClinicalTrials.gov Trials screen
-When I have entered a NCT Number
+When I have entered a NCT Number where Study Type is CT.GOV is Expanded Access
 And the Search Studies feature indicates that the trial has not been registered in CTRP
 And the trial NCT ID, Status, and Study Title, Conditions, and Interventions are displayed
 Then I can import the trial information from ClinicalTrials.gov into CTRP
@@ -37,7 +36,6 @@ And the trial Study Souce will be listed as Industrial
 And the trial Research Category will be listed as Expanded Access
 And the XML from ClinicalTrials.gov will be added to the trial related document
 And the trial milestone "Submission Received Date" will be added with the date of the import
-And an email entitled "Imported Trial Record" will be sent to the CTRP import application user (Email list can be found in the shared drive under functional/registration: CTRP System Generated Emails)
 And the trial status will match the trial status in ClinicalTrials.gov as:
 |Available|
 |No Longer Available|
@@ -73,7 +71,7 @@ And the previously registered trial with the same lead organization and lead org
 Then the error message will be displayed "Error Message: gov.nih.nci.pa.service.PAException: Duplicate Trial Submission: A trial exists in the system with the same Lead Organization Trial Identifier for the selected Lead Organization" 
 
 Scenario: #5 I can add my site as a participating site after a trial is imported from ClinicalTrials.gov
-Given I have selected the option to import an Industrial, Expanded Access, or 'Other' trial
+Given I have selected the option to import an Industrial or 'Other' trial
 And I am on the Import ClinicalTrials.gov Trials screen
 And I have entered a NCT Number
 And I have selected the option to Import from ClinicalTrials.gov
@@ -90,7 +88,7 @@ Then the trial information will be displayed including
 And I can select the "Add My Site" function to add my site as a participating site
 
 Scenario: #6 I can enter my site information as a participating site after a trial is imported from ClinicalTrials.gov
-Given I have selected the option to import an Industrial, Expanded Access, or 'Other' trial
+Given I have selected the option to import an Industrial or 'Other' trial
 And I have completed the import
 And I have selected the option to "Add My Site"
 Then I can enter my Local Trial Identifier
