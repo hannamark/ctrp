@@ -152,7 +152,7 @@
             enableHorizontalScrollbar: 2,
             columnDefs: [],
             enableGridMenu: true,
-            enableSelectAll: true,
+            enableSelectAll: false,
             exporterCsvFilename: 'users.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [0, 0, 0, 0]},

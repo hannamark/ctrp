@@ -272,6 +272,20 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
+      if  params[:no_nih_nci_prog].present?
+        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
+      end
+      if  params[:family_id].present?
+        if ['ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU'].include? current_user.role
+          familyId = params[:family_id]
+        elsif
+          familyId = FamilyMembership.find_by_organization_id(current_user.organization_id).family_id
+        end
+        familyOrganizations = FamilyMembership.where(
+            family_id: familyId
+        ).pluck(:organization_id)
+        @trials =  @trials.where(lead_org_id: familyOrganizations) unless @trials.blank?
+      end
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
@@ -667,7 +681,7 @@ class TrialsController < ApplicationController
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                  arms_groups_attributes: [:id, :label, :arms_groups_type, :description, :intervention_text, :trial_id, :_destroy],
+                                  arms_groups_attributes: [:id, :label, :arms_groups_type, :description, :trial_id, :_destroy],
                                   central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
                                   trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                   collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],

@@ -7,7 +7,10 @@
   "abstractorPWD" : "Welcome01",
   "trialSubmitterUID" : "ctrptrialsubmitter",
   "trialSubmitterPWD" : "Welcome01",
+  "trialSubmitter2UID" : "ctrptrialsubmitter2",
+  "trialSubmitter2PWD" : "Welcome01",
   "trialSubmitterEmail" : "ctrptrialsubmitter@gmail.com",
   "trialSubmitterEmailPwd" : "Welcome0!",
-  "trialSubmitterEmailFirstName" : "ctrptrialsubmitter"
+  "trialSubmitterEmailFirstName" : "ctrptrialsubmitter",
+  "conString" : "postgres://singhs10:@localhost:5432/ctrp_dev"
 }

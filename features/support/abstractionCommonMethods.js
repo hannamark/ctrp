@@ -232,21 +232,31 @@ var abstractionCommonMethods = function(){
             helper.wait_for(5000);
             expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
             expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
-        };
+        }
         //ctrp curator user
-        if (usrID === 'ctrpcurator'){
+        else if (usrID === 'ctrpcurator'){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.accept();
-            helper.wait_for(5000);
+          //  helper.wait_for(5000);
             expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(true);
-        };
+        }
         //ctrp trial submitter user
-        if (usrID === 'ctrptrialsubmitter'){
+        else if (usrID === 'ctrptrialsubmitter'){
             login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
             login.accept();
-            helper.wait_for(5000);
+            //helper.wait_for(5000);
             expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
-        };
+        }
+        //ctrp trial submitter user
+        else if (usrID === 'ctrptrialsubmitter2'){
+            login.login(configuration.trialSubmitter2UID, configuration.trialSubmitter2PWD);
+            login.accept();
+           // helper.wait_for(5000);
+            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
+        }
+        else {
+            assert.fail(0,1,'Given User Id ---- '+ usrID + ' ---- does not match any option. Please check that provided user exist in the function.');
+        }
     };
 
     /*****************************************

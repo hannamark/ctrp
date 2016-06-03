@@ -21,6 +21,7 @@ var registerTrial = function(){
     this.addTrialAddProtocolButton = element(by.css('button[ng-click="trialDetailView.addOtherId()"]'));
     this.addTrialVerifyOtherTrialIdentifier = element.all(by.css('tr[ng-repeat="otherId in trialDetailView.addedOtherIds track by $index"]'));
     this.addTrialVerifyOtherTrialIdentifierTable =  element.all(by.binding('otherId.protocol_id'));
+    this.addTrialLeadProtocolIdValidationMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) || (trial_form.lead_protocol_id.$error.required && trialDetailView.showLpiError)"]'));
 
     /** Trial Details **/
     this.addTrialDetailsSection = element(by.linkText('Trial Details'));
@@ -168,6 +169,8 @@ var registerTrial = function(){
     this.viewTrialLeadProtocolIdentifier = element(by.binding('viewTrialView.curTrial.lead_protocol_id'));
     this.viewTrialNCIID = element(by.binding('viewTrialView.curTrial.nci_id'));
     this.viewTrialOtherIdentifierNameValue =  element.all(by.binding('otherId.protocol_id'));
+    this.viewTrialOtherIdentifierValuePresent =  element(by.css('td.col-md-6.protocol-id'));
+    this.viewTrialOtherIdentifierAllValues =  element.all(by.css('td.col-md-6.protocol-id'));
 
     /** Trial Details **/
     this.viewTrialOfficialTitle = element(by.binding('viewTrialView.curTrial.official_title'));
@@ -253,6 +256,11 @@ var registerTrial = function(){
     this.viewTrialAcceptedFileExtensionMsg = element.all(by.binding('trialDetailView.acceptedFileExtensions'));
     this.viewTrialAddMoreDocsButton = element(by.css('button[ng-click="trialDetailView.addOtherDoc()"]'));
     this.viewTrialOtherDocsDescription = element.all(by.model('trialDetailView.other_document_subtypes[$index]'));
+
+    /** Trial Participating Sites **/
+    this.viewParticipatingSiteNamePresent = element(by.binding('ps.organization.name'));
+    this.viewParticipatingSiteName = element.all(by.binding('ps.organization.name'));
+    this.viewTrialPsticipatingSites = element.all(by.css('tr[ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index"]'));
 
 
     var helper = new helperFunctions();
@@ -880,6 +888,12 @@ var registerTrial = function(){
 
     this.getViewTrialDoc = function(){
         helper.getVerifyLabel(this.viewTrialVerifyviewedDocs,"View Trial Docs ");
+    };
+
+    /*************** Verify Participating Sites ****************/
+
+    this.getViewTrialParticipatingSites = function(participatingSites){
+        expect(this.viewTrialPsticipatingSites.getText()).to.eventually.eql(participatingSites);
     };
 
 
