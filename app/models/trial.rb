@@ -774,7 +774,7 @@ class Trial < TrialBase
       current_year = Time.new.year.to_s
       largest_id = Trial.where('nci_id ilike ?', "%NCI-#{current_year}-%").order('nci_id desc').pluck('nci_id').first
       if largest_id.nil?
-        new_id = "NCI-#{current_year}-00000"
+        new_id = "NCI-#{current_year}-00001"
       else
         new_id = largest_id.next
       end
