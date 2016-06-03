@@ -5,7 +5,7 @@ As a CTRP User with Site Administration privileges, I can grant Site Administrat
 
 Scenario: #1 I can view CTRP Users with as a Site Admin
 Given I am logged into CTRP 
-And I have Site Administrator privileges for my organization
+And I have Site Administrator privileges
 When I select the Site Administration feature (User Management)
 Then I will see a list of all CTRP Users that have organization Affiliation to the same Family as my organization affiliation:
 |Username|
@@ -21,19 +21,23 @@ Then I will see a list of all CTRP Users that have organization Affiliation to t
 
 Scenario: #2 I can search for CTRP Users as a Site Admin
 Given I am logged into CTRP 
-And I have Site Administrator privileges for my organization
+And I have Site Administrator privileges
 When I select the Site Administration feature (User Management)
 And I enter search criteria as
 |Username|
 |Last Name |
 |First Name |
 |Email |
-|Organization (using the organization Type Ahead and includes only organizations in the same Family as my organization affiliation)|
+|Organization (using the organization Type Ahead which includes only organizations in the same Family as my organization affiliation)|
 |Family|
 |Site Admin Privilege|
 |Status|
 And I select the Search option
-Then I will see a list of all CTRP Users that have organization Affiliation to the same Family as my organization affiliation that match the search criteria, and are Active, and are Not Expired
+Then I will see a list of all CTRP Users that have organization Affiliation to the same Family as my organization affiliation that match the search criteria, 
+And user Status is
+|Active|
+|Pending|
+And the affiliation between the organizaiton an the Family is not Not Expired
 And the list will be ordered by Last Name and then First name
 And the list can be sorted by
 |Username|
@@ -93,7 +97,7 @@ Scenario: #6 Change site affiliation
 Given I am logged into CTRP 
 And I have Site Administrator privileges
 When I select the Site Administration feature (User Management)
-Then I will see a list of all CTRP Users with the same Site Affiliation as I have listing:
+Then I will see a list of all CTRP Users with the same Site Affiliation as I have
 And I select a user that has site administrator privileges
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the organization affiliation for the CTRP User to a different organization by selecting organization look up
