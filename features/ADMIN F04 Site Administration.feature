@@ -62,6 +62,8 @@ And user Status is
 |Active|
 |Pending|
 And the affiliation between the organization an the Family is not Not Expired
+And the Family is Active
+And the Organization is Active
 And the list will be ordered by Last Name and then First name
 And the list can be sorted by
 |Username|
@@ -91,6 +93,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation as m
 And user Status is
 |Active|
 |Pending|
+And the Organization is Active
 And the list will be ordered by Last Name and then First name
 And the list can be sorted by
 |Username|
@@ -108,6 +111,12 @@ Given I am logged into CTRP
 And I have Site Administrator privileges
 When I select the Site Administration feature
 And I will see a list of all CTRP Users with the same Site Affiliation as I have
+And user Status is
+|Active|
+|Pending|
+And the Family is Active
+And the Organization is Active
+And the affiliation between the organization an the Family is not Not Expired
 When I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
@@ -120,6 +129,12 @@ Given I am logged into CTRP
 And I have Site Administrator privileges
 When I select the Site Administration feature
 And I will see a list of all CTRP Users with the same Site Affiliation as I have 
+And user Status is
+|Active|
+|Pending|
+And the Family is Active
+And the Organization is Active
+And the affiliation between the organization an the Family is not Not Expired
 When I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
