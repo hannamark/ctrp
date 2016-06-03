@@ -824,22 +824,19 @@
             var errorMsg = '';
 
             if (!protocolIdOriginId || !protocolId) {
-                errorMsg = 'Protocol ID Origin and enter a Protocol ID is Required';
+                errorMsg = 'Both Protocol ID Origin and a Protocol ID are Required';
                 return errorMsg;
             }
-            for (var i = 0; i < addedOtherIds.length; i++) {
-                if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
-                    && protocolIdOriginCode !== 'OTH'
-                    && protocolIdOriginCode !== 'ONCT') {
-                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' already exists';
-                    return errorMsg;
-                } else if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
-                    && addedOtherIds[i].protocol_id === protocolId
-                    && (protocolIdOriginCode === 'OTH'
-                    || protocolIdOriginCode === 'ONCT')) {
-                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' ' + addedOtherIds[i].protocol_id + ' already exists';
-                    return errorMsg;
-                }
+            var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
+            var codeArr = ['OTH', 'ONCT'];
+            if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + 'already exists';
+                return errorMsg;
+            } else if (angular.isDefined(idObj) && idObj.protocol_id === protocolId &&
+                _.contains(codeArr, protocolIdOriginCode)) {
+
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ': ' + idObj.protocol_id + ' already exists';
+                return errorMsg;
             }
             // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
             if ((protocolIdOriginCode === 'NCT' || protocolIdOriginCode === 'ONCT') && !/^NCT\d{8}$/.test(protocolId)) {
@@ -847,7 +844,7 @@
                 return errorMsg;
             }
             if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
-                errorMsg = 'The Obsolete ClinicalTrials.gov Identifier must be unique';
+                errorMsg = 'The Obsolete ClinicalTrials.gov Identifier must not be identical to the active one';
                 return errorMsg;
             }
 
