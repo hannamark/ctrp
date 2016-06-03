@@ -844,7 +844,7 @@
                 return errorMsg;
             }
             if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
-                errorMsg = 'The Obsolete ClinicalTrials.gov Identifier must not be identical to the active one';
+                errorMsg = 'The Obsolete ClinicalTrials.gov Identifier must be unique';
                 return errorMsg;
             }
 
