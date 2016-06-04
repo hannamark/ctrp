@@ -235,6 +235,9 @@
                         <button type="submit" class="btn btn-primary pull-right" id="submit_processing" restriction-field ng-disabled="markersView.disableBtn">
                             <i class="glyphicon glyphicon-ok"></i> Save
                         </button>
+                        <button type="button" class="btn btn-primary pull-right" ng-if="markersView.currentBioMarker.id" ng-click="markersView.saveAndRetainMarker()" restriction-field ng-disabled="markersView.disableBtn">
+                            <i class="glyphicon glyphicon-ok"></i> Save & Retain Attributes
+                        </button>
                         <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="markersView.resetBioMarker()" ng-disabled="markersView.disableBtn">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
@@ -257,7 +260,9 @@
                     <table class="table table-bordered table-striped table-hover" ng-show="markersView.curTrial.bio_markers.length">
                         <thead>
                         <th>Name</th>
+                        <th>Protocol Marker Name</th>
                         <th>Evaluation Type</th>
+                        <th>Assay Type</th>
                         <th>Bio Marker Use</th>
                         <th>Biomarker Purpose</th>
                         <th>Specimen Type</th>
@@ -277,8 +282,17 @@
                             </td>
 
                             <td>
+                                {{bio_marker.protocol_marker_name}}
+                            </td>
+
+                            <td>
                                 {{bio_marker.eval_types_array}}
                             </td>
+
+                            <td>
+                                {{bio_marker.assay_types_array}}
+                            </td>
+
                             <td>
                                 {{bio_marker.biomarker_use}}
                             </td>
