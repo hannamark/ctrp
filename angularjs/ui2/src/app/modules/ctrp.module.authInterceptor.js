@@ -44,6 +44,11 @@
         function responseError(rejection) {
             console.log('rejection is: ', rejection);
             var ignoredFields = ['new', 'id', 'server_response']; // fields ignored in the response body
+
+            if (!rejection.data) {
+                $injector.get('toastr').error('Please try again.', 'The server may be down');
+            }
+
             if(rejection.status === 401) {
               //if unauthenticated or unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
