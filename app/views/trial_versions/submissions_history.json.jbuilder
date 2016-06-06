@@ -45,7 +45,7 @@ json.trial_versions do
         milestone_name =  Milestone.find_by_id(milestone.milestone_id).name
         Array milestone = Array.new
 
-        milestone.push(milestone_date.strftime("%d-%h-%Y"))
+        milestone.push(milestone_date.strftime("%d-%h-%Y")) if milestone_date
         milestone.push(milestone_name)
         json.milestone milestone
     end
