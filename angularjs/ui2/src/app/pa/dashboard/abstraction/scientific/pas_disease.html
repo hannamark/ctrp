@@ -32,7 +32,7 @@
                     <span us-spinner="{radius: 10, length: 5}" spinner-on="diseaseView.searching"></span>
                 </div>
 
-                <h4 ng-show="diseaseView.searchResult.length">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
+                <h4 ng-show="diseaseView.infoUrl">{{diseaseView.searchResult.length === 300 ? 'More than ' : ''}}{{diseaseView.searchResult.length}} results for "{{diseaseView.searchParams.disease_name}}"</h4>
 
                 <div class="form-group">
                     <div class="col-sm-7 table-responsive max-height-lg">
