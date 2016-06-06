@@ -185,8 +185,14 @@ And I am on the Trial Validation (Submission) screen
 When select Accept
 Then the information entered or edited for the trail will be saved to the trial record
 And the trial processing status will be Accepted 
-And the trial milestone Submission Accepted Date will be created with the current date and time 
 And the trail acceptance e-mail will be sent to the trial submitter
+When the trial milestone "Validation QC Completed Date" does not exist for this submission
+Then the trial milestone "Validation QC Completed Date" will be created with the current date and time
+And the trial milestone "Submission Accepted Date" will be created with the current date and time 
+When the trial milestone "Validation QC Completed" Date does exist for this submission
+Then the trial milestone "Submission Accepted Date" will be created with the current date and time 
+
+
 
 Scenario: #22 Reject Trial Validation
 Given I have selected a trial for Trail Validation 
