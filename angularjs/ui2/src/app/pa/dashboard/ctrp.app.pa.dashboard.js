@@ -40,12 +40,10 @@
         'ui.grid.selection',
         'ui.grid.expandable',
         'ui.scrollpoint',
-        'angular-json-tree',
         'smart-table',
         'ngFileSaver',
         'angularSpinner',
         'ui.select',
-        'ui.sortable',
         'ntt.TreeDnD'
     ]);
 })();

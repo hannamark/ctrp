@@ -207,7 +207,7 @@
                         </label>
                     </div>
                 </div>
-                <div ng-hide="generalTrialDetailView.centralContactType == 'None' || generalTrialDetailView.centralContactType == ''">
+                <div ng-hide="generalTrialDetailView.centralContactType === 'None' || generalTrialDetailView.centralContactType === ''">
                     <div class="form-group" ng-class="{'has-feedback required': generalTrialDetailView.centralContactNameRequired,'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.central_contact_name)}">
                         <label for="central_contact" class="control-label col-xs-12 col-sm-3">Central Contact:</label>
                         <div class="col-xs-12 col-sm-6">
@@ -223,30 +223,32 @@
                             <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
                         </div>
                     </div>
-                </div>
 
-                <!-- Email Address -->
-                <div class="form-group">
-                    <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="email" id="email" name="email" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email" class="form-control input-sm" placeholder="Email">
-                        <span class="form-control-feedback" ng-show="general_trial_details_form.email.$viewValue.length > 0" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                    <!-- Email Address -->
+                    <div class="form-group">
+                        <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="email" id="email" name="email" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].email" class="form-control input-sm" placeholder="Email">
+                            <span class="form-control-feedback" ng-show="general_trial_details_form.email.$viewValue.length > 0" ng-class="!general_trial_details_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                        </div>
+                        <div class="col-sm-3"></div>
                     </div>
-                    <div class="col-sm-3"></div>
-                </div>
+                    <!-- end of Email Address -->
 
-                <!-- Phone Number -->
-                <div class="form-group">
-                    <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
-                    <div class="col-xs-12 col-sm-4">
-                        <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
-                        class="form-control input-sm" placeholder="Phone" ng-change="generalTrialDetailView.isValidPhoneNumber()">
-                        <span ng-show="general_trial_details_form.phone.$viewValue.length > 0" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
+                            class="form-control input-sm" placeholder="Phone" ng-change="generalTrialDetailView.isValidPhoneNumber()">
+                            <span ng-show="general_trial_details_form.phone.$viewValue.length > 0" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                        </div>
+                        <div class="col-xs-12 col-sm-2">
+                            <input type="text" class="form-control input-sm" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension" placeholder="Extension">
+                        </div>
+                        <div class="col-sm-3"></div>
                     </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <input type="text" class="form-control input-sm" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension" placeholder="Extension">
-                    </div>
-                    <div class="col-sm-3"></div>
+                    <!-- end of phone number -->
                 </div>
             </fieldset>
 
