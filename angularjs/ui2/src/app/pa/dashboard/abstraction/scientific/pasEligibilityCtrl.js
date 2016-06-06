@@ -66,6 +66,12 @@
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
             vm.disableBtn = true;
 
+            $scope.criteria_form.$setSubmitted();
+
+            if (!$scope.criteria_form.$valid) {
+                return;
+            }
+
             PATrialService.upsertTrial(outerTrial).then(function(res) {
                 var status = res.server_response.status;
 
