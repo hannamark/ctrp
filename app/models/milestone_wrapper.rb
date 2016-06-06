@@ -88,6 +88,11 @@ class MilestoneWrapper < TrialBase
         if self.submission.present? && vfp.present?
           ProcessingStatusWrapper.create(status_date: Date.today, processing_status: vfp, submission: self.submission, trial: self.trial)
         end
+        # Should generate Trial Summary Report each time when this milestone has been added to Trial.
+        #Calling service to generate Trial Summary Report
+        CreateTrialSummaryReportService.new({
+                                                trial_id: self.trial.id, store_file_on_server:true
+                                            }).generate_tsr_in_rtf
       elsif self.milestone.code == 'IAV'
         self.trial.verification_date = self.created_at
         self.trial.save
