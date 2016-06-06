@@ -169,7 +169,7 @@
                                         </span>
 
                                         <input type="hidden" name="sr_dummy" ng-model="psView.srDummyField" ng-required="!psView.siteRecruitmentGrid.length">
-                                        <div class="top-offset-xs" ng-show="ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length" ng-class="{'has-error': ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length}">
+                                        <div class="top-offset-xs" ng-show="(ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length) || psView.srStatusDeleteException" ng-class="{'has-error': (ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length) || psView.srStatusDeleteException}">
                                             <span class="help-block">
                                                 At least one Site Recruitment Status is Required
                                             </span>
@@ -313,7 +313,7 @@
                                 </div>
 
                                 <input type="hidden" name="inv_dummy" ng-model="psView.invDummyField" ng-required="!psView.investigatorGrid.length">
-                                <div class="top-offset-xs" ng-show="ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length" ng-class="{'has-error': ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length}">
+                                <div class="top-offset-xs" ng-show="(ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length) || psView.invDeleteException" ng-class="{'has-error': (ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length) || psView.invDeleteException}">
                                     <span class="help-block">
                                         At least one Investigator is Required
                                     </span>
@@ -360,7 +360,7 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_investigators" restriction-field ng-disabled="psView.current_investigator.uiEdit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
                                     <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)" ng-disabled="psView.disableBtn">
