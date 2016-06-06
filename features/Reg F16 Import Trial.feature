@@ -11,7 +11,7 @@ Then the Search Studies feature will indicate if the NCT ID is a valid NCT ID in
 And the Search Studies feature will indicate if a trial with the NCT ID has been registered in CTRP
 
 Scenario: #2 I can import an Industrial or Other trial by NCT ID from ClinicalTrials.gov
-Given I have selected the option to import an Industrial trial or Other Trial
+Given I have selected the option to import an Industrial or Other Trial
 And I am on the Import ClinicalTrials.gov Trials screen
 When I have entered a NCT Number
 And the Search Studies feature indicates that the trial has not been registered in CTRP
