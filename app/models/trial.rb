@@ -223,6 +223,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :onholds, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
+  validates :lead_protocol_id, uniqueness: { scope: :lead_org_id, message: "Combination of Lead Organization Trial ID and Lead Organization must be unique" }
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
