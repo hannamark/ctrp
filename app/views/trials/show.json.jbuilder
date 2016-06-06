@@ -74,9 +74,11 @@ end
 
 json.bio_markers do
   json.array!(@trial.markers) do |marker|
-    json.extract! marker, :id, :name,:protocol_marker_name, :evaluation_type_other,:assay_type_other,:specimen_type_other,:record_status,:biomarker_use_id,:cadsr_marker_id
+    json.extract! marker, :id,:protocol_marker_name, :evaluation_type_other,:assay_type_other,:specimen_type_other,:record_status,:biomarker_use_id,:cadsr_marker_id
     json.biomarker_use marker.biomarker_use.present? ? marker.biomarker_use.name : nil
 
+    marker.record_status == "Active" ? name = marker.name.gsub("name:", "") : name = marker.name
+    json.name name
     json.assay_type_associations MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id)
     json.eval_type_associations MarkerEvalTypeAssociation.where("marker_id = ? ", marker.id)
     json.spec_type_associations MarkerSpecTypeAssociation.where("marker_id = ? ", marker.id)
@@ -85,17 +87,37 @@ json.bio_markers do
     at_array =MarkerAssayTypeAssociation.where("marker_id = ? ", marker.id).pluck(:assay_type_id)
     assay_types= AssayType.where(id: at_array)
     json.assay_types assay_types
+    assay_types = assay_types.pluck(:code)
+    if assay_types.include? AssayType.find_by_code("Other").code
+      assay_types.delete(AssayType.find_by_code("Other").code)
+      assay_types.push(marker.assay_type_other + " (Other)")
+    end
+    json.assay_types_array assay_types.inspect[1...-1].gsub('"',"")
 
     et_array =MarkerEvalTypeAssociation.where("marker_id = ? ", marker.id).pluck(:evaluation_type_id)
     eval_types= EvaluationType.where(id: et_array)
     json.eval_types eval_types
-    json.eval_types_array eval_types.pluck(:code).inspect[1...-1].gsub('"',"")
+    eval_types = eval_types.pluck(:code)
+
+
+    if eval_types.include? EvaluationType.find_by_code("Other").code
+      eval_types.delete(EvaluationType.find_by_code("Other").code)
+      eval_types.push(marker.evaluation_type_other + " (Other)")
+    end
+    json.eval_types_array eval_types.inspect[1...-1].gsub('"',"")
 
     st_array =MarkerSpecTypeAssociation.where("marker_id = ? ", marker.id).pluck(:specimen_type_id)
     spec_types= SpecimenType.where(id: st_array)
     json.spec_types spec_types
-    json.spec_types_array
-    spec_types.pluck(:code).inspect[1...-1].gsub('"',"")
+
+    spec_types = spec_types.pluck(:code)
+
+    if spec_types.include? SpecimenType.find_by_code("Other").code
+      spec_types.delete(SpecimenType.find_by_code("Other").code)
+      spec_types.push(marker.specimen_type_other + " (Other)")
+    end
+
+    json.spec_types_array spec_types.inspect[1...-1].gsub('"',"")
 
     biomarker_purpose_array = MarkerBiomarkerPurposeAssociation.where("marker_id = ? ", marker.id).pluck(:biomarker_purpose_id)
     biomarker_purposes = BiomarkerPurpose.where(id: biomarker_purpose_array)
@@ -111,6 +133,9 @@ json.interventions do
     json.set! :intervention_type_name, intervention.intervention_type_id.nil? ? '' : InterventionType.find(intervention.intervention_type_id).nil? ? '' : InterventionType.find(intervention.intervention_type_id).name
   end
 end
+
+
+
 
 json.collaborators do
   json.array!(@trial.collaborators) do |collaborator|
@@ -178,11 +203,28 @@ json.participating_sites do
   end
 end
 
+
 json.arms_groups do
+  arms_groups_interventions = []
   json.array!(@trial.arms_groups) do |ag|
     json.extract! ag, :id, :label, :arms_groups_type, :description, :trial_id
+
+      arms_groups_interventions_array=ArmsGroupsInterventionsAssociation.where("arms_group_id = ? ", ag.id)
+      json.arms_groups_interventions_array arms_groups_interventions_array
+
+      arms_groups_interventions_array = arms_groups_interventions_array.pluck(:intervention_id)
+
+      interventions= Intervention.where(id: arms_groups_interventions_array)
+      json.arms_groups_interventions interventions
+
+      interventions = interventions.pluck(:name)
+      json.display_interventions interventions.inspect[1...-1].gsub('"',"")
+
+
   end
-end
+  end
+
+
 
 json.diseases do
   json.array!(@trial.diseases) do |disease|

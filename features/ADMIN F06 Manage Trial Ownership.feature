@@ -18,12 +18,12 @@ And the Information Source is "Protocol"
 And the NIH/NCI Division/Department Identifier is Null, including
 |NCI Trial ID|
 |Lead Org ID|
-|Organization (Lead Organization or Participating site)|
+|Organization (Lead Organization)|
 And all the associations that I am making between trials and users affiliated with my Organizational family including (will be null until selections are made in follwing scenarios)
 |Last Name, First Name |
 |NCI Trial ID|
 |Lead Org ID|
-|Organization (Lead Organization or Participating site)|
+|Organization (Lead Organization)|
 
 Scenario: #2 I can assign a CTRP Users that are affiliated with an Organization in my Family Trial Ownership privileges
 Given I am logged into CTRP 
@@ -44,5 +44,5 @@ And I have selected one or more trial ownership assignments, displayed as:
 |Last Name, First Name |
 |NCI Trial ID|
 |Lead Org ID|
-|Organization (Lead Organization or Participating site)|
+|Organization (Lead Organization)|
 Then trial ownership privileges will be removed from the CTRP Users selected
