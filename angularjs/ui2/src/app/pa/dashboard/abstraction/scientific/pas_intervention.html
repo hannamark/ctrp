@@ -1,7 +1,10 @@
 <div class="row" id="section_top">
     <div class="panel panel-default" ng-show="interventionView.showInterventionForm">
         <div class="panel-heading">
-            <div class="panel-title">Add Intervention</div>
+            <div class="panel-title">
+                <span ng-hide="interventionView.curInterventionObj.edit">Add Intervention</span>
+                <span ng-show="interventionView.curInterventionObj.edit">Edit Intervention</span>
+            </div>
         </div>
         <div class="panel-body">
             <form name="intervention_form" role="form" class="form form-horizontal" novalidate ctrp-submit="interventionView.upsertIntervention(interventionView.curInterventionObj)">
