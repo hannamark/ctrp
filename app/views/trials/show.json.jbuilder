@@ -134,6 +134,9 @@ json.interventions do
   end
 end
 
+
+
+
 json.collaborators do
   json.array!(@trial.collaborators) do |collaborator|
     json.extract! collaborator, :id, :organization_id, :org_name
@@ -200,11 +203,28 @@ json.participating_sites do
   end
 end
 
+
 json.arms_groups do
+  arms_groups_interventions = []
   json.array!(@trial.arms_groups) do |ag|
     json.extract! ag, :id, :label, :arms_groups_type, :description, :trial_id
+
+      arms_groups_interventions_array=ArmsGroupsInterventionsAssociation.where("arms_group_id = ? ", ag.id)
+      json.arms_groups_interventions_array arms_groups_interventions_array
+
+      arms_groups_interventions_array = arms_groups_interventions_array.pluck(:intervention_id)
+
+      interventions= Intervention.where(id: arms_groups_interventions_array)
+      json.arms_groups_interventions interventions
+
+      interventions = interventions.pluck(:name)
+      json.display_interventions interventions.inspect[1...-1].gsub('"',"")
+
+
   end
-end
+  end
+
+
 
 json.diseases do
   json.array!(@trial.diseases) do |disease|

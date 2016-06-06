@@ -21,5 +21,7 @@ class ArmsGroup < ActiveRecord::Base
   include BasicConcerns
   
   belongs_to :trial
-  has_many :interventions
+  has_many :arms_groups_interventions_associations, dependent: :destroy
+  accepts_nested_attributes_for :arms_groups_interventions_associations, allow_destroy: true
+
 end

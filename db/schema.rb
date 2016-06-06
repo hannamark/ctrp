@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601162210) do
+ActiveRecord::Schema.define(version: 20160606004020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,18 @@ ActiveRecord::Schema.define(version: 20160601162210) do
   end
 
   add_index "arms_groups", ["trial_id"], name: "index_arms_groups_on_trial_id", using: :btree
+
+  create_table "arms_groups_interventions_associations", force: :cascade do |t|
+    t.integer  "arms_group_id"
+    t.integer  "intervention_id"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "uuid",            limit: 255
+    t.integer  "lock_version",                default: 0
+  end
+
+  add_index "arms_groups_interventions_associations", ["arms_group_id"], name: "index_arms_groups_interventions_associations_on_arms_group_id", using: :btree
+  add_index "arms_groups_interventions_associations", ["intervention_id"], name: "index_arms_groups_interventions_associations_on_intervention_id", using: :btree
 
   create_table "assay_types", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -457,11 +469,9 @@ ActiveRecord::Schema.define(version: 20160601162210) do
     t.string   "uuid",                 limit: 255
     t.integer  "lock_version",                     default: 0
     t.integer  "index"
-    t.integer  "arms_group_id"
     t.string   "c_code"
   end
 
-  add_index "interventions", ["arms_group_id"], name: "index_interventions_on_arms_group_id", using: :btree
   add_index "interventions", ["c_code"], name: "index_interventions_on_c_code", using: :btree
   add_index "interventions", ["intervention_type_id"], name: "index_interventions_on_intervention_type_id", using: :btree
   add_index "interventions", ["trial_id"], name: "index_interventions_on_trial_id", using: :btree
@@ -1496,6 +1506,8 @@ ActiveRecord::Schema.define(version: 20160601162210) do
   add_foreign_key "anatomic_site_wrappers", "anatomic_sites"
   add_foreign_key "anatomic_site_wrappers", "trials"
   add_foreign_key "arms_groups", "trials"
+  add_foreign_key "arms_groups_interventions_associations", "arms_groups"
+  add_foreign_key "arms_groups_interventions_associations", "interventions"
   add_foreign_key "associated_trials", "identifier_types"
   add_foreign_key "associated_trials", "trials"
   add_foreign_key "cadsr_marker_synonyms", "cadsr_marker_statuses"
@@ -1516,7 +1528,6 @@ ActiveRecord::Schema.define(version: 20160601162210) do
   add_foreign_key "grants", "trials"
   add_foreign_key "ind_ides", "holder_types"
   add_foreign_key "ind_ides", "trials"
-  add_foreign_key "interventions", "arms_groups"
   add_foreign_key "interventions", "intervention_types"
   add_foreign_key "interventions", "trials"
   add_foreign_key "links", "trials"
@@ -1624,6 +1635,7 @@ ActiveRecord::Schema.define(version: 20160601162210) do
   create_sequence "anatomic_sites_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "app_settings_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "arms_groups_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "arms_groups_interventions_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "assay_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "associated_trials_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "biomarker_purposes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

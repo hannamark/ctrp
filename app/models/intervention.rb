@@ -31,6 +31,7 @@ class Intervention < ActiveRecord::Base
   belongs_to :intervention_type
   belongs_to :trial
   belongs_to :arms_group
+  has_many :arms_groups_interventions_associations, dependent: :destroy
 
   after_save :update_intervention_type
 
