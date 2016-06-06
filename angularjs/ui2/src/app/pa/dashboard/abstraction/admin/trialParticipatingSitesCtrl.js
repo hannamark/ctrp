@@ -130,6 +130,7 @@
             var invGrid = angular.copy(vm.investigatorGrid);
 
             vm.invDeleteException = false;
+            vm.srStatusDeleteException = false;
 
             // So user cannot save with duplicate organization id for the same trial
             if (vm.duplicateParticipatingSite) {
