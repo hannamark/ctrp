@@ -23,6 +23,7 @@
         // 'ctrp.app.po',
 
         /* 3rd-party modules */
+        'ui.sortable',
         'ui.bootstrap.modal',
         'ui.bootstrap.datepicker',
         'ui.bootstrap.accordion',
@@ -45,7 +46,6 @@
         'ngFileSaver',
         'angularSpinner',
         'ui.select',
-        'ui.sortable',
         'ntt.TreeDnD'
     ]);
 })();
