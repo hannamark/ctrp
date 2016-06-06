@@ -295,7 +295,7 @@ Then the updated information on the Add Biomarkers screen will not be saved to t
 And the screen will be refreshed with the data since the last save
 
   Scenario: #18 I cannot save duplicate Biomarkers  (added 06JUN2016)
-    Given I have entered a duplicate biomarker with duplicate 'Name', 'Assay Type', 'Assay Use', 'Assay Purpose', 'Tissue Specimen Type'
+    Given I have entered a duplicate biomarker with duplicate 'Name', 'Assay Type', 'Biomarker Use', 'Biomarker Purpose', 'Specimen Type'
      When I select Save button
      Then an error message is displayed 'Duplicate Planned Markers are not allowed' 
 
