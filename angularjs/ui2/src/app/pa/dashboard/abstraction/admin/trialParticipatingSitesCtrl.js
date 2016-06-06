@@ -49,6 +49,8 @@
         vm.centralContactTypes = centralContactTypes.types;
         vm.investigatorTypes = investigatorTypes;
         vm.showInvestigatorRoleError = false;
+        vm.invDeleteException = false;
+        vm.srStatusDeleteException = false;
         vm.duplicateParticipatingSite = false;
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
@@ -127,9 +129,29 @@
             var cbString = callBackString;
             var invGrid = angular.copy(vm.investigatorGrid);
 
+            vm.invDeleteException = false;
+
             // So user cannot save with duplicate organization id for the same trial
             if (vm.duplicateParticipatingSite) {
                 return;
+            }
+
+            /* Validation to pre-empt deletion if only one investigator remains */
+            if (invGrid.length === 1) {
+                var inv = invGrid[0];
+                if (inv._destroy || (inv.hasOwnProperty('uiDestroy') && inv.uiDestroy)) {
+                    vm.invDeleteException = true;
+                    return;
+                }
+            }
+
+            /* Validation to pre-empt deletion if only one site recruitment status remains */
+            if (vm.siteRecruitmentGrid.length === 1) {
+                var srStatus = vm.siteRecruitmentGrid[0];
+                if (srStatus._destroy) {
+                    vm.srStatusDeleteException = true;
+                    return;
+                }
             }
 
             vm.disableBtn = true;
@@ -158,7 +180,6 @@
                     if (invObj.hasOwnProperty('uiDestroy') && invObj.uiDestroy) {
                         vm.investigatorGrid.splice(i,1);
                     } else {
-                    //delete invObj.uiDestroy;
                         vm.currentParticipatingSite.participating_site_investigators_attributes.push(invObj);
                     }
                 }
