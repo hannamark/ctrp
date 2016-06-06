@@ -49,6 +49,8 @@
         vm.centralContactTypes = centralContactTypes.types;
         vm.investigatorTypes = investigatorTypes;
         vm.showInvestigatorRoleError = false;
+        vm.invDeleteException = false;
+        vm.srStatusDeleteException = false;
         vm.duplicateParticipatingSite = false;
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
@@ -127,8 +129,12 @@
             var cbString = callBackString;
             var invGrid = angular.copy(vm.investigatorGrid);
 
+            /* Validation to pre-empt deletion if only one site recruitment status or investigator remains */
+            vm.invDeleteException = checkArrayForDeletion(invGrid);
+            vm.srStatusDeleteException = checkArrayForDeletion(vm.siteRecruitmentGrid);
+
             // So user cannot save with duplicate organization id for the same trial
-            if (vm.duplicateParticipatingSite) {
+            if (vm.duplicateParticipatingSite || vm.invDeleteException || vm.srStatusDeleteException) {
                 return;
             }
 
@@ -158,7 +164,6 @@
                     if (invObj.hasOwnProperty('uiDestroy') && invObj.uiDestroy) {
                         vm.investigatorGrid.splice(i,1);
                     } else {
-                    //delete invObj.uiDestroy;
                         vm.currentParticipatingSite.participating_site_investigators_attributes.push(invObj);
                     }
                 }
@@ -995,6 +1000,26 @@
                 console.log('Unsaved Items Exist!');
             } else {
                 console.log('Arrays are identical.');
+            }
+        }
+
+        function checkArrayForDeletion(arr) {
+            var markedItems = [];
+
+            if (!arr.length) {
+                return false;
+            }
+
+            for (var i=0; i < arr.length; i++) {
+                if ((arr[i].hasOwnProperty('uiDestroy') && arr[i].uiDestroy) || arr[i]._destroy) {
+                    markedItems.push(arr[i]);
+                }
+            }
+
+            if (markedItems.length === arr.length) {
+                return true;
+            } else {
+                return false;
             }
         }
 
