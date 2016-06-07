@@ -9,7 +9,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var moment = require ('moment');
-
+var should = chai.should();
 var helperFunctions = require('../support/helper');
 var addTrialPage = require('../support/registerTrialPage');
 //File System
@@ -89,6 +89,16 @@ var abstractionTrailStatuses = function(){
     this.trialStatusSaveBtn = element(by.id('save_btn'));
     this.trialStatusResetBtn = element(by.id('cancel_btn'));
 
+    //Back to Search Results
+    this.trialStatusBackToSearchResultBtn = element(by.id('back_to_search'));
+
+    //Refer Rules
+    this.trialStatusTransitionRules = element(by.css('.row.table-responsive>div>p'));
+    this.trialStatusDatesRules = element(by.css('.row.top-offset-xs'));
+
+    //Wiki obj
+    this.wikiTitle = element(by.css('#title-text'));
+
     //Trial Statuses
 
     this.setStatusDate = function(dateYear, dateMonth, dateDay){
@@ -130,6 +140,62 @@ var abstractionTrailStatuses = function(){
         helper.verifyTableRowText(this.tblErrorsWarningTHd, trialSttsTblHdr[4], "Errors/Warnings - Table Header");
         helper.verifyTableRowText(this.tblEditTHd, trialSttsTblHdr[5], "Edit - Table Header");
         helper.verifyTableRowText(this.tblDeleteTHd, trialSttsTblHdr[6], "Delete - Table Header");
+    };
+
+    this.verifyTransitionRulesRef = function(getArg, verifyLine){
+        getTranRef = this.trialStatusTransitionRules.getText('value');
+        getTranRef.then(function(ref){
+            console.log('Actual Reference: '+ref.replace(/\n/g, "###", -1));
+            strVal = ref.toString().replace(/\n/g, "###", -1);
+            console.log('replace:[' + strVal +']');
+            var refLines = strVal.toString().split("###");
+            refA = refLines[0];
+            refB = refLines[1];
+            if (verifyLine === '1'){
+                expect(getArg.toString()).to.eql(refA.toString());
+            } else if (verifyLine === '2'){
+                expect(getArg.toString()).to.eql(refB.toString());
+            }
+        });
+    };
+
+    this.verifyWikiTitle = function(getTtle){
+        var wikiTitleVar = element(by.css('#title-text'));
+        //browser.driver.isElementPresent(wikiTitleVar).then(function(result) {
+        //    if (result) {
+        //        browser.driver.findElement(wikiTitleVar).getText().then(function(value)   {
+        //            expect(getTtle.toString()).to.eql(value.toString());
+        //        });
+        //    }
+        //});
+        //
+        //browser.driver.getAllWindowHandles().then(function(handles){
+        //    browser.driver.switchTo().window(handles[1]).then(function(){
+        //        helper.wait(wikiTitleVar, 'Waiting for Wiki page');
+        //        expect(browser.driver.findElement(wikiTitleVar).getText().toString()).to.eql(ttle.toString());
+        //        getWikiTitle = this.wikiTitle.getText('value');
+        //        getWikiTitle.then(function(ttle){
+        //            expect(getTtle.toString()).to.eql(ttle.toString());
+        //        });
+        //    });
+        //});
+    };
+
+    this.verifyDatesRulesRef = function(getArg, verifyLine){
+        getDatRef = this.trialStatusDatesRules.getText('value');
+        getDatRef.then(function(ref){
+            console.log('Actual Reference: '+ref.replace(/\n/g, "###", -1));
+            strVal = ref.toString().replace(/\n/g, "###", -1);
+            console.log('replace:[' + strVal +']');
+            var refLines = strVal.toString().split("###");
+            refC = refLines[0];
+            refD = refLines[1];
+            if (verifyLine === '1'){
+                expect(getArg.toString()).to.eql(refC.toString());
+            } else if (verifyLine === '2'){
+                expect(getArg.toString()).to.eql(refD.toString());
+            }
+        });
     };
 
     this.findTrialStatusVerfEdtDel = function(exTrlStatus, what, errWarn){
@@ -184,6 +250,16 @@ var abstractionTrailStatuses = function(){
                             expect(errWarnings.toString()).to.eql(getErWarn.toString());
                             console.log('Current Errors/Warnings: ['+getErWarn+']');
                         });
+                    } else if (whatToDo === 'notExists'){
+                        var notExpectedValue = 'Unexpected Trial Status Exists';
+                        expect(expTrialStats.toString()).to.eql(notExpectedValue.toString());
+                    }
+                }
+                if (expTrialStats != Test1){
+                    if (whatToDo === 'notExists'){
+                        var notExpectedValue = 'Unexpected Trial Status Does not Exists';
+                        var noneExpVal = 'Unexpected Trial Status Does not Exists'
+                        expect(notExpectedValue.toString()).to.eql(noneExpVal.toString());
                     }
                 }
             });
@@ -277,6 +353,9 @@ var abstractionTrailStatuses = function(){
         helper.clickButton(this.trialStatusResetBtn, "Trial Status Reset - Button");
     };
 
+    this.clickBackToSearchResults = function(){
+        helper.clickButton(this.trialStatusBackToSearchResultBtn, "Back to Trial Search Results Screen - Button");
+    };
 };
 
 module.exports = abstractionTrailStatuses;

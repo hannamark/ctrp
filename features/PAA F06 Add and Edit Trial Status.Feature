@@ -41,25 +41,25 @@ And have entered or edited the Additional Comments
 When I select Save
 Then the trial status and dates will be checked against validation rules and associated with the trial
 And the trial status and date will be displayed as trial status history with any errors or warnings from the Trial Status Transition Rules
-@runthis
+
 Scenario: #2 I can enter a trial status and invalid trial status date for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Given I have selected trail
-And I have selected a trial status 
+And I have selected a trial status
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
 And I have selected the Trial Start Date Type of "Actual" , "Anticipated"
 And I have entered or selected a Primary Completion Date
-And I have selected the Primary Completion Date Type of "Actual" , "Anticipated" , "NA"
+And I have selected the Primary Completion Date Type of "Actual" , "Anticipated", "NA"
 And I have entered or selected a Completion Date
 And I have selected the Completion Date Type of "Actual" , "Anticipated"
-And have entered or edited the Trial Status Comments
 And have entered or edited the Trial On Hold Reason Comments with the trial status is:
 |Administratively Complete|
 |Withdrawn|
 |Temporarily Closed to Accrual|
 |Temporarily Closed to Accrual and Intervention|
+And have entered or edited the Trial Status Comments
 And have entered or edited the any Additional Trial Status Comments
 When I select Save
 Then the trial status and dates will be checked against validation rules and associated with the trial
@@ -75,32 +75,30 @@ And the screen will be refreshed with the existing data trial status data
 Scenario: #4 PA Trial Status Transition Rules 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
-And I can view the Trial Status Transition Rules Information text "Refer to the Trial Status Transition Rules" displayed in the Trial Statuses section below the Trial Statuses Table
+And I can view the Trial Status Transition Rules Information text "Please refer to the Trial Status Transition Rules:" displayed in the Trial Statuses section below the Trial Statuses Table
+And Trial Status Transition Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules"
 When I have clicked on the Trial Status Transition Rules text
-And Trial Status Transition Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Status+Transitions"
 Then the Trial Status Transition Rules user guide page will be displayed
 
 Scenario: #5 PA Trial Status Rules for Start and Completion Dates Rules
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
-And I can view the Trial Status Rules for Start and Completion DatesRules Information text "Refer to the Trial Status Rules for Start and Completion Dates Rules" displayed in the Trial Dates section
+And I can view the Trial Status Rules for Start and Completion DatesRules Information text "Please refer to the Trial Status Rules for Start and Completion Dates Rules:" displayed in the Trial Dates section
+And the Trial Status Rules for Start and Completion Dates Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates"
 When I have clicked on the Trial Status Rules for Start and Completion Dates text
-And the Trial Status Rules for Start and Completion Dates Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Date+Rules"
 Then the Trial Status Rules for Start and Completion Dates Rules user guide page will be displayed
-
-
-
+@runthis
 Scenario: #6 PA Trial Status Comments (Why Study Stopped?)
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Then the information list appears below the Why Study Stopped?
-| Administratively Complete, Withdrawn, and Temporarily Closed statuses only|
+|Administratively Complete,Withdrawn,Temporarily Closed to Accrual,Temporarily Closed to Accrual and Intervention|
 
 Scenario: #7 PA Trial Status Comments (Trial Status Values)
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 Then the information text appears below for each Trial Status when it is selected:
-| In Review - The trial is in development and waiting for final approval.|
+|In Review - The trial is in development and waiting for final approval.|
 |Approved - Trial has been approved.|
 |Active � The trial is open for Accrual.| 
 |Temporarily Closed to Accrual - Trial is temporarily not accruing.|
