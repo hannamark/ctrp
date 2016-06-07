@@ -64,6 +64,7 @@
                             <div class="col-xs-12 col-sm-4">
                                 <select name="priority_selection" id="processing_priority"
                                     class="form-control input-sm"
+                                    ng-disabled="!trialIdView.isFieldEditable"
                                     ng-model="trialIdView.trialProcessingObj.priority" restriction-field
                                     ng-options="priority.name as priority.name for priority in trialIdView.priorities" required>
                                     <option value="">
@@ -81,7 +82,7 @@
                             <label for="trial_processing_comment" class="control-label col-xs-12 col-sm-3">Trial Processing Comments:<br> <small>(maximum: 4,000 characters)</small></label>
 
                             <div class="col-xs-9">
-                                <textarea class="form-control" restriction-field
+                                <textarea class="form-control" ng-disabled="!trialIdView.isFieldEditable" restriction-field
                                     name="processing_comment" id="trial_processing_comment" rows="6" ng-maxlength="4000"
                                     ng-model="trialIdView.trialProcessingObj.comment">
                                 </textarea>
