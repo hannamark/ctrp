@@ -8,14 +8,14 @@
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
     pasArmsGroupsCtrl.$inject = ['$scope','$filter', '$state', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location', 'Common'];
+        'MESSAGES', '_', '$timeout', '$anchorScroll', '$location', 'Common'];
 
     function pasArmsGroupsCtrl($scope,$filter, $state, TrialService, PATrialService, toastr,
-                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location, Common) {
+                                     MESSAGES, _, $timeout, $anchorScroll, $location, Common) {
         var vm = this;
-        vm.curTrial = trialDetailObj;
-        console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
-        console.log("INTERVENTIONS = " + JSON.stringify(trialDetailObj.interventions));
+        vm.curTrial = {};
+        // console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
+        // console.log("INTERVENTIONS = " + JSON.stringify(trialDetailObj.interventions));
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
@@ -34,22 +34,22 @@
         vm.old_assigned_interventions_array = [];
 
         //vm.watchArmLabel = watchArmLabel();
-
-        if(vm.curTrial.research_category.name=='Interventional') {
-            vm.interventional = true;
-        }
-
-        console.log("vm.interventional = " + JSON.stringify(vm.curTrial.research_category));
-        vm.reload = function() {
-            console.log("RELOAD");
-            $state.go($state.$current, null, { reload: true });
-        };
-
         activate();
+        console.log("ARMS_GROUPS = ", vm.curTrial.arms_groups);
+
+        vm.interventional = vm.curTrial.isInterventional || false;
+        vm.reload = function() {
+            _getTrialDetailCopy();
+        };
 
         /****************** implementations below ***************/
         function activate() {
            // watchArmLabel();
+           _getTrialDetailCopy();
+        }
+
+        function _getTrialDetailCopy() {
+            vm.curTrial = PATrialService.getCurrentTrialFromCache();
         }
 
         vm.checkAllAG = function () {
@@ -70,16 +70,9 @@
             var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Label.  Click Cancel to abort';
             //check for duplicates
-            vm.duplicateLabel = false;
-            for (var j = 0; j < vm.curTrial.arms_groups.length; j++) {
-                if (vm.curTrial.arms_groups[j].label == vm.currentArmsGroup.label) {
-                    vm.duplicateLabel = true;
-                }
-            }
+            vm.duplicateLabel = _.findIndex(vm.curTrial.arms_groups, {label: vm.currentArmsGroup.label, arms_groups_type: vm.currentArmsGroup.arms_groups_type}) > -1;
             if (vm.duplicateLabel) {
-                // if OC exists already
                 vm.disableBtn = true;
-
                 Common.alertConfirm(confirmMsg).then(function(ok) {
                     isConfirmed = ok;
                 }).catch(function(cancel) {
