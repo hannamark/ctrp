@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606004020) do
+ActiveRecord::Schema.define(version: 20160606173609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1334,10 +1334,10 @@ ActiveRecord::Schema.define(version: 20160606004020) do
     t.integer  "pi_id"
     t.integer  "sponsor_id"
     t.integer  "investigator_id"
-    t.datetime "created_at",                                            null: false
+    t.datetime "created_at",                                             null: false
     t.datetime "updated_at"
     t.string   "uuid",                          limit: 255
-    t.integer  "lock_version",                              default: 0
+    t.integer  "lock_version",                               default: 0
     t.integer  "research_category_id"
     t.integer  "accrual_disease_term_id"
     t.string   "investigator_title",            limit: 255
@@ -1393,7 +1393,7 @@ ActiveRecord::Schema.define(version: 20160606004020) do
     t.integer  "biospecimen_retention_id"
     t.text     "biospecimen_desc"
     t.integer  "internal_source_id"
-    t.text     "nci_specific_comment"
+    t.string   "nci_specific_comment",          limit: 4000
     t.string   "send_trial_flag"
   end
 

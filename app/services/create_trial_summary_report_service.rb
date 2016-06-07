@@ -3,6 +3,7 @@ class CreateTrialSummaryReportService
 
   def initialize(params)
     @trial_id = params[:trial_id]
+    @store_file_on_server = params[:store_file_on_server]
     @trial = Trial.find_by_id(@trial_id)
 
   end
@@ -130,11 +131,21 @@ class CreateTrialSummaryReportService
       #And the file name will be "TSR_""CTRP Trial ID""_""Current Date YYYY-MM-DD""-
     # "Current Time HHMM(24hr)""_""Current Submission Type (O for original and A for amendment""_""Amendment Number (for amendments)"<examples>
 
-
-
-    temp_file = Tempfile.new(['Sample2',".rtf"])
+    temp_file = Tempfile.new(['rtf_temp_file',".rtf"])
     temp_file << @document.to_rtf
+    file_name = get_rtf_file_name
 
+    if @store_file_on_server
+          trial_document_params = {:file => temp_file, :document_type =>"TSR", :file_name => file_name,:trial_id => @trial_id}
+          td = TrialDocument.new(trial_document_params)
+          td.save!
+     else
+          return temp_file
+     end
+
+  end
+
+  def get_rtf_file_name
     today_date = Date.today()
     time = Time.now
 
@@ -152,12 +163,7 @@ class CreateTrialSummaryReportService
     end
 
     file_name = file_name + ".rtf"
-    trial_document_params = {:file => temp_file, :document_type =>"TSR", :file_name => file_name,:trial_id => @trial_id}
-    td = TrialDocument.new(trial_document_params)
-    td.save!
-
-   return td.id
-
+    return file_name
   end
 
     def create_a_table_row(shading_color, forground_color,text)

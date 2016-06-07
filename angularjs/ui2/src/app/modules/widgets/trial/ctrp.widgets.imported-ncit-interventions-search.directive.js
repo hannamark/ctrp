@@ -173,7 +173,7 @@
                   },
                   {
                       name:'synonyms',
-                      headerName: 'Other Names',
+                      headerName: 'Synonyms',
                       width:'35%',
                       enableSorting: true,
                       enableFiltering: true,
