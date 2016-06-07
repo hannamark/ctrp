@@ -127,7 +127,7 @@
 
 one:
   nci_id: MyString
-  lead_protocol_id: MyString
+  lead_protocol_id: MyString1
   official_title: MyText
   pilot: MyString
   program_code: MyString
@@ -146,7 +146,7 @@ one:
 
 two:
   nci_id: MyString
-  lead_protocol_id: MyString
+  lead_protocol_id: MyString2
   official_title: MyText
   pilot: MyString
   program_code: MyString
