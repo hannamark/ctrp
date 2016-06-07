@@ -44,7 +44,7 @@ class CadsrMarker < ActiveRecord::Base
         end
         where("cadsr_markers.#{column} ilike ?", "%#{value}%")
       else
-        where("cadsr_markers.#{column} ilike ?", "#{value}")
+        where("cadsr_markers.#{column} = ?", "#{value}")
       end
     end
   }

@@ -60,7 +60,7 @@
 
         activate();
         function activate() {
-            _watchTrialStatusChangesChanges();
+            _watchTrialStatusChanges();
             _getTrialDetailCopy();
         } // activate
 
@@ -200,9 +200,10 @@
 
         function editTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
-                vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
+                vm.statusObj = vm.tempTrialStatuses[index]; // angular.copy(vm.tempTrialStatuses[index]);
                 vm.statusObj.edit = true;
                 vm.statusObj.index = index;
+                vm.statusObj.why_stopped = 'hello';
                 // vm.tempTrialStatuses.splice(index, 1);
             }
         }
@@ -233,6 +234,7 @@
         function cancelEdit() {
             if (vm.statusObj.edit) {
                 vm.statusObj = _initStatusObj();
+                vm.showWhyStoppedField = false;
             }
         }
 
@@ -368,16 +370,16 @@
             _getTrialDetailCopy();
         }
 
-        function _watchTrialStatusChangesChanges() {
+        function _watchTrialStatusChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
                 if (newVal) {
-                    vm.statusObj.why_stopped = '';
                     var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
                     var statusName = selectedStatus.name || '';
                     if (_.contains(statusesForWhyStopped, statusName.toLowerCase())) {
                         vm.showWhyStoppedField = true;
                     } else {
                         vm.showWhyStoppedField = false;
+                        vm.statusObj.why_stopped = '';
                     }
                 }
             });

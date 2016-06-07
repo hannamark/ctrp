@@ -15,6 +15,7 @@
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
         vm.deleteSelected = deleteSelected;
+        vm.saveAndRetainMarker = saveAndRetainMarker;
         vm.resetBioMarker = resetBioMarker;
         vm.trialDetailObj = {};
         vm.selOrganization = {name: '', array: []};
@@ -174,6 +175,7 @@
             });
 
         };
+
 
         vm.saveBioMarker = function(){
             // Prevent multiple submissions
@@ -490,6 +492,12 @@
 
         }
 
+        function saveAndRetainMarker() {
+
+            vm.currentBioMarker.id = null;
+            vm.currentBioMarker.name =null;
+
+        }
         function resetBioMarker() {
             vm.selectedAllBM = false;
             if(vm.currentBioMarker.id > 0){
@@ -528,7 +536,8 @@
                         $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
                     }
                 }
-            } else {
+            }
+            else {
                 vm.setAddMode();
             }
 

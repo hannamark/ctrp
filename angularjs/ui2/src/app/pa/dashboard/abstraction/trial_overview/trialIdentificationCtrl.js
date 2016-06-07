@@ -9,14 +9,17 @@
     .controller('trialIdentificationCtrl', trialIdentificationCtrl);
 
     trialIdentificationCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr'];
+        '$timeout', '_', 'PATrialService', 'toastr', 'UserService'];
 
     function trialIdentificationCtrl($scope, TrialService, MESSAGES,
-        $timeout, _, PATrialService, toastr) {
+        $timeout, _, PATrialService, toastr, UserService) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
         vm.resetView = resetView;
+        var USER_ROLES_ALLOWD = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_ABSTRACTOR-SU', 'ROLE_ABSTRACTOR'];
+        var curUserRole = UserService.getUserRole();
+        vm.isFieldEditable = _.contains(USER_ROLES_ALLOWD, curUserRole);
         vm.priorities = [
             {id: 1, name: 'High'},
             {id: 2, name: 'Normal'},

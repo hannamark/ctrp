@@ -10,6 +10,25 @@ When I can edit the lead organization trial identifier
 And I can optionally enter or edit one or more Other Trial Identifiers
 Then the Protocol Identifier section will be complete
 
+Scenario #1a Duplicate and format rules for Other Trial Identifiers
+Given I have selected a trial to abstract 
+And I am on the General Trial Details screen
+Then I should be allowed to enter only one "ClinicalTrials.gov Identifier"
+And I should be allowed to enter more than one "Obsolete ClinicalTrials.gov Identifier" with unique IDs
+And the "Obsolete ClinicalTrials.gov Identifier" must not be the same as the "ClinicalTrials.gov Identifier"
+And I should check for valid "ClinicalTrials.gov Identifier" format as NCT followed by 8 numeric characters <NCT00000000>
+And I should check for valid "Obsolete ClinicalTrials.gov Identifier" format as NCT followed by 8 numeric characters <NCT00000000>
+And I should be allowed to enter more than one "Duplicate NCI Identifier" with unique IDs
+And the "Duplicate NCI Identifier" must not be the same as the "NCI Trial ID"
+And I should check for valid "Duplicate NCI Identifier" format as NCI-YYYY-nnnnn <NCI-2016-00123>
+And I should be allowed to enter more than one "Other Identifier" with unique IDs
+And I should be allowed to enter more than one "Duplicate NCI Identifier" with unique IDs
+And I should be allowed to enter more than one "DCP Identifier" with unique IDs
+And I should be allowed to enter more than one "CTEP Identifier" with unique IDs
+And I should be allowed to enter more than one "CCR Identifier" with unique IDs
+And I should be allowed to enter more than one "CDR Identifier" with unique IDs
+Then the Protocol Identifiers section will indicate zero errors
+
 Scenario: #2 I can enter the Acronym and Official Title for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
@@ -129,6 +148,8 @@ And I have selected e-mail address field
 And I change the e-mail address in the format "text"@"text"."text" 
 When I change the e-mail address and the format is not "text"@"text"."text"
 Then the system displays a warning message that says "The E-mail address is incorrect"
+
+
 
 
 

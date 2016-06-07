@@ -7,15 +7,15 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
-    pasArmsGroupsCtrl.$inject = ['$scope', '$state', 'TrialService', 'PATrialService', 'toastr',
-        'MESSAGES', '_', '$timeout', 'trialDetailObj', '$anchorScroll', '$location', 'Common'];
+    pasArmsGroupsCtrl.$inject = ['$scope','$filter', '$state', 'TrialService', 'PATrialService', 'toastr',
+        'MESSAGES', '_', '$timeout', '$anchorScroll', '$location', 'Common'];
 
-    function pasArmsGroupsCtrl($scope, $state, TrialService, PATrialService, toastr,
-                                     MESSAGES, _, $timeout, trialDetailObj, $anchorScroll, $location, Common) {
+    function pasArmsGroupsCtrl($scope,$filter, $state, TrialService, PATrialService, toastr,
+                                     MESSAGES, _, $timeout, $anchorScroll, $location, Common) {
         var vm = this;
-        vm.curTrial = trialDetailObj;
-        console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
-        console.log("INTERVENTIONS = " + JSON.stringify(trialDetailObj.interventions));
+        vm.curTrial = {};
+        // console.log("ARMS_GROUPS = " + JSON.stringify(trialDetailObj.arms_groups));
+        // console.log("INTERVENTIONS = " + JSON.stringify(trialDetailObj.interventions));
         vm.setAddMode = setAddMode;
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
@@ -31,23 +31,25 @@
         vm.sortableListener = {};
         vm.sortableListener.stop = dragItemCallback;
         vm.disableBtn = false;
+        vm.old_assigned_interventions_array = [];
+
         //vm.watchArmLabel = watchArmLabel();
-
-        if(vm.curTrial.research_category.name=='Interventional') {
-            vm.interventional = true;
-        }
-
-        console.log("vm.interventional = " + JSON.stringify(vm.curTrial.research_category));
-        vm.reload = function() {
-            console.log("RELOAD");
-            $state.go($state.$current, null, { reload: true });
-        };
-
         activate();
+        console.log("ARMS_GROUPS = ", vm.curTrial.arms_groups);
+
+        vm.interventional = vm.curTrial.isInterventional || false;
+        vm.reload = function() {
+            _getTrialDetailCopy();
+        };
 
         /****************** implementations below ***************/
         function activate() {
            // watchArmLabel();
+           _getTrialDetailCopy();
+        }
+
+        function _getTrialDetailCopy() {
+            vm.curTrial = PATrialService.getCurrentTrialFromCache();
         }
 
         vm.checkAllAG = function () {
@@ -68,16 +70,9 @@
             var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Label.  Click Cancel to abort';
             //check for duplicates
-            vm.duplicateLabel = false;
-            for (var j = 0; j < vm.curTrial.arms_groups.length; j++) {
-                if (vm.curTrial.arms_groups[j].label == vm.currentArmsGroup.label) {
-                    vm.duplicateLabel = true;
-                }
-            }
+            vm.duplicateLabel = _.findIndex(vm.curTrial.arms_groups, {label: vm.currentArmsGroup.label, arms_groups_type: vm.currentArmsGroup.arms_groups_type}) > -1;
             if (vm.duplicateLabel) {
-                // if OC exists already
                 vm.disableBtn = true;
-
                 Common.alertConfirm(confirmMsg).then(function(ok) {
                     isConfirmed = ok;
                 }).catch(function(cancel) {
@@ -99,15 +94,38 @@
         vm.updateTrial = function() {
             if(vm.currentArmsGroup) {
                 vm.curTrial.arms_groups_attributes = [];
-                vm.currentArmsGroup.intervention_text = "";
+                vm.currentArmsGroup.arms_groups_interventions_associations_attributes = [];
+
+                //vm.currentArmsGroup.intervention_text = "";
                 console.log("vm.interventionList.length ="+ vm.interventionList.length);
                 console.log("vm.interventionList ="+ JSON.stringify(vm.interventionList.length));
                 if(vm.interventionList.length > 0){
                     for (var i = 0; i < vm.interventionList.length; i++) {
-                        vm.currentArmsGroup.intervention_text = vm.currentArmsGroup.intervention_text + vm.interventionList[i].id + ",";
-                        //console.log("GOOGLE vm.currentArmsGroup.intervention_text" +vm.currentArmsGroup.intervention_text);
+                        var interventionHash={}
+                        var result = $filter('filter')(vm.old_assigned_interventions_array, {id:vm.interventionList[i].id})[0];
+                        if(!angular.isDefined(result)) {
+                            interventionHash.intervention_id=vm.interventionList[i].id;
+                            vm.currentArmsGroup.arms_groups_interventions_associations_attributes.push(interventionHash);
+                        }
                     }
                 }
+
+                // delete already assigned interventions if they are not selected now
+
+                console.log("arms_groups_interventions_array " + vm.arms_groups_interventions_array)
+                for (var i = 0; i < vm.old_assigned_interventions_array.length; i++) {
+                    var interventionHash={}
+                    var result = $filter('filter')(vm.interventionList, {id:vm.old_assigned_interventions_array[i].id})[0];
+                    if(!angular.isDefined(result)) {
+                        interventionHash._destroy = true;
+                       var result = $filter('filter')(vm.arms_groups_interventions_array, {intervention_id:vm.old_assigned_interventions_array[i].id,arms_group_id:vm.currentArmsGroup.id})[0];
+                        console.log("hey this is inside delete loop" + result.id)
+                        interventionHash.id=result.id;
+                        vm.currentArmsGroup.arms_groups_interventions_associations_attributes.push(interventionHash);
+                    }
+                }
+
+
                 if (vm.currentArmsGroup.edit || vm.currentArmsGroup.new || (vm.currentArmsGroup._destroy && vm.currentArmsGroup.id)) {
                     vm.curTrial.arms_groups_attributes.push(vm.currentArmsGroup);
                 }
@@ -176,6 +194,7 @@
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
+            vm.old_assigned_interventions_array = [];
 
             if (isAddMode) {
                 vm.addEditMode = true;
@@ -208,19 +227,18 @@
             vm.interventionList = vm.currentArmsGroup.arms_groups_interventions;
             vm.currentArmsGroup.edit = true;
             vm.currentArmsGroupIndex = idx;
-            vm.intervention_array = new Array();
             vm.trial_interventions = [];
             var exists = false;
-            if(vm.curTrial.arms_groups[idx].intervention_text){
-                vm.intervention_array =  vm.curTrial.arms_groups[idx].intervention_text.split(",");
-                console.log("vm.curTrial.arms_groups[idx].intervention_text="+JSON.stringify(vm.curTrial.arms_groups[idx].intervention_text));
-                console.log("vm.intervention_array="+JSON.stringify(vm.intervention_array));
-            }
+            vm.intervention_array = vm.curTrial.arms_groups[idx].arms_groups_interventions;
+            vm.old_assigned_interventions_array = angular.copy(vm.intervention_array);
+            vm.arms_groups_interventions_array = vm.curTrial.arms_groups[idx].arms_groups_interventions_array;
+
+
             // Show the list of Trial interventions with the checkbox selected if they are assigned to the Arms Group
             var temp_intervention = {};
             for (var i = 0; i < vm.curTrial.interventions.length; i++) {
                for (var j = 0; j < vm.intervention_array.length; j++) {
-                   if(vm.curTrial.interventions[i].id == vm.intervention_array[j]){
+                   if(vm.curTrial.interventions[i].id == vm.intervention_array[j].id){
                        exists = true;
                    }
                }
@@ -232,6 +250,7 @@
                } else {
                    temp_intervention.selected = false;
                }
+                temp_intervention._destroy = false;
                vm.trial_interventions.push(temp_intervention);
                 temp_intervention = {};
                 exists = false;
@@ -270,6 +289,7 @@
             console.log("In selectListHandler interventionCheckboxes"+JSON.stringify(interventionCheckboxes));
             var selectList = [];
             angular.forEach(interventionCheckboxes, function(item) {
+
                 if ( angular.isDefined(item.selected) && item.selected === true ) {
                     selectList.push(item);
                 }

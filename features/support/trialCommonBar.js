@@ -27,6 +27,7 @@ var trialCommonBar = function(){
     var helper = new helperFunctions();
     var search_Trial_Header_Text = 'Search Trials * for wild card';
     var register_Trial_Header_Text = 'Register Trial';
+    var register_Import_Trial_Header_Text = 'Import ClinicalTrials.gov Trials';
 
     this.clickHomeSearchTrial = function(){
         homeSearchTrial.isPresent().then(function(retVal){
@@ -81,6 +82,11 @@ var trialCommonBar = function(){
         browser.get('ui/#/main/new-trial/ins');
        // helper.clickLink(this.registerInstitutional, "Register Institutional Trial link");
         expect(pageHeaderText.getText()).to.eventually.equal(register_Trial_Header_Text);
+    };
+
+    this.clickRegisterIndustrialOtherTrialLink = function(){
+        browser.get('ui/#/main/import-trial');
+        expect(pageHeaderText.getText()).to.eventually.equal(register_Import_Trial_Header_Text);
     };
 
     this.verifyRegisterTrial = function(){

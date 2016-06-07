@@ -169,7 +169,7 @@
                                         </span>
 
                                         <input type="hidden" name="sr_dummy" ng-model="psView.srDummyField" ng-required="!psView.siteRecruitmentGrid.length">
-                                        <div class="top-offset-xs" ng-show="ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length" ng-class="{'has-error': ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length}">
+                                        <div class="top-offset-xs" ng-show="(ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length) || psView.srStatusDeleteException" ng-class="{'has-error': (ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length) || psView.srStatusDeleteException}">
                                             <span class="help-block">
                                                 At least one Site Recruitment Status is Required
                                             </span>
@@ -254,9 +254,7 @@
                                 <div class="form-group has-feedback">
                                     <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">Investigator Name:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                                        <!--<ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array" ng-disabled="psView.addEditMode"></ctrp-person-adv-search-modal-button>-->
-                                        <button type="button" class="btn btn-primary" person-search-modal-button2 ng-model="psView.principalInvestigator.array" restriction-field ng-disabled="psView.current_investigator.edit">Search Persons</button>
+                                        <button type="button" class="btn btn-primary" person-search-modal-button2 ng-model="psView.principalInvestigator.array" restriction-field ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">Search Persons</button>
                                     </div>
                                 </div>
 
@@ -283,14 +281,15 @@
                                                 <input type="text" id="first_name" name="first_name" class="form-control input-sm" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
                                             </td>
                                             <td>
-                                                <select name="investigator_type" id="investigator_type_select"
-                                                        class="form-control input-sm"
-                                                        restriction-field
-                                                        ng-model="psView.current_investigator.investigator_type">
-                                                    <option value="">Select Site Investigator Role</option>
-                                                    <option ng-repeat="option in psView.investigatorTypes" value="{{option.name}}">{{option.name}}</option>
-                                                </select>
-                                                <span class="help-block" ng-show="ps_inv_form.investigator_type.$error.required">Select a Investigator Role</span>
+                                                <div ng-class="{'has-error': psView.showInvestigatorRoleError && !psView.current_investigator.investigator_type && psView.current_investigator.uiEdit}">
+                                                    <select name="investigator_type" id="investigator_type_select"
+                                                            class="form-control input-sm"
+                                                            restriction-field
+                                                            ng-model="psView.current_investigator.investigator_type">
+                                                        <option value="">Select Site Investigator Role</option>
+                                                        <option ng-repeat="option in psView.investigatorTypes" value="{{option.name}}">{{option.name}}</option>
+                                                    </select>
+                                                </div>
                                             </td>
                                              <td>
                                                  <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
@@ -307,8 +306,14 @@
                                     </table>
                                 </div>
 
+                                <div ng-if="psView.current_investigator.uiEdit" ng-class="{'has-error': psView.showInvestigatorRoleError && !psView.current_investigator.investigator_type && psView.current_investigator.uiEdit, 'bottom-offset-xs': psView.investigatorGrid.length}">
+                                    <span class="help-block">
+                                        Investigator Role is Required
+                                    </span>
+                                </div>
+
                                 <input type="hidden" name="inv_dummy" ng-model="psView.invDummyField" ng-required="!psView.investigatorGrid.length">
-                                <div class="top-offset-xs" ng-show="ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length" ng-class="{'has-error': ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length}">
+                                <div class="top-offset-xs" ng-show="(ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length) || psView.invDeleteException" ng-class="{'has-error': (ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length) || psView.invDeleteException}">
                                     <span class="help-block">
                                         At least one Investigator is Required
                                     </span>
@@ -321,18 +326,16 @@
                                             <th>Last Name</th>
                                             <th width="20%">First Name</th>
                                             <th width="20%">Role</th>
-                                            <!--<th width="10%">Status Code</th>-->
                                             <th width="20%">Primary Contact?</th>
                                             <th class="text-center td-icon">Edit</th>
                                             <th class="text-center td-icon">Delete</th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
+                                        <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy || inv.uiDestroy, 'edit-selected': inv.uiEdit}">
                                             <td>{{inv.person.id}}</td>
                                             <td>{{inv.person.lname}}</td>
                                             <td>{{inv.person.fname}}</td>
                                             <td>{{inv.investigator_type}}</td>
-                                            <!--<td>{{inv.status_code}}</td>-->
                                             <td ng-bind="inv.set_as_contact ? 'Yes' : 'No'"></td>
                                             <td class="text-center td-icon">
                                                 <button type="button" class="btn btn-primary" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit || psView.current_investigator.uiEdit" ng-click="psView.editInvestigator($index)">
@@ -341,7 +344,7 @@
                                             </td>
                                             <td class="text-center td-icon">
                                                 <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
-                                                    <i class="glyphicon" ng-class="inv._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                                    <i class="glyphicon" ng-class="inv._destroy || inv.uiDestroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -357,7 +360,7 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_investigators" restriction-field ng-disabled="psView.current_investigator.uiEdit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
                                     <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)" ng-disabled="psView.disableBtn">

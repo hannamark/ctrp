@@ -146,15 +146,6 @@
                     label: 'Check Out History'
                 }
             })
-            .state('main.pa.trialOverview.jsonRawData', {
-                url: '/raw-json-trial-data',
-                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/raw_json_trial_data.html',
-                section: 'pa',
-                ncyBreadcrumb: {
-                    parent: 'main.pa.trialOverview',
-                    label: 'Raw JSON Data'
-                }
-            })
             .state('main.pa.trialOverview.emailLogs', {
                 url: '/trial-email-logs',
                 templateUrl: 'app/pa/dashboard/abstraction/trial_overview/email_logs.html',

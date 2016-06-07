@@ -100,7 +100,7 @@ Scenario Outline:#5 Trial Milestones Recording Rules
 |Validation Processing Completed Date          |N/A                                                                                                                                                                                    |    |Recorded when completing Submission Validation                                                                                     |               
 |Ready for Validation QC Date                  |Triggered by Validation Processing Completed Date Milestone                                                                                                                            |    |Recorded as an exception (original or amendment submission)                                                                        |
 |Validation QC Start Date                      |N/A                                                                                                                                                                                    |    |Recorded when starting Submission Validation QC                                                                                    |
-|Validation QC Completed Date                  |N/A                                                                                                                                                                                    |    |Recorded when completing Submission Validation QC                                                                                  |
+|Validation QC Completed Date                  |Triggered by Acceptance after Validation                                                                                                                                                                                    |    |Recorded when completing Submission Validation QC                                                                                  |
 |Submission Acceptance Date                    |Triggered by Acceptance after Validation                                                                                                                                               |    |As an exception at trial abstraction                                                                                               |
 |Submission Terminated Date                    |Triggered if on hold more than 21 Business days and Submission Acceptance Date has not been recorded (after the hold reminder was sent out 7 times waiting 3 days after each reminder) |    |Added at any point except after milestone "Submission Rejection Date" or "Late Rejection Date"                                     |
 |Submission Terminated Date                    |Triggers setting the Processing Status to "Submission Terminated"|
@@ -250,5 +250,36 @@ Scenario Outline: #6 Trials Milestones validation rules
       |On-going Abstraction Verified Date       |
       
      And I can enter "Late Rejection Milestone" milestone only one time during a Trial and "Late Rejection milestone" comment will be required 
-     When I click on the Add Milestone button
-     Then the added milestone will 
+
+   Scenario:#8 Submission Rejection Date Milestone Warning
+  Given : I am logged into the CTRP Protocol Abstraction Application
+   When I have selected a Trial
+    And I am on the Trial Milestones Screen
+    And I add the Submission Rejection Date milestone
+    Then a warning message will appear "Adding the Submission Rejection Date will Reject this submission"
+    And the user can select OK to continue 
+    And the user can select Cancel
+
+ Scenario:#9 Late Rejection Date Milestone Warning
+  Given : I am logged into the CTRP Protocol Abstraction Application
+   When I have selected a Trial
+    And I am on the Trial Milestones Screen
+    And I add the Late Rejection Date milestone
+    Then a warning message will appear "Adding the Late Rejection Date will Reject this Trial Completely.  Use the "Submission Rejection Date" milesotne to Reject the submission"
+    And the user can select OK to continue 
+    And the user can select Cancel 
+     
+ Scenario:#10 Un-Reject Milestone
+  Given : I am logged into the CTRP Protocol Abstraction Application
+   When I have selected a Trial
+    And I am on the Trial Milestones Screen
+    And the "Late Rejection Date" milestone exist for the current submission
+    Then the the system will display the "Un-Reject Trail" button
+    When the user selects "Un-Reject Trail"
+    Then I have to enter a comment in the comment box 
+    And the comment and the current datetime will be added to the comment field for prior milestone for this trial
+    And the "Late Rejection Date" milestone will be deleted
+    And the "Processing Status" will be set to the processing status associated with the trial prior to the addition of the "Late Rejection Milestone"
+   
+
+     
