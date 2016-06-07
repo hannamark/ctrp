@@ -4,7 +4,7 @@
             <div class="panel-title">Eligibility Criteria</div>
         </div>
         <div class="panel-body">
-            <form name="criteria_form" role="form" class="form form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria(true)">
+            <form name="criteria_form" role="form" class="form form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria(true)" ctrp-submit-delete>
                 <!-- fieldset for eligibility criteria -->
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || criteriaView.disableBtn">
                         <legend class="sub-bordered">Eligibility Criteria</legend>
@@ -61,7 +61,6 @@
                                </span>
                             </div>
                         </div>
-
                         <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.min_age) ||
                                 ctrpbtn.criteria_form.needsAttention(criteria_form.min_age_unit)}">
                             <label for="min_age" class="control-label col-xs-12 col-sm-3">Minimum Age:</label>
@@ -271,9 +270,8 @@
                    <div class="row">
                       <div class="col-sm-3"></div>
                       <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field
-                                ctrp-confirm ctrp-click="criteriaView.updateCriteria(true)"
-                                ng-attr-confirm-off="{{(criteriaView.trialDetailObj.other_criteria | findObjByAttribute:'_destroy':true).length === 0 || undefined}}"
+                        <button class="btn btn-primary pull-right" id="save_btn" restriction-field
+                                ctrp-confirm ng-attr-confirm-off="{{(criteriaView.trialDetailObj.other_criteria | findObjByAttribute:'_destroy':true).length === 0 || undefined}}"
                                 confirm-msg="Click OK to remove selected Eligibility Criteria(s) from the study. Click Cancel to abort." ng-disabled="criteriaView.addOtherCriterionFormShown || criteriaView.disableBtn">
                           <i class="glyphicon glyphicon-ok"></i>  Save
                         </button>
