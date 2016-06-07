@@ -98,7 +98,7 @@
                 {name: 'nih_nci_prog', enableSorting: true, minWidth: '130', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'internal_source', enableSorting: true, minWidth: '130', width: '3%',
+                {name: 'internal_source', displayName: 'Information Source', enableSorting: true, minWidth: '130', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
             ]
