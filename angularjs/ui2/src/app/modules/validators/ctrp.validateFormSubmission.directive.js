@@ -26,9 +26,10 @@
                     scope.ctrpbtn[attrs.name] = submitController;
                     scope.formAction = $parse(attrs.ctrpSubmit);
 
+                    /* Hook for ctrp-confirm directive (and potentially other similar directives) as needed */
                     if (hasSecondaryTask) {
                         $rootScope.$on('deleteConfirmationComplete', function(e) {
-                            if (!formController.$invalid) {
+                            if (!formController.$invalid) { // Confirm that form is valid before submitting form via the event broadcast
                                 scope.formAction(scope);
                             }
                         });
@@ -48,9 +49,9 @@
                             $log.error('form submission invalid or untouched!');
                             return false;
                         } else if (hasSecondaryTask) {
-                            $rootScope.$broadcast('confirmDelete');
+                            $rootScope.$broadcast('confirmDelete'); // Hand over control to ctrp-confirm directive
                         } else {
-                            /* execute the form action if valid */
+                            /* Execute the form action normally if valid/and no secondary tasks */
                             scope.$apply(function() {
                                 formAction(scope, {$event: event});
                             });

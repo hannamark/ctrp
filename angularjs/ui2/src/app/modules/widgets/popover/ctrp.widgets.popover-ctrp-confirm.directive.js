@@ -51,7 +51,7 @@
 
             element.bind('click', function(event) {
                 if (attrs.confirmOff && attrs.confirmOff !== 'false') {
-                    // trigger the click action
+                    // trigger the click action and broadcast delete confirmation in case it is a secondary task in ctrp-submit directive
                     scope.ngClick();
                     $rootScope.$broadcast('deleteConfirmationComplete');
                 } else {
@@ -74,6 +74,7 @@
                 var buttonAction = attrs.ctrpClick ? $parse(attrs.ctrpClick) : null;
                 // buttonAction(scope, {$event: popover.event}); // trigger the click action, !not working!
 
+                /* If no button action is provided, hand over control to ctrp-submit directive and broadcast event as needed */
                 if (buttonAction) {
                     scope.ngClick(); // trigger the click action
                 } else {
