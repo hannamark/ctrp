@@ -192,6 +192,14 @@ class DataImport
         trial.arms_groups << arm1
         trial.arms_groups << arm2
 
+        # Submissions
+        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'))
+        trial.submissions << sub
+
+        # Processing status
+        pro_status = ProcessingStatusWrapper.new(status_date: Date.today, processing_status: ProcessingStatus.find_by_code('SUB'), submission: sub)
+        trial.processing_status_wrappers << pro_status
+
         # Randomely Assign User statuses
         #User.all.each do |u|
         #  u.user_status = UserStatus.all[rand(0..UserStatus.all.size-1)]
