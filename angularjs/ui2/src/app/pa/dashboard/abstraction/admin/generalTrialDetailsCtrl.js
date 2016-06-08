@@ -365,7 +365,7 @@
                     vm.generalTrialDetailsObj.central_contacts = [].concat({email: '', phone: ''});
                 }
             }
-        });
+        }, true);
       }
 
       function isValidPhoneNumber() {
@@ -451,7 +451,6 @@
               var _centralContactType = _.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)});
               typeName = !!_centralContactType ? _centralContactType.name : typeName;
           }
-
           return typeName;
       }
 
