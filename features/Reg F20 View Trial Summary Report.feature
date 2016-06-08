@@ -84,9 +84,12 @@ And I can view TSR document
      
      
      
-     
+     Scenario:#5 Summary 4 Information Section Display Rules 
+     Given I can View TSR document
+     And the TSR Summary 4 Information Section fields will be displayed following the rules below
 
-
-    
-    
+      |TSR Section          |Field                              |Field Required  |Display Rule when Field Blank  |
+      |Summary 4 Information|Study Source                       |Required        |No Data Available              |
+      |                     |Funding Sponsor/Source             |Required        |No Data Available              |
+      |                     |Anatomic Site Code                 |Required        |No Data Available              |
    

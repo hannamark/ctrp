@@ -1353,6 +1353,7 @@ if !Rails.env.qa?
                  {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "first_name" => "Fifi", "last_name" => "L"},
                  {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "first_name" => "Flower", "last_name" => "Leinmann"},
                  {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "first_name" => "Fox", "last_name" => "Lilongwe"},
+                 {"username" => "ctrpsitesu3", "role" => "ROLE_SITE-SU", "first_name" => "Fedro", "last_name" => "Piuz"},
                  {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "first_name" => "Frederick", "last_name" => "Lathiramalaynathan"},
                  {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fils", "last_name" => "Litmus"},
                  {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fred", "last_name" => "Lizdenburgh"},
@@ -1385,6 +1386,8 @@ if !Rails.env.qa?
       unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
         if user.username == 'ctrpsitesu2'
           user.organization = org3
+        elsif user.username == 'ctrpsitesu3'
+            user.organization = dcp
         else
           user.organization = org0
         end
