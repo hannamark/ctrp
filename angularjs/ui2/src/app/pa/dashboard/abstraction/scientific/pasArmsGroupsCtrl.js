@@ -19,8 +19,8 @@
         vm.selectListHandler = selectListHandler;
         vm.deleteSelected = deleteSelected;
         vm.selectedDeleteAnatomicSiteList = [];
-        vm.currentArmsGroup = {};
-        vm.currentArmsGroup.label = "";
+        vm.currentArmsGroup = {index: ''};
+        vm.currentArmsGroup.label = '';
         vm.interventionList = [];
         vm.trial_interventions = [];
         vm.interventional = false;
@@ -69,8 +69,8 @@
             var isConfirmed = false;
             var confirmMsg = 'Click OK to add a duplicate Label.  Click Cancel to abort';
             //check for duplicates
-            var duplicateLabel = _.findIndex(vm.curTrial.arms_groups, {label: vm.currentArmsGroup.label}) > -1;
-            if (duplicateLabel) {
+            var duplicateLabelIndex = _.findIndex(vm.curTrial.arms_groups, {label: vm.currentArmsGroup.label});
+            if (duplicateLabelIndex > -1 && duplicateLabelIndex !== vm.currentArmsGroup.index) {
                 vm.disableBtn = true;
                 Common.alertConfirm(confirmMsg).then(function(ok) {
                     isConfirmed = ok;
@@ -222,6 +222,7 @@
             vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
             vm.interventionList = vm.currentArmsGroup.arms_groups_interventions;
             vm.currentArmsGroup.edit = true;
+            vm.currentArmsGroup.index = idx;
             vm.currentArmsGroupIndex = idx;
             vm.trial_interventions = [];
             var exists = false;
