@@ -24,7 +24,7 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.arm_form.needsAttention(arm_form.arms_groups_type)}" ng-show="armView.interventional">
                         <label for="arms_groups_type" class="control-label col-xs-12 col-sm-3">Type:</label>
                         <div class="col-xs-12 col-sm-3">
-                            <select class="form-control input-sm min-width-md" name="arms_groups_type" id="arms_groups_type" ng-model="armView.currentArmsGroup.arms_groups_type" ng-required="true" restriction-field>
+                            <select class="form-control input-sm min-width-md" name="arms_groups_type" id="arms_groups_type" ng-model="armView.currentArmsGroup.arms_groups_type" ng-required="armView.interventional" restriction-field>
                                 <option value="">-Select Type-</option>
                                 <option value="Experimental">Experimental</option>
                                 <option value="Active Comparator">Active Comparator</option>
