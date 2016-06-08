@@ -37,7 +37,7 @@ And I can view TSR document
     Given I can view TSR document
     And the TSR Official Title section fields will be displayed following the rules below
      
-     |TSR Section    |Field          |Field Required|Display Rule when Field Blank |       
+     |TSR Section    |Field          |Field Required|Display Rule when Field Blank  |       
      |Official Title |Official Title |Required    	 |No data available	            |
 	 |	             |Acronym	     |Not Required   |Not Displayed                 |
 	 |	             |Keywords	     |Not Required	 |Not displayed  	            |
@@ -47,7 +47,7 @@ And I can view TSR document
     Given I can view TSR document
     And the TSR Trial Identification Section fields will be displayed following the rules below
     
-    |TSR Section         |Field                        |Field Required|Display rule when Field Blank |
+    |TSR Section         |Field                        |Field Required|Display Rule when Field Blank |
     |Trial Identification|NCI Trial Identifier         |Required      |No Data Available             |
     |                    |Lead Org Identifier          |Required      |No Data Avaiable              |
     |                    |ClinicalTrials.gov Identifier|Required      |No Data Available             | 
@@ -57,11 +57,36 @@ And I can view TSR document
     |                    |Other Identifier             |Not Required  |Not Displayed                 |
     |                    |Amendment Number             |Not Required  |Not Displayed                 |
     |                    |Amendment Date               |Not Required  |Not Displayed                 |
-    |                    |  |  |  |
-    |                    |  |  |  |
+   
 
  
-    
+      Scenario:#4 General Trial Details Section Display Rules 
+    Given I can View TSR document
+     And the TSR Trial Details Section fields will be displayed following the rules below
+     
+     
+      |TSR Section     |Field                              |Field Required  |Conditional Fields                                      |Display Rule when Field Blank  |
+      |General Details |Research Category                  |Required        |                                                        |No Data Available              |
+      |                |Lead Organization                  |Required        |                                                        |No Data Available              |
+      |                |Sponsor                            |Required        |                                                        |No Data Available              |
+      |                |Responsible Party                  |Required        |                                                        |No Data Available              |
+      |                |Investigator                       |Required        |Only Displayed when Responsible Party is not the Sponsor|Not Displayed                  |
+      |                |Investigator Title                 |Required        |Only Displayed when Responsible Party is not the Sponsor|Not Displayed                  |
+      |                |Investigator Affiliation           |Required        |Only Displayed when Responsible Party is not the Sponsor|Not Displayed                  |
+      |                |Principal Investigator             |Required        |                                                        |No Data Available              |
+      |                |Affiliation                        |Required        |                                                        |No Data Available              |
+      |Collaborators   |Name                               |Not Required    |                                                        |Not Displayed
+      |Status/Dates    |Current Trial Status               |Required        |                                                        |No Data Available
+      |                |Trial Start Date-Actual            |Required        |                                                        |No Data Available
+      |                |Primary Completion Date-Anticipated|Required        |                                                        |Not Displayed
+      |                |Trial Completion Date              |Not Required    |                                                        |
+      
+     
+     
+     
+     
+
+
     
     
    
