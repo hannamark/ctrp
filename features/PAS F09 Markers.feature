@@ -105,7 +105,7 @@ Given I am on the Add Biomarkers Screen
 When I have selected Name from caDSR
 Then Record Status is set to Active
 And the Record Status displays as Active
-When Name is not selected from MDR (previously caDSR)
+When Name is not selected from caDSR
 And I select save
 Then the record status "Pending" will be displayed on the Biomarkers table
 And the pending Biomarkers will be added to the "New Biomarkers Requests" screen
@@ -154,10 +154,10 @@ When I have not entered text in the Specimen Type
 Then the error message type "Specimen Type Other Text is Required"
 
 
-Scenario:  #8 Select Name from MDR (previously caDSR)
+Scenario:  #8 Select Name from caDSR
  Given I am on the Add Marker screen
- And I have selected the MDR (previously caDSR) button
-And I am on the Biomarker Search in MDR (previously caDSR) screen 
+ And I have selected the caDSR button
+And I am on the Biomarker Search in caDSR screen 
 And Case-Sensitive Search is defaulted to No
 And Highlight Query Text is defaulted to Yes
 When I have entered a Search Term 
@@ -174,36 +174,36 @@ Then a results table type will be displayed
 When I select the Select button
 Then the selected Biomarker displays on Add Biomarker screen
 
-  Scenario: #9 Rules for Marker Search in MDR (previously caDSR) 
-    Given I am on the Marker Search in MDR (previously caDSR) screen
+  Scenario: #9 Rules for Marker Search in caDSR  
+    Given I am on the Marker Search in caDSR screen
      When I have not entered a Search term Value
      And I have not entered a Public ID value
      Then an error message "Please enter at least one search criteria." will be displayed 
      
        Scenario:#10 case sensitive search
-    Given I am on the Marker Search in MDR (previously caDSR) screen
+    Given I am on the Marker Search in caDSR screen
     And the Case-Sensitive Search will be defaulted to "No"
     When Case-Sensitive Search is changed to "Yes"
     And I click on the search button
     Then the Case-Sensitive Searched term will be highlighted
 
-Scenario:  #11 Highlight Query Text in MDR (previously caDSR) Marker Search screen
+Scenario:  #11 Highlight Query Text in caDSR Marker Search screen
 Given I am on the Add Biomarker screen
- And I have selected the MDR (previously caDSR) button
-And I am on the Marker Search in MDR (previously caDSR) screen 
+ And I have selected the caDSR button
+And I am on the Marker Search in caDSR screen 
 When I select Highlight Query Text = No
 And I select the search button
 Then the Search Term in the Permissable Value field is not highlighted 
 
-Scenario:  #12 Enter Public ID in MDR (previously caDSR) Marker Search screen
+Scenario:  #12 Enter Public ID in caDSR Marker Search screen
 Given I am on the Add Biomarker screen
- And I have selected the MDR (previously caDSR) button
-And I am on the Biomarker Search in MDR (previously caDSR) screen 
-When I enter a valid MDR (previously caDSR) Public ID
-And there is a match in MDR (previously caDSR)
+ And I have selected the caDSR button
+And I am on the Biomarker Search in caDSR screen 
+When I enter a valid caDSR Public ID
+And there is a match in caDSR
 Then the exact valid Public ID will be displayed in the result table
 When I enter an invalid Public ID
-And there is no match in MDR (previously caDSR)
+And there is no match in caDSR
 Then a 'Nothing found to display' message is displayed
 
 Scenario:  #13  Create new marker with attributes of existing marker
@@ -231,7 +231,7 @@ And I have selected the Save button
 Then the updated Biomarker will be associated to the trial
 And the Biomarkers screen displays
   
-Scenario:  #15 Edit Attributes for Multiple Markers 
+Scenario:  #15 Edit Attributes for Multiple Markers   (FUTURE IMPLEMENTATION)  
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Biomarker screen
