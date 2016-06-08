@@ -6,12 +6,11 @@ As a CTRP User, I can view my trial Trial Summary Report (TSR)
 Scenario: #1 I search My trials and select the View TSR 
 Given I am in the CTRP Registration applicatin
 And I have selected the option to view My trials in CTRP (trials where I am listed as owner)
-When I select Action from the Available Actions
 And the current processing status type is displayed
       |Verification Pending|
       |Abstraction Verified Response   |
       |Abstraction Verified No Response  |
-
+When I select Action from the Available Actions
 Then the View TSR option will available
 When I click on the view TSR option
 Then the TSR document will be downloaded 
@@ -70,9 +69,9 @@ And I can view TSR document
       |                |Lead Organization                  |Required        |                                                        |No Data Available              |
       |                |Sponsor                            |Required        |                                                        |No Data Available              |
       |                |Responsible Party                  |Required        |                                                        |No Data Available              |
-      |                |Investigator                       |Required        |Only Displayed when Responsible Party is not the Sponsor|Not Displayed                  |
-      |                |Investigator Title                 |Required        |Only Displayed when Responsible Party is not the Sponsor|Not Displayed                  |
-      |                |Investigator Affiliation           |Required        |Only Displayed when Responsible Party is not the Sponsor|Not Displayed                  |
+      |                |Investigator                       |Required        |Only Displayed when Responsible Party is not the Sponsor|No Data Available              |
+      |                |Investigator Title                 |Required        |Only Displayed when Responsible Party is not the Sponsor|No Data Available              |
+      |                |Investigator Affiliation           |Required        |Only Displayed when Responsible Party is not the Sponsor|No Data Available              |
       |                |Principal Investigator             |Required        |                                                        |No Data Available              |
       |                |Affiliation                        |Required        |                                                        |No Data Available              |
       |Collaborators   |Name                               |Not Required    |                                                        |Not Displayed                  |
