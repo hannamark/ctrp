@@ -4,7 +4,7 @@
             <div class="panel-title">Associated Trial Details</div>
         </div>
         <div class="panel-body">
-            <form name="associated_trials_form" role="form" class="form form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()">
+            <form name="associated_trials_form" role="form" class="form form-horizontal" novalidate ctrp-submit="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">
                 <!-- fieldset for eligibility criteria -->
                 <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm || assoTrialsView.disableBtn">
                     <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type)}">
@@ -42,7 +42,7 @@
                            </span>
                         </div>
                         <div class="col-xs-12 col-sm-2">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary" ng-click="assoTrialsView.lookupTrial()">
                                 <i class="glyphicon glyphicon-search"></i> Look Up Trial
                             </button>
                         </div>
@@ -68,7 +68,7 @@
 
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
-                            <button type="button" class="btn btn-primary pull-right" ng-disabled="assoTrialsView.foundTrialObj.official_title.length==0" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">
+                            <button class="btn btn-primary pull-right">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
                             <button type="button" class="btn btn-warning pull-right" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">
