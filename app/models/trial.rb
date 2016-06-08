@@ -1067,6 +1067,14 @@ class Trial < TrialBase
     end
   }
 
+  scope :in_family, -> (value, dateLimit) {
+    familyOrganizations = FamilyMembership.where(
+        family_id: value
+    ).where("family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null")
+    .pluck(:organization_id)
+    where(lead_org_id: familyOrganizations)
+  }
+
   scope :with_protocol_id, -> (value) {
     join_clause = 'LEFT JOIN other_ids ON other_ids.trial_id = trials.id'
     where_clause = 'trials.lead_protocol_id ilike ? OR trials.nci_id ilike ? OR other_ids.protocol_id ilike ?'

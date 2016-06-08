@@ -171,6 +171,7 @@ class OrganizationsController < ApplicationController
       @organizations = @organizations.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @organizations = @organizations.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
       @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
+      @organizations = @organizations.without_family() if params[:no_family].present?
       @organizations = @organizations.matches_wc('address', params[:address],params[:wc_search]) if params[:address].present?
       @organizations = @organizations.matches_wc('address2', params[:address2],params[:wc_search]) if params[:address2].present?
       @organizations = @organizations.matches_wc('city', params[:city],params[:wc_search]) if params[:city].present?
