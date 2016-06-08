@@ -4,9 +4,9 @@
     angular.module('ctrp.module.validators')
             .directive('ctrpSubmit', ctrpSubmit);
 
-            ctrpSubmit.$inject = ['$parse', '$log'];
+            ctrpSubmit.$inject = ['$parse', '$log', '$rootScope'];
 
-            function ctrpSubmit($parse, $log) {
+            function ctrpSubmit($parse, $log, $rootScope) {
 
                 var directiveObject = {
                     restrict: 'A',
@@ -19,14 +19,28 @@
                 function linkerFn(scope, element, attrs, controllers) {
                     var submitController = controllers[0];
                     var formController = controllers[1]; //get form controller
+                    var hasSecondaryTask = attrs.hasOwnProperty('ctrpSubmitDelete') ? true : false;
                     submitController.setFormController(formController);
 
                     scope.ctrpbtn = scope.ctrpbtn || {};
                     scope.ctrpbtn[attrs.name] = submitController;
+                    scope.formAction = $parse(attrs.ctrpSubmit);
+
+                    /* Hook for ctrp-confirm directive (and potentially other similar directives) as needed */
+                    if (hasSecondaryTask) {
+                        $rootScope.$on('deleteConfirmationComplete', function(e) {
+                            if (!formController.$invalid) { // Confirm that form is valid before submitting form via the event broadcast
+                                scope.formAction(scope);
+                            }
+                        });
+                    }
 
                     element.bind('submit', function(event) {
+                        var formAction = scope.formAction;
+
                         submitController.attempted = formController.$submitted;
                         $log.info('form is submitted: ' + formController.$submitted);
+
                         if (!scope.$$phase) {
                             scope.$apply();
                         }
@@ -34,13 +48,14 @@
                         if (formController.$invalid) { //|| formController.$pristine
                             $log.error('form submission invalid or untouched!');
                             return false;
+                        } else if (hasSecondaryTask) {
+                            $rootScope.$broadcast('confirmDelete'); // Hand over control to ctrp-confirm directive
+                        } else {
+                            /* Execute the form action normally if valid/and no secondary tasks */
+                            scope.$apply(function() {
+                                formAction(scope, {$event: event});
+                            });
                         }
-
-                        var formAction = $parse(attrs.ctrpSubmit);
-                        /* execute the form action if valid */
-                        scope.$apply(function() {
-                            formAction(scope, {$event: event});
-                        });
                     });
                 } //linkerFn
 

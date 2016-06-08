@@ -64,6 +64,7 @@
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
             outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
+
             vm.disableBtn = true;
 
             PATrialService.upsertTrial(outerTrial).then(function(res) {
