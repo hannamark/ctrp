@@ -134,34 +134,45 @@ end
     end
     @users = User.all
 
-    if params[:family_id].present?
-      if ['ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU'].include? current_user.role
-        familyId = params[:family_id]
-      elsif
-        familyId = FamilyMembership.find_by_organization_id(current_user.organization_id).family_id
+    if ['ROLE_ADMIN'].include? current_user.role
+      if params[:family_id].present?
+          @users = @users.family_matches(params[:family_id], Date.today) unless @users.blank?
+      elsif params[:organization_id].present?
+          @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
       end
-      @users = @users.matches_wc('organization_family_id', familyId)
-    elsif params[:organization_id].present?
-      @users = @users.matches_wc('organization_id', params[:organization_id])
+    end
+
+    if ['ROLE_SITE-SU'].include? current_user.role
+      family = FamilyMembership.find_by_organization_id(current_user.organization_id)
+      if family
+        if (family.effective_date == nil || family.effective_date < Date.today) &&
+            (family.expiration_date == nil || family.expiration_date > Date.today)
+          @users = @users.family_matches(family.family_id, Date.today) unless @users.blank?
+        else
+          @users = []
+        end
+      else
+          @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
+      end
     end
 
     if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU'
-      @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id)
+      @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id) unless @users.blank?
       @status = 'Active'
     end
 
     @searchType = current_user.role
 
-    @users = @users.matches_wc('username', params[:username]) if params[:username].present?
-    @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present?
-    @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present?
-    @users = @users.matches_wc('email', params[:email]) if params[:email].present?
-    @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil?
-    @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present?
-    @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present?
-    @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present?
+    @users = @users.matches_wc('username', params[:username]) if params[:username].present? unless @users.blank?
+    @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present? unless @users.blank?
+    @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present? unless @users.blank?
+    @users = @users.matches_wc('email', params[:email]) if params[:email].present? unless @users.blank?
+    @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
+    @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present? unless @users.blank?
+    @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
+    @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
     if (sortBy != 'admin_role')
-      @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC")
+      @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
     else
       temp0 = []
       temp1 = []
@@ -179,7 +190,7 @@ end
       end
     end
     unless params[:rows].nil?
-      @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows])
+      @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows]) unless @users.blank?
     end
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     @users

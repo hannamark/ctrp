@@ -247,7 +247,7 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
-  #after_save :send_email
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -1065,6 +1065,14 @@ class Trial < TrialBase
     else
       where("trials.#{column} ilike ?", "#{value}")
     end
+  }
+
+  scope :in_family, -> (value, dateLimit) {
+    familyOrganizations = FamilyMembership.where(
+        family_id: value
+    ).where("family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null")
+    .pluck(:organization_id)
+    where(lead_org_id: familyOrganizations)
   }
 
   scope :with_protocol_id, -> (value) {

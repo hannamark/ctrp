@@ -98,7 +98,7 @@
                 {name: 'nih_nci_prog', enableSorting: true, minWidth: '130', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'internal_source', enableSorting: true, minWidth: '130', width: '3%',
+                {name: 'internal_source', displayName: 'Information Source', enableSorting: true, minWidth: '130', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
             ]
@@ -374,16 +374,17 @@
             // trim off unused fields
             delete trialDetailObj.server_response;
             delete trialDetailObj.history;
+            curTrial = trialDetailObj;
 
             // trialDetailObj comes from controllers other than trial overview controller,
             // the flag is undefined, the checkout record should be retained from trial overview controller
             if (checkoutinFlag === undefined) {
-                curTrial = getCurrentTrialFromCache();
+                // curTrial = getCurrentTrialFromCache();
                 trialDetailObj.admin_checkout = curTrial.admin_checkout;
                 trialDetailObj.scientific_checkout = curTrial.scientific_checkout;
             }
 
-            LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
+            // LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
         }
 
         /**
@@ -391,16 +392,10 @@
          * @return {JSON}
          */
         function getCurrentTrialFromCache() {
-            var curTrial = LocalCacheService.getCacheWithKey('current_trial_object');
+            // var curTrial = LocalCacheService.getCacheWithKey('current_trial_object');
 
             _.each(curTrial.participating_sites, function (site) {
                 site.site_rec_status_wrappers = DateService.formatDateArray(site.site_rec_status_wrappers, 'status_date', 'DD-MMM-YYYY');
-                /*
-                _.each(site.site_rec_status_wrappers, function (item) {
-                    var status_date = new Date(item.status_date);
-                    item.status_date = moment(status_date).format("DD-MMM-YYYY");
-                });
-                */
             });
 
             delete curTrial.admin_checkout;

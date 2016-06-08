@@ -184,9 +184,12 @@
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
         if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
-            vm.searchParams.organization_family_id = vm.curUser.family_orgs[0] ? vm.curUser.family_orgs[0].id : '';
-            vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
-            vm.searchParams.organization_family = vm.searchOrganizationFamily;
+            if (vm.curUser.org_families.length) {
+                vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
+            } else {
+                vm.searchOrganization = vm.curUser.organization.name;
+                vm.searchOrganizationFamily = '';
+            }
             vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone);

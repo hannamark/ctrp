@@ -200,11 +200,9 @@
 
         function editTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
-                vm.statusObj = vm.tempTrialStatuses[index]; // angular.copy(vm.tempTrialStatuses[index]);
+                vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
                 vm.statusObj.edit = true;
                 vm.statusObj.index = index;
-                vm.statusObj.why_stopped = 'hello';
-                // vm.tempTrialStatuses.splice(index, 1);
             }
         }
 
