@@ -77,6 +77,12 @@
             }
             */
             if (!!isoDate) {
+                // check if isoDate is a Date object
+                if (typeof isoDate.getMonth === 'function') {
+                    //adjust timezone offset * 600000 ms
+                    isoDate = new Date(isoDate.getTime() + isoDate.getTimezoneOffset() * 60000);
+                    isoDate = isoDate.toISOString(); // convert date to iso date format string
+                }
 
                 try {
                     var date = moment(isoDate, 'YYYY-MM-DDTHH:mm:ss.SSSSZ');
