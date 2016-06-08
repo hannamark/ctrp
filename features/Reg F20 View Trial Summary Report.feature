@@ -37,14 +37,28 @@ And I can view TSR document
     Given I can view TSR document
     And the TSR Official Title section fields will be displayed following the rules below
      
-     |TSR Section    |Field          | Field Required|Field Blank        |       
-     |Official Title |Official Title |Required    	 |No data available	 |
-	 |	             |Acronym	     |Not Required   |Not Displayed      |
-	 |	             |Keywords	     |Not Required	 |Not displayed  	 |
+     |TSR Section    |Field          |Field Required|Display Rule when Field Blank |       
+     |Official Title |Official Title |Required    	 |No data available	            |
+	 |	             |Acronym	     |Not Required   |Not Displayed                 |
+	 |	             |Keywords	     |Not Required	 |Not displayed  	            |
 
      
-     
-     
+       Scenario: #3 Trial Identification Section Display Rules
+    Given I can view TSR document
+    And the TSR Trial Identification Section fields will be displayed following the rules below
+    
+    |TSR Section         |Field                        |Field Required|Display rule when Field Blank |
+    |Trial Identification|NCI Trial Identifier         |Required      |No Data Available             |
+    |                    |Lead Org Identifier          |Required      |No Data Avaiable              |
+    |                    |ClinicalTrials.gov Identifier|Required      |No Data Available             | 
+    |                    |CTEP Identifier              |Not Required  |Not Displayed                 |
+    |                    |DCP Identifier               |Not Required  |Not Displayed                 |
+    |                    |Other Identifier             |Not Required  |Not Displayed                 |
+    |                    |Other Identifier             |Not Required  |Not Displayed                 |
+    |                    |Amendment Number             |Not Required  |Not Displayed                 |
+    |                    |Amendment Date               |Not Required  |Not Displayed                 |
+    |                    |  |  |  |
+    |                    |  |  |  |
 
  
     
