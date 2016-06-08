@@ -116,7 +116,7 @@
                         <th>Description</th>
                         <th class="text-center td-icon">Edit</th>
                         <th class="text-center td-icon">
-                            <input type="checkbox" restriction-field ng-model="armView.selectedAllAG" ng-click="armView.checkAllAG()" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
+                            <input type="checkbox" restriction-field ng-model="armView.selectedAllAG" ng-click="armView.checkAllAG(armView.selectedAllAG)" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                         </th>
                         </thead>
                         <tbody ui-sortable="armView.sortableListener" ng-model="armView.curTrial.arms_groups">
@@ -125,25 +125,27 @@
                             <td>{{arms_group.arms_groups_type}}</td>
                             <td>{{arms_group.display_interventions}}</td>
                             <td>{{arms_group.description}}</td>
-
                             <td class="text-center td-icon">
                                 <button class="btn btn-primary" restriction-field ng-disabled="status._destroy || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setEditMode($index)">
                                     <i class="glyphicon glyphicon-edit"></i>
                                 </button>
                             </td>
                             <td class="text-center td-icon">
-                                <input type="checkbox" restriction-field ng-click="armView.selectedAllAG = false" ng-model="arms_group.selected" ng-change="armView.deleteListHandler(armView.curTrial.arms_groups)" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
+                                <input type="checkbox" restriction-field ng-click="armView.selectedAllAG = false" ng-model="arms_group._destroy" ng-change="!arms_group._destroy" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"/>
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
                     <div class="btn-toolbar">
-                        <button type="button" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-click="armView.setAddMode(true)">
+                        <button type="button" class="btn btn-primary pull-right" id="add_arms_groups" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || armView.disableBtn" ng-click="armView.setAddMode(true)">
                             <i class="glyphicon glyphicon-plus"></i> Add Arms Group
                         </button>
-                        <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="armView.deleteSelected()" confirm-msg="Click OK to remove selected Arm/Group(s) from the study. Click Cancel to abort."
-                                ng-disabled="!armView.selectedDeleteArmsGroupsList.length || !paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="armView.curTrial.arms_groups.length">
+                        <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field
+                            ctrp-confirm
+                            ctrp-click="armView.deleteSelected()"
+                            confirm-msg="Click OK to remove selected Arm/Group(s) from the study. Click Cancel to abort."
+                            ng-disabled="armView.deleteBtnDisabled || !paTrialOverview.trialDetailObj.pa_sci_editable || armView.disableBtn" ng-show="armView.curTrial.arms_groups.length">
                             <i class="glyphicon glyphicon-trash"></i> Delete Selected
                         </button>
                     </div>

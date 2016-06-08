@@ -16,9 +16,9 @@ And I am on the Import ClinicalTrials.gov Trials screen
 When I have entered a NCT Number
 And the Search Studies feature indicates that the trial has not been registered in CTRP
 And the trial NCT ID, Status, and Study Title, Conditions, and Interventions are displayed
-Then I can import the trial information from ClinicalTrials.gov into CTRP
 When the imported Clinical Trial does not have an Official Title 
 Then the Clinical Trial Brief Title should be displayed in the search results
+Then I can import the trial information from ClinicalTrials.gov into CTRP
 And the trial Study Souce will be listed as Industrial
 And the XML from ClinicalTrials.gov will be added to the trial related document
 And the trial milestone "Submission Received Date" will be added with the date of the import

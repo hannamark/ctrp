@@ -8,29 +8,46 @@
     angular.module('ctrp.app.user')
         .controller('userAssignTrialCtrl', userAssignTrialCtrl);
 
-    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', '$scope', 'userDetailObj', 'TrialService', 'UserService', 'FamilyService', 'URL_CONFIGS'];
+    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', '$scope', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS'];
 
-    function userAssignTrialCtrl(PromiseTimeoutService, $scope, userDetailObj, TrialService, UserService, FamilyService, URL_CONFIGS) {
+    function userAssignTrialCtrl(PromiseTimeoutService, $scope, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS) {
         var vm = this;
         vm.curUser = userDetailObj;
-        vm.familySearchParams = FamilyService.getInitialFamilySearchParams();
-        vm.familySearchParams.name = '*';
-        FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
-            if (data.data) {
-                vm.families = data.data.families;
-                if(vm.curUser.org_families && vm.curUser.org_families[0]) {
+        if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
+            vm.familySearchParams = FamilyService.getInitialFamilySearchParams();
+            vm.familySearchParams.name = '*';
+            FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
+                if (data.data) {
+                    vm.families = data.data.families;
                     vm.family_id = vm.curUser.org_families[0].id;
+                    vm.family_name = vm.curUser.org_families[0].name;
                     vm.getFamilyTrialsUsers();
                 }
-            }
-        }).catch(function (err) {
-            console.log('family search people failed: ' + err);
-        });
+            }).catch(function (err) {
+                console.log('family search people failed: ' + err);
+            });
+        }
+        if(!(vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
+            vm.orgSearchParams = OrgService.getInitialOrgSearchParams();
+            vm.orgSearchParams.name = '*';
+            vm.orgSearchParams.no_family = true;
+            OrgService.searchOrgs(vm.orgSearchParams).then(function (data) {
+                if (data.orgs) {
+                    vm.no_family_orgs = data.orgs;
+                    vm.organization_id = vm.curUser.organization.id;
+                    vm.organization_name = vm.curUser.organization.name;
+                    vm.getFamilyTrialsUsers();
+                }
+            }).catch(function (err) {
+                console.log('organization search people failed: ' + err);
+            });
+        }
 
         vm.getFamilyTrialsUsers = function () {
-            if (vm.family_id) {
+            if (vm.family_id || vm.organization_id) {
                 UserService.createTransferTrialsOwnership(vm);
                 TrialService.createTransferTrialsOwnership(vm);
+                vm.showSelects = vm.family_id || vm.organization_id;
             }
         };
 
