@@ -29,7 +29,7 @@
         var EXPANDEDACC_FIELDS = INTERVENTIONAL_FIELDS;
         var OBSERVATIONAL_FIELDS = ['study_model_id', 'study_model_other',
                                     'time_perspective_id', 'time_perspective_other',
-                                    'biospecimen_retention_id',	'biospecimen_desc',];  // fields/keys in vm.trialDetailObj
+                                    'biospecimen_retention_id',	'biospecimen_desc'];  // fields/keys in vm.trialDetailObj
         var ANCILLARY_FIELDS = OBSERVATIONAL_FIELDS;
 
         vm.isOtherPrimaryPurpose = false;
@@ -246,8 +246,12 @@
 
             // clear field-value pairs in the trialDetailObj if the research category changes
             // so that the old values are not saved for the new research category
-            if (vm.isObservational || vm.isAncillary) {
+            if (vm.isAncillary) {
                 vm.trialDetailObj = _clearKeyValuePairsInTrial(INTERVENTIONAL_FIELDS, vm.trialDetailObj);
+            } else if (vm.isObservational) {
+                var modifiedInterventionalFields = angular.copy(INTERVENTIONAL_FIELDS);
+                modifiedInterventionalFields.pop(); // remove num_of_arms from cleared keys list, as it is now required field for this research category
+                vm.trialDetailObj = _clearKeyValuePairsInTrial(modifiedInterventionalFields, vm.trialDetailObj);
             } else if (vm.isInterventional || vm.isExpandedAccess) {
                 vm.trialDetailObj = _clearKeyValuePairsInTrial(OBSERVATIONAL_FIELDS, vm.trialDetailObj);
             }

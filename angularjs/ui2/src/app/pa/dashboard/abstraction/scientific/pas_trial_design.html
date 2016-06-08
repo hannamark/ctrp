@@ -170,23 +170,38 @@
                                 >
                                 <option value="">- Please select a masking...</option>
                             </select>
+                            <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.masking) && trial_design_form.masking.$error">
+                                <span class="help-block" ng-message="required">Masking is Required</span>
+                           </span>
                         </div>
-                        <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.masking) &&
-                                            trial_design_form.masking.$error">
-                            <span class="help-block" ng-message="required">Masking is Required</span>
-                       </span>
                     </div>
                     <!-- end of maskings -->
 
                     <!-- masking roles -->
                     <div class="form-group" ng-show="designView.showMaskingRoles && (designView.isInterventional || designView.isExpandedAccess)">
                         <label class="control-label col-xs-12 col-sm-4">Masking Role(s):</label>
-                        <div class="col-xs-12 col-sm-9" layout="row" layout-wrap flex-xs="100">
-                            <md-checkbox ng-model="designView.trialDetailObj.masking_role_subject" restriction-field aria-label="Subject" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Subject</md-checkbox>
-                            <md-checkbox ng-model="designView.trialDetailObj.masking_role_investigator" restriction-field aria-label="Investigator" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Investigator</md-checkbox>
-                            <md-checkbox ng-model="designView.trialDetailObj.masking_role_caregiver" restriction-field aria-label="Caregiver" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Caregiver</md-checkbox>
-                            <md-checkbox ng-model="designView.trialDetailObj.masking_role_outcome_assessor" restriction-field aria-label="Outcomes Assessor" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable">Outcomes Assessor</md-checkbox>
-                            <span class="help-block alert alert-warning" ng-hide="designView.trialDetailObj.masking_role_subject || designView.trialDetailObj.masking_role_investigator
+                        <div class="col-xs-12 col-sm-5">
+                            <div class="checkbox checkbox-info">
+                                <label>
+                                    <input id="masking_role_subject" type="checkbox" ng-model="designView.trialDetailObj.masking_role_subject" ng-click="toggle(et, markersView.checked_eval_types,'ET')" restriction-field aria-label="Subject" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> Subject
+                                </label>
+                            </div>
+                            <div class="checkbox checkbox-info">
+                                <label>
+                                    <input id="masking_role_investigator" type="checkbox" ng-model="designView.trialDetailObj.masking_role_investigator" ng-click="toggle(et, markersView.checked_eval_types,'ET')" restriction-field aria-label="Investigator" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> Investigator
+                                </label>
+                            </div>
+                            <div class="checkbox checkbox-info">
+                                <label>
+                                    <input id="masking_role_caregiver" type="checkbox" ng-model="designView.trialDetailObj.masking_role_caregiver" ng-click="toggle(et, markersView.checked_eval_types,'ET')" restriction-field aria-label="Caregiver" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> Caregiver
+                                </label>
+                            </div>
+                            <div class="checkbox checkbox-info">
+                                <label>
+                                    <input id="masking_role_outcome_assessor" type="checkbox" ng-model="designView.trialDetailObj.masking_role_outcome_assessor" ng-click="toggle(et, markersView.checked_eval_types,'ET')" restriction-field aria-label="Outcomes Assessor" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> Outcomes Assessor
+                                </label>
+                            </div>
+                            <span class="help-block" ng-hide="designView.trialDetailObj.masking_role_subject || designView.trialDetailObj.masking_role_investigator
                                 || designView.trialDetailObj.masking_role_caregiver || designView.trialDetailObj.masking_role_outcome_assessor">
                                 Even though not mandatory on this screen, failure to select masking role(s) may lead to abstraction <u>validation warnings/errors</u>.
                             </span>
@@ -269,6 +284,9 @@
                                 >
                                 <option value="">- Please select an allocation...</option>
                             </select>
+                            <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.allocation) && trial_design_form.allocation.$error">
+                                <span class="help-block" ng-message="required">Allocation is Required</span>
+                           </span>
                         </div>
                     </div>
                     <!-- end of allocations -->
@@ -321,13 +339,16 @@
                     <!-- end of description for biospecimenRetention -->
 
                     <!-- num of arms -->
-                    <div class="form-group" ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.num_arms)}">
+                    <div class="form-group" ng-class="{'has-feedback required': designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess || designView.isObservational), 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.num_arms)}">
                         <label for="num_arms" class="control-label col-xs-12 col-sm-4">Number of Arms/Groups:</label>
                         <div class="col-xs-12 col-sm-2">
                             <input type="number" min="0" name="num_arms" id="num_arms"
                                 class="form-control input-sm"
-                                ng-required="designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess)"
+                                ng-required="designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess || designView.isObservational)"
                                 ng-model="designView.trialDetailObj.num_of_arms" placeholder="">
+                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.num_arms) && trial_design_form.num_arms.$error">
+                                    <span class="help-block" ng-message="required">Number of Arms/Groups is Required</span>
+                               </span>
                         </div>
                     </div>
                     <!-- end of number of arms -->
@@ -340,6 +361,9 @@
                                 class="form-control input-sm"
                                 ng-required="designView.isInfoSourceProtocol"
                                 ng-model="designView.trialDetailObj.target_enrollment" placeholder="">
+                                <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.target_enrollment) && trial_design_form.target_enrollment.$error">
+                                    <span class="help-block" ng-message="required">Target Enrollment is Required</span>
+                               </span>
                         </div>
                     </div>
                     <!-- end of target enrollment -->
