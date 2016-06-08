@@ -109,7 +109,7 @@
                     <div class="form-group">
                         <label for="trial_processing_comment" class="control-label col-xs-12  col-sm-4">Comments:</label>
                         <div class="col-xs-12 col-sm-7">
-                            <textarea class="form-control" name="nci_specific_comment" id="trial_nci_specific_comment" rows="7" ng-model="trialNciView.curTrial.nci_specific_comment"></textarea>
+                            <textarea class="form-control" name="nci_specific_comment" id="trial_nci_specific_comment" rows="7" ng-model="trialNciView.curTrial.nci_specific_comment" maxlength="4000"></textarea>
                             <span ng-show="trial_form.nci_specific_comment.$dirty">
                                 {{4000 - trial_form.nci_specific_comment.$viewValue.length}} characters left
                             </span>
