@@ -136,7 +136,7 @@ end
 
     if ['ROLE_ADMIN'].include? current_user.role
       if params[:family_id].present?
-          @users = @users.family_matches(params[:family_id], Date.today) unless @users.blank?
+          @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
       elsif params[:organization_id].present?
           @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
       end
@@ -145,12 +145,7 @@ end
     if ['ROLE_SITE-SU'].include? current_user.role
       family = FamilyMembership.find_by_organization_id(current_user.organization_id)
       if family
-        if (family.effective_date == nil || family.effective_date < Date.today) &&
-            (family.expiration_date == nil || family.expiration_date > Date.today)
-          @users = @users.family_matches(family.family_id, Date.today) unless @users.blank?
-        else
-          @users = []
-        end
+          @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
       else
           @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
       end
