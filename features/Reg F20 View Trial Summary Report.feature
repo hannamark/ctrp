@@ -61,7 +61,7 @@ And I can view TSR document
 
  
       Scenario:#4 General Trial Details Section Display Rules 
-    Given I can View TSR document
+     Given I can View TSR document
      And the TSR Trial Details Section fields will be displayed following the rules below
      
      
@@ -75,11 +75,11 @@ And I can view TSR document
       |                |Investigator Affiliation           |Required        |Only Displayed when Responsible Party is not the Sponsor|Not Displayed                  |
       |                |Principal Investigator             |Required        |                                                        |No Data Available              |
       |                |Affiliation                        |Required        |                                                        |No Data Available              |
-      |Collaborators   |Name                               |Not Required    |                                                        |Not Displayed
-      |Status/Dates    |Current Trial Status               |Required        |                                                        |No Data Available
-      |                |Trial Start Date-Actual            |Required        |                                                        |No Data Available
-      |                |Primary Completion Date-Anticipated|Required        |                                                        |Not Displayed
-      |                |Trial Completion Date              |Not Required    |                                                        |
+      |Collaborators   |Name                               |Not Required    |                                                        |Not Displayed                  |
+      |Status/Dates    |Current Trial Status               |Required        |                                                        |No Data Available              |
+      |                |Trial Start Date-Actual            |Required        |                                                        |No Data Available              |
+      |                |Primary Completion Date-Anticipated|Required        |                                                        |No Data Available              |                 
+      |                |Trial Completion Date              |Not Required    |                                                        |Not Displayed                  |
       
      
      
