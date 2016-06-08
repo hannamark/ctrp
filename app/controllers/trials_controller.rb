@@ -275,17 +275,26 @@ class TrialsController < ApplicationController
       if  params[:no_nih_nci_prog].present?
         @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
       end
-      if  params[:family_id].present?
-        if ['ROLE_SUPER', 'ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU'].include? current_user.role
-          familyId = params[:family_id]
-        elsif
-          familyId = FamilyMembership.find_by_organization_id(current_user.organization_id).family_id
+
+      if params[:trial_ownership].present?
+        if ['ROLE_ADMIN'].include? current_user.role
+          if params[:family_id].present?
+            @trials = @trials.in_family(params[:family_id], Date.today)
+          elsif params[:organization_id].present?
+            @trials = @trials.matches('lead_org_id', params[:organization_id])
+          end
         end
-        familyOrganizations = FamilyMembership.where(
-            family_id: familyId
-        ).pluck(:organization_id)
-        @trials =  @trials.where(lead_org_id: familyOrganizations) unless @trials.blank?
+
+        if ['ROLE_SITE-SU'].include? current_user.role
+          family = FamilyMembership.find_by_organization_id(current_user.organization_id)
+          if family
+            @trials = @trials.in_family(family.family_id, Date.today)
+          else
+            @trials = @trials.matches('lead_org_id', current_user.organization_id)
+          end
+        end
       end
+
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?

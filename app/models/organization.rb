@@ -332,6 +332,10 @@ class Organization < ActiveRecord::Base
     end
   }
 
+  scope :without_family, -> () {
+    joins("LEFT OUTER JOIN family_memberships on organizations.id = family_memberships.organization_id").where("family_memberships.family_id is null")
+  }
+
   scope :sort_by_col, -> (column, order) {
     if Organization.columns_hash[column] && Organization.columns_hash[column].type == :integer
       order("#{column} #{order}")

@@ -95,14 +95,12 @@ class  User < ActiveRecord::Base
 
     if column == 'site_admin'
       if  value == true
-        joins(join_clause).where("users.role IN ('ROLE_SITE-SU','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR')")
+        joins(join_clause).where("users.role IN ('ROLE_SITE-SU','ROLE_ADMIN')")
       else
-        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR')")
+        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU','ROLE_ADMIN')")
       end
     elsif column == 'user_status_id' || column == 'organization_id'
       joins(join_clause).where("#{column_str} = #{value}")
-    elsif column == 'organization_family_id'
-      joins(join_clause).where("family_memberships.family_id = #{value}")
     elsif value[0] == '*' && value[str_len - 1] != '*'
       joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}")
     elsif value[0] != '*' && value[str_len - 1] == '*'
@@ -112,6 +110,15 @@ class  User < ActiveRecord::Base
     else
       joins(join_clause).where("#{column_str} ilike ?", "#{value}")
     end
+  }
+
+  scope :family_matches, -> (value, dateLimit) {
+    familyOrganizations = FamilyMembership.where(
+        family_id: value
+    ).where("family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null")
+    .pluck(:organization_id)
+
+    where(organization_id: familyOrganizations)
   }
 
   attr_accessor :password
