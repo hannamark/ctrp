@@ -309,6 +309,7 @@
              }
              UserService.endUserTrialsOwnership(searchParams).then(function (data) {
                  if(data.results === 'success') {
+                    toastr.success('Trial Ownership Removed', 'Success!');
                     vm.getUserTrials();
                  }
                  vm.trialOwnershipRemoveIdArr = null;

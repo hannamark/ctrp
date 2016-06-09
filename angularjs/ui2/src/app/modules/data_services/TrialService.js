@@ -9,10 +9,10 @@
         .factory('TrialService', TrialService);
 
     TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
-        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http','PromiseService'];
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http', 'toastr', 'PromiseService'];
 
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
-            PromiseTimeoutService, Upload, HOST, DateService, $http,PromiseService) {
+            PromiseTimeoutService, Upload, HOST, DateService, $http, toastr, PromiseService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -1091,6 +1091,7 @@
                         PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
                             .then(function (data) {
                             if(data.results === 'success') {
+                                toastr.success('Trial Ownership Created', 'Success!');
                                 controller.getUserTrials();
                             }
                         });
