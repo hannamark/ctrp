@@ -36,10 +36,10 @@ And I can view TSR document
     Given I can view TSR document
     And the TSR Official Title section fields will be displayed following the rules below
      
-     |TSR Section    |Field          |Field Required|Display Rule when Field Blank  |       
-     |Official Title |Official Title |Required    	 |No data available	            |
-	 |	             |Acronym	     |Not Required   |Not Displayed                 |
-	 |	             |Keywords	     |Not Required	 |Not displayed  	            |
+     |TSR Section    |Field          |Field Required |Display Rule when Field Blank |       
+     |Official Title |Official Title |Required    	 |Display "No data available"	|
+	 |	             |Acronym	     |Not Required   |Field not Displayed           |
+	 |	             |Keywords	     |Not Required	 |Field not displayed  	        |
 
      
        Scenario: #3 Trial Identification Section Display Rules
@@ -47,15 +47,15 @@ And I can view TSR document
     And the TSR Trial Identification Section fields will be displayed following the rules below
     
     |TSR Section         |Field                        |Field Required|Display Rule when Field Blank |
-    |Trial Identification|NCI Trial Identifier         |Required      |No Data Available             |
-    |                    |Lead Org Identifier          |Required      |No Data Avaiable              |
-    |                    |ClinicalTrials.gov Identifier|Required      |No Data Available             | 
-    |                    |CTEP Identifier              |Not Required  |Not Displayed                 |
-    |                    |DCP Identifier               |Not Required  |Not Displayed                 |
-    |                    |Other Identifier             |Not Required  |Not Displayed                 |
-    |                    |Other Identifier             |Not Required  |Not Displayed                 |
-    |                    |Amendment Number             |Not Required  |Not Displayed                 |
-    |                    |Amendment Date               |Not Required  |Not Displayed                 |
+    |Trial Identification|NCI Trial Identifier         |Required      |Display "No data available"   |
+    |                    |Lead Org Identifier          |Required      |Display "No data available"   |
+    |                    |ClinicalTrials.gov Identifier|Required      |Display "No data available"   | 
+    |                    |CTEP Identifier              |Not Required  |Field not displayed           |
+    |                    |DCP Identifier               |Not Required  |Field not displayed           |
+    |                    |Other Identifier             |Not Required  |Field not displayed           |
+    |                    |Other Identifier             |Not Required  |Field not displayed           |
+    |                    |Amendment Number             |Not Required  |Field not displayed           |
+    |                    |Amendment Date               |Not Required  |Field not displayed           |
    
 
  
@@ -65,20 +65,20 @@ And I can view TSR document
      
      
       |TSR Section     |Field                              |Field Required  |Conditional Fields                                      |Display Rule when Field Blank  |
-      |General Details |Research Category                  |Required        |                                                        |No Data Available              |
-      |                |Lead Organization                  |Required        |                                                        |No Data Available              |
-      |                |Sponsor                            |Required        |                                                        |No Data Available              |
-      |                |Responsible Party                  |Required        |                                                        |No Data Available              |
-      |                |Investigator                       |Required        |Only Displayed when Responsible Party is not the Sponsor|No Data Available              |
-      |                |Investigator Title                 |Required        |Only Displayed when Responsible Party is not the Sponsor|No Data Available              |
-      |                |Investigator Affiliation           |Required        |Only Displayed when Responsible Party is not the Sponsor|No Data Available              |
-      |                |Principal Investigator             |Required        |                                                        |No Data Available              |
-      |                |Affiliation                        |Required        |                                                        |No Data Available              |
-      |Collaborators   |Name                               |Not Required    |                                                        |Not Displayed                  |
-      |Status/Dates    |Current Trial Status               |Required        |                                                        |No Data Available              |
-      |                |Trial Start Date-Actual            |Required        |                                                        |No Data Available              |
-      |                |Primary Completion Date-Anticipated|Required        |                                                        |No Data Available              |                 
-      |                |Trial Completion Date              |Not Required    |                                                        |Not Displayed                  |
+      |General Details |Research Category                  |Required        |                                                        |Display "No data available"    |
+      |                |Lead Organization                  |Required        |                                                        |Display "No data available"    |
+      |                |Sponsor                            |Required        |                                                        |Display "No data available"    |
+      |                |Responsible Party                  |Required        |                                                        |Display "No data available"    |
+      |                |Investigator                       |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
+      |                |Investigator Title                 |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
+      |                |Investigator Affiliation           |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
+      |                |Principal Investigator             |Required        |                                                        |Display "No data available"    |
+      |                |Affiliation                        |Required        |                                                        |Display "No data available"    |
+      |Collaborators   |Name                               |Not Required    |                                                        |Field not Displayed            |
+      |Status/Dates    |Current Trial Status               |Required        |                                                        |Display "No data available"    |
+      |                |Trial Start Date-Actual            |Required        |                                                        |Display "No data available"    |
+      |                |Primary Completion Date-Anticipated|Required        |                                                        |Display "No data available"    |                 
+      |                |Trial Completion Date              |Not Required    |                                                        |Field not Displayed            |
       
      
      
@@ -88,7 +88,7 @@ And I can view TSR document
      And the TSR Summary 4 Information Section fields will be displayed following the rules below
 
       |TSR Section          |Field                              |Field Required  |Display Rule when Field Blank  |
-      |Summary 4 Information|Study Source                       |Required        |No Data Available              |
-      |                     |Funding Sponsor/Source             |Required        |No Data Available              |
-      |                     |Anatomic Site Code                 |Required        |No Data Available              |
+      |Summary 4 Information|Study Source                       |Required        |Display "No data available"    |
+      |                     |Funding Sponsor/Source             |Required        |Display "No data available"    |
+      |                     |Anatomic Site Code                 |Required        |Display "No data available"    |
    

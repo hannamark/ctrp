@@ -963,7 +963,7 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",
                                         "name": "Account Approver",
-                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
                                      },
                                      {
                                         "id": "ROLE_RO",
