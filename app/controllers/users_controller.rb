@@ -151,7 +151,7 @@ end
       end
     end
 
-    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU'
+    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU' && current_user.role != 'ROLE_ACCOUNT-APPROVER'
       @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id) unless @users.blank?
       @status = 'Active'
     end
@@ -172,7 +172,7 @@ end
       temp0 = []
       temp1 = []
       @users.each do |user|
-        if user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR'
+        if user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ACCOUNT-APPROVER'
           temp0.push(user)
         else
           temp1.push(user)
