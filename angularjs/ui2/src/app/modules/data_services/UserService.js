@@ -422,7 +422,8 @@
             return (service.isCurationModeEnabled()
                         && (curUserRole === 'ROLE_SUPER'
                                 || curUserRole === 'ROLE_ADMIN'
-                                    || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
+                                    || curUserRole === 'ROLE_ACCOUNT-APPROVER'
+                                        || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
         
         /******* helper functions *********/
