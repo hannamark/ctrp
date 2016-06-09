@@ -36,10 +36,10 @@ And I can view TSR document
     Given I can view TSR document
     And the TSR Official Title section fields will be displayed following the rules below
      
-     |TSR Section    |Field          |Field Required|Display Rule when Field Blank  |       
-     |Official Title |Official Title |Required    	 |No data available	            |
-	 |	             |Acronym	     |Not Required   |Not Displayed                 |
-	 |	             |Keywords	     |Not Required	 |Not displayed  	            |
+     |TSR Section    |Field          |Field Required |Display Rule when Field Blank |       
+     |Official Title |Official Title |Required    	 |Display "No data available"	|
+	 |	             |Acronym	     |Not Required   |Field not Displayed           |
+	 |	             |Keywords	     |Not Required	 |Field not displayed  	        |
 
      
        Scenario: #3 Trial Identification Section Display Rules
