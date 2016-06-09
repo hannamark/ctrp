@@ -79,7 +79,8 @@
                         if (vm.gridOptions.totalItems > 0
                                 && (vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
-                                        || vm.userRole === 'ROLE_SITE-SU')) {
+                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
+                                            || vm.userRole === 'ROLE_SITE-SU')) {
                             vm.chooseTransferTrials = true;
                             return;
                         } else {
@@ -97,13 +98,14 @@
         vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                if (vm.gridOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER' || vm.userRole === 'ROLE_SITE-SU')) {
+                if (vm.gridOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER'
+                    || vm.userRole === 'ROLE_ACCOUNT-APPROVER' || vm.userRole === 'ROLE_SITE-SU')) {
                     vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 }
                 if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
-                } else if (vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER') {
+                } else if (vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER' && vm.userRole === 'ROLE_ACCOUNT-APPROVER') {
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id = vm.userDetailsOrig.organization_id;
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].name = 'Request has been sent';
                 }
@@ -164,9 +166,9 @@
         vm.statusArr = [];
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
             vm.statusArr = response.data;
-            if (vm.userRole == 'ROLE_SITE-SU') {
+            if (vm.userRole == 'ROLE_SITE-SU' || vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INA'], item.code);
+                    return _.contains(['ACT', 'INA', 'INR'], item.code);
                 });
             }
         }).catch(function (err) {
@@ -307,6 +309,7 @@
              }
              UserService.endUserTrialsOwnership(searchParams).then(function (data) {
                  if(data.results === 'success') {
+                    toastr.success('Trial Ownership Removed', 'Success!');
                     vm.getUserTrials();
                  }
                  vm.trialOwnershipRemoveIdArr = null;

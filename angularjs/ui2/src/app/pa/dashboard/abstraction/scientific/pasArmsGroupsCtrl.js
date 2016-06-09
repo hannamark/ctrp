@@ -18,6 +18,7 @@
         vm.setEditMode = setEditMode;
         vm.selectListHandler = selectListHandler;
         vm.deleteSelected = deleteSelected;
+        vm.resetArmsGroup = resetArmsGroup;
         vm.selectedDeleteAnatomicSiteList = [];
         vm.currentArmsGroup = {index: ''};
         vm.currentArmsGroup.label = '';
@@ -35,9 +36,7 @@
         console.log("ARMS_GROUPS = ", vm.curTrial.arms_groups);
 
         vm.interventional = vm.curTrial.isInterventional || false;
-        vm.reload = function() {
-            _getTrialDetailCopy();
-        };
+
 
         /****************** implementations below ***************/
         function activate() {
@@ -186,7 +185,8 @@
 
         function setAddMode(isAddMode) {
             vm.currentArmsGroup = {};
-            vm.currentArmsGroup.label = "";
+            vm.currentArmsGroup.label = null;
+            vm.currentArmsGroup.description = null;
             vm.currentArmsGroup.new = true;
             vm.currentArmsGroupIndex = null;
             vm.trial_interventions = [];
@@ -218,8 +218,7 @@
          **/
         function setEditMode(idx) {
             vm.addEditMode = true;
-            //vm.currentArmsGroup.label = "";
-            vm.currentArmsGroup = vm.curTrial.arms_groups[idx];
+            vm.currentArmsGroup = angular.copy(vm.curTrial.arms_groups[idx]);
             vm.interventionList = vm.currentArmsGroup.arms_groups_interventions;
             vm.currentArmsGroup.edit = true;
             vm.currentArmsGroup.index = idx;
@@ -328,6 +327,18 @@
             vm.curTrial.arms_groups_attributes = _labelSortableIndex(vm.curTrial.arms_groups);
             vm.saveTrial();
         }
+
+        function resetArmsGroup() {
+            var curIndex = vm.currentArmsGroup.index;
+            if (curIndex !== undefined) {
+                setEditMode(curIndex);
+                return;
+            }
+
+            vm.setAddMode(true);
+        }
+
+
     } //pasArmsGroupsCtrl
 
 })();

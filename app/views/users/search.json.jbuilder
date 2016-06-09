@@ -1,7 +1,7 @@
 
 json.users do
   json.array!(@users) do |user|
-    if current_user.role == 'ROLE_SITE-SU' || current_user.role == 'ROLE_SUPER' || current_user.role == 'ROLE_ADMIN'  || current_user.role == 'ROLE_ABSTRACTOR' || current_user.role == 'ROLE_ABSTRACTOR-SU'
+    if current_user.role == 'ROLE_ACCOUNT-APPROVER' || current_user.role == 'ROLE_SITE-SU' || current_user.role == 'ROLE_SUPER' || current_user.role == 'ROLE_ADMIN'  || current_user.role == 'ROLE_ABSTRACTOR' || current_user.role == 'ROLE_ABSTRACTOR-SU'
       json.extract! user, :domain, :id, :username, :first_name, :last_name, :email, :user_status_id, :role
       json.user_status_name user.user_status ? user.user_status.name : ''
       json.url user_url(user, format: :json)
@@ -15,7 +15,7 @@ json.users do
           end
         end
       end
-      json.admin_role user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR'? 'Yes': 'No'
+      json.admin_role user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ACCOUNT-APPROVER'? 'Yes': 'No'
       json.organization_family_name org_family_name.chomp(',')
       if user.receive_email_notifications then
         json.receive_email_notifications "Yes"
