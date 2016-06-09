@@ -248,7 +248,7 @@
         }; //resetSearch
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchParams.organization_family);
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchOrganizationFamily);
         };
 
         /****************************** implementations **************************/
