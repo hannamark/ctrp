@@ -105,7 +105,7 @@
                 if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
-                } else if (vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER' && vm.userRole === 'ROLE_ACCOUNT-APPROVER') {
+                } else if (vm.userRole !== 'ROLE_ADMIN') {
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id = vm.userDetailsOrig.organization_id;
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].name = 'Request has been sent';
                 }
