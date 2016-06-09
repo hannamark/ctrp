@@ -69,14 +69,14 @@ class Ability
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard
     elsif user.role == 'ROLE_SITE-SU' && user.user_status.code == 'ACT'
-      can :manage, [Trial, AssociatedTrial]
+      can :manage, [Trial, Comment, AssociatedTrial, Family]
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard
     elsif user.role == 'ROLE_ABSTRACTOR' && user.user_status.code == 'ACT'
-      can :manage, [Trial, Comment, AssociatedTrial]
+      can :manage, [Trial, Comment, AssociatedTrial, Family]
       can :unique, Organization
       can :read, :all
       can :search, :all
@@ -84,7 +84,7 @@ class Ability
       cannot :access, :rails_admin   # grant access to rails_admin
       cannot :dashboard              # grant access to the dashboard
     elsif user.role == 'ROLE_ABSTRACTOR-SU' && user.user_status.code == 'ACT'
-      can :manage, [Trial, Comment, AssociatedTrial]
+      can :manage, [Trial, Comment, AssociatedTrial, Family]
       can :read, :all
       can :search, :all
       cannot :access_backoffice, :manage_backoffice
