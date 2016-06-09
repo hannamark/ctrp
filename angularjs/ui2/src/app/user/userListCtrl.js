@@ -175,6 +175,11 @@
 
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
             vm.statusArr = response.data;
+            if (vm.curUser.role == 'ROLE_SITE-SU' || vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INR'], item.code);
+                });
+            }
         }).catch(function (err) {
             vm.statusArr = [];
             console.log("Error in retrieving USER_STATUSES " + err);
@@ -190,9 +195,8 @@
                 vm.searchOrganization = vm.curUser.organization.name;
                 vm.searchOrganizationFamily = '';
             }
-            vm.searchStatus = 'Active';
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (!vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (vm.registeredUsersPage) {
