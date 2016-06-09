@@ -285,7 +285,7 @@ class TrialsController < ApplicationController
           end
         end
 
-        if ['ROLE_SITE-SU'].include? current_user.role
+        if ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
           family = FamilyMembership.find_by_organization_id(current_user.organization_id)
           if family
             @trials = @trials.in_family(family.family_id, Date.today)

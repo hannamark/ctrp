@@ -348,6 +348,7 @@
 
                         service.transferUserTrialsOwnership(searchParams).then(function (data) {
                             if(data.results === 'success') {
+                                toastr.success('Trial Ownership Transferred', 'Success!');
                                 if (controller.passiveTransferMode) {
                                     controller.passiveTransferMode = false;
                                     controller.updateUser(controller.checkForOrgChange());
@@ -422,7 +423,8 @@
             return (service.isCurationModeEnabled()
                         && (curUserRole === 'ROLE_SUPER'
                                 || curUserRole === 'ROLE_ADMIN'
-                                    || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
+                                    || curUserRole === 'ROLE_ACCOUNT-APPROVER'
+                                        || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
         
         /******* helper functions *********/

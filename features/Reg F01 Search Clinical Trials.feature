@@ -15,10 +15,12 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Lead Org Trial Identifier|
 |Principal Investigator|
 |ClinicalTrials.gov Identifier|
+|Other Identifiers|
 |Current Trial Status|
 |Current Processing Status|
 |Available Actions|
 |Accrual Disease Terminology|
+|Sites|
 |Phase|
 |Primary Purpose|
 |Category|
