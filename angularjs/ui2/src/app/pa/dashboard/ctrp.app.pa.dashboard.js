@@ -30,6 +30,8 @@
         'ui.bootstrap.typeahead',
         'ui.bootstrap.pagination',
         'ui.bootstrap.alert',
+        'ui.bootstrap.tooltip',
+        'ui.bootstrap.popover',
         'ngMaterial',
         'agGrid',
         'toastr',
@@ -44,6 +46,7 @@
         'ngFileSaver',
         'angularSpinner',
         'ui.select',
-        'ntt.TreeDnD'
+        'ntt.TreeDnD',
+        'mgcrea.ngStrap.tooltip'
     ]);
 })();

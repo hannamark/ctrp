@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     get '/app_settings/:settings' => 'util#get_app_settings'
     get '/app_settings_ext/:settings' => 'util#get_app_settings_ext'
 
+    post '/trial_submissions' => 'submissions#search'
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'

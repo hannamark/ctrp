@@ -630,6 +630,15 @@ class TrialsController < ApplicationController
     rescue OpenURI::HTTPError
       @search_result[:error_msg] = 'A study with the given identifier is not found in ClinicalTrials.gov.'
     else
+      lead_protocol_id = xml.xpath('//org_study_id').text
+      org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
+
+      dup_trial = Trial.joins(:lead_org).where('organizations.name = ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
+      if dup_trial.length > 0
+        @search_result[:error_msg] = 'Combination of Lead Organization Trial ID and Lead Organization must be unique.'
+        return
+      end
+
       @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
       @search_result[:official_title] = xml.xpath('//official_title').text
       @search_result[:status] = xml.xpath('//overall_status').text

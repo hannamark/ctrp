@@ -53,4 +53,14 @@ class Submission < TrialBase
       self.acknowledge = 'No'
   end
 
+
+  scope :matches, -> (column, value) {
+    join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
+    join_clause += "LEFT JOIN users ON submissions.user_id = users.id "
+
+    if column == 'user_id'
+      joins(join_clause).where("submissions.user_id = #{value} AND submissions.trial_id is not null")
+    end
+  }
+
 end

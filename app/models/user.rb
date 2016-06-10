@@ -99,6 +99,8 @@ class  User < ActiveRecord::Base
       else
         joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU','ROLE_ADMIN')").distinct
       end
+    elsif column == 'user_statuses'
+      joins(join_clause).where("users.user_status_id in (#{value.join(',')})").distinct
     elsif column == 'user_status_id' || column == 'organization_id'
       joins(join_clause).where("#{column_str} = #{value}").distinct
     elsif value[0] == '*' && value[str_len - 1] != '*'

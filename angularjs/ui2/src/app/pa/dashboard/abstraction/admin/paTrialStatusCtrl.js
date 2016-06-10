@@ -16,7 +16,6 @@
         UserService, toastr) {
 
         var vm = this;
-        console.log('trialStatuses: ', trialStatuses);
         vm.trialStatusDict = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
@@ -30,6 +29,7 @@
         vm.isExpandedAccess = false;
         vm.isDCPTrial = false;
         vm.isInterventional = false;
+        vm.statusPopover = {open: false, content: ''};
 
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
@@ -62,6 +62,7 @@
         function activate() {
             _watchTrialStatusChanges();
             _getTrialDetailCopy();
+
         } // activate
 
         function _getTrialDetailCopy() {
@@ -371,7 +372,14 @@
         function _watchTrialStatusChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
                 if (newVal) {
+                    if (newVal !== oldVal) {
+                        vm.statusPopover.open = true; // when to turn off ?
+                    } else {
+                        vm.statusPopover.open = false;
+                    }
                     var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
+                    vm.statusPopover.content = selectedStatus.explanation;
+                    vm.statusPopover.open = vm.statusPopover.content.length > 0; // if empty content, do not open popover
                     var statusName = selectedStatus.name || '';
                     if (_.contains(statusesForWhyStopped, statusName.toLowerCase())) {
                         vm.showWhyStoppedField = true;
