@@ -301,15 +301,11 @@
             UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
                 vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
                 vm.gridTrialsSubmittedOptions.totalItems =  data.total;
-                $timeout(function() {
-                    vm.gridTrialsSubmittedLoaded = true;
-                }, 500);
             }).catch(function (err) {
                 console.log('Get User Submitted Trials failed');
             });
         };
         vm.getUserSubmittedTrials();
-
 
         vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         vm.getUserTrials = function () {
@@ -318,9 +314,6 @@
             UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
                 vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
                 vm.gridTrialsOwnedOptions.totalItems =  data.total;
-                $timeout(function() {
-                    vm.gridTrialsOwnedLoaded = true;
-                }, 500);
             }).catch(function (err) {
                 console.log('Get User Trials failed');
             });

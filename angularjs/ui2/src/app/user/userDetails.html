@@ -208,14 +208,13 @@
 
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default" ng-if="userDetailView.gridTrialsOwnedOptions.data.length > 0">
-                    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                    <div class="panel-heading" data-target="#collapseOne">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle">
                                 Trials Currently Owned by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}
-                            </a>
+
                         </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse" ng-class="{'in': !userDetailView.gridTrialsOwnedLoaded}">
+                    <div id="collapseOne" class="panel-collapse collapse in">
                         <div class="panel-body">
 
 
@@ -231,13 +230,13 @@
                 </div>
                 <div class="panel panel-default" ng-if="userDetailView.gridTrialsSubmittedOptions.data.length > 0">
                     <div class="panel-heading">
-                        <h4 class="panel-title"  data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
-                            <a class="accordion-toggle">
+                        <h4 class="panel-title"   data-target="#collapseTwo">
+
                                 Trials Submitted by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}
-                            </a>
+
                         </h4>
                     </div>
-                    <div id="collapseTwo" class="panel-collapse collapse" ng-class="{'in': !userDetailView.gridTrialsSubmittedLoaded}">
+                    <div id="collapseTwo" class="panel-collapse collapse in">
                         <div class="panel-body">
 
                                         <div class="col-xs-12">
