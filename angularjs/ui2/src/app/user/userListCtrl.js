@@ -228,13 +228,32 @@
         vm.searchUsers = function () {
             vm.gridOptions.useExternalPagination = true;
             vm.gridOptions.useExternalSorting = true;
-            UserService.searchUsers(vm.searchParams).then(function (data) {
-                vm.gridOptions.data = data['users'];
-                vm.gridOptions.totalItems =  data.total;
-                $location.hash('users_search_results');
-            }).catch(function (err) {
-                console.log('Search Users failed: ' + err);
+
+            /**
+             * If not, it should throw a warning to the user to select atleast one parameter.
+             * Right now, ignoring the alias parameter as it is set to true by default.
+             * To refactor and look at default parameters instead of hardcoding -- radhika
+             */
+            var isEmptySearch = true;
+            var excludedKeys = ['sort', 'order', 'rows', 'start', 'site_admin'];
+            Object.keys(vm.searchParams).forEach(function (key) {
+                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '') {
+                    isEmptySearch = false;
+                }
             });
+
+            if (isEmptySearch) {
+                vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
+            } else {
+                vm.searchWarningMessage = '';
+                UserService.searchUsers(vm.searchParams).then(function (data) {
+                    vm.gridOptions.data = data['users'];
+                    vm.gridOptions.totalItems =  data.total;
+                    $location.hash('users_search_results');
+                }).catch(function (err) {
+                    console.log('Search Users failed: ' + err);
+                });
+            }
         }; //searchUsers
 
         vm.resetSearch = function () {
@@ -248,7 +267,7 @@
         }; //resetSearch
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchOrganizationFamily);
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchParams.organization_family);
         };
 
         /****************************** implementations **************************/
