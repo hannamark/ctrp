@@ -38,9 +38,9 @@
                                     <td class="col-sm-2">
                                         <select name="status" id="status_select"
                                             class="form-control input-sm"
-                                            uib-popover="Trial is temporarily not accruing. Participants are not receiving intervention."
+                                            uib-popover="{{trialStatusView.statusPopover.content}}"
                                             popover-trigger="none"
-                                            popover-is-open="trialStatusView.statusPopoverOpen"
+                                            popover-is-open="trialStatusView.statusPopover.open"
                                             restriction-field
                                             ng-model="trialStatusView.statusObj.trial_status_id"
                                             ng-options="status.id as status.name disable when status.disabled for status in trialStatusView.trialStatusDict">
