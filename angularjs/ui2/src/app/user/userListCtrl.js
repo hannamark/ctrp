@@ -235,15 +235,17 @@
              * To refactor and look at default parameters instead of hardcoding -- radhika
              */
             var isEmptySearch = true;
-            var excludedKeys = ['sort', 'order', 'rows', 'start', 'site_admin'];
+            var excludedKeys = ['sort', 'order', 'rows', 'start'];
             Object.keys(vm.searchParams).forEach(function (key) {
-                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '') {
+                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '' && vm.searchParams[key] !== undefined) {
                     isEmptySearch = false;
                 }
             });
 
             if (isEmptySearch) {
                 vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
+                vm.gridOptions.data = [];
+                vm.gridOptions.totalItems = null;
             } else {
                 vm.searchWarningMessage = '';
                 UserService.searchUsers(vm.searchParams).then(function (data) {
