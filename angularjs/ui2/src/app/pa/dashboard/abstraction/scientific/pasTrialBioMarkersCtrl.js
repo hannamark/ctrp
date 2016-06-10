@@ -459,6 +459,9 @@
             vm.addEditMode = true;
             vm.currentBioMarker = angular.copy(vm.curTrial.bio_markers[idx]);
             vm.currentBioMarker.status_alert=true;
+            vm.currentBioMarker.index = idx;
+            vm.currentBioMarkerIndex = idx;
+
             //vm.currentBioMarker.cadsr_marker_id=0;
             vm.masterCopyOfMarkerNameFromCadsr=angular.copy(vm.currentBioMarker.name);
 
@@ -499,6 +502,14 @@
 
         }
         function resetBioMarker() {
+            var curIndex = vm.currentBioMarker.index;
+            if (curIndex !== undefined) {
+                setEditMode(curIndex);
+                return;
+            }
+
+            //vm.setAddMode(true);
+
             vm.selectedAllBM = false;
             if(vm.currentBioMarker.id > 0){
                 var cachedTrial = PATrialService.getCurrentTrialFromCache();
