@@ -4,9 +4,9 @@
     angular.module('ctrp.module.validators')
             .directive('ctrpSubmit', ctrpSubmit);
 
-            ctrpSubmit.$inject = ['$parse', '$log', '$rootScope'];
+            ctrpSubmit.$inject = ['$parse', '$log', '$rootScope', '$timeout'];
 
-            function ctrpSubmit($parse, $log, $rootScope) {
+            function ctrpSubmit($parse, $log, $rootScope, $timeout) {
 
                 var directiveObject = {
                     restrict: 'A',
@@ -29,14 +29,17 @@
                     /* Hook for ctrp-confirm directive (and potentially other similar directives) as needed */
                     if (hasSecondaryTask) {
                         $rootScope.$on('deleteConfirmationComplete', function(e) {
-                            if (!formController.$invalid && !formController.$pristine) { // Confirm that form is valid before submitting form via the event broadcast
-                                scope.formAction(scope);
+                            if (!e.defaultPrevented) {
+                                e.preventDefault();
+                                if (!formController.$invalid) { // Confirm that form is valid before submitting form via the event broadcast
+                                    scope.formAction(scope);
+                                }
                             }
                         });
                     }
 
                     element.bind('submit', function(event) {
-                        var formAction = scope.formAction;
+                        var formAction = $parse(attrs.ctrpSubmit);
 
                         submitController.attempted = formController.$submitted;
                         $log.info('form is submitted: ' + formController.$submitted);

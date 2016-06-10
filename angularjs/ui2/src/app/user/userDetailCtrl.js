@@ -76,7 +76,7 @@
             } else {
                 if (vm.inactivatingUser || vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                        if (vm.gridOptions.totalItems > 0
+                        if (vm.gridTrialsOwnedOptions.totalItems > 0
                                 && (vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
                                         || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
@@ -98,14 +98,14 @@
         vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
-                if (vm.gridOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER'
+                if (vm.gridTrialsOwnedOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER'
                     || vm.userRole === 'ROLE_ACCOUNT-APPROVER' || vm.userRole === 'ROLE_SITE-SU')) {
                     vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 }
                 if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
-                } else if (vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER' && vm.userRole === 'ROLE_ACCOUNT-APPROVER') {
+                } else if (vm.userRole !== 'ROLE_ADMIN') {
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id = vm.userDetailsOrig.organization_id;
                     vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].name = 'Request has been sent';
                 }
@@ -197,7 +197,7 @@
         vm.export_column_type = "visible";
         vm.searchParams = new TrialSearchParams;
         vm.viewCount = vm.searchParams.start + vm.searchParams.rows - 1;
-        vm.gridOptions = {
+        vm.gridTrialsOwnedOptions = {
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -230,6 +230,20 @@
                     width: '155'
                 },
                 {
+                    name: 'process_priority',
+                    displayName: 'Processing Priority',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.process_priority })">{{COL_FIELD}}</a></div>',
+                    enableSorting: true,
+                    width: '*'
+                },
+                {
+                    name: 'ctep_id',
+                    displayName: 'CTEP ID',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.ctep_id })">{{COL_FIELD}}</a></div>',
+                    enableSorting: true,
+                    width: '*'
+                },
+                {
                     name: 'official_title',
                     displayName: 'Official Title for Trial',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
@@ -246,7 +260,7 @@
             exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
             exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Trials owned by ' + vm.userDetails.username + ':', style: 'headerStyle' },
             exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' owns a total of ' + vm.gridOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
+                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' owns a total of ' + vm.gridTrialsOwnedOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
             },
             exporterPdfCustomFormatter: function ( docDefinition ) {
                 docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
@@ -256,11 +270,10 @@
             exporterMenuAllData: true,
             exporterMenuPdfAll: true,
             exporterPdfOrientation: 'landscape',
-            exporterPdfMaxGridWidth: 700,
-            gridMenuCustomItems: new UserService.TransferTrialsGridMenuItems($scope, vm)
+            exporterPdfMaxGridWidth: 700
         };
 
-        vm.gridOptions.onRegisterApi = function (gridApi) {
+        vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
@@ -269,25 +282,38 @@
                 vm.getUserTrials();
             });
         };
-        vm.gridOptions.exporterAllDataFn = function () {
+        vm.gridTrialsOwnedOptions.exporterAllDataFn = function () {
             var allSearchParams = angular.copy(vm.searchParams);
             allSearchParams.start = null;
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, allSearchParams).then(
                 function (data) {
-                    vm.gridOptions.useExternalPagination = false;
-                    vm.gridOptions.useExternalSorting = false;
-                    vm.gridOptions.data = data['trial_ownerships'];
+                    vm.gridTrialsOwnedOptions.useExternalPagination = false;
+                    vm.gridTrialsOwnedOptions.useExternalSorting = false;
+                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
                 }
             );
         };
-        vm.getUserTrials = function () {
-            vm.gridOptions.useExternalPagination = true;
-            vm.gridOptions.useExternalSorting = true;
-            UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                vm.gridOptions.data = data['trial_ownerships'];
-                vm.gridOptions.totalItems =  data.total;
+        vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
+        vm.getUserSubmittedTrials = function () {
+            vm.gridTrialsSubmittedOptions.useExternalPagination = true;
+            vm.gridTrialsSubmittedOptions.useExternalSorting = true;
+            UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
+                vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                vm.gridTrialsSubmittedOptions.totalItems =  data.total;
+            }).catch(function (err) {
+                console.log('Get User Submitted Trials failed');
+            });
+        };
+        vm.getUserSubmittedTrials();
 
+        vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
+        vm.getUserTrials = function () {
+            vm.gridTrialsOwnedOptions.useExternalPagination = true;
+            vm.gridTrialsOwnedOptions.useExternalSorting = true;
+            UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                vm.gridTrialsOwnedOptions.totalItems =  data.total;
             }).catch(function (err) {
                 console.log('Get User Trials failed');
             });
@@ -385,7 +411,7 @@
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
+            vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
 })();

@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row-fluid user-detail">
     <div class="col-xs-12 drop-shadow">
         <div class="row">
             <p>
@@ -204,29 +204,57 @@
                 </fieldset>
             </form>
 
-            <div class="form-group" ng-if="userDetailView.gridOptions.data.length > 0">
-                <div class="btn-toolbar col-xs-12 col-sm-12"><h4>Trials owned by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}:</h4></div>
-                <div class="btn-toolbar col-xs-12 col-sm-12">
+            <div class="row top-offset-xs"></div>
 
-                    <!-- list of Users -->
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row animated-item">
-                                <div ui-grid="userDetailView.gridOptions"  class="user-detail-grid"
-                                     ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
-                            </div>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default" ng-if="userDetailView.gridTrialsOwnedOptions.data.length > 0">
+                    <div class="panel-heading" data-target="#collapseOne">
+                        <h4 class="panel-title">
+                                Trials Currently Owned by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}
+
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+
+
+                                        <div class="col-xs-12">
+                                            <div class="row animated-item">
+                                                <div ui-grid="userDetailView.gridTrialsOwnedOptions"  class="user-detail-grid"
+                                                     ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                                            </div>
+                                        </div>
+
                         </div>
                     </div>
-                    <div class="row top-offset-xs" ng-if="userDetailView.gridOptions.totalItems != null"></div>
-                    <div class="row top-offset-xs"></div>
+                </div>
+                <div class="panel panel-default" ng-if="userDetailView.gridTrialsSubmittedOptions.data.length > 0">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"   data-target="#collapseTwo">
 
+                                Trials Submitted by {{userDetailView.userDetails.first_name}} {{userDetailView.userDetails.last_name}}
+
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div class="panel-body">
+
+                                        <div class="col-xs-12">
+                                            <div class="row animated-item">
+                                                <div ui-grid="userDetailView.gridTrialsSubmittedOptions"  class="user-detail-grid"
+                                                     ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                                            </div>
+                                        </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
         </div>
-        <div class="row top-offset-xs"></div>
     </div>
 </div>
-<modal visible="userDetailView.showSelectedTrialsModal" title="Transfer Ownership Selected Trials" id="transferTrialsfff">
+<modal visible="userDetailView.showSelectedTrialsModal" title="Transfer Ownership Selected Trials" id="transferTrials">
     <ctrptransferselect options="userDetailView.userOptions"> </ctrptransferselect>
 </modal>
 

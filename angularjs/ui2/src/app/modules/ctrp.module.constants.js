@@ -29,6 +29,7 @@
             'USER_TRIALS_ADD': '/ctrp/trial_ownerships/add.json',
             'USER_TRIALS_TRANSFER': '/ctrp/trial_ownerships/transfer.json',
             'USER_TRIALS_CREATE': '/ctrp/trial_ownerships.json',
+            'USER_SUBMITTED_TRIALS': '/ctrp/trial_submissions.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
             'CURATE_PERSON': '/ctrp/people/curate',
