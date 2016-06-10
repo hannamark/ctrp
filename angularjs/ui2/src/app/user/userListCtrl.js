@@ -191,7 +191,6 @@
         if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
             if (vm.curUser.org_families.length) {
                 vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
-                vm.searchParams.organization_family = vm.searchOrganizationFamily;
             } else {
                 vm.searchOrganization = vm.curUser.organization.name;
                 vm.searchOrganizationFamily = '';
@@ -270,7 +269,7 @@
         }; //resetSearch
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchParams.organization_family);
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchOrganizationFamily);
         };
 
         /****************************** implementations **************************/
