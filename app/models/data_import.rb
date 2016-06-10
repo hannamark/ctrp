@@ -206,6 +206,7 @@ class DataImport
         #  u.save!
         #end
         #save Trial
+        trial.edit_type = 'seed'
         trial.save!
       end
     rescue Exception => e
@@ -220,6 +221,7 @@ class DataImport
     c3.organization = org27
     c3.org_name = org27.name
     t.collaborators << c3
+    t.edit_type = 'seed'
     t.save!
 
   end
@@ -248,6 +250,7 @@ class DataImport
           current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
           current_submission.user = User.all[rand(0..total_users-1)]
           trial.submissions << current_submission
+          trial.edit_type = 'seed'
           trial.save!
         end
         current_milestone = spreadsheet.cell(row,'B')
@@ -262,6 +265,7 @@ class DataImport
           cmw.milestone = milestone
           cmw.submission = current_submission
           trial.milestone_wrappers << cmw
+          trial.edit_type = 'seed'
           trial.save!
         end
       end
@@ -317,6 +321,7 @@ class DataImport
 
       #ps.participating_site_investigators << psi2
       trial.participating_sites << ps
+      trial.edit_type = 'seed'
       trial.save!
     end
   end

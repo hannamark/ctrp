@@ -38,6 +38,9 @@
                                     <td class="col-sm-2">
                                         <select name="status" id="status_select"
                                             class="form-control input-sm"
+                                            uib-popover="{{trialStatusView.statusPopover.content}}"
+                                            popover-trigger="none"
+                                            popover-is-open="trialStatusView.statusPopover.open"
                                             restriction-field
                                             ng-model="trialStatusView.statusObj.trial_status_id"
                                             ng-options="status.id as status.name disable when status.disabled for status in trialStatusView.trialStatusDict">
@@ -98,8 +101,8 @@
                         </div>
                         <div>
                             <p>
-                                <mark>Please refer to the Trial Status Transition Rules:</mark><br>
-                                <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules" target="_blank">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Transition+Rules <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
+                                <mark>Please refer to this link for </mark>
+                                <a href="https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Status+Transitions" target="_blank"> Trial Accrual Status Transition Rules <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
                             </p>
                         </div>
                     </div>
@@ -281,8 +284,8 @@
                     </div>
                     <!-- end of completion date -->
                     <div class="row top-offset-xs">
-                        <mark>Please refer to the Trial Status Rules for Start and Completion Dates Rules:</mark><br>
-                        <a href="https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates" target="_blank">https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
+                        <mark>Please refer to this link for</mark>
+                        <a href="https://wiki.nci.nih.gov/display/CTRPAUM/About+Trial+Date+Rules" target="_blank"> Trial Date Rules <i class="glyphicon glyphicon-new-window" style="padding-left: 5px"></i></a>
                     </div>
                 </fieldset>
                 <!-- end of fieldset for trial dates -->

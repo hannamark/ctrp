@@ -19,9 +19,11 @@
             FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
                 if (data.data) {
                     vm.families = data.data.families;
-                    vm.family_id = vm.curUser.org_families[0].id;
-                    vm.family_name = vm.curUser.org_families[0].name;
-                    vm.getFamilyTrialsUsers();
+                    if(vm.curUser.org_families[0] && vm.curUser.org_families[0].id) {
+                        vm.family_id = vm.curUser.org_families[0].id;
+                        vm.family_name = vm.curUser.org_families[0].name;
+                        vm.getFamilyTrialsUsers();
+                    }
                 }
             }).catch(function (err) {
                 console.log('family search people failed: ' + err);
@@ -34,9 +36,11 @@
             OrgService.searchOrgs(vm.orgSearchParams).then(function (data) {
                 if (data.orgs) {
                     vm.no_family_orgs = data.orgs;
-                    vm.organization_id = vm.curUser.organization.id;
-                    vm.organization_name = vm.curUser.organization.name;
-                    vm.getFamilyTrialsUsers();
+                    if(vm.curUser.organization && vm.curUser.organization.id) {
+                        vm.organization_id = vm.curUser.organization.id;
+                        vm.organization_name = vm.curUser.organization.name;
+                        vm.getFamilyTrialsUsers();
+                    }
                 }
             }).catch(function (err) {
                 console.log('organization search people failed: ' + err);

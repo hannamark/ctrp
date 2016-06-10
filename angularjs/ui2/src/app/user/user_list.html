@@ -1,14 +1,12 @@
-<div class="row" ng-hide="searchWarningMessage==''" ng-cloak>
-    <div class="alert alert-warning fade in" ng-if="searchWarningMessage.length">
-        <strong>{{searchWarningMessage}}</strong>
-    </div>
-</div>
 <div class="row">
     <div class="col-xs-12 drop-shadow">
         <div class="row">
             <h4>Search User
-                <small>Enter blank for wild card</small>
+                <small>* for wild card (e.g. university* for any university)</small>
             </h4>
+        </div>
+        <div class="alert alert-warning fade in" ng-if="userView.searchWarningMessage && userView.searchWarningMessage.length" ng-cloak>
+            <strong>{{userView.searchWarningMessage}}</strong>
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
@@ -39,7 +37,7 @@
                             <div class="col-sm-7" ng-if="!userView.searchStatus">
                                 <select class="form-control input-sm" id="user_status_id" ng-model="userView.searchParams.user_status_id">
                                     <option value="">Select a status</option>
-                                    <option ng-repeat="status in userView.statusArr" value="{{status.id}}">{{status.name}}</option>
+                                    <option ng-repeat="status in (userView.statusArrForROLESITESU || userView.statusArr)" value="{{status.id}}">{{status.name}}</option>
                                 </select>
                             </div>
                             <div class="col-sm-7 control-label text-left" ng-if="userView.searchStatus">
@@ -68,7 +66,7 @@
                         <div class="form-group" ng-if="!userView.registeredUsersPage">
                             <label for="email" class="control-label col-sm-5">Email:</label>
                             <div class="col-sm-7">
-                                <input type="text" id="email" class="form-control input-sm" placeholder="email" ng-model="userView.searchParams.email" auto-focus/>
+                                <input type="text" id="email" class="form-control input-sm" placeholder="email" ng-model="userView.searchParams.email" />
                             </div>
                         </div>
                         <!-- email ends -->
@@ -77,7 +75,7 @@
                         <div class="form-group">
                             <label for="first_name" class="control-label col-sm-5">First Name:</label>
                             <div class="col-sm-7">
-                                <input type="text" id="first_name" class="form-control input-sm" placeholder="First Name" ng-model="userView.searchParams.first_name" auto-focus/>
+                                <input type="text" id="first_name" class="form-control input-sm" placeholder="First Name" ng-model="userView.searchParams.first_name" />
                             </div>
                         </div>
                         <!-- First Name ends -->
@@ -97,7 +95,7 @@
                         <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0) && !userView.registeredUsersPage">
                             <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
                             <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
-                                <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" auto-focus/>
+                                <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" />
                             </div>
                             <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganizationFamily && userView.searchOrganizationFamily.length">
                                 {{userView.searchOrganizationFamily}}

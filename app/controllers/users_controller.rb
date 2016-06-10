@@ -136,28 +136,23 @@ end
 
     if ['ROLE_ADMIN'].include? current_user.role
       if params[:family_id].present?
-          @users = @users.family_matches(params[:family_id], Date.today) unless @users.blank?
+          @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
       elsif params[:organization_id].present?
           @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
       end
     end
 
-    if ['ROLE_SITE-SU'].include? current_user.role
+    if ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
       family = FamilyMembership.find_by_organization_id(current_user.organization_id)
       if family
-        if (family.effective_date == nil || family.effective_date < Date.today) &&
-            (family.expiration_date == nil || family.expiration_date > Date.today)
-          @users = @users.family_matches(family.family_id, Date.today) unless @users.blank?
-        else
-          @users = []
-        end
+          @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
       else
           @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
       end
     end
 
     if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU'
-      @users = @users.matches_wc('user_status_id', UserStatus.find_by_code('ACT').id) unless @users.blank?
+      @users = @users.matches_wc('user_statuses', [UserStatus.find_by_code('ACT').id, UserStatus.find_by_code('INR').id]) unless @users.blank?
       @status = 'Active'
     end
 
@@ -177,7 +172,7 @@ end
       temp0 = []
       temp1 = []
       @users.each do |user|
-        if user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR'
+        if user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ACCOUNT-APPROVER'
           temp0.push(user)
         else
           temp1.push(user)

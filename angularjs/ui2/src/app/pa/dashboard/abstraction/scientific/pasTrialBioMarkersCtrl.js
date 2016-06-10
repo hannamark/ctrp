@@ -457,7 +457,7 @@
          **/
         function setEditMode(idx) {
             vm.addEditMode = true;
-            vm.currentBioMarker = vm.curTrial.bio_markers[idx];
+            vm.currentBioMarker = angular.copy(vm.curTrial.bio_markers[idx]);
             vm.currentBioMarker.status_alert=true;
             //vm.currentBioMarker.cadsr_marker_id=0;
             vm.masterCopyOfMarkerNameFromCadsr=angular.copy(vm.currentBioMarker.name);

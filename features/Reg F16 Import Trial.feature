@@ -42,17 +42,6 @@ And the trial status will match the trial status in ClinicalTrials.gov as:
 |Temporarily not Available|
 |Approved for Marketing|
 
-Scenario: #4a I will not be able to Import NIH trial from ClinicalTrials.gov
-Given I have selected the option to Import an Industrial or Other Trial
-And I have entered a NCT Number
-When the XML from ClinicalTrials.gov contains the XML: <agency_class>NIH</agency_class>
-Then the error message "Error Message:gov.nih.nci.pa.service.PAException: Unable to import study NCTxxxxxxxx because it does not belong to Industrial/Consortia category" will be displayed
-
-Scenario: #4b I will not be able to import U.S. Federal trial from ClinicalTrials.gov
-Given I have selected the option to Import an Industrial or Other Trial
-And I have entered a NCT Number
-When the XML from ClinicalTrials.gov contains the XML: <agency_class>U.S. Fed</agency_class>
-Then the error message "Error Message:gov.nih.nci.pa.service.PAException: Unable to import study NCTxxxxxxxx because it does not belong to Industrial/Consortia category" will be displayed
 
 Scenario: #4c I will not be able to Import a trial previously registered in CTRP
 Given I have selected the option to Import an Industrial or Other Trial
