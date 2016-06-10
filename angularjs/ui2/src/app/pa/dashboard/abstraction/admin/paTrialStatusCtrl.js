@@ -371,7 +371,6 @@
 
         function _watchTrialStatusChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
-                console.info('status id: ', newVal);
                 if (newVal) {
                     var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
                     if (newVal !== oldVal) {
