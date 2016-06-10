@@ -84,6 +84,7 @@
                                            ng-model="markersView.currentBioMarker.evaluation_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isEvalTypeOtherChecked"
                                            ng-required="markersView.isEvalTypeOtherChecked" placeholder="Other Evaluation Type">
 
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.evaluation_type_other) && marker_form.evaluation_type_other.$error">
@@ -125,6 +126,7 @@
                                            ng-model="markersView.currentBioMarker.assay_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isAssayTypeOtherChecked"
                                            ng-required="markersView.isAssayTypeOtherChecked" placeholder="Other Assay Type">
 
                                     <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.assay_type_other) && marker_form.assay_type_other.$error">
@@ -213,6 +215,7 @@
                                            ng-model="markersView.currentBioMarker.specimen_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isSpecTypeOtherChecked"
                                            ng-required="markersView.isSpecTypeOtherChecked" placeholder="Other Specimen Type">
 
                                     <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.specimen_type_other) && marker_form.specimen_type_other.$error">
