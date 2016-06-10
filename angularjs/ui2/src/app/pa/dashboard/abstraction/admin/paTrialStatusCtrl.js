@@ -371,14 +371,16 @@
 
         function _watchTrialStatusChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
+                console.info('status id: ', newVal);
                 if (newVal) {
+                    var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
                     if (newVal !== oldVal) {
+                        vm.statusPopover.content = selectedStatus.explanation;
                         vm.statusPopover.open = true; // when to turn off ?
                     } else {
+                        vm.statusPopover.content = '';
                         vm.statusPopover.open = false;
                     }
-                    var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
-                    vm.statusPopover.content = selectedStatus.explanation;
                     vm.statusPopover.open = vm.statusPopover.content.length > 0; // if empty content, do not open popover
                     var statusName = selectedStatus.name || '';
                     if (_.contains(statusesForWhyStopped, statusName.toLowerCase())) {
@@ -387,8 +389,11 @@
                         vm.showWhyStoppedField = false;
                         vm.statusObj.why_stopped = '';
                     }
+                } else {
+                    vm.statusPopover.content = '';
+                    vm.statusPopover.open = false;
                 }
-            });
+            }, true);
         }
 
         /**
