@@ -26,8 +26,9 @@
         <!-- endbuild -->
 
         <!-- ctrp override -->
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+        <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" /> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
         <link rel="stylesheet" href="styles/override.css" />
 
@@ -35,6 +36,8 @@
         <!-- inject:css -->
 
         <link rel="stylesheet" href="/.tmp/styles.css">
+
+        <link rel="stylesheet" href="/.tmp/override.css">
 
         <!-- endinject -->
         <!-- endbuild -->
@@ -166,10 +169,10 @@
         <script src="/src/app/modules/widgets/popover/ctrp.widgets.popover-trial-peek.directive.js"></script>
         <script src="/src/app/modules/widgets/popover/ctrp.widgets.popover-ctrp-confirm.directive.js"></script>
         <script src="/src/app/modules/widgets/popover/ctrp.widgets.popover-comment.directive.js"></script>
+        <script src="/src/app/modules/widgets/modals/ctrp.widgets.modal.directive.js"></script>
         <script src="/src/app/modules/widgets/help/helpModalCtrl.js"></script>
         <script src="/src/app/modules/widgets/help/ctrp.widgets.ctrpHelp.directive.js"></script>
         <script src="/src/app/modules/widgets/help/HelpService.js"></script>
-        <script src="/src/app/modules/widgets/modals/ctrp.widgets.modal.directive.js"></script>
         <script src="/src/app/modules/widgets/forms/ctrp.widgets.autoFocus.directive.js"></script>
         <script src="/src/app/modules/widgets/filters/ctrp.widgets.filter.toProperCase.js"></script>
         <script src="/src/app/modules/widgets/filters/ctrp.widgets.filter.reverseList.js"></script>
@@ -181,14 +184,6 @@
         <script src="/src/app/modules/widgets/comment/CommentService.js"></script>
         <script src="/src/app/modules/widgets/buttons/ctrp.widgets.ctrpClickOnce.directive.js"></script>
         <script src="/src/app/modules/widgets/buttons/ctrp.widgets.backButton.directive.js"></script>
-        <script src="/src/app/registry/ctrp.app.registry.js"></script>
-        <script src="/src/app/registry/registration/viewTrialCtrl.js"></script>
-        <script src="/src/app/registry/registration/verifyTrialDataCtrl.js"></script>
-        <script src="/src/app/registry/registration/trialDetailCtrl.js"></script>
-        <script src="/src/app/registry/registration/trialCtrl.js"></script>
-        <script src="/src/app/registry/registration/trial-registration.routes.js"></script>
-        <script src="/src/app/registry/registration/psDetailCtrl.js"></script>
-        <script src="/src/app/registry/registration/importTrialCtrl.js"></script>
         <script src="/src/app/po/person/personSearchCtrl.js"></script>
         <script src="/src/app/po/person/personDetailCtrl.js"></script>
         <script src="/src/app/po/person/personCtrl.js"></script>
@@ -205,6 +200,14 @@
         <script src="/src/app/po/family/family.routes.js"></script>
         <script src="/src/app/po/family/ModalInstanceFamilyMembersCtrl.js"></script>
         <script src="/src/app/po/family/ModalInstanceFamilyCtrl.js"></script>
+        <script src="/src/app/registry/ctrp.app.registry.js"></script>
+        <script src="/src/app/registry/registration/viewTrialCtrl.js"></script>
+        <script src="/src/app/registry/registration/verifyTrialDataCtrl.js"></script>
+        <script src="/src/app/registry/registration/trialDetailCtrl.js"></script>
+        <script src="/src/app/registry/registration/trialCtrl.js"></script>
+        <script src="/src/app/registry/registration/trial-registration.routes.js"></script>
+        <script src="/src/app/registry/registration/psDetailCtrl.js"></script>
+        <script src="/src/app/registry/registration/importTrialCtrl.js"></script>
         <script src="/src/app/pa/search/PATrialService.js"></script>
         <script src="/src/app/pa/layout/paModuleMenuPanelCtrl.js"></script>
         <script src="/src/app/modules/widgets/ctrp.widgets.restrictionField.directive.js"></script>
@@ -232,8 +235,8 @@
         <script src="/src/app/modules/cache_service/ctrp.module.localCache.js"></script>
         <script src="/src/app/modules/cache_service/LocalCacheService.js"></script>
         <script src="/src/app/administrative/registered_user_details/registered-user-details.routes.js"></script>
-        <script src="/src/app/administrative/new_biomarker_requests/new-biomarker-requests.routes.js"></script>
         <script src="/src/app/administrative/manage_site_admins/manage-site-admins.routes.js"></script>
+        <script src="/src/app/administrative/new_biomarker_requests/new-biomarker-requests.routes.js"></script>
         <script src="/src/app/administrative/manage_nclt_terms/manage-nclt-terms.routes.js"></script>
         <script src="/src/app/accrual/pending_accrual_queue/pending-accrual-queue.routes.js"></script>
         <script src="/src/app/accrual/manage_flagged_trails/manage-flagged-trails.routes.js"></script>
