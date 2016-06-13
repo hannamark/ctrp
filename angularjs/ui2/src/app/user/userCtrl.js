@@ -8,13 +8,10 @@
     angular.module('ctrp.app.user')
         .controller('userCtrl', userCtrl);
 
-    userCtrl.$inject = ['$scope',
-        '$state', '$timeout', 'LocalCacheService', 'UserService', 'loginBulletin'];
+    userCtrl.$inject = ['$scope', 'UserService', 'loginBulletin'];
 
-    function userCtrl($scope, $state, $timeout, LocalCacheService, UserService, loginBulletin) {
+    function userCtrl($scope, UserService, loginBulletin) {
         var vm = this;
-        console.log('in user controller');
-        //console.log('received loginBulletin: ' + JSON.stringify(loginBulletin));
         vm.loginBulletin = loginBulletin['login_bulletin'] || '';
         vm.processing = false;
 

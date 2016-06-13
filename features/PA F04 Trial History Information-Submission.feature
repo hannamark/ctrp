@@ -12,8 +12,9 @@ Then I can view the Trial History Information type for Submissions and Updates f
 |Submission Date|
 |Submission Type|
 |Submitter User ID|
-|Documents| 
-|Milestone|
+|Documents (display upto 4 documents and then use popup box if more than 4.  See scenario 12)| 
+|Current Milestone (for this submission number)|
+|Action|
 
 Scenario Outline: #2 I can view Amendment Information for Submissions
 Given I am logged into the CTRP Protocol Abstraction Application
@@ -57,7 +58,8 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
 Then the trial documents are displayed
-And the documents that are attached for each submission are identified as original documents 
+And the documents that are attached for each Submission are identified as original documents 
+And the documents that are attached for each Amendment are identified as original documents
 And the documents that are attached for each Update are identified as original documents
 
 Scenario: #6 I can view Trial History Information for Original Submission
@@ -71,7 +73,7 @@ Then I can view the Trial History Information for Submissions for each submissio
 |Submission Type|
 |Submitter User ID|
 |Documents| 
-|Milestone|
+|Current Milestone (for this submission number)|
 
 
 Scenario: #7 I can view each document
@@ -85,6 +87,49 @@ Scenario: #8 I can view deleted documents
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
-And the indicator displays that there are deleated documents associated with this trial
-Then I can display the deleted documents
+And the indicator displays that there are deleated and revised documents associated with this trial
+And I Select Show Deleted and Revisied Documents
+Then I the deleted and revised documents will be displayed including the following fields
+|Deletion Date|
+|Deleted by Username|
+|Document Type (i.e. Protocol Document, IRB Document...|
+|Delete Comment|
+|Filename| 
+|Original|
+|Deleted or Revised Attribute (D for Deleted, R for Revised)|
 
+
+Scenario: #9 Document Delete Comments
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a Trial
+And I am on the Trial History Information for Submissions Screen
+And the indicator displays that there are deleated and revised documents associated with this trial
+And I Select Show Deleted and Revisied Documents
+Then files that were deleted with have the have the "Deleted or Revised Attribute" set to D
+And the comment will be the comment entered by the user that deleted the file
+
+Scenario: #10 Document Delete Comments - Revised
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a Trial
+And I am on the Trial History Information for Submissions Screen
+And the indicator displays that there are deleated and revised documents associated with this trial
+And I Select Show Deleted and Revisied Documents
+Then the files that were revised will have the "Deleted or Revised Attribute" set to R
+And the Comment will be "Revised" 
+
+ Scenario: #11 Paging
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I have selected a Trial
+      And I am on the Trial History Information Submission Screen
+      Then the submission history will be displayed for the trial 
+      And the list will be paganiated 
+
+Scenario: #12 I can view Trial History Information for Submissions with more then 4 documents in a submission
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a Trial
+And I am on the Trial History Information for Submissions Screen
+ANd the Trial History Information table is displayed
+And a submission has more than 4 documents
+Then the 4 Documents will be displayed with a function that will allow the user to popup and view all the documents for this submission.
+And I can select the Documents Pop Up Box
+And I can view all the Documents for this submission.

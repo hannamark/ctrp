@@ -35,14 +35,21 @@ ListOfOrganizationsPage = function () {
     this.orgModelSearch = element(by.id('org_search_modal'));
     this.orgModelSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
     this.orgModelConfirm = element(by.buttonText('Confirm Selection'));
-    this.orgModelCloseButton = element(by.css('.btn.btn-danger.pull-right')); //element(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]'));
-      this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
+    this.orgModelCloseButton = element(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]')); //element(by.css('.btn.btn-danger.pull-right'));
+    this.orgPersonModelCloseButton = element(by.css('button[ng-click="advPersonSearchModalView.cancel()"]'));
+    this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
+    this.orgFamilyAffiliatedTable = element.all(by.css('div[ng-show="familyDetailView.savedSelection.length > 0"]'));
     //  this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedEffectiveDate = element(by.model('org.effective_date'));
     this.orgAffiliatedExpirationDate = element(by.model('org.expiration_date'));
     this.orgFamilyRelationship = element(by.model('org.family_relationship_id'));
     this.orgAffiliatedRemoveButton = element(by.css('.glyphicon.glyphicon-remove-circle'));
     this.orgSearchResultsPage = element.all(by.css('div.ui-grid-viewport'));
+    this.searchResultHeader = element.all(by.css('div[ui-grid-header-cell=""]'));
+    this.searchResultMenu = element(by.css('.ui-grid-icon-menu'));
+    this.searchResultClearFilter = element(by.buttonText('Clear all filters'));
+    this.trialOrgSearchSrcContext = element(by.binding('sourceContexts[0].name'));
+    this.trialOrgSearchSrcStatus = element(by.binding('sourceStatuses[0].name'));
 
    // this.searchResult = element.all(by.css('div[ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"]'));//element.all(by.css('.ui-grid-row'));//element.all(by.binding('grid.getCellValue(row, col) '));
     this.pageResult = element.all(by.css('div.row'));
@@ -223,6 +230,10 @@ ListOfOrganizationsPage = function () {
 
     this.clickOrgModelClose = function(){
         search.clickButton(this.orgModelCloseButton,"Organization Model Close button");
+    };
+
+    this.clickOrgPersonModelClose = function(){
+        search.clickButton(this.orgPersonModelCloseButton,"Organization Person Model Close button on Person Model Search");
     };
 
     this.setAffiliatedOrgEffectiveDate = function(orgEffectiveDate){

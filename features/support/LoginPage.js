@@ -18,13 +18,15 @@ var LoginPage = function(){
     this.logoutButton = element(by.css('a[ng-click="headerView.logOut()"]'));
     this.rejectButton = element(by.buttonText('Reject'));
     this.acceptButton = element(by.buttonText('Accept'));
+    this.loginUser = element(by.binding('headerView.username'));
     this.loginPageVerification = element(by.css('.ng-binding.ng-scope'));
     this.loginVerifyText = element(by.css('.panel-title'));
     this.loginNewUsrSign = element(by.css('.pad-height'));
-    this.loginUser = element(by.css('.ng-binding:nth-child(1)'));
+  //  this.loginUser = element(by.css('.ng-binding:nth-child(1)'));
     var writeMode =  element(by.css('.md-thumb'));
     var params = browser.params;
     var login = new helper();
+    var getMemCrntUsrNm = '';
 
     this.setUsername = function(){
         login.setValue(this.username,params.login.user,"Username field");
@@ -93,6 +95,17 @@ var LoginPage = function(){
             if (retVal === true) {
                 element(by.buttonText('Accept')).click();// element(by.css('.container.ng-scope>button:nth-child(2)')).click();
             }
+        });
+    };
+
+    this.getUserName = function(){
+        element(by.binding('headerView.username')).getText().then(function(userNameValue){
+            var crntUsrNm = userNameValue;
+            function getUsrNm(){
+                return crntUsrNm;
+            };
+            return getMemCrntUsrNm = getUsrNm();
+            //console.log('Current User Name : ' + getMemCrntUsrNm);
         });
     };
     //{

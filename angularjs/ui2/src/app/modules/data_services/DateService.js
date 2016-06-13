@@ -62,6 +62,7 @@
          */
         this.convertISODateToLocaleDateStr = function(isoDate) {
             var dateStr = '';
+
             if (!!isoDate) {
                 var date = new Date(isoDate);
                 //adjust timezone offset * 600000 ms
@@ -74,6 +75,29 @@
                 var month = monthsDict[monthNum];
                 dateStr = day + '-' + month + '-' + year;
             }
+            /*
+            if (!!isoDate) {
+                console.info('isoDate is: ', isoDate);
+                // check if isoDate is a Date object
+                if (typeof isoDate.getMonth === 'function') {
+                    //adjust timezone offset * 600000 ms
+                    isoDate = new Date(isoDate.getTime() + isoDate.getTimezoneOffset() * 60000);
+                    isoDate = isoDate.toISOString(); // convert date to iso date format string
+                }
+
+                try {
+                    var date = moment(isoDate); // 'YYYY-MM-DDTHH:mm:ss.SSSSZ'
+                    date = date.toDate();
+                    var day = ('0' + date.getDate()).slice(-2);
+                    var year = date.getFullYear();
+                    var monthNum = date.getMonth() + 1;
+                    var month = monthsDict[monthNum];
+                    dateStr = day + '-' + month + '-' + year;
+                } catch (err) {
+                    console.error('error parsing date: ', err);
+                }
+            }
+            */
             return dateStr;
         }; //convertISODateToLocale
 
@@ -123,6 +147,28 @@
             return dateRangeArray;
         }; //getDateRange
 
+
+        /**
+         *
+         * Returns an array after formatting date property to specified date format
+         *
+         * @param dateArray, Array
+         * @param dateKey, String
+         * @param formatString, String
+         * @returns Array
+         */
+        this.formatDateArray = function (dateArray, dateKey, dateFormat) {
+            if (!dateFormat) {
+                return;
+            }
+
+            _.each(dateArray, function (item) {
+                var d = new Date(item[dateKey]);
+                item[dateKey] = moment(d).format(dateFormat);
+            });
+
+            return dateArray;
+        }
     }
 
 })();

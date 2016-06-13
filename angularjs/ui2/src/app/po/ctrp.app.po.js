@@ -22,7 +22,13 @@
         'ctrp.module.validators',
 
         /* 3rd-party modules */
-        'ui.bootstrap',
+        'ui.bootstrap.modal',
+        'ui.bootstrap.datepicker',
+        'ui.bootstrap.accordion',
+        'ui.bootstrap.buttons',
+        'ui.bootstrap.typeahead',
+        'ui.bootstrap.pagination',
+        'ui.bootstrap.alert',
         'ngMaterial',
         'toastr',
         'ngFileUpload',
@@ -30,7 +36,9 @@
         'ui.grid',
         'ui.grid.pagination',
         'ui.grid.selection',
-        'ui.scrollpoint'
-
+        'ui.scrollpoint',
+        'agGrid',
+        'formly',
+        'formlyBootstrap'
     ]);
 })();

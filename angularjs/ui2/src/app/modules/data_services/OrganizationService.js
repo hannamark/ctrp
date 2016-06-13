@@ -65,17 +65,17 @@
                 {name: 'Nullify', displayName: 'Nullify',
                     enableSorting: false,
                     enableFiltering: false,
-                    minWidth: '75', width: '*',
+                    minWidth: '100', width: '*',
                     cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"' +
                     ' ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
                 {name: 'ctrp_id', displayName: 'CTRP ID',
                     enableSorting: true,
-                    minWidth: '80',
+                    minWidth: '100',
                     width: '*'},
 
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '80', width: '*'},
+                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '100', width: '*'},
 
                 {
                     name: 'name', enableSorting: true, minWidth: '300', width: '*', sort: { direction: 'asc', priority: 1},
@@ -87,11 +87,11 @@
 
                 },
                 {name: 'source_status', displayName: 'Source Status',
-                    enableSorting: true, minWidth: '75', width: '*'},
+                    enableSorting: true, minWidth: '175', width: '*'},
                 {name: 'source_context', displayName: 'Source Context',
-                    enableSorting: true, minWidth: '75', width: '*'},
+                    enableSorting: true, minWidth: '175', width: '*'},
                 {name: 'source_id', displayName: 'Source ID',
-                    enableSorting: true, minWidth: '75', width: '*'},
+                    enableSorting: true, minWidth: '175', width: '*'},
 
                 {name: 'aff_families_names', displayName: 'Families',
                     enableSorting: true, minWidth: '100', width: '*',height: '50%',
@@ -111,7 +111,7 @@
                 {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '100', width:'*'}
+                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '120', width:'*'}
 
 
             ]
@@ -134,7 +134,8 @@
             initSelectedOrg: initSelectedOrg,
             curateOrg: curateOrg,
             findContextId: findContextId,
-            checkUniqueOrganization: checkUniqueOrganization
+            checkUniqueOrganization: checkUniqueOrganization,
+            typeAheadOrgNameSearch: typeAheadOrgNameSearch
         };
 
         return services;
@@ -149,8 +150,6 @@
 
 
         function getOrgById(orgId) {
-            console.log('calling getOrgById in OrgService');
-            //return PromiseService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
             return PromiseTimeoutService.getData(URL_CONFIGS.AN_ORG + orgId + '.json');
         } //getOrgById
 
@@ -169,7 +168,7 @@
             }
 
             //update an existing organization
-            var configObj = {}; //empty config
+            var configObj = {};
             return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + '.json', orgObj, configObj);
         } //upsertOrg
 
@@ -224,13 +223,39 @@
                 if (nullify_index >= 0)
                    gridOptions.columnDefs.splice(nullify_index,1);
             }
-
-            console.log('user role is: ', user_role.toUpperCase());
             return gridOptions;
         }
 
+        function typeAheadOrgNameSearch(resObj, field, family) {
 
+            var wildcardOrgName = field.indexOf('*') > -1 ? field : '*' + field + '*';
+            //search context: 'CTRP', to avoid duplicate names
+            var queryObj = {
+                name: wildcardOrgName,
+                source_context: 'CTRP',
+                source_status: 'Active'
+            };
 
+            if(family && family.length){
+                queryObj['family_name'] = family
+            }
+
+            return searchOrgs(queryObj).then(function(res) {
+                //remove duplicates
+                var uniqueNames = [];
+                var orgNames = [];
+
+                orgNames = res.orgs.map(function (org) {
+                    resObj.organization_id = org.id;
+                    resObj.organization_name = org.name;
+                    return org.name;
+                });
+
+                return uniqueNames = orgNames.filter(function (name) {
+                    return uniqueNames.indexOf(name) === -1;
+                });
+            });
+        }
 
         /**
          * Return a watcher for the selected country name
@@ -240,7 +265,6 @@
             return function(countryName) {
                 if (countryName) {
 
-                   // console.log('countryName: ' + countryName + ', calling GeoLocationService');
                     GeoLocationService.getStateListInCountry(countryName)
                         .then(function (response) {
                             statesOrProvinces = response;

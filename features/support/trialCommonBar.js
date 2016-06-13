@@ -21,11 +21,13 @@ var trialCommonBar = function(){
     this.registerNationalTrial = element(by.css('a[href="#/main/new-trial/nat"]'));//by.linkText('National')
     this.registerExternallyPeerReviewedTrial = element(by.css('a[href="#/main/new-trial/epr"]'));
     this.registerInstitutional = element(by.css('a[href="#/main/new-trial/ins"]'));
+    this.pageHeaderTextTrial = element(by.css('div.row > h4'));
     var pageHeaderText = element(by.css('div.row > h4'));
 
     var helper = new helperFunctions();
     var search_Trial_Header_Text = 'Search Trials * for wild card';
     var register_Trial_Header_Text = 'Register Trial';
+    var register_Import_Trial_Header_Text = 'Import ClinicalTrials.gov Trials';
 
     this.clickHomeSearchTrial = function(){
         homeSearchTrial.isPresent().then(function(retVal){
@@ -80,6 +82,11 @@ var trialCommonBar = function(){
         browser.get('ui/#/main/new-trial/ins');
        // helper.clickLink(this.registerInstitutional, "Register Institutional Trial link");
         expect(pageHeaderText.getText()).to.eventually.equal(register_Trial_Header_Text);
+    };
+
+    this.clickRegisterIndustrialOtherTrialLink = function(){
+        browser.get('ui/#/main/import-trial');
+        expect(pageHeaderText.getText()).to.eventually.equal(register_Import_Trial_Header_Text);
     };
 
     this.verifyRegisterTrial = function(){

@@ -329,7 +329,7 @@
                 <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">Trial Related Documents:</h5>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Protocol Document' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'Protocol Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
@@ -338,7 +338,7 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Change Memo Document' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'Change Memo Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Change Memo Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
@@ -347,7 +347,7 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Protocol Highlighted Document' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'Protocol Highlighted Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Protocol Highlighted Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
@@ -356,7 +356,7 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'IRB Approval' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'IRB Approval' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
@@ -365,7 +365,7 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'List of Participating Sites' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'List of Participating Sites' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
@@ -374,7 +374,7 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Informed Consent' && document.is_latest && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'Informed Consent' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
@@ -383,12 +383,37 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Other Document' && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'Other Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Other:</label>
                     <div class="col-xs-12 col-sm-9 form-text">
                         <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                         <br>{{document.document_subtype}}
+                    </div>
+                </div>
+
+                <h5 ng-if="viewTrialView.curTrial.participating_sites.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">Participating Sites:</h5>
+
+                <div ng-if="viewTrialView.curTrial.participating_sites.length > 0 && viewTrialView.curTrial.is_owner" class="form-group">
+                    <div class=" col-xs-12 col-sm-12">
+                        <table class="table table-bordered table-striped table-condensed">
+                            <thead>
+                                <th>Organization Name</th>
+                                <th>Local Trial Identifier</th>
+                                <th>Site Principal Investigator</th>
+                                <th>Site Specific Program Code</th>
+                                <th>Current Status</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index">
+                                <td class="col-md-4">{{ps.organization.name}}</td>
+                                <td class="col-md-2">{{ps.protocol_id}}</td>
+                                <td class="col-md-2">{{ps.site_pi.lname + (ps.site_pi.lname ? ', ' : ' ') + ps.site_pi.fname}}</td>
+                                <td class="col-md-2">{{ps.program_code}}</td>
+                                <td class="col-md-2">{{ps.current_status_name}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </form>

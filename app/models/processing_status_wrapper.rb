@@ -19,9 +19,7 @@
 #  index_processing_status_wrappers_on_trial_id              (trial_id)
 #
 
-class ProcessingStatusWrapper < ActiveRecord::Base
-  include BasicConcerns
-
+class ProcessingStatusWrapper < TrialBase
   belongs_to :processing_status
   belongs_to :submission
   belongs_to :trial

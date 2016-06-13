@@ -1,9 +1,15 @@
 class Ws::BaseApiController < ApplicationController
-  #before_filter :parse_request, :authenticate_user_from_token!
-  http_basic_authenticate_with name: "ctrptrialsubmitter", password: Rails.configuration.restful_service_pwd, except: :index
+  #force_ssl
+
+  CONTENT_TYPE        =   "application/xml"
+
+  before_filter :check_auth, :is_valid_mime
+
+  def indicate_source
+    @api = true
+  end
 
   private
-
   def authenticate_user_from_token!
 
     if !@json['api_token']
@@ -21,4 +27,33 @@ class Ws::BaseApiController < ApplicationController
   def parse_request
     @json = JSON.parse(request.body.read)
   end
+
+
+  def check_auth
+    begin
+    authenticate_or_request_with_http_basic do |username,password|
+      resource = User.find_by_username_and_role(username,"ROLE_SERVICE-REST")
+
+      @current_user = resource
+
+      if resource && resource.valid_password?(password)
+        sign_in :user, resource
+      end
+
+    end
+    rescue Errors::UnauthorizedAccessError => error
+      render(xml: error, status: error.status)
+    end
+
+  end
+
+  def is_valid_mime
+    ##check content_type
+    if  request.content_type != CONTENT_TYPE
+      render nothing:true, status: '415'
+    end
+
+  end
+
+
 end

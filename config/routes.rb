@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
 
+  resources :marker_biomarker_purpose_associations
+
   resources :accrual_disease_terms
 
   resources :trial_documents
-
-
-
-
 
   scope "/ctrp" do
 
@@ -15,19 +13,20 @@ Rails.application.routes.draw do
         scope '/v1' do
           scope '/trials' do
             scope '/complete' do
-              get '/' => 'api_trials#index'
-              get '/:id' =>  'api_trials#show'
               post '/' => 'api_trials#create'
-              post '/:idType/:id' => 'api_trials#update'
-              post '/:id' => 'api_trials#update'
-              put '/:idType/:id' => 'api_trials#amend'
-              put  '/:id' =>  'api_trials#update'
-              put  '/:id/status' =>  'api_trials#change_status'
+              post '/:idType/:id' => 'api_trials#update',constraints: {
+                                                            idType:  'nci'
+                                                        }
+              put '/:idType/:id' => 'api_trials#amend',constraints: {
+                                                          idType:  'nci'
+                                                      }
+              #put  '/:id/status' =>  'api_trials#change_status'
             end
           end
         end
       end
     end
+
 
 
     devise_for :users
@@ -42,6 +41,18 @@ Rails.application.routes.draw do
         post 'search'
         post 'select'
         post 'curate'
+        post 'unique', defaults: {format: 'json'}
+      end
+    end
+
+    resources :associated_trials
+
+    resources :trial_ownerships do
+      collection do
+        post 'add'
+        post 'search'
+        post 'transfer'
+        post 'end'
         post 'unique', defaults: {format: 'json'}
       end
     end
@@ -81,7 +92,7 @@ Rails.application.routes.draw do
 
     resources :pa_trials
     get '/pa/trial/:trial_id/checkout/:type', to: 'trials#checkout_trial'
-    get '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
+    post '/pa/trial/:trial_id/checkin/:type', to: 'trials#checkin_trial'
 
     resources :comments
     get '/instance/:uuid/comments/count(/:field)', to: 'comments#count'
@@ -89,7 +100,10 @@ Rails.application.routes.draw do
 
     get '/users/search' => 'users#search'
     get '/users/gsa' => 'users#gsa'
+    get '/users/user_statuses' => 'user_statuses#index'
     post '/users/search' => 'users#search'
+    post '/users/request_admin/:username' => 'users#request_admin_access'
+
     # All the User routes(non-devise) should be accessed by username
     # rather that "id" in order to prevent exposing the "id"
     resources :users, param: :username do
@@ -108,8 +122,45 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :trial_versions do
+      collection do
+        get 'index'
+        post 'history'
+        post 'updates_history'
+        post 'submissions_history'
+      end
+    end
+
+    resources :cadsr_markers do
+      collection do
+        get 'index'
+        post 'search'
+      end
+    end
+
+
+    resources :outcome_measure_types
     resources :po_affiliations
     resources :po_affiliation_statuses
+
+    resources :assay_types
+    resources :evaluation_types
+    resources :specimen_types
+    resources :biomarker_uses
+    resources :biomarker_purposes
+
+    resources :marker_spec_type_associations
+
+    resources :marker_eval_type_associations
+
+    resources :marker_assay_type_associations
+
+
+
+    get '/app_settings/:settings' => 'util#get_app_settings'
+    get '/app_settings_ext/:settings' => 'util#get_app_settings_ext'
+
+    post '/trial_submissions' => 'submissions#search'
 
     get '/countries' => 'util#get_countries'
     get '/states' => 'util#get_states'
@@ -142,10 +193,12 @@ Rails.application.routes.draw do
     scope '/pa' do
       get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
       get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
+      get 'trial_document_types' => 'util#get_trial_document_types'
       resources :submission_methods
     end
 
     scope '/registry' do
+      resources :submissions
       resources :study_sources
       resources :phases
       resources :primary_purposes
@@ -159,12 +212,30 @@ Rails.application.routes.draw do
           get  'search_pa'
           post 'search_pa'
           post 'validate_status'
+          post 'validate_milestone'
           get  'get_grants_serialnumber'
           post 'get_grants_serialnumber'
           get  'get_central_contact_types'
           get  'search_clinical_trials_gov'
+          get  'search_trial_with_nci_id'
+          get  'search_clinical_trials_gov_ignore_exists'
           post 'import_clinical_trials_gov'
           get  'get_board_approval_statuses'
+          get  'get_intervention_models'
+          get  'get_maskings'
+          get  'get_allocations'
+          get  'study_classifications'
+          get  'study_models'
+          get  'time_perspectives'
+          get  'biospecimen_rententions'
+          get  'genders'
+          get  'age_units'
+          get  'trial_identifier_types'
+          post 'lookup_imported_ncit_interventions'
+          get  'get_intervention_types'
+          get  'search_ctrp_interventions'
+          get  'get_mail_logs'
+          get  'get_trial_checkout_history'
         end
       end
 
@@ -174,20 +245,47 @@ Rails.application.routes.draw do
       resources :trial_statuses
       resources :processing_statuses
       resources :milestones
+      resources :onhold_reasons
       resources :research_categories
+      resources :site_recruitment_statuses
+      resources :anatomic_sites
+      resources :participating_sites do
+        collection do
+          post 'validate_status'
+        end
+      end
+      resources :outcome_measures
+      #resources :site_rec_status_wrappers
       resources :trial_documents do
         collection do
           get 'download/:id' => 'trial_documents#download'
+          get  'download_tsr_in_rtf/:trial_id' => 'trial_documents#download_tsr_in_rtf'
+          post 'deleted_documents'
         end
       end
 
-
+      resources :sub_groups
       get 'funding_mechanisms' => 'util#get_funding_mechanisms'
       get 'institute_codes' => 'util#get_institute_codes'
       get 'nci' => 'util#get_nci'
       get 'nih' => 'util#get_nih'
-
+      get 'accepted_file_types_for_registry' => 'util#get_accepted_file_types_for_registry'
       get 'accepted_file_types' => 'util#get_accepted_file_types'
+      get 'sampling_methods' => 'util#get_sampling_methods'
+
+      resources :internal_sources
+    end
+
+
+
+
+    resources :ncit_disease_codes do
+      collection do
+        get 'get_tree'
+        post 'get_tree'
+        get 'search'
+        post 'search'
+      end
     end
   end
   # Devise related routes

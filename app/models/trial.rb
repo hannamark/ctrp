@@ -8,7 +8,7 @@
 #  official_title                :text
 #  pilot                         :string(255)
 #  primary_purpose_other         :string(255)
-#  secondary_purpose_other       :string(255)
+#  secondary_purpose_other       :text
 #  program_code                  :string(255)
 #  grant_question                :string(255)
 #  start_date                    :date
@@ -65,7 +65,6 @@
 #  min_age                       :integer
 #  max_age                       :integer
 #  assigned_to_id                :integer
-#  owner_id                      :integer
 #  board_approval_status_id      :integer
 #  intervention_model_id         :integer
 #  masking_id                    :integer
@@ -111,7 +110,6 @@
 #  index_trials_on_masking_id                (masking_id)
 #  index_trials_on_max_age_unit_id           (max_age_unit_id)
 #  index_trials_on_min_age_unit_id           (min_age_unit_id)
-#  index_trials_on_owner_id                  (owner_id)
 #  index_trials_on_phase_id                  (phase_id)
 #  index_trials_on_pi_id                     (pi_id)
 #  index_trials_on_primary_purpose_id        (primary_purpose_id)
@@ -125,8 +123,10 @@
 #  index_trials_on_time_perspective_id       (time_perspective_id)
 #
 
-class Trial < ActiveRecord::Base
-  include BasicConcerns
+class Trial < TrialBase
+
+  # Disabled optimistic locking
+  self.locking_column = :dummy_column
 
   belongs_to :study_source
   belongs_to :phase
@@ -152,10 +152,10 @@ class Trial < ActiveRecord::Base
   has_many :co_pis, through: :trial_co_pis, source: :person
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
   has_many :trial_documents, -> { order 'trial_documents.id' }
+  has_many :mail_logs, -> { order 'mail_logs.id'}
 
   # PA fields
   belongs_to :assigned_to, class_name: "User"
-  belongs_to :owner, class_name: "User"
   belongs_to :board_approval_status
   belongs_to :board_affiliation, class_name: "Organization"
   belongs_to :intervention_model
@@ -191,50 +191,63 @@ class Trial < ActiveRecord::Base
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
   has_many :users, through: :trial_ownerships
   has_many :anatomic_site_wrappers, -> { order 'anatomic_site_wrappers.id' }
+  has_many :trial_checkout_logs, -> { order 'trial_checkout_logs.id'}
 
   attr_accessor :edit_type
   attr_accessor :coming_from
   attr_accessor :current_user
 
+  accepts_nested_attributes_for :interventions, allow_destroy: true
+  accepts_nested_attributes_for :associated_trials, allow_destroy: true
+  accepts_nested_attributes_for :arms_groups, allow_destroy: true
   accepts_nested_attributes_for :other_ids, allow_destroy: true
   accepts_nested_attributes_for :trial_funding_sources, allow_destroy: true
   accepts_nested_attributes_for :grants, allow_destroy: true
   accepts_nested_attributes_for :trial_status_wrappers, allow_destroy: true
   accepts_nested_attributes_for :ind_ides, allow_destroy: true
   accepts_nested_attributes_for :oversight_authorities, allow_destroy: true
-  accepts_nested_attributes_for :trial_documents, allow_destroy: true
+  accepts_nested_attributes_for :trial_documents, allow_destroy: false
   accepts_nested_attributes_for :submissions, allow_destroy: true
 
   accepts_nested_attributes_for :central_contacts, allow_destroy: true
   accepts_nested_attributes_for :alternate_titles, allow_destroy: true
+  accepts_nested_attributes_for :participating_sites, allow_destroy: true
   accepts_nested_attributes_for :collaborators, allow_destroy: true
   accepts_nested_attributes_for :outcome_measures, allow_destroy: true
+  accepts_nested_attributes_for :anatomic_site_wrappers, allow_destroy: true
   accepts_nested_attributes_for :other_criteria, allow_destroy: true
+  accepts_nested_attributes_for :sub_groups, allow_destroy: true
+  accepts_nested_attributes_for :markers, allow_destroy: true
+  accepts_nested_attributes_for :diseases, allow_destroy: true
+  accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :onholds, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
-  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import"'
-  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import"'
+  validates :lead_protocol_id, uniqueness: { scope: :lead_org_id, message: "Combination of Lead Organization Trial ID and Lead Organization must be unique" }
+  validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :research_category, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_purpose, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :accrual_disease_term, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :lead_org, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :pi, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :sponsor, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :grant_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :ind_ide_question, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :start_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :start_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+  validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
 
   before_create :save_history
   before_create :save_internal_source
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
+  after_save :send_email
 
   # Array of actions can be taken on this Trial
   def actions
@@ -243,13 +256,63 @@ class Trial < ActiveRecord::Base
     if self.users.include? self.current_user
       if self.is_draft
         actions.append('complete')
-      elsif self.internal_source && self.internal_source.code == 'CTRP'
+      elsif self.internal_source && self.internal_source.code == 'PRO'
         actions.append('update')
         actions.append('amend')
-      elsif self.internal_source && self.internal_source.code == 'CTGI'
-        actions.append('add-my-site')
+        actions.append('verify-data')
+        actions.append('view-tsr')
+
       end
     end
+
+    if self.internal_source && self.internal_source.code == 'IMP'
+      if self.current_user.role == 'ROLE_SITE-SU'
+        actions.append('manage-sites')
+      else
+        if self.ps_orgs.include?(self.current_user.organization)
+          # Associated org has been added as participating site
+          actions.append('update-my-site')
+        elsif self.current_user.organization.present?
+          # Associated org hasn't been added as participating site
+          actions.append('add-my-site')
+        end
+      end
+    end
+
+    return actions
+  end
+
+  # Participating site ID that has this user's associated org
+  def my_site_id
+    if self.current_user.present? && self.current_user.role != 'ROLE_SITE-SU'
+      self.participating_sites.each do |e|
+        if self.current_user.organization.present? && e.organization.present? && e.organization.id == self.current_user.organization.id
+          return e.id
+        end
+      end
+    else
+      return nil
+    end
+  end
+
+  # Array of participating sites that site-su user can edit
+  def sitesu_sites
+    sitesu_sites = []
+
+    if self.current_user.present? && self.current_user.role == 'ROLE_SITE-SU'
+      self.participating_sites.each do |e|
+        if self.current_user.family_orgs.include? e.organization
+          sitesu_sites.append(e)
+        end
+      end
+    end
+
+    return sitesu_sites
+  end
+
+  # Array of orgs in user's associated org's family that's not yet added to participating sites
+  def available_family_orgs
+    return self.current_user.family_orgs - self.ps_orgs if self.current_user.present?
   end
 
   def is_owner
@@ -319,6 +382,351 @@ class Trial < ActiveRecord::Base
     pa_editable
   end
 
+  def checked_out_by_current_user(user)
+    return false if user.nil?
+    checked_out = false
+    Rails.logger.info "user = #{user.inspect}"
+    if ((self.admin_checkout && eval(self.admin_checkout)[:by] == user)  ||
+        (self.scientific_checkout && eval(self.scientific_checkout)[:by] == user))
+      checked_out = true
+    end
+    checked_out
+  end
+
+  def submission_nums
+    self.submissions.pluck('submission_num').uniq
+  end
+
+  # Most recent non-update submission
+  def current_submission
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
+    else
+      return nil
+    end
+  end
+
+  # Return true if this trial contains the specified milestone with specific submission ID
+  def contains_milestone?(submission_id, milestone_id)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ? AND milestone_id = ?', self.id, submission_id, milestone_id)
+    return target.size > 0 ? true : false
+  end
+
+  # Return true if the last milestone of the specified submission matches the milestone_code
+  def is_last_milestone?(submission_id, milestone_code)
+    target = MilestoneWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.milestone.code == milestone_code
+      return true
+    else
+      return false
+    end
+  end
+
+  def current_process_status_code(submission_id)
+    target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
+    if target.present? && target.processing_status.present?
+      return target.processing_status.code
+    else
+      return nil
+    end
+  end
+
+  def active_onhold_exists?
+    self.onholds.each do |onhold|
+      if onhold.offhold_date.nil?
+        return true
+      end
+    end
+    return false
+  end
+
+  def update_need_ack?
+    self.submissions.each do |submission|
+      if submission.submission_type && submission.submission_type.code == 'UPD' && submission.acknowledge == 'No'
+        return true
+      end
+    end
+    return false
+  end
+
+  # Return validation errors for adding a milestone to a set of milestones with specific submission ID
+  def validate_milestone(submission_id, milestone_id)
+    validation_msgs = {}
+    validation_msgs[:errors] = []
+    milestone_to_add = Milestone.find(milestone_id)
+
+    if milestone_to_add.code == 'VPS'
+      if !is_last_milestone?(submission_id, 'SRD')
+        validation_msgs[:errors].push('Submission Received Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'VPC'
+      if !is_last_milestone?(submission_id, 'VPS')
+        validation_msgs[:errors].push('Validation Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'SAC'
+      if !is_last_milestone?(submission_id, 'VPC')
+        validation_msgs[:errors].push('Validation Processing Completed Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'APS'
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
+        validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'APC'
+      aps = Milestone.find_by_code('APS')
+      if aps.present? && !contains_milestone?(submission_id, aps.id)
+        validation_msgs[:errors].push('Administrative Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Administrative processing')
+      end
+    elsif milestone_to_add.code == 'RAQ'
+      if !is_last_milestone?(submission_id, 'APC')
+        validation_msgs[:errors].push('Administrative Processing Completed Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'AQS'
+      raq = Milestone.find_by_code('RAQ')
+      if raq.present? && !contains_milestone?(submission_id, raq.id)
+        validation_msgs[:errors].push('Ready for Administrative QC Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'AQC'
+      aqs = Milestone.find_by_code('AQS')
+      if aqs.present? && !contains_milestone?(submission_id, aqs.id)
+        validation_msgs[:errors].push('Administrative QC Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+      if self.admin_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Administrative processing')
+      end
+    elsif milestone_to_add.code == 'SPS'
+      sac = Milestone.find_by_code('SAC')
+      if sac.present? && !contains_milestone?(submission_id, sac.id)
+        validation_msgs[:errors].push('Submission Acceptance Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'SPC'
+      sps = Milestone.find_by_code('SPS')
+      if sps.present? && !contains_milestone?(submission_id, sps.id)
+        validation_msgs[:errors].push('Scientific Processing Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Scientific processing')
+      end
+    elsif milestone_to_add.code == 'RSQ'
+      if !is_last_milestone?(submission_id, 'SPC')
+        validation_msgs[:errors].push('Scientific Processing Completed Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+    elsif milestone_to_add.code == 'SQS'
+      rsq = Milestone.find_by_code('RSQ')
+      if rsq.present? && !contains_milestone?(submission_id, rsq.id)
+        validation_msgs[:errors].push('Ready for Scientific QC Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+    elsif milestone_to_add.code == 'SQC'
+      sqs = Milestone.find_by_code('SQS')
+      if sqs.present? && !contains_milestone?(submission_id, sqs.id)
+        validation_msgs[:errors].push('Scientific QC Start Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if self.scientific_checkout.present?
+        validation_msgs[:errors].push('Cannot be recorded if Trail is checked out for Scientific processing')
+      end
+    elsif milestone_to_add.code == 'RTS'
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'TSR'
+      rts = Milestone.find_by_code('RTS')
+      if rts.present? && !contains_milestone?(submission_id, rts.id)
+        validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
+      end
+      if ['SUB', 'AMS', 'ACC', 'REJ'].include?(current_process_status_code(submission_id))
+        validation_msgs[:errors].push('Cannot be recorded because the most current processing status is "Submitted", "Amendment Submitted", "Accepted" or "Rejected')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'STS'
+      tsr = Milestone.find_by_code('TSR')
+      if tsr.present? && !contains_milestone?(submission_id, tsr.id)
+        validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
+      end
+    elsif milestone_to_add.code == 'IAV'
+      if !is_last_milestone?(submission_id, 'RTS')
+        validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
+      end
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'ONG'
+      if active_onhold_exists?
+        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
+      end
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    elsif milestone_to_add.code == 'LRD'
+      if update_need_ack?
+        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
+      end
+    end
+
+    # Duplication check
+    if !['STR', 'SRE', 'TSR', 'STS', 'ONG'].include?(milestone_to_add.code)
+      if contains_milestone?(submission_id, milestone_id)
+        validation_msgs[:errors].push('This milestone cannot be recorded multiple times')
+      end
+    end
+
+    return validation_msgs
+  end
+
+  def ctg_id
+    ctg = ProtocolIdOrigin.find_by_code('NCT')
+    if ctg.present?
+      ctg_id = OtherId.where('trial_id = ? AND protocol_id_origin_id = ?', self.id, ctg.id).first
+      if ctg_id.present?
+        return ctg_id.protocol_id
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def submitter
+    ori = SubmissionType.find_by_code('ORI')
+    if ori.present?
+      original_sub = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, ori.id).first
+      if original_sub.present? && original_sub.user.present? && original_sub.user.first_name.present? && original_sub.user.last_name.present?
+        return original_sub.user.last_name + ', ' + original_sub.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_updated_at
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      last_update = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, upd.id).order('id desc').first
+      if last_update.present?
+        return last_update.created_at
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_updated_by
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      last_update = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, upd.id).order('id desc').first
+      if last_update.present? && last_update.user.present? && last_update.user.first_name.present? && last_update.user.last_name.present?
+        return last_update.user.last_name + ', ' + last_update.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_amended_at
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      last_amend = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, amd.id).order('id desc').first
+      if last_amend.present?
+        return last_amend.created_at
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def last_amended_by
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      last_amend = Submission.where('trial_id = ? AND submission_type_id = ?', self.id, amd.id).order('id desc').first
+      if last_amend.present? && last_amend.user.present? && last_amend.user.first_name.present? && last_amend.user.last_name.present?
+        return last_amend.user.last_name + ', ' + last_amend.user.first_name
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+
+  def onhold_reason
+    self.onholds.each do |onhold|
+      if onhold.offhold_date.nil?
+        if onhold.onhold_reason.present?
+          return onhold.onhold_reason.name
+        else
+          return nil
+        end
+      end
+    end
+
+    return nil
+  end
+
   private
 
   def save_history
@@ -328,9 +736,9 @@ class Trial < ActiveRecord::Base
 
   def save_internal_source
     if self.edit_type == 'import'
-      self.internal_source = InternalSource.find_by_code('CTGI')
+      self.internal_source = InternalSource.find_by_code('IMP')
     else
-      self.internal_source = InternalSource.find_by_code('CTRP')
+      self.internal_source = InternalSource.find_by_code('PRO')
     end
   end
 
@@ -340,7 +748,7 @@ class Trial < ActiveRecord::Base
       current_year = Time.new.year.to_s
       largest_id = Trial.where('nci_id ilike ?', "%NCI-#{current_year}-%").order('nci_id desc').pluck('nci_id').first
       if largest_id.nil?
-        new_id = "NCI-#{current_year}-00000"
+        new_id = "NCI-#{current_year}-00001"
       else
         new_id = largest_id.next
       end
@@ -348,53 +756,96 @@ class Trial < ActiveRecord::Base
 
       # New Submission
       if self.edit_type == 'import'
-        newSubmission = self.submissions.last
-
-
+        new_submission = self.submissions.last
       else
         ori = SubmissionType.find_by_code('ORI')
         if self.coming_from == 'rest'
+          user = self.current_user
+          case user.organization.name
+            when "CTEP"
+              sub_source = SubmissionSource.find_by_code('CTEP')
+            when "CCR"
+              sub_source = SubmissionSource.find_by_code('CCR')
+            when "DCP"
+              sub_source = SubmissionSource.find_by_code('DCP')
+            else
+              sub_source = SubmissionSource.find_by_code('CCT')
+          end
+
           sub_method = SubmissionMethod.find_by_code('RSV')
         else
+          sub_source = SubmissionSource.find_by_code('CCT')
           sub_method = SubmissionMethod.find_by_code('REG')
-          end
-        newSubmission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_method: sub_method)
+        end
+        new_submission = Submission.create(submission_num: 1, submission_date: Date.today, trial: self, user: self.current_user, submission_type: ori, submission_source: sub_source, submission_method: sub_method)
       end
 
       # New Milestone
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: newSubmission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: new_submission, created_by: 'CTRP application')
 
       # New Processing Status
       sub = ProcessingStatus.find_by_code('SUB')
-      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: newSubmission)
+      ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sub, trial: self, submission: new_submission)
+
+      # Populate Submission ID for documents uploaded in draft stage
+      self.trial_documents.each do |doc|
+        doc.submission = new_submission
+        doc.save
+      end
     elsif self.edit_type == 'update'
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
-      new_sub_number = largest_sub_num.present? ? largest_sub_num + 1 : 1
+      # Don't increment submission number for updates
+      new_sub_number = largest_sub_num.present? ? largest_sub_num : 1
       upd = SubmissionType.find_by_code('UPD')
       if self.coming_from == 'rest'
+        user = self.current_user
+        case user.organization.name
+          when "CTEP"
+            sub_source = SubmissionSource.find_by_code('CTEP')
+          when "CCR"
+            sub_source = SubmissionSource.find_by_code('CCR')
+          when "DCP"
+            sub_source = SubmissionSource.find_by_code('DCP')
+          else
+            sub_source = SubmissionSource.find_by_code('CCT')
+        end
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
+        sub_source = SubmissionSource.find_by_code('CCT')
         sub_method = SubmissionMethod.find_by_code('REG')
       end
-      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd, submission_method: sub_method)
+      Submission.create(submission_num: new_sub_number, submission_date: Date.today, trial: self, user: self.current_user, submission_type: upd, submission_source: sub_source, submission_method: sub_method)
     elsif self.edit_type == 'amend'
       # Populate submission number for the latest Submission and create a Milestone
       largest_sub_num = Submission.where('trial_id = ?', self.id).order('submission_num desc').pluck('submission_num').first
       amd = SubmissionType.find_by_code('AMD')
       if self.coming_from == 'rest'
+        user = self.current_user
+        case user.organization.name
+          when "CTEP"
+            sub_source = SubmissionSource.find_by_code('CTEP')
+          when "CCR"
+            sub_source = SubmissionSource.find_by_code('CCR')
+          when "DCP"
+            sub_source = SubmissionSource.find_by_code('DCP')
+          else
+            sub_source = SubmissionSource.find_by_code('CCT')
+        end
         sub_method = SubmissionMethod.find_by_code('RSV')
       else
+        sub_source = SubmissionSource.find_by_code('CCT')
         sub_method = SubmissionMethod.find_by_code('REG')
       end
       latest_submission = self.submissions.last
       latest_submission.submission_num = largest_sub_num.present? ? largest_sub_num + 1 : 1
       latest_submission.user = self.current_user
       latest_submission.submission_type = amd
+      latest_submission.submission_source = sub_source
       latest_submission.submission_method = sub_method
 
       srd = Milestone.find_by_code('SRD')
-      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission)
+      MilestoneWrapper.create(milestone_date: Date.today, milestone: srd, trial: self, submission: latest_submission, created_by: 'CTRP application')
 
       ams = ProcessingStatus.find_by_code('AMS')
       ProcessingStatusWrapper.create(status_date: Date.today, processing_status: ams, trial: self, submission: latest_submission)
@@ -409,11 +860,173 @@ class Trial < ActiveRecord::Base
 
   def create_ownership
     # New Trial Ownership
-    if self.coming_from == 'rest'
-     TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
-    else
-    TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
+    #if self.coming_from == 'rest'
+     # TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
+    #else
+      TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
+    #end
+  end
 
+  def send_email
+
+    if self.edit_type == 'checkoutin'
+      # do not send email when checking out/in the trial
+      return
+    end
+
+    if self.edit_type != 'seed'
+      last_submission = self.submissions.last
+      last_sub_type = last_submission.submission_type if last_submission.present?
+      last_sub_method = last_submission.submission_method if last_submission.present?
+      last_submitter = last_submission.user if last_submission.present?
+      last_submitter_name = last_submitter.nil? ? '' : "#{last_submitter.first_name} #{last_submitter.last_name}"
+      last_submitter_name.strip!
+      last_submitter_name = 'CTRP User' if last_submitter_name.blank?
+      last_submission_date = last_submission.nil? ? '' : (last_submission.submission_date.nil? ? '' : last_submission.submission_date.strftime('%d-%b-%Y'))
+      lead_protocol_id = self.lead_protocol_id.present? ? self.lead_protocol_id : ''
+      trial_title = self.official_title.present? ? self.official_title : ''
+      nci_id = self.nci_id.present? ? self.nci_id : ''
+      org_name = ''
+      org_id = ''
+      if self.lead_org.present?
+        org_name = self.lead_org.name
+        org_id = self.lead_org.id.to_s
+      end
+
+      mail_template = nil
+
+      if last_sub_type.present? && last_sub_method.present?
+        if last_sub_type.code == 'ORI' && last_sub_method.code == 'REG' && self.edit_type != 'verify'
+          mail_template = MailTemplate.find_by_code('TRIAL_REG')
+          if mail_template.present?
+            ## populate the mail_template with data for trial registration
+            mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+
+            # Populate the trial data in the email body
+            mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
+            mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+            mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
+            mail_template.body_html.sub!('${trialTitle}', trial_title)
+
+            table = '<table border="0">'
+            table += "<tr><td><b>Lead Organization Trial ID:</b></td><td>#{lead_protocol_id}</td></tr>"
+            table += "<tr><td><b>Lead Organization:</b></td><td>#{org_name}</td></tr>"
+            table += "<tr><td><b>NCI Trial ID:</b></td><td>#{nci_id}</td></tr>"
+            self.other_ids.each do |other_id|
+              table += "<tr><td><b>#{other_id.protocol_id_origin.name}:</b></td><td>#{other_id.protocol_id}</td></tr>"
+            end
+            table += '</table>'
+            mail_template.body_html.sub!('${trialIdentifiers}', table)
+
+            mail_template.body_html.sub!('${submissionDate}', last_submission_date)
+            mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+            mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
+            mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
+          end
+
+        elsif last_sub_type.code == 'UPD' && self.edit_type != 'verify'
+          mail_template = MailTemplate.find_by_code('TRIAL_UPDATE')
+          # trial_owner = TrialOwnership.find_by_trial_id(self.id)
+          # trial_registrant_email = trial_owner.nil? ? nil : trial_owner.user.email
+          if mail_template.present?
+            ## populate the mail_template with data for trial update
+            mail_template.from = 'ncictro@mail.nih.gov'
+            # mail_template.to = trial_registrant_email
+            mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+            mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
+            mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+            mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
+            mail_template.body_html.sub!('${trialTitle}', trial_title)
+            mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
+            mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+            mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
+            mail_template.body_html.sub!('${submitting_organization}', org_name)
+            mail_template.body_html.sub!('${submissionDate}', last_submission_date)
+            mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+            mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
+          end
+
+        elsif last_sub_type.code == 'AMD' && self.edit_type != 'verify'
+          mail_template = MailTemplate.find_by_code('TRIAL_AMEND')
+          if mail_template.present?
+            ## populate the mail_template with data for trial amendment
+            mail_template.from = 'ncictro@mail.nih.gov'
+            mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+            last_amend_num = last_submission.nil? ? '' : (last_submission.amendment_num.present? ? last_submission.amendment_num : '')
+            mail_template.subject.sub!('${trialAmendNumber}', last_amend_num)
+            mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
+            mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+            mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
+            mail_template.body_html.sub!('${trialTitle}', trial_title)
+            mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
+            mail_template.body_html.sub!('${lead_organization}', org_name)
+            mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+            mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
+
+            # find all those identifiers and populate the fields in the email template
+            nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
+            ctep_origin_id = ProtocolIdOrigin.find_by_code('CTEP').id
+            dcp_origin_id = ProtocolIdOrigin.find_by_code('DCP').id
+            nctIdentifierObj = self.other_ids.any?{|a| a.protocol_id_origin_id == nct_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == nct_origin_id} : nil
+            nctIdentifier = nctIdentifierObj.present? ? nctIdentifierObj.protocol_id : nil
+            ctepIdentifierObj = self.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
+            ctepIdentifier = ctepIdentifierObj.present? ? ctepIdentifierObj.protocol_id : nil
+            dcpIdentifierObj = self.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? self.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
+            dcpIdentifier = dcpIdentifierObj.present? ? dcpIdentifier.protocol_id : nil
+
+            mail_template.body_html.sub!('${nctId}', nctIdentifier.nil? ? '' : nctIdentifier)
+            mail_template.body_html.sub!('${ctepId}', ctepIdentifier.nil? ? '' : ctepIdentifier)
+            mail_template.body_html.sub!('${dcpId}', dcpIdentifier.nil? ? '' : dcpIdentifier)
+
+            mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+            mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
+
+            # if !last_submission.nil? and last_submission.amendment_date
+            #   trial_amend_date = Date.strptime(last_submission.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y")
+            # end
+            trial_amend_date = last_submission.nil? ? '' : (last_submission.amendment_date.present? ? Date.strptime(last_submission.amendment_date.to_s, "%Y-%m-%d").strftime("%d-%b-%Y") : '')
+            mail_template.body_html.sub!('${trialAmendNumber}', last_amend_num)
+            mail_template.body_html.sub!('${trialAmendmentDate}', trial_amend_date)
+
+          end
+        end
+
+      elsif self.is_draft == TRUE && self.edit_type != 'verify'
+        mail_template = MailTemplate.find_by_code('TRIAL_DRAFT')
+        if mail_template.present?
+          ## populate the mail_template with data for trial draft
+          mail_template.from = 'ncictro@mail.nih.gov'
+          mail_template.to = self.current_user.email if self.current_user.present? && self.current_user.email.present? && self.current_user.receive_email_notifications
+          mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+          mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
+          mail_template.body_html.sub!('${trialTitle}', trial_title)
+          mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+          mail_template.body_html.sub!('${lead_organization}', org_name)
+          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
+          mail_template.body_html.sub!('${submissionDate}', last_submission_date)
+          mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+          mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
+        end
+
+      end
+
+      mail_sending_result = 'Mail server failed to send'
+      if mail_template.present?
+        begin
+          p " sending emails now!"
+          mail_sending_result = 'Success'
+          CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+        rescue  Exception => e
+          logger.warn "email delivery error = #{e}"
+        end
+        ## save the mail sending to mail log
+        if mail_template.to.nil? || !mail_template.to.include?("@")
+          # recipient email not replaced with actual email address (user does not have email)
+          mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
+        end
+        MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, mail_template: mail_template, result: mail_sending_result, trial: self)
+
+      end
     end
   end
 
@@ -434,6 +1047,14 @@ class Trial < ActiveRecord::Base
     end
   }
 
+  scope :in_family, -> (value, dateLimit) {
+    familyOrganizations = FamilyMembership.where(
+        family_id: value
+    ).where("family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null")
+    .pluck(:organization_id)
+    where(lead_org_id: familyOrganizations)
+  }
+
   scope :with_protocol_id, -> (value) {
     join_clause = 'LEFT JOIN other_ids ON other_ids.trial_id = trials.id'
     where_clause = 'trials.lead_protocol_id ilike ? OR trials.nci_id ilike ? OR other_ids.protocol_id ilike ?'
@@ -451,6 +1072,8 @@ class Trial < ActiveRecord::Base
 
     joins(join_clause).where(where_clause, value_exp, value_exp, value_exp)
   }
+
+  scope :with_nci_id, -> (nci_id) { where(nci_id: nci_id) }
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
@@ -598,7 +1221,7 @@ class Trial < ActiveRecord::Base
 
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
-    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = participating_sites.organization_id"
     where_clause = ""
     conditions = []
 
@@ -609,11 +1232,14 @@ class Trial < ActiveRecord::Base
           where_clause += "lead_orgs.name ilike ?"
         elsif e == 'Sponsor'
           where_clause += "sponsors.name ilike ?"
+        elsif e == 'Participating Site'
+          where_clause += "sites.name ilike ?"
         end
         conditions.push(value_exp)
       }
     else
-      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ?"
+      where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR sites.name ilike ?"
+      conditions.push(value_exp)
       conditions.push(value_exp)
       conditions.push(value_exp)
     end
@@ -633,6 +1259,23 @@ class Trial < ActiveRecord::Base
 
   scope :is_draft, -> (value) {
     joins(:users).where("users.username = ? AND trials.is_draft = ?", value, true)
+  }
+
+  scope :with_internal_sources, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "internal_sources.code = ?"
+      else
+        q += " OR internal_sources.code = ?"
+      end
+      conditions.push(e[:code])
+    }
+    conditions.insert(0, q)
+
+    joins(:internal_source).where(conditions)
   }
 
   scope :sort_by_col, -> (params) {

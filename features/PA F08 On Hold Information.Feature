@@ -9,8 +9,8 @@ And I have selected On Hold Information
 Then the trial On Hold Information will be displayed and include the following fields ordered accending by On Hold Date/Time (oldest Date first):
 |On Hold Reason |
 |On Hold Reason Description|
-|On Hold Date/Time|
-|Off Hold Date/Time|
+|On Hold Date|
+|Off Hold Date|
 
 Scenario: #2 I can place a trial on On Hold 
 Given I am logged into the CTRP Protocol Abstraction application
@@ -29,10 +29,16 @@ When I Select the On Hold Reason Code from the list:
 |Pending Intervention Curation|
 |Pending Other (CTRO)| 
 And I enter a Reason Description
-And I enter the On Hold Date
+And I the will be the current Date
 Then I can select save to place the trail on hold
 And the trial processing status will be set On Hold
-And an e-mail will be sent to the trial owners for the on hold reason 
+When the On Hold Reason Code is:
+|Submission Incomplete|
+|Submission Incomplete -- Missing Documents| 
+|Submission Invalid Grant |
+|Submission Other (Submitter)|
+Then an e-mail "On Hold Trial (Original Notice)" will be sent to the trial owners for the on hold reason (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
+
 
 Scenario: #3 Required fields for On Hold Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -40,7 +46,7 @@ And I have selected a trial
 And I have selected On Hold Information
 And I have not entered the field
 And Selected Save
-Then a error message will appear that "The On Hold Reason must be entered to place trial on hold"
+Then an error message will appear that "The On Hold Reason must be entered to place trial on hold"
 
 Scenario: #4 PA On Hold Reason note
 Given I am logged into the CTRP Protocol Abstraction application
@@ -61,5 +67,25 @@ And I have selected edit to edit the trial on hold status
 And I enter the off hold date
 And I select Save
 Then I the trail will no longer be on hold
-And the trial processing status will be set Off Hold
-And an e-mail will be sent to the trial owners to tell them the trial is no longer on hold
+And the trial processing status will be set to the processing status when the trail was placed on hold 
+
+Scenario: #7 Off Hold Date Validaiton
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial 
+And I have selected On Hold Information
+And I have entered an Off Hold Date
+And Selected Save
+When the Off hold date is a future date
+Then an error message will appear that the "Off-hold dates must be only past or current dates."
+When the Off hold date preceeds the on hold date
+Then an error message will appear that the "Off-hold dates must be the same or after the on-hold dates."
+
+Scenario: #8 Only 1 on hold at a time 
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial 
+And I have selected On Hold Information
+And the trial is On Hold
+And the trial has an on hold date
+Then I will not be able to add another on hold until the trial is off hold
+And the trial has an Off Hold date
+

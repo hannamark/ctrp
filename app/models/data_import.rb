@@ -123,13 +123,13 @@ class DataImport
         # Internal Source
         trial.internal_source = InternalSource.all[rand(0..(InternalSource.all.size-1))]
         #Responsible party
-        resp_party = trial_spreadsheet.cell(row,'CJ')
-        responsible_party = ResponsibleParty.find_by_code(resp_party)
-        if resp_party.present? && responsible_party.blank?
-          puts "missed resonsible party = #{resp_party} "
-        else
-          trial.responsible_party = responsible_party
-        end
+        #resp_party = trial_spreadsheet.cell(row,'CJ')
+        #responsible_party = ResponsibleParty.find_by_code(resp_party)
+        # if resp_party.present? && responsible_party.blank?
+        #  puts "missed resonsible party = #{resp_party} "
+        #else
+        #  trial.responsible_party = responsible_party
+        #end
 
         trial.ind_ide_question = "Yes"
         trial.pilot = "Yes"
@@ -159,6 +159,54 @@ class DataImport
         c2.org_name = c2.organization.name
         trial.collaborators << c1
         trial.collaborators << c2
+
+        #Assign Random Anatomic sites
+        a1 = AnatomicSiteWrapper.new
+        a1.anatomic_site = AnatomicSite.all[rand(0..AnatomicSite.all.size-1)]
+        a1.trial = trial
+        trial.anatomic_site_wrappers << a1
+        a2 = AnatomicSiteWrapper.new
+        a2.anatomic_site = AnatomicSite.all[rand(0..AnatomicSite.all.size-1)]
+        a2.trial = trial
+        trial.anatomic_site_wrappers << a2
+
+        # Assign Interventions and Arm Groups
+        arm1 = ArmsGroup.new
+        i1 = Intervention.new
+        i1.name = "CBP/beta-catenin Antagonist PRI-724"
+        i1.description = "Given IV"
+       # arm1.intervention_text= i1.name
+        trial.interventions << i1
+        arm1.label = "Arm I (PRI-724, mFOLFOX6/bevacizumab)"
+        arm1.trial = trial
+        arm1.description = "Patients receive CBP/beta-catenin antagonist PRI-724 IV continuously on days 1-7, bevacizumab IV over 30 minutes"
+        i2 = Intervention.new
+        arm2 = ArmsGroup.new
+        i2.name = "Bevacizumab"
+        i2.description = "Correlative studies"
+        #arm2.intervention_text = i2.name
+        trial.interventions << i2
+        arm2.label = "Arm II (mFOLFOX6/bevacizumab)"
+        arm2.description = "Patients receive bevacizumab, leucovorin calcium, oxaliplatin, and fluorouracil as in Arm I. Courses repeat every 14 days in the absence of disease progression or unacceptable toxicity."
+        arm2.trial = trial
+        trial.arms_groups << arm1
+        trial.arms_groups << arm2
+
+        # Submissions
+        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'))
+        trial.submissions << sub
+
+        # Processing status
+        pro_status = ProcessingStatusWrapper.new(status_date: Date.today, processing_status: ProcessingStatus.find_by_code('SUB'), submission: sub)
+        trial.processing_status_wrappers << pro_status
+
+        # Randomely Assign User statuses
+        #User.all.each do |u|
+        #  u.user_status = UserStatus.all[rand(0..UserStatus.all.size-1)]
+        #  u.save!
+        #end
+        #save Trial
+        trial.edit_type = 'seed'
         trial.save!
       end
     rescue Exception => e
@@ -173,6 +221,7 @@ class DataImport
     c3.organization = org27
     c3.org_name = org27.name
     t.collaborators << c3
+    t.edit_type = 'seed'
     t.save!
 
   end
@@ -201,6 +250,7 @@ class DataImport
           current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
           current_submission.user = User.all[rand(0..total_users-1)]
           trial.submissions << current_submission
+          trial.edit_type = 'seed'
           trial.save!
         end
         current_milestone = spreadsheet.cell(row,'B')
@@ -215,6 +265,7 @@ class DataImport
           cmw.milestone = milestone
           cmw.submission = current_submission
           trial.milestone_wrappers << cmw
+          trial.edit_type = 'seed'
           trial.save!
         end
       end
@@ -247,13 +298,30 @@ class DataImport
       #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
       x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
       #puts "x = #{x.inspect}"
-      srs.site_recruitment_status = x
+      srs.site_recruitment_status = x || SiteRecruitmentStatus.all[rand(0..(SiteRecruitmentStatus.all.size-1))]
       srs.status_date =  spreadsheet.cell(row,'J')
       ps.site_rec_status_wrappers <<  srs
       #Organization and Person
       ps.organization =  Organization.all[rand(0..(Organization.all.size-1))]
-      ps.person = Person.all[rand(0..(Person.all.size-1))]
+      #ps.person = Person.all[rand(0..(Person.all.size-1))]
+      #ps.contact_name = ps.person.fname + " " + ps.person.lname;
+      #ps.contact_type = "PI";
+      #ps.contact_email = ps.person.email;
+      #ps.contact_phone = ps.person.phone;
+      #psi = ParticipatingSiteInvestigator.new
+      #psi.person = ps.person;
+      #psi.investigator_type = "Principal Investigator"
+      #psi.set_as_contact = false;
+      #ps.participating_site_investigators << psi
+
+      #psi2 = ParticipatingSiteInvestigator.new
+      #psi2.person = Person.all[rand(0..(Person.all.size-1))]
+      #psi2.investigator_type = "Principal Investigator"
+      #psi2.set_as_contact = false
+
+      #ps.participating_site_investigators << psi2
       trial.participating_sites << ps
+      trial.edit_type = 'seed'
       trial.save!
     end
   end

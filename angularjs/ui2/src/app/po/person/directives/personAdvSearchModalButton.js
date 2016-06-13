@@ -45,7 +45,6 @@
 
 
         function personAdvSearchModalButtonController($scope, $timeout) {
-
             $scope.savedSelection = [];
             $scope.showGrid = true;
             $scope.curationMode = false;

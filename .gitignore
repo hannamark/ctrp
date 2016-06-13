@@ -36,14 +36,14 @@ config/secrets.yml
 config/database.yml
 config/ldap.yml
 config/environments/ci.rb
-config/environments/qa.rb
+#config/environments/qa.rb
 config/environments/demo.rb
 config/environments/stage.rb
 config/environments/production.rb
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
-/db/add_users.rb
+./db/add_users.rb
 # these should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
@@ -61,7 +61,10 @@ config/environments/production.rb
 /node_modules
 
 # Ignore cucumber tests dir
-/tests
+/tests/features/output
+
+# Ignore cucumber tests cred
+/tests/features/testConfig
 
 # Ignore local config document
 /config_ahmed.js

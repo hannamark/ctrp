@@ -4,9 +4,9 @@
     angular.module('ctrp.module.validators')
             .directive('ctrpSubmit', ctrpSubmit);
 
-            ctrpSubmit.$inject = ['$parse', '$log'];
+            ctrpSubmit.$inject = ['$parse', '$log', '$rootScope', '$timeout'];
 
-            function ctrpSubmit($parse, $log) {
+            function ctrpSubmit($parse, $log, $rootScope, $timeout) {
 
                 var directiveObject = {
                     restrict: 'A',
@@ -19,14 +19,31 @@
                 function linkerFn(scope, element, attrs, controllers) {
                     var submitController = controllers[0];
                     var formController = controllers[1]; //get form controller
+                    var hasSecondaryTask = attrs.hasOwnProperty('ctrpSubmitDelete') ? true : false;
                     submitController.setFormController(formController);
 
                     scope.ctrpbtn = scope.ctrpbtn || {};
                     scope.ctrpbtn[attrs.name] = submitController;
+                    scope.formAction = $parse(attrs.ctrpSubmit);
+
+                    /* Hook for ctrp-confirm directive (and potentially other similar directives) as needed */
+                    if (hasSecondaryTask) {
+                        $rootScope.$on('deleteConfirmationComplete', function(e) {
+                            if (!e.defaultPrevented) {
+                                e.preventDefault();
+                                if (!formController.$invalid) { // Confirm that form is valid before submitting form via the event broadcast
+                                    scope.formAction(scope);
+                                }
+                            }
+                        });
+                    }
 
                     element.bind('submit', function(event) {
+                        var formAction = $parse(attrs.ctrpSubmit);
+
                         submitController.attempted = formController.$submitted;
                         $log.info('form is submitted: ' + formController.$submitted);
+
                         if (!scope.$$phase) {
                             scope.$apply();
                         }
@@ -34,13 +51,12 @@
                         if (formController.$invalid) { //|| formController.$pristine
                             $log.error('form submission invalid or untouched!');
                             return false;
+                        } else if (!hasSecondaryTask) {
+                            /* Execute the form action normally if valid/and no secondary tasks */
+                            scope.$apply(function() {
+                                formAction(scope, {$event: event});
+                            });
                         }
-
-                        var formAction = $parse(attrs.ctrpSubmit);
-                        /* execute the form action if valid */
-                        scope.$apply(function() {
-                            formAction(scope, {$event: event});
-                        });
                     });
                 } //linkerFn
 
@@ -54,17 +70,34 @@
                     };
 
                     /* fieldModelController is ngModel controller */
-                    this.needsAttention = function(fieldModelController) {
+                    /**
+                     * Verify the validity of the field and set form invalid or valid
+                     * @param  {Object} fieldModelController [form field]
+                     * @param  {boolean} isFieldInvalid        [set the form field invalid directly]
+                     * @return {boolean}                      [true or false]
+                     */
+                    this.needsAttention = function(fieldModelController, isFieldInvalid) {
+                        if (angular.isDefined(isFieldInvalid) && isFieldInvalid === true) {
+                            formController.$invalid = true;
+                            return formController.$submitted && isFieldInvalid;
+                        }
+
                         if (!formController) {
                             return false;
                         }
 
+                        /* Used in PA:
+                           formController.$setPristine sets $submitted property to false.
+                           Setting this.attempted based on $submitted value allows for resetting
+                           a CRUD form when list/CRUD views are displayed separately in the UI
+                        */
+
                         if (fieldModelController) {
-                            return fieldModelController.$invalid &&
+                            return formController.$submitted && fieldModelController.$invalid &&
                                 (fieldModelController.$dirty || this.attempted);
                         } else {
                             return formController &&
-                                formController.$invalid &&
+                                formController.$submitted && formController.$invalid &&
                                 (formController.$dirty || this.attempted);
                         }
                     }; //needsAttention

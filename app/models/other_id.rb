@@ -17,11 +17,10 @@
 #  index_other_ids_on_trial_id               (trial_id)
 #
 
-class OtherId < ActiveRecord::Base
-  include BasicConcerns
+class OtherId < TrialBase
 
   belongs_to :protocol_id_origin
-  belongs_to :trial
+  belongs_to :trial, touch: true
 
   validates :protocol_id, presence: true
   validates :protocol_id_origin, presence: true

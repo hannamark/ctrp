@@ -79,7 +79,7 @@ And I have selected a trial
 And I am on the Arms/Group screen
 When I select Save 
 And Label is Null
-Then a warning message will appear 'Label is required' 
+Then an error message will appear 'Label is Required' 
 
 Scenario:  #6 Type is not null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -87,7 +87,7 @@ And I have selected a trial with clinical research category = interventional
 And I am on the Arm/Group screen
 When I select Save 
 And Type is Null
-Then a warning message will appear 'Type is required' 
+Then an error message will appear 'Type is Required' 
 
 Scenario:  #7 Description is not null   
 Given I am logged into the CTRP Protocol Abstraction application
@@ -95,7 +95,7 @@ And I have selected a trial
 And I am on the Arms/Group screen
 When I select Save 
 And Description is Null
-Then a warning message will appear 'Description is required' 
+Then an error message will appear 'Description is Required' 
 
 Scenario: #8 Label field character count
 Given I am logged into the CTRP Protocol Abstraction application
@@ -145,3 +145,15 @@ And I am on the Arm/Group screen
 When I have selected Reset
 Then the information entered or edited on the Add Arm/Group screen will not be saved to the trial record
 And the screen will be refreshed with the data since the last save.
+
+Scenario:  #13 I can enter duplicateArm/Group for a Trial
+Given I am on the Arm/Group screen for a trial
+When I have entered a duplicate Arm/Group Label or Description
+And have clicked the Save button
+Then  the message displays ‘Click OK to add a duplicate Arm/Group  Click Cancel to abort’ 
+When I select OK button
+Then the duplicate arm/group is saved to the trial record
+And the message 'Record Updated' displays
+When I select Cancel button
+Then the duplicate arm/group is not saved to the trial record 
+

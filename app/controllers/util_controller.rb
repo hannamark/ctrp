@@ -1,5 +1,20 @@
 class UtilController < ApplicationController
-  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  before_filter :wrapper_authenticate_user, :except => [:get_app_settings_ext] unless Rails.env.test?
+
+  def get_app_settings
+    requestedSettings = params[:settings]
+    results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value.gsub("\n",'').split.join(" ") : nil
+    @settings = [results]
+  end
+
+  def get_app_settings_ext
+    requestedSettings = params[:settings]
+    permittedSettings = ['USER_DOMAINS','USER_ROLES','NIH_USER_FUNCTIONS','NIHEXT_USER_FUNCTIONS','Federated_USER_FUNCTIONS']
+    if permittedSettings.include? requestedSettings
+      results = AppSetting.find_by_code(requestedSettings) ? AppSetting.find_by_code(requestedSettings).big_value.gsub("\n",'').split.join(" ")  : nil
+      @settings = [results]
+    end
+  end
 
   def get_countries
     @countries = Country.all.sort
@@ -30,16 +45,36 @@ class UtilController < ApplicationController
     @nih = AppSetting.find_by_code('NIH').big_value.split(';')
   end
 
+  def get_sampling_methods
+    @methods = AppSetting.find_by_code('SAMPLING_METHOD_PA').value.split(',')
+    respond_to do |format|
+      format.json { render :json => @methods }
+    end
+  end
+
   def get_nih_nci_div_pa
     @nih_nci_div_pa = AppSetting.find_by_code('NIH_NCI_DIV_PA').big_value.split(',')
   end
 
   def get_nih_nci_prog_pa
-    @nih_nci_prog_pa = AppSetting.find_by_code('NIH_NCI_PROG_PA').big_value.split(';')
+    @nih_nci_prog_pa = AppSetting.find_by_code('NIH_NCI_PROG_PA').big_value.split(',')
+  end
+
+  def get_accepted_file_types_for_registry
+    @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').value
+    @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES_REG').big_value
   end
 
   def get_accepted_file_types
     @file_extensions = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').value
     @file_types = AppSetting.find_by_code('ACCEPTED_FILE_TYPES').big_value
   end
+
+  def get_trial_document_types
+    @doc_types = AppSetting.find_by_code('TRIAL_DOCUMENT_TYPES').value
+    respond_to do |format|
+      format.json { render :json => {:types => @doc_types} }
+    end
+  end
+
 end

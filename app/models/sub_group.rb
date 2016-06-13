@@ -10,6 +10,7 @@
 #  updated_at   :datetime         not null
 #  uuid         :string(255)
 #  lock_version :integer          default(0)
+#  index        :integer
 #
 # Indexes
 #
@@ -20,4 +21,19 @@ class SubGroup < ActiveRecord::Base
   include BasicConcerns
 
   belongs_to :trial
+  after_create :save_index
+
+  private
+   def save_index
+      max=SubGroup.maximum('index')
+      if max.nil?
+        p "max"
+        new_index=0
+      else
+        new_index=max.next
+      end
+        self.index=new_index
+        self.save!
+    end
+
 end

@@ -16,28 +16,26 @@ require 'roo'
 #Person.delete_all
 puts "Begin seeding"
 
+############## SEEDING STATIC DATA BEGINS ##################
+# NOTE:: In this section insert seeds for static data ,for example source_statuses, family_statuses.It will load minimum required data to create entities for fresh installation of app.So seed file purpose will be served.
+#This might be useful in production app also.
+
 puts "Seeding static members"
 
 SourceContext.find_or_create_by(code: 'CTEP', name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP', name: 'CTRP')
 SourceContext.find_or_create_by(code: 'NLM', name: 'NLM')
+
 SourceStatus.find_or_create_by(code: 'ACT', name: 'Active')
 SourceStatus.find_or_create_by(code: 'PEND', name: 'Pending')
 SourceStatus.find_or_create_by(code: 'INACT', name: 'InActive')
 SourceStatus.find_or_create_by(code: 'NULLIFIED', name: 'Nullified')
+
 FamilyRelationship.find_or_create_by(code: 'ORG', name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF', name: 'Affiliation')
-InternalSource.find_or_create_by(code: 'CTGI', name: 'ClinicalTrials.gov Import')
-InternalSource.find_or_create_by(code: 'CTRP', name: 'CTRP')
 
-
-
-
-############## SEEDING STATIC DATA BEGINS ##################
-# NOTE:: In this section insert seeds for static data ,for example source_statuses, family_statuses.It will load minimum required data to create entities for fresh installation of app.So seed file purpose will be served.
-#This might be useful in production app also.
-
-#source_statuses
+InternalSource.find_or_create_by(code: 'IMP', name: 'Import')
+InternalSource.find_or_create_by(code: 'PRO', name: 'Protocol')
 
 #family_statuses
 FamilyStatus.find_or_create_by(code:'ACTIVE',name:'Active')
@@ -48,12 +46,10 @@ FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
 FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
 FamilyType.find_or_create_by(code:'NIH',name:'NIH')
 FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
-FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
 
 StudySource.find_or_create_by(code: 'NAT', name: 'National')
 StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
 StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
-StudySource.find_or_create_by(code: 'EXP', name: 'Expanded Access')
 StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
 StudySource.find_or_create_by(code: 'OTH', name: 'Other')
 
@@ -74,6 +70,15 @@ PrimaryPurpose.find_or_create_by(code: 'DIA', name: 'Diagnostic')
 PrimaryPurpose.find_or_create_by(code: 'HSR', name: 'Health Services Research')
 PrimaryPurpose.find_or_create_by(code: 'BSC', name: 'Basic Science')
 PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
+
+TimePerspective.find_or_create_by(code: 'PRO', name: 'Prospective')
+TimePerspective.find_or_create_by(code: 'RET', name: 'Retrospective')
+TimePerspective.find_or_create_by(code: 'CRO', name: 'Cross sectional')
+TimePerspective.find_or_create_by(code: 'OTH', name: 'Other')
+
+BiospecimenRetention.find_or_create_by(code: 'NONE', name: 'None Retained')
+BiospecimenRetention.find_or_create_by(code: 'SDNA', name: 'Samples With DNA')
+BiospecimenRetention.find_or_create_by(code: 'SNODNA', name: 'Samples Without DNA')
 
 SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
 SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
@@ -102,26 +107,21 @@ HolderType.find_or_create_by(code: 'IND', name: 'Industry')
 HolderType.find_or_create_by(code: 'NIH', name: 'NIH')
 HolderType.find_or_create_by(code: 'NCI', name: 'NCI')
 
-ExpandedAccessType.find_or_create_by(code: 'AVA', name: 'Available')
-ExpandedAccessType.find_or_create_by(code: 'NLA', name: 'No Longer Available')
-ExpandedAccessType.find_or_create_by(code: 'TNA', name: 'Temporarily Not Available')
-ExpandedAccessType.find_or_create_by(code: 'AFM', name: 'Approved for Marketing')
-
-TrialStatus.find_or_create_by(code: 'INR', name: 'In Review')
-TrialStatus.find_or_create_by(code: 'APP', name: 'Approved')
-TrialStatus.find_or_create_by(code: 'ACT', name: 'Active')
-TrialStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
-TrialStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
-TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
-TrialStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
-TrialStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
-TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
-TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
-TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
-TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
-TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
-TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
+TrialStatus.find_or_create_by(code: 'INR', name: 'In Review', explanation: 'The trial is in development and waiting for final approval')
+TrialStatus.find_or_create_by(code: 'APP', name: 'Approved', explanation: 'Trial has been approved')
+TrialStatus.find_or_create_by(code: 'ACT', name: 'Active', explanation: 'The trial is open for Accrual')
+TrialStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation', explanation: '')
+TrialStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual', explanation: 'Trial has been closed to participant accrual. Participants are still receiving treatment/intervention')
+TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention', explanation: 'Trial is temporarily not accruing. Participants are not receiving intervention')
+TrialStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual', explanation: 'Trial is temporarily not accruing')
+TrialStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention', explanation: 'Trial has been closed to participant accrual. No participants are receiving treatment/intervention, but participants are still being followed according to the primary objectives of the study')
+TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn', explanation: 'Trial has been withdrawn from development and review')
+TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete', explanation: 'Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)')
+TrialStatus.find_or_create_by(code: 'COM', name: 'Complete', explanation: 'Trial has been closed to accrual; participants have completed treatment/intervention, and the study has met its primary objectives')
+TrialStatus.find_or_create_by(code: 'AVA', name: 'Available', explanation: 'Currently available for this treatment')
+TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available', explanation: 'Was available for this treatment previously but is not currently available and will not be available in the future')
+TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available', explanation: 'Not currently available for this treatment, but is expected to be available in the future')
+TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing', explanation: 'Treatment has been approved for sale to the public')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
@@ -140,11 +140,13 @@ ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Resp
 ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
 ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
 
+Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
+Milestone.find_or_create_by(code: 'VPS', name: 'Validation Processing Start Date')
+Milestone.find_or_create_by(code: 'VPC', name: 'Validation Processing Completed Date')
 Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
-Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
 Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
 Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
-Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
+Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
 Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
 Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
 Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
@@ -159,9 +161,12 @@ Milestone.find_or_create_by(code: 'RTS', name: 'Ready for Trial Summary Report D
 Milestone.find_or_create_by(code: 'TSR', name: 'Trial Summary Report Date')
 Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report Feedback Date')
 Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'ONG', name: 'On-going')
-Milestone.find_or_create_by(code: 'AVD', name: 'Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'ONG', name: 'On-going Abstraction Verified Date')
 Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
+
+MilestoneType.find_or_create_by(code: 'ADM', name: 'Administrative')
+MilestoneType.find_or_create_by(code: 'SCI', name: 'Scientific')
+MilestoneType.find_or_create_by(code: 'GEN', name: 'General')
 
 SubmissionType.find_or_create_by(code: 'ORI', name: 'Original')
 SubmissionType.find_or_create_by(code: 'AMD', name: 'Amendment')
@@ -172,45 +177,120 @@ SubmissionSource.find_or_create_by(code: 'CTEP', name: 'CTEP')
 SubmissionSource.find_or_create_by(code: 'DCP', name: 'DCP')
 SubmissionSource.find_or_create_by(code: 'CCT', name: 'Cancer Center')
 
-SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registery')
+SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registry')
 SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
 SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
-SubmissionMethod.find_or_create_by(code: 'PDQ', name: 'PDQ')
 SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
-SubmissionMethod.find_or_create_by(code: 'RSV', name: 'Rest Service')
+SubmissionMethod.find_or_create_by(code: 'RSV', name: 'REST Service')
+SubmissionMethod.find_or_create_by(code: 'OTHER', name: 'Other')
 
-SiteRecruitmentStatus.find_or_create_by(code: 'CAC' ,name: 'Closed to Accrual')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
-SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Completed')
-SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
-SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
+SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
 SiteRecruitmentStatus.find_or_create_by(code: 'ACT', name: 'Active')
 SiteRecruitmentStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
-SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
-SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
-SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
 SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
 
 Gender.find_or_create_by(code: 'M', name: 'Male')
 Gender.find_or_create_by(code: 'F', name: 'Female')
 Gender.find_or_create_by(code: 'B', name: 'Both')
 
-StudyClassification.find_or_create_by(code: 'BAV', name: 'Bio-availability')
-StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bio-equivalence')
-StudyClassification.find_or_create_by(code: 'EFF', name: 'Efficacy')
-StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+InterventionType.find_or_create_by(code: 'DRUG', name: 'Drug', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DEVI', name: 'Device', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BIOL', name: 'Biological/Vaccine', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'PROC', name: 'Procedure/Surgery', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'RAD', name: 'Radiation', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BEHA', name: 'Behavioral', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'GENE', name: 'Genetic', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DSUP', name: 'Dietary Supplement', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'OTH', name: 'Other', category: 'clinicaltrials.gov')
+
+NcitStatus.find_or_create_by(code:'ACT',name:'Active')
+NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
+
+## seed 50 NcitIntervention records with C_Code
+act = NcitStatus.find_by_code('ACT')
+NcitIntervention.create(preferred_name: 'Sivifene', synonyms:  "4,4'-Dihydroxybenzophenone 2,4-dinitrophenylhydrazone; A-007; Aryl Hydrazone A-007 Gel; SIVIFENE; Sivifene", definition: "The phenylhydrazone 4,4'-dihydroxybenzophenone-2,4-dinitrophenylhydrazone formulated as a topical agent with immunomodulating and potential antineoplastic activities. Applied topically as a gel, sivifene may stimulate a local immune response against human papillomavirus (HPV)-induced cervical intraepithelial neoplasia (CIN).", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C61305')
+NcitIntervention.create(preferred_name: 'A-65', synonyms:  "A-65", definition: "An amide analogue of Trichostatin A studied for potential antineoplastic activity.  A-65 inhibits zinc-dependent histone deacetylase, inducing terminal cell differentiation and anti-angiogenic activity. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2048')
+NcitIntervention.create(preferred_name: 'ABBV-221', synonyms:  "ABBV-221", definition: "An intravenously-administered agent capable of modulating the activity of epidermal growth factor receptor (EGFR), with potential antineoplastic activity.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C120556')
+NcitIntervention.create(preferred_name: 'Paclitaxel Albumin-Stabilized Nanoparticle Formulation', synonyms:  "ABI 007; ABI-007; ABI-007; Abraxane; Abraxane; Albumin-Stabilized Nanoparticle Paclitaxel; Albumin-bound Paclitaxel; Nanoparticle Albumin-bound Paclitaxel; Nanoparticle Paclitaxel; Paclitaxel Albumin-Stabilized Nanoparticle Formulation; nab-paclitaxel; nanoparticle paclitaxel; paclitaxel albumin-stabilized nanoparticle formulation; protein-bound paclitaxel", definition: "A Cremophor EL-free, albumin-stabilized nanoparticle formulation of the natural taxane paclitaxel with antineoplastic activity. Paclitaxel binds to and stabilizes microtubules, preventing their depolymerization and so inhibiting cellular motility, mitosis, and replication. This formulation solubilizes paclitaxel without the use of the solvent Cremophor, thereby permitting the administration of larger doses of paclitaxel while avoiding the toxic effects associated with Cremophor.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2688')
+NcitIntervention.create(preferred_name: 'Navitoclax', synonyms:  "A-855071.0; ABT-263; ABT-263; BcI-2 Family Protein Inhibitor ABT-263; NAVITOCLAX; Navitoclax; navitoclax", definition: "An orally active, synthetic small molecule and an antagonist of a subset of the B-cell leukemia 2 (Bcl-2) family of proteins with potential antineoplastic activity. Navitoclax selectively binds to apoptosis suppressor proteins Bcl-2, Bcl-XL, and Bcl-w, which are frequently overexpressed in a wide variety of cancers, including those of the lymph, breast, lung, prostate, and colon, and are linked to tumor drug resistance. Inhibition of these apoptosis suppressors prevents their binding to the apoptotic effectors Bax and Bak proteins, thereby triggering apoptotic processes in cells overexpressing Bcl-2, Bcl-XL, and Bcl-w. This eventually reduces tumor cell proliferation.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C64776')
+NcitIntervention.create(preferred_name: 'ABT-510', synonyms:  "ABT-510; ABT-510; ABT-510", definition: "A synthetic peptide that mimics the anti-angiogenic activity of the endogenous protein thrombospondin-1 (TSP-1).  ABT-510 inhibits the actions of several pro-angiogenic growth factors important to tumor neovascularization; these pro-angiogenic growth factors include vascular endothelial growth factor (VEGF), basic fibroblast growth factor (bFGF)), hepatocyte growth factor (HGF), and interleukin 8 (IL-8). (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C37447')
+NcitIntervention.create(preferred_name: 'ABT-751', synonyms:  "ABT-751; ABT-751; ABT-751; E7010; N-[2-[(4-Hydroxyphenyl)amino]-3-pyridinyl]-4-methoxybenzenesulfonamide; N-[2-[(4-Hydroxyphenyl)amino]-3-pyridinyl]-4-methoxybenzenesulfonamide", definition: "An orally bioavailable antimitotic sulfonamide. ABT- 751 binds to the colchicine-binding site on beta-tubulin and inhibits the polymerization of microtubules, thereby preventing tumor cell replication. This agent also disrupts tumor neovascularization, reducing tumor blood flow and so inducing a cytotoxic effect. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2679')
+NcitIntervention.create(preferred_name: 'Veliparib', synonyms:  "2-((R)-2-Methylpyrrolidin-2-yl)-1H-benzimidazole-4-carboxamide; ABT-888; ABT-888; PARP-1 inhibitor ABT-888; VELIPARIB; Veliparib; veliparib", definition: "A poly(ADP-ribose) polymerase (PARP) -1 and -2 inhibitor with chemosensitizing and antitumor activities. With no antiproliferative effects as a single agent at therapeutic concentrations, ABT-888 inhibits PARPs, thereby inhibiting DNA repair and potentiating the cytotoxicity of DNA-damaging agents. PARP nuclear enzymes are activated by DNA single or double strand breaks, resulting in the poly(ADP-ribosyl)ation of other nuclear DNA binding proteins involved in DNA repair; poly(ADP-ribosyl)ation contributes to efficient DNA repair and to survival of proliferating cells exposed to mild genotoxic stresses as induced by as oxidants, alkylating agents or ionizing radiation.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C60768')
+NcitIntervention.create(preferred_name: 'ACAPHA', synonyms:  "ACAPHA; ACAPHA", definition: "", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C93167')
+NcitIntervention.create(preferred_name: 'ACE Inhibitor', synonyms:  "ACE Inhibitor; ACE Inhibitor; ACE inhibitor; Angiotensin-Converting Enzyme Inhibitor; Angiotensin-Converting Enzyme Inhibitor; angiotensin-converting enzyme inhibitor", definition: "Any substance that inhibits angiotensin-converting enzyme (ACE), an enzyme that catalyzes the conversion of angiotensin I to angiotensin II. Inhibition of ACE results in a reduction in angiotensin II and angiotensin II-induced aldosterone secretion, causing vasodilation and natriuresis.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C247')
+NcitIntervention.create(preferred_name: 'ADA Transduced T Cell', synonyms:  "ADA Transduced T Cell", definition: "T cells harvested from a patient with adenosine deaminase (ADA) deficiency and transduced with a vector containing the gene for ADA. ADA catalyzes the hydrolysis of adenosine to inosine; ADA deficiency causes a form of severe combined immunodeficiency (SCID).  Following genetic modification, the T cells are returned to the patient, where they produce functional ADA.  ADA-transduced T cells have been shown to improve immune function in individuals with ADA deficiency. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C28797')
+NcitIntervention.create(preferred_name: 'ADH-1', synonyms:  "ADH-1; Exherin", definition: "A small, cyclic pentapeptide vascular-targeting agent with potential antineoplastic and antiangiogenic activities. ADH-1 selectively and competitively binds to and blocks N-cadherin, which may result in disruption of tumor vasculature, inhibition of tumor cell growth, and the induction of tumor cell and endothelial cell apoptosis. N-cadherin, a cell- surface transmembrane glycoprotein of the cadherin superfamily of proteins involved in calcium-mediated cell-cell adhesion and signaling mechanisms; may be upregulated in some aggressive tumors and the endothelial cells and pericytes of some tumor blood vessels.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C53399')
+NcitIntervention.create(preferred_name: 'AE37 Peptide/GM-CSF Vaccine', synonyms:  "AE37 Peptide/GM-CSF Vaccine", definition: "A vaccine containing HER2/Neu-derived epitope (amino acids 776-790) linked to li-Key peptide (li-Key/HER2/neu hybrid peptide or AE37), and combined with granulocyte-macrophage colony-stimulating factor (GM-CSF), with potential antineoplastic and immunoadjuvant activities. Upon vaccination, AE37 may activate the immune system and stimulate T-helper cells against HER2/Neu expressing cancer cells. GM-CSF may potentiate the immune response against cancer cells expressing the HER2/Neu antigen. The Ii-Key moiety, a 4-amino acid (LRMK) epitope from the MHC class II-associated invariant chain (Ii protein), increases T-helper cell stimulation against HER2/neu antigen when compared to unmodified class II epitopes. HER2/neu, a tumor associated antigen (TAA), is overexpressed in a variety of tumor cell types and is highly immunogenic.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C91719')
+NcitIntervention.create(preferred_name: 'AEE788', synonyms:  "AEE 788; AEE-788; AEE788; AEE788", definition: "An orally bioavailable multiple-receptor tyrosine kinase inhibitor. AEE788 inhibits phosphorylation of the tyrosine kinases of epidermal growth factor receptor (EGFR), human epidermal growth factor receptor 2 (HER2), and vascular endothelial growth factor receptor 2 (VEGF2), resulting in receptor inhibition, the inhibition of cellular proliferation, and induction of tumor cell and tumor-associated endothelial cell apoptosis. (NCI05)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C48369')
+NcitIntervention.create(preferred_name: 'AEG35156', synonyms:  "AEG35156; AEG35156; GEM640; GEM640", definition: "A second-generation synthetic antisense oligonucleotide with potential antineoplastic activity. AEG35156 selectively blocks the cellular expression of X-linked inhibitor of apoptosis protein (XIAP), a pivotal inhibitor of apoptosis that is overexpressed in many tumors. This agent reduces total levels of XIAP in tumor cells, working synergistically with cytotoxic drugs to overcome tumor cell resistance to apoptosis. XIAP interferes with both the intrinsic and extrinsic program-death signaling pathways, which may render tumor cells resistant to apoptosis.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C49180')
+NcitIntervention.create(preferred_name: 'AFP464', synonyms:  "AFP464; AFP464", definition: "A synthetic lysyl prodrug of the amino-substituted flavone derivate aminoflavone with antiproliferative and antineoplastic activities. AFP464 is rapidly converted to aminoflavone in plasma. Aminoflavone activates the aryl hydrocarbon receptor (AhR) signaling pathway leading to an increase in cytochrome P450 1A1 (CYP1A1) and cytochrome P450 1A2 (CYP1A2) expression and, to a lesser extent, an increase in cytochrome P450 1B1 (CYP1B1) expression. Subsequently, aminoflavone is metabolized to toxic metabolites by the cytochromome P450 enzymes that it induces; these toxic metabolites covalently bind to DNA, resulting in the phosphorylation of p53, the induction of the p53 downstream target p21Waf1/Cip1, and apoptosis. Pulmonary toxicity may be dose-limiting.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C48370')
+NcitIntervention.create(preferred_name: 'AFP Gene Hepatocellular Carcinoma Vaccine', synonyms:  "AFP Gene Hepatocellular Carcinoma Vaccine; vaccine, AFP gene hepatocellular carcinoma", definition: "A cancer vaccine composed of naked plasmid DNA of the gene for the tumor-associated antigen alpha-fetoprotein (AFP), a macromolecule that acts as a specific immunologic target for hepatocellular carcinoma. This agent exerts an antitumor effect by inducing cytotoxic T-lymphocytes to attack AFP-expressing tumor cells. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2512')
+NcitIntervention.create(preferred_name: 'Axitinib', synonyms:  "AG-013736; AG-013736; AG013736; AXITINIB; Axitinib; Inlyta; N-methyl-2-((3-((1E)-2-(pyridin-2-yl)ethenyl)-1H-indazol-6-yl)sulfanyl)benzamide; axitinib", definition: "An orally bioavailable tyrosine kinase inhibitor. Axitinib inhibits the proangiogenic cytokines vascular endothelial growth factor (VEGF) and platelet-derived growth factor receptor (PDGF), thereby exerting an anti-angiogenic effect.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C38718')
+NcitIntervention.create(preferred_name: 'AG-024322', synonyms:  "AG-024322", definition: "A cyclin-dependent kinase (CDK) inhibitor with antineoplastic activity. AG-024322 selectively inhibits cyclin-dependent kinases (particularly CDK1,2 and 4), enzymes that regulate cell cycle progression. Inhibition of CDK may result in cell cycle arrest, induction of apoptosis, and inhibition of DNA replication and tumor cell proliferation.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C52182')
+NcitIntervention.create(preferred_name: 'Pelitrexol', synonyms:  "(2S)-2-(((5-(2-((6S)-2-Amino-4-oxo-1,4,5,6,7,8-hexahydropyrido(2,3-d)pyrimidin-6-yl)ethyl)-4-methylthiophen-2-yl)carbonyl)amino)pentanedioic Acid; (2S)-2-[[[5-[2-[(6S)-2-amino-4-oxo-1,4,5,6,7,8-hexahydropyrido[2,3-d]pyrimidin-6-yl]ethyl]-4-methylthiophen-2-yl]carbonyl]amino]pentanedioic Acid; AG2037; AG2037; PELITREXOL; Pelitrexol", definition: "A water soluble antifolate with anti-proliferative activity. Pelitrexol inhibits activity of glycinamide ribonucleotide formyltransferase (GARFT), the first folate-dependent enzyme of the de novo purine synthesis pathway essential for cell proliferation. Enzyme inhibition reduces the purine nucleotides pool required for DNA replication and RNA transcription. As a result, this agent causes cell cycle arrest in S-phase, and ultimately inhibits tumor cell proliferation", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2633')
+NcitIntervention.create(preferred_name: 'AG 1517', synonyms:  "AG 1517; AG 1517", definition: "A quinazoline derivative that selectively inhibits EGFR kinase activity and suppresses the growth of psoriatic keratinocytes.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C1787')
+NcitIntervention.create(preferred_name: 'AG 1732', synonyms:  "AG 1732; AG 1732; AG-1732", definition: "A tyrphostin compound inhibiting receptor autophosphorylation by inhibiting protein tyrosine kinase and is used to study receptor function.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2042')
+NcitIntervention.create(preferred_name: 'AICA-Ribotide', synonyms:  "1-(5'-Phosphoribosyl)-5-Amino-4-Imidazolecarboxamide; 1H-Imidazole-4-Carboxamide, 5-Amino-1-(5-O-Phosphono-Beta-D-Ribofuranosyl)- (9CI); 5'-Phospho-Ribosyl-5-Amino-4-Imidazole Carboxamide; 5'-Phosphoribosyl-5-Amino-4-Imidazolecarboxamide; 5-Amino-1-(5-O-Phosphono-Beta-D-Ribofuranosyl)-1H-Imidazole-4-Carboxamide; 5-Amino-1-(5-Phospho-D-Ribosyl)Imidazole-4-Carboxamide; 5-Amino-4-Imidazole Carboxamide Ribonucleotide; 5-Amino-4-Imidazolecarboxamide Ribonucleoside 5'-Monophosphate; 5-Amino-4-Imidazolecarboxamide Ribotide; 5-Aminoimidazole-4-Carboxamide Ribonucleotide; 5-Phosphoribosyl-4-Carbamoyl-5-Aminoimidazole; AICA Ribonucleotide; AICA Ribotide; AICA-Ribotide; AICAR; Aminoimidazole Carboxamide Ribonucleotide; Imidazole-4-Carboxamide, 5-Amino-1-Beta-D-Ribofuranosyl-, 5'-(Dihydrogen Phosphate) (8CI); ZMP; [(2R,3S,4R,5R)-5-(4-Carbamoyl-5-Aminoimidazol-1-yl)-3,4-Dihydroxyoxolan-2-yl]Methyl Dihydrogen Phosphate", definition: "A ribonucleotide analog of adenosine monophosphate that is an intermediate in the synthesis of inosine monophosphate with potential cardioprotective activity. During myocardial ischemia, AICA-ribotide activates AMP-dependent protein kinase (AMPK), inhibits adenosine deaminase (ADA) and causes increased synthesis of both adenosine and adenosine triphosphate (ATP). These activities prevent calcium overload, increase AMPK-dependent glucose uptake and improve blood flow to the heart. AMPK, a protein kinase complex, regulates several cellular systems including the uptake of glucose, the beta-oxidation of fatty acids, protein synthesis, and the biogenesis of both glucose transporter 4 (GLUT4) and mitochondria. ADA is a key enzyme involved in purine metabolism.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C113498')
+NcitIntervention.create(preferred_name: 'AIM2(-1)/HT001(-1)/TAF1B(-1) Frameshift Peptide Vaccine', synonyms:  "AIM2(-1)/HT001(-1)/TAF1B(-1) FSP Vaccine; AIM2(-1)/HT001(-1)/TAF1B(-1) Frameshift Peptide Vaccine", definition: "A cancer vaccine containing the three frame shift peptides (FSP) AIM2(-1), HT001(-1) and TAF1B(-1), with potential immunomodulating activity. Upon administration, the AIM2(-1)/HT001(-1)/TAF1B(-1) FSP vaccine may induce an immune response against microsatellite instability (MSI) colorectal cancer-associated antigens. Frame shift mutations of AIM2 (absent in melanoma 2, an interferon-inducible protein), HT001 (asteroid homolog 1 or ASTE1, with an unknown function) and TAF1B (TATA box-binding protein-associated RNA polymerase I B, a transcription factor) are seen in MSI-positive colorectal cancers and may be associated with malignant transformation, tumor progression and the presence of tumor-infiltrating lymphocytes. These FSPs all have one-base deletions.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C99129')
+NcitIntervention.create(preferred_name: 'AKT 1/2 Inhibitor BAY1125976', synonyms:  "AKT 1/2 Inhibitor BAY1125976; BAY1125976", definition: "An orally bioavailable inhibitor of the serine/threonine protein kinase AKT (protein kinase B) isoforms 1 and 2 (AKT1/2) with potential antineoplastic activity. AKT1/2 inhibitor BAY1125976 selectively binds to and inhibits the phosphorylation and activity of AKT1/2 in a non-ATP competitive manner, which may result in the inhibition of the phosphatidylinositol 3 (PI3K)/AKT/mammalian target of rapamycin (mTOR) signaling pathway. This may lead to both the reduction of cell proliferation and the induction of cell apoptosis in AKT-overexpressing tumor cells. The AKT signaling pathway is often deregulated in cancer and is associated with tumor cell proliferation, survival and migration.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C111575')
+NcitIntervention.create(preferred_name: 'AKT Inhibitor ARQ 092', synonyms:  "AKT Inhibitor ARQ 092; ARQ 092", definition: "An orally bioavailable inhibitor of the serine/threonine protein kinase AKT (protein kinase B) with potential antineoplastic activity. AKT inhibitor ARQ 092 binds to and inhibits the activity of AKT in a non-ATP competitive manner, which may result in the inhibition of the PI3K/AKT signaling pathway. This may lead to the reduction in tumor cell proliferation and the induction of tumor cell apoptosis. The AKT signaling pathway is often deregulated in cancer and is associated with tumor cell proliferation, survival and migration.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C99172')
+NcitIntervention.create(preferred_name: 'AK 3012', synonyms:  "AK 3012", definition: "A proprietary topical formulation. Upon subcutaneous administration, the active ingredient in AK 3012 may inhibit actinic keratosis.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C104266')
+NcitIntervention.create(preferred_name: 'AL721', synonyms:  "AL-721; AL721; AL721; Altrigen; Egg Lecithin Lipids", definition: "A mixture of neutral lipids (70%), phosphatidylcholine (20%) and phosphatidylethanolamine (10%) extracted from egg yolk. AL721 removes cholesterol from outer cell membranes, increases membrane fluidity, and impairs virus attachment to cell receptors. AL721 has been studied for diseases and conditions where altered membrane fluidity plays a role.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C993')
+NcitIntervention.create(preferred_name: 'ALK-FAK Inhibitor CEP-37440', synonyms:  "ALK-FAK Inhibitor CEP-37440; CEP-37440", definition: "An orally available dual kinase inhibitor of the receptor tyrosine kinase anaplastic lymphoma kinase (ALK) and focal adhesion kinase (FAK), with potential antineoplastic activity. Upon administration, ALK-FAK inhibitor CEP-37440 selectively binds to and inhibits ALK kinase and FAK kinase. The inhibition leads to disruption of ALK- and FAK-mediated signal transduction pathways and eventually inhibits tumor cell growth in ALK- and FAK-overexpressing tumor cells. ALK belongs to the insulin receptor superfamily and plays an important role in nervous system development; its dysregulation and gene rearrangements are associated with a variety of tumors. The cytoplasmic tyrosine kinase FAK, a signal transducer for integrins, is upregulated and constitutively activated in various tumor types; it plays a key role in tumor cell migration, proliferation, survival, and tumor angiogenesis.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C111685')
+NcitIntervention.create(preferred_name: 'Dalantercept', synonyms:  "ACE-041; ALK1-Fc Fusion Protein ACE-041; Activin Receptor-like Kinase 1 Inhibitor ACE-041; DALANTERCEPT; Dalantercept", definition: "A soluble fusion protein containing the extracellular domain of activin receptor-like kinase-1 (ALK1) fused to a human Fc domain (ALK1-Fc fusion protein), with potential antiangiogenic and antineoplastic activities. Upon administration, dalantercept binds to various ALK1 ligands, preventing activation of tumor cell ALK1 receptors and so inhibiting the ALK1 signaling pathway; growth factor-induced angiogenesis is thus inhibited, which may result in the inhibition of tumor cell proliferation and tumor cell death. ALK1 is a type I cell surface receptor with serine/threonine kinase activity that mediates signaling by members of the transforming growth factor-beta (TGFbeta) superfamily and plays a key role in angiogenesis; ligands for this receptor include TGFbeta1 and TGFbeta2. The Fc moiety of this fusion protein mediates clearance of ligand-fusion protein complexes by the reticuloendothelial system (RES).", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C88296')
+NcitIntervention.create(preferred_name: 'ALK5 Inhibitor TEW-7197', synonyms:  "ALK5 Inhibitor TEW-7197; TEW-7197; TEW7197; TGFBR1 Inhibitor TEW-7197", definition: "An orally bioavailable inhibitor of the serine/threonine kinase, transforming growth factor (TGF)-beta receptor type 1 (TGFBR1), also known as activin receptor-like kinase 5 (ALK5), with potential antineoplastic activity. Upon oral administration, ALK5 inhibitor TEW-7197 inhibits the activity of TGFBR1 and prevents TGF-beta/TGFBR1-mediated signaling. This suppresses tumor growth in TGFBR1-overexpressing tumor cells. TGFBR1, which is overexpressed in a variety of tumor cell types, plays a key role in tumor cell proliferation. Expression of TGF-beta promotes tumor cell proliferation, enhances the migration of tumor cells and suppresses the response of the host immune system to tumor cells.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C116357')
+NcitIntervention.create(preferred_name: 'ALK/FAK/Pyk2 Inhibitor CT-707', synonyms:  "ALK/FAK/Pyk2 Inhibitor CT-707; CT 707; CT-707", definition: "An orally available inhibitor of the receptor tyrosine kinase anaplastic lymphoma kinase (ALK), focal adhesion kinase (FAK) and proline-rich tyrosine kinase 2 (Pyk2), with potential antineoplastic activity. Upon administration, ALK/FAK/Pyk2 inhibitor CT-707 selectively binds to and inhibits ALK , FAK and Pyk2. The inhibition leads to disruption of ALK- , FAK- and Pyk2-mediated signal transduction pathways and eventually inhibits tumor cell growth in ALK-, FAK- and Pyk2-overexpressing tumor cells. Expression of these tyrosine kinases is dysregulated in various tumor types; they play a key role in tumor cell migration, proliferation, survival, and tumor angiogenesis.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C126648')
+NcitIntervention.create(preferred_name: 'ALK Inhibitor ASP3026', synonyms:  "ALK Inhibitor ASP3026; ASP-3026; ASP3026; N2-[2-Methoxy-4-[4-(4-methyl-1-piperazinyl)-1-piperidinyl]phenyl]-N4-[2-[(1-methylethyl)sulfonyl]phenyl]-1,3,5-triazine-2,4-diamine", definition: "An orally available, small molecule inhibitor of the receptor tyrosine kinase anaplastic lymphoma kinase (ALK), with potential antineoplastic activity. Upon oral administration, ASP3026 binds to and inhibits ALK tyrosine kinase, ALK fusion proteins and ALK point mutation variants. Inhibition of ALK leads to the disruption of ALK-mediated signaling and the inhibition of cell growth in ALK-expressing tumor cells. ALK belongs to the insulin receptor superfamily and plays an important role in nervous system development. ALK is not expressed in healthy adult human tissue but ALK dysregulation and gene rearrangements are associated with a series of tumors. Additionally, ALK mutations are associated with acquired resistance to small molecule tyrosine kinase inhibitors.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C116727')
+NcitIntervention.create(preferred_name: 'Alectinib', synonyms:  "5H-benzo(b)carbazole-3-carbonitrile, 9-Ethyl-6,11-dihydro-6,6-dimethyl-8-(4-(4-morpholinyl)-1-piperidinyl)-11-oxo-; AF-802; AF802; ALECTINIB; Alecensa; Alecensa; Alectinib; CH5424802; RG7853; RO5424802", definition: "An orally available inhibitor of the receptor tyrosine kinase anaplastic lymphoma kinase (ALK) with antineoplastic activity. Upon administration, alectinib binds to and inhibits ALK kinase, ALK fusion proteins as well as the gatekeeper mutation ALKL1196M known as one of the mechanisms of acquired resistance to small-molecule kinase inhibitors. The inhibition leads to disruption of ALK-mediated signaling and eventually inhibits tumor cell growth in ALK-overexpressing tumor cells. ALK belongs to the insulin receptor superfamily and plays an important role in nervous system development. ALK dysregulation and gene rearrangements are associated with a series of tumors.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C101790')
+NcitIntervention.create(preferred_name: 'ALK Inhibitor RO5424802', synonyms:  "ALK Inhibitor RO5424802; RO5424802", definition: "An orally available inhibitor of the receptor tyrosine kinase anaplastic lymphoma kinase (ALK) with antineoplastic activity. Upon administration, ALK inhibitor RO5424802 binds to and inhibits ALK kinase, which leads to a disruption of ALK-mediated signaling and eventually inhibits tumor cell growth in ALK-overexpressing tumor cells. ALK belongs to the insulin receptor superfamily and plays an important role in nervous system development. ALK dysregulation and gene rearrangements are associated with a series of tumors. Additionally, ALK mutations are associated with acquired resistance to small molecule tyrosine kinase inhibitors.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C105615')
+NcitIntervention.create(preferred_name: 'ALK Inhibitor X-396', synonyms:  "ALK Inhibitor X-396; Anaplastic Lymphoma Kinase Inhibitor X-396; X-396", definition: "An orally available small molecule inhibitor of the receptor tyrosine kinase anaplastic lymphoma kinase (ALK) with potential antineoplastic activity. Upon oral administration, X-396 binds to and inhibits ALK kinase, ALK fusion proteins and ALK point mutation variants. Inhibition of ALK leads to the disruption of ALK-mediated signaling and eventually inhibits tumor cell growth in ALK-expressing tumor cells. ALK belongs to the insulin receptor superfamily and plays an important role in nervous system development. ALK is not expressed in healthy adult human tissue but ALK dysregulation and gene rearrangements are associated with a series of tumors; ALK mutations are associated with acquired resistance to small molecule tyrosine kinase inhibitors.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C102754')
+NcitIntervention.create(preferred_name: 'ALK/ROS1 Inhibitor PF-06463922', synonyms:  "ALK/ROS1 Inhibitor PF-06463922; PF-06463922", definition: "An orally available, ATP-competitive inhibitor of the receptor tyrosine kinases, anaplastic lymphoma kinase (ALK) and C-ros oncogene 1 (Ros1), with potential antineoplastic activity. Upon administration, ALK/ROS1 inhibitor PF-06463922 binds to and inhibits both ALK and ROS1 kinases. The kinase inhibition leads to disruption of ALK- and ROS1-mediated signaling and eventually inhibits tumor cell growth in ALK- and ROS1-overexpressing tumor cells. In addition, PF-06463922 is able to cross the blood brain barrier. ALK belongs to the insulin receptor superfamily and plays an important role in nervous system development; ALK dysregulation and gene rearrangements are associated with a series of tumors. ROS1, overexpressed in certain cancer cells, plays a key role in cell growth and survival of cancer cells.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C113655')
+NcitIntervention.create(preferred_name: 'ALK/TRK Inhibitor TSR-011', synonyms:  "ALK/TRK Inhibitor TSR-011; TSR-011", definition: "An orally available inhibitor of both the receptor tyrosine kinase anaplastic lymphoma kinase (ALK) and the tropomyosin-related kinases (TRK) TRKA, TRKB, and TRKC, with potential antineoplastic activity. Upon administration, ALK/TRK inhibitor TSR-011 binds to and inhibits both ALK and TRK kinases. The inhibition leads to disruption of ALK- and TRK-mediated signaling and impedes tumor cell growth in ALK/TRK-overexpressing tumor cells. ALK belongs to the insulin receptor superfamily and plays an important role in nervous system development; ALK dysregulation and gene rearrangements are associated with a series of tumors. TRK, a family of receptor tyrosine kinases activated by neurotrophins, is mutated in a variety of cancer cell types and plays an important role in tumor cell growth and survival.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C114287')
+NcitIntervention.create(preferred_name: 'ALVAC-B7-CEA', synonyms:  "ALVAC-B7-CEA", definition: "A cancer vaccine consisting of ALVAC, a highly attenuated poxvirus strain derived from the canarypox virus.  ALVAC-B7-CEA expresses carcinoembryonic antigen (CEA), a protein that is overexpressed by many tumor cells, and B7.1 (also known as CD80), the natural ligand for the T-cell antigen CD28, to augment the host immune response.  This agent has been shown to stimulate a host immune response against tumor cells that express CEA. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2742')
+NcitIntervention.create(preferred_name: 'ALVAC-CEA (6D)-B7.1 Vaccine', synonyms:  "ALVAC-CEA (6D)-B7.1 Vaccine; ALVAC-CEA (6D)-B7.1", definition: "A cancer vaccine consisting of ALVAC, a highly attenuated poxvirus strain derived from the canarypox virus.  ALVAC-CEA (6D)-B7.1 vaccine expresses both a highly immunogenic analogue (6D) of the immunodominant epitope of carcinoembryonic antigen (CEA) and B7.1 (also known as CD80), the natural ligand for the T-cell antigen CD28. This agent was designed to stimulate host immune responses against tumor cells that express CEA. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C29982')
+NcitIntervention.create(preferred_name: 'ALVAC-CEA B7.1 Vaccine', synonyms:  "ALVAC CEA B7.1 Vaccine; ALVAC-CEA B7.1 Vaccine", definition: "A cancer vaccine that uses a viral vector system derived from the canarypox virus engineered to target the carcinoembryonic antigen (CEA). It causes infected cells to temporarily display CEA and activates the immune system to attack the tumor cells.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C1977')
+NcitIntervention.create(preferred_name: 'ALVAC-CEA (VCP248)', synonyms:  "ALVAC-CEA (VCP248)", definition: "A replication-defective recombinant canarypox virus (ALVAC) that contains the entire human carcinoembryonic antigen (CEA) gene.  Vaccination with ALVAC-CEA (VCP248) may stimulate the host immune system to mount a cytotoxic T lymphocyte (CTL) response against CEA-positive tumor cells, thereby decreasing tumor growth. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2743')
+NcitIntervention.create(preferred_name: 'ALVAC-CEA Vaccine', synonyms:  "ALVAC-CEA Vaccine; ALVAC-CEA vaccine; ALVAC-CEA", definition: "A cancer vaccine consisting of ALVAC, a highly attenuated poxvirus strain derived from the canarypox virus, encoding for the tumor associated antigen (TAA) carcinoembryonic antigen (CEA), with potential antineoplastic activity. Upon administration, ALVAC-CEA vaccine expresses CEA and may stimulate a host immune response against tumor cells expressing CEA. This may result in the inhibition of tumor growth and/or metastasis. CEA is overexpressed in a variety of tumor cell types.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C1648')
+NcitIntervention.create(preferred_name: 'ALVAC-ESO-1 Vaccine', synonyms:  "ALVAC-ESO-1 Vaccine", definition: "A cancer vaccine consisting of a replication-defective recombinant canarypox virus (ALVAC) encoding the cancer-testis antigen NY-ESO-1, with potential immunostimulatory and antineoplastic activities. Upon administration, ALVAC-ESO-1 vaccine may stimulate the host immune system to mount a cytotoxic T lymphocyte (CTL) response against NY-ESO-1-expressing cancer cells, which may result in the inhibition of tumor cell proliferation. NY-ESO-1, a tumor associated antigen (TAA), is found in normal testis and on the surface of various tumor cells.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C90558')
+NcitIntervention.create(preferred_name: 'ALVAC-MART-1 Vaccine', synonyms:  "ALVAC-MART-1 Vaccine", definition: "A cancer vaccine containing a replication-defective recombinant canarypox virus (ALVAC), encoding an epitope of MART-1 (melanoma antigen recognized by T-cells), with potential immunostimulatory and antineoplastic activities. Upon administration, the MART-1 epitope is expressed by the ALVAC vector in ALVAC-MART-1 vaccine; a host cytotoxic T lymphocyte (CTL) response against MART-1-expressing tumor cells may follow, resulting in tumor cell lysis and decreased tumor cell proliferation.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C73999')
+NcitIntervention.create(preferred_name: 'ALVAC-hB7.1', synonyms:  "ALVAC-hB7.1", definition: "A vaccine comprise of a canarypox viral vector that carries the gene for human B7.1 (CD80 antigen) with potential use as an autologous therapeutic cancer vaccine.  Tumor cells harvested from a patient are infected with ALVAC-hB7 1, thereby producing an autologous cell line that exhibits increased expression of HLA class I and class II, CD54 (ICAM), and CD80. Increased expression of these proteins by this autologous cell line may activate an antitumor T-cell response when the modified cells are administered to the patient. (NCI04)", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C2485')
+NcitIntervention.create(preferred_name: 'ALVAC(2) Melanoma Multi-antigen Vaccine', synonyms:  "ALVAC(2) Melanoma Multi-antigen Vaccine", definition: "A therapeutic cancer vaccine, based on a replication-defective recombinant canarypox virus (ALVAC) encoding multiple melanoma antigens, with potential immunostimulatory and antineoplastic activities. Vaccination with ALVAC(2) melanoma multi-antigen therapeutic vaccine may stimulate the host immune system to mount an immune response against antigen-expressing melanoma cells, resulting in inhibition of tumor growth and/or metastasis.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C73998')
+NcitIntervention.create(preferred_name: 'ALVAC(2)-NY-ESO-1 (M)/TRICOM Vaccine', synonyms:  "ALVAC(2)-NY-ESO-1 (M)/TRICOM Vaccine; vCP2292", definition: "A cancer vaccine consisting of a replication-defective recombinant canarypox virus [ALVAC(2)] encoding the cancer-testis antigen NY-ESO and the TRIad of COstimulatory Molecules (B7-1, ICAM-1 and LFA-3; also called TRICOM), with potential immunostimulatory and antineoplastic activities. Upon administration, ALVAC(2)/NY-ESO (M)/TRICOM vaccine may stimulate the host immune system to mount a cytotoxic T lymphocyte (CTL) response against NY-ESO-expressing cancer cells, which may result in the inhibition of tumor cell proliferation. NY-ESO-1, a tumor associated antigen (TAA), is found in normal testis and on the surface of various tumor cells, including bladder, breast, hepatocellular, melanoma, and prostate tumor cells. TRICOM may enhance antigen presentation and activate cytotoxic T-cells. In addition, ALVAC(2) encodes the vaccinia virus (vv) E3L ad K3L genes, which may potentiate the translation of the NY-ESO and TRICOM genes.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C79832')
+NcitIntervention.create(preferred_name: 'ALVAC Vaccine', synonyms:  "ALVAC Vaccine; ALVAC", definition: "A derivative of the Canarypox Virus, ALVAC can infect mammalian cells but it can't replicate.  Thus, it produces a self-limiting infection which does not produce symptoms or harm the host.  When carrying foreign genes it will cause transient expression of protein.", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C1479')
+NcitIntervention.create(preferred_name: 'Anti-inflammatory Antibody ALXN1007', synonyms:  "ALXN 1007; ALXN-1007; ALXN1007; Anti-inflammatory Antibody ALXN1007", definition: "A proprietary antibody that targets the complement inflammatory pathway with potential immunomodulating and anti-inflammatory activities. Upon intravenous administration, anti-inflammatory antibody ALXN1007 modulates the complement inflammatory pathway through binding to an as of yet undisclosed target. This may help in the treatment of certain inflammatory-mediated disorders, such as antiphospholipid syndrome (APS). This agent may also influence the progression of graft-versus-host disease (GvHD).", type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: 'C118441')
+
+
+
+StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
+StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'SAEF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'BAV', name: 'Bioavailability')
+StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bioequivalence')
 StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'PK', name: 'Pharmacokinetics')
-StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/dynamics')
-StudyClassification.find_or_create_by(code: 'SF', name: 'Safety')
-StudyClassification.find_or_create_by(code: 'SFEFF', name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+
+StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
+StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
+StudyModel.find_or_create_by(code: 'CASEON', name: 'Case-only')
+StudyModel.find_or_create_by(code: 'CASECR', name: 'Case-crossover')
+StudyModel.find_or_create_by(code: 'EORCS', name: 'Ecologic or Community Studies')
+StudyModel.find_or_create_by(code: 'FAMB', name: 'Family-based')
+StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
 
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
-Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Control Trial')
+Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
 Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
 
 InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
@@ -222,18 +302,296 @@ Masking.find_or_create_by(code: 'OP', name: 'Open')
 Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
 Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
 
-AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
+# AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
 AgeUnit.find_or_create_by(code: 'YRS', name: 'Years')
-AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
+# AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
 AgeUnit.find_or_create_by(code: 'MOS', name: 'Months')
-AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
+# AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
 AgeUnit.find_or_create_by(code: 'WKS', name: 'Weeks')
-AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
+# AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
 AgeUnit.find_or_create_by(code: 'DYS', name: 'Days')
-AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
+# AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
 AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
-AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
+# AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
+
+AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
+AmendmentReason.find_or_create_by(code: 'AA', name: 'Acknowledged Administrative')
+AmendmentReason.find_or_create_by(code: 'AAS', name: 'Acknowledged Administrative and Scientific')
+
+AnatomicSite.find_or_create_by(code:'AN', name: 'Anus')
+AnatomicSite.find_or_create_by(code:'BJ', name: 'Bones and Joints')
+AnatomicSite.find_or_create_by(code:'BN', name: 'Brain and Nervous System')
+AnatomicSite.find_or_create_by(code:'BF', name: 'Breast - Female')
+AnatomicSite.find_or_create_by(code:'BM', name: 'Breast - Male')
+AnatomicSite.find_or_create_by(code:'CE', name: 'Cervix')
+AnatomicSite.find_or_create_by(code:'CO', name: 'Colon')
+AnatomicSite.find_or_create_by(code:'CU', name: 'Corpus Uteri')
+AnatomicSite.find_or_create_by(code:'ES', name: 'Esophagus')
+AnatomicSite.find_or_create_by(code:'ET', name: 'Eye and Orbit')
+AnatomicSite.find_or_create_by(code:'HL', name: "Hodgkin's Lymphoma")
+AnatomicSite.find_or_create_by(code:'IS', name: 'Ill-Defined Sites')
+AnatomicSite.find_or_create_by(code:'KA', name: "Kaposi's Sarcoma")
+AnatomicSite.find_or_create_by(code:'KI', name: "Kidney")
+AnatomicSite.find_or_create_by(code:'LA', name: 'Larynx')
+AnatomicSite.find_or_create_by(code:'LN', name: 'Leukemia, not otherwise specified')
+AnatomicSite.find_or_create_by(code:'LO', name: 'Leukemia, other')
+AnatomicSite.find_or_create_by(code:'LP', name: 'Lip, Oral Cavity and Pharynx')
+AnatomicSite.find_or_create_by(code:'LR', name: 'Liver')
+AnatomicSite.find_or_create_by(code:'LU', name: 'Lung')
+AnatomicSite.find_or_create_by(code:'LY', name: 'Lymphoid Leukemia')
+AnatomicSite.find_or_create_by(code:'ME', name: 'Melanoma, Skin')
+AnatomicSite.find_or_create_by(code:'ML', name: 'Multiple')
+AnatomicSite.find_or_create_by(code:'MM', name: 'Multiple Myeloma')
+AnatomicSite.find_or_create_by(code:'MY', name: 'Mycosis Fungoides')
+AnatomicSite.find_or_create_by(code:'MZ', name: 'Myeloid and Monocyte Leukemia')
+AnatomicSite.find_or_create_by(code:'NL', name: "Non-Hodgkin's Lymphoma")
+AnatomicSite.find_or_create_by(code:'OD', name: "Other Digestive Organ")
+AnatomicSite.find_or_create_by(code:'OE', name: "Other Endocrine System")
+AnatomicSite.find_or_create_by(code:'OF', name: "Other Female Genital")
+AnatomicSite.find_or_create_by(code:'OH', name: "Other Hematopoietic")
+AnatomicSite.find_or_create_by(code:'OM', name: "Other Male Genital")
+AnatomicSite.find_or_create_by(code:'OR', name: "Other Respiratory/Intrathoracic Organs")
+AnatomicSite.find_or_create_by(code:'OS', name: "Other Skin")
+AnatomicSite.find_or_create_by(code:'OU', name: "Other Urinary")
+AnatomicSite.find_or_create_by(code:'OV', name: "Ovary")
+AnatomicSite.find_or_create_by(code:'PA', name: "Pancreas")
+AnatomicSite.find_or_create_by(code:'PR', name: "Prostate")
+AnatomicSite.find_or_create_by(code:'RE', name: "Rectum")
+AnatomicSite.find_or_create_by(code:'SI', name: "Small Intestine")
+AnatomicSite.find_or_create_by(code:'SO', name: "Soft Tissue / Sarcoma")
+AnatomicSite.find_or_create_by(code:'ST', name: "Stomach")
+AnatomicSite.find_or_create_by(code:'TH', name: "Thyroid")
+AnatomicSite.find_or_create_by(code:'UM', name: "Unknown Sites")
+AnatomicSite.find_or_create_by(code:'UR', name: "Urinary Bladder")
+
+UserStatus.find_or_create_by(code: 'INR', name: 'In Review')
+UserStatus.find_or_create_by(code: 'ACT', name: 'Active')
+UserStatus.find_or_create_by(code: 'INA', name: 'Inactive')
+UserStatus.find_or_create_by(code: 'DEL', name: 'Deleted')
+
+
+### MARKER STATIC DATA
+
+CadsrMarkerStatus.find_or_create_by(code: 'ACT', name: 'Active')
+CadsrMarkerStatus.find_or_create_by(code: 'INA', name: 'Inactive')
+
+##### Here ids are important to given statically to display codes in a specific order on front end
+AssayType.find_or_create_by(id:21,  code:  'Other' , name:'Other')
+AssayType.find_or_create_by(id:16,  code:  'HPLC' , name:'High Performance Liquid Chromatography')
+AssayType.find_or_create_by(id:5,   code:  'Immunohistochemistry (IHC)' , name:'Immunohistochemistry Staining Method')
+AssayType.find_or_create_by(id:6,   code:  'Western Blot (Immunoblot)' , name:'Western Blotting')
+AssayType.find_or_create_by(id:10,  code:  'ELISPOT' , name:'Enzyme-linked Immunosorbent Spot Assay')
+AssayType.find_or_create_by(id:17,  code:  'RT-PCR' , name:'RT-PCR')
+AssayType.find_or_create_by(id:12,  code:  'Cytotoxicity Assay' , name:'Cytotoxicity Assay')
+AssayType.find_or_create_by(id:8,   code:  'Sequencing' , name:'Nucleic Acid Sequencing')
+AssayType.find_or_create_by(id:18,  code:  'Multiplex Immunoassay' , name:'Multiple Immunologic Technique')
+AssayType.find_or_create_by(id:11,  code:  'Proliferation Assay' , name:'Proliferation Assay')
+AssayType.find_or_create_by(id:20,  code:  'Unspecified' , name:'Unspecified')
+AssayType.find_or_create_by(id:13,  code:  'Mass Spectrometry' , name:'Mass Spectrometry')
+AssayType.find_or_create_by(id:19,  code:  'Real-Time PCR (quantitative PCR)' , name:'Real Time PCR')
+AssayType.find_or_create_by(id:3,   code:  'Microarray' , name:'Microarray')
+AssayType.find_or_create_by(id:4,   code:  'ELISA' , name:'ELISA')
+AssayType.find_or_create_by(id:7,   code:  'Flow Cytometry' , name:'Flow Cytometry')
+AssayType.find_or_create_by(id:2,   code:  'In Situ Hybridization' , name:'in situ Hybridization')
+AssayType.find_or_create_by(id:14,  code:  'TUNEL assay' , name:'TdT-Mediated dUTP Nick End Labeling Assay')
+AssayType.find_or_create_by(id:1,   code:  'PCR' , name:'Polymerase Chain Reaction')
+AssayType.find_or_create_by(id:9,   code:  'Microscopy/Imaging' , name:'Microscopy Imaging Technique')
+AssayType.find_or_create_by(id:15,  code:  'Real-Time RT-PCR (qRT-PCR)' , name:'Quantitative Reverse Transcriptase PCR')
+
+EvaluationType.find_or_create_by(id:16, code:  'Other', name:  'Other')
+EvaluationType.find_or_create_by(id:9,  code: 'Acetylation', name:  'Acetylation')
+EvaluationType.find_or_create_by(id:11,  code: 'Loss of Heterozygosity (LOH)', name:  'Loss of Heterozygosity')
+EvaluationType.find_or_create_by(id:7,  code: 'Phosphorylation', name:  'Phosphorylation Process')
+EvaluationType.find_or_create_by(id:6,  code: 'Proteolytic Cleavage', name:  'Protein Cleavage')
+EvaluationType.find_or_create_by(id:5,  code: 'Protein Activity', name:  'Protein or Enzyme Activity')
+EvaluationType.find_or_create_by(id:4,  code: 'Subtyping', name:  'Subtype')
+EvaluationType.find_or_create_by(id:3,  code: 'Cell Functionality', name:  'Cell Function')
+EvaluationType.find_or_create_by(id:2,  code: 'Genetic Analysis', name:  'Genetic Testing')
+EvaluationType.find_or_create_by(id:1,  code: 'Level/Quantity', name:  'Level Quantity Value')
+EvaluationType.find_or_create_by(id:12, code: 'Germline Variant', name:  'Germline Mutation')
+EvaluationType.find_or_create_by(id:13, code: 'Somatic Variant', name:  'Somatic Mutation')
+EvaluationType.find_or_create_by(id:14, code: 'Chromosomal Amplification', name:  'Chromosomal Duplication')
+EvaluationType.find_or_create_by(id:15, code: 'Chromosomal Deletion', name:  'Chromosomal Deletion')
+EvaluationType.find_or_create_by(id:10,  code: 'Activation Status', name:  'Protein Activation Status')
+EvaluationType.find_or_create_by(id:8,  code: 'Methylation', name:  'Methylation')
+
+SpecimenType.find_or_create_by(id:14, code: 'Other', name:'Other')
+SpecimenType.find_or_create_by(id:9,  code: 'Saliva', name:'Saliva')
+SpecimenType.find_or_create_by(id:12, code: 'Feces', name:'Feces')
+SpecimenType.find_or_create_by(id:1,  code: 'Serum', name:'Serum')
+SpecimenType.find_or_create_by(id:11, code: 'Buccal Mucosa', name:'Buccal Mucosa')
+SpecimenType.find_or_create_by(id:4,  code: 'Tissue', name:'Tissue')
+SpecimenType.find_or_create_by(id:13, code: 'Unspecified', name:'Unspecified')
+SpecimenType.find_or_create_by(id:7,  code: 'CSF', name:'Cerebrospinal Fluid')
+SpecimenType.find_or_create_by(id:2,  code: 'Plasma', name:'Plasma')
+SpecimenType.find_or_create_by(id:3,  code: 'Blood', name:'Blood')
+SpecimenType.find_or_create_by(id:5,  code: 'Urine', name:'Urine')
+SpecimenType.find_or_create_by(id:6,  code: 'PBMCs', name:'Peripheral Blood Mononuclear Cell')
+SpecimenType.find_or_create_by(id:10, code: 'Cryopreserved Cells', name:'Cryopreserved Cell')
+SpecimenType.find_or_create_by(id:8,  code: 'Bone Marrow', name:'Bone Marrow (biopsy/aspirate)')
+
+BiomarkerUse.find_or_create_by(id:2, code:'Integrated', name:'Integrated')
+BiomarkerUse.find_or_create_by(id:1, code:'Integral', name:'Integral')
+
+BiomarkerPurpose.find_or_create_by(id:3, code: 'Stratification Factor', name:'Stratification Factor')
+BiomarkerPurpose.find_or_create_by(id:2, code: 'Treatment Assignment', name:'Therapy Assignment')
+BiomarkerPurpose.find_or_create_by(id:1, code: 'Eligibility Criterion', name:'Eligibility Determination')
+BiomarkerPurpose.find_or_create_by(id:4, code: 'Research', name:'Research')
+BiomarkerPurpose.find_or_create_by(id:5, code: 'Response Assessment', name:'Response Assessment')
+
+IdentifierType.find_or_create_by(code: 'NCI', name: 'NCI')
+IdentifierType.find_or_create_by(code: 'NCT', name: 'NCT')
+
+CadsrMarker.find_or_create_by(id:659,
+                              name: 'SLC2A4 (GLUT4, name:  solute carrier family 2 (facilitated glucose transporter), member 4)',
+                              meaning: 'SLC2A4 Gene',
+                              description: 'This gene plays a role in glucose transport regulation.',
+                              cadsr_id: 3335290,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+                              nv_term_identifier: 'C89034',
+                              pv_name: 'SLC2A4')
+
+CadsrMarker.find_or_create_by(id:47,
+                              name: 'AFP (FETA, name:  alpha-fetoprotein)',
+                              meaning: 'Alpha-Fetoprotein',
+                              description: 'This gene plays a role in glucose transport regulation.',
+                              cadsr_id: 3335290,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+                              nv_term_identifier: 'C89034',
+                              pv_name: 'SLC2A4')
+
+
+
+
+CadsrMarker.find_or_create_by(id:3543,
+                              name: 'Citrate',
+                              meaning: 'Citrate',
+                              description: 'A salt or ester of citric acid.',
+                              cadsr_id: 3192535,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C63374', pv_name: 'Citrate')
+
+CadsrMarker.find_or_create_by(id:169,
+                              name: 'PDE5A (PDE5, name:  CN5A, name:  phosphodiesterase 5A (cGMP-specific), name:  CGB-PDE)',
+                              meaning: 'cGMP-Specific 3,5-Cyclic Phosphodiesterase',
+                              description: 'cGMP-specific 3,5-cyclic phosphodiesterase (875 aa, ~100 kDa) is encoded by the human PDE5A gene. This protein plays a role in the mediation of cyclic GMP metabolism.',
+                              cadsr_id: 3243311, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C96469', pv_name: 'PDE5A')
+
+CadsrMarker.find_or_create_by(id:375,
+                              name: 'ITGAM (integrin, alpha M, name:  CR3A, name:  MAC-1, name:  CD11b)',
+                              meaning: 'ITGAM gene',
+                              description: 'This gene plays a role in extracellular matrix interactions and cellular adhesion.',
+                              cadsr_id: 3279303, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1366562', pv_name: 'ITGAM')
+
+
+CadsrMarker.find_or_create_by(id:394,
+                              name: 'CD24 (CD24 antigen (small cell lung carcinoma cluster 4 antigen), name:  CD24A)',
+                              meaning: 'CD24 gene',
+                              description: 'This gene is involved in the immune responsiveness of B-cells.',
+                              cadsr_id: 3281849, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1413212', pv_name: 'CD24')
+
+CadsrMarker.find_or_create_by(id:494,
+                              name: 'TNFAIP3 (A20, name:  OTUD7C, name:  tumor necrosis factor alpha-induced protein 3)',
+                              meaning: 'TNFAIP3 gene',
+                              description: 'This gene may play a role in the regulation of apoptosis.',
+                              cadsr_id: 3288476, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1420799', pv_name: 'TNFAIP3');
+
+CadsrMarker.find_or_create_by(id:568,
+                              name: 'tumor protein p53 binding protein 1 (TP53BP1, name:  53BP1)',
+                              meaning: 'TP53BP1 Gene',
+                              description: 'This gene may play a role in the modulation of the response to DNA damage.',
+                              cadsr_id: 3302801,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C88925', pv_name: 'tumor protein p53 binding protein 1')
+
+CadsrMarker.find_or_create_by(id:702,
+                              name: 'BCL2A1 (BCL2-related protein A1, name:  ACC-1, name:  GRS, name:  BCL2L5, name:  BFL1, name:  HBPA1, name:  ACC-2)',
+                              meaning: 'BCL2A1 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3351678,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1412761', pv_name: 'BCL2A1')
+
+CadsrMarker.find_or_create_by(id:724,
+                              name: 'MIR382 (MIRN382, name:  microRNA 382, name:  hsa-mir-382)',
+                              meaning: 'MIR382 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3359747,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1537903', pv_name: 'MIR382')
+
+CadsrMarker.find_or_create_by(id:374,
+                              name: 'CD33 (SIGLEC3, name:  CD33 antigen (gp67), name:  sialic acid binding Ig-like lectin 3, name:  FLJ00391, name:  SIGLEC-3, name:  p67)',
+                              meaning: 'CD33 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3279301,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1439292', pv_name: 'CD33')
+
+CadsrMarker.find_or_create_by(id:856,
+                              name: 'AKT2',
+                              meaning: 'AKT2 Gene',
+                              description: 'This gene plays a role in glucose homeostasis and the inhibition of apoptosis.',
+                              cadsr_id: 3412274,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C18352', pv_name: 'AKT2')
+
+CadsrMarker.find_or_create_by(id:924,
+                              name: 'IGHV3-21 (immunoglobulin heavy variable 3-21)',
+                              meaning: 'IGHV3-21 gene',
+                              description: 'No Value Exists',
+                              cadsr_id: 3430847, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+                              nv_term_identifier: 'C1416035', pv_name: 'IGHV3-21')
+CadsrMarker.find_or_create_by(id:1781,
+                              name: 'SPIB (SPI-B, name:  Transcription Factor Spi-B, name:  Spi-B Transcription Factor (Spi-1/PU.1 Related))',
+                              meaning: 'SPIB Gene',
+                              description: 'This gene is involved in the modulation of gene transcription.',
+                              cadsr_id: 3684777,
+                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C99651', pv_name: 'SPIB')
+
+
+
+CadsrMarkerSynonym.find_or_create_by(id: 678,alternate_name:  'CGB-PDE',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 677,alternate_name:  'phosphodiesterase 5A (cGMP-specific)',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 676,alternate_name:  'CN5A',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 675,alternate_name:  'PDE5',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+
+CadsrMarkerSynonym.find_or_create_by(id: 1914,alternate_name:  'tumor necrosis factor alpha-induced protein 3',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1912,alternate_name:  'A20',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1913,alternate_name:  'OTUD7C',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+CadsrMarkerSynonym.find_or_create_by(id: 1563,alternate_name:  'CD24 antigen (small cell lung carcinoma cluster 4 antigen)',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1564,alternate_name:  'CD24A',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+CadsrMarkerSynonym.find_or_create_by(id: 2740,alternate_name:  'BCL2L5',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2737,alternate_name:  'BCL2-related protein A1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2739,alternate_name:  'GRS',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2742,alternate_name:  'HBPA1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2738,alternate_name:  'ACC-1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2743,alternate_name:  'ACC-2',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2741,alternate_name:  'BFL1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1431,alternate_name:  'sialic acid binding Ig-like lectin 3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1432,alternate_name:  'FLJ00391',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1429,alternate_name:  'SIGLEC3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1430,alternate_name:  'CD33 antigen (gp67)',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1434,alternate_name:  'SIGLEC-3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1433,alternate_name:  'p67',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2800,alternate_name:  'microRNA 382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2801,alternate_name:  'hsa-mir-382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2799,alternate_name:  'MIRN382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 3554,alternate_name:  'immunoglobulin heavy variable 3-21',cadsr_marker_id:  924,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2296,alternate_name:  '53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2295,alternate_name:  'TP53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7725,alternate_name:  'Spi-B Transcription Factor (Spi-1/PU.1 Related)',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7723,alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7724,alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+OnholdReason.find_or_create_by(code: 'SIC', name: 'Submission Incomplete')
+OnholdReason.find_or_create_by(code: 'SIM', name: 'Submission Incomplete - Missing Documents')
+OnholdReason.find_or_create_by(code: 'SIG', name: 'Submission Invalid Grant')
+OnholdReason.find_or_create_by(code: 'SOT', name: 'Submission Other (Submitter)')
+OnholdReason.find_or_create_by(code: 'PCR', name: 'Pending CTRO Review')
+OnholdReason.find_or_create_by(code: 'PDC', name: 'Pending Disease Curation')
+OnholdReason.find_or_create_by(code: 'PPC', name: 'Pending Person Curation')
+OnholdReason.find_or_create_by(code: 'POC', name: 'Pending Organization Curation')
+OnholdReason.find_or_create_by(code: 'PIC', name: 'Pending Intervention Curation')
+OnholdReason.find_or_create_by(code: 'POT', name: 'Pending Other (CTRO)')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -245,13 +603,19 @@ AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'se
 
 AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
+AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types', value: 'pdf,doc,docx,xls,xlsx,zip,gz', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/zip, application/x-gzip')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG', name: 'Accepted File Types for Registry', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHBLI')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types for PA', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering_Commitee_Reviewed')
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
+
+AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCCPS,DCP,NHLBI')
+
+AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering Commitee Reviewed')
+
+AppSetting.find_or_create_by(code: 'SAMPLING_METHOD_PA', name: 'Sampling Method', value: 'Probability Sample,Non-Probability Sample', big_value: 'see value')
 
 trial_status_transition = '{
                              "STATUSZERO": {
@@ -312,10 +676,10 @@ trial_status_transition = '{
                                "WIT": {"valid": "Yes", "sameDay": "Yes"},
                                "ACT": {"errors": [{"message": "Duplicate"}]},
                                "EBI": {"errors": [{"message": "Invalid Transition"}]},
-                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
-                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
-                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
                                "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
                              },
@@ -325,10 +689,10 @@ trial_status_transition = '{
                                "WIT": {"valid": "Yes", "sameDay": "Yes"},
                                "ACT": {"errors": [{"message": "Invalid Transition"}]},
                                "EBI": {"errors": [{"message": "Duplicate"}]},
-                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
-                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
-                               "TCL": {"valid": "Yes", "sameDay": "Yes"},
-                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
                                "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
                                "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
                              },
@@ -414,120 +778,701 @@ trial_status_transition = '{
 
 AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
 
+sr_status_transition = '{
+                             "STATUSZERO": {
+                               "INR": {"valid": "Yes"},
+                               "APP": {"warnings": [{"status": "INR"}]},
+                               "WIT": {"warnings": [{"status": "INR"}, {"status": "APP"}]},
+                               "ACT": {"warnings": [{"status": "INR"}, {"status": "APP"}]},
+                               "EBI": {"warnings": [{"status": "INR"}, {"status": "APP"}]},
+                               "CAC": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}]},
+                               "CAI": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}]},
+                               "TCL": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}]},
+                               "TCA": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "TCL"}]},
+                               "COM": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}]},
+                               "ACO": {"warnings": [{"status": "INR"}, {"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}]}
+                             },
+                             "INR": {
+                               "INR": {"errors": [{"message": "Duplicate"}]},
+                               "APP": {"valid": "Yes", "sameDay": "Yes"},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"warnings": [{"status": "APP"}], "sameDay": "Yes"},
+                               "EBI": {"warnings": [{"status": "APP"}], "sameDay": "Yes"},
+                               "CAC": {"warnings": [{"status": "APP"}, {"status": "ACT"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"warnings": [{"status": "APP"}, {"status": "ACT"}], "sameDay": "Yes"},
+                               "TCA": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "TCL"}], "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "APP"}, {"status": "ACT"}, {"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "APP": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Duplicate"}]},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"valid": "Yes", "sameDay": "Yes"},
+                               "EBI": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"warnings": [{"status": "ACT"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "ACT"}, {"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"warnings": [{"status": "ACT"}], "sameDay": "Yes"},
+                               "TCA": {"warnings": [{"status": "ACT"}, {"status": "TCL"}], "sameDay": "Yes"},
+                               "COM": {"errors": [{"status": "ACT"}, {"status": "CAC"}], "warnings": [{"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"errors": [{"status": "ACT"}, {"status": "CAC"}], "warnings": [{"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "WIT": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Duplicate"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"errors": [{"message": "Invalid Transition"}]}
+                             },
+                             "ACT": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"errors": [{"message": "Duplicate"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "EBI": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Duplicate"}]},
+                               "CAC": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}, {"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCL": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "TCA": {"valid": "Yes", "warnings": [{"message": "Same Day"}], "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "CAC": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Duplicate"}]},
+                               "CAI": {"valid": "Yes", "sameDay": "Yes"},
+                               "TCL": {"warnings": [{"message": "Invalid Transition"}], "sameDay": "Yes"},
+                               "TCA": {"warnings": [{"message": "Invalid Transition"}], "sameDay": "Yes"},
+                               "COM": {"warnings": [{"status": "CAI"}], "sameDay": "Yes"},
+                               "ACO": {"warnings": [{"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "CAI": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Duplicate"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"valid": "Yes", "sameDay": "Yes"},
+                               "ACO": {"valid": "Yes", "sameDay": "Yes"}
+                             },
+                             "TCL": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"valid": "Yes", "sameDay": "Yes"},
+                               "EBI": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAI": {"valid": "Yes", "sameDay": "Yes"},
+                               "TCL": {"errors": [{"message": "Duplicate"}]},
+                               "TCA": {"valid": "Yes", "sameDay": "Yes"},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "TCA": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"valid": "Yes", "sameDay": "Yes"},
+                               "EBI": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAC": {"valid": "Yes", "sameDay": "Yes"},
+                               "CAI": {"warnings": [{"status": "CAC"}], "sameDay": "Yes"},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Duplicate"}]},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"warnings": [{"status": "CAC"}, {"status": "CAI"}], "sameDay": "Yes"}
+                             },
+                             "COM": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"errors": [{"message": "Duplicate"}]},
+                               "ACO": {"errors": [{"message": "Invalid Transition"}]}
+                             },
+                             "ACO": {
+                               "INR": {"errors": [{"message": "Invalid Transition"}]},
+                               "APP": {"errors": [{"message": "Invalid Transition"}]},
+                               "WIT": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACT": {"errors": [{"message": "Invalid Transition"}]},
+                               "EBI": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAC": {"errors": [{"message": "Invalid Transition"}]},
+                               "CAI": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCL": {"errors": [{"message": "Invalid Transition"}]},
+                               "TCA": {"errors": [{"message": "Invalid Transition"}]},
+                               "COM": {"errors": [{"message": "Invalid Transition"}]},
+                               "ACO": {"errors": [{"message": "Duplicate"}]}
+                             }
+                           }'
+
+AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitment Status Transition Matrix', value: 'see big value', big_value: sr_status_transition)
+
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INFO_URL', name: 'NCI Thesaurus page for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=NCI_Thesaurus&code=')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL', name: 'NCI Thesaurus tree for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ajax?action=search_hierarchy&ontology_node_ns=NCI_Thesaurus&ontology_display_name=NCI_Thesaurus&ontology_node_id=')
+
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
+
+AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
+
+#AUM Role Matrix (roles will be assigned per environment i.e. prod, qa, demo)
+AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value',
+                             big_value:
+                                 '[
+                                     {
+                                        "id": "ROLE_ACCOUNT-APPROVER",
+                                        "name": "Account Approver",
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_RO",
+                                        "name": "Read Only",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_SUPER",
+                                        "name": "Super",
+                                        "assign_access": "ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_ADMIN",
+                                        "name": "Admin",
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU,ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                     },
+                                     {
+                                        "id": "ROLE_CURATOR",
+                                        "name": "Curator",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ABSTRACTOR",
+                                        "name": "Abstractor",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ABSTRACTOR-SU",
+                                        "name": "Abstractor SU",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_TRIAL-SUBMITTER",
+                                        "name": "Trial Submitter",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ACCRUAL-SUBMITTER",
+                                        "name": "Accrual Submitter",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_SITE-SU",
+                                        "name": "Site Administrator",
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU"
+                                     },
+                                     {
+                                        "id": "ROLE_SERVICE-REST",
+                                        "name": "Service Rest",
+                                        "assign_access": ""
+                                     }
+                                 ]'
+)
+
+AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons, Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
+
+AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
+
+AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'Federated User Functions', value: 'see big value', big_value: 'Submit Trials')
+
 ########## SEEDING APP SETTINGS ENDS ##########
+
+########## SEEDING MAIL TEMPLATES STARTS ##########
+
+MailTemplate.find_or_create_by(
+                code: 'TRIAL_REG',
+                name: 'Trial Registration',
+                from: 'noreply@ctrp.nci.nih.gov',
+                to: 'noreply@ctrp.nci.nih.gov',
+                subject: 'NCI CTRP: Trial RECORD CREATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+                body_text: 'Text version.',
+                body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers} <table border="0"> <tr> <td><b>Submission Date:</b></td> <td>${submissionDate}</td> </tr> </table> <hr> <p>Date: ${CurrentDate}</p> <p>Dear ${SubmitterName},</p> <p>You have successfully created a record in the NCI Clinical Trials Reporting Program (CTRP) for the trial identified above.</p> <p>The CTRP has assigned your trial the following unique NCI Trial Identification (Trial ID) number:<br> <b>${nciTrialIdentifier}</b><br><br> Please reference this number in all future correspondence with the Clinical Trials Reporting Office (CTRO).</p> <p><b>NEXT STEPS:</b><br> The Clinical Trials Reporting Office (CTRO) staff is reviewing your trial to ensure that it meets all of the requirements for registration in the CTRP system. They will email you their findings within two (2) business days. </p> <p>In the meantime, if you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p> <p>Thank you for submitting your trial for registration in the Clinical Trials Reporting Program.</p></body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_UPDATE',
+    name: 'Trial Update',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${trialSubmitterEmail}',
+    subject: 'NCI CTRP: Trial RECORD UPDATED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>Submitting Organization: </b>${submitting_organization}</p>
+                                <p><b>Submission Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>The NCI Clinical Trials Reporting Program (CTRP) received updates for the trial identified above.</p>
+                            <p><b>Update Information: </b></p>
+                            <p>Other Identifiers: new identifier(s) added</p>
+                            <p>Grant Information: Added</p>
+                            <p>Trial Status: Added</p>
+                            <p>Trial Status Date: Added</p>
+                            <p>Start Date and Type: Added</p>
+                            <p>Primary Completion Date and Type: Added</p>
+                            <p>Participating Site status: Added</p>
+                            <p>Trial Related Documents: Added</p>
+
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_AMEND',
+    name: 'Trial Amendment',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${trialAmendSubmitterEmail}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${trialAmendNumber} for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${lead_organization}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>NCT ID: </b>${nctId}</p>
+                                <p><b>CTEP ID: </b>${ctepId}</p>
+                                <p><b>DCP ID: </b>${dcpId}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>The NCI Clinical Trials Reporting Program (CTRP) received the amendment you submitted for the trial identified above.</p>
+                            <p><b>Amendment Information: </b></p>
+                            <p>Amendment Number: ${trialAmendNumber}</p>
+                            <p>Amendment Date: ${trialAmendmentDate}</p>
+
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>The Clinical Trials Reporting Office (CTRO) staff is reviewing the amended information to ensure that it meets all of the requirements for registration in the CTRP system. The CTRO will send you a separate email that indicates whether they have accepted or rejected your trial within two (2) business days.</p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_DRAFT',
+    name: 'Trial Draft',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${trialSubmitterEmail}',
+    subject: 'NCI CTRP: Trial RECORD SAVED as DRAFT for ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${lead_organization}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>Submission Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>You have saved a draft of the trial identified above for submission to the NCI Clinical Trials Reporting Program (CTRP).</p>
+
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>To retrieve and complete your submission, use the "Search Saved Drafts" feature on the "Search Trials" page in the CTRP Registration application.</p>
+                            <p>Clinical Trials Reporting Office (CTRO) staff will not access or process your trial until you have completed the submission. </p>
+                            <p><b>Important!</b> You can save your draft for a maximum of 30 days.</p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_REGISTRATION',
+    name: 'User Registration',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
+    subject: 'New NCI CTRP Account Request',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br>A new user account in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application.<br><br>The user information is as follows:<ul><li><b>First Name:</b> ${first_name}</li><li><b>Last Name:</b> ${last_name}</li><li><b>Affiliated Organization:</b> ${organization}</li><li><b>Email:</b> ${email}</li></ul></p><p>The user would like the following functions:${functions_list}</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ and activate user and assign role.<p></body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_ADMIN_REQUEST',
+    name: 'User Admin Request',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
+    subject: 'New NCI CTRP User Admin Request',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br><b>${username}</b>, a user in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application, is requesting admin access.</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ for the user\'s details and assign new role to grant access.<p></body></html>'
+)
+
+
+MailTemplate.find_or_create_by(
+    code: 'SITE-ADMIN-ACCESS-GRANTED',
+    name: 'Trial Registration',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: '${adminAccessRecepient}',
+    subject: 'Site Administrator Access Has Been Granted',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>You have been granted Site Administrator Access.</p></body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'ONHOLD_ORIGINAL',
+    name: 'On Hold Trial (original notice)',
+    from: 'noreply@ctrp.nci.nih.gov',
+    to: 'noreply@ctrp.nci.nih.gov',
+    subject: 'NCI CTRP: Trial PROCESSING ON HOLD  for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head>
+                  <body><hr> <p><b>Title: </b>${trialTitle}</p> ${trialIdentifiers}<hr>
+                    <p>Date: ${CurrentDate}</p>
+                    <p>Dear ${trialOwner},</p>
+                    <p>Processing of the NCI Clinical Trials Reporting Program (CTRP) trial identified above is on hold as of ${CurrentDate} for the following reason: <br><i>${onholdReason}</i></p>
+                    <p><b>NEXT STEPS:</b><br>
+                      Please contact us at ncictro@mail.nih.gov at your earliest convenience, but no later than close of business on ${nextDate}. We are unable to resume processing your trial without further information from you.
+                    </p>
+                    <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov.</p>
+                    <p>Thank you for participating in the NCI Clinical</p>
+                  </body></html>'
+)
+
+########## SEEDING MAIL TEMPLATES ENDS ############
 
 puts "Seeding ldap and local users"
 #Add LDAP and local test users
 #Need dummy org for LDAP users
-  org0 = Organization.find_or_create_by( id: 9999999,
-                                         source_id: '9999999',
-                                         name: 'ZZZ test org for test accounts',
-                                         phone:'240-276-0000',
-                                         source_status: SourceStatus.find_by_code("ACT"),
-                                         source_context: SourceContext.find_by_code('CTRP'),
-                                         address: '9605 Medical Center Dr',
-                                         city: 'Rockville',
-                                         state_province: 'Maryland',
-                                         country: 'United States',
-                                         postal_code: '20850',
-                                         email: "ncictrpdev@mail.nih.gov"
-  )
+org0 = Organization.find_or_create_by( id: 9999999,
+                                       source_id: '9999999',
+                                       name: 'ZZZ test org for test accounts',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
 
+org1 = Organization.find_or_create_by( id: 9999997,
+                                       source_id: '9999997',
+                                       name: 'ZZZ test org for test accounts 2',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
 
-test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "approve" => true},
-               {"username" => "ctrpadmin", "role" => "ROLE_SUPER" , "approve" => true},
-               {"username" => "ctrpcurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "testercurator", "role" => "ROLE_CURATOR" , "approve" => true},
-               {"username" => "ctrpro", "role" => "ROLE_RO", "approve" => true},
-               {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "approve" => true},
-               {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "approve" => true},
-               {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "approve" => true},
-               {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "approve" => true}
-]
+org2 = Organization.find_or_create_by( id: 9999996,
+                                       source_id: '9999996',
+                                       name: 'ZZZ test org for test accounts 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
 
-test_users.each do |u|
-  user = User.find_by_username(u["username"])
-  unless user.blank?
-    user.role = u["role"]
-    user.approved =  u["approve"]
-    unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER"
-      user.organization = org0
+family0 = Family.find_or_create_by( name: 'ZZZ family',
+                                    family_status: FamilyStatus.find_by_code('ACTIVE'),
+                                    family_type: FamilyType.find_by_code('CANCERCENTER')
+)
+
+family0.organizations << org0
+family0.organizations << org1
+family0.organizations << org2
+
+org3 = Organization.find_or_create_by( id: 9999995,
+                                       source_id: '9999995',
+                                       name: 'AAA test org for test accounts',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+org4 = Organization.find_or_create_by( id: 9999994,
+                                       source_id: '9999994',
+                                       name: 'AAA test org for test accounts 2',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+org5 = Organization.find_or_create_by( id: 9999993,
+                                       source_id: '9999993',
+                                       name: 'AAA test org for test accounts 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+family1 = Family.find_or_create_by( name: 'AAA family',
+                                    family_status: FamilyStatus.find_by_code('ACTIVE'),
+                                    family_type: FamilyType.find_by_code('NIH')
+)
+
+family1.organizations << org3
+family1.organizations << org4
+family1.organizations << org5
+
+ctep = Organization.find_or_create_by( id: 10000000,
+                                       source_id: '10000000',
+                                       name: 'CTEP',
+                                       phone:'240-276-0001',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+ccr = Organization.find_or_create_by( id: 10000001,
+                                       source_id: '10000001',
+                                       name: 'CCR',
+                                       phone:'240-276-0002',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+dcp = Organization.find_or_create_by( id: 10000002,
+                                       source_id: '10000002',
+                                       name: 'DCP',
+                                       phone:'240-276-0003',
+                                       source_status: SourceStatus.find_by_code("ACT"),
+                                       source_context: SourceContext.find_by_code('CTRP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+if !Rails.env.qa?
+
+  test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
+                 {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "first_name" => "Frank", "last_name" => "Lee"},
+                 {"username" => "ctrpsuper3", "role" => "ROLE_SUPER", "first_name" => "Fiona", "last_name" => "Layman-Ligramman"},
+                 {"username" => "ctrpadmin", "role" => "ROLE_ADMIN", "first_name" => "Fifi", "last_name" => "Lineburgh"},
+                 {"username" => "ctrpcurator", "role" => "ROLE_CURATOR", "first_name" => "Fox", "last_name" => "Links-Hyphenn"},
+                 {"username" => "testercurator", "role" => "ROLE_CURATOR", "first_name" => "F", "last_name" => "Lever"},
+                 {"username" => "ctrpro", "role" => "ROLE_RO", "first_name" => "Frederick", "last_name" => "Lathiramalaynathan"},
+                 {"username" => "ctrptrialsubmitter", "role" => "ROLE_TRIAL-SUBMITTER", "first_name" => "Fred", "last_name" => "Luggz"},
+                 {"username" => "ctrptrialsubmitter2", "role" => "ROLE_TRIAL-SUBMITTER", "first_name" => "Frank", "last_name" => "Layman"},
+                 {"username" => "ctrptrialsubmitter3", "role" => "ROLE_TRIAL-SUBMITTER", "first_name" => "Fiona", "last_name" => "Lighthouse"},
+                 {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "first_name" => "Fifi", "last_name" => "L"},
+                 {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "first_name" => "Flower", "last_name" => "Leinmann"},
+                 {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "first_name" => "Fox", "last_name" => "Lilongwe"},
+                 {"username" => "ctrpsitesu3", "role" => "ROLE_SITE-SU", "first_name" => "Fedro", "last_name" => "Piuz"},
+                 {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "first_name" => "Frederick", "last_name" => "Lathiramalaynathan"},
+                 {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fils", "last_name" => "Litmus"},
+                 {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fred", "last_name" => "Lizdenburgh"},
+                 {"username" => "ctrpabstractorsu", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Frank", "last_name" => "Legal"},
+                 {"username" => "ctepservice", "role" => "ROLE_SERVICE-REST", "first_name" => "Fiona", "last_name" => "Lee"},
+                 {"username" => "ccrservice", "role" => "ROLE_SERVICE-REST", "first_name" => "Fifi", "last_name" => "Lever"},
+                 {"username" => "dcpservice", "role" => "ROLE_SERVICE-REST", "first_name" => "Fox", "last_name" => "Layman"},
+                 {"username" => "ctrpaccountapprover1", "role" => "ROLE_ACCOUNT-APPROVER", "first_name" => "Frederick", "last_name" => "Links"},
+                 {"username" => "ctrpaccountapprover2", "role" => "ROLE_ACCOUNT-APPROVER", "first_name" => "Freed", "last_name" => "Lathiramalaynathan"}
+  ]
+
+  test_users.each do |u|
+   user = LocalUser.new
+   user.username = u["username"]
+   user.role = u["role"]
+   user.first_name = u["first_name"]
+   user.last_name  = u["last_name"]
+   user.domain = "NIH"
+   user.email = "#{user.username}@ctrp-ci.nci.nih.gov"
+   user.password = "Welcome01"
+   user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
+   user.user_status = UserStatus.find_by_code('ACT')
+   user.save!
+  end
+
+  test_users.each do |u|
+    user = User.find_by_username(u["username"])
+    unless user.blank?
+      user.role = u["role"]
+      unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
+        if user.username == 'ctrpsitesu2'
+          user.organization = org3
+        elsif user.username == 'ctrpsitesu3'
+            user.organization = dcp
+        else
+          user.organization = org0
+        end
+      end
+      if user.role == "ROLE_SERVICE-REST"
+        case user.username
+          when "ctepservice"
+            user.organization = ctep
+
+          when "dcpservice"
+            user.organization = dcp
+
+          when "ccrservice"
+            user.organization = ccr
+        end
+      end
+      user.save!
+      #puts "Updated role of user = #{user.username}, role = #{user.role}"
     end
-    user.save!
-    #puts "Updated role of user = #{user.username}, role = #{user.role}"
   end
-end
 
-##Add NCICTRPDEV team
-LdapUser.delete_all
+  ##Add NCICTRPDEV team
+  LdapUser.delete_all
 
-charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Charlie", "last_name" => "Shive" }
-mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Mahesh", "last_name" => "Yelisetti" }
-shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shilpi", "last_name" => "Singh" }
-shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shamim", "last_name" => "Ahmed" }
-murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Murali", "last_name" => "Dulla" }
-tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Tony", "last_name" => "Wang" }
-shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
-sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
-hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
-radhika = {"email" => "tekumall@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
-vasu = {"email" => "nalluruvn@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Vasu", "last_name" => "Nalluru"}
-barry = {"email" => "alkisbd@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Barry", "last_name" => "Alkis"}
+  charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Charlie", "last_name" => "Shive" }
+  mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Mahesh", "last_name" => "Yelisetti" }
+  shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shilpi", "last_name" => "Singh" }
+  shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shamim", "last_name" => "Ahmed" }
+  murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Murali", "last_name" => "Dulla" }
+  tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Tony", "last_name" => "Wang" }
+  shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
+  sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
+  hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
+  radhika = {"email" => "tekumall@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
+  vasu = {"email" => "nalluruvn@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Vasu", "last_name" => "Nalluru"}
+  barry = {"email" => "alkisbd@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Barry", "last_name" => "Alkis"}
 
 
-ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika, vasu, barry]
+  ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika, vasu, barry]
 
-##Add CTRP Business Analysts
+  ##Add CTRP Business Analysts
 
-joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Joe", "last_name" => "Martucci" }
-michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Michael", "last_name" => "Izbicki"}
-sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sandy", "last_name" => "Lightbody" }
-susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Susan", "last_name" => "Nonemaker"  }
-sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sophia", "last_name" => "Rarhai"  }
+  joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Joe", "last_name" => "Martucci" }
+  michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Michael", "last_name" => "Izbicki"}
+  sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sandy", "last_name" => "Lightbody" }
+  susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Susan", "last_name" => "Nonemaker"  }
+  sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sophia", "last_name" => "Rarhai"  }
 
-ba_users = [joe, michael, sandy, susan, sophia]
+  ba_users = [joe, michael, sandy, susan, sophia]
 
-##Add CTRO and Curator users
+  ##Add CTRO and Curator users
 
-stephanie = {"email" => "whitleys@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
-kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
-andrea = {"email" => "mooreaj@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
-graysonra = {"email" => "graysonra@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
+  stephanie = {"email" => "whitleys@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
+  kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
+  andrea = {"email" => "mooreaj@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
+  graysonra = {"email" => "graysonra@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
 
-ctro_users = [stephanie, kirsten, andrea, graysonra]
+  ctro_users = [stephanie, kirsten, andrea, graysonra]
 
-#Add Fed users
+  #Add Fed users
 
-jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
-gene = {"email" => "krausg@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Gene", "last_name" => "Kraus" }
+  jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
+  gene = {"email" => "krausg@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Gene", "last_name" => "Kraus" }
 
-fed_users = [jose, gene]
+  fed_users = [jose, gene]
 
-all_users = ncictrpdev_users + ba_users + ctro_users + fed_users
+  all_users = ncictrpdev_users + ba_users + ctro_users + fed_users
 
-## Save the users by bypassing validation. We want to save the user without the password
-begin
-  all_users.each do |u|
-    ldap_user = LdapUser.new
-    ldap_user.email = u["email"]
-    ldap_user.username = u["email"].split("@")[0]
-    ldap_user.role = u["role"]
-    ldap_user.first_name = u["first_name"]
-    ldap_user.last_name = u["last_name"]
-    ldap_user.approved = true
-    ldap_user.organization = org0
-    ldap_user.save(validate: false)
-    #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
+  ## Save the users by bypassing validation. We want to save the user without the password
+  begin
+    all_users.each do |u|
+      ldap_user = LdapUser.new
+      ldap_user.email = u["email"]
+      ldap_user.username = u["email"].split("@")[0]
+      ldap_user.role = u["role"]
+      ldap_user.domain = "NIH"
+      ldap_user.first_name = u["first_name"]
+      ldap_user.last_name = u["last_name"]
+      ldap_user.organization = org0
+      ldap_user.user_status = UserStatus.find_by_code('ACT')
+      ldap_user.save(validate: false)
+      #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
+    end
+  rescue Exception => e
+    Rails.logger.info "Exception thrown #{e.inspect}"
   end
-rescue Exception => e
-  Rails.logger.info "Exception thrown #{e.inspect}"
-end
 
+end
 
 #Line to include seeds from passed environment variable
 puts "Begin seeding environment-specfic data"

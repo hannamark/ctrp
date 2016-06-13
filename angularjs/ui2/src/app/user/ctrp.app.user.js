@@ -19,7 +19,16 @@
 
 
         /* 3rd party */
-        'ui.bootstrap',
+        'ui.bootstrap.modal',
+        'ui.bootstrap.datepicker',
+        'ui.bootstrap.accordion',
+        'ui.bootstrap.buttons',
+        'ui.bootstrap.typeahead',
+        'ui.bootstrap.pagination',
+        'ui.bootstrap.alert',
+        'ui.grid',
+        'ui.grid.selection',
+        'ui.grid.exporter',
         'ngMaterial',
         'toastr',
         'ngFileUpload',

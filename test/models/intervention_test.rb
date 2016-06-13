@@ -12,9 +12,12 @@
 #  updated_at           :datetime         not null
 #  uuid                 :string(255)
 #  lock_version         :integer          default(0)
+#  index                :integer
+#  arms_group_id        :integer
 #
 # Indexes
 #
+#  index_interventions_on_arms_group_id         (arms_group_id)
 #  index_interventions_on_intervention_type_id  (intervention_type_id)
 #  index_interventions_on_trial_id              (trial_id)
 #

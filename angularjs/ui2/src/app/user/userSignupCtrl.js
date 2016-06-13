@@ -8,42 +8,74 @@
     angular.module('ctrp.app.user')
         .controller('userSignupCtrl', userSignupCtrl);
 
-    userSignupCtrl.$inject = ['$scope', '$http', '$window', 'toastr',
-        '$sce', '$state', '$timeout', 'UserService'];
+    userSignupCtrl.$inject = ['$scope', 'AppSettingsService', 'UserService', 'OrgService'];
 
-    function userSignupCtrl($scope, $http, $window, toastr, $state, $sce,
-                      $timeout,  UserService) {
+    function userSignupCtrl($scope, AppSettingsService,  UserService, OrgService) {
         var vm = this;
 
-        // { "local_user"=>{"username"=>"e", "email"=>"e@x.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "role"=>"ROLE_READONLY"}, "commit"=>"Sign up"}
+        $scope.signup_form = {};
 
-        vm.userObj = {
-            "local_user": {
-                username: '',
-                email: '',
-                password: '',
-                password_confirmation: '',
-                role: 'ROLE_RO'
-            },
-            "type": vm.type
+        var UserObj = function() {
+            return {
+                'local_user': {
+                    domain: '',
+                    username: '',
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: '',
+                    organization_name: '',
+                    organization_id: '',
+                    selected_function: ''
+                },
+                'type': vm.type
+            };
+        };
+
+        vm.userObj = new UserObj();
+        
+        AppSettingsService.getSettings({ setting: 'USER_DOMAINS', external: true}).then(function (response) {
+            vm.domainsArr = response.data[0].settings.split('||');
+            vm.selectedFunctionsObj = [];
+            vm.selectAbleUserFunctions = [];
+            angular.forEach(vm.domainsArr, function (domain) {
+                AppSettingsService.getSettings({ setting: domain + '_USER_FUNCTIONS', external: true}).then(function (response) {
+                    var functionsArr = response.data[0].settings.split('||');
+                    vm.selectedFunctionsObj[domain] = {};
+                    angular.forEach(functionsArr, function (func) {
+                        vm.selectAbleUserFunctions[domain] = functionsArr.length;
+                        vm.selectedFunctionsObj[domain][func] = vm.selectAbleUserFunctions[domain] > 1 ? false : true;
+                    });
+                }).catch(function (err) {
+                    console.log("Error in retrieving " + domain + "_USER_FUNCTIONS " + err);
+                });
+            });
+        }).catch(function (err) {
+            console.log("Error in retrieving USER_DOMAINS " + err);
+        });
+
+        vm.selectedUserFunctions = function(){
+            var selectedArr = [];
+            _.each( vm.selectedFunctionsObj[vm.userObj.local_user.domain], function( selected, func ) {
+                if ( selected ) {
+                    selectedArr.push(func);
+                }
+            });
+            vm.userObj.local_user.selected_function = '';
+        };
+
+        vm.typeAheadNameSearch = function () {
+            return OrgService.typeAheadOrgNameSearch(vm.userObj.local_user, vm.searchParams.org_search_name);
         };
 
         vm.updateUser = function () {
-            //
             UserService.upsertUserSignup(vm.userObj);
+        };
 
-            /**
-            UserService.upsertUserSignup(vm.userObj).then(function (response) {
-                toastr.success('User ' +JSON.stringify(vm.userObj) + ' has been recorded', 'Operation Successful!');
-                console.log("Added User" + JSON.stringify(vm.userObj));
-
-            }).catch(function (err) {
-                console.log("Error in updating inserting new User " + JSON.stringify(vm.userObj));
-            });
-
-**/
-        }
-
+        vm.reset = function () {
+            vm.userObj = new UserObj();
+        };
     }
 
 })();

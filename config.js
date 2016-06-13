@@ -1,7 +1,10 @@
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 var path = require('path');
+var databaseConnection = require('./features/support/databaseConnection.js');
+var eventsPG = require('events');
 
 exports.config = {
+
     framework: 'cucumber',
     //framework: 'jasmine2',
 
@@ -10,12 +13,13 @@ exports.config = {
     capabilities: {
         'browserName' : 'firefox',
         shardTestFiles: true,
-        maxInstances: 3
+        maxInstances: 6
 
     },
 
-    baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
-    //     baseUrl: 'http://localhost/ctrp/',
+      baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+//    baseUrl: 'http://localhost/ctrp/',
+//    baseUrl: 'http://ctrp-qa.ncifcrf.gov/ctrp/',
 
     params: {
         login: {
@@ -24,10 +28,12 @@ exports.config = {
         }
     },
 
-    //onPrepare: function() {
-    //    browser.driver.manage().window().maximize();
-    //    browser.driver.manage().window().setSize('1440', '900');
-    //},
+
+    onPrepare: function() {
+    var dbConnect = new databaseConnection();
+   getDBConnection = dbConnect.buildDBConnection();
+        eventsPG.EventEmitter.defaultMaxListeners = 100;
+    },
 
 
     jasmineNodeOpts: {
@@ -41,7 +47,36 @@ exports.config = {
     getPageTimeout: 50000,
 
     specs: [
-        //PO F2-F15
+        /************* PA Features ************/
+        'features/PAA\ F01\ Add\ and\ Edit\ General\ Trial\ Details.Feature',
+        'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
+        'features/PAA\ F03\ Add\ and\ Edit\ Regulatory\ Information.Feature',
+        'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
+        'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
+        'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',
+        'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature',
+
+        /************* Registry Features ************/
+        'features/Reg\ F01\ Search\ Clinical\ Trials.feature',
+        'features/Reg\ F02\ Search\ Persons.feature',
+        'features/Reg\ F02\ View\ Persons.feature',
+        'features/Reg\ F03\ Search\ Organizations.feature',
+        'features/Reg\ F03\ View\ Organizations.feature',
+        'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
+        'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
+        'features/Reg\ F06\ Register\ Trial\ Details.feature',
+        'features/Reg\ F07\ Register\ Trial\ Study\ Design.feature',
+        'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature',
+        'features/Reg\ F09\ Register\ Trial\ FDAAA\ Information.feature',
+        'features/Reg\ F10\ Register\ Trial\ Grant\ Information.feature',
+        'features/Reg\ F11\ Register\ Trial\ Dates\ and\ Trial\ Status.feature',
+        'features/Reg\ F12\ Register\ Trial\ IND\ IDE.feature',
+        'features/Reg\ F13\ Register\ Trial\ Documents.feature',
+        'features/Reg\ F14\ Register\ Trial\ Review\ and\ Submit.feature',
+        'features/Reg\ F15\ Register\ Trial\ Save\ as\ Draft.feature',
+
+
+        /************* PO F2-F15 ************/
         'features/PO\ F2\ Search\ for\ Organizations.feature',
         'features/PO\ F3\ Create\ an\ Organization.feature',
         'features/PO\ F4\ Edit\ Organization\ Information.feature',
@@ -57,23 +92,7 @@ exports.config = {
         'features/PO\ F12\ Delete\ Person\ record.feature',
         'features/PO\ F13 Curator\ review\ of\ a\ Pending\ Person\ Record.feature',
         'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
-        'features/PO\ F15\ Add\ Organization\ Alias.feature',
-
-        /************* Registry Features ************/
-        'features/Reg\ F04\ Register\ Trial\ Study\ Source.feature',
-        'features/Reg\ F05\ Register\ Trial\ Protocol\ Identifiers.feature',
-        'features/Reg\ F06\ Register\ Trial\ Details.feature',
-        'features/Reg\ F07\ Register\ Trial\ Study\ Design.feature',
-        'features/Reg\ F08\ Register\ Trial\ Person\ and\ Organization\ Associations.feature',
-        'features/Reg\ F09\ Register\ Trial\ FDAAA\ Information.feature',
-        'features/Reg\ F10\ Register\ Trial\ Grant\ Information.feature',
-
-         /************* PA Features ************/
-        'features/PAA\ F02\ Add\ and\ Edit\ NCI\ Specific\ Information.Feature',
-        'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
-        'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
-        'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',
-        'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature'
+        'features/PO\ F15\ Add\ Organization\ Alias.feature'
 
     ],
 

@@ -116,20 +116,40 @@
   height: auto !important;
 }
 */
+.ui-grid.ui-grid-hide-left .ui-grid-pinned-container-left .ui-grid-cell-contents {
+
+}
+.ui-grid .ui-grid-menu-item:contains("Export all") {
+    display: none;
+}
+
+.ui-grid-menu-button {
+    height: 24px;
+}
 
 .ui-grid-contents-wrapper {
     margin-bottom: 32px;
 }
 
+.user-detail-grid .ui-grid-contents-wrapper {
+    min-height: 230px;
+}
+.user-detail .panel-body {
+    padding: 5px 0;
+}
 .grid {
     width: 100%;
     height: 550px;
 }
 
+.grid-small {
+    width: 100%;
+    height: 200px;
+}
+
 .ui-grid-header-cell .ui-grid-cell-contents {
     line-height: 1em;
     padding: 6px 5px;
-    height: 32px;
     white-space: normal;
     -ms-text-overflow: clip;
     -o-text-overflow: clip;
@@ -142,8 +162,21 @@
 }
 
 /* Overriding default table classes */
+
+.table-bordered {
+    margin-bottom: 13px;
+    color: #003f59;
+}
+
 .table-bordered > thead >tr > td, .table-bordered > thead > tr > th {
     border-bottom-width: 1px;
+    background: #f3f3f3;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(1, #ffffff));
+    background: -ms-linear-gradient(bottom, #eeeeee, #ffffff);
+    background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+    background: -o-linear-gradient(#ffffff, #eeeeee);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
+    -webkit-border-top-right-radius: -1px;
 }
 
 .table-bordered > tbody > tr > td,
@@ -162,6 +195,9 @@
     overflow: visible;
     border: 1px solid #D4D4D4;
 }
+.table-bordered > thead > tr > th.nowrap {
+    white-space: nowrap;
+}
 
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td,
@@ -169,8 +205,27 @@
     vertical-align: middle;
 }
 
+.table-bordered > thead > tr > td {
+    height: 22px;
+}
+.table > thead > tr > th  {
+    vertical-align:top;
+}
 .table .btn, .input-group-btn .btn {
     line-height: 1em;
+}
+
+.table-striped > tbody > tr.edit-selected {
+    background-color: #DDEBF7;
+}
+.table-striped.table-condensed textarea.form-control {
+    height: 50px;
+}
+.control-label.text-left {
+    text-align:left;
+}
+table td > div.input-group.datepicker {
+    position: static;
 }
 
 .animated-item {
@@ -206,9 +261,14 @@
     opacity: 0;
 }
 
-.deleted-text {
+.deleted-text, .deleted-text a{
     color:red;
     text-decoration:line-through;
+}
+
+.grey-text {
+    color: grey;
+    font-weight: bold;
 }
 
 .nav-search-bar {
@@ -289,6 +349,9 @@ header img {
 .top-offset-tiny {
     margin-top: 5px;
 }
+.top-offset-xss {
+    margin-top: 15px;
+}
 .top-offset-xs {
 	margin-top: 25px;
 }
@@ -300,6 +363,50 @@ header img {
 }
 .top-offset-lg {
 	margin-top: 185px;
+}
+.bottom-offset-xs {
+	margin-bottom: 25px;
+}
+.bottom-offset-sm {
+	margin-bottom: 50px;
+}
+.bottom-offset-md {
+	margin-bottom: 100px;
+}
+
+.min-width-xs {
+    min-width: 50px;
+}
+.min-width-sm {
+    min-width: 100px;
+}
+.min-width-md {
+    min-width: 150px;
+}
+.min-width-lg {
+    min-width: 200px;
+}
+.min-width-xl {
+    min-width: 225px;
+}
+.min-width-xxl {
+    min-width: 250px;
+}
+.min-width-xxxl {
+    min-width: 275px;
+}
+
+.max-height-xs {
+    max-height: 230px;
+}
+.max-height-sm {
+    max-height: 500px;
+}
+.max-height-md {
+    max-height: 750px;
+}
+.max-height-lg {
+    max-height: 1000px;
 }
 
 .row-blue {
@@ -412,6 +519,10 @@ form label {
     border-radius: 0 6px 6px 6px;*/
 }
 
+.dropdown-menu li a:hover, a.hand-hover:hover {
+    cursor: pointer;
+}
+
 .dropdown-submenu:hover>.dropdown-menu {
     display: block;
 }
@@ -497,8 +608,17 @@ form {
     padding: 0 5px;
 }
 
+form.width-normal {
+    width: 100%;
+}
+
 .control-label {
     color: #444;
+}
+
+.control-label.radio-line {
+    padding-right: 10px;
+    font-weight: normal;
 }
 
 .control-label.left {
@@ -537,14 +657,82 @@ form {
     padding-left: 10px;
 }
 
-h4, .panel-title {
+/**
+ * @file
+ * Columns with automatic width, similar to .col-xs-1 and friends.
+ */
+
+.col-xs-auto, .col-xs1-auto, .col-sm-auto, .col-md-auto, .col-lg-auto,
+.col-xs-auto-right, .col-xs1-auto-right, .col-sm-auto-right, .col-md-auto-right, .col-lg-auto-right,
+.col-middle {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.col-middle {
+    display: table;
+}
+
+.col-xs-auto {
+    float: left;
+}
+.col-xs-auto-right {
+    float: right;
+}
+
+@media (min-width: 480px) {
+    .col-xs1-auto {
+        float: left;
+    }
+    .col-xs1-auto-right {
+        float: right;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-sm-auto {
+        float: left;
+    }
+    .col-sm-auto-right {
+        float: right;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-auto {
+        float: left;
+    }
+    .col-md-auto-right {
+        float: right;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-auto {
+        float: left;
+    }
+    .col-lg-auto-right {
+        float: right;
+    }
+}
+
+h1, h2 {
+    font-size: 18px;
+}
+
+h4, h5, .panel-title {
     color: #2A71A5;
 }
 h4 {
     font-size: 16px;
 }
+h5 {
+    font-size: 13px;
+}
 .panel-title {
-    font-size: 14px;
+    font-size: 13px;
 }
 .panel-heading {
     padding: 6px 15px;
@@ -567,6 +755,14 @@ h4 {
     right: 5px;
 }
 
+.has-feedback .form-control  {
+    padding-right: 30px;
+}
+
+.feedback-height-sm {
+    line-height: 25px;
+}
+
 .input-group-addon {
     line-height: 1;
     padding: 3px 3px 3px 4px;
@@ -585,7 +781,8 @@ h4 {
     padding: 3px 6px;
     font-size: 12px;
     font-weight: bold;
-    height: 22px;
+    height: 24px;
+    margin-bottom:3px;
 }
 
 .btn-default {
@@ -647,13 +844,57 @@ h4 {
     height: 22px !important;
 }
 
+.grid-medium-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 35px !important;
+}
+
+.grid-large-cell .ui-grid-cell {
+    line-height: 1em;
+    height: 110px !important;
+}
+
+.grid-large-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-large-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell,
+
+.grid-medium-cell .ui-grid-row:nth-child(odd):hover .ui-grid-cell, .grid-medium-cell .ui-grid-row:nth-child(even):hover .ui-grid-cell {
+    background:#bbb;
+    color: darkblue;
+}
+
+.grid-large-cell .ui-grid-row:nth-child(even) .ui-grid-cell,
+.grid-medium-cell .ui-grid-row:nth-child(even) .ui-grid-cell {
+    background: #fdfdfd;
+}
+
+.grid-large-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell,
+.grid-medium-cell .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell {
+    background-color: #fdfdfd;
+}
+
+.expandableRow {
+    border-bottom: 1px solid #EEE;
+    margin-top: 2px !important;
+}
+
 .ui-grid-cell .btn {
     margin: 0 auto;
     padding: 0 6px;
 }
 
+.ui-grid-sort-priority-number {
+  font-size: 0;
+}
+
+div.ui-grid-cell input[type="checkbox"] {
+    margin-top: 0;
+}
+
 .form-text {
     padding-top: 7px;
+}
+
+td > .form-text {
+    padding-top: 5px;
 }
 
 .form-file-upload {
@@ -715,7 +956,7 @@ input[type=radio] {
     border-radius: 6px;
 }
 
-.no-bottom-margin {
+.no-bottom-margin, .form-group.no-bottom-margin {
     margin-bottom: 0;
 }
 
@@ -749,7 +990,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
 }
 
 .form-group.required .control-label:after{
-    color: #C53531;
+    color: #a94442;
     content: "*";
     position: absolute;
     margin-right: -13px;
@@ -788,14 +1029,27 @@ fieldset.sub-bordered {
     margin: 0 0 1.5em 0 !important;
     -webkit-box-shadow:  0px 0px 0px 0px #000;
             box-shadow:  0px 0px 0px 0px #000;
+    /* try out
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-right-width: 0 !important;
+    border-left-width: 3px !important;
+    border-bottom-width: 0 !important;
+    */
 }
 legend.sub-bordered {
-    font-size: 1.2em !important;
+    font-size: 1em !important;
     font-weight: bold !important;
     text-align: left !important;
     width:auto;
     padding:0 10px;
     border-bottom:none;
+
+/* try out
+    font-style: italic;
+    color: #aaa;
+    */
 }
 
 .editable-click,
@@ -807,6 +1061,10 @@ a.editable-click:hover {
 
 .search-calendar-grid {
     min-height: 310px;
+}
+
+.search-calendar-grid-sm {
+    min-height: 210px;
 }
 
 .select2-results-absolute .select2-results {
@@ -832,4 +1090,448 @@ h5.border-bottom {
 
 span.date-qualifier {
     margin-left: 20px;
+}
+
+textarea.resize-vertical {
+    resize: vertical;
+}
+
+md-checkbox .md-icon {
+    background: clear;
+}
+md-checkbox.md-default-theme.md-checked .md-icon {
+    background: blue;
+}
+.text-vmiddle {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Angular Material Overrides */
+.md-tab {
+    font-size: 13px;
+    text-transform:capitalize;
+}
+
+a.btn-file {
+    color: #fff;
+    width: 110px;
+
+}
+a.btn-file:hover {
+    text-decoration:none;
+    cursor: pointer;
+}
+.label-info {
+    color: #555;
+    background: #eee;
+    font-weight: normal;
+    display: inline-flex;
+    width: 150px;
+    text-align: left;
+    border-radius: 0px 5px 5px 0px;
+    -moz-border-radius: 0px 5px 5px 0px;
+    -webkit-border-radius: 0px 5px 5px 0px;
+    border-left-width: 0;
+    padding: 4px 8px 6px 3px;
+    font-size: 12px;
+    overflow-y: hidden;
+}
+
+
+.td-icon {
+    width: 45px;
+    vertical-align: middle !important;
+}
+
+.td-time {
+    min-width: 6%;
+}
+.td-name {
+    min-width: 5%;
+}
+
+body.identification  a.menu-identification,
+body.history a.menu-history,
+body.milestone a.menu-milestone,
+body.onhold a.menu-onhold,
+body.view-tsr a.menu-view-tsr,
+body.assign-ownership a.menu-assign-ownership,
+body.check-out-history a.menu-check-out-history,
+body.raw-json-trial-data a.menu-raw-json-trial-data,
+body.general-trial-details a.menu-general-trial-details,
+body.reg-fda a.menu-reg-fda,
+body.regulatory-info-human-subject-safety a.menu-regulatory-info-human-subject-safety,
+body.reg-ind a.menu-reg-ind,
+body.trial-status a.menu-trial-status,
+body.funding a.menu-funding,
+body.participating-sites a.menu-participating-sites,
+body.collaborators a.menu-collaborators,
+body.trial-related-documents a.menu-trial-related-documents,
+body.nci-info a.menu-nci-info,
+body.trial-design a.menu-trial-design,
+body.trial-description a.menu-trial-description,
+body.trial-outcome-measures a.menu-trial-outcome-measures,
+body.eligibility-critiera a.menu-eligibility-critiera,
+body.associated-trials a.menu-associated-trials,
+body.disease a.menu-disease,
+body.anatomic-sites a.menu-anatomic-sites,
+body.bio-markers a.menu-bio-markers,
+body.arms-groups a.menu-arms-groups,
+body.trial-sub-groups a.menu-trial-sub-groups {
+    background: #eee;
+    color: #555;
+    font-weight:bold;
+    border-radius: 0px 0px 0px 0px;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+    cursor: default;
+}
+
+
+body.trial-related-documents #trial-doc-upload {
+    width: 100%;
+}
+
+
+.td-icon  .btn {
+    height: 20px;
+    padding: 2px 5px;
+    margin-bottom: 0;
+}
+th.td-icon .btn {
+    height: 15px;
+    padding: 0px 2px 5px 2px;
+    margin-bottom: 0;
+    font-size: .8em;
+}
+.input-sm, select.input-sm, input[type="text"].form-control {
+    height: 24px;
+}
+
+.remove-bottom-margin {
+    margin-bottom: 0;
+}
+ul.trial-comments li {
+    padding-top: 10px;
+}
+ul.trial-comments li textarea {
+    font-size: 12px !important;
+    height: 60px !important;
+    line-height: 1.3 !important;
+    border: 1px dashed #ddd;
+    border-width: 1px !important;
+    padding: 0 5px !important;
+    border-radius: 5px 5px 5px 5px !important;
+    -moz-border-radius: 5px 5px 5px 5px !important;
+    -webkit-border-radius: 5px 5px 5px 5px !important;
+}
+ul.trial-comments li md-input-container{
+    padding-bottom: 0;
+}
+
+ul.trial-comments li .md-button.btn {
+    text-transform: none;
+    color: #fff;
+    min-height: 24px;
+    min-width: 70px;
+}
+ul.trial-comments li:hover{
+    background: transparent;
+}
+
+ul.trial-comments li .md-button.btn-primary:hover {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
+    background: #1e5799; /* Old browsers */
+    background: -moz-linear-gradient(top,  #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+}
+
+ul.trial-comments li .md-button.btn-warning:hover {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffaf4b+0,ff920a+100;Orange+3D+%231 */
+    background: #ffaf4b; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffaf4b 0%, #ff920a 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #ffaf4b 0%,#ff920a 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #ffaf4b 0%,#ff920a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
+}
+
+input[type="file"] {
+    display: inline;
+}
+
+uib-accordion form.form-horizontal {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1300px;
+}
+
+md-tabs.md-dynamic-height md-tab-content.md-active {
+    padding-top: 20px;
+}
+md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
+    color: blue;
+}
+
+div.datepicker {
+    max-width: 150px;
+}
+
+.sign_in .panel-body {
+    padding-bottom: 0;
+}
+
+.item, .placeholder {
+    padding: 2px;
+    width: 50px;
+    height: 20px;
+    border: 1px solid #333;
+    background: #EEE;
+}
+.placeholder {
+    background: #AEF;
+}
+
+.popover-wide {
+    color: #444;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1060;
+    overflow: auto;
+    display: none;
+    max-width: 550px;
+    padding: 1px;
+    font-family: Helvetica Neue, Helvetica, Aria, sans-serif;
+    font-size:14px;
+    font-weight: normal;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popover-wide .top {
+    margin-top: -10px;
+}
+
+.popover-wide > .arrow {
+    border-width: 11px;
+}
+
+.popover-wide > .arrow, .popover-wide >
+.arrow:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+
+}
+
+.popover-wide .top > .arrow {
+    bottom: -11px;
+    left: 50%;
+    margin-left: -11px;
+    border-top-color: #999;
+    border-top-color: rgba(0, 0, 0, 0.25);
+    border-bottom-width: 0;
+}
+
+.popover-confirm {
+    width: 300px;
+}
+.popover-confirm .popover-message {
+    margin-bottom:3px;
+}
+.popover-confirm .form-actions {
+    text-align: right;
+}
+
+/* For validation within Angular ui-select elements */
+.select2-results-absolute.has-error a {
+    border-color: #a94442;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.sign_up .panel, .welcome_signup .panel {
+    max-width: 500px;
+}
+.sign_up form {
+    width:100%;
+}
+.sign_up .centered-form, .welcome_signup .centered-form{
+    padding: 1% 0;
+}
+
+.sign_up #password_confirm {
+    font-family: inherit;
+}
+.sign_up fieldset legend {
+    border: none;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+.sign_up fieldset label {
+    font-weight: normal;
+}
+
+ul.csv {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul.csv li {
+    display: inline;
+}
+ul.csv li:after {
+    content: ",";
+}
+ul.csv li:last-child:after {
+    content: "";
+}
+
+div[disabled] {
+    display:none;
+}
+
+.modal-body {
+    overflow: visible;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.small-header-text {
+    font-size: 75%;
+}
+
+.st-sort-ascent:before{
+    content: '\25B2';
+}
+
+.st-sort-descent:before{
+    content: '\25BC';
+}
+
+.show-form-errors .ng-invalid, .show-form-errors .help-block {
+    border-color: #a94442;
+    border-width: 1px;
+}
+.cellbg-green {
+    color: green;
+}
+.cellbg-red {
+    color: red;
+}
+
+.ctrptransferselect label {
+    margin: 10px;
+}
+
+.ctrptransferselect .btn {
+    margin-left: 5px;
+}
+
+.ctrptransferselect .pool {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 5px;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.ctrptransferselect .pool ul {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.ctrptransferselect .pool ul li {
+    width: 100%;
+    padding: 4px 8px 4px 4px;
+    border-bottom: 1px dotted #CFCFCF;
+    font-size: 12px;
+    padding: 3px 15px 3px 3px;
+}
+
+.ctrptransferselect .pool ul li a:hover {
+    text-decoration: none;
+}
+.ctrptransferselect .pool ul li:hover {
+    background: #ebf2f9;
+}
+.ctrptransferselect .select-content {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.ctrptransferselect .ms-col0 {
+    width: 20px;
+    float: left;
+}
+
+.ctrptransferselect .ms-col1, .ctrptransferselect .ms-col5 {
+    float: left;
+}
+.ctrptransferselect .ms-col2, .ctrptransferselect .ms-col6 {
+    float: right;
+}
+.ctrptransferselect .ms-col5 {
+    padding-left: 20px;
+ }
+.ctrptransferselect .ms-col3, .ctrptransferselect .ms-col7 {
+    width: 99%;
+    padding-left: 20px;
+    float: left;
+}
+.ctrptransferselect a span.ms-col1, .ctrptransferselect a span.ms-col5 {
+    color: #666;
+    font-weight:bold;
+}
+.ctrptransferselect a span.ms-col6 {
+    color: #666;
+    padding-left: 20px;
+}
+.ctrptransferselect input.search-term {
+    width: 99%;
+}
+
+.transferTrials {
+    width: 100%;
+}
+.transferTrials .modal-dialog {
+    width: 90% !important;
+    max-width: 1000px;
+}
+
+.assign-trial-ownership h2 {
+    padding-left: 10px;
+}
+
+.assign-trial-ownership .btn-toolbar {
+    padding-right: 15px;
+}
+.assign-trial-ownership .ctrptransferselect .pool {
+    height: 400px;
+}
+
+.dir-modal-body .ctrptransferselect {
+    margin: 10px 20px;
+}
+
+.reg-users-details label {
+    padding-left: 0;
+}
+
+.has-error .form-control.no-validate {
+    border-color: #CCC;
 }

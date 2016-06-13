@@ -89,15 +89,12 @@
                     holderTypeObj: function(TrialService) {
                         return TrialService.getHolderTypes();
                     },
-                    expandedAccessTypeObj: function(TrialService) {
-                        return TrialService.getExpandedAccessTypes();
-                    },
                     GeoLocationService : 'GeoLocationService',
                     countryList: function(GeoLocationService) {
                         return GeoLocationService.getCountryList();
                     },
                     acceptedFileTypesObj: function(TrialService) {
-                        return TrialService.getAcceptedFileTypes();
+                        return TrialService.getAcceptedFileTypesForRegistry();
                     }
                 },
                 ncyBreadcrumb: {
@@ -158,15 +155,12 @@
                     holderTypeObj: function(TrialService) {
                         return TrialService.getHolderTypes();
                     },
-                    expandedAccessTypeObj: function(TrialService) {
-                        return TrialService.getExpandedAccessTypes();
-                    },
                     GeoLocationService : 'GeoLocationService',
                     countryList: function(GeoLocationService) {
                         return GeoLocationService.getCountryList();
                     },
                     acceptedFileTypesObj: function(TrialService) {
-                        return TrialService.getAcceptedFileTypes();
+                        return TrialService.getAcceptedFileTypesForRegistry();
                     }
                 },
                 ncyBreadcrumb: {
@@ -200,6 +194,108 @@
                 ncyBreadcrumb: {
                     parent: 'main.trials',
                     label: 'View Trial'
+                }
+            })
+
+            .state('main.addParticipatingSite', {
+                url: '/add-participating-site/:trialId',
+                templateUrl: 'app/registry/registration/psDetails.html',
+                controller: 'psDetailCtrl as psDetailView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    UserService: 'UserService',
+                    psDetailObj: function($q) {
+                        var deferred = $q.defer();
+                        deferred.resolve(null);
+                        return deferred.promise;
+                    },
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
+                    },
+                    srStatusObj: function(TrialService) {
+                        return TrialService.getSrStatuses();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'Add Participating Site'
+                }
+            })
+
+            .state('main.manageParticipatingSite', {
+                url: '/manage-participating-site/:trialId',
+                templateUrl: 'app/registry/registration/psDetails.html',
+                controller: 'psDetailCtrl as psDetailView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    UserService: 'UserService',
+                    psDetailObj: function($q) {
+                        var deferred = $q.defer();
+                        deferred.resolve(null);
+                        return deferred.promise;
+                    },
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
+                    },
+                    srStatusObj: function(TrialService) {
+                        return TrialService.getSrStatuses();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'Manage Participating Site'
+                }
+            })
+
+            .state('main.participatingSiteDetail', {
+                url: '/participating-sites/:psId',
+                templateUrl: 'app/registry/registration/psDetails.html',
+                controller: 'psDetailCtrl as psDetailView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    UserService: 'UserService',
+                    psDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getParticipatingSiteById($stateParams.psId);
+                    },
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return null;
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
+                    },
+                    srStatusObj: function(TrialService) {
+                        return TrialService.getSrStatuses();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'Update Participating Site'
+                }
+            })
+
+            .state('main.verifyTrialData', {
+                url: '/verify-trial-data/:trialId',
+                templateUrl: 'app/registry/registration/verifyTrialData.html',
+                controller: 'verifyTrialDataCtrl as verifyTrialDataView',
+                section: 'registry',
+                resolve: {
+                    TrialService: 'TrialService',
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.trials',
+                    label: 'Verify Trial Data'
                 }
             });
     } //trialRegistrationRoutes

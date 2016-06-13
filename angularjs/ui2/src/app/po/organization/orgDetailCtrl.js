@@ -9,11 +9,11 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$modal',
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal',
         'GeoLocationService'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
-                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $modal) {
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal) {
         var vm = this;
         $scope.organization_form = {};
         vm.addedNameAliases = [];
@@ -31,9 +31,11 @@
         vm.alias = '';
         vm.curationReady = false;
         vm.showPhoneWarning = false;
+        vm.disableBtn = false;
         var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
         vm.updateOrg = function () {
+            vm.disableBtn = true;
 
             // Construct nested attributes
             if (vm.addedNameAliases.length > 0) {
@@ -48,21 +50,34 @@
             outerOrg.id = vm.curOrg.id;
             outerOrg.organization = vm.curOrg;
             OrgService.upsertOrg(outerOrg).then(function (response) {
-                if (vm.curOrg.new) {
-                    $state.go('main.orgDetail', {orgId: response.id});
-                } else {
-                    vm.curOrg = response;
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (vm.curOrg.new && status === 201) {
+                        // created
+                        $state.go('main.orgDetail', {orgId: response.id});
+                    } else if (status === 200) {
+                        // updated
+                        vm.curOrg = response;
+                    }
+
+                    showToastr(vm.curOrg.name);
+                    vm.curOrg.new = false;
                 }
-                vm.curOrg.new = false;
-                toastr.clear();
-                toastr.success('Organization ' + vm.curOrg.name + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }; // updateOrg
+
+        function showToastr(orgName) {
+            toastr.clear();
+            toastr.success('Organization ' + orgName + ' has been recorded', 'Operation Successful!', {
+                extendedTimeOut: 1000,
+                timeOut: 0
+            });
+        }
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy,vm.curOrg);
@@ -123,9 +138,13 @@
                     switchSourceContext();
                 } else {
                     OrgService.getOrgById(vm.curOrg.cluster[newValue].id).then(function(response) {
-                        orgContextCache[contextKey] = angular.copy(response);
-                        vm.curOrg = orgContextCache[contextKey]
-                        switchSourceContext()
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            orgContextCache[contextKey] = angular.copy(response);
+                            vm.curOrg = orgContextCache[contextKey];
+                            switchSourceContext();
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving organization during tab change.");
                     });
@@ -290,7 +309,7 @@
 
         function prepareModal() {
             vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'delete_confirm_template.html',
                     controller: 'ModalInstanceCtrl as vm',
@@ -325,10 +344,14 @@
             vm.showUniqueWarning = false
 
             var result = OrgService.checkUniqueOrganization(searchParams).then(function (response) {
-                vm.name_unqiue = response.name_unique;
+                var status = response.server_response.status;
 
-                if(!response.name_unique && vm.curOrg.name.length > 0)
-                    vm.showUniqueWarning = true
+                if (status >= 200 && status <= 210) {
+                    vm.name_unqiue = response.name_unique;
+
+                    if(!response.name_unique && vm.curOrg.name.length > 0)
+                        vm.showUniqueWarning = true;
+                }
             }).catch(function (err) {
                 console.log("error in checking for duplicate org name " + JSON.stringify(err));
             });
@@ -339,8 +362,5 @@
             vm.showPhoneWarning = true;
             console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
-
     }
-
-
 })();

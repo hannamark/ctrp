@@ -18,7 +18,8 @@
         vm.holderTypeArr = holderTypeObj;
         vm.nihNciArr = [];
         vm.addedIndIdes = [];
-        console.log('Trial ' + vm.holderTypeObj + ' has been recorded', 'Operation Successful!');
+        vm.showAddIndIdeError = false;
+        vm.disableBtn = false;
 
         vm.reload = function() {
             $state.go($state.$current, null, { reload: true });
@@ -39,60 +40,85 @@
             outerTrial.new = vm.curTrial.new;
             outerTrial.id = vm.curTrial.id;
             outerTrial.trial = vm.curTrial;
-
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
+                var status = response.server_response.status;
 
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-                console.log("error in updating trial " + JSON.stringify(outerTrial));
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial.lock_version = response.lock_version || '';
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
-
         }
+
+
+        vm.deleteAllAddedIndIdes = function () {
+            if (vm.addedIndIdesAll) {
+                vm.addedIndIdesAll = false;
+            } else {
+                vm.addedIndIdesAll = true;
+            }
+            angular.forEach(vm.addedIndIdes, function (item) {
+                item._destroy = vm.addedIndIdesAll;
+            });
+        };
 
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
-            //console.log("In addIndIde vm.addedIndIdes=" + JSON.stringify(vm.addedIndIdes));
-            if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
-                // Check if there is a similar entry
-                for (var i = 0; i < vm.addedIndIdes.length; i++) {
-                   if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
-                       (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
-                       (vm.addedIndIdes[i].grantor == vm.grantor) &&
-                       (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
-                       return;
-                   }
+            var isValidIndIde = vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id;
+            vm.showAddIndIdeError = false;
+
+            if (isValidIndIde) {
+                if (vm.holder_type_id === '4' || vm.holder_type_id === '5') {
+                    vm.showAddIndIdeError = !vm.nih_nci ? true : false;
                 }
-                var newIndIde = {};
-                newIndIde.ind_ide_type = vm.ind_ide_type;
-                newIndIde.ind_ide_number = vm.ind_ide_number;
-                newIndIde.grantor = vm.grantor;
-                newIndIde.holder_type_id = vm.holder_type_id;
-                // For displaying name in the table
-                _.each(vm.holderTypeArr, function (holderType) {
-                    if (holderType.id == vm.holder_type_id) {
-                        newIndIde.holder_type_name = holderType.name;
+
+                if (!vm.showAddIndIdeError) {
+                    // Check if there is a similar entry
+                    for (var i = 0; i < vm.addedIndIdes.length; i++) {
+                       if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
+                           (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
+                           (vm.addedIndIdes[i].grantor == vm.grantor) &&
+                           (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
+                           return;
+                       }
                     }
-                });
-                newIndIde.nih_nci = vm.nih_nci;
-                newIndIde._destroy = false;
-                vm.addedIndIdes.push(newIndIde);
-                vm.indIdeNum++;
-                vm.ind_ide_type = null;
-                vm.ind_ide_number = null;
-                vm.grantor = null;
-                vm.holder_type_id = null;
-                vm.nih_nci = null;
-                vm.grantorArr = [];
-                vm.nihNciArr = [];
-                vm.showAddIndIdeError = false;
+
+                    var newIndIde = {};
+                    newIndIde.ind_ide_type = vm.ind_ide_type;
+                    newIndIde.ind_ide_number = vm.ind_ide_number;
+                    newIndIde.grantor = vm.grantor;
+                    newIndIde.holder_type_id = vm.holder_type_id;
+                    // For displaying name in the table
+                    _.each(vm.holderTypeArr, function (holderType) {
+                        if (holderType.id == vm.holder_type_id) {
+                            newIndIde.holder_type_name = holderType.name;
+                        }
+                    });
+                    newIndIde.nih_nci = vm.nih_nci;
+                    newIndIde._destroy = false;
+                    vm.addedIndIdes.push(newIndIde);
+                    vm.indIdeNum++;
+                    vm.ind_ide_type = null;
+                    vm.ind_ide_number = null;
+                    vm.grantor = null;
+                    vm.holder_type_id = null;
+                    vm.nih_nci = null;
+                    vm.grantorArr = [];
+                    vm.nihNciArr = [];
+                    vm.addedIndIdesAll = false;
+                }
             } else {
                 vm.showAddIndIdeError = true;
             }
@@ -110,6 +136,7 @@
                     }
                 }
             }
+            vm.addedIndIdesAll = false;
         };// toggleSelection
 
 
@@ -129,13 +156,21 @@
                 var nihOption = vm.holderTypeArr.filter(findNihOption);
                 if (nciOption[0].id == vm.holder_type_id) {
                     TrialService.getNci().then(function (response) {
-                        vm.nihNciArr = response;
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.nihNciArr = response;
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving NCI Division/Program code.");
                     });
                 } else if (nihOption[0].id == vm.holder_type_id) {
                     TrialService.getNih().then(function (response) {
-                        vm.nihNciArr = response;
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.nihNciArr = response;
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving NIH Institution code.");
                     });
@@ -202,15 +237,6 @@
                     }
                 });
                 indIde.nih_nci = vm.curTrial.ind_ides[i].nih_nci;
-                indIde.expanded_access = vm.curTrial.ind_ides[i].expanded_access;
-                indIde.expanded_access_type_id = vm.curTrial.ind_ides[i].expanded_access_type_id;
-                // For displaying name in the table
-                _.each(vm.expandedAccessTypeArr, function (expandedAccessType) {
-                    if (expandedAccessType.id == vm.curTrial.ind_ides[i].expanded_access_type_id) {
-                        indIde.expanded_access_type_name = expandedAccessType.name;
-                    }
-                });
-                indIde.exempt = vm.curTrial.ind_ides[i].exempt;
                 indIde._destroy = false;
                 vm.addedIndIdes.push(indIde);
                 vm.indIdeNum++;

@@ -117,7 +117,7 @@ module.exports = function() {
         expect(addTrial.addTrialSerialNumberSelect.getText()).to.eventually.equal(grantEntireSerialNumberFirst).and.notify(callback);
     });
 
-    this.Given(/^I can select from the Grant Serial Numbers displayed or enter a different Grant Serial Number$/, function (callback) {
+    this.Given(/^I can select from the Grant Serial Numbers displayed$/, function (callback) {
         addTrial.addTrialSerialNumberSelect.click();
         expect(addTrial.addTrialSerialNumberVerify.getText()).to.eventually.equal(grantValueFirst);
         browser.sleep(25).then(callback);
@@ -204,6 +204,5 @@ module.exports = function() {
     this.Then(/^A message will be displayed "([^"]*)"$/, function (arg1, callback) {
         expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1)).to.become('true').and.notify(callback);
     });
-
 
 };

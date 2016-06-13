@@ -8,7 +8,7 @@
 #  official_title                :text
 #  pilot                         :string(255)
 #  primary_purpose_other         :string(255)
-#  secondary_purpose_other       :string(255)
+#  secondary_purpose_other       :text
 #  program_code                  :string(255)
 #  grant_question                :string(255)
 #  start_date                    :date
@@ -65,7 +65,6 @@
 #  min_age                       :integer
 #  max_age                       :integer
 #  assigned_to_id                :integer
-#  owner_id                      :integer
 #  board_approval_status_id      :integer
 #  intervention_model_id         :integer
 #  masking_id                    :integer
@@ -111,7 +110,6 @@
 #  index_trials_on_masking_id                (masking_id)
 #  index_trials_on_max_age_unit_id           (max_age_unit_id)
 #  index_trials_on_min_age_unit_id           (min_age_unit_id)
-#  index_trials_on_owner_id                  (owner_id)
 #  index_trials_on_phase_id                  (phase_id)
 #  index_trials_on_pi_id                     (pi_id)
 #  index_trials_on_primary_purpose_id        (primary_purpose_id)

@@ -50,6 +50,50 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    this.Given(/^the FDA Regulated Intervention Indicator will be defaulted to the "([^"]*)" setting$/, function (arg1, callback) {
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('0', false);
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('1', false);
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('2', true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the Section (\d+) Indicator will be defaulted to the "([^"]*)" setting$/, function (arg1, arg2, callback) {
+        addTrial.verifyAddTrialSection801Indicator('0', false);
+        addTrial.verifyAddTrialSection801Indicator('1', false);
+        addTrial.verifyAddTrialSection801Indicator('2', true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the Data Monitoring Committee Appointed Indicator will be defaulted to the "([^"]*)" setting$/, function (arg1, callback) {
+        addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('0', false);
+        addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('1', false);
+        addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('2', true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have the option to change the defaulted "([^"]*)" setting to either "([^"]*)" or "([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, arg2, arg3, callback) {
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+        addTrial.selectAddTrialFDARegulatedInterventionIndicator('2');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have the option to change the defaulted "([^"]*)" setting to either"([^"]*)"or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, arg4, callback) {
+        addTrial.selectAddTrialSection801Indicator('0');
+        addTrial.selectAddTrialSection801Indicator('1');
+        addTrial.selectAddTrialSection801Indicator('2');
+        addTrial.selectAddTrialSection801Indicator('1');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have the option to change the defaulted "([^"]*)" setting to either "([^"]*)"or "([^"]*)" for Data Monitoring Committee Appointed Indicator$/, function (arg1, arg2, arg3, callback) {
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('0');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('2');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        browser.sleep(25).then(callback);
+    });
+
     this.Given(/^I have selected"([^"]*)" or "([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, arg2, callback) {
         addTrial.verifyAddTrialFDARegulatedInterventionIndicator('0', false);
         addTrial.verifyAddTrialFDARegulatedInterventionIndicator('1', false);
@@ -79,7 +123,7 @@ module.exports = function() {
         addTrial.getVerifyAddTrialResponsibleParty('Sponsor');
         projectFunctionsRegistry.verifyAddTrialOversightCountryOrganization('Gabon', 'Ministry of Health');
         projectFunctionsRegistry.verifyAddTrialOversightCountryOrganization('Italy', 'The Italian Medicines Agency');
-        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('1', true);
+        addTrial.verifyAddTrialFDARegulatedInterventionIndicator('2', true);
         addTrial.verifyAddTrialSection801Indicator('1', true);
         addTrial.verifyAddTrialDataMonitoringCommitteeAppointedIndicator('1', true);
         browser.sleep(25).then(callback);
@@ -96,7 +140,7 @@ module.exports = function() {
     });
 
     this.Then(/^the Principal Investigator selected will be recorded as the Responsible Party Investigator$/, function (callback) {
-        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0');
+        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0', 'ctrptrialsubmitter');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         browser.driver.wait(function() {
             console.log('wait here');
@@ -121,18 +165,50 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^the Investigator Affiliation will be the Principal Investigator's organization affiliation$/, function (callback) {
-        storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
-            console.log('value of Principal Investigator affiliation Organization' + value);
-            addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
-            return value;
+    this.Given(/^the Investigator Affiliation will be the Sponsor Organization$/, function (callback) {
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
+        addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+        addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        //storePrincipalInvestigator.then(function (value) {
+        //    projectFunctionsRegistry.selectPerForTrial(value,'0');
+        //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        //    addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+        //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+        //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+        //});
+        //cukePerson.then(function (value) {
+        //    console.log('value of PERSON' + value);
+        //    projectFunctionsRegistry.selectPerForTrial(value,'1');
+        //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+        //});
+        addTrial.getVerifyAddTrialInvestigatorTitle('Principal Investigator');
+        browser.driver.wait(function() {
+            console.log('wait here');
+            return true;
+        }, 40).then(function() {
+            storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
+                console.log('value of Org' + value);
+                addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
+                return value;
+            });
         });
         browser.sleep(25).then(callback);
     });
 
+
+    //this.Given(/^the Investigator Affiliation will be the Principal Investigator's organization affiliation$/, function (callback) {
+    //    storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
+    //        console.log('value of Principal Investigator affiliation Organization' + value);
+    //        addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
+    //        return value;
+    //    });
+    //    browser.sleep(25).then(callback);
+    //});
+
     this.Given(/^the Investigation Affiliation can be changed$/, function (callback) {
         /* Create or use an Org to affiliate Person Org **/
-        projectFunctionsRegistry.createOrgforTrial('shiTrialPIOrg0', typeOfTrial, '3');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialPIOrg0', typeOfTrial, '3', 'ctrptrialsubmitter');
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
@@ -151,6 +227,10 @@ module.exports = function() {
             });
             addTrial.getVerifyAddTrialInvestigatorTitle('Principal Investigator');
             storePrincipalInvestigatorAffOrg.then(function (value) {
+                projectFunctionsRegistry.selectOrgforTrial(value,'1');
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
                 addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
             });
             cukeOrganization.then(function (value) {
@@ -196,7 +276,7 @@ module.exports = function() {
     });
 
     this.Then(/^the Principal Investigator will be populated in Investigator field as default$/, function (callback) {
-        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0');
+        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0', 'ctrptrialsubmitter');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
@@ -214,7 +294,7 @@ module.exports = function() {
     });
 
     this.Given(/^I have performed a person search in Search Persons for Investigator$/, function (callback) {
-        projectFunctionsRegistry.createPersonforTrial('shiTrialPersonInv0',typeOfTrial, '1');
+        projectFunctionsRegistry.createPersonforTrial('shiTrialPersonInv0',typeOfTrial, '1', 'ctrptrialsubmitter');
         browser.sleep(25).then(callback);
     });
 
@@ -232,7 +312,7 @@ module.exports = function() {
     });
 
     this.Given(/^the Investigation Affiliation will be the Sponsor Organization$/, function (callback) {
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
@@ -267,31 +347,88 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected"([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
-        addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+    this.When(/^I have selected "([^"]*)" for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
+        if (arg1 === 'NA') {
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('2');
+        }
+        else if (arg1 === 'No') {
+            addTrial.clickAddTrialResetButton();
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+        }
+        else if (arg1 === 'Yes') {
+            addTrial.clickAddTrialResetButton();
+            addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+        }
         browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have noted that Section (\d+) Indicator is set to "([^"]*)"$/, function (arg1, arg2, callback) {
+    this.Then(/^I can select "([^"]*)", "([^"]*)", "([^"]*)" for the Section (\d+) Indicator field$/, function (arg1, arg2, arg3, arg4, callback) {
+        expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
+        expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(true);
+        expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(true);
+        addTrial.selectAddTrialSection801Indicator('0');
+        addTrial.selectAddTrialSection801Indicator('1');
+        addTrial.selectAddTrialSection801Indicator('2');
+        browser.sleep(25).then(callback);
+    });
+
+
+    this.Given(/^I have selected "([^"]*)", "([^"]*)", "([^"]*)" for Data Monitoring Committee Appointed Indicator$/, function (arg1, arg2, arg3, callback) {
+        expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(0).isEnabled()).to.become(true);
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('0');
+        expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(1).isEnabled()).to.become(true);
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(2).isEnabled()).to.become(true);
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('2');
+        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('1');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Section (\d+) Indicator will be set to "([^"]*)"$/, function (arg1, arg2, callback) {
         expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
         addTrial.verifyAddTrialSection801Indicator('0', true);
         expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(false);
+        addTrial.verifyAddTrialSection801Indicator('1', false);
+        expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(false);
+        addTrial.verifyAddTrialSection801Indicator('2', false);
         browser.sleep(25).then(callback);
     });
 
-    this.When(/^I have selected "([^"]*)" for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
-        addTrial.clickAddTrialResetButton();
-        addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
-        browser.sleep(25).then(callback);
-    });
-
-    this.Then(/^I can select "([^"]*)" or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, callback) {
+    this.Then(/^I can select only "([^"]*)" or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, callback) {
         expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
         expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(true);
+        expect(addTrial.addTrialSection801Indicator.get(2).isEnabled()).to.become(false);
         addTrial.selectAddTrialSection801Indicator('0');
         addTrial.selectAddTrialSection801Indicator('1');
         browser.sleep(25).then(callback);
     });
+
+
+    //this.When(/^I have selected"([^"]*)"for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
+    //    addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+    //    browser.sleep(25).then(callback);
+    //});
+    //
+    //this.Given(/^I have noted that Section (\d+) Indicator is set to "([^"]*)"$/, function (arg1, arg2, callback) {
+    //    expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
+    //    addTrial.verifyAddTrialSection801Indicator('0', true);
+    //    expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(false);
+    //    browser.sleep(25).then(callback);
+    //});
+
+    //this.When(/^I have selected "([^"]*)" for FDA Regulated Intervention Indicator$/, function (arg1, callback) {
+    //    addTrial.clickAddTrialResetButton();
+    //    addTrial.selectAddTrialFDARegulatedInterventionIndicator('1');
+    //    browser.sleep(25).then(callback);
+    //});
+    //
+    //this.Then(/^I can select "([^"]*)" or "([^"]*)" for Section (\d+) Indicator$/, function (arg1, arg2, arg3, callback) {
+    //    expect(addTrial.addTrialSection801Indicator.get(0).isEnabled()).to.become(true);
+    //    expect(addTrial.addTrialSection801Indicator.get(1).isEnabled()).to.become(true);
+    //    addTrial.selectAddTrialSection801Indicator('0');
+    //    addTrial.selectAddTrialSection801Indicator('1');
+    //    browser.sleep(25).then(callback);
+    //});
 
     this.When(/^I add a duplicate Trial Oversight Authority and Organization Names$/, function (callback) {
         addTrial.selectAddTrialOversightAuthorityCountry('Gabon');

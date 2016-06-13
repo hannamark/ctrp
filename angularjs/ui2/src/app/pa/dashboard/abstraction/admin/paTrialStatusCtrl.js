@@ -1,5 +1,5 @@
 /**
- * Created by wangg5, Deember 31st, 2015
+ * Created by wangg5, December 31st, 2015
  */
 
 (function() {
@@ -16,8 +16,7 @@
         UserService, toastr) {
 
         var vm = this;
-        console.log('trialStatuses: ', trialStatuses);
-        vm.trialStatuses = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
+        vm.trialStatusDict = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
         vm.startDateRequired = true;
@@ -30,11 +29,14 @@
         vm.isExpandedAccess = false;
         vm.isDCPTrial = false;
         vm.isInterventional = false;
+        vm.statusPopover = {open: false, content: ''};
 
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
         vm.tempTrialStatuses = [];
         vm.commentList = [];
+        vm.disableBtn = false;
+
         var commentField = 'trial-status'; // for marking comment entry
         var commentModel = 'Trial'; // model name for comment
         var statusesForWhyStopped = [
@@ -54,11 +56,13 @@
         vm.updateComment = updateComment;
         vm.updateTrialStatuses = updateTrialStatuses;
         vm.resetForm = resetForm;
+        vm.deleteAllStatuses = deleteAllStatuses;
 
         activate();
         function activate() {
-            _watchTrialStatusChangesChanges();
+            _watchTrialStatusChanges();
             _getTrialDetailCopy();
+
         } // activate
 
         function _getTrialDetailCopy() {
@@ -84,22 +88,7 @@
                 // load comments for the trial with the field name {commentField}
                 _loadComments(commentField);
                 _convertDates();
-
-                // convert the trial_status_id to status name
-                vm.tempTrialStatuses = _.map(vm.trialDetailObj.trial_status_wrappers, function(status) {
-                    var curStatusObj = _.findWhere(vm.trialStatuses, {id: status.trial_status_id});
-                    status.trial_status_name = curStatusObj.name || '';
-                    status.trial_status_code = curStatusObj.code || '';
-                    status._destroy = false;
-                    // status.status_date is in this format "YYYY-mm-DD" (e.g. "2009-12-03")
-                    // transform it to the format ("DD-MMM-YYYY", e.g. "03-Dec-2009")
-                    status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
-                    delete status.trial_status; // delete the trial_status object
-                    delete status.updated_at;
-                    delete status.created_at;
-                    return status;
-                });
-
+                vm.tempTrialStatuses = PATrialService.annotateTrialStatusWithNameAndCode(vm.trialDetailObj.trial_status_wrappers, vm.trialStatusDict);
                 validateStatuses();
             }, 0);
         } // _getTrialDetailCopy
@@ -130,7 +119,7 @@
                 var clonedStatusObj = angular.copy(vm.statusObj);
                 // clonedStatusObj.status_date = clonedStatusObj.status_date.toISOString(); // ISOString for POST to backend
                 clonedStatusObj.status_date = DateService.convertISODateToLocaleDateStr(clonedStatusObj.status_date); // for display in table
-                var selectedStatus = _.findWhere(vm.trialStatuses, {id: clonedStatusObj.trial_status_id});
+                var selectedStatus = _.findWhere(vm.trialStatusDict, {id: clonedStatusObj.trial_status_id});
 
                 if (!!selectedStatus) {
                     clonedStatusObj.trial_status_name = selectedStatus.name;
@@ -142,8 +131,9 @@
                 validateStatuses();
                 // re-initialize the vm.statusObj
                 vm.statusObj = _initStatusObj();
+                vm.deleteStatusesAll = false;
             } else {
-                vm.statusErrorMsg = 'Both status date and trial status are required';
+                vm.statusErrorMsg = 'Both status date and trial status are Required';
             }
         }
 
@@ -164,19 +154,39 @@
         function _validateStatusesDelegate(statusArr) {
             if (statusArr.length === 0) return;
 
+            vm.disableBtn = true;
+
             TrialService.validateStatus({"statuses": statusArr}).then(function(res) {
-                if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
-                    vm.statusValidationMsgs = res.validation_msgs;
-                    _.each(vm.tempTrialStatuses, function(status, index) {
-                        if (status._destroy) {
-                            vm.statusValidationMsgs.splice(index, 0, {});
-                        }
-                    });
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (res.validation_msgs && angular.isArray(res.validation_msgs)) {
+                        vm.statusValidationMsgs = res.validation_msgs;
+                        _.each(vm.tempTrialStatuses, function(status, index) {
+                            if (status._destroy) {
+                                vm.statusValidationMsgs.splice(index, 0, {});
+                            }
+                        });
+                    }
                 }
             }).catch(function(err) {
                 console.log('error in validating status');
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         } // _validateStatusesDelegate
+
+
+        function deleteAllStatuses() {
+            if (vm.deleteStatusesAll) {
+                vm.deleteStatusesAll = false;
+            } else {
+                vm.deleteStatusesAll = true;
+            }
+            angular.forEach(vm.tempTrialStatuses, function (item) {
+                item._destroy = vm.deleteStatusesAll;
+            });
+        }
 
         function deleteTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
@@ -186,6 +196,7 @@
                     vm.statusObj = _initStatusObj();
                 }
             }
+            vm.deleteStatusesAll = false;
         } // deleteTrialStatus
 
         function editTrialStatus(index) {
@@ -193,21 +204,20 @@
                 vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
                 vm.statusObj.edit = true;
                 vm.statusObj.index = index;
-                // vm.tempTrialStatuses.splice(index, 1);
             }
         }
 
         function commitEdit() {
             vm.statusErrorMsg = '';
             if (!vm.statusObj.status_date || !vm.statusObj.trial_status_id) {
-                vm.statusErrorMsg = 'Both status date and trial status are required';
+                vm.statusErrorMsg = 'Both status date and trial status are Required';
                 return;
             }
             if (vm.statusObj.edit) {
                 // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
                 // format date from 'yyyy-mm-DD' to 'yyyy-MMM-DD' (e.g. from 2009-12-03 to 03-Feb-2009)
                 vm.statusObj.status_date = DateService.convertISODateToLocaleDateStr(vm.statusObj.status_date);
-                var selectedStatus = _.findWhere(vm.trialStatuses, {id: vm.statusObj.trial_status_id});
+                var selectedStatus = _.findWhere(vm.trialStatusDict, {id: vm.statusObj.trial_status_id});
                 if (!!selectedStatus) {
                     vm.statusObj.trial_status_name = selectedStatus.name;
                     vm.statusObj.trial_status_code = selectedStatus.code;
@@ -223,6 +233,7 @@
         function cancelEdit() {
             if (vm.statusObj.edit) {
                 vm.statusObj = _initStatusObj();
+                vm.showWhyStoppedField = false;
             }
         }
 
@@ -232,13 +243,21 @@
          * @return {Promise}           [resolved to an array of comments]
          */
         function _loadComments(fieldName) {
+            vm.disableBtn = true;
+
             CommentService.getComments(vm.trialDetailObj.uuid, fieldName)
                 .then(function(res) {
-                    vm.commentList = CommentService.annotateCommentIsEditable(res.comments);
-                    vm.commentList.reverse();
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.commentList = CommentService.annotateCommentIsEditable(res.comments);
+                        vm.commentList.reverse();
+                    }
                 })
                 .catch(function(err) {
                     console.log('error in retrieving comments');
+                }).finally(function() {
+                    vm.disableBtn = false;
                 });
         }
 
@@ -247,12 +266,24 @@
         */
         function createComment() {
             if (vm.commentObj.content === '') return;
+            vm.disableBtn = true;
+
             CommentService.createComment(vm.commentObj)
               .then(function(res) {
-                 console.log('posted comment, res: ', res);
-                 vm.commentObj = _initCommentObj();
-                 _loadComments(commentField);
-              });
+                  var status = res.server_response.status;
+
+                  if (status >= 200 && status <= 210) {
+                     vm.commentObj = _initCommentObj();
+                     _loadComments(commentField);
+
+                     toastr.clear();
+                     toastr.success('Your comment has been added', 'Successful!', {
+                         timeOut: 1000
+                     });
+                  }
+             }).finally(function() {
+                 vm.disableBtn = false;
+             });
         } //createComment
 
         function updateComment(newContent, index) {
@@ -307,41 +338,61 @@
             outerTrial.new = false;
             outerTrial.id = vm.trialDetailObj.id;
             outerTrial.trial = vm.trialDetailObj;
+            vm.disableBtn = true;
 
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
             TrialService.upsertTrial(outerTrial).then(function(res) {
-                vm.trialDetailObj = res;
-                vm.trialDetailObj.lock_version = res.lock_version;
+                var status = res.server_response.status;
 
-                PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
-                $scope.$emit('updatedInChildScope', {});
+                if (status >= 200 && status <= 210) {
+                    vm.trialDetailObj = res;
+                    vm.trialDetailObj.lock_version = res.lock_version;
+                    // delete vm.trialDetailObj.admin_checkout;
+                    // delete vm.trialDetailObj.scientific_checkout;
+                    PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
 
-                toastr.clear();
-                toastr.success('Trial statuses has been updated', 'Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
-                _getTrialDetailCopy();
+                    toastr.clear();
+                    toastr.success('Trial statuses has been updated', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                    _getTrialDetailCopy();
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
-
         } // updateTrialStatuses
 
         function resetForm() {
             _getTrialDetailCopy();
         }
 
-        function _watchTrialStatusChangesChanges() {
+        function _watchTrialStatusChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
                 if (newVal) {
-                    vm.statusObj.why_stopped = '';
-                    var selectedStatus = _.findWhere(vm.trialStatuses, {id: newVal});
+                    var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
+                    if (newVal !== oldVal) {
+                        vm.statusPopover.content = selectedStatus.explanation;
+                        vm.statusPopover.open = true; // when to turn off ?
+                    } else {
+                        vm.statusPopover.content = '';
+                        vm.statusPopover.open = false;
+                    }
+                    vm.statusPopover.open = vm.statusPopover.content.length > 0; // if empty content, do not open popover
                     var statusName = selectedStatus.name || '';
                     if (_.contains(statusesForWhyStopped, statusName.toLowerCase())) {
                         vm.showWhyStoppedField = true;
                     } else {
                         vm.showWhyStoppedField = false;
+                        vm.statusObj.why_stopped = '';
                     }
+                } else {
+                    vm.statusPopover.content = '';
+                    vm.statusPopover.open = false;
                 }
-            });
+            }, true);
         }
 
         /**
@@ -359,7 +410,7 @@
             'approved for marketing'
         ];
         function _disableItemsInTrialStatusList() {
-            vm.trialStatuses = _.map(vm.trialStatuses, function(status) {
+            vm.trialStatusDict = _.map(vm.trialStatusDict, function(status) {
                 status.disabled = _.contains(nonSelectableStatuses, status.name.toLowerCase());
                 return status;
             });

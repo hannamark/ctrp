@@ -8,12 +8,13 @@
     angular.module('ctrp.app.pa')
         .factory('PATrialService', PATrialService);
 
-    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common',
-            '$rootScope', 'PromiseTimeoutService', 'Upload', 'HOST', 'LocalCacheService', 'uiGridConstants'];
+    PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload', 'TrialService',
+            '$rootScope', 'PromiseTimeoutService', 'DateService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
 
-    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common,
-            $rootScope, PromiseTimeoutService, Upload, HOST, LocalCacheService, uiGridConstants) {
+    function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload, TrialService,
+            $rootScope, PromiseTimeoutService, DateService, HOST, LocalCacheService, uiGridConstants) {
 
+        var curTrial = {};
         var initTrialSearchParams = {
             //for pagination and sorting
             sort: '',
@@ -41,7 +42,7 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '120', width: '3%',
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '3%', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
@@ -52,7 +53,7 @@
                 {name: 'purpose', enableSorting: true, minWidth: '100', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
                 {name: 'pilot', enableSorting: true, minWidth: '75', width: '6%'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '190', width: '5%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '5%',
@@ -64,7 +65,7 @@
                 {name: 'study_source', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'current_trial_status', enableSorting: true, minWidth: '160', width: '7%',
+                {name: 'current_trial_status', enableSorting: true, minWidth: '190', width: '7%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_milestone', enableSorting: true, minWidth: '200', width: '7%',
@@ -82,19 +83,22 @@
                 {name: 'current_processing_status', enableSorting: true, minWidth: '225', width: '10%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'submission_type', enableSorting: true, minWidth: '100', width: '3%',
+                {name: 'submission_type', enableSorting: true, minWidth: '180', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'submission_method', enableSorting: true, minWidth: '100', width: '3%',
+                {name: 'submission_method', enableSorting: true, minWidth: '180', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'submission_source', enableSorting: true, minWidth: '100', width: '3%',
+                {name: 'submission_source', enableSorting: true, minWidth: '180', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'nih_nci_div', enableSorting: true, minWidth: '100', width: '3%',
+                {name: 'nih_nci_div', enableSorting: true, minWidth: '180', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'nih_nci_prog', enableSorting: true, minWidth: '100', width: '3%',
+                {name: 'nih_nci_prog', enableSorting: true, minWidth: '130', width: '3%',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'internal_source', displayName: 'Information Source', enableSorting: true, minWidth: '130', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 }
             ]
@@ -124,8 +128,8 @@
             getHolderTypes: getHolderTypes,
             getSubmissionTypes: getSubmissionTypes,
             getSubmissionMethods: getSubmissionMethods,
+            getInvestigatorTypes: getInvestigatorTypes,
             getNih: getNih,
-            getExpandedAccessTypes: getExpandedAccessTypes,
             checkOtherId: checkOtherId,
             deleteTrial: deleteTrial,
             setCurrentTrial: setCurrentTrial,
@@ -133,7 +137,38 @@
             checkoutTrial: checkoutTrial,
             checkinTrial: checkinTrial,
             getCentralContactTypes: getCentralContactTypes,
-            getBoardApprovalStatuses: getBoardApprovalStatuses
+            getBoardApprovalStatuses: getBoardApprovalStatuses,
+            getSiteRecruitementStatuses: getSiteRecruitementStatuses,
+            getTrialDocumentTypes: getTrialDocumentTypes,
+            uploadTrialRelatedDocs: uploadTrialRelatedDocs,
+            prepUploadingTrialRelatedDocs: prepUploadingTrialRelatedDocs,
+            groupTrialDesignData: groupTrialDesignData,
+            getAcceptedFileTypesPA: getAcceptedFileTypesPA,
+            getInterventionModels: getInterventionModels,
+            getMaskings: getMaskings,
+            getAllocations: getAllocations,
+            getStudyClassifications: getStudyClassifications,
+            getStudyModels: getStudyModels,
+            getTimePerspectives: getTimePerspectives,
+            getBiospecimenRetentions: getBiospecimenRetentions,
+            getAgeUnits: getAgeUnits,
+            getGenderList: getGenderList,
+            getSamplingMethods: getSamplingMethods,
+            getAnatomicSites: getAnatomicSites,
+            groupPATrialSearchFieldsData: groupPATrialSearchFieldsData,
+            getTrialIdentifierTypes: getTrialIdentifierTypes,
+            searchClinicalTrialsGovIgnoreExists: searchClinicalTrialsGovIgnoreExists,
+            searchNCITrial: searchNCITrial,
+            lookupTrial: lookupTrial,
+            associateTrial: associateTrial,
+            lookupNcitInterventions: lookupNcitInterventions,
+            getInterventionTypes: getInterventionTypes,
+            searchCtrpInterventionsByName: searchCtrpInterventionsByName,
+            updateTrial: updateTrial,
+            getMailLogs: getMailLogs,
+            getTrialCheckoutHistory: getTrialCheckoutHistory,
+            annotateTrialStatusWithNameAndCode: annotateTrialStatusWithNameAndCode,
+            getInternalSources: getInternalSources
         };
 
         return services;
@@ -243,6 +278,10 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
         }
 
+        function getAnatomicSites() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ANATOMIC_SITES);
+        }
+
         function getProcessingStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PROCESSING_STATUSES);
         }
@@ -274,8 +313,15 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.SUBMISSION_METHODS);
         }
 
-        function getExpandedAccessTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
+        function getSiteRecruitementStatuses() {
+            console.log("In getSiteRecruitementStatuses");
+            return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
+        }
+
+        function getInvestigatorTypes() {
+            // TODO: check if hardcoding is OK
+            var investigator_types = [{"name":"Principal Investigator"},{"name":"Sub-Investigator"}];
+            return investigator_types;
         }
 
         // Validation logic for Other Trial Identifier
@@ -283,7 +329,7 @@
             var errorMsg = '';
 
             if (!protocolIdOriginId || !protocolId) {
-                errorMsg = 'Please select a Protocol ID Origin and enter a Protocol ID';
+                errorMsg = 'Select a Protocol ID Origin and enter a Protocol ID';
                 return errorMsg;
             }
             for (var i = 0; i < addedOtherIds.length; i++) {
@@ -322,12 +368,23 @@
         /**
          * Cache the current trial object
          * @param {JSON} trialDetailObj
+         * @param {String} checkoutinFlag, if 'undefined', ignore its checkout record
          */
-        function setCurrentTrial(trialDetailObj) {
+        function setCurrentTrial(trialDetailObj, checkoutinFlag) {
             // trim off unused fields
             delete trialDetailObj.server_response;
             delete trialDetailObj.history;
-            LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
+            curTrial = trialDetailObj;
+
+            // trialDetailObj comes from controllers other than trial overview controller,
+            // the flag is undefined, the checkout record should be retained from trial overview controller
+            if (checkoutinFlag === undefined) {
+                // curTrial = getCurrentTrialFromCache();
+                trialDetailObj.admin_checkout = curTrial.admin_checkout;
+                trialDetailObj.scientific_checkout = curTrial.scientific_checkout;
+            }
+
+            // LocalCacheService.cacheItem('current_trial_object', trialDetailObj);
         }
 
         /**
@@ -335,7 +392,15 @@
          * @return {JSON}
          */
         function getCurrentTrialFromCache() {
-            return LocalCacheService.getCacheWithKey('current_trial_object');
+            // var curTrial = LocalCacheService.getCacheWithKey('current_trial_object');
+
+            _.each(curTrial.participating_sites, function (site) {
+                site.site_rec_status_wrappers = DateService.formatDateArray(site.site_rec_status_wrappers, 'status_date', 'DD-MMM-YYYY');
+            });
+
+            delete curTrial.admin_checkout;
+            delete curTrial.scientific_checkout;
+            return curTrial;
         }
 
         function checkoutTrial(trialId, checkoutType) {
@@ -345,11 +410,12 @@
             return PromiseTimeoutService.getData(url);
         }
 
-        function checkinTrial(trialId, checkinType) {
+        function checkinTrial(trialId, checkinType, commentText) {
             var url = URL_CONFIGS.PA.TRIALS_CHECKOUT_IN.replace('{:trialId}', trialId);
             url = url.replace('{:checkWhat}', 'checkin');
             url = url.replace('{:checkoutType}', checkinType);
-            return PromiseTimeoutService.getData(url);
+            // return PromiseTimeoutService.getData(url);
+            return PromiseTimeoutService.postDataExpectObj(url, {checkin_comment: commentText});
         }
 
         /**
@@ -366,6 +432,258 @@
          */
         function getBoardApprovalStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.BOARD_APPROVAL_STATUSES);
+        }
+
+        function getTrialDocumentTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_DOCUMENT_TYPES);
+        }
+
+        function getAcceptedFileTypesPA() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
+        }
+
+        function getInterventionModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_MODELS);
+        }
+
+        function getMaskings() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.MASKINGS);
+        }
+
+        function getAllocations() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.ALLOCATIONS);
+        }
+
+        function getStudyClassifications() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_CLASSIFICATIONS);
+        }
+
+        function getStudyModels() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.STUDY_MODELS);
+        }
+
+        function getTimePerspectives() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TIME_PERSPECTIVES);
+        }
+
+        function getBiospecimenRetentions() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.BIOSPECIMEN_RETENTIONS);
+        }
+
+        function getGenderList() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.GENDERS);
+        }
+
+        function getAgeUnits() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.AGE_UNITS);
+        }
+
+        function getSamplingMethods() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SAMPLING_METHODS);
+        }
+
+        function getTrialIdentifierTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_ID_TYPES);
+        }
+
+        /**
+         * Search clinical trials, ignoring existing trials even if they have been imported
+         * @param  {String} nctId        NCT trial id
+         * @param  {binary 1 or 0} ignoreExists whether or not ignores the NCT trial has been imported (1 for ignored, 0 for not ignored)
+         * @return {Promise}
+         */
+        function searchClinicalTrialsGovIgnoreExists(nctId) {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_CLINICAL_TRIALS_GOV_IGNORE_EXITS + '?nct_id=' + nctId);
+        }
+
+        function searchCtrpInterventionsByName(cCode) {
+            var url = URL_CONFIGS.PA.SEARCH_CTRP_INTERVENTIONS.replace(/\s*\{.*?\}\s*/g, cCode);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Retrieve email logs sent out for this trialId
+         * @param  {Integer} trialId
+         * @return {Promise}
+         */
+        function getMailLogs(trialId) {
+            var url = URL_CONFIGS.PA.MAIL_LOGS.replace(/\s*\{.*?\}\s*/g, trialId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        function getTrialCheckoutHistory(trialId) {
+            var url = URL_CONFIGS.PA.CHECKOUT_HISTORY.replace(/\s*\{.*?\}\s*/g, trialId);
+            return PromiseTimeoutService.getData(url);
+        }
+
+        /**
+         * Search NCI trial in the database
+         * @param  {String} nciTrialId, trial id that starts with NCI- (e.g. NCI-2014-00894)
+         * @return {Promise}
+         */
+        function searchNCITrial(nciTrialId) {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.SEARCH_NCI_TRIAL + '?nci_id=' + nciTrialId);
+        }
+
+        /**
+         * Get a list of intervention types from CTRP/local database
+         * @return {[Promise resolved to array]} [possible values include 'Device', 'Drug', etc]
+         */
+        function getInterventionTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERVENTION_TYPES);
+        }
+
+        /**
+         * Look up a trial with the given identifier from either NCT or NCI (local database)
+         * @param  {[type]} trialIdentifier [description]
+         * @return {[type]}                 [description]
+         */
+        function lookupTrial(trialIdentifier) {
+            trialIdentifier = trialIdentifier.toUpperCase();
+            if (!!trialIdentifier && trialIdentifier.startsWith('NCT')) {
+                return searchClinicalTrialsGovIgnoreExists(trialIdentifier);
+            } else {
+                return searchNCITrial(trialIdentifier);
+            }
+        }
+
+        /**
+         * Associate a Trial with another trial
+         * @param  {JSON object} associatedTrialObj: fields include 'trial_identifier', 'associated_trial_id',
+         *                       'identifier_type_id', 'official_title', 'research_category_name'
+         * @return {[type]}                    [description]
+         */
+        function associateTrial(associatedTrialObj) {
+            console.info('associating trial: ', associatedTrialObj);
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.ASSOCIATE_TRIAL, associatedTrialObj);
+        }
+
+        function lookupNcitInterventions(searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.NCIT_INTERVENTIONS_LOOKUP, searchParams);
+        }
+
+        /**
+         * Update an existing trial
+         * @param  {[JSON]} trialObj - Trial detail object
+         * @return {[Promise]}
+         */
+        function updateTrial(trialObj) {
+            if (!angular.isDefined(trialObj.id)) {
+                return;
+            }
+            var outerTrial = {};
+            outerTrial.new = false;
+            outerTrial.id = trialObj.id;
+            outerTrial.trial = trialObj;
+            outerTrial.trial.lock_version = getCurrentTrialFromCache().lock_version;
+            return upsertTrial(outerTrial);
+        }
+
+        /**
+         * Convert each trial doc object to a promise for uploading, the doc must be 'active' to be uploaded
+         * @param  {JSON Object} trialDocObj
+         * @param  {Integer} trialId
+         * @return {a single promise}
+         */
+        function prepUploadingTrialRelatedDocs(trialDocObj, trialId) {
+            if (typeof trialDocObj.file === 'object' &&
+                !!trialDocObj.file.size && trialDocObj.status === 'active') {
+                return Upload.upload({
+                    url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
+                    method: 'POST',
+                    data: {
+                        'trial_document[document_type]': trialDocObj.document_type,
+                        'trial_document[document_subtype]': trialDocObj.document_subtype,
+                        'trial_document[trial_id]': trialId,
+                        'trial_document[source_document]': trialDocObj.source_document || 'PA',
+                        'trial_document[file]': trialDocObj.file,
+                        'replaced_doc_id': trialDocObj.replacedDocId || ''  // if not present, use empty string
+                    }
+                });
+            } else {
+                console.log('not file');
+                return null;
+            }
+        }
+
+        function uploadTrialRelatedDocs(trialDocsArr, trialId) {
+            var promises = [];
+            promises = _.map(trialDocsArr, function(trialDocObj) {
+                // console.log('trialDocObj: ', trialDocObj);
+                return prepUploadingTrialRelatedDocs(trialDocObj, trialId);
+            });
+
+            return PromiseTimeoutService.groupPromises(promises);
+        }
+
+        /**
+         * Annotate each trial status with name and code that is found in the provided trialStatusDictArr
+         * @param  {Array} trialStatusArr     [description]
+         * @param  {Array} trialStatusDictArr [description]
+         * @return {Array}                    annotated trial status array
+         */
+        function annotateTrialStatusWithNameAndCode(trialStatusArr, trialStatusDictArr) {
+            var tempStatuses = [];
+            if (!angular.isArray(trialStatusArr) || !angular.isArray(trialStatusDictArr)) {
+                return tempStatuses;
+            }
+            tempStatuses = _.map(trialStatusArr, function(status) {
+                var curStatusObj = _.findWhere(trialStatusDictArr, {id: status.trial_status_id});
+                status.trial_status_name = curStatusObj.name || '';
+                status.trial_status_code = curStatusObj.code || '';
+                status._destroy = false;
+                status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
+                delete status.trial_status; // delete the trial_status object
+                delete status.updated_at;
+                delete status.created_at;
+                return status;
+            }).filter(function(s) {
+                return !s._destroy; // only return active statuses
+            });
+
+            return tempStatuses;
+        } // annotateTrialStatusWithNameAndCode
+
+        /**
+         * Get grouped data objects/arrays for Trial Design,
+         * the ordered array: phases, research_category, primaryPurpose, secondaryPurpose
+         * @return {Array of promises} To be resolved as an array
+         */
+        function groupTrialDesignData() {
+            var promises = [
+                TrialService.getPhases(),
+                TrialService.getResearchCategories(),
+                TrialService.getPrimaryPurposes(),
+                TrialService.getSecondaryPurposes()
+            ];
+            return PromiseTimeoutService.groupPromises(promises);
+        }
+
+        /**
+         * Group the promise calls to return the data/list required
+         * in the PA Trial Search form
+         * @return {Array of promises} [description]
+         */
+        function groupPATrialSearchFieldsData() {
+            var promises = [];
+            promises.push(TrialService.getStudySources());
+            promises.push(TrialService.getPhases());
+            promises.push(TrialService.getPrimaryPurposes());
+            promises.push(TrialService.getTrialStatuses());
+            promises.push(TrialService.getProtocolIdOrigins());
+            promises.push(getMilestones());
+            promises.push(getResearchCategories());
+            promises.push(getNciDiv());
+            promises.push(getNciProg());
+            promises.push(getSubmissionTypes());
+            promises.push(getSubmissionMethods());
+            promises.push(getProcessingStatuses());
+
+            return PromiseTimeoutService.groupPromises(promises);
+        }
+
+        function getInternalSources() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.INTERNAL_SOURCES);
         }
 
     }

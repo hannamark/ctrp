@@ -7,121 +7,15 @@
     angular.module('ctrp.module.dataservices')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'PRIVILEGES', 'URL_CONFIGS', '$rootScope'];
+    UserService.$inject = ['LocalCacheService', 'TrialService', 'PromiseTimeoutService', '$log', '$uibModal',
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS'];
 
-    function UserService(LocalCacheService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, PRIVILEGES, URL_CONFIGS, $rootScope) {
+    function UserService(LocalCacheService, TrialService, PromiseTimeoutService, $log, $uibModal,
+                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
 
+        var service = this;
         var appVersion = '';
         var appRelMilestone = '';
-
-        // Initial User Search Parameters
-        var initUserSearchParams = {
-            username: '',
-            first_name: '',
-            middle_name: '',
-            last_name: '',
-            email: '',
-            phone: '',
-            approved: '',
-            // affiliated_org_name: '',
-
-            //for pagination and sorting
-            sort: 'updated_at',
-            order: 'DESC',
-            rows: 10,
-            start: 1
-        }; //initial User Search Parameters
-
-
-        var gridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            //enableRowSelection: false,
-            paginationPageSizes: [10, 25, 50, 100],
-            paginationPageSize: 10,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableGridMenu: true,
-            enableFiltering: true,
-            enableVerticalScrollbar: 2,
-            enableHorizontalScrollbar: 2,
-            columnDefs: [
-                {
-                    name: 'username',
-                    enableSorting: true,
-                    displayName: 'Username',
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                        ' title="{{COL_FIELD}}">' +
-                        ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                        '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'first_name',
-                    displayName: 'First',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'middle_name',
-                    displayName: 'Middle',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'last_name',
-                    displayName: 'Last',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.userDetail({username : row.entity.username })">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {
-                    name: 'email',
-                    displayName: 'Email',
-                    enableSorting: true,
-                    minWidth: '150',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'phone',
-                    displayName: 'Phone',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {
-                    name: 'approved',
-                    displayName: 'Approval',
-                    enableSorting: true,
-                    minWidth: '100',
-                    width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                }
-            ]
-        };
-
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -149,23 +43,21 @@
 
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
                 .then(function (data) {
-                    console.log('successful login, data returned: ' + JSON.stringify(data));
                     if (data.token) {
                         LocalCacheService.cacheItem('token', data.token);
                         LocalCacheService.cacheItem('username', userObj.user.username);
+                        LocalCacheService.cacheItem('user_id', data.user_id);
                         _setAppVersion(data.app_version);
-                        // LocalCacheService.cacheItem('app_version', data.application_version);
-                        LocalCacheService.cacheItem('user_role', data.role); //e.g. ROLE_SUPER
-                        LocalCacheService.cacheItem('user_type', data.user_type); //e.g. LocalUser
+                        LocalCacheService.cacheItem('user_role', data.role);
+                        LocalCacheService.cacheItem('user_type', data.user_type);
                         //array of write_modes for each area (e.g. pa or po)
                         LocalCacheService.cacheItem('write_modes', data.privileges || []);
-                        LocalCacheService.cacheItem('curation_enabled', false); //default: curation mode is off/false
+                        LocalCacheService.cacheItem('curation_enabled', false);
                         toastr.success('Login is successful', 'Logged In!');
                         Common.broadcastMsg('signedIn');
 
                         $timeout(function () {
                             openGsaModal();
-                           // $state.go('main.gsa');
                         }, 500);
                     } else {
                         toastr.error('Login failed', 'Login error');
@@ -195,7 +87,6 @@
                             $state.go('main.sign_in');
                         }, 200);
                     }
-                    $log.info('success in log out: ' + JSON.stringify(data));
                 }).catch(function (err) {
                     $log.error('error in logging out: ' + JSON.stringify(err));
                 });
@@ -211,28 +102,9 @@
          * @returns Array of JSON objects
          */
         this.searchUsers = function (searchParams) {
-            //toastr.success('Success', 'Successful in UserService, searchUsers');
-            console.log('User searchparams: ' + JSON.stringify(searchParams));
-            // if (!!searchParams) {
-            // toastr.success('Success', 'Successful in UserService, searchUsers');
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
-            // console.log('User List: ' + JSON.stringify(user_list));
             return user_list;
-            // }
         }; //searchUsers
-
-        /**
-         * get initial paramater object for people search
-         * @return initUserSearchParams
-         */
-        this.getInitialUserSearchParams = function () {
-            return initUserSearchParams;
-        }; //getInitialUserSearchParams
-
-
-        this.getGridOptions = function () {
-            return gridOptions;
-        };
 
 
         /**
@@ -240,6 +112,10 @@
          */
         this.getLoggedInUsername = function () {
             return LocalCacheService.getCacheWithKey('username') || '';
+        };
+
+        this.getCurrentUserId = function() {
+            return LocalCacheService.getCacheWithKey('user_id') || null;
         };
 
         /**
@@ -251,10 +127,24 @@
         };
 
         this.getUserDetailsByUsername = function (username) {
-            var username2 = LocalCacheService.getCacheWithKey('username');
-            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username2 + '.json');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
         }; //getUserByName
 
+        this.getCurrentUserDetails = function () {
+            var username = LocalCacheService.getCacheWithKey('username');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_USER + username + '.json');
+        };
+
+        this.userRequestAdmin = function (params) {
+            PromiseTimeoutService.postDataExpectObj('/ctrp/users/request_admin/' + params.username, params)
+                .then(function (data) {
+                    if(data[0].success) {
+                        toastr.success('Success', 'Your Request for Admin Access has been sent.');
+                    } else {
+                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error');
+                    }
+                });
+        };
 
         /**
          * Get the user role of the logged in user
@@ -291,11 +181,11 @@
         };
 
         this.getAppVersion = function () {
-            return LocalCacheService.getCacheWithKey('app_version'); // || appVersion;
+            return LocalCacheService.getCacheWithKey('app_version');
         };
 
         this.getAppRelMilestone = function () {
-            return LocalCacheService.getCacheWithKey('app_rel_milestone'); // || appRelMilestone;
+            return LocalCacheService.getCacheWithKey('app_rel_milestone');
         };
 
         this.getLoginBulletin = function () {
@@ -308,14 +198,13 @@
 
         this.upsertUser = function (userObj) {
             //update an existing user
-            var configObj = {}; //empty config
+            var configObj = {};
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
-        }; //upsertUser
+        };
 
         this.upsertUserSignup = function (userObj) {
             //update an existing user
-            var configObj = {}; //empty config
-            console.log('userObj = ' + JSON.stringify(userObj));
+            var configObj = {};
 
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
                 .then(function (data) {
@@ -343,11 +232,27 @@
         this.upsertUserChangePassword = function (userObj) {
             //update an existing user
             var configObj = {}; //empty config
-            console.log('upsertUserChangePassword userObj = ' + JSON.stringify(userObj));
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_CHANGEPASSWORD, userObj, configObj);
         }; //upsertUserChangePassword
 
+        this.getUserTrialsOwnership = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsOwnership
 
+        this.getUserTrialsSubmitted = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsSubmitted
+
+        this.endUserTrialsOwnership = function (searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_END, searchParams);
+        }; //endUsersTrialsOwnership
+        
+        this.transferUserTrialsOwnership = function (searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_TRANSFER, searchParams);
+        }; //endUsersTrialsOwnership
+        
         /**
          * Check if the curation mode is supported for the user role
          *
@@ -381,12 +286,7 @@
             var objIndex = _.findIndex(writeModesArray, queryObj);
 
             return objIndex > -1;
-
-            // var writeModeObj = writeModesArray[objIndex];
-            // var writeModeObj = _.findWhere(writeModesArray, queryObj);
-            // console.log('found the writeModeObj', writeModeObj);
-            // return writeModeObj[completeSectionNameKey];
-        }
+        };
 
 
         /**
@@ -397,9 +297,143 @@
             LocalCacheService.cacheItem('curation_enabled', curationMode);
         };
 
+        this.getAllOrgUsers = function (searchParams) {
+            service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json', searchParams);
+            return service.allOrgUsers;
+        };
 
+        this.createTransferTrialsOwnership = function (controller, trialIdArr) {
+            service.getAllOrgUsers({
+                    'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
+                    'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id
+            }).then(function (data) {
+                if (controller.showTransferTrialsModal === false) {
+                    controller.showTransferTrialsModal = true;
+                }
+                controller.userOptions = {
+                    title: '',
+                    type: 'users',
+                    filterPlaceHolder: 'Start typing to filter the users below.',
+                    labelAll: 'Unselected Users',
+                    labelSelected: 'Selected Users',
+                    helpMessage: ' Click on names to transfer users between selected and unselected.',
+                    orderProperty: 'name',
+                    resetItems: [],
+                    items: [],
+                    selectedItems: [],
+                    openModal: controller.showTransferTrialsModal,
+                    showSave: controller.showTransferTrialsModal,
+                    confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
+                    close: function () {
+                        controller.showTransferTrialsModal = false;
+                    },
+                    reset: function () {
+                        controller.userOptions.searchTerm = '';
+                        controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
+                        controller.userOptions.selectedItems = [];
+                    },
+                    save: function () {
+
+                        var searchParams = {
+                            from_user_id: controller.userDetails.id,
+                            transfers: []
+                        };
+                        var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
+                        if (trialIdArr && trialIdArr.length){
+                            _.each(user_ids, function(user_id) {
+                                _.each(trialIdArr, function (trial_id) {
+                                    searchParams.transfers.push({'user_id': user_id, 'trial_id': trial_id});
+                                });
+                            });
+                            searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value();
+                        } else {
+                            _.each(user_ids, function(user_id) {
+                                searchParams.transfers.push({'user_id': user_id});
+                            });
+                        }
+
+                        service.transferUserTrialsOwnership(searchParams).then(function (data) {
+                            if(data.results === 'success') {
+                                toastr.success('Trial Ownership Transferred', 'Success!');
+                                if (controller.passiveTransferMode) {
+                                    controller.passiveTransferMode = false;
+                                    controller.updateUser(controller.checkForOrgChange());
+                                } else {
+                                    controller.getUserTrials();
+                                }
+                            }
+                        });
+                    }
+                };
+                _.each(data.users, function (user) {
+                    if(user.id !== (controller.userDetails ? controller.userDetails.id : null)) {
+                        controller.userOptions.items.push({
+                            'id': user.id,
+                            'col1': user.last_name + ', ' + user.first_name,
+                            'col2': user.email,
+                            'col3': user.organization_name
+                        });
+                    }
+                });
+                controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
+            });
+        };
+        
+        this.TransferTrialsGridMenuItems = function (scope, controller) {
+            var menuArr =
+                [
+                    {
+                        title: 'Add Ownership of Trials',
+                        order: 1,
+                        action: function ($event) {
+                            scope.showSelectedTrialsModal = true;
+                            TrialService.createTransferTrialsOwnership(controller);
+                        }
+                    },
+                    {
+                        title: 'Transfer Trial Ownership for All Trials',
+                        order: 2,
+                        action: function (){
+                            service.createTransferTrialsOwnership(controller);
+                        }
+                    },
+                    {
+                        title: 'Transfer Ownership for Selected Trials',
+                        order: 3,
+                        shown: function () {
+                            return controller.gridApi.selection.getSelectedRows().length > 0
+                        },
+                        action: function (){
+                            service.createTransferTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value());
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of All Trials',
+                        order: 4,
+                        action: function (){
+                            controller.confirmRemoveTrialsOwnerships();
+                        }
+                    },
+                    {
+                        title: 'Remove Ownership of Selected Trials',
+                        order: 5,
+                        shown: function () {
+                            return controller.gridApi.selection.getSelectedRows().length > 0
+                        },
+                        action: function (){
+                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                        }
+                    }
+                ];
+            var curUserRole = service.getUserRole();
+            return (service.isCurationModeEnabled()
+                        && (curUserRole === 'ROLE_SUPER'
+                                || curUserRole === 'ROLE_ADMIN'
+                                    || curUserRole === 'ROLE_ACCOUNT-APPROVER'
+                                        || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
+        };
+        
         /******* helper functions *********/
-
         function _setAppVersion(version) {
             if (!version) {
                 //if null or empty value
@@ -427,7 +461,6 @@
         }
 
         function openGsaModal() {
-            console.log('1 st openning modal instance???');
 
             (function() {
                 var modalInstance = $uibModal.open({
@@ -439,14 +472,13 @@
                         UserService: 'UserService',
                         gsaObj: function (UserService) {
                             return UserService.getGsa();
-                        },
+                        }
                     }
 
                 });
 
-
                 modalInstance.result.then(function () {
-                    console.log('modal closed, TODO redirect');
+                    //console.log('modal closed, TODO redirect');
                 });
             })();
 

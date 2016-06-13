@@ -27,10 +27,17 @@ class SessionsController < Devise::SessionsController
       end
 
       user = User.custom_find_by_username(request.params['user']["username"])
-      if user.blank?
+
+      if user.blank? || user.user_status_id != UserStatus.find_by_code('ACT').id
         error_text = "The User does not exist in the database as an LdapUser or a LocalUser"
         self.raise_login_failed(error_text)
       end
+
+      if user.role == "ROLE_SERVICE-REST"
+        error_text = "This User role does not have access to UI"
+        self.raise_login_failed(error_text)
+      end
+
 
       ## Print informational login messages
       user.log_debug

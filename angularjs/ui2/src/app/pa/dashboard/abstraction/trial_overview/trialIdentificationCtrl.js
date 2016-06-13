@@ -9,19 +9,23 @@
     .controller('trialIdentificationCtrl', trialIdentificationCtrl);
 
     trialIdentificationCtrl.$inject = ['$scope', 'TrialService', 'MESSAGES',
-        '$timeout', '_', 'PATrialService', 'toastr'];
+        '$timeout', '_', 'PATrialService', 'toastr', 'UserService'];
 
     function trialIdentificationCtrl($scope, TrialService, MESSAGES,
-        $timeout, _, PATrialService, toastr) {
+        $timeout, _, PATrialService, toastr, UserService) {
         var vm = this;
         vm.trialProcessingObj = {comment: '', priority: ''};
         vm.saveProcessingInfo = saveProcessingInfo;
         vm.resetView = resetView;
+        var USER_ROLES_ALLOWD = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_ABSTRACTOR-SU', 'ROLE_ABSTRACTOR'];
+        var curUserRole = UserService.getUserRole();
+        vm.isFieldEditable = _.contains(USER_ROLES_ALLOWD, curUserRole);
         vm.priorities = [
             {id: 1, name: 'High'},
             {id: 2, name: 'Normal'},
             {id: 3, name: 'Low'},
         ];
+        vm.disableBtn = false;
 
         activate();
 
@@ -53,22 +57,28 @@
         function saveProcessingInfo() {
             //console.log('processing info: ', vm.trialProcessingObj);
             var updatedTrial = PATrialService.getCurrentTrialFromCache();
-            console.log('processing, lock_version: ' + updatedTrial.lock_version);
             //angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
             updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
-            console.log('updated trial: ', updatedTrial);
+
+            vm.disableBtn = true;
 
             TrialService.upsertTrial(updatedTrial).then(function(res) {
-                console.log('priority and commented updated: ', res);
-                updatedTrial.lock_version = res.lock_version;
-                PATrialService.setCurrentTrial(updatedTrial);
-                $scope.$emit('updatedInChildScope', {});
-                toastr.clear();
-                toastr.success('Trial processing information has been recorded', 'Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    // console.log('priority and commented updated: ', res);
+                    updatedTrial.lock_version = res.lock_version;
+                    PATrialService.setCurrentTrial(updatedTrial);
+                    // $scope.$emit('updatedInChildScope', {});
+                    toastr.clear();
+                    toastr.success('Trial processing information has been recorded', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         }
 

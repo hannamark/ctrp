@@ -37,7 +37,7 @@ Feature: Reg F10 Register Trial Grant Information
       |Institutional             |
 
 
-
+  @runthis
   Scenario Outline: #3 I can enter the NCI Grant information for multiple Grants for a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Grant Information screen
@@ -48,6 +48,8 @@ Feature: Reg F10 Register Trial Grant Information
     Examples:
       |trialType                 |
       |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
 
 
   Scenario Outline: #4 I must enter Trial Grant Information for a Trial
@@ -57,7 +59,7 @@ Feature: Reg F10 Register Trial Grant Information
     And I have not selected the Institute Code from the drop down list
     And I have not entered a Trial Serial Number
     And I have not selected a NCI Division/Program Code from the drop down list
-    Then the Register Trial Grant Information section will indicate the error "Grant is required"
+    Then the Register Trial Grant Information section will indicate the error "Grant is Required"
 
     Examples:
       |trialType                 |
@@ -76,7 +78,7 @@ Feature: Reg F10 Register Trial Grant Information
       |Serial Number  |
       |NCI Division/Program Code  |
     When I have clicked on the ADD button to add a grant
-    Then A message will be displayed "Please select a Funding Mechanism, Institute Code, enter a Serial Number and select a NCI Division/Program Code"
+    Then A message will be displayed "Funding Mechanism, Institute Code,Serial Number and NCI Division/Program Code are Required"
 
     Examples:
       |trialType                 |

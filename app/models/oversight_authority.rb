@@ -16,7 +16,7 @@
 #  index_oversight_authorities_on_trial_id  (trial_id)
 #
 
-class OversightAuthority < ActiveRecord::Base
+class OversightAuthority < TrialBase
   include BasicConcerns
 
   belongs_to :trial

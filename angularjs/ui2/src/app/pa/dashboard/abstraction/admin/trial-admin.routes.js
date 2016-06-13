@@ -145,9 +145,15 @@
                     trialDetailObj: function($stateParams, TrialService) {
                         return TrialService.getTrialById($stateParams.trialId);
                     },
-                    fundingMechanismObj: function(TrialService) {
-                        return TrialService.getFundingMechanisms();
+                    siteRecruitmentStatusesObj: function(PATrialService) {
+                        return PATrialService.getSiteRecruitementStatuses();
                     },
+                    investigatorTypes: function(PATrialService) {
+                        return PATrialService.getInvestigatorTypes();
+                    },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
+                    }
                 },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
@@ -199,6 +205,25 @@
                     ncyBreadcrumb: {
                         parent: 'main.pa.trialOverview',
                         label: 'NCI Specific Information'
+                    }
+                })
+                .state('main.pa.trialOverview.paTrialRelatedDocs', {
+                    url: '/trial-related-documents',
+                    templateUrl: 'app/pa/dashboard/abstraction/admin/pa_trial_related_docs.html',
+                    controller: 'paTrialRelatedDocsCtrl as trialRelatedDocsView',
+                    resolve: {
+                        PATrialService: 'PATrialService',
+                        acceptedFileTypesObj: function(PATrialService) {
+                            return PATrialService.getAcceptedFileTypesPA();
+                        },
+                        documentTypes: function(PATrialService) {
+                            return PATrialService.getTrialDocumentTypes();
+                        }
+                    },
+                    section: 'pa',
+                    ncyBreadcrumb: {
+                        parent: 'main.pa.trialOverview',
+                        label: 'Trial Related Documents'
                     }
                 });
 

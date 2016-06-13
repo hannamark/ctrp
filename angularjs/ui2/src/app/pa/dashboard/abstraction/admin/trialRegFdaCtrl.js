@@ -24,10 +24,14 @@
         vm.selectedIaArray = [];
         vm.selectedFsArray = [];
         vm.addedAuthorities = [];
+        //vm.selectedAuthority = false;
         vm.indIdeNum = 0;
+        vm.toaNum = 0;
         vm.sponsor_id = null;
         vm.showSponsor = false;
         vm.sponsorName = "";
+        vm.disableBtn = false;
+
         for (var i = 0; i < responsiblePartyObj.length; i++) {
             if (responsiblePartyObj[i].code == "SPONSOR") {
                 vm.sponsor_id = responsiblePartyObj[i].id;
@@ -46,9 +50,22 @@
             $state.go($state.$current, null, { reload: true });
         };
 
+
+
+        vm.deleteAllAuthorities  = function () {
+            if (vm.authoritiesDestroyAll) {
+                vm.authoritiesDestroyAll = false;
+            } else {
+                vm.authoritiesDestroyAll = true;
+            }
+            angular.forEach(vm.addedAuthorities, function (item) {
+                item._destroy = vm.authoritiesDestroyAll;
+            });
+        };
         vm.updateTrial = function() {
-            // Prevent multiple submissions
-            vm.disableBtn = true;
+            if ((!vm.curTrial.responsible_party_id) || (!vm.toaNum || vm.toaNum <= 0)) {
+                return;
+            }
 
             if (vm.selectedPiArray.length > 0) {
                 vm.curTrial.pi_id = vm.selectedPiArray[0].id;
@@ -70,34 +87,46 @@
 
             if (vm.addedAuthorities.length > 0) {
                 vm.curTrial.oversight_authorities_attributes = [];
+                //console.log("HIIIII added authorities =" + JSON.stringify(vm.addedAuthorities));
                 _.each(vm.addedAuthorities, function (authority) {
                     vm.curTrial.oversight_authorities_attributes.push(authority);
                 });
+                vm.selectedAuthority = true;
+            } else {
+                vm.selectedAuthority = false;
             }
+
+            vm.disableBtn = true;
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
             outerTrial.new = vm.curTrial.new;
             outerTrial.id = vm.curTrial.id;
             outerTrial.trial = vm.curTrial;
-
+            // get the most updated lock_version
+            outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
 
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                //toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-                vm.curTrial.lock_version = response.lock_version || '';
-                vm.curTrial.responsible_party_id = response["responsible_party_id"];
-                vm.curTrial.responsible_party = response["responsible_party"];
-                vm.curTrial.investigator_aff_id = response["investigator_aff_id"];
-                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                $scope.$emit('updatedInChildScope', {});
+                var status = response.server_response.status;
 
-                toastr.clear();
-                toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial = response;
+                    vm.addedAuthorities = vm.curTrial.oversight_authorities;
+                    //console.log("2HIIIII oversight_authorities =" + JSON.stringify(vm.curTrial.oversight_authorities));
+
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+
+                    toastr.clear();
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+                }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
 
 
@@ -114,7 +143,11 @@
                         vm.toaNum++;
                     }
                 }
+                 if(vm.toaNum <= 0){
+                     vm.selectedAuthority = false;
+                 }
             }
+            vm.authoritiesDestroyAll = false;
         };// toggleSelection
 
 
@@ -134,9 +167,12 @@
                 vm.authorityOrgArr = [];
                 vm.addAuthorityError = '';
                 vm.showAddAuthorityError = false;
+                vm.authoritiesDestroyAll = false;
+                //vm.selectedAuthority = true;
             } else {
                 vm.addAuthorityError = errorMsg;
                 vm.showAddAuthorityError = true;
+                //vm.selectedAuthority = false;
             }
         };
 
@@ -161,8 +197,19 @@
         });
 
 
+        // Scenario 6: I have selected "No" for FDA Regulated Intervention Indicator
+        // And the number of Authorities > 0
+        // Then the required Regulatory Information for the trial will be associated
+        // And the Section 801 Indicator will be set to "No"
+        vm.checkIndicatorValue = function(value) {
+            if(value == "No" && (vm.addedAuthorities.length > 0)){
+                vm.curTrial.sec801_indicator = "No";
+            }
+        }
+
         vm.watchOption = function(type) {
             if (type == 'responsible_party') {
+                vm.showSponsor = false;
                 var piOption = vm.responsiblePartyArr.filter(findPiOption);
                 var siOption = vm.responsiblePartyArr.filter(findSiOption);
                 if (piOption[0].id == vm.curTrial.responsible_party_id) {
@@ -195,6 +242,12 @@
                 }
             }  else if (type == 'authority_country') {
                 vm.authority_org = '';
+                /*
+                if(vm.addedAuthorities.length > 0){
+                    vm.selectedAuthority = true;
+                } else {
+                    vm.selectedAuthority = false;
+                }*/
                 vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
             }
         };

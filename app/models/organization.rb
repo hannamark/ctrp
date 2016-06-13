@@ -42,7 +42,7 @@ class Organization < ActiveRecord::Base
   has_many :users
   belongs_to :source_status
   belongs_to :source_context
-  belongs_to :source_cluster
+ # belongs_to :source_cluster
   has_many :trial_funding_sources
   has_many :fs_trials, through: :trial_funding_sources, source: :trial
   has_many :trial_co_lead_orgs
@@ -59,6 +59,8 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :name_aliases, allow_destroy: true
 
   validates :name, presence: true
+  ##validates_length_of :name, :in => 5..255
+
   validates :address, presence: true
   validates :city, presence: true
 
@@ -328,6 +330,10 @@ class Organization < ActiveRecord::Base
     else
       joins(:families).where("families.name ilike ?", "#{value}")
     end
+  }
+
+  scope :without_family, -> () {
+    joins("LEFT OUTER JOIN family_memberships on organizations.id = family_memberships.organization_id").where("family_memberships.family_id is null")
   }
 
   scope :sort_by_col, -> (column, order) {

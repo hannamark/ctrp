@@ -10,6 +10,7 @@ var expect = require('chai').expect;
 var util = require('util');
 var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
+var assert = require('assert');
 
 
 /**
@@ -106,6 +107,12 @@ var helper = function() {
         }
     };
 
+    this.clickButtonByIndex = function (button, index, errorMessage){
+        this.wait(button.get(index), errorMessage);
+        button.get(index).click();
+        console.log(errorMessage + " was clicked");
+    };
+
     this.clickButtonNoHeader = function (button, errorMessage){
         this.wait(button, errorMessage);
         button.click();
@@ -129,7 +136,55 @@ var helper = function() {
             console.log(errorMessage + " was clicked");
             expect(button.get(1).isSelected()).to.eventually.equal(true);
         }
+        else if (value === '2') {
+            button.get(2).click();
+            console.log(errorMessage + " was clicked");
+            expect(button.get(2).isSelected()).to.eventually.equal(true);
+        }
+        else {
+            assert.fail(value, '0 OR 1 OR 2 OR Yes OR No OR Actual OR Anticipated', 'Value -- ' + value + ' --' + ' not found as Radio option button');
+        }
     };
+
+    this.setUploadedFile = function (fieldName, fieldValue, getFileNm, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        //fieldName.clear();
+        fieldName.sendKeys(fieldValue);
+        if(fieldValue == '[object Object]'){
+            var store = fieldName.getAttribute('value');
+            getFileNm.then(function(value){
+                console.log(errorMessage + ' ' + value + " Value entered");
+                expect(store).to.eventually.equal(value);});
+        }
+        else {
+            console.log(errorMessage + ' ' + fieldValue + " Value entered");
+            expect(fieldName.getAttribute('value')).to.eventually.equal((getFileNm));
+        }
+    };
+
+    this.setCommentValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.clear();
+        fieldName.sendKeys(fieldValue);
+    };
+
+    this.setReadOnlyFieldValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.sendKeys(fieldValue);
+
+        //if(fieldValue == '[object Object]'){
+        //    var store = fieldName.getAttribute('value');
+        //    fieldValue.then(function(value){
+        //        console.log(errorMessage + ' ' + value + " Value entered");
+        //        expect(store).to.eventually.equal(value);});
+        //}
+        //else {
+        //    console.log(errorMessage + ' ' + fieldValue + " Value entered");
+        //    expect(fieldName.getAttribute('value')).to.eventually.equal((fieldValue));
+        //}
+
+    };
+
 
     this.getValue = function (fieldName, errorMessage) {
         this.wait(fieldName, errorMessage);
@@ -149,6 +204,12 @@ var helper = function() {
         console.log(errorMessage + " - Got value");
     };
 
+    this.getVerifyRadioSelection = function(button, fieldValue, errorMessage){
+        this.wait(button, errorMessage);
+        expect(button.get(fieldValue).isSelected()).to.eventually.equal(true);
+        console.log(errorMessage + " - Got value");
+    }
+
     this.getVerifyheader = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         expect(fieldName.getText()).to.eventually.equal(fieldValue);
@@ -164,7 +225,7 @@ var helper = function() {
     this.getVerifyLabel= function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         expect(fieldName.getText()).to.eventually.equal(fieldValue);
-        console.log(errorMessage + " - Required field value");
+        console.log(errorMessage + " - field value");
     };
 
     this.verifyElementPresents =function (fieldName, fieldValueTrueOrFalse) {
@@ -174,6 +235,11 @@ var helper = function() {
     this.verifyElementDisplayed =function (fieldName, fieldValueTrueOrFalse) {
         expect(fieldName.isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
     };
+
+    this.verifyElementDisplayedByIndex =function (fieldName, index, fieldValueTrueOrFalse) {
+        expect(fieldName.get(index).isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
+    };
+
 
     this.verifyTableRowText = function (tbleRowIdentifier, expectedTblRwVal, errorMessage) {
         this.wait(tbleRowIdentifier, errorMessage);
@@ -307,13 +373,6 @@ var helper = function() {
                 retTextAndSelectedValue = retTxtVal();
                 console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
                 actualVal = ''+ retTextAndSelectedValue +'';
-                console.log('************************************');
-                console.log('************************************');
-                console.log('Expected value:['+ expectedVal +']');
-                console.log('************************************');
-                console.log('Actual value:['+ actualVal +']');
-                console.log('************************************');
-                console.log('************************************');
                 if (expectedVal === retTextAndSelectedValue){
                     expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
@@ -345,13 +404,6 @@ var helper = function() {
                 retTextAndSelectedValue = retTxtVal();
                 console.log('retTextAndSelectedValue['+ retTextAndSelectedValue +']');
                 actualVal = ''+ retTextAndSelectedValue +'';
-                console.log('************************************');
-                console.log('************************************');
-                console.log('Expected value:['+ expectedVal +']');
-                console.log('************************************');
-                console.log('Actual value:['+ actualVal +']');
-                console.log('************************************');
-                console.log('************************************');
                 if (expectedVal === retTextAndSelectedValue){
                     expect(obj.$('option:checked').getText()).to.eventually.equal(expectedVal);
                     console.log('Successfully verified the expected value:['+ expectedVal +'] with the actual value:['+ retTextAndSelectedValue +'], Test steps PASSED');
@@ -367,6 +419,35 @@ var helper = function() {
                 };
             });
         };
+    };
+
+    this.waitNonAngularPage = function (element, label) {
+        browser.driver.wait(function () {
+            return browser.driver.isElementPresent(element).then(function (state) {
+                if (state === true) {
+                    return  browser.driver.findElement(element).isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, label + " did not appear");
+        browser.sleep(250);
+    };
+
+    this.setValueNonAngularPage = function (fieldName, fieldValue, errorMessage) {
+        this.waitNonAngularPage(fieldName, errorMessage);
+        browser.driver.findElement(fieldName).clear();
+        browser.driver.findElement(fieldName).sendKeys(fieldValue);
+        console.log(errorMessage + ' ' + fieldValue + " Value entered");
+        expect(browser.driver.findElement(fieldName).getAttribute('value')).to.eventually.equal((fieldValue));
+    };
+
+    this.clickButtonNonAngularPage = function (button, errorMessage) {
+        this.waitNonAngularPage(button, errorMessage);
+        browser.driver.findElement(button).click();
+        console.log(errorMessage + " was clicked");
     };
 
 

@@ -40,7 +40,7 @@ grant27 = Tempgrants.find_or_create_by(serial_number: 97131, institution_name:'U
 
 ## Central Contact Types
 contact_type1 = CentralContactType.find_or_create_by(code: 'NONE', name: 'None')
-contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'PI')
+contact_type2 = CentralContactType.find_or_create_by(code: 'PI', name: 'Site Investigator')
 contact_type3 = CentralContactType.find_or_create_by(code: 'PERSON', name: 'Person')
 contact_type4 = CentralContactType.find_or_create_by(code: 'GENERAL', name: 'General')
 
@@ -62,8 +62,9 @@ if Trial.all.size == 0
   ## Reading and importing Trial related spreadsheets
   puts "...Parsing trial spreadsheet"
   DataImport.import_trials
-  puts "...Parsing milestone spreadsheet"
-  DataImport.import_milestones
+  # Temporarily commenting out import of Milestons
+  #puts "...Parsing milestone spreadsheet"
+  #DataImport.import_milestones
   puts "...Parsing participating sites spreadsheet"
   DataImport.import_participating_sites
 end

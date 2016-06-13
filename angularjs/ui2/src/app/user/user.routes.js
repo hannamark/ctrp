@@ -45,16 +45,20 @@
                     resolve: {
                         UserService: 'UserService'
                     },
-                ncyBreadcrumb: {
-                    parent: '',
-                    label: 'CTRP Sign Up'
-                    // skip: true,
-                }
+                    ncyBreadcrumb: {
+                        parent: 'main.sign_in',
+                        label: 'CTRP Sign Up'
+                        // skip: true,
+                    }
                 })
-
                 .state('main.welcome_signup', {
                     url: '/welcome_signup',
-                    templateUrl: 'app/user/welcome_signup.html'
+                    templateUrl: 'app/user/welcome_signup.html',
+                    ncyBreadcrumb: {
+                        parent: 'main.sign_in',
+                        label: 'CTRP Welcome'
+                        // skip: true,
+                    }
                 })
 
                 .state('main.gsa', {
@@ -74,9 +78,50 @@
                     templateUrl: 'app/user/user_list.html',
                     controller: 'userListCtrl as userView',
                     resolve: {
-                        UserService: 'UserService'
+                        UserService: 'UserService',
+                        userDetailObj: function(UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'User Management'
                     }
                 })
+
+                .state('main.assignTrials', {
+                    url: '/assign-trial-ownership',
+                    templateUrl: 'app/user/assign_trials_user_list.html',
+                    controller: 'userAssignTrialCtrl as trialOwnershipView',
+                    resolve: {
+                        UserService: 'UserService',
+                        TrialService: 'TrialService',
+                        userDetailObj: function(UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.users',
+                        label: 'Assign Trial Ownership'
+                    }
+                })
+
+                .state('main.registeredUsers', {
+                    url: '/registered-users',
+                    templateUrl: 'app/user/user_list.html',
+                    controller: 'userListCtrl as userView',
+                    resolve: {
+                        UserService: 'UserService',
+                        userDetailObj: function(UserService) {
+                            return UserService.getCurrentUserDetails();
+                        }
+                    },
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'Registered CTRP Users'
+                    }
+                })
+
                 .state('main.changePassword', {
                     url: '/change_password',
                     templateUrl: 'app/user/changePassword.html',
@@ -89,8 +134,29 @@
                     }
                 })
 
+                .state('main.regUserDetail', {
+                    url: '/reg-user-detail/:username',
+                    templateUrl: 'app/user/regUserDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
+                    resolve: {
+                        UserService: 'UserService',
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        },
+                        userDetailObj : function(UserService, $stateParams) {
+                            return UserService.getUserDetailsByUsername($stateParams.username);
+                        }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.registeredUsers',
+                        label: 'User Profile'
+                    }
+                })
+
                 .state('main.userDetail', {
-                    url: '/userDetail/username',
+                    url: '/user-detail/:username',
                     templateUrl: 'app/user/userDetails.html',
                     controller: 'userDetailCtrl as userDetailView',
                     section: 'user',
@@ -100,11 +166,12 @@
                         countryList : function(GeoLocationService) {
                             return GeoLocationService.getCountryList();
                         },
-                        userDetailObj : function(UserService) {
-                            return UserService.getUserDetailsByUsername();
+                        userDetailObj : function(UserService, $stateParams) {
+                            return UserService.getUserDetailsByUsername($stateParams.username);
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
                         label: 'User Profile'
                     }
                 });

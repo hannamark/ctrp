@@ -13,22 +13,22 @@ Scenario: #2 I can add and edit Regulatory IND or IDE Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
 And I have selected "Yes" where the question "Does this trial have an associated IND/IDE?"
-When I have selected the IND/IDE Type from a list
+When selected the IND/IDE Type from a list (Required)
 |-Select-|
 |IND|
 |IDE|
-And I have entered the IND/IDE number
-And I have selected the IND/IDE Grantor from a list based on IND or IDE selected
+And entered the IND/IDE number (Required)
+And selected the IND/IDE Grantor from a list based on IND or IDE selected (Required)
 |IND:-Select-,CDER,CBER|
 |IDE:-Select-,CDRH,CBER|
-And I have selected the IND/IDE Holder Type from a list
+And selected the IND/IDE Holder Type from a list (Required)
 |-Select-|
 |Investigator|
 |Organization|
 |Industry|
 |NIH|
 |NCI|
-And I have selected the NIH Institution or NCI Division/Program Code from a list
+And selected the NCI Division/Program  from a list (Required when IND/IDE Holder Type is "NIH" or "NCI")
 |NIH Values Below:|
 |NEI-National Eye Institute|
 |NHLBI-National Heart, Lung, and Blood Institute|
@@ -80,15 +80,15 @@ Scenario: #3 I can add and edit Regulatory IND and IDE information for multiple 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
 And I have selected "Yes" for the IND/IDE question "Does this trial have an associated IND/IDE?"
-When I have entered the information for an IND or IDE
-Then I will be able to select "Add IND/IDE" and enter the information for multiple IND/IDEs
+When I entered the information for an IND or IDE
+Then I am able to select "Add IND/IDE" and enter the information for multiple IND/IDEs
 
 Scenario: #4 I can remove Regulatory IND and IDE information for one or more IND or IDE registrations for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
 And I have selected "Yes" for the IND/IDE question "Does this trial have an associated IND/IDE?"
 When I have selected the IND or IDE
-Then I will be able to remove the IND or IDE information for one or more INDs or IDEs
+Then I am able to remove the IND or IDE information for one or more INDs or IDEs
 
 Scenario: #5 Save Regulatory Information
 Given I am logged into the CTRP Protocol Abstraction application
@@ -107,26 +107,31 @@ Scenario Outline: #7 Regulatory IND or IDE Information must be complete
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information (IND/IDE) screen
 And I have selected conditions for the question <Does this trial have an associated IND or IDE>
-When I have selected values the <IND IDE Type>
-And I have entered the <IND IDE number>
-And I have selected the <IND IDE Grantor>
-And I have selected the <IND IDE Holder Type>
-And I have selected the <NIH Institution or NCI Division or Program>
+When selected values the <IND IDE Type>
+And entered the <IND IDE number>
+And I am able to select Grantor as <IND IDE Grantor>
+And I am able to select Holder Type as <IND IDE Holder Type>
+And I am able to select NCI Division /Program as <NCI Division / Program>
 And selected Save
-Then the system will display a warning <Message> that each of values that were not entered must be entered in order to associate the IND/IDE Information for the trial
+Then the system will display an Error <Message> that each of values that were not entered must be entered in order to associate the IND/IDE Information for the trial
 
 Examples:
-|Does this trial have an associated IND or IDE|IND IDE Type |IND IDE number|IND IDE Grantor|IND IDE Holder Type |NIH Institution or NCI Division or Program|Message|
+|Does this trial have an associated IND or IDE|IND IDE Type |IND IDE number|IND IDE Grantor|IND IDE Holder Type |NCI Division/Program|Message|
 |No|null|null|null|null|null|null|
 |Yes|IND|77782|CDER|Investigator|null|null|
 |Yes|IND|77782|CDER|NCI|CTEP|null|
 |Yes|IND|77782|CDER|NIH|NLM-National Library of Medicine|null|
-|Yes|IND|77782|CDER|NCI|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
-|Yes|IND|77782|CDER|null|null|Warning - The NIH Institution/NCI Division/Program Code is Required|
-|Yes|IND|77782|CDER|null|null|Warning - The NIH  is Required|
-|Yes|IND|77782|null|NCI|null|Warning - The IND/IDE Holder Type is Required|
-|Yes|IND|null|CDER|NCI|CTEP|Warning - IND/IDE number is Required|
-|Yes|null|77782|CDER|NCI|CTEP|Warning - IND/IDE Type is Required|
+|Yes|IND|77782|CDER|null|null|Error - The IND IDE Holder Type is Required|
+|Yes|IND|77782|null|NCI|CTEP|Error - The IND IDE Grantor is Required|
+|Yes|IND|null|CDER|NCI|CTEP|Error - The IND IDE number is Required|
+|Yes|IND|77782|null|null|null|Error - The IND IDE Grantor, The IND IDE Holder Type are Required |
+|Yes|IND|77782|CDER|NCI|null|Error - The NCI Division/Program is Required|
+|Yes|null|77782|null|null|null|Error - The IND/IDE Type, IND Grantor, IND IDE Holder Type are Required|
+
+
+
+
+
 
 
 

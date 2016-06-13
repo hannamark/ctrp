@@ -9,10 +9,10 @@
         .factory('TrialService', TrialService);
 
     TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
-        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http'];
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http', 'toastr', 'PromiseService'];
 
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
-            PromiseTimeoutService, Upload, HOST, DateService, $http) {
+            PromiseTimeoutService, Upload, HOST, DateService, $http, toastr, PromiseService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -22,63 +22,6 @@
             start: 1
         }; //initial Trial Search Parameters
 
-        var actionTemplate = '<div ng-if="row.entity.actions.length > 0" class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
-            + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-            + 'Action <span class="caret"></span>'
-            + '</button>'
-            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
-            + '<a ng-if="action == \'add-my-site\'">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action != \'add-my-site\'" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '</li></ul>'
-            + '</div>';
-
-        var gridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            enableRowSelection: true,
-            enableRowHeaderSelection: true,
-            paginationPageSizes: [20, 50, 100],
-            paginationPageSize: 20,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableGridMenu: true,
-            enableFiltering: true,
-            columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'phase', enableSorting: true, minWidth: '70', width: '70'},
-                {name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'},
-                {name: 'pilot', enableSorting: true, minWidth: '60', width: '60'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'study_source', enableSorting: true, minWidth: '170', width: '170',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '170',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '100',
-                    cellTemplate: actionTemplate, cellClass: 'action-btn'
-                }
-
-            ]
-        };
 
         var services = {
             getAllTrials: getAllTrials,
@@ -87,7 +30,6 @@
             searchTrials: searchTrials,
             searchTrialsPa: searchTrialsPa,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
-            getGridOptions: getGridOptions,
             getStudySources: getStudySources,
             getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
@@ -100,22 +42,38 @@
             getInstituteCodes: getInstituteCodes,
             getNci: getNci,
             getTrialStatuses: getTrialStatuses,
+            getSrStatuses: getSrStatuses,
             getTrialStatusById: getTrialStatusById,
             getMilestones: getMilestones,
+            getOnholdReasons: getOnholdReasons,
             getHolderTypes: getHolderTypes,
             getNih: getNih,
-            getExpandedAccessTypes: getExpandedAccessTypes,
-            getAcceptedFileTypes: getAcceptedFileTypes,
+            getAcceptedFileTypesForRegistry: getAcceptedFileTypesForRegistry,
             getAuthorityOrgArr: getAuthorityOrgArr,
             checkOtherId: checkOtherId,
             checkAuthority: checkAuthority,
             addStatus: addStatus,
             validateStatus: validateStatus,
+            validateMilestone: validateMilestone,
+            validateSrStatus: validateSrStatus,
             searchClinicalTrialsGov: searchClinicalTrialsGov,
             importClinicalTrialsGov: importClinicalTrialsGov,
             uploadDocument: uploadDocument,
             deleteTrial: deleteTrial,
-            getGrantsSerialNumber: getGrantsSerialNumber
+            getGrantsSerialNumber: getGrantsSerialNumber,
+            upsertParticipatingSite: upsertParticipatingSite,
+            getParticipatingSiteById: getParticipatingSiteById,
+            deleteParticipatingSite: deleteParticipatingSite,
+            upsertOutcomeMeasure: upsertOutcomeMeasure,
+            deleteOutcomeMeasure: deleteOutcomeMeasure,
+            getOutcomeMeasureTypes:getOutcomeMeasureTypes,
+            getAssayTypes:getAssayTypes,
+            getEvaluationTypes:getEvaluationTypes,
+            getSpecimenTypes:getSpecimenTypes,
+            getBiomarkerPurposes:getBiomarkerPurposes,
+            getBiomarkerUses:getBiomarkerUses,
+            createTransferTrialsOwnership: createTransferTrialsOwnership
+
         };
 
         return services;
@@ -174,7 +132,7 @@
         } //searchTrials
 
         function getGrantsSerialNumber(searchParams) {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);            
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.GET_GRANTS_SERIALNUMBER, searchParams);
         } // getGrantsSerialNumber
         /**
          * get initial paramater object for trials search
@@ -183,10 +141,6 @@
         function getInitialTrialSearchParams() {
             return initTrialSearchParams;
         } //getInitialTrialSearchParams
-
-        function getGridOptions() {
-            return gridOptions;
-        }
 
         /**
          * A helper function:
@@ -246,14 +200,77 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_STATUSES);
         }
 
+        function getSrStatuses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SITE_RECRUITMENT_STATUSES);
+        }
+
         function getTrialStatusById(trialStatusId) {
             //insert the trialStatusId into the url
             var url = URL_CONFIGS.TRIALS.STATUS_WITH_ID.replace(/\s*\{.*?\}\s*/g, trialStatusId);
             return PromiseTimeoutService.getData(url);
         }
 
+        function getParticipatingSiteById(participatingSiteId) {
+            console.log('calling getParticipatingSiteById in TrialService');
+            //return PromiseService.getData(URL_CONFIGS.AN_TRIAL + trialId + '.json');
+            return PromiseTimeoutService.getData(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteId + '.json');
+        } //getTrialById
+
+
+       // function getParticipatingSiteById(participatingSiteId) {
+            //insert the participatingSiteId into the url
+       //     var url = URL_CONFIGS.TRIALS.PARTICIPATING_SITE_WITH_ID.replace(/\s*\{.*?\}\s*/g, participatingSiteId);
+      //      return PromiseTimeoutService.getData(url);
+      //  }
+
+        /**
+         * Update or insert a Participating Site Records
+         *
+         * @param participatingSiteObj
+         * @returns {*}
+         */
+        function upsertParticipatingSite(participatingSiteObj) {
+            if (participatingSiteObj.new) {
+                //create a new trial
+                $log.info('creating a participating site: ' + JSON.stringify(participatingSiteObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PARTICIPATING_SITE_LIST, participatingSiteObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            $log.info('updating a participating site: ' + JSON.stringify(participatingSiteObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_PARTICIPATING_SITE + participatingSiteObj.id + '.json', participatingSiteObj, configObj);
+        } //upsertParticipatingSite
+
+
+        /**
+         * Update or insert a Outcome Measure Record
+         *
+         * @param outcomeMeasureObj
+         * @returns {*}
+         */
+        function upsertOutcomeMeasure(outcomeMeasureObj) {
+            if (outcomeMeasureObj.new) {
+                //create a new trial
+                $log.info('creating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.OUTCOME_MEASURE_LIST, outcomeMeasureObj);
+            }
+
+            //update an Participating Site
+            var configObj = {}; //empty config
+            console.log('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            $log.info('updating a outcome measure: ' + JSON.stringify(outcomeMeasureObj));
+            return PromiseTimeoutService.updateObj(URL_CONFIGS.A_OUTCOME_MEASURE + outcomeMeasureObj.id + '.json', outcomeMeasureObj, configObj);
+        } //upsertOutcomeMeasure
+
+
         function getMilestones() {
             return PromiseTimeoutService.getData(URL_CONFIGS.MILESTONES);
+        }
+
+        function getOnholdReasons() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ONHOLD_REASONS);
         }
 
         function getHolderTypes() {
@@ -264,12 +281,8 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.NIH);
         }
 
-        function getExpandedAccessTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.EXPANDED_ACCESS_TYPES);
-        }
-
-        function getAcceptedFileTypes() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES);
+        function getAcceptedFileTypesForRegistry() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES_REG);
         }
 
         function getAuthorityOrgArr(country) {
@@ -811,26 +824,37 @@
             var errorMsg = '';
 
             if (!protocolIdOriginId || !protocolId) {
-                errorMsg = 'Please select a Protocol ID Origin and enter a Protocol ID';
+                errorMsg = 'Both Protocol ID Origin and a Protocol ID are Required';
                 return errorMsg;
             }
-            for (var i = 0; i < addedOtherIds.length; i++) {
-                if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
-                    && protocolIdOriginCode !== 'OTH'
-                    && protocolIdOriginCode !== 'ONCT') {
-                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' already exists';
-                    return errorMsg;
-                } else if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
-                    && addedOtherIds[i].protocol_id === protocolId
-                    && (protocolIdOriginCode === 'OTH'
-                    || protocolIdOriginCode === 'ONCT')) {
-                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' ' + addedOtherIds[i].protocol_id + ' already exists';
-                    return errorMsg;
-                }
+            var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
+            var codeArr = ['OTH', 'ONCT'];
+            if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + 'already exists';
+                return errorMsg;
+            } else if (angular.isDefined(idObj) && idObj.protocol_id === protocolId &&
+                _.contains(codeArr, protocolIdOriginCode)) {
+
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ': ' + idObj.protocol_id + ' already exists';
+                return errorMsg;
             }
             // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
             if ((protocolIdOriginCode === 'NCT' || protocolIdOriginCode === 'ONCT') && !/^NCT\d{8}$/.test(protocolId)) {
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
+                return errorMsg;
+            }
+            if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
+                errorMsg = 'Obsolete ClinicalTrials.gov Identifier must be unique';
+                return errorMsg;
+            }
+
+            if (protocolIdOriginCode === 'DNCI' && !/^NCI-\d{4}-\d{5}$/.test(protocolId)) {
+                errorMsg = 'Duplicate NCI Identifier must be in this format: "NCI-yyyy-nnnnn"';
+                return errorMsg;
+            }
+
+            if (protocolIdOriginCode === 'DNCI' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
+                errorMsg = 'Duplicate NCI Identifier must be unique';
                 return errorMsg;
             }
 
@@ -842,7 +866,7 @@
             var errorMsg = '';
 
             if (!authorityCountry || !authorityOrg) {
-                errorMsg = 'Please select a Country and Organization';
+                errorMsg = 'Country and Organization is Required';
                 return errorMsg;
             }
             for (var i = 0; i < addedAuthorities.length; i++) {
@@ -862,7 +886,7 @@
          * @param documentType
          * @param file
          */
-        function uploadDocument(trialId, documentType, documentSubtype, file) {
+        function uploadDocument(trialId, documentType, documentSubtype, file, replacedDocId) {
             Upload.upload({
                 url: HOST + URL_CONFIGS.TRIAL_DOCUMENT_LIST,
                 method: 'POST',
@@ -870,7 +894,8 @@
                     'trial_document[document_type]': documentType,
                     'trial_document[document_subtype]': documentSubtype,
                     'trial_document[trial_id]': trialId,
-                    'trial_document[file]': file
+                    'trial_document[file]': file,
+                    'replaced_doc_id': replacedDocId ? replacedDocId : ''
                 }
                 //file: file,
                 //fileFormDataName: 'trial_document[file]'
@@ -920,6 +945,28 @@
         }
 
         /**
+         * Get validation errors for milestones
+         *
+         * @param params
+         */
+        function validateMilestone (params) {
+            if (!!params) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_MILESTONE, params);
+            }
+        }
+
+        /**
+         * Get validation warnings/errors for site recruitment statuses
+         *
+         * @param statuses
+         */
+        function validateSrStatus(statuses) {
+            if (!!statuses) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.VALIDATE_SR_STATUS, statuses);
+            }
+        }
+
+        /**
          * Search ClinicalTrials.gov using NCT ID
          *
          * @param nctId
@@ -950,6 +997,120 @@
          */
         function deleteTrial(trialId) {
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_TRIAL + trialId + '.json');
+        }
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteParticipatingSite(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_PARTICIPATING_SITE + psId + '.json');
+        }
+
+        /**
+         * delete an trial with the given trialId
+         *
+         * @param trialId
+         * @returns {*}
+         */
+        function deleteOutcomeMeasure(psId) {
+            return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.A_OUTCOME_MEASURE + psId + '.json');
+        }
+
+        /**
+         * retrieve out come measures types from backend service
+         * @return {promise}
+         */
+        function getOutcomeMeasureTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.OUTCOME_MEASURE_TYPES);
+        } //getSourceStatuses
+
+        function getAssayTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ASSAY_TYPES);
+        }
+
+        function getEvaluationTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.EVALUATION_TYPES);
+        }
+
+        function getSpecimenTypes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SPECIMEN_TYPES);
+        }
+        function getBiomarkerPurposes() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.BIOMARKER_PURPOSES);
+        }
+        function getBiomarkerUses() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.BIOMARKER_USES);
+        }
+
+
+        function createTransferTrialsOwnership(controller, userIdArr) {
+            searchTrials({
+                'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
+                'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id,
+                'protocol_id':'*',
+                'internal_sources': [{'code':'PRO'}],
+                'searchType': 'All Trials',
+                'trial_ownership': true,
+                'no_nih_nci_prog': true
+            }).then(function (data) {
+                if (controller.showAddTrialsModal === false) {
+                    controller.showAddTrialsModal = true;
+                }
+                controller.trialOptions = {
+                    title: '',
+                    type: 'trials',
+                    filterPlaceHolder: 'Start typing to filter the trials below.',
+                    labelAll: 'Unselected Trials',
+                    labelSelected: 'Selected Trials',
+                    helpMessage: ' Click on trial details to transfer trials between selected and unselected.',
+                    orderProperty: 'name',
+                    resetItems: [],
+                    items: [],
+                    selectedItems: [],
+                    openModal: controller.showAddTrialsModal,
+                    showSave: controller.showAddTrialsModal,
+                    confirmMessage: controller.userDetails ? 'You have selected to add ownership of the Selected Trial(s) above, to ' + controller.userDetails.last_name + ', '
+                                + controller.userDetails.first_name + ' (' + controller.userDetails.username + ')' + '.':'',
+                    close: function () {
+                        controller.showAddTrialsModal = false;
+                    },
+                    reset: function () {
+                        controller.trialOptions.searchTerm = '';
+                        controller.trialOptions.items = angular.copy(controller.trialOptions.resetItems);
+                        controller.trialOptions.selectedItems = [];
+                    },
+                    save: function () {
+                        controller.showAddTrialsModal = false;
+                        var searchParams = {
+                            user_ids: [controller.userDetails.id],
+                            trial_ids: _.chain(controller.trialOptions.selectedItems).pluck('id').value()
+                        };
+
+                        PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
+                            .then(function (data) {
+                            if(data.results === 'success') {
+                                toastr.success('Trial Ownership Created', 'Success!');
+                                controller.getUserTrials();
+                            }
+                        });
+                    }
+                };
+                _.each(data.trials, function (trial) {
+                    if(trial.id ) {
+                        controller.trialOptions.items.push({
+                            'id': trial.id,
+                            'col1': trial.nci_id,
+                            'col2': trial.lead_protocol_id,
+                            'col6': trial.lead_org,
+                            'col7': trial.official_title
+                        });
+                    }
+                });
+                controller.trialOptions.resetItems = angular.copy(controller.trialOptions.items);
+
+            });
         }
     }
 })();

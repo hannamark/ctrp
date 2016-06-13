@@ -8,8 +8,8 @@
 #  amendment_date       :date
 #  amendment_reason_id  :integer
 #  trial_id             :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  created_at           :datetime
+#  updated_at           :datetime
 #  uuid                 :string(255)
 #  lock_version         :integer          default(0)
 #  amendment_num        :string(255)
@@ -17,6 +17,10 @@
 #  submission_source_id :integer
 #  submission_method_id :integer
 #  user_id              :integer
+#  acknowledge          :string(255)
+#  acknowledge_comment  :text
+#  acknowledge_date     :date
+#  acknowledged_by      :string(255)
 #
 # Indexes
 #
@@ -28,7 +32,7 @@
 #  index_submissions_on_user_id               (user_id)
 #
 
-class Submission < ActiveRecord::Base
+class Submission < TrialBase
   include BasicConcerns
 
   belongs_to :amendment_reason
@@ -39,4 +43,24 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   has_many :milestone_wrappers, -> { order 'milestone_wrappers.id' }
   has_many :processing_status_wrappers, -> { order 'processing_status_wrappers.id' }
+  has_many :trial_documents, -> { order 'trial_documents.id' }
+
+  before_create :set_acknowledge_as_no
+
+  private
+
+  def set_acknowledge_as_no
+      self.acknowledge = 'No'
+  end
+
+
+  scope :matches, -> (column, value) {
+    join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
+    join_clause += "LEFT JOIN users ON submissions.user_id = users.id "
+
+    if column == 'user_id'
+      joins(join_clause).where("submissions.user_id = #{value} AND submissions.trial_id is not null")
+    end
+  }
+
 end

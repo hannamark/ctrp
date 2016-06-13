@@ -48,8 +48,8 @@ Given I am logged into the CTRP PA application
 And I am on the NCI Specific Information screen
 And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where organizations/name = "National Cancer Institute")
 And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
-And the Trial processing status is �Verification Pending�, "Abstracted", "Abstraction Verified No Response�, or �Abstraction Verified Response� 
-And the Trial Overall Status is not �Complete�, �Administratively Complete� or �Terminated�  
+And the Trial processing status is "Verification Pending", "Abstracted", "Abstraction Verified No Response", or "Abstraction Verified Response"
+And the Trial Overall Status is not "Complete", "Administratively Complete" or "Terminated"
 And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
 When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?� 
 Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
@@ -75,32 +75,29 @@ And the screen will be refreshed with the existing data
 
 Scenario Outline: #11 I cannot change the �Send Trial Information to ClinicalTrials.gov? - greyed out
 Given I am logged into the CTRP PA application
-And I am on the NCI Specific Information screen
-When the following <conditions> exist
+And I am at the NCI Specific Information screen to abstract
+When the following <Conditions> and <Field> exist
 Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not greyed out and not editable
 
-|<Conditions>|<Field>|
-|Trial is sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name = "National Cancer Institute"|
+Examples:
+|Conditions|Field|
+|Trial is sponsored by "National Cancer Institute"|trials.sponsor_id Organizations.name = "National Cancer Institute"|
 |Trial Lead Organization is "NCI - Center for Cancer Research"|trials.lead_org_id Organizations.name = "NCI - Center for Cancer Research"|
 |Trial processing status is not "Verification Pending"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Verification Pending"|
-|Trial processing status is not "Abstracted"| processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted"|
-|Trial processing status is not "Abstraction Verified Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = Abstraction Verified Response"|
+|Trial processing status is not "Abstracted"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstracted"|
+|Trial processing status is not "Abstraction Verified Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstraction Verified Response"|
 |Trial processing status is not "Abstraction Verified No Response"|processing_status_wrappers.processing_status_id processing_statuses.name not = "Abstraction Verified No Response"|
-|Trial Overall Status is �Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Complete"|
-|Trial Overall Status is �Administratively Complete�|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
-|Trial Overall Status is �Terminated�| trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
+|Trial Overall Status is "Complete"|trial_status_wrappers.trial_status_id trial_statuses.name = "Complete"|
+|Trial Overall Status is "Administratively Complete"|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
+|Trial Overall Status is "Terminated"|trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
 |Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
-
 
 Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
 Given I am logged into the CTRP PA application
-And I am on the NCI Specific Information screen
-When the following <conditions> exist to send the trail to the ClinicalTrials.gov
- |conditions|
- |Trial is not sponsored by "National Cancer Institute"|
+And I am at the NCI Specific Information screen
+When the following condition exist to send the trail to the ClinicalTrials.gov
+ |Trial is not sponsored by|National Cancer Institute|
 Then the label and element for �Send Trial Information to ClinicalTrials.gov?� will not be visible
-|<Conditions>|<Field>|
-|Trial is not sponsored by "National Cancer Institute" |trials.sponsor_id Organizations.name not = "National Cancer Institute"|
 
 Scenario: #12 Study Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
@@ -108,7 +105,7 @@ And I am on the NCI Specific Information screen
 And I have not selected a Study Source
 When I select Save to verify Study Source is required
 Then an Error message will appear "Study Source is required”
- @runthis
+
 Scenario: #13 Funding Source is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the NCI Specific Information screen 

@@ -101,6 +101,17 @@
             return $http.delete(url);
         }; //deleteObjFromBackend
 
+        /**
+         * Group promises call, will resolve individually
+         * @param  {Array} promiseObjArr, Array of promises
+         * @return {Grouped promises}
+         */
+        this.groupPromises = function(promiseObjArr) {
+            var deferred = $q.defer();
+            deferred.notify('grouping promises array: ', promiseObjArr);
+            return $q.all(promiseObjArr);
+        };
+
 
         /**
          * Raise error message for AJAX calls

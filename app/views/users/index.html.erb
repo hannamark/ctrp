@@ -46,7 +46,7 @@
         <br/><br/>
         <li><a href="/ctrp/ui#/main/sign_in">CTRP Main</a></li>
         <% if local_user_signed_in? %>
-            <% if current_local_user.approved? %>
+            <% if current_local_user.user_status.code == 'ACT' %>
                 <li><%= link_to "List Users", users_path %></li>
                 <% if current_local_user.role == "ROLE_SUPER"  && current_local_user.organization_id.nil? %>
                     <li><%= link_to "BackOffice", backoffice_path %></li>
@@ -55,7 +55,7 @@
             <li><%= link_to "Assign Organization", search_organizations_path %></li>
         <% end %>
         <% if ldap_user_signed_in? %>
-            <% if current_ldap_user.approved? %>
+            <% if current_ldap_user.user_status.code == 'ACT' %>
                 <li><%= link_to "List Users", users_path %></li>
                 <% if current_ldap_user.role == "ROLE_SUPER" && current_ldap_user.organization_id.nil? %>
                     <li><%= link_to "BackOffice", backoffice_path %></li>
@@ -104,9 +104,7 @@
                 <th colspan="2">Username</th>
                 <th colspan="3">Type</th>
                 <th colspan="3">Role</th>
-                <th colspan="3">Privileges</th>
                 <th colspan="3">Organization</th>
-                <th colspan="*">Approval</th>
               </tr>
               </tr>
               </thead>
@@ -121,34 +119,6 @@
                         <td colspan="3" class="info"><%= user.organization.name %>&nbsp; </td>
                     <% else %>
                         <td colspan="3"> &nbsp; </td>
-                    <% end %>
-                    <% if user.approved == false %>
-                        <td colspan="3">NOT APPROVED</td>
-                      <td colspan="3">
-                        <!--
-                        <%= button_to [:approve, user.becomes(User)] do %>
-                            <strong class="btn btn-sm btn-primary">Approve</strong>
-                        <% end %>
-                        -->
-
-                        <%= form_tag [:approve, user.becomes(User)] do %>
-                            <button class="btn btn-sm btn-primary" type="submit">Approve</button>
-                        <% end %>
-                      </td>
-                    <% end %>
-                    <% if user.approved == true %>
-                        <td colspan="3">APPROVED</td>
-                        <td colspan="3">
-                            <!--
-                            <%= button_to [:disapprove, user.becomes(User)] do %>
-                                <strong class="btn btn-sm btn-danger">Disable</strong>
-                            <% end %>
-                            -->
-
-                            <%= form_tag [:disapprove, user.becomes(User)] do %>
-                                <button class="btn btn-sm btn-danger" type="submit">Disable</button>
-                            <% end %>
-                        </td>
                     <% end %>
                   </tr>
               <% end %>

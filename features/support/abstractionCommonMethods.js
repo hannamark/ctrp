@@ -28,6 +28,8 @@ var poMenuItemList = require('../support/PoCommonBar');
 var paSearchTrialPage = require('../support/abstractionSearchTrialPage');
 //Abstraction NCI Specific Information
 var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
+//Trial Related Document
+var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -44,7 +46,7 @@ var abstractionCommonMethods = function(){
     var poHome = new poMenuItemList();
     var reader;
     var nciSpecific = new abstractionNCISpecific();
-
+    var trialDocCommon = new abstractionTrialRelatedDocument();
     var loginTxtVerif = 'CTRP Sign In';
     var loginCredTxtVerif = 'Please sign in to continue.';
     var loginNwUsrSngVerif = 'New User? Sign Up';
@@ -53,6 +55,7 @@ var abstractionCommonMethods = function(){
     var searchTrialsTxt = 'Search Trials * for wild card';
     var rsltCountValRT = '';
     var rsltGridValRT = '';
+    var exp_del_bttn_pg_hdr = 'Delete button on Organization page';
 
     /*****************************************
      * Verify Search Trials(PA) screen
@@ -208,7 +211,7 @@ var abstractionCommonMethods = function(){
         var BrwsrVal = browser.getCurrentUrl();
         iteraCntLg = iteraCntLg + 1;
         var getCrntCntLg = iteraCntLg + 1;
-        console.log('calculating count:'+getCrntCntLg+'')
+        console.log('Sign in count:'+iteraCntLg++);
         //if (getCrntCntLg == '010101'){
         //    login.loginPageVerification.getText().then (function(text){
         //        var passTxtA = ''+text+'';
@@ -229,21 +232,31 @@ var abstractionCommonMethods = function(){
             helper.wait_for(5000);
             expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
             expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
-        };
+        }
         //ctrp curator user
-        if (usrID === 'ctrpcurator'){
+        else if (usrID === 'ctrpcurator'){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.accept();
-            helper.wait_for(5000);
+          //  helper.wait_for(5000);
             expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(true);
-        };
+        }
         //ctrp trial submitter user
-        if (usrID === 'ctrptrialsubmitter'){
+        else if (usrID === 'ctrptrialsubmitter'){
             login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
             login.accept();
-            helper.wait_for(5000);
+            //helper.wait_for(5000);
             expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
-        };
+        }
+        //ctrp trial submitter user
+        else if (usrID === 'ctrptrialsubmitter2'){
+            login.login(configuration.trialSubmitter2UID, configuration.trialSubmitter2PWD);
+            login.accept();
+           // helper.wait_for(5000);
+            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
+        }
+        else {
+            assert.fail(0,1,'Given User Id ---- '+ usrID + ' ---- does not match any option. Please check that provided user exist in the function.');
+        }
     };
 
     /*****************************************
@@ -325,12 +338,75 @@ var abstractionCommonMethods = function(){
         browser.sleep(250);
     };
 
+    this.elementIsPresent = function (element){
+        var cnt = 1000;
+        var getLoopState = false;
+        loopBr1:
+        for (var i = 0;i<cnt;i++){
+            element.isPresent().then(function (getState){
+                var pasVal = ''+getState+'';
+                function retVal(){
+                    return pasVal;
+                }
+                getLoopState = retVal();
+                console.log('Element is Present Status:['+i+'] - ['+getLoopState+']');
+            });
+            if (getLoopState === true){
+                break loopBr1;
+            }
+        }
+    };
+
+    this.elementIsPresentA = function (element){
+        var i =0;
+        var getLoopState = false;
+        do{
+            element.isPresent().then(function (getState){
+                var pasVal = ''+getState+'';
+                function retVal(){
+                    return pasVal;
+                }
+                getLoopState = retVal();
+                console.log('Element is Present Status ['+getLoopState+']');
+            });
+            if (getLoopState === true){break;}
+            i++
+        } while (i <= 1000);
+    };
 
     /*****************************************
      * Verify expected value : Text Box
      *****************************************/
     this.verifyValueFromTextBox = function(obj, expectedValue, errorMessage){
         helper.getVerifyValue(obj, expectedValue, "Funding Source Organization field");
+    };
+
+    /*****************************************
+     * Verify expected value : Radio Button
+     *****************************************/
+    this.verifyIndicator = function(getObject ,getIndicator, result)  {
+        expect(getObject.get(getIndicator).isSelected()).to.eventually.equal(result);
+    };
+
+    /***************************************
+     * Set Comment on Deletion button popup
+     ***************************************/
+    this.clickCommentDeleteButton = function (button, commitOrCancelComment, errorMessage){
+        helper.wait(button, errorMessage);
+        button.click();
+        console.log(errorMessage + " was clicked");
+        helper.wait_for(9000);
+        trialDocCommon.setCommentOnDeletion();
+        if (commitOrCancelComment === 'commit'){
+            trialDocCommon.clickCommitCommentButton();
+        } else if(commitOrCancelComment === 'cancel'){
+            trialDocCommon.clickCancelCommentButton();
+        }
+        if (errorMessage === exp_del_bttn_pg_hdr){
+            console.log("Page header does not exists on the popup dialog box");
+        } else {
+            //Do nothing
+        }
     };
 
 };

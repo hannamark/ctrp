@@ -9,10 +9,10 @@
         .controller('personDetailCtrl', personDetailCtrl);
 
     personDetailCtrl.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES',
-        '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$modal', 'OrgService', 'poAffStatuses', '_'];
+        '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$uibModal', 'OrgService', 'poAffStatuses', '_'];
 
     function personDetailCtrl(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES,
-                              $scope, Common, sourceStatusObj,sourceContextObj, $state, $modal, OrgService, poAffStatuses, _) {
+                              $scope, Common, sourceStatusObj,sourceContextObj, $state, $uibModal, OrgService, poAffStatuses, _) {
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
@@ -32,6 +32,7 @@
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String
+                console.info('aff.effective_date: ', aff.effective_date);
                 aff['effective_date'] = aff.effective_date ? DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
                 aff['expiration_date'] = aff.expiration_date ? DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
                 var affStatusIndex = -1; //PoAffiliationStatus index
@@ -51,23 +52,31 @@
             newPerson.person = vm.curPerson;
 
             PersonService.upsertPerson(newPerson).then(function (response) {
+                var statusCode = response.status || response.server_response.status;
                 //vm.savedSelection = [];
-                if (newPerson.new) {
-                    //vm.clearForm();
+                if (newPerson.new && statusCode === 201) {
+                    // created
+                    showToastr(vm.curPerson.lname);
+                    vm.curPerson.new = false;
                     $state.go('main.personDetail', {personId: response.data.id});
-                } else {
+                } else if (statusCode === 200) {
+                    // updated
                     vm.curPerson = response.data;
+                    showToastr(vm.curPerson.lname);
+                    vm.curPerson.new = false;
                 }
-                vm.curPerson.new = false;
-                toastr.clear();
-                toastr.success('Person ' + vm.curPerson.lname + ' has been recorded', 'Operation Successful!', {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
             });
         }; // updatePerson
+
+        function showToastr(personName) {
+            toastr.clear();
+            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!', {
+                extendedTimeOut: 1000,
+                timeOut: 0
+            });
+        }
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy, vm.curPerson);
@@ -329,7 +338,7 @@
 
         function prepareModal() {
             vm.confirmDelete = function (size) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'delete_confirm_template.html',
                     controller: 'ModalInstancePersonCtrl as vm',
