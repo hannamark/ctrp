@@ -47,6 +47,7 @@
         'angularSpinner',
         'ui.select',
         'ntt.TreeDnD',
-        'mgcrea.ngStrap.tooltip'
+        'mgcrea.ngStrap.tooltip',
+        'ui.sortable'
     ]);
 })();
