@@ -65,14 +65,36 @@ And the following columns can be filtered
 |Ready for TSR|
 |Business Days Since Submitted|
 
-Scenario: #2 I can edit Expected Abstraction Completion Date
+
+Scenario: #2 I can search the Workload 
+ Given I am logged into the CTRP Protocol Abstraction application
+ And I am on the CTRP Abstraction Dashboard Workload screen
+ And all trials will be displayed (scenario 1) 
+ Then I can narrow the list of trials by entering a partical 
+ |NCI Trial Identifier|
+ And I can narrow the list of trials by selecting one or more Submission Types 
+ |Original|
+ |Amendment|
+ |Imported |
+ And I can narrow the list of trials by selecting the "Any Date" (Default), "Date", "No Date" button for any of the following date fields
+ |Submitted On|
+ |Expected Abstraction Completion Date|
+ |Accepted|
+ |Current On-Hold Date|
+ |Admin Abstraction Completed|
+ |Admin QC Completed|
+ |Scientific Abstraction Completed|
+ |Scientific QC Completed|
+
+
+Scenario: #3 I can edit Expected Abstraction Completion Date
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
 And I select a trial Expected Abstraction Completion Date
 Then I can edit the Expected Abstraction Completion Date
 And the Expected Abstraction Completion Date will be associated with the trial
 
-Scenario: #3 I can view trail details - Validate
+Scenario: #4 I can view trail details - Validate
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
 And I select a trial ID
@@ -80,7 +102,7 @@ And the latest trial milestone is "Submission Received Date"
 Then the trail validaiton sidebar menu will appear
 And the trial details screen will be displayed (see PAM F17 Abstraction Dashboard - Details) 
 
-Scenario: #4 I can view trail details - Abstract
+Scenario: #5 I can view trail details - Abstract
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
 And I select a trial ID
@@ -89,7 +111,7 @@ Then the trail abstraction sidebar menu will appear
 And the trial details screen will be displayed (see PAM F17 Abstraction Dashboard - Details)
 
 
-Scenario: #5 I can export Abstraction Dashboard WorkLoad into an Excel spreadsheet
+Scenario: #6 I can export Abstraction Dashboard WorkLoad into an Excel spreadsheet
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Dashboard WorkLoad
 When I select the export to Excel option
@@ -184,7 +206,7 @@ And will includ the following fields:
 |Late Rejection Date Added By|
 |Late Rejection Date Added On|
 
-Scenario: #6 Logic for This Trial is Field
+Scenario: #7 Logic for This Trial is Field
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Dashboard WorkLoad
 When I select the export to Excel option
