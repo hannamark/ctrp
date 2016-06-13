@@ -7,6 +7,7 @@ var del = require('del');
 var path = require('path');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')({lazy: true});
+// var sourcemaps = require('gulp-sourcemaps');
 var port = process.env.PORT || config.defaultPort;
 //pipe segments
 var pipes = {};
@@ -210,6 +211,7 @@ gulp.task('optimize', ['inject', 'test'], function() {
 
     return gulp
         .src(config.index)
+        .pipe($.sourcemaps.init()) // source mapping
         .pipe($.replace('<link rel="stylesheet" href="styles/override.css" />', ''))
         .pipe($.plumber())
         .pipe($.inject(
@@ -225,6 +227,7 @@ gulp.task('optimize', ['inject', 'test'], function() {
         .pipe($.uglify({mangle: false})) // no variable name mangling
         .pipe(jsLibFilter.restore())
         .pipe(jsAppFilter)
+        .pipe($.stripDebug()) // strip off console log or debuggers
         .pipe($.ngAnnotate())
         .pipe($.uglify({mangle: false})) // no variable name mangling
         .pipe(jsAppFilter.restore())
@@ -234,6 +237,11 @@ gulp.task('optimize', ['inject', 'test'], function() {
         .pipe($.revReplace())
         .pipe(gulp.dest(config.build))
         .pipe($.rev.manifest())
+        .pipe($.sourcemaps.write('../mapping.js', {
+            sourceMappingURL: function(file) {
+                console.info('mapping file: ', file);
+            }
+        }))
         .pipe(gulp.dest(config.build));
 });
 
