@@ -868,6 +868,12 @@ class Trial < TrialBase
   end
 
   def send_email
+
+    if self.edit_type == 'checkoutin'
+      # do not send email when checking out/in the trial
+      return
+    end
+
     if self.edit_type != 'seed'
       last_submission = self.submissions.last
       last_sub_type = last_submission.submission_type if last_submission.present?
