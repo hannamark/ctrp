@@ -242,10 +242,53 @@ And I can view TSR document
      Given I can View TSR document
      And the Secondary Outcome Measures Section fields will be displayed following the rules below
      
+      |TSR Section               |Field        |Field Required |Display Rule when Field Blank| 
+      |Secondary Outcome Measures|Title        |Required       |Display "No data available"  |
+      |                          |Description  |Required       |Display "No data available"  |
+      |                          |Time Frame   |Required       |Display "No data available"  |
+      |                          |Safety Issue |Required       |Display "No data available"  |
+      
      
      
+      Scenario:#16 Sub-Groups Stratification Criteria Section Display Rules 
+     Given I can View TSR document
+     And the Sub-Groups Stratification Criteria Section fields will be displayed following the rules below
      
+      |TSR Section                         |Field        |Field Required |Display Rule when Field Blank|
+      |Sub-Groups Stratification Criteria  |Label        |Required       |Display "No data available"  |
+      |                                    |Description  |Required       |Display "No data available"  |
      
       
       
+     Scenario:#17 Biomarkers Section Display Rules 
+     Given I can View TSR document
+     And the Biomarkers Section fields will be displayed following the rules below
+     
+      |TSR Section |Field            |Field Required |Display Rule when Field Blank| 
+      |Biomarkers  |Protocol Name    |Required       |Display "No data available"  |
+      |            |Evaluation Type  |Required       |Display "No data available"  |
+      |            |Assay Type       |Required       |Display "No data available"  |
+      |            |Biomarker Use    |Required       |Display "No data available"  |
+      |            |Biomarker Purpose|Required       |Display "No data available"  |
+      |            |Specimen Type    |Required       |Display "No data available"  |
+
+      
+       
+     Scenario:#18 Participating Sites Section Display Rules 
+     Given I can View TSR document
+     And the Participating Sites  Section fields will be displayed following the rules below
+     
+      |TSR Section         |Field                         |Field Required |Display Rule when Field Blank|
+      |Participating Sites |Facility                      |Required       |Display "No data available"  |
+      |                    |Contact                       |Required       |Display "No data available"  |
+      |                    |Recruitment Status & Date(s)  |Required       |Display "No data available"  |
+      |                    |Target Accrual                |Required       |Display "No data available"  |
+      |                    |Investigator(s)               |Required       |Display "No data available"  |
+
+     
+     
+     
+     
+     
+     
       
