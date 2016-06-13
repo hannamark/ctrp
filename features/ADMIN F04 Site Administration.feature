@@ -10,6 +10,7 @@ When I select the Site Administration feature (User Management)
 And user Status is
 |Active|
 |Pending|
+|Inactive|
 And the Family is Active
 And the Organization is Active
 And the affiliation between the organization an the Family is not Not Expired
@@ -31,6 +32,7 @@ When I select the Site Administration feature (User Management)
 And user Status is
 |Active|
 |Pending|
+|Inactive|
 And the Organization is Active
 Then I will see a list of all CTRP Users that have organization Affiliation as my organization affiliation:
 |Username|
@@ -61,6 +63,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation to t
 And user Status is
 |Active|
 |Pending|
+|Inactive|
 And the affiliation between the organization an the Family is not Not Expired
 And the Family is Active
 And the Organization is Active
@@ -93,6 +96,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation as m
 And user Status is
 |Active|
 |Pending|
+|Inactive|
 And the Organization is Active
 And the list will be ordered by Last Name and then First name
 And the list can be sorted by
@@ -114,6 +118,7 @@ And I will see a list of all CTRP Users with the same Site Affiliation as I have
 And user Status is
 |Active|
 |Pending|
+|Inactive|
 And the Family is Active
 And the Organization is Active
 And the affiliation between the organization an the Family is not Not Expired
@@ -132,6 +137,7 @@ And I will see a list of all CTRP Users with the same Site Affiliation as I have
 And user Status is
 |Active|
 |Pending|
+|Inactive|
 And the Family is Active
 And the Organization is Active
 And the affiliation between the organization an the Family is not Not Expired

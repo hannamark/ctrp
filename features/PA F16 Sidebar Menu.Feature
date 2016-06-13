@@ -19,13 +19,13 @@ Then the sidebar menu will be displayed expanded:
 |Check Out History|
 |Administrative Data (Section)|
 |General Trial Details|
-|Collaborators|
-|Trial Status|
-|Trial Funding|
 |Regulatory Information - FDAAA|
 |Regulatory Information - Human Subject Safety|
 |Regulatory Information - IND/IDE|
+|Trial Status|
+|Trial Funding|
 |Participating Sites|
+|Collaborators|
 |Trial Related Documents|
 |NCI Specific Information|
 |Scientific Data (Section)|
@@ -78,7 +78,7 @@ Then that sidebar menu section will be expanded"
 |Scientific Data|
 |Completion|
 
-Scenario: #5 Trial Validation Sidebar Menu Tab for imported trails
+Scenario: #5 Trial Validation Sidebar Menu Tab for Imported trails
 Given I am logged into the CTRP application
 And I have selected a trial to Validate
 And the trial information source is
@@ -93,11 +93,13 @@ Then the sidebar menu will be displayed expanded:
 |Assign Ownership|
 |Check Out History|
 |Administrative Data (Section)|
+|General Trial Details|
 |Participating Sites|
+|NCI Specific Information|
 |Trial Validation (section)|
 |Submission Validation|
 
-Scenario: #6 Trial Validation Sidebar Menu Tab for non imported trials
+Scenario: #6 Trial Validation Sidebar Menu Tab for Protocol trials
 Given I am logged into the CTRP application
 And I have selected a trial to Validate
 And the trial information source is
@@ -112,11 +114,13 @@ Then the sidebar menu will be displayed expanded:
 |Assign Ownership|
 |Check Out History|
 |Administrative Data (Section)|
+|General Trial Details|
 |Regulatory Information - FDAAA|
 |Regulatory Information - IND/IDE|
 |Trial Status|
 |Trial Funding|
 |Trial Related Documents|
+|NCI Specific Information|
 |Trial Validation (section)|
 |Submission Validation|
 
