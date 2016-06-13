@@ -32,7 +32,13 @@ And I enter a Reason Description
 And I the will be the current Date
 Then I can select save to place the trail on hold
 And the trial processing status will be set On Hold
-And an e-mail "On Hold Trial (Original Notice)" will be sent to the trial owners for the on hold reason (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
+When the On Hold Reason Code is:
+|Submission Incomplete|
+|Submission Incomplete -- Missing Documents| 
+|Submission Invalid Grant |
+|Submission Other (Submitter)|
+Then an e-mail "On Hold Trial (Original Notice)" will be sent to the trial owners for the on hold reason (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
+
 
 Scenario: #3 Required fields for On Hold Information for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -40,7 +46,7 @@ And I have selected a trial
 And I have selected On Hold Information
 And I have not entered the field
 And Selected Save
-Then a error message will appear that "The On Hold Reason must be entered to place trial on hold"
+Then an error message will appear that "The On Hold Reason must be entered to place trial on hold"
 
 Scenario: #4 PA On Hold Reason note
 Given I am logged into the CTRP Protocol Abstraction application

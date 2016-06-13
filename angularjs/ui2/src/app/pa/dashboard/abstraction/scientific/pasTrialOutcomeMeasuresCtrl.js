@@ -221,7 +221,7 @@
         function setEditMode(idx) {
             vm.editMode || vm.copyMode || vm.addMode ? resetOutcomeMeasure() : vm.addMode = vm.copyMode = false;
             vm.editMode = true;
-            vm.currentOutcomeMeasure = vm.curTrial.outcome_measures[idx];
+            vm.currentOutcomeMeasure = angular.copy(vm.curTrial.outcome_measures[idx]);
             saveCopyCurrentOutcomeMeasure(vm.curTrial.outcome_measures[idx]);
         }
 

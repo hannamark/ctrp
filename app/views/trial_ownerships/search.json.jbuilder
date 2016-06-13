@@ -14,6 +14,8 @@ json.trial_ownerships do
     json.lead_protocol_id trial_ownership.trial ? trial_ownership.trial.lead_protocol_id : ''
     json.lead_org_name trial_ownership.trial && trial_ownership.trial.lead_org ? trial_ownership.trial.lead_org.name : ''
     json.lead_org_id trial_ownership.trial && trial_ownership.trial.lead_org ? trial_ownership.trial.lead_org.id : ''
+    json.process_priority trial_ownership.trial && trial_ownership.trial.process_priority ? trial_ownership.trial.process_priority : ''
+    json.ctep_id trial_ownership.trial && trial_ownership.trial.lead_org.ctep_id ? trial_ownership.trial.lead_org.ctep_id : ''
 
   end
 end

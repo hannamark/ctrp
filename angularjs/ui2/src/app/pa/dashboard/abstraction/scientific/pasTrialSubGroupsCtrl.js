@@ -167,7 +167,7 @@
          **/
         function setEditMode(idx) {
             vm.addEditMode = true;
-            vm.currentSubGroup = vm.curTrial.sub_groups[idx];
+            vm.currentSubGroup = angular.copy(vm.curTrial.sub_groups[idx]);
         }
 
 

@@ -1,7 +1,7 @@
 <div class="row" id="section_top">
     <div class="panel panel-default" ng-show="markersView.addEditMode">
         <div class="panel-heading">
-            <div class="panel-title">Bio Marker Details</div>
+            <div class="panel-title">Biomarker Details</div>
         </div>
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="marker_form" novalidate ctrp-submit="markersView.saveBioMarker()">
@@ -84,6 +84,7 @@
                                            ng-model="markersView.currentBioMarker.evaluation_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isEvalTypeOtherChecked"
                                            ng-required="markersView.isEvalTypeOtherChecked" placeholder="Other Evaluation Type">
 
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.evaluation_type_other) && marker_form.evaluation_type_other.$error">
@@ -125,6 +126,7 @@
                                            ng-model="markersView.currentBioMarker.assay_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isAssayTypeOtherChecked"
                                            ng-required="markersView.isAssayTypeOtherChecked" placeholder="Other Assay Type">
 
                                     <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.assay_type_other) && marker_form.assay_type_other.$error">
@@ -146,18 +148,15 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use)}">
                         <label for="biomarker_use" class="control-label col-xs-12 col-sm-2">Biomarker Use:</label>
                         <div class="col-xs-12 col-sm-6">
-                            <select name="biomarker_use" id="biomarker_use"
-                                    class="form-control input-sm"
-                                    ng-required="true"
-                                    ng-model="markersView.currentBioMarker.biomarker_use_id"
-                                    ng-options="use.id as use.name for use in markersView.biomarkerUses">
-                                <option value="">- Please select a bio marker use...</option>
-                            </select>
+                                <label class="radio-inline" ng-repeat="use in markersView.biomarkerUses">
+                                    <input type="radio" ng-required="true" ng-model="markersView.currentBioMarker.biomarker_use_id" name="biomarker_use" value="{{use.id}}" id="{{use.id}}">{{use.name}}
+                                </label>
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) && marker_form.biomarker_use.$error">
                                 <span class="help-block" ng-message="required">Biomarker Use is Required</span>
                             </span>
                         </div>
                     </div>
+
                     <!-- end of bio marker use -->
 
                     <div class="form-group no-bottom-margin" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_biomarker_purposes.length)}">
@@ -213,6 +212,7 @@
                                            ng-model="markersView.currentBioMarker.specimen_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isSpecTypeOtherChecked"
                                            ng-required="markersView.isSpecTypeOtherChecked" placeholder="Other Specimen Type">
 
                                     <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.specimen_type_other) && marker_form.specimen_type_other.$error">
@@ -242,7 +242,7 @@
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                         <button type="button" class="btn btn-warning pull-right" id="participating_site_list" restriction-field ng-click="markersView.setAddMode(false)" ng-disabled="markersView.disableBtn">
-                            <i class="glyphicon glyphicon-arrow-left"></i> Back to Bio Markers List
+                            <i class="glyphicon glyphicon-arrow-left"></i> Back to Biomarkers List
                         </button>
                     </div>
                 </div>
@@ -252,7 +252,7 @@
 
     <div class="panel panel-default" ng-show="!markersView.addEditMode">
         <div class="panel-heading">
-            <div class="panel-title">List of Bio Markers</div>
+            <div class="panel-title">List of Biomarkers</div>
         </div>
         <div class="panel-body">
             <fieldset>
@@ -263,7 +263,7 @@
                         <th>Protocol Marker Name</th>
                         <th>Evaluation Type</th>
                         <th>Assay Type</th>
-                        <th>Bio Marker Use</th>
+                        <th>Biomarker Use</th>
                         <th>Biomarker Purpose</th>
                         <th>Specimen Type</th>
                         <th>Record Status</th>
@@ -320,7 +320,7 @@
 
                     <div class="btn-toolbar">
                         <button type="button" class="btn btn-primary pull-right" id="add_bio_marker" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || markersView.disableBtn" ng-click="markersView.setAddMode()">
-                            <i class="glyphicon glyphicon-plus"></i> Add Bio Marker
+                            <i class="glyphicon glyphicon-plus"></i> Add Biomarker
                         </button>
                         <button type="submit" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="markersView.deleteSelected()" confirm-msg="Click OK to remove selected Biomarker(s) form the study. Click Cancel to abort."
                                 ng-disabled="!markersView.selectedDeleteBioMarkersList.length || !paTrialOverview.trialDetailObj.pa_sci_editable || markersView.disableBtn" ng-show="markersView.curTrial.bio_markers.length">

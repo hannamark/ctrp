@@ -240,6 +240,11 @@
             return user_list;
         }; //searchUsersTrialsOwnership
 
+        this.getUserTrialsSubmitted = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsSubmitted
+
         this.endUserTrialsOwnership = function (searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_END, searchParams);
         }; //endUsersTrialsOwnership
