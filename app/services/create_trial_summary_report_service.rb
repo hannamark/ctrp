@@ -186,34 +186,38 @@ class CreateTrialSummaryReportService
       num_of_rows = num_of_rows + 2
     end
 
-    if @trial.acronym
+    if @trial.keywords
      num_of_rows = num_of_rows + 2
     end
 
     array =@document.table(num_of_rows, 1,8000)
-
+    i=0;
     array.border_width =10
-    array[0].shading_colour = @grey
-    array[0][0].foreground(@foreground_th_text_color) << "Official Title"
+    array[i].shading_colour = @grey
+    array[i][0].foreground(@foreground_th_text_color) << "Official Title"
+    i = i+1
+
     official_title = ""
     official_title = @trial.official_title if @trial.official_title
-
-    array[1][0] << official_title
+    array[i][0] << official_title
+    i = i+1
 
 
     if @trial.acronym
-        array[2][0].foreground(@foreground_th_text_color) << "Acronym"
-        array[2].shading_colour = @light_red
+        array[i][0].foreground(@foreground_th_text_color) << "Acronym"
+        array[i].shading_colour = @light_red
+        i = i+1
         acronym = @trial.acronym
-        array[3][0] << acronym
+        array[i][0] << acronym
+        i = i+1
+
     end
 
     if @trial.keywords
-      array[4][0].foreground(@foreground_th_text_color) << "Keywords"
-      array[4].shading_colour = @light_red
-      acronym = ""
-      acronym = @trial.acronym
-      array[5][0] << @trial.keywords
+      array[i][0].foreground(@foreground_th_text_color) << "Keywords"
+      array[i].shading_colour = @light_red
+      i = i+1
+      array[i][0] << @trial.keywords
     end
 
   end
