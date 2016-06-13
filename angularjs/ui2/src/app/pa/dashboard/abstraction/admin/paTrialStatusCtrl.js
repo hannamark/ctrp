@@ -16,7 +16,6 @@
         UserService, toastr) {
 
         var vm = this;
-        console.log('trialStatuses: ', trialStatuses);
         vm.trialStatusDict = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
@@ -30,6 +29,7 @@
         vm.isExpandedAccess = false;
         vm.isDCPTrial = false;
         vm.isInterventional = false;
+        vm.statusPopover = {open: false, content: ''};
 
         vm.dateOptions = DateService.getDateOptions();
         vm.trialDetailObj = {};
@@ -60,8 +60,9 @@
 
         activate();
         function activate() {
-            _watchTrialStatusChangesChanges();
+            _watchTrialStatusChanges();
             _getTrialDetailCopy();
+
         } // activate
 
         function _getTrialDetailCopy() {
@@ -203,7 +204,6 @@
                 vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
                 vm.statusObj.edit = true;
                 vm.statusObj.index = index;
-                // vm.tempTrialStatuses.splice(index, 1);
             }
         }
 
@@ -233,6 +233,7 @@
         function cancelEdit() {
             if (vm.statusObj.edit) {
                 vm.statusObj = _initStatusObj();
+                vm.showWhyStoppedField = false;
             }
         }
 
@@ -368,19 +369,30 @@
             _getTrialDetailCopy();
         }
 
-        function _watchTrialStatusChangesChanges() {
+        function _watchTrialStatusChanges() {
             $scope.$watch(function() {return vm.statusObj.trial_status_id;}, function(newVal, oldVal) {
                 if (newVal) {
-                    vm.statusObj.why_stopped = '';
                     var selectedStatus = _.findWhere(vm.trialStatusDict, {id: newVal});
+                    if (newVal !== oldVal) {
+                        vm.statusPopover.content = selectedStatus.explanation;
+                        vm.statusPopover.open = true; // when to turn off ?
+                    } else {
+                        vm.statusPopover.content = '';
+                        vm.statusPopover.open = false;
+                    }
+                    vm.statusPopover.open = vm.statusPopover.content.length > 0; // if empty content, do not open popover
                     var statusName = selectedStatus.name || '';
                     if (_.contains(statusesForWhyStopped, statusName.toLowerCase())) {
                         vm.showWhyStoppedField = true;
                     } else {
                         vm.showWhyStoppedField = false;
+                        vm.statusObj.why_stopped = '';
                     }
+                } else {
+                    vm.statusPopover.content = '';
+                    vm.statusPopover.open = false;
                 }
-            });
+            }, true);
         }
 
         /**

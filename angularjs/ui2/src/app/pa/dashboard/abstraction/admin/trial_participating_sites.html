@@ -149,11 +149,6 @@
                                                             !(psView.current_site_recruitment.site_recruitment_status && psView.current_site_recruitment.site_recruitment_status.name) ||
                                                             ps_sites_form.comments.$viewValue.length > 160"><i class="glyphicon glyphicon-plus"></i> Add</button>
                                                     </div>
-
-                                                    <!-- <div class="btn-toolbar col-xs-12" ng-show="trialStatusView.statusObj.edit">
-                                                        <button class="btn btn-warning" restriction-field type="button" ng-click="trialStatusView.cancelEdit()">Cancel</button>
-                                                        <button class="btn btn-danger" restriction-field type="button" ng-click="trialStatusView.commitEdit()">Commit</button>
-                                                    </div> -->
                                                     <div class="btn-toolbar" ng-show="psView.current_site_recruitment.edit">
                                                         <button class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelSiteRecruitmentEdit()">
                                                             <i class="glyphicon glyphicon-remove"></i>
@@ -169,8 +164,15 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
-                                            {{trialStatusView.statusErrorMsg}}
+                                        <span class="help-block">
+                                            Status Date and Status are Required
+                                        </span>
+
+                                        <input type="hidden" name="sr_dummy" ng-model="psView.srDummyField" ng-required="!psView.siteRecruitmentGrid.length">
+                                        <div class="top-offset-xs" ng-show="(ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length) || psView.srStatusDeleteException" ng-class="{'has-error': (ctrpbtn.ps_sites_form.needsAttention(ps_sites_form.srDummyField) && !psView.siteRecruitmentGrid.length) || psView.srStatusDeleteException}">
+                                            <span class="help-block">
+                                                At least one Site Recruitment Status is Required
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row table-responsive" ng-show="psView.siteRecruitmentGrid.length > 0">
@@ -252,9 +254,7 @@
                                 <div class="form-group has-feedback">
                                     <label for="principal_investigator" class="control-label col-xs-12 col-sm-3">Investigator Name:</label>
                                     <div class="col-xs-12 col-sm-5">
-                                        <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                                        <!--<ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.principalInvestigator.array" ng-disabled="psView.addEditMode"></ctrp-person-adv-search-modal-button>-->
-                                        <button class="btn btn-primary" person-search-modal-button2 ng-model="psView.principalInvestigator.array" restriction-field ng-disabled="psView.current_investigator.edit">Search Persons</button>
+                                        <button type="button" class="btn btn-primary" person-search-modal-button2 ng-model="psView.principalInvestigator.array" restriction-field ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">Search Persons</button>
                                     </div>
                                 </div>
 
@@ -262,10 +262,10 @@
                                     <h5>Edit Investigator</h5>
                                     <table class="table table-striped table-condensed">
                                         <thead>
-                                            <th width="10%">PO ID</th>
-                                            <th width="30%">Last Name</th>
+                                            <th width="15%">PO ID</th>
+                                            <th width="20%">Last Name</th>
                                             <th width="30%">First Name</th>
-                                            <th width="20%" class="min-width-lg">Role</th>
+                                            <th width="25%" class="min-width-lg">Role</th>
                                             <!--<th width="20%">Set as Primary Contact</th>-->
                                             <th width="10%">Cancel/Confirm</th>
                                         </thead>
@@ -281,22 +281,16 @@
                                                 <input type="text" id="first_name" name="first_name" class="form-control input-sm" ng-model="psView.current_investigator.person.fname" placeholder="First Name" ng-disabled="true">
                                             </td>
                                             <td>
-                                                <select name="investigator_type" id="investigator_type_select"
-                                                        class="form-control input-sm"
-                                                        restriction-field
-                                                        ng-model="psView.current_investigator.investigator_type">
-                                                    <option value="">Select a status</option>
-                                                    <option ng-repeat="option in psView.investigatorTypes" value="{{option.name}}">{{option.name}}</option>
-                                                </select>
-                                                <span class="help-block" ng-show="ps_inv_form.investigator_type.$error.required">Select a Investigator Role</span>
+                                                <div ng-class="{'has-error': psView.showInvestigatorRoleError && !psView.current_investigator.investigator_type && psView.current_investigator.uiEdit}">
+                                                    <select name="investigator_type" id="investigator_type_select"
+                                                            class="form-control input-sm"
+                                                            restriction-field
+                                                            ng-model="psView.current_investigator.investigator_type">
+                                                        <option value="">Select Site Investigator Role</option>
+                                                        <option ng-repeat="option in psView.investigatorTypes" value="{{option.name}}">{{option.name}}</option>
+                                                    </select>
+                                                </div>
                                             </td>
-                                            <!--
-                                            <td class="text-center">
-                                                <label>
-                                                    <input type="checkbox" id="set_contact" name="set_as_contact" restriction-field ng-model="psView.current_investigator.set_as_contact" ng-value="{{psView.current_investigator.set_as_contact}}">
-                                                </label>
-                                            </td>
-                                            -->
                                              <td>
                                                  <div class="btn-toolbar" ng-show="psView.current_investigator.edit || psView.current_investigator.new">
                                                     <button id="edit_remove" class="btn btn-warning" restriction-field type="button" ng-click="psView.cancelInvestigatorEdit()">
@@ -310,9 +304,19 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div class="add-association-error" ng-show="trialStatusView.statusErrorMsg.length > 0">
-                                        {{trialStatusView.statusErrorMsg}}
-                                    </div>
+                                </div>
+
+                                <div ng-if="psView.current_investigator.uiEdit" ng-class="{'has-error': psView.showInvestigatorRoleError && !psView.current_investigator.investigator_type && psView.current_investigator.uiEdit, 'bottom-offset-xs': psView.investigatorGrid.length}">
+                                    <span class="help-block">
+                                        Investigator Role is Required
+                                    </span>
+                                </div>
+
+                                <input type="hidden" name="inv_dummy" ng-model="psView.invDummyField" ng-required="!psView.investigatorGrid.length">
+                                <div class="top-offset-xs" ng-show="(ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length) || psView.invDeleteException" ng-class="{'has-error': (ctrpbtn.ps_inv_form.needsAttention(ps_inv_form.invDummyField) && !psView.investigatorGrid.length) || psView.invDeleteException}">
+                                    <span class="help-block">
+                                        At least one Investigator is Required
+                                    </span>
                                 </div>
 
                                 <div class="row table-responsive" ng-show="psView.investigatorGrid.length" ng-class="{'top-offset-xs': !psView.current_investigator.edit }">
@@ -320,20 +324,18 @@
                                         <thead>
                                             <th width="10%">PO ID</th>
                                             <th>Last Name</th>
-                                            <th width="10%">First Name</th>
+                                            <th width="20%">First Name</th>
                                             <th width="20%">Role</th>
-                                            <th width="10%">Status Code</th>
                                             <th width="20%">Primary Contact?</th>
                                             <th class="text-center td-icon">Edit</th>
                                             <th class="text-center td-icon">Delete</th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy, 'edit-selected': inv.uiEdit}">
+                                        <tr ng-repeat="inv in psView.investigatorGrid track by $index" class="animated-item" ng-class="{'deleted-text': inv._destroy || inv.uiDestroy, 'edit-selected': inv.uiEdit}">
                                             <td>{{inv.person.id}}</td>
                                             <td>{{inv.person.lname}}</td>
                                             <td>{{inv.person.fname}}</td>
                                             <td>{{inv.investigator_type}}</td>
-                                            <td>{{inv.status_code}}</td>
                                             <td ng-bind="inv.set_as_contact ? 'Yes' : 'No'"></td>
                                             <td class="text-center td-icon">
                                                 <button type="button" class="btn btn-primary" restriction-field ng-disabled="inv._destroy || psView.current_investigator.edit || psView.current_investigator.uiEdit" ng-click="psView.editInvestigator($index)">
@@ -342,7 +344,7 @@
                                             </td>
                                             <td class="text-center td-icon">
                                                 <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
-                                                    <i class="glyphicon" ng-class="inv._destroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
+                                                    <i class="glyphicon" ng-class="inv._destroy || inv.uiDestroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -358,7 +360,7 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_investigators" restriction-field ng-disabled="psView.current_investigator.uiEdit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
                                     <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)" ng-disabled="psView.disableBtn">
@@ -389,14 +391,13 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group" ng-show="psView.selectedContactTypePI && psView.investigatorArray.length">
+                                <div class="form-group" ng-show="psView.selectedContactTypePI && psView.investigatorArray.length" ng-class="{'has-feedback required': psView.selectedContactTypePI,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.investigator)}">
                                     <label for="investigator" class="control-label col-xs-12 col-sm-3">Contact:</label>
                                     <div class="col-xs-12 col-sm-4">
                                         <select name="investigator" id="investigator"
                                                 class="form-control input-sm"
-                                                ng-model="psView.selectedInvestigator" ng-options="investigator as investigator.name for investigator in psView.investigatorArray track by investigator.id">
+                                                ng-model="psView.selectedInvestigator" ng-options="investigator as investigator.name for investigator in psView.investigatorArray track by investigator.id" ng-required="psView.selectedContactTypePI">
                                             <option value="">-Select Investigator-</option>
-                                            <!--<option ng-repeat="investigator in psView.investigatorArray" value="{{investigator.id}}">{{investigator.name}}</option>-->
                                         </select>
                                     </div>
                                 </div>
@@ -408,42 +409,58 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group has-feedback has-error" ng-show="psView.selectedContactTypePI && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.investigator)">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-5">
+                                        <span>
+                                            <span class="help-block">Investigator is Required</span>
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <div>
-                                    <div class="form-group" ng-class="{'has-feedback required': psView.centralContactNameRequired,'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}" ng-hide="psView.selectedContactTypePI">
+                                    <div class="form-group" ng-class="{'has-feedback required': psView.currentParticipatingSite.contact_type === 'General' || psView.currentParticipatingSite.contact_type === 'Person','has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name)}" ng-hide="psView.selectedContactTypePI">
                                         <label for="contact_type" class="control-label col-xs-12 col-sm-3">Contact:</label>
                                         <div class="col-xs-12 col-sm-4">
                                             <input type="text" id="contact_name" name="contact_name" class="form-control input-sm" placeholder="Central Contact"
                                                    ng-disabled="psView.currentParticipatingSite.contact_type !== 'General'"
-                                                   ng-model="psView.currentParticipatingSite.contact_name"
-                                                   ng-required="psView.centralContactNameRequired">
+                                                   ng-model="psView.currentParticipatingSite.contact_name" ng-required="psView.currentParticipatingSite.contact_type === 'General' || psView.currentParticipatingSite.contact_type === 'Person'">
+                                           <span ng-messages="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name) && ps_contact_form.contact_name.$error">
+                                               <span class="help-block" ng-message="required">Central contact name is Required</span>
+                                           </span>
                                         </div>
                                         <div class="col-xs-12 col-sm-4" ng-show="psView.currentParticipatingSite.contact_type == 'Person'">
                                             <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button>
                                         </div>
-                                      <span ng-messages="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.contact_name) && ps_contact_form.contact_name.$error">
-                                          <span class="help-block" ng-message="required">Central contact name is Required</span>
-                                      </span>
                                     </div>
 
                                     <!-- Email Address -->
-                                    <div class="form-group">
+                                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.phone)}">
                                         <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
                                         <div class="col-xs-12 col-sm-5">
-                                            <input type="email" id="email" name="email" ng-model="psView.currentParticipatingSite.contact_email" class="form-control input-sm" placeholder="Email">
-                                            <span class="form-control-feedback" ng-show="ps_contact_form.email.$dirty" ng-class="!ps_contact_form.email.$error.email ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                            <input type="email" id="email" name="email" ng-model="psView.currentParticipatingSite.contact_email" class="form-control input-sm" placeholder="Email" ng-required="!psView.currentParticipatingSite.contact_phone.length">
+                                            <span class="form-control-feedback" ng-show="ps_contact_form.email.$viewValue.length" ng-class="ps_contact_form.email.$error && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                         </div>
                                     </div>
 
                                     <!-- Phone Number -->
-                                    <div class="form-group">
+                                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.phone) && ps_contact_form.phone.$error && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) && ps_contact_form.email.$error}">
                                         <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
                                         <div class="col-xs-12 col-sm-3">
-                                            <input type="text" id="phone" name="phone" ng-model="psView.currentParticipatingSite.contact_phone" class="form-control input-sm" placeholder="Phone">
-                                            <span ng-show="ps_contact_form.phone.$dirty || psView.currentParticipatingSite.contact_phone.length" class="form-control-feedback" ng-class="!psView.currentParticipatingSite.contact_phone.length ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                                            <input type="text" id="phone" name="phone" ng-model="psView.currentParticipatingSite.contact_phone" class="form-control input-sm" placeholder="Phone" ng-required="!psView.currentParticipatingSite.contact_email.length">
+                                            <span ng-show="ps_contact_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!psView.currentParticipatingSite.contact_phone.length && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-2">
-                                            <!--<input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.central_contacts[0].extension" placeholder="Extension">-->
-                                            <input type="text" class="form-control input-sm" id="phone_extension" ng-model="psView.currentParticipatingSite.extension" placeholder="Extension">
+                                            <input type="text" class="form-control input-sm no-validate" id="phone_extension" ng-model="psView.currentParticipatingSite.extension" placeholder="Extension">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group has-feedback has-error" ng-show="ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.phone) && ps_contact_form.phone.$error && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) && ps_contact_form.email.$error">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-5">
+                                            <span>
+                                                <span class="help-block">Email or Phone Number is Required</span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

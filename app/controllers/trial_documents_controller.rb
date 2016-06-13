@@ -81,10 +81,17 @@ class TrialDocumentsController < ApplicationController
 
   def download_tsr_in_rtf
 
-    trial_document_id = generate_tsr_with_create_trial_summary_report_service
-    if trial_document_id
-      @trial_document =TrialDocument.find_by_id(trial_document_id)
-      send_file @trial_document.file.url, filename: @trial_document.file_name
+
+    serviceObject = CreateTrialSummaryReportService.new({
+                                            trial_id: params[:trial_id], store_file_on_server: false
+                                        })
+
+    rtf_temp_file =  serviceObject.generate_tsr_in_rtf
+    rtf_file_name = serviceObject.get_rtf_file_name
+
+    if rtf_temp_file
+
+      send_file rtf_temp_file.path , filename: rtf_file_name, type: 'application/rtf'
 
     else
 
@@ -94,12 +101,7 @@ class TrialDocumentsController < ApplicationController
 
   end
 
-  def generate_tsr_with_create_trial_summary_report_service
 
-    CreateTrialSummaryReportService.new({
-                                            trial_id: params[:trial_id]
-                                       }).generate_tsr_in_rtf
-  end
 
 
   def deleted_documents

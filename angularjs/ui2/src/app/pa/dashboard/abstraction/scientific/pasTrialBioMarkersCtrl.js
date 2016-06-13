@@ -15,6 +15,7 @@
         vm.setEditMode = setEditMode;
         vm.deleteListHandler = deleteListHandler;
         vm.deleteSelected = deleteSelected;
+        vm.saveAndRetainMarker = saveAndRetainMarker;
         vm.resetBioMarker = resetBioMarker;
         vm.trialDetailObj = {};
         vm.selOrganization = {name: '', array: []};
@@ -175,6 +176,7 @@
 
         };
 
+
         vm.saveBioMarker = function(){
             // Prevent multiple submissions
             vm.disableBtn = true;
@@ -206,7 +208,7 @@
                         vm.currentBioMarker.marker_eval_type_associations_attributes.push(evalHash);
                     }
                 }
-                if (vm.currentBioMarker.asay_type_associations) {
+                if (vm.currentBioMarker.assay_type_associations) {
                     for (var i = 0; i < vm.currentBioMarker.assay_type_associations.length; i++) {
                         var evalHash = {}
                         evalHash._destroy = true;
@@ -284,6 +286,7 @@
             vm.currentBioMarker.trial_id = trialDetailObj.id;
             vm.curTrial.markers_attributes=[];
             vm.curTrial.markers_attributes.push(vm.currentBioMarker);
+            console.log("current bio marker" + vm.currentBioMarker)
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
@@ -455,33 +458,42 @@
          **/
         function setEditMode(idx) {
             vm.addEditMode = true;
-            vm.currentBioMarker = vm.curTrial.bio_markers[idx];
+            vm.currentBioMarker = angular.copy(vm.curTrial.bio_markers[idx]);
             vm.currentBioMarker.status_alert=true;
+            vm.currentBioMarker.index = idx;
+            vm.currentBioMarkerIndex = idx;
+
             //vm.currentBioMarker.cadsr_marker_id=0;
             vm.masterCopyOfMarkerNameFromCadsr=angular.copy(vm.currentBioMarker.name);
 
             if (vm.currentBioMarker.assay_type_other && vm.currentBioMarker.assay_type_other.length > 0) {
                 vm.isAssayTypeOtherChecked=true;
+            } else {
+                vm.isAssayTypeOtherChecked=false;
             }
             if (vm.currentBioMarker.evaluation_type_other && vm.currentBioMarker.evaluation_type_other.length > 0) {
                 vm.isEvalTypeOtherChecked=true;
+            } else {
+                vm.isEvalTypeOtherChecked=false;
             }
+
             if (vm.currentBioMarker.specimen_type_other && vm.currentBioMarker.specimen_type_other.length > 0) {
                 vm.isSpecTypeOtherChecked=true;
+            } else {
+                vm.isSpecTypeOtherChecked=false;
             }
 
             vm.checked_assay_types=[];
-            vm.checked_assay_types = vm.curTrial.bio_markers[idx].assay_types;
-            vm.old_checked_assay_types = angular.copy(vm.checked_assay_types);
+            vm.checked_assay_types = vm.currentBioMarker.assay_types;
 
             vm.checked_eval_types=[];
-            vm.checked_eval_types = vm.curTrial.bio_markers[idx].eval_types;
+            vm.checked_eval_types = vm.currentBioMarker.eval_types;
 
             vm.checked_spec_types=[];
-            vm.checked_spec_types = vm.curTrial.bio_markers[idx].spec_types;
+            vm.checked_spec_types = vm.currentBioMarker.spec_types;
 
             vm.checked_biomarker_purposes=[];
-            vm.checked_biomarker_purposes=vm.curTrial.bio_markers[idx].biomarker_purposes;
+            vm.checked_biomarker_purposes=vm.currentBioMarker.biomarker_purposes;
 
             $scope.checked_eval_types=vm.checked_eval_types;
             $scope.checked_assay_types=vm.checked_assay_types;
@@ -490,51 +502,20 @@
 
         }
 
+        function saveAndRetainMarker() {
+
+            vm.currentBioMarker.id = null;
+            vm.currentBioMarker.name =null;
+
+        }
+
         function resetBioMarker() {
-            vm.selectedAllBM = false;
-            if(vm.currentBioMarker.id > 0){
-                var cachedTrial = PATrialService.getCurrentTrialFromCache();
-
-                vm.checked_assay_types=[];
-                vm.checked_eval_types=[];
-                vm.checked_spec_types=[];
-                vm.checked_biomarker_purposes=[];
-
-                for (var i = 0; i < cachedTrial.bio_markers.length; i++) {
-                    if(cachedTrial.bio_markers[i].id == vm.currentBioMarker.id){
-                        vm.currentBioMarker = cachedTrial.bio_markers[i];
-
-                        vm.isEvalTypeOtherChecked=false;
-                        vm.isAssayTypeOtherChecked=false;
-                        vm.isSpecTypeOtherChecked=false;
-
-                        if (vm.currentBioMarker.assay_type_other && vm.currentBioMarker.assay_type_other.length > 0) {
-                            vm.isAssayTypeOtherChecked=true;
-                        }
-                        if (vm.currentBioMarker.evaluation_type_other && vm.currentBioMarker.evaluation_type_other.length > 0) {
-                            vm.isEvalTypeOtherChecked=true;
-                        }
-                        if (vm.currentBioMarker.specimen_type_other && vm.currentBioMarker.specimen_type_other.length > 0) {
-                            vm.isSpecTypeOtherChecked=true;
-                        }
-
-                        vm.checked_assay_types = cachedTrial.bio_markers[i].assay_types;
-                        vm.checked_eval_types = cachedTrial.bio_markers[i].eval_types;
-                        vm.checked_spec_types = cachedTrial.bio_markers[i].spec_types;
-                        vm.checked_biomarker_purposes=vm.curTrial.bio_markers[i].biomarker_purposes;
-                        $scope.checked_eval_types=vm.checked_eval_types;
-                        $scope.checked_assay_types=vm.checked_assay_types;
-                        $scope.checked_spec_types=vm.checked_spec_types;
-                        $scope.checked_biomarker_purposes=vm.checked_biomarker_purposes;
-                    }
-                }
-            } else {
-                vm.setAddMode();
+            var curIndex = vm.currentBioMarker.index;
+            if (curIndex !== undefined) {
+                setEditMode(curIndex);
+                return;
             }
-
-            $timeout(function() {
-                getTrialDetailCopy();
-            }, 0);
+            vm.setAddMode();
         }
 
         function getTrialDetailCopy() {

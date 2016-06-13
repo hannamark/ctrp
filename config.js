@@ -1,7 +1,10 @@
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 var path = require('path');
+var databaseConnection = require('./features/support/databaseConnection.js');
+var eventsPG = require('events');
 
 exports.config = {
+
     framework: 'cucumber',
     //framework: 'jasmine2',
 
@@ -14,8 +17,9 @@ exports.config = {
 
     },
 
-        baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
- //     baseUrl: 'http://localhost/ctrp/',
+      baseUrl: 'http://ctrp-ci.nci.nih.gov/ctrp/',
+//    baseUrl: 'http://localhost/ctrp/',
+//    baseUrl: 'http://ctrp-qa.ncifcrf.gov/ctrp/',
 
     params: {
         login: {
@@ -24,10 +28,12 @@ exports.config = {
         }
     },
 
-    //onPrepare: function() {
-    //    browser.driver.manage().window().maximize();
-    //    browser.driver.manage().window().setSize('1440', '900');
-    //},
+
+    onPrepare: function() {
+    var dbConnect = new databaseConnection();
+   getDBConnection = dbConnect.buildDBConnection();
+        eventsPG.EventEmitter.defaultMaxListeners = 100;
+    },
 
 
     jasmineNodeOpts: {
@@ -51,6 +57,7 @@ exports.config = {
         'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature',
 
         /************* Registry Features ************/
+        'features/Reg\ F01\ Search\ Clinical\ Trials.feature',
         'features/Reg\ F02\ Search\ Persons.feature',
         'features/Reg\ F02\ View\ Persons.feature',
         'features/Reg\ F03\ Search\ Organizations.feature',
@@ -85,7 +92,7 @@ exports.config = {
         'features/PO\ F12\ Delete\ Person\ record.feature',
         'features/PO\ F13 Curator\ review\ of\ a\ Pending\ Person\ Record.feature',
         'features/PO\ F14\ Change\ a\ Person\'s\ Affiliated\ Organization.feature',
-        'features/PO\ F15\ Add\ Organization\ Alias.feature',
+        'features/PO\ F15\ Add\ Organization\ Alias.feature'
 
     ],
 

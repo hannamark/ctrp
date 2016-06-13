@@ -22,7 +22,7 @@ module.exports = function() {
     });
 
     this.When(/^I have performed a Lead Organization look-up in Search Organization$/, function (callback) {
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg0', typeOfTrial, '0');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg0', typeOfTrial, '0', 'ctrptrialsubmitter');
         browser.sleep(25).then(callback);
     });
 
@@ -35,7 +35,7 @@ module.exports = function() {
     });
 
     this.Given(/^I have performed a person look\-up in Search persons$/, function (callback) {
-        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0');
+        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0', 'ctrptrialsubmitter');
         browser.sleep(25).then(callback);
     });
 
@@ -49,7 +49,7 @@ module.exports = function() {
             console.log('value of Org' + value);
             addTrial.getVerifyAddTrialPrincipalInvestigator('lName, ' + value);
         });
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg0', typeOfTrial, '0');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg0', typeOfTrial, '0', 'ctrptrialsubmitter');
         browser.sleep(25).then(callback);
     });
 
@@ -85,7 +85,7 @@ module.exports = function() {
     });
 
     this.When(/^I have performed a Sponsor organization look\-up in Search Organizations$/, function (callback) {
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
         browser.sleep(25).then(callback);
     });
 
@@ -126,7 +126,7 @@ module.exports = function() {
 
     this.When(/^I have performed a Funding Source organization look\-up$/, function (callback) {
         /****** Create first Funding Source Organization ********/
-        projectFunctionsRegistry.createOrgforTrial('shiTrialFundOrg2', typeOfTrial, '2');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialFundOrg2', typeOfTrial, '2', 'ctrptrialsubmitter');
 
         /**** Stores the value of first funding Src Org ****/
         storeFirstFundingSrc = cukeOrganization.then(function(value) {
@@ -144,7 +144,7 @@ module.exports = function() {
                 addTrial.getVerifyAddTrialFundingSource(value.split());
 
                 /****** Create second Funding Source Organization ********/
-                projectFunctionsRegistry.createOrgforTrial('shiTrialFundOrg3', typeOfTrial, '2');
+                projectFunctionsRegistry.createOrgforTrial('shiTrialFundOrg3', typeOfTrial, '2', 'ctrptrialsubmitter');
 
                 /**** Stores the value of second funding Src Org ****/
                 storeSecondFundingSrc = cukeOrganization.then(function(value) {

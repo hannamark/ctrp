@@ -29,6 +29,7 @@
         vm.saveSelection = saveSelection;
         vm.reset = reset();
         vm.disableBtn = false;
+        vm.anatomicSitesError = false;
 
         //console.log('IN pasAnatomicSitesCtrl anatomicView.curTrial.anatomic_sites='+ JSON.stringify(vm.curTrial.anatomic_site_wrappers));
 
@@ -133,8 +134,11 @@
         }
 
         function saveSelection() {
-            console.log("Selected anatomic sites = " + JSON.stringify(vm.anatomic_sites_selected));
-            if (vm.anatomic_sites_selected.length > 0) {
+            if (!vm.anatomic_sites_selected.length) {
+                vm.anatomicSitesError = true;
+                return;
+            } else if (vm.anatomic_sites_selected.length > 0) {
+                vm.anatomicSitesError = false;
                 vm.curTrial.anatomic_site_wrappers_attributes = [];
                 _.each(vm.anatomic_sites_selected, function (selected_anatomic_site) {
                     var exists = false

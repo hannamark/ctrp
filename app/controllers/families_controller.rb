@@ -103,11 +103,6 @@ class FamiliesController < ApplicationController
 
   #Method to check for Uniqueness while creating families - check on name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
-    print params[:family_name]
-    print params[:family_exists]
-    print "Family ID "
-    print params[:family_id]
-
     is_unique = true
     count = 0
 

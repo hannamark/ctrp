@@ -78,7 +78,7 @@ class NcitDiseaseCodesController < ApplicationController
 
     if params[:disease_name].present?
       @diseases = NcitDiseaseCode.all
-      @diseases = @diseases.with_name(params[:disease_name], params[:synonym]).group(:'ncit_disease_codes.id').limit(300)
+      @diseases = @diseases.with_name(params[:disease_name], params[:synonym]).group(:'ncit_disease_codes.id').order(:preferred_name).limit(300)
     else
       @diseases = []
     end

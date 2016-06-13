@@ -140,7 +140,7 @@ module.exports = function() {
     });
 
     this.Then(/^the Principal Investigator selected will be recorded as the Responsible Party Investigator$/, function (callback) {
-        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0');
+        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0', 'ctrptrialsubmitter');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         browser.driver.wait(function() {
             console.log('wait here');
@@ -166,7 +166,7 @@ module.exports = function() {
     });
 
     this.Given(/^the Investigator Affiliation will be the Sponsor Organization$/, function (callback) {
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
@@ -208,7 +208,7 @@ module.exports = function() {
 
     this.Given(/^the Investigation Affiliation can be changed$/, function (callback) {
         /* Create or use an Org to affiliate Person Org **/
-        projectFunctionsRegistry.createOrgforTrial('shiTrialPIOrg0', typeOfTrial, '3');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialPIOrg0', typeOfTrial, '3', 'ctrptrialsubmitter');
         browser.driver.wait(function() {
             console.log('wait here');
             return true;
@@ -276,7 +276,7 @@ module.exports = function() {
     });
 
     this.Then(/^the Principal Investigator will be populated in Investigator field as default$/, function (callback) {
-        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0');
+        projectFunctionsRegistry.createPersonforTrial('shiTrialPerson0',typeOfTrial, '0', 'ctrptrialsubmitter');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
@@ -294,7 +294,7 @@ module.exports = function() {
     });
 
     this.Given(/^I have performed a person search in Search Persons for Investigator$/, function (callback) {
-        projectFunctionsRegistry.createPersonforTrial('shiTrialPersonInv0',typeOfTrial, '1');
+        projectFunctionsRegistry.createPersonforTrial('shiTrialPersonInv0',typeOfTrial, '1', 'ctrptrialsubmitter');
         browser.sleep(25).then(callback);
     });
 
@@ -312,7 +312,7 @@ module.exports = function() {
     });
 
     this.Given(/^the Investigation Affiliation will be the Sponsor Organization$/, function (callback) {
-        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1');
+        projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
         addTrial.selectAddTrialResponsibleParty('Principal Investigator');
         addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');

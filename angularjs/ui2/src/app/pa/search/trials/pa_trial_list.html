@@ -135,7 +135,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="principal_investigator" class="control-label col-xs-12 col-sm-5">PI: </label>
+                            <label for="principal_investigator" class="control-label col-xs-12 col-sm-5">Principal Investigator: </label>
                             <div class="col-xs-12 col-sm-7">
                                 <input type="text" id="pi" class="form-control input-sm" placeholder="Principal Investigator" ng-model="trialView.searchParams.pi" />
                             </div>
@@ -192,7 +192,7 @@
                             <label for="nih_nci_prog" class="control-label col-xs-12 col-sm-5">NIH/NCI Program Identifier: </label>
                             <div class="col-xs-12 col-sm-7">
                                 <ui-select multiple id="nih_nci_prog" ng-model="trialView.searchParams.nih_nci_prog">
-                                    <ui-select-match placeholder="-Select  NIH/NCI Div/Dept -">{{$item.code}}</ui-select-match>
+                                    <ui-select-match placeholder="-Select  NIH/NCI Program Identifier -">{{$item.code}}</ui-select-match>
                                     <ui-select-choices repeat="nc in trialView.nciProgArr">{{nc.code}}</ui-select-choices>
                                 </ui-select>
                             </div>

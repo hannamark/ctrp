@@ -240,6 +240,11 @@
             return user_list;
         }; //searchUsersTrialsOwnership
 
+        this.getUserTrialsSubmitted = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsSubmitted
+
         this.endUserTrialsOwnership = function (searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_END, searchParams);
         }; //endUsersTrialsOwnership
@@ -293,15 +298,15 @@
         };
 
         this.getAllOrgUsers = function (searchParams) {
-            return service.allOrgUsers || service.getAllOrgUsersNow(searchParams);
-        };
-        this.getAllOrgUsersNow = function (searchParams) {
             service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json', searchParams);
             return service.allOrgUsers;
         };
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers({'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id, 'family_users' : true}).then(function (data) {
+            service.getAllOrgUsers({
+                    'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
+                    'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id
+            }).then(function (data) {
                 if (controller.showTransferTrialsModal === false) {
                     controller.showTransferTrialsModal = true;
                 }
@@ -317,11 +322,13 @@
                     items: [],
                     selectedItems: [],
                     openModal: controller.showTransferTrialsModal,
-                    showSave: trialIdArr && trialIdArr.length,
+                    showSave: controller.showTransferTrialsModal,
+                    confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
                     close: function () {
                         controller.showTransferTrialsModal = false;
                     },
                     reset: function () {
+                        controller.userOptions.searchTerm = '';
                         controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
                         controller.userOptions.selectedItems = [];
                     },
@@ -347,6 +354,7 @@
 
                         service.transferUserTrialsOwnership(searchParams).then(function (data) {
                             if(data.results === 'success') {
+                                toastr.success('Trial Ownership Transferred', 'Success!');
                                 if (controller.passiveTransferMode) {
                                     controller.passiveTransferMode = false;
                                     controller.updateUser(controller.checkForOrgChange());
@@ -421,7 +429,8 @@
             return (service.isCurationModeEnabled()
                         && (curUserRole === 'ROLE_SUPER'
                                 || curUserRole === 'ROLE_ADMIN'
-                                    || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
+                                    || curUserRole === 'ROLE_ACCOUNT-APPROVER'
+                                        || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
         
         /******* helper functions *********/

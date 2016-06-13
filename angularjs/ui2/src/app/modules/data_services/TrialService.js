@@ -9,10 +9,10 @@
         .factory('TrialService', TrialService);
 
     TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
-        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http','PromiseService'];
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http', 'toastr', 'PromiseService'];
 
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
-            PromiseTimeoutService, Upload, HOST, DateService, $http,PromiseService) {
+            PromiseTimeoutService, Upload, HOST, DateService, $http, toastr, PromiseService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -22,68 +22,6 @@
             start: 1
         }; //initial Trial Search Parameters
 
-        var actionTemplate = '<div ng-if="row.entity.actions.length > 0" class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
-            + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-            + 'Action <span class="caret"></span>'
-            + '</button>'
-            + '<ul class="dropdown-menu dropdown-menu-right"><li ng-repeat="action in row.entity.actions">'
-            + '<a ng-if="action == \'add-my-site\'" ui-sref="main.addParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action == \'update-my-site\'" ui-sref="main.participatingSiteDetail({psId: row.entity.my_site_id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action == \'manage-sites\'" ui-sref="main.manageParticipatingSite({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action == \'verify-data\'" ui-sref="main.verifyTrialData({trialId: row.entity.id})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="action == \'view-tsr\'" href="{{grid.appScope.downloadTSRUrl}}/{{row.entity.id}}">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '<a ng-if="[\'add-my-site\', \'update-my-site\', \'manage-sites\', \'verify-data\', \'view-tsr\'].indexOf(action) < 0" ui-sref="main.trialDetail({trialId: row.entity.id, editType: action})">{{grid.appScope.capitalizeFirst(action)}}</a>'
-            + '</li></ul>'
-            + '</div>';
-
-        var gridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            enableRowSelection: true,
-            enableRowHeaderSelection: true,
-            paginationPageSizes: [20, 50, 100],
-            paginationPageSize: 20,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableGridMenu: true,
-            enableFiltering: true,
-            columnDefs: [
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '170', sort: { direction: 'asc', priority: 1},
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
-                },
-                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'phase', enableSorting: true, minWidth: '70', width: '70'},
-                {name: 'purpose', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'pilot', enableSorting: true, minWidth: '60', width: '60'},
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '180', width: '180',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'study_source', enableSorting: true, minWidth: '170', width: '170',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '170',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'display_name', displayName: 'Actions', enableSorting: false, minWidth: '100', width: '100',
-                    cellTemplate: actionTemplate, cellClass: 'action-btn'
-                }
-
-            ]
-        };
 
         var services = {
             getAllTrials: getAllTrials,
@@ -92,7 +30,6 @@
             searchTrials: searchTrials,
             searchTrialsPa: searchTrialsPa,
             getInitialTrialSearchParams: getInitialTrialSearchParams,
-            getGridOptions: getGridOptions,
             getStudySources: getStudySources,
             getProtocolIdOrigins: getProtocolIdOrigins,
             getPhases: getPhases,
@@ -204,10 +141,6 @@
         function getInitialTrialSearchParams() {
             return initTrialSearchParams;
         } //getInitialTrialSearchParams
-
-        function getGridOptions() {
-            return gridOptions;
-        }
 
         /**
          * A helper function:
@@ -891,26 +824,37 @@
             var errorMsg = '';
 
             if (!protocolIdOriginId || !protocolId) {
-                errorMsg = 'Protocol ID Origin and enter a Protocol ID is Required';
+                errorMsg = 'Both Protocol ID Origin and a Protocol ID are Required';
                 return errorMsg;
             }
-            for (var i = 0; i < addedOtherIds.length; i++) {
-                if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
-                    && protocolIdOriginCode !== 'OTH'
-                    && protocolIdOriginCode !== 'ONCT') {
-                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' already exists';
-                    return errorMsg;
-                } else if (addedOtherIds[i].protocol_id_origin_id == protocolIdOriginId
-                    && addedOtherIds[i].protocol_id === protocolId
-                    && (protocolIdOriginCode === 'OTH'
-                    || protocolIdOriginCode === 'ONCT')) {
-                    errorMsg = addedOtherIds[i].protocol_id_origin_name + ' ' + addedOtherIds[i].protocol_id + ' already exists';
-                    return errorMsg;
-                }
+            var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
+            var codeArr = ['OTH', 'ONCT'];
+            if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + 'already exists';
+                return errorMsg;
+            } else if (angular.isDefined(idObj) && idObj.protocol_id === protocolId &&
+                _.contains(codeArr, protocolIdOriginCode)) {
+
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ': ' + idObj.protocol_id + ' already exists';
+                return errorMsg;
             }
             // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
             if ((protocolIdOriginCode === 'NCT' || protocolIdOriginCode === 'ONCT') && !/^NCT\d{8}$/.test(protocolId)) {
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
+                return errorMsg;
+            }
+            if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
+                errorMsg = 'Obsolete ClinicalTrials.gov Identifier must be unique';
+                return errorMsg;
+            }
+
+            if (protocolIdOriginCode === 'DNCI' && !/^NCI-\d{4}-\d{5}$/.test(protocolId)) {
+                errorMsg = 'Duplicate NCI Identifier must be in this format: "NCI-yyyy-nnnnn"';
+                return errorMsg;
+            }
+
+            if (protocolIdOriginCode === 'DNCI' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
+                errorMsg = 'Duplicate NCI Identifier must be unique';
                 return errorMsg;
             }
 
@@ -1103,11 +1047,13 @@
 
         function createTransferTrialsOwnership(controller, userIdArr) {
             searchTrials({
-                'organization_id': (controller.userDetails ? controller.userDetails.organization_id : false) || controller.curUser.organization_id,
-                'family_users': true,
+                'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
+                'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id,
                 'protocol_id':'*',
                 'internal_sources': [{'code':'PRO'}],
-                'searchType': 'All Trials'
+                'searchType': 'All Trials',
+                'trial_ownership': true,
+                'no_nih_nci_prog': true
             }).then(function (data) {
                 if (controller.showAddTrialsModal === false) {
                     controller.showAddTrialsModal = true;
@@ -1125,15 +1071,30 @@
                     selectedItems: [],
                     openModal: controller.showAddTrialsModal,
                     showSave: controller.showAddTrialsModal,
+                    confirmMessage: controller.userDetails ? 'You have selected to add ownership of the Selected Trial(s) above, to ' + controller.userDetails.last_name + ', '
+                                + controller.userDetails.first_name + ' (' + controller.userDetails.username + ')' + '.':'',
                     close: function () {
                         controller.showAddTrialsModal = false;
                     },
                     reset: function () {
+                        controller.trialOptions.searchTerm = '';
                         controller.trialOptions.items = angular.copy(controller.trialOptions.resetItems);
                         controller.trialOptions.selectedItems = [];
                     },
                     save: function () {
                         controller.showAddTrialsModal = false;
+                        var searchParams = {
+                            user_ids: [controller.userDetails.id],
+                            trial_ids: _.chain(controller.trialOptions.selectedItems).pluck('id').value()
+                        };
+
+                        PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
+                            .then(function (data) {
+                            if(data.results === 'success') {
+                                toastr.success('Trial Ownership Created', 'Success!');
+                                controller.getUserTrials();
+                            }
+                        });
                     }
                 };
                 _.each(data.trials, function (trial) {

@@ -272,6 +272,29 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
+      if  params[:no_nih_nci_prog].present?
+        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
+      end
+
+      if params[:trial_ownership].present?
+        if ['ROLE_ADMIN'].include? current_user.role
+          if params[:family_id].present?
+            @trials = @trials.in_family(params[:family_id], Date.today)
+          elsif params[:organization_id].present?
+            @trials = @trials.matches('lead_org_id', params[:organization_id])
+          end
+        end
+
+        if ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
+          family = FamilyMembership.find_by_organization_id(current_user.organization_id)
+          if family
+            @trials = @trials.in_family(family.family_id, Date.today)
+          else
+            @trials = @trials.matches('lead_org_id', current_user.organization_id)
+          end
+        end
+      end
+
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
@@ -607,6 +630,15 @@ class TrialsController < ApplicationController
     rescue OpenURI::HTTPError
       @search_result[:error_msg] = 'A study with the given identifier is not found in ClinicalTrials.gov.'
     else
+      lead_protocol_id = xml.xpath('//org_study_id').text
+      org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
+
+      dup_trial = Trial.joins(:lead_org).where('organizations.name = ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
+      if dup_trial.length > 0
+        @search_result[:error_msg] = 'Combination of Lead Organization Trial ID and Lead Organization must be unique.'
+        return
+      end
+
       @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
       @search_result[:official_title] = xml.xpath('//official_title').text
       @search_result[:status] = xml.xpath('//overall_status').text
@@ -667,7 +699,8 @@ class TrialsController < ApplicationController
                                   :board_name, :board_affiliation_id, :board_approval_num, :board_approval_status_id, :send_trial_flag, :verification_date,
                                   other_ids_attributes: [:id, :protocol_id_origin_id, :protocol_id, :_destroy],
                                   alternate_titles_attributes: [:id, :category, :title, :source, :_destroy],
-                                  arms_groups_attributes: [:id, :label, :arms_groups_type, :description, :intervention_text, :trial_id, :_destroy],
+                                  arms_groups_attributes: [:id, :label, :arms_groups_type, :description, :trial_id, :_destroy,
+                                                           arms_groups_interventions_associations_attributes:[:id,:intervention_id,:_destroy]],
                                   central_contacts_attributes: [:id, :country, :phone, :email, :central_contact_type_id, :person_id, :trial_id, :fullname, :extension],
                                   trial_funding_sources_attributes: [:id, :organization_id, :_destroy],
                                   collaborators_attributes: [:id, :organization_id, :org_name, :_destroy],

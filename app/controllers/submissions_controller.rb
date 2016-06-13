@@ -61,6 +61,24 @@ class SubmissionsController < ApplicationController
     end
   end
 
+
+
+  # GET /user_trial_submissions/search.json
+  def search
+    # Pagination/sorting params initialization
+    params[:start] = 1 if params[:start].blank?
+    params[:sort] = 'nci_id' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+
+    @trial_submissions = Submission.all
+    @trial_submissions = @trial_submissions.matches('user_id', params[:user_id])
+    @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
+    unless params[:rows].nil?
+      @trial_submissions = @trial_submissions.page(params[:start]).per(params[:rows])
+    end
+    @trial_submissions
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_submission

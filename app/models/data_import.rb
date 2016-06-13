@@ -192,12 +192,21 @@ class DataImport
         trial.arms_groups << arm1
         trial.arms_groups << arm2
 
+        # Submissions
+        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'))
+        trial.submissions << sub
+
+        # Processing status
+        pro_status = ProcessingStatusWrapper.new(status_date: Date.today, processing_status: ProcessingStatus.find_by_code('SUB'), submission: sub)
+        trial.processing_status_wrappers << pro_status
+
         # Randomely Assign User statuses
         #User.all.each do |u|
         #  u.user_status = UserStatus.all[rand(0..UserStatus.all.size-1)]
         #  u.save!
         #end
         #save Trial
+        trial.edit_type = 'seed'
         trial.save!
       end
     rescue Exception => e
@@ -212,6 +221,7 @@ class DataImport
     c3.organization = org27
     c3.org_name = org27.name
     t.collaborators << c3
+    t.edit_type = 'seed'
     t.save!
 
   end
@@ -240,6 +250,7 @@ class DataImport
           current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
           current_submission.user = User.all[rand(0..total_users-1)]
           trial.submissions << current_submission
+          trial.edit_type = 'seed'
           trial.save!
         end
         current_milestone = spreadsheet.cell(row,'B')
@@ -254,6 +265,7 @@ class DataImport
           cmw.milestone = milestone
           cmw.submission = current_submission
           trial.milestone_wrappers << cmw
+          trial.edit_type = 'seed'
           trial.save!
         end
       end
@@ -309,6 +321,7 @@ class DataImport
 
       #ps.participating_site_investigators << psi2
       trial.participating_sites << ps
+      trial.edit_type = 'seed'
       trial.save!
     end
   end

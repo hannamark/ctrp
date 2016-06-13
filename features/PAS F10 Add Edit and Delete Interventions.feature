@@ -18,6 +18,7 @@ Then the intervention information will be displayed
  
 
       |Preferred Name                |
+      |C Code                        |                       
       |Synonyms                      |
       |Definition                    |
       |Action                        |

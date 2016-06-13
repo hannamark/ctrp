@@ -45,7 +45,6 @@ class NcitIntervention < ActiveRecord::Base
             xml = Nokogiri::XML(entry.get_input_stream.read)
             
             # Search for label as preferred name
-            i = 0
             xml.xpath('//owl:Class[@rdf:about]').each do |node|
               # extract preferred_name and synonyms
               name = node.xpath('rdfs:label').text
@@ -64,12 +63,8 @@ class NcitIntervention < ActiveRecord::Base
                 ## extract the definition field
                 definition = node.css('P97').xpath('ncicp:ComplexDefinition/ncicp:def-definition')
                 definition = definition.present? ? definition.text : nil
-                if i < 50
-                  p "NcitIntervention.create(preferred_name: \"#{name}\", synonyms: \"#{synonyms}\", definition: \"#{definition}\", type_code: \"nil\", ct_gov_type_code: \"nil\", ncit_status: #{act.id}, c_code: \"#{c_code}\")"
-                  i += 1
-                end
-
-                # NcitIntervention.create(preferred_name: name, synonyms: synonyms, definition: definition, type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: c_code)
+                # p "NcitIntervention.create(preferred_name: \"#{name}\", synonyms: \"#{synonyms}\", definition: \"#{definition}\", type_code: \"nil\", ct_gov_type_code: \"nil\", ncit_status: #{act.id}, c_code: \"#{c_code}\")"
+                NcitIntervention.create(preferred_name: name, synonyms: synonyms, definition: definition, type_code: nil, ct_gov_type_code: nil, ncit_status: act, c_code: c_code)
               end
 
             end

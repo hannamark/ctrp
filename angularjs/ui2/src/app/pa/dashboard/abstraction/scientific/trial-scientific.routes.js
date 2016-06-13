@@ -153,13 +153,6 @@
                 templateUrl: 'app/pa/dashboard/abstraction/scientific/pas_arms_groups.html',
                 controller: 'pasArmsGroupsCtrl as armView',
                 section: 'pa',
-                resolve: {
-                    TrialService: 'TrialService',
-                    PATrialService: 'PATrialService',
-                    trialDetailObj: function($stateParams, TrialService) {
-                        return TrialService.getTrialById($stateParams.trialId);
-                    }
-                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Arms Groups'

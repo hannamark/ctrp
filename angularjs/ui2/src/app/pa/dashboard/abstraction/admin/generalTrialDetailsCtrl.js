@@ -175,7 +175,6 @@
           }, 0);
       } //getTrialDetailCopy
 
-
       /**
        * Add other identifier to the trial,
        * This function prevents adding duplicate other identifier
@@ -187,12 +186,10 @@
 
           // parse to integer
           vm.otherIdentifier.protocol_id_origin_id = parseInt(vm.otherIdentifier.protocol_id_origin_id);
-          // boolean
           var condition = {'protocol_id_origin_id': vm.otherIdentifier.protocol_id_origin_id};
+          // var condition = {'protocol_id': vm.otherIdentifier.protocol_id};
           var otherIdObj = _.findWhere(vm.generalTrialDetailsObj.other_ids, condition);
-
           if (angular.isDefined(otherIdObj) && !_.contains(duplicateAllowedIds, otherIdObj.identifierName)) {
-              // if the identifier exists (excluding 'Other Identifier'), Return
               vm.otherIdErrorMsg = 'Identifier already exists';
               return;
           }
@@ -368,7 +365,7 @@
                     vm.generalTrialDetailsObj.central_contacts = [].concat({email: '', phone: ''});
                 }
             }
-        });
+        }, true);
       }
 
       function isValidPhoneNumber() {
@@ -454,7 +451,6 @@
               var _centralContactType = _.findWhere(vm.centralContactTypes, {id: parseInt(_centralContactTypeId)});
               typeName = !!_centralContactType ? _centralContactType.name : typeName;
           }
-
           return typeName;
       }
 
