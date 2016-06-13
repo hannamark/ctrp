@@ -172,7 +172,7 @@ end
       temp0 = []
       temp1 = []
       @users.each do |user|
-        if user.role == 'ROLE_SITE-SU' || user.role == 'ROLE_SUPER' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ACCOUNT-APPROVER'
+        if user.role == 'ROLE_SITE-SU'
           temp0.push(user)
         else
           temp1.push(user)
