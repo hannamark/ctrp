@@ -470,36 +470,9 @@ class Trial < TrialBase
       if update_need_ack?
         validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
       end
-    elsif milestone_to_add.code == 'RVQ'
+    elsif milestone_to_add.code == 'SAC'
       if !is_last_milestone?(submission_id, 'VPC')
         validation_msgs[:errors].push('Validation Processing Completed Date milestone must exist')
-      end
-      if active_onhold_exists?
-        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
-      end
-    elsif milestone_to_add.code == 'VQS'
-      if !is_last_milestone?(submission_id, 'RVQ')
-        validation_msgs[:errors].push('Ready for Validation QC Date milestone must exist')
-      end
-      if active_onhold_exists?
-        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
-      end
-      if update_need_ack?
-        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
-      end
-    elsif milestone_to_add.code == 'VQC'
-      if !is_last_milestone?(submission_id, 'VQS')
-        validation_msgs[:errors].push('Validation QC Start Date milestone must exist')
-      end
-      if active_onhold_exists?
-        validation_msgs[:errors].push('Cannot be recorded because at least one active "on-hold" record exists')
-      end
-      if update_need_ack?
-        validation_msgs[:errors].push('Cannot be recorded because at least one update needs to be acknowledged')
-      end
-    elsif milestone_to_add.code == 'SAC'
-      if !is_last_milestone?(submission_id, 'VQC')
-        validation_msgs[:errors].push('Validation QC Completed Date milestone must exist')
       end
     elsif milestone_to_add.code == 'APS'
       sac = Milestone.find_by_code('SAC')

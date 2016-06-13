@@ -50,9 +50,7 @@ class MilestoneWrapper < TrialBase
 
   def recording_triggers
     if self.milestone.present?
-      if self.milestone.code == 'VPC'
-        MilestoneWrapper.create(milestone: Milestone.find_by_code('RVQ'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
-      elsif self.milestone.code == 'STR'
+      if self.milestone.code == 'STR'
         stm = ProcessingStatus.find_by_code('STM')
         if self.submission.present? && stm.present?
           ProcessingStatusWrapper.create(status_date: Date.today, processing_status: stm, submission: self.submission, trial: self.trial)
