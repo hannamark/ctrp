@@ -34,6 +34,7 @@ end
 
 json.search_status @status
 json.search_organization @organization
+json.search_families @families
 json.search_type @searchType
 
 json.start params[:start]
