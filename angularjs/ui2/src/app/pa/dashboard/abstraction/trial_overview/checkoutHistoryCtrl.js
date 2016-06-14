@@ -131,16 +131,16 @@
         function getColumnDefs() {
             var columns = [
                 {headerName: 'Type', width: 60, field: 'abstraction_type', cellRenderer: _renderCellType},
-                {headerName: 'Checkout',
+                {headerName: 'Check Out',
                  children: [
-                     {headerName: 'Checkout Time', width: 75, field: 'checkout_time', cellRenderer: _renderCellDate},
-                     {headerName: 'Checkout User', width: 80, field: 'checkout_username', cellRenderer: _renderToolTip},
+                     {headerName: 'Check Out Time', width: 75, field: 'checkout_time', cellRenderer: _renderCellDate},
+                     {headerName: 'Check Out User', width: 80, field: 'checkout_username', cellRenderer: _renderToolTip},
                     ]
                 },
-                {headerName: 'Checkin',
+                {headerName: 'Check In',
                  children: [
-                     {headerName: 'Checkin Time', width: 75, field: 'checkin_time', cellRenderer: _renderCellDate},
-                     {headerName: 'Checkin User', width: 80, field: 'checkin_username', cellRenderer: _renderToolTip},
+                     {headerName: 'Check In Time', width: 75, field: 'checkin_time', cellRenderer: _renderCellDate},
+                     {headerName: 'Check In User', width: 80, field: 'checkin_username', cellRenderer: _renderToolTip},
                      {headerName: 'Check In Comment',field: 'checkin_comment', cellRenderer: _renderToolTip, suppressSizeToFit: false}
                     ]
                 }

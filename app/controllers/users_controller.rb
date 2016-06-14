@@ -18,6 +18,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_username(params[:username])
+    @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     @userWriteAccess = userWriteAccess(@user)
   end
 
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:user][:username])
     initalUserRole = @user.role
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
-
+    @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     respond_to do |format|
       #must be correct admin for the org, or with correct role or user him/herself
       if userWriteAccess(@user) && @user.update_attributes(user_params)
@@ -144,8 +145,9 @@ end
     end
 
     if ['ROLE_SITE-SU'].include? current_user.role
-      family = FamilyMembership.find_by_organization_id(current_user.organization_id)
-      if family
+      any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
+      @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
+      if any_membership
           @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
       else
           @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?

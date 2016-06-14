@@ -297,7 +297,13 @@
                 $scope.ps_sites_form.$setPristine();
                 $scope.ps_inv_form.$setPristine();
                 $scope.ps_contact_form.$setPristine();
+                vm.current_investigator.uiEdit = false;
             }
+
+            vm.current_investigator.edit = false;
+            vm.current_investigator.uiEdit = false;
+            vm.showInvestigatorRoleError = false;
+            vm.current_investigator.new = false;        
 
             vm.currentParticipatingSite = {
                 contact_type: 'General'
@@ -699,6 +705,12 @@
          *  Cancel out of editing an existing Site Recruitment Status Record in the Participating Site
          */
         function cancelInvestigatorEdit() {
+            if (!vm.current_investigator.investigator_type) {
+                vm.showInvestigatorRoleError = true;
+                return;
+            } else {
+                vm.showInvestigatorRoleError = false;
+            }
 
             for (var i = 0; i < vm.investigatorGrid.length; i++) {
                 console.log("in commitEditInvestigator vm.current_investigator=" + JSON.stringify(vm.current_investigator));
