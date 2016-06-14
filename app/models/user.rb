@@ -95,9 +95,9 @@ class  User < ActiveRecord::Base
 
     if column == 'site_admin'
       if  value == true
-        joins(join_clause).where("users.role IN ('ROLE_SITE-SU','ROLE_ADMIN')").distinct
+        joins(join_clause).where("users.role IN ('ROLE_SITE-SU')").distinct
       else
-        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU','ROLE_ADMIN')").distinct
+        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU')").distinct
       end
     elsif column == 'user_statuses'
       joins(join_clause).where("users.user_status_id in (#{value.join(',')})").distinct

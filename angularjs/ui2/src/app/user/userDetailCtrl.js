@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$state', '$timeout', '$scope', 'countryList', 'AppSettingsService', 'URL_CONFIGS'];
+    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$rootScope', '$state', '$timeout', '$scope', 'countryList', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $state, $timeout, $scope, countryList, AppSettingsService, URL_CONFIGS) {
+    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, countryList, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -23,7 +23,11 @@
         vm.countriesArr = countryList;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
+        vm.isCurrentUser = UserService.getCurrentUserId() === vm.userDetailsOrig.id;
+        $rootScope.$broadcast('isWriteModeSupported', vm.userDetailsOrig.write_access);
+
         vm.updateUser = function (redirect) {
+
             vm.chooseTransferTrials = false;
             vm.showTransferTrialsModal = false;
             vm.showAddTrialsModal = false;
@@ -32,7 +36,9 @@
             }
 
             UserService.upsertUser(vm.userDetails).then(function(response) {
-                toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                if ( response.username ) {
+                    toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                }
                 if (redirect) {
                     UserService.allOrgUsers = null;
                     $timeout(function() {
@@ -98,9 +104,10 @@
         vm.checkForOrgChange = function() {
             var redirect = false;
             if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
+                var review_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 if (vm.gridTrialsOwnedOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER'
                     || vm.userRole === 'ROLE_ACCOUNT-APPROVER' || vm.userRole === 'ROLE_SITE-SU')) {
-                    vm.userDetails.user_status_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
+                    vm.userDetails.user_status_id = review_id;
                 }
                 if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user

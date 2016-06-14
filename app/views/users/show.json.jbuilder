@@ -23,3 +23,4 @@ json.extract! @user,
               :created_at, :updated_at
 
 json.org_families @user.organization.present? && @user.organization.families.present? ? @user.organization.families : []
+json.write_access @userWriteAccess

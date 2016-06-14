@@ -84,6 +84,7 @@
                                            ng-model="markersView.currentBioMarker.evaluation_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isEvalTypeOtherChecked"
                                            ng-required="markersView.isEvalTypeOtherChecked" placeholder="Other Evaluation Type">
 
                                     <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.evaluation_type_other) && marker_form.evaluation_type_other.$error">
@@ -125,6 +126,7 @@
                                            ng-model="markersView.currentBioMarker.assay_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isAssayTypeOtherChecked"
                                            ng-required="markersView.isAssayTypeOtherChecked" placeholder="Other Assay Type">
 
                                     <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.assay_type_other) && marker_form.assay_type_other.$error">
@@ -146,18 +148,15 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use)}">
                         <label for="biomarker_use" class="control-label col-xs-12 col-sm-2">Biomarker Use:</label>
                         <div class="col-xs-12 col-sm-6">
-                            <select name="biomarker_use" id="biomarker_use"
-                                    class="form-control input-sm"
-                                    ng-required="true"
-                                    ng-model="markersView.currentBioMarker.biomarker_use_id"
-                                    ng-options="use.id as use.name for use in markersView.biomarkerUses">
-                                <option value="">- Please select a biomarker use...</option>
-                            </select>
+                                <label class="radio-inline" ng-repeat="use in markersView.biomarkerUses">
+                                    <input type="radio" ng-required="true" ng-model="markersView.currentBioMarker.biomarker_use_id" name="biomarker_use" value="{{use.id}}" id="{{use.id}}">{{use.name}}
+                                </label>
                             <span ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.biomarker_use) && marker_form.biomarker_use.$error">
                                 <span class="help-block" ng-message="required">Biomarker Use is Required</span>
                             </span>
                         </div>
                     </div>
+
                     <!-- end of bio marker use -->
 
                     <div class="form-group no-bottom-margin" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_biomarker_purposes.length)}">
@@ -213,6 +212,7 @@
                                            ng-model="markersView.currentBioMarker.specimen_type_other"
                                            ng-maxlength="300"
                                            maxlength="300"
+                                           ng-if="markersView.isSpecTypeOtherChecked"
                                            ng-required="markersView.isSpecTypeOtherChecked" placeholder="Other Specimen Type">
 
                                     <span class="top-offset-xss" ng-messages="ctrpbtn.marker_form.needsAttention(marker_form.specimen_type_other) && marker_form.specimen_type_other.$error">
