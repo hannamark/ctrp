@@ -146,7 +146,7 @@ end
 
     if ['ROLE_SITE-SU'].include? current_user.role
       any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
-      @families = Family.find_unexpired_matches_by_org(@user.organization_id)
+      @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
       if any_membership
           @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
       else
