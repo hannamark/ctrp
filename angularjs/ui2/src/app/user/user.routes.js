@@ -155,6 +155,27 @@
                     }
                 })
 
+                .state('main.myprofile', {
+                    url: '/settings/profile',
+                    templateUrl: 'app/user/userDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
+                    resolve: {
+                        UserService: 'UserService',
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        },
+                        userDetailObj : function(UserService) {
+                            return UserService.getUserDetailsByUsername(UserService.currentUser());
+                        }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'User Profile'
+                    }
+                })
+
                 .state('main.userDetail', {
                     url: '/user-detail/:username',
                     templateUrl: 'app/user/userDetails.html',
