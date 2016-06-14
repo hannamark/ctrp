@@ -635,7 +635,7 @@ class TrialsController < ApplicationController
       lead_protocol_id = xml.xpath('//org_study_id').text
       org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
 
-      dup_trial = Trial.joins(:lead_org).where('organizations.name = ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
+      dup_trial = Trial.joins(:lead_org).where('organizations.name ilike ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
       if dup_trial.length > 0
         @search_result[:error_msg] = 'Combination of Lead Organization Trial ID and Lead Organization must be unique.'
         return
