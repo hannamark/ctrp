@@ -134,7 +134,7 @@ gulp.task('wiredep', function() {
     return gulp
         .src(config.index)
         .pipe($.inject(gulp.src(config.js)
-            .pipe(pipes.orderedAppScripts()))) // $.angularFilesort()
+            .pipe(pipes.orderedAppScripts()) /* , {ignorePath: './src/', relative: true} */)) // $.angularFilesort()
         .pipe(wiredep(options))
         .pipe(gulp.dest(config.client));
 });
