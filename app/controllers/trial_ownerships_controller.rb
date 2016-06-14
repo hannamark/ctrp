@@ -19,6 +19,7 @@ class TrialOwnershipsController < ApplicationController
 
     @trial_ownerships = TrialOwnership.all
     @trial_ownerships = @trial_ownerships.matches('user_id', params[:user_id])
+    @trial_ownerships = @trial_ownerships.matches('internal_source_id', InternalSource.find_by_code('PRO').id)
     @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}")
     unless params[:rows].nil?
       @trial_ownerships = @trial_ownerships.page(params[:start]).per(params[:rows])
