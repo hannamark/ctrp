@@ -29,7 +29,7 @@ And the Section in the Comment field is displayed as a link to the form
     Then Administration_Error_Count is incremented
     When all rules have been checked
     Then the Header 'Abstraction Validation failed.  Please check Admin Data Menu error(s)' displays
-    And Header "Administration_Error_Count 'item(s) found" displays
+    And Header "Administration_Error_Count item(s) found" displays
     And the associated <Description> and <Comment> display  
   
   |Section |Admin_Error_Rule|Description  | Comment|     
@@ -42,7 +42,7 @@ And the Section in the Comment field is displayed as a link to the form
      Then Scientific_Error_Count is incremented
     When all rules have been checked
     Then the Header 'Abstraction Validation failed.  Please check Scientific Data Menu error(s)' displays
-    And Header "Scientific_Error_Count 'item(s) found" displays
+    And Header "Scientific_Error_Count item(s) found" displays
     And the associated <Description> and <Comment> display  
     
   |Section                   |Scientific_Error_Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                       
@@ -55,7 +55,7 @@ And the Section in the Comment field is displayed as a link to the form
      Then Administration_Warning_Count is incremented
     When all rules have been checked
     Then the Header 'Administrative Abstraction Validation Warnings.  Please check Admin Data Warnings' displays
-    And Header "Administration_Warning_Count 'item(s) found" displays
+    And Header "Administration_Warning_Count item(s) found" displays
     And the associated <Description> and <Comment> display  
     
   |Section                   |Admin_Warning_Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                         
@@ -68,7 +68,7 @@ And the Section in the Comment field is displayed as a link to the form
     Then Scientific_Warning_Count is incremented
     When all rules have been checked
     Then the Header 'Scientific Abstraction Validation Warnings.  Please check Scientific Data Warnings' displays
-    And Header "Scientific_Warning_Count 'item(s) found" displays
+    And Header "Scientific_Warning_Count item(s) found" displays
     And the associated <Description> and <Comment> display  
     
   |Section                   |Scientific_Warning_Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                         
