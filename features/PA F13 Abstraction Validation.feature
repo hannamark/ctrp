@@ -20,14 +20,14 @@ Given I have selected a Trial
 And I select the Abstraction validation option
 When there are warnings or errors
 Then the Description and Comment fields display grouped by section
-And the Section is displayed as a link to the form
+And the Section in the Comment field is displayed as a link to the form
 
 
  Scenario Outline: #3 Administration Validation Display for Errors
     Given I have selected a Trial
     When the <Rule> is met
     Then the Header 'Abstraction Validation failed.  Please check Admin Data Menu error(s)' displays
-    And Header Error_Count 'item(s) found
+    And Header "Error_Count 'item(s) found" displays
     And the associated <Description> and <Comment> display  
   
   |Section |Rule|Description  | Comment|     
@@ -38,7 +38,7 @@ And the Section is displayed as a link to the form
     Given I have selected a Trial
     When the <Rule> is met
     Then the Header 'Abstraction Validation failed.  Please check Scientific Data Menu error(s)' displays
-    And Header: Error_Count 'item(s) found
+    And Header "Error_Count 'item(s) found" displays
     And the associated <Description> and <Comment> display  
     
   |Section                   |Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                       
@@ -49,7 +49,7 @@ And the Section is displayed as a link to the form
     Given I have selected a Trial
     When the <Rule> is met
     Then the Header 'Abstraction Validation Warnings.  Please check Admin Data Warnings' displays
-    And Header Error_Count 'item(s) found
+    And Header "Error_Count 'item(s) found" displays
     And the associated <Description> and <Comment> display  
     
   |Section                   |Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                         
@@ -60,7 +60,7 @@ And the Section is displayed as a link to the form
     Given I have selected a Trial
     When the <Rule> is met
     Then the Header 'Abstraction Validation Warnings.  Please check Scientific Data Warnings' displays
-    And Header Error_Count 'item(s) found
+    And Header "Error_Count 'item(s) found" displays
     And the associated <Description> and <Comment> display  
     
   |Section                   |Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                         
