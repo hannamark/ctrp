@@ -76,11 +76,12 @@
 
         vm.validateSave = function() {
             vm.showValidation = true;
+            var newOrg = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1];
             // If form is invalid, return and let AngularJS show validation errors.
             if ($scope.userDetail_form.$invalid) {
                 return;
             } else {
-                if (vm.inactivatingUser || vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id ) {
+                if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
                         if (vm.gridTrialsOwnedOptions.totalItems > 0
                                 && (vm.userRole === 'ROLE_ADMIN'
@@ -115,7 +116,7 @@
                     redirect = true;
                 } else if (
                     //new org is not part of the family and user is not an admin
-                    _.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length === 0
+                    !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length
 
                     && vm.userRole !== 'ROLE_ADMIN') {
                     newOrg.id = vm.userDetailsOrig.organization_id;
