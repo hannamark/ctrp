@@ -34,6 +34,9 @@ var abstractionTrailStatuses = function(){
     this.statuesesWhyStoped = element(by.model('trialStatusView.statusObj.why_stopped'));
     this.statuesesAdd = element(by.id('trial_status_add_btn'));
 
+    this.commentCharaLeft = element(by.css('.row.table-responsive .table.table-striped.table-condensed:nth-child(01) tbody tr:nth-child(1) td:nth-child(3) .ng-binding'));
+    this.whyStdyCharaLeft = element(by.css('.row.table-responsive .table.table-striped.table-condensed:nth-child(01) tbody tr:nth-child(1) td:nth-child(4) .ng-binding'));
+
     this.trialStatusTbleAll = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
     this.trialStatusTble = element(by.css('.table.table-bordered.table-striped.table-hover'));
 
@@ -60,6 +63,7 @@ var abstractionTrailStatuses = function(){
     this.tblErrorsWarningRWB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(05) td:nth-child(05)'));
     this.tblEditRWB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(06) td:nth-child(06) #edit_btn'));
     this.tblDeleteRWB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(07) td:nth-child(07) #delete_btn'));
+
     //trial status edit
     this.statuesesCancel = element(by.id('trial_status_cancel'));
     this.statuesesConfirm = element(by.id('trial_status_confirm'));
@@ -75,10 +79,13 @@ var abstractionTrailStatuses = function(){
     this.primaryCompletionDateCalendar = element(by.id('primary_completion_date_calendar'));
     this.primaryCompletionDateRadioActual = element(by.id('primary_completion_date_radio_btn_actual'));
     this.primaryCompletionDateRadioAnticipated = element(by.id('primary_completion_date_radio_btn_anticipated'));
+    this.primaryCompletionDateRadioNA = element(by.id('primary_completion_date_radio_btn_na'));
     this.completionDate = element(by.id('completion_date'));
     this.completionDateCalendar = element(by.id('completion_date_calendar'));
     this.completionDateRadioActual = element(by.id('completion_date_radio_btn_actual'));
     this.completionDateRadioAnticipated = element(by.id('completion_date_radio_btn_anticipated'));
+
+    this.primaryCompletionDateNAErr = element(by.css('.col-sm-7 .help-block'));
 
     //Trial Comment
     this.trialComment = element(by.id('status_comment'));
@@ -99,6 +106,10 @@ var abstractionTrailStatuses = function(){
     //Wiki obj
     this.wikiTitle = element(by.css('#title-text'));
 
+    //Page class
+    this.trialStatusSec = element(by.css('.row.table-responsive'));
+    this.trialStatusPage = element(by.css('.trial-status'));
+
     //Trial Statuses
 
     this.setStatusDate = function(dateYear, dateMonth, dateDay){
@@ -108,6 +119,12 @@ var abstractionTrailStatuses = function(){
 
     this.selectStatus = function(getValue){
       helper.selectValueFromList(this.statuesesStatus, getValue, 'Select Status');
+      helper.wait_for(200);
+    };
+
+    this.selectDisableStatus = function(getValue){
+        helper.selectDisableValueFromList(this.statuesesStatus, getValue, 'Select Status');
+        helper.wait_for(200);
     };
 
     this.setStatusComment = function(getCommentValue){
@@ -129,6 +146,11 @@ var abstractionTrailStatuses = function(){
 
     this.clickEditTrialStatusCancel = function(){
         helper.clickButton(this.statuesesCancel, "Trial Status Edit Cancel - Button");
+    };
+
+    this.verifyNothingSelectedFromList = function(getValue){
+        helper.getVerifyListValue(this.statuesesStatus, getValue, 'Select Status');
+        helper.wait_for(200);
     };
 
     this.verifyTrialStatusTblHdr = function (){
@@ -286,6 +308,8 @@ var abstractionTrailStatuses = function(){
             helper.clickButton(this.primaryCompletionDateRadioActual, "Actual Radio Button");
         } else if(actulAnticptd === 'Anticipated'){
             helper.clickButton(this.primaryCompletionDateRadioAnticipated, "Anticipated Radio Button");
+        } else if(actulAnticptd === 'NA'){
+            helper.clickButton(this.primaryCompletionDateRadioNA, "NA Radio Button");
         }
     };
 

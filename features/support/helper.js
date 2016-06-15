@@ -81,6 +81,12 @@ var helper = function() {
         });
     };
 
+    this.selectDisableValueFromList = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.element(by.cssContainingText('option', fieldValue)).click();
+        console.log(errorMessage + ' ' + fieldValue + " Value selected");
+    };
+
     this.selectValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.click();

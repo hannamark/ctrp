@@ -87,7 +87,7 @@ And I can view the Trial Status Rules for Start and Completion DatesRules Inform
 And the Trial Status Rules for Start and Completion Dates Rules is a Web Link "https://wiki.nci.nih.gov/display/CTRP/Trial+Status+Rules+for+Start+and+Completion+Dates"
 When I have clicked on the Trial Status Rules for Start and Completion Dates text
 Then the Trial Status Rules for Start and Completion Dates Rules user guide page will be displayed
-@runthis
+
 Scenario: #6 PA Trial Status Comments (Why Study Stopped?)
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
@@ -100,7 +100,7 @@ And I am on the Trial Status Screen
 Then the information text appears below for each Trial Status when it is selected:
 |In Review - The trial is in development and waiting for final approval.|
 |Approved - Trial has been approved.|
-|Active � The trial is open for Accrual.| 
+|Active - The trial is open for Accrual.|
 |Temporarily Closed to Accrual - Trial is temporarily not accruing.|
 |Temporarily Closed to Accrual and Intervention - Trial has been closed to participant accrual. No participants are receiving treatment/intervention, but participants are still being followed according to the primary objectives of the study.|
 |Closed to Accrual - Trial has been closed to participant accrual. Participants are still receiving treatment/intervention.|
@@ -109,9 +109,9 @@ Then the information text appears below for each Trial Status when it is selecte
 |Administratively Complete - Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)|
 |Withdrawn - Trial has been withdrawn from development and review.|
 |Available - Currently available for this treatment|
-|No longer available � Was available for this treatment previously but is not currently available and will not be available in the future|
-|Temporarily not available � Not currently available for this treatment, but is expected to be available in the future|
-|Approved for marketing � Treatment has been approved for sale to the public.|
+|No longer available - Was available for this treatment previously but is not currently available and will not be available in the future|
+|Temporarily not available - Not currently available for this treatment, but is expected to be available in the future|
+|Approved for marketing - Treatment has been approved for sale to the public.|
 
 Scenario: #8 PA Trial Status Why Study Stopped? field character count
 Given I am logged into the CTRP Protocol Abstraction application
@@ -136,7 +136,6 @@ Then the trial status will not be selectable:
 |Temporarily not available|
 |Approved for marketing|
 
-
 Scenario: #11 Selection of Primary Completion Date Type "NA" - DCP
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
@@ -145,8 +144,8 @@ And I have selected the Primary Completion Date
 And I have selected the Primary Completion Date Type  "NA"
 And the trial does not have a DCP Trial Identifier 
 And I select Save
-Then an Error will be displayed "Primary Completion Date Type of "NA" is only available for DCP Trials"
-
+Then an Error will be displayed "Primary Completion Date Type of NA is only available for DCP Trials"
+ @runthis
 Scenario: #12 Selection of Primary Completion Date Type "NA" - Non Interventional
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
@@ -155,7 +154,7 @@ And I have selected the Primary Completion Date
 And I have selected the Primary Completion Date Type  "NA"
 And the trial is Interventional
 And I select Save
-Then an Error will be displayed "Primary Completion Date Type of "NA" is only available for Non-Interventional Trials"
+Then an Error will be displayed "Primary Completion Date Type of NA is only available for Non-Interventional Trials"
 
 Scenario: #13 Selection of Primary Completion Date - DCP
 Given I am logged into the CTRP Protocol Abstraction application
