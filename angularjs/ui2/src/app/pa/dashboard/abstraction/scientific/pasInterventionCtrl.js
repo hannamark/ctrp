@@ -28,7 +28,8 @@
             vm.sortableListener = {};
             vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
-            var isUserAllowedToSelectType = curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU'; // only super userss are allowed
+            var USERS_ALLOWED_CHANGE_TYPE = ['ROLE_SUPER', 'ROLE_ABSTRACTOR-SU', 'ROLE_ADMIN']; // user roles allowed to change intervention type
+            var isUserAllowedToSelectType = _.contains(USERS_ALLOWED_CHANGE_TYPE, curUserRole);
 
             // actions
             vm.addIntervention = addIntervention;
