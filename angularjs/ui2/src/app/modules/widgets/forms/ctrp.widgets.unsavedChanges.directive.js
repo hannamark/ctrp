@@ -5,10 +5,10 @@
 (function() {
     'use strict';
     angular.module('ctrpApp.widgets')
-        .controller('unSavedChangesModalCtrl', unSavedChangesModalCtrl)
+        //.controller('unSavedChangesModalCtrl', unSavedChangesModalCtrl)
         .directive('unsavedChanges', unsavedChanges);
 
-        unSavedChangesModalCtrl.$inject = ['$scope', '$uibModalInstance'];
+        //unSavedChangesModalCtrl.$inject = ['$scope', '$uibModalInstance'];
         unsavedChanges.$inject = ['$window', '$uibModal'];
 
         function unsavedChanges($window, $uibModal) {
@@ -22,25 +22,20 @@
             function linkerFn(scope, element, attrs) {
                 var formName = attrs.name;
 
-                $window.onbeforeunload = function() {
-                    var modalOpened = false;
-
+                $window.onbeforeunload = function(event) {
                     if (scope[formName].$dirty) {
-                        if (modalOpened) return; //prevent modal open twice in single click
-
-                        activateModal();
-                        modalOpened = true;
+                        return 'Are you sure you want to leave this page? You may have unsaved changes.';
                     }
                 };
 
                 scope.$on('$stateChangeStart', function(event) {
                     if (scope[formName].$dirty) {
-                        if (true) {
+                        if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
                             event.preventDefault();
                         }
                     }
                 });
-
+/*
                 function activateModal() {
                     $uibModal.open({
                         animation: true,
@@ -49,11 +44,14 @@
                         size: 'md'
                     });
                 }
+*/
             }
         }
 
+/*
         function unSavedChangesModalCtrl($scope, $uibModalInstance) {
             var vm = this;
+
 
             vm.confirm = function() {
 
@@ -63,4 +61,5 @@
                 $uibModalInstance.close();
             };
         }
+*/
 })();
