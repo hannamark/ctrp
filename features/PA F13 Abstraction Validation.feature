@@ -10,7 +10,7 @@ And I select the Abstraction vaidation option
 When there are no warnings or errors
 Then the 'Abstraction is valid' message displays
 And the <ViewButtons> display
-|ViewButtons|
+|ViewButtons    |
 |View XML|
 |View TSR|
 And the milestone 'Ready for Trial Summary Report Date' is added to the milestone for the study
