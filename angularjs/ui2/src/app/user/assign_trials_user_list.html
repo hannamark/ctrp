@@ -7,30 +7,47 @@
 <div class="row">
     <div class="col-xs-12 drop-shadow">
         <h4>Assign Trial Ownership</h4>
-        <div class="row">
-            <h2>1. Select Family</h2>
+        <div class="row"  ng-if="trialOwnershipView.curUser.role === 'ROLE_ADMIN'">
+            <h2>1. Select Family <u>or Organization</u> <small>(for organizations without families)</small></h2>
             <div class="col-xs-auto">
                 <select name="family" id="family"
                         class="form-control input-sm"
                         ng-model="trialOwnershipView.family_id"
-                        ng-change="trialOwnershipView.getFamilyTrialsUsers()"
-                        ng-disabled="trialOwnershipView.curUser.role !== 'ROLE_SUPER' && trialOwnershipView.curUser.role !== 'ROLE_ADMIN' && trialOwnershipView.curUser.role !== 'ROLE_ABSTRACTOR'"
+                        ng-change="trialOwnershipView.organization_id = null; trialOwnershipView.getFamilyTrialsUsers()"
                         ng-options="family.id as family.name for family in trialOwnershipView.families"
                         required>
                     <option value="">Select an Organization Family</option>
                 </select>
+                <div class="row top-offset-xs"></div>
+                <select name="organization" id="organization"
+                        class="form-control input-sm"
+                        ng-model="trialOwnershipView.organization_id"
+                        ng-change="trialOwnershipView.family_id = null; trialOwnershipView.getFamilyTrialsUsers()"
+                        ng-options="organization.id as organization.name for organization in trialOwnershipView.no_family_orgs"
+                        required>
+                    <option value="">Select an Organization without Family</option>
+                </select>
             </div>
         </div>
-        <div class="row" ng-if="trialOwnershipView.family_id">
+        <div class="row" ng-if="trialOwnershipView.curUser.role === 'ROLE_SITE-SU'">
+            <h2 ng-if="trialOwnershipView.family_name">1. Family: {{trialOwnershipView.family_name}}</h2>
+            <h2 ng-if="!trialOwnershipView.family_name">1. Organization: {{trialOwnershipView.organization_name}}</h2>
+        </div>
+        <div class="row"
+             ng-if="trialOwnershipView.showSelects && !trialOwnershipView.userOptions.resetItems.length">
+            <h2>2. Select Users</h2>
+            <p>There are no users to assign trials to.</p>
+        </div>
+        <div class="row" ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
             <h2>2. Select Users</h2>
             <ctrptransferselect options="trialOwnershipView.userOptions"> </ctrptransferselect>
         </div>
         <hr>
-        <div class="row" ng-if="trialOwnershipView.family_id">
+        <div class="row" ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
             <h2>3. Select Trials</h2>
             <ctrptransferselect options="trialOwnershipView.trialOptions"> </ctrptransferselect>
         </div>
-        <div class="row btn-toolbar" ng-if="trialOwnershipView.family_id">
+        <div class="row btn-toolbar" ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
             <button
                     type="button" class="btn btn-primary pull-right ng-isolate-scope"
                     id="save_btn"

@@ -181,21 +181,53 @@ class CreateTrialSummaryReportService
   end
 
   def generate_trial_title_table
-    array =@document.table(4, 1,8000)
+    num_of_rows=2
+    if @trial.acronym
+      num_of_rows = num_of_rows + 2
+    end
+
+    if @trial.keywords
+     num_of_rows = num_of_rows + 2
+    end
+
+    array =@document.table(num_of_rows, 1,8000)
+    i=0;
     array.border_width =10
-    array[0].shading_colour = @grey
-    array[0][0].foreground(@foreground_th_text_color) << "Official Title"
+    array[i].shading_colour = @grey
+    array[i][0].foreground(@foreground_th_text_color) << "Official Title"
+    i = i+1
+
     official_title = ""
     official_title = @trial.official_title if @trial.official_title
+    array[i][0] << official_title
+    i = i+1
 
-    array[1][0] << official_title
-    array[2][0].foreground(@foreground_th_text_color) << "Acronym"
-    array[2].shading_colour = @light_red
-    acronym = ""
-    acronym = @trial.acronym if @trial.acronym
-    array[3][0] << acronym
+
+    if @trial.acronym
+        array[i][0].foreground(@foreground_th_text_color) << "Acronym"
+        array[i].shading_colour = @light_red
+        i = i+1
+        acronym = @trial.acronym
+        array[i][0] << acronym
+        i = i+1
+
+    end
+
+    if @trial.keywords
+      array[i][0].foreground(@foreground_th_text_color) << "Keywords"
+      array[i].shading_colour = @light_red
+      i = i+1
+      array[i][0] << @trial.keywords
+    end
+
   end
 
+  def get_value_based_on_display_rule(field,rule)
+    if rule == "Required"
+      field.nil? ? field = "No Data Available" : field = field
+    end
+    return field
+  end
 
 
   def generate_trial_identification_table
@@ -209,8 +241,8 @@ class CreateTrialSummaryReportService
 
 
     Hash h = Hash.new
-    h.store("NCI Trial Identifier",@trial.nci_id)
-    h.store("Lead Organization Identifier",@trial.lead_protocol_id)
+    h.store("NCI Trial Identifier",get_value_based_on_display_rule(@trial.nci_id,"Required"))
+    h.store("Lead Organization Identifier",get_value_based_on_display_rule(@trial.lead_protocol_id,"Required"))
     i=0
     h.each do |k,v|
       array[i][0] << k
@@ -228,6 +260,7 @@ class CreateTrialSummaryReportService
   end
 
   def generate_general_trial_details
+
     create_a_table_row(@grey,@foreground_th_text_color,"General Trial Details")
     create_a_table_row(@light_red,@foreground_th_text_color,"General Details")
 
@@ -236,10 +269,10 @@ class CreateTrialSummaryReportService
     array.border_width =10
 
     Hash h = Hash.new
-    @trial.research_category_id.nil? ? trail_type = nil : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
-    @trial.lead_org_id.nil? ? lead_org = nil : lead_org = Organization.find_by_id(@trial.lead_org_id).name
-    @trial.sponsor_id.nil? ? sponsor = nil : sponsor = Organization.find_by_id(@trial.sponsor_id).name
-    @trial.responsible_party_id.nil? ? responsible_party=nil : responsible_party = ResponsibleParty.find_by_id(@trial.responsible_party_id).name
+    @trial.research_category_id.nil? ? trail_type = "No Data Available" : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
+    @trial.lead_org_id.nil? ? lead_org = "No Data Available" : lead_org = Organization.find_by_id(@trial.lead_org_id).name
+    @trial.sponsor_id.nil? ? sponsor = "No Data Available" : sponsor = Organization.find_by_id(@trial.sponsor_id).name
+    @trial.responsible_party_id.nil? ? responsible_party="No Data Available" : responsible_party = ResponsibleParty.find_by_id(@trial.responsible_party_id).name
     h.store("Trial Type",trial_type)
     h.store("Lead Organization",lead_org)
     h.store("Sponsor",sponsor)
@@ -269,9 +302,9 @@ class CreateTrialSummaryReportService
       investigator_name = investigator_name + " " + investigator.lname if investigator.lname
     end
 
-    h.store("Investigator", investigator_name)
-    h.store("Investigator Title", @trial.investigator_title)
-    h.store("Investigator Affilliation", investigator_affiliation)
+    h.store("   Investigator", investigator_name)
+    h.store("   Investigator Title", @trial.investigator_title)
+    h.store("   Investigator Affilliation", investigator_affiliation)
     h.store("Principal Investigator",principle_investigator_name )
     h.store("Affilliation", "")
 
@@ -281,18 +314,21 @@ class CreateTrialSummaryReportService
       array[i][1] << v
       i = i+1
     end
-    create_a_table_row(@light_red,@foreground_th_text_color,"Collaborators")
-    create_a_table_row(@grey,@foreground_th_text_color,"Name")
 
     collaborators = @trial.collaborators
-    collaborators_num = 0
-    collaborators_num = collaborators.size if collaborators
-    array =@document.table(collaborators_num, 2,4000,4000)
-    array.border_width =10
-    i = 0
-    collaborators.each do |col|
-      array[i][0] << col.org_name
-      i= i+1
+    #Only display when collabarators are there
+    if collaborators
+        create_a_table_row(@light_red,@foreground_th_text_color,"Collaborators")
+        create_a_table_row(@grey,@foreground_th_text_color,"Name")
+        collaborators_num = 0
+        collaborators_num = collaborators.size if collaborators
+        array =@document.table(collaborators_num, 1,8000)
+        array.border_width =10
+        i = 0
+        collaborators.each do |col|
+          array[i][0] << col.org_name
+          i= i+1
+        end
     end
 
     create_a_table_row(@light_red,@foreground_th_text_color,"Status/Dates")
@@ -302,10 +338,10 @@ class CreateTrialSummaryReportService
     @trial.trial_status_wrappers.present? ? cur_trial_status_date = @trial.trial_status_wrappers.last.status_date : cur_trial_status_date = nil
     cur_trial_status = cur_trial_status + " as of " + cur_trial_status_date.to_s     if !cur_trial_status_date.nil?
 
-    start_date = @trial.start_date
+    start_date = get_value_based_on_display_rule(@trial.start_date,"Required")
     @trial.start_date_qual.nil? ? start_date_qual= "Trial Start Date" : start_date_qual = "Trial Start Date" +  " - " + @trial.start_date_qual
 
-    primary_comp_date = @trial.primary_comp_date
+    primary_comp_date = get_value_based_on_display_rule(@trial.primary_comp_date,"Required")
     @trial.primary_comp_date_qual.nil? ? primary_comp_date_qual= "Primary Completion Date" : primary_comp_date_qual = "Primary Completion Date" +  " - " + @trial.primary_comp_date_qual
 
     comp_date = @trial.comp_date
@@ -316,9 +352,11 @@ class CreateTrialSummaryReportService
     h.store("Current Trial Status", cur_trial_status)
     h.store(start_date_qual,start_date.to_s)
     h.store(primary_comp_date_qual,primary_comp_date.to_s)
-    h.store(comp_date_qual,comp_date.to_s)
+    h.store(comp_date_qual,comp_date.to_s) if comp_date
 
-    array =@document.table(4, 2,4000,4000)
+    array =@document.table(4, 2,4000,4000) if comp_date
+    array =@document.table(3, 2,4000,4000) if !comp_date
+
     array.border_width =10
 
     i =0
@@ -335,7 +373,7 @@ class CreateTrialSummaryReportService
     create_a_table_row(@grey,@foreground_th_text_color,"Summary 4 Information")
 
     Hash h = Hash.new
-    @trial.study_source_id.nil? ? study_source = nil : study_source = StudySource.find_by_id(@trial.study_source_id).name
+    @trial.study_source_id.nil? ? study_source = "No Data Available" : study_source = StudySource.find_by_id(@trial.study_source_id).name
     h.store("Funding Category",study_source)
     array =@document.table(1, 2,4000,4000)
     array.border_width =10
@@ -354,7 +392,7 @@ class CreateTrialSummaryReportService
 
     funding_sources_num = 0
     funding_sources_num = funding_sources.size if funding_sources
-    array =@document.table(funding_sources_num, 2,4000,4000)
+    array =@document.table(funding_sources_num, 1,8000)
     array.border_width =10
     i = 0
 
@@ -364,12 +402,18 @@ class CreateTrialSummaryReportService
       i = i+1
     end
 
+    if funding_sources_num == 0
+      array =@document.table(1, 1,8000)
+      array[0][0] << "No Data Available"
+      array.border_width =10
+    end
+
     create_a_table_row(@light_red,@foreground_th_text_color,"Anatomic Site Code")
 
     anatomic_sites = @trial.anatomic_site_wrappers
     anatomic_sites_num = 0
     anatomic_sites_num = anatomic_sites.size if anatomic_sites
-    array =@document.table(anatomic_sites_num, 2,4000,4000)
+    array =@document.table(anatomic_sites_num, 1,8000)
     array.border_width =10
     i = 0
 
@@ -379,10 +423,17 @@ class CreateTrialSummaryReportService
       array[i][0] << anatomic_site_name
       i = i +1
     end
+
+
+    if anatomic_sites_num == 0
+      array =@document.table(1, 1,8000)
+      array[0][0] << "No Data Available"
+      array.border_width =10
+    end
+
   end
 
-
-        def generate_regulatory_information_table
+  def generate_regulatory_information_table
 
           oversight_authorities =@trial.oversight_authorities
           create_a_table_row(@grey,@foreground_th_text_color,"Regulatory Information")
@@ -407,13 +458,20 @@ class CreateTrialSummaryReportService
             i = i+1
           end
 
+          if oversight_authorities_num == 0
+            array =@document.table(1, 1,8000)
+            array[0][0] << "No Data Available"
+            array.border_width =10
+          end
+
+
 
 
           Hash h = Hash.new
-          h.store("FDA Regulated Intervention?", @trial.intervention_indicator)
-          h.store("Section 801?",@trial.sec801_indicator)
-          h.store("DMC Appointed?",@trial.data_monitor_indicator)
-          h.store("IND/IDE Study?",@trial.ind_ide_question)
+          h.store("FDA Regulated Intervention?", get_value_based_on_display_rule(@trial.intervention_indicator,"Required"))
+          h.store("Section 801?",get_value_based_on_display_rule(@trial.sec801_indicator,"Required"))
+          h.store("DMC Appointed?",get_value_based_on_display_rule(@trial.data_monitor_indicator,"Required"))
+          h.store("IND/IDE Study?",get_value_based_on_display_rule(@trial.ind_ide_question,"Required"))
 
           array =@document.table(4, 2,4000,4000)
           array.border_width =10
@@ -444,11 +502,17 @@ class CreateTrialSummaryReportService
           array.border_width =10
           i = 0
           ind_ides.each do |ind_ide|
-            ind_ide.ind_ide_type.nil? ? array[i][0] << ind_ide.ind_ide_type="" : array[i][0] << ind_ide.ind_ide_type
-            ind_ide.grantor.nil? ? array[i][1] << ind_ide.grantor="" : array[i][1] << ind_ide.grantor
-            ind_ide.ind_ide_number.nil? ? array[i][2] << ind_ide.ind_ide_number="" : array[i][2] << ind_ide.ind_ide_number
-            ind_ide.holder_type_id.nil? ?  array[i][3]="" : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
+            ind_ide.ind_ide_type.nil? ? array[i][0] << ind_ide.ind_ide_type="No Data Available" : array[i][0] << ind_ide.ind_ide_type
+            ind_ide.grantor.nil? ? array[i][1] << ind_ide.grantor="No Data Available" : array[i][1] << ind_ide.grantor
+            ind_ide.ind_ide_number.nil? ? array[i][2] << ind_ide.ind_ide_number="No Data Available" : array[i][2] << ind_ide.ind_ide_number
+            ind_ide.holder_type_id.nil? ?  array[i][3]="No Data Available" : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
             i = i +1
+          end
+
+          if ind_ides_num == 0
+            array =@document.table(1, 1,8000)
+            array[0][0] << "No Data Available"
+            array.border_width =10
           end
 
           array =@document.table(1,1,8000)
@@ -457,20 +521,32 @@ class CreateTrialSummaryReportService
           array[0][0] << "Human Subject Safety"
 
           Hash h = Hash.new
-          @trial.board_approval_status_id.nil? ? board_approval_status = "N/A" : board_approval_status = BoardApprovalStatus.find_by_id(@trial.board_approval_status_id).name
+          @trial.board_approval_status_id.nil? ? board_approval_status = "No Data Available" : board_approval_status = BoardApprovalStatus.find_by_id(@trial.board_approval_status_id).name
           h.store("Board Approval Status", board_approval_status)
-          h.store("Board Approval Number",@trial.board_approval_num)
-          h.store("Board",@trial.board_name)
+          h.store("Board Approval Number",get_value_based_on_display_rule(@trial.board_approval_num,"Required"))
+          h.store("Board",get_value_based_on_display_rule(@trial.board_name,"Required"))
           @trial.board_affiliation_id.nil? ? org =nil : org = Organization.find_by_id(@trial.board_affiliation_id)
 
-          org.nil? ? address = "N/A" : address = org.address
-          org.nil? ? phone = "N/A" : phone = org.phone
+          org.nil? ? address = nil : address = org.address
+          org.nil? ? phone = nil : phone = org.phone
+          org.nil? ? email = nil : email = org.email
+          org.nil? ? affiliation = "No Data Available" : affiliation = org.name
 
 
-          h.store("Address",address)
-          h.store("Phone", phone)
+          num_of_rows= 4
+          num_of_rows = num_of_rows +1 if address
+          num_of_rows = num_of_rows +1 if phone
+          num_of_rows = num_of_rows +1 if email
 
-          array =@document.table(5,2,4000,4000)
+
+
+          h.store("   Address",address) if address
+          h.store("   Phone", phone)    if phone
+          h.store("   Email", email)    if email
+          h.store("Affiliation",affiliation)
+
+
+          array =@document.table(num_of_rows,2,4000,4000)
           array.border_width =10
           i = 0
           h.each do |k,v|
@@ -489,7 +565,7 @@ class CreateTrialSummaryReportService
 
           Hash h = Hash.new
           #h.store("Type", board_approval_status)
-          @trial.primary_purpose_id.nil? ? primary_purpose="N/A" : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
+          @trial.primary_purpose_id.nil? ? primary_purpose="No Data Available" : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
           @trial.secondary_purpose_id.nil? ? secondary_purpose="N/A" : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
           @trial.phase_id.nil? ? phase="N/A" : phase = Phase.find_by_id(@trial.phase_id).name
           @trial.intervention_model_id.nil? ? interventional_model="N/A" : interventional_model = InterventionModel.find_by_id(@trial.intervention_model_id).name
@@ -527,22 +603,25 @@ class CreateTrialSummaryReportService
           create_a_table_row(@grey,@foreground_th_text_color,"Trial Description")
           create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
 
-          create_a_table_row_node(@trial_description_table,@trial.brief_title)
+          @trial.brief_title.nil? ? brief_title = "No Data Available" : brief_title = @trial.brief_title
+          @trial.brief_summary.nil? ? brief_summary = "No Data Available" : brief_summary = @trial.brief_summary
+          @trial.objective.nil? ? objective = "No Data Available" : objective = @trial.objective
+          @trial.detailed_description.nil? ? detailed_description = "No Data Available" : detailed_description = @trial.detailed_description
+
+          create_a_table_row_node(@trial_description_table,brief_title)
 
           create_a_table_row(@light_red,@foreground_th_text_color,"Brief Summary")
-          create_a_table_row_node(@trial_description_table,@trial.brief_summary)
+          create_a_table_row_node(@trial_description_table,brief_summary)
 
           create_a_table_row(@light_red,@foreground_th_text_color,"Objectives")
-          create_a_table_row_node(@trial_description_table,@trial.objective)
+          create_a_table_row_node(@trial_description_table,objective)
 
           create_a_table_row(@light_red,@foreground_th_text_color,"Detailed Description")
-          create_a_table_row_node(@trial_description_table,@trial.detailed_description)
+          create_a_table_row_node(@trial_description_table,detailed_description)
 
-          create_a_table_row(@light_red,@foreground_th_text_color,"Other Details")
-          array =@document.table(1,2,4000,4000)
-          array.border_width =10
-          array[0][0] << "Keywords"
-          array[0][1] << @trial.keywords
+          #create_a_table_row(@light_red,@foreground_th_text_color,"Other Details")
+          #array =@document.table(1,2,4000,4000)
+
 
         end
 
@@ -698,6 +777,12 @@ class CreateTrialSummaryReportService
           array[0][1].foreground(@foreground_th_text_color) << "Description"
           array[0][2].foreground(@foreground_th_text_color) << "Time Frame"
           array[0][3].foreground(@foreground_th_text_color) << "Safety Issue?"
+          if num_of_rows == 0
+
+            array = @document.table(1,1,8000)
+            array[0][0] << "No Data Available"
+          end
+
           i=1
 
           primary_oms.each do |col|

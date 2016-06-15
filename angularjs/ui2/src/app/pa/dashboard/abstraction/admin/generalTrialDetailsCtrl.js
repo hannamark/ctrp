@@ -199,11 +199,8 @@
           vm.otherIdentifier.trial_id = vm.generalTrialDetailsObj.id;
           vm.otherIdentifier.identifierName = otherIdentifierNameObj.name;
           vm.otherIdentifier._destroy = false;
-          if (otherIdentifierNameObj.code === 'NCT' ||
-                otherIdentifierNameObj.code === 'ONCT') {
-              // force to upper case
-              vm.otherIdentifier.protocol_id = vm.otherIdentifier.protocol_id.toUpperCase();
-          }
+          // force to upper case
+          vm.otherIdentifier.protocol_id = vm.otherIdentifier.protocol_id.toUpperCase();
           // validation on other identifier
           var errorMsg = TrialService.checkOtherId(vm.otherIdentifier.protocol_id_origin_id,
                 otherIdentifierNameObj.code, vm.otherIdentifier.protocol_id,

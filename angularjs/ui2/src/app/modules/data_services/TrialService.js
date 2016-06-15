@@ -9,10 +9,10 @@
         .factory('TrialService', TrialService);
 
     TrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', '$rootScope',
-        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http','PromiseService'];
+        'PromiseTimeoutService', 'Upload', 'HOST', 'DateService', '$http', 'toastr', 'PromiseService'];
 
     function TrialService(URL_CONFIGS, MESSAGES, $log, _, Common, $rootScope,
-            PromiseTimeoutService, Upload, HOST, DateService, $http,PromiseService) {
+            PromiseTimeoutService, Upload, HOST, DateService, $http, toastr, PromiseService) {
 
         var initTrialSearchParams = {
             //for pagination and sorting
@@ -828,9 +828,9 @@
                 return errorMsg;
             }
             var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
-            var codeArr = ['OTH', 'ONCT'];
+            var codeArr = ['OTH', 'ONCT', 'DNCI'];
             if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
-                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + 'already exists';
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ' already exists';
                 return errorMsg;
             } else if (angular.isDefined(idObj) && idObj.protocol_id === protocolId &&
                 _.contains(codeArr, protocolIdOriginCode)) {
@@ -1047,10 +1047,12 @@
 
         function createTransferTrialsOwnership(controller, userIdArr) {
             searchTrials({
-                'family_id': (controller.userDetails ? controller.userDetails.org_families[0].id: false) || controller.family_id,
+                'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
+                'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id,
                 'protocol_id':'*',
                 'internal_sources': [{'code':'PRO'}],
                 'searchType': 'All Trials',
+                'trial_ownership': true,
                 'no_nih_nci_prog': true
             }).then(function (data) {
                 if (controller.showAddTrialsModal === false) {
@@ -1089,6 +1091,7 @@
                         PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
                             .then(function (data) {
                             if(data.results === 'success') {
+                                toastr.success('Trial Ownership Created', 'Success!');
                                 controller.getUserTrials();
                             }
                         });

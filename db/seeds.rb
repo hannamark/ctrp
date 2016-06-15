@@ -107,21 +107,21 @@ HolderType.find_or_create_by(code: 'IND', name: 'Industry')
 HolderType.find_or_create_by(code: 'NIH', name: 'NIH')
 HolderType.find_or_create_by(code: 'NCI', name: 'NCI')
 
-TrialStatus.find_or_create_by(code: 'INR', name: 'In Review')
-TrialStatus.find_or_create_by(code: 'APP', name: 'Approved')
-TrialStatus.find_or_create_by(code: 'ACT', name: 'Active')
-TrialStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
-TrialStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
-TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
-TrialStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
-TrialStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
-TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
-TrialStatus.find_or_create_by(code: 'COM', name: 'Complete')
-TrialStatus.find_or_create_by(code: 'AVA', name: 'Available')
-TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available')
-TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available')
-TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing')
+TrialStatus.find_or_create_by(code: 'INR', name: 'In Review', explanation: 'The trial is in development and waiting for final approval')
+TrialStatus.find_or_create_by(code: 'APP', name: 'Approved', explanation: 'Trial has been approved')
+TrialStatus.find_or_create_by(code: 'ACT', name: 'Active', explanation: 'The trial is open for Accrual')
+TrialStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation', explanation: '')
+TrialStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual', explanation: 'Trial has been closed to participant accrual. Participants are still receiving treatment/intervention')
+TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention', explanation: 'Trial is temporarily not accruing. Participants are not receiving intervention')
+TrialStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual', explanation: 'Trial is temporarily not accruing')
+TrialStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention', explanation: 'Trial has been closed to participant accrual. No participants are receiving treatment/intervention, but participants are still being followed according to the primary objectives of the study')
+TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn', explanation: 'Trial has been withdrawn from development and review')
+TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete', explanation: 'Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)')
+TrialStatus.find_or_create_by(code: 'COM', name: 'Complete', explanation: 'Trial has been closed to accrual; participants have completed treatment/intervention, and the study has met its primary objectives')
+TrialStatus.find_or_create_by(code: 'AVA', name: 'Available', explanation: 'Currently available for this treatment')
+TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available', explanation: 'Was available for this treatment previously but is not currently available and will not be available in the future')
+TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available', explanation: 'Not currently available for this treatment, but is expected to be available in the future')
+TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing', explanation: 'Treatment has been approved for sale to the public')
 
 ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
 ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
@@ -143,9 +143,6 @@ ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
 Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
 Milestone.find_or_create_by(code: 'VPS', name: 'Validation Processing Start Date')
 Milestone.find_or_create_by(code: 'VPC', name: 'Validation Processing Completed Date')
-Milestone.find_or_create_by(code: 'RVQ', name: 'Ready for Validation QC Date')
-Milestone.find_or_create_by(code: 'VQS', name: 'Validation QC Start Date')
-Milestone.find_or_create_by(code: 'VQC', name: 'Validation QC Completed Date')
 Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
 Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
 Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
@@ -290,7 +287,7 @@ StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
 
 OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
-OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Pre-specified')
+OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
 
 Allocation.find_or_create_by(code: 'NA', name: 'NA')
 Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
@@ -614,7 +611,7 @@ AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File T
 
 AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCP,NHLBI')
+AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCCPS,DCP,NHLBI')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering Commitee Reviewed')
 
@@ -963,7 +960,7 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",
                                         "name": "Account Approver",
-                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
                                      },
                                      {
                                         "id": "ROLE_RO",
@@ -1353,6 +1350,7 @@ if !Rails.env.qa?
                  {"username" => "ctrpaccrualsubmitter", "role" => "ROLE_ACCRUAL-SUBMITTER", "first_name" => "Fifi", "last_name" => "L"},
                  {"username" => "ctrpsitesu", "role" => "ROLE_SITE-SU", "first_name" => "Flower", "last_name" => "Leinmann"},
                  {"username" => "ctrpsitesu2", "role" => "ROLE_SITE-SU", "first_name" => "Fox", "last_name" => "Lilongwe"},
+                 {"username" => "ctrpsitesu3", "role" => "ROLE_SITE-SU", "first_name" => "Fedro", "last_name" => "Piuz"},
                  {"username" => "ctrpabstractor", "role" => "ROLE_ABSTRACTOR", "first_name" => "Frederick", "last_name" => "Lathiramalaynathan"},
                  {"username" => "ctrpabstractor2", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fils", "last_name" => "Litmus"},
                  {"username" => "ctrpabstractor3", "role" => "ROLE_ABSTRACTOR", "first_name" => "Fred", "last_name" => "Lizdenburgh"},
@@ -1385,6 +1383,8 @@ if !Rails.env.qa?
       unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
         if user.username == 'ctrpsitesu2'
           user.organization = org3
+        elsif user.username == 'ctrpsitesu3'
+            user.organization = dcp
         else
           user.organization = org0
         end

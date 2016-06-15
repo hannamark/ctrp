@@ -36,7 +36,7 @@
         var optionOrg = {
             name: 'organization_name',
             displayName: 'Organizational Affiliation',
-            enableSorting: true,
+            enableSorting: false,
             minWidth: '100',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
@@ -175,6 +175,11 @@
 
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
             vm.statusArr = response.data;
+            if (vm.curUser.role == 'ROLE_SITE-SU' || vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INR'], item.code);
+                });
+            }
         }).catch(function (err) {
             vm.statusArr = [];
             console.log("Error in retrieving USER_STATUSES " + err);
@@ -184,12 +189,14 @@
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
         if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
-            vm.searchParams.organization_family_id = vm.curUser.family_orgs[0] ? vm.curUser.family_orgs[0].id : '';
-            vm.searchOrganizationFamily = vm.curUser.org_families.length ? vm.curUser.org_families[0].name : '';
-            vm.searchParams.organization_family = vm.searchOrganizationFamily;
-            vm.searchStatus = 'Active';
+            if (vm.curUser.org_families.length) {
+                vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
+            } else {
+                vm.searchOrganization = vm.curUser.organization.name;
+                vm.searchOrganizationFamily = '';
+            }
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (!vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (vm.registeredUsersPage) {
@@ -221,13 +228,34 @@
         vm.searchUsers = function () {
             vm.gridOptions.useExternalPagination = true;
             vm.gridOptions.useExternalSorting = true;
-            UserService.searchUsers(vm.searchParams).then(function (data) {
-                vm.gridOptions.data = data['users'];
-                vm.gridOptions.totalItems =  data.total;
-                $location.hash('users_search_results');
-            }).catch(function (err) {
-                console.log('Search Users failed: ' + err);
+
+            /**
+             * If not, it should throw a warning to the user to select atleast one parameter.
+             * Right now, ignoring the alias parameter as it is set to true by default.
+             * To refactor and look at default parameters instead of hardcoding -- radhika
+             */
+            var isEmptySearch = true;
+            var excludedKeys = ['sort', 'order', 'rows', 'start'];
+            Object.keys(vm.searchParams).forEach(function (key) {
+                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '' && vm.searchParams[key] !== undefined) {
+                    isEmptySearch = false;
+                }
             });
+
+            if (isEmptySearch) {
+                vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
+                vm.gridOptions.data = [];
+                vm.gridOptions.totalItems = null;
+            } else {
+                vm.searchWarningMessage = '';
+                UserService.searchUsers(vm.searchParams).then(function (data) {
+                    vm.gridOptions.data = data['users'];
+                    vm.gridOptions.totalItems =  data.total;
+                    $location.hash('users_search_results');
+                }).catch(function (err) {
+                    console.log('Search Users failed: ' + err);
+                });
+            }
         }; //searchUsers
 
         vm.resetSearch = function () {
@@ -241,7 +269,7 @@
         }; //resetSearch
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchParams.organization_family);
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchOrganizationFamily);
         };
 
         /****************************** implementations **************************/

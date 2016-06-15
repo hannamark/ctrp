@@ -21,9 +21,9 @@
     angular.module('ctrpApp.widgets')
     .directive('ctrpConfirm', ctrpConfirm);
 
-    ctrpConfirm.$inject = ['$timeout', '$compile', '$parse', '$popover'];
+    ctrpConfirm.$inject = ['$timeout', '$compile', '$parse', '$popover', '$rootScope'];
 
-    function ctrpConfirm($timeout, $compile, $parse, $popover) {
+    function ctrpConfirm($timeout, $compile, $parse, $popover, $rootScope) {
         var defaultTemplateUrl = 'app/modules/widgets/popover/_default_popover_confirm.tpl.html';
         var directiveObj = {
             restrict: 'A',
@@ -51,8 +51,9 @@
 
             element.bind('click', function(event) {
                 if (attrs.confirmOff && attrs.confirmOff !== 'false') {
-                    // trigger the click action
+                    // trigger the click action and broadcast delete confirmation in case it is a secondary task in ctrp-submit directive
                     scope.ngClick();
+                    $rootScope.$broadcast('deleteConfirmationComplete');
                 } else {
                     popover.event = event;
                     if (!popover.$isShown) {
@@ -70,9 +71,16 @@
             }
 
             function confirm() {
-                var buttonAction = $parse(attrs.ctrpClick);
+                var buttonAction = attrs.ctrpClick ? $parse(attrs.ctrpClick) : null;
                 // buttonAction(scope, {$event: popover.event}); // trigger the click action, !not working!
-                scope.ngClick(); // trigger the click action
+
+                /* If no button action is provided, hand over control to ctrp-submit directive and broadcast event as needed */
+                if (buttonAction) {
+                    scope.ngClick(); // trigger the click action
+                } else {
+                    $rootScope.$broadcast('deleteConfirmationComplete');
+                }
+
                 popover.hide();
             }
 

@@ -35,6 +35,7 @@
                 _getTrialDetailCopy();
                 vm.foundTrialObj = _initFoundTrialObj();
                 watchDeletionCheckbox();
+                watchIdentifierTypeId();
             }
 
             function lookupTrial() {
@@ -156,6 +157,19 @@
                     function(newVal, oldVal) {
                         if (angular.isDefined(newVal) && angular.isArray(newVal)) {
                             vm.deleteBtnDisabled = _.findIndex(newVal, {_destroy: true}) === -1;
+                        }
+                }, true);
+            }
+
+            function watchIdentifierTypeId() {
+                $scope.$watch(function() {return vm.trialQueryObj.identifierTypeId;},
+                    function(newVal, oldVal) {
+                        if (newVal) {
+                            if (newVal === 1) {
+                                vm.trialQueryObj.trialIdentifier = 'NCI-';
+                            } else {
+                                vm.trialQueryObj.trialIdentifier = 'NCT-';
+                            }
                         }
                 }, true);
             }

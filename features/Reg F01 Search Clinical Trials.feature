@@ -10,18 +10,20 @@ When I select the option to search "My Trials"
 Then CTRP will display all trials where I am listed as a Trial Owner and the trials match the trial search criteria
 And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
 |NCI Trial Identifier|
-|Title|
+|Official Title|
 |Lead Organization|
 |Lead Org Trial Identifier|
 |Principal Investigator|
 |ClinicalTrials.gov Identifier|
+|Other Identifiers|
 |Current Trial Status|
 |Current Processing Status|
 |Available Actions|
 |Accrual Disease Terminology|
+|Sites|
 |Phase|
 |Primary Purpose|
-|Category|
+|Research Category|
 |Trial Start Date|
 |Responsible Party|
 |Sponsor|
@@ -52,7 +54,7 @@ When I select the option to search "All Trials"
 Then CTRP will display all trials that match the trial search criteria
 And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
 |NCI Trial Identifier|
-|Title|
+|Official Title|
 |Current Trial Status|
 |Lead Organization|
 |Lead Org Trial Identifier|

@@ -4,7 +4,7 @@
             <div class="panel-title">Eligibility Criteria</div>
         </div>
         <div class="panel-body">
-            <form name="criteria_form" role="form" class="form form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria(true)">
+            <form name="criteria_form" role="form" class="form form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria(true)" ctrp-submit-delete>
                 <!-- fieldset for eligibility criteria -->
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || criteriaView.disableBtn">
                         <legend class="sub-bordered">Eligibility Criteria</legend>
@@ -61,7 +61,6 @@
                                </span>
                             </div>
                         </div>
-
                         <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.criteria_form.needsAttention(criteria_form.min_age) ||
                                 ctrpbtn.criteria_form.needsAttention(criteria_form.min_age_unit)}">
                             <label for="min_age" class="control-label col-xs-12 col-sm-3">Minimum Age:</label>
@@ -142,7 +141,7 @@
                                     ng-required="criteriaView.trialDetailObj.isObservational || criteriaView.trialDetailObj.isAncillary"
                                     ng-model="criteriaView.trialDetailObj.study_pop_desc" rows="3">
                                 </textarea>
-                                <span ng-show="criteria_form.study_pop_desc.$viewValue.length > 0">
+                                <span class="help-block" ng-show="criteria_form.study_pop_desc.$viewValue.length > 0">
                                     {{800 - criteria_form.study_pop_desc.$viewValue.length}} characters left
                                 </span>
                                 <span ng-messages="ctrpbtn.criteria_form.needsAttention(criteria_form.study_pop_desc) && criteria_form.study_pop_desc.$error">
@@ -215,7 +214,6 @@
                             <table st-table="criteriaView.trialDetailObj.other_criteria" class="table table-bordered table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th class="col-sm-1">Index</th>
                                     <th class="col-sm-4">Eligibility Criterion Type</th>
                                     <th class="col-sm-5">Eligibility Criterion Description</th>
                                     <th class="text-center td-icon">Edit</th>
@@ -223,10 +221,7 @@
                                 </tr>
                                 </thead>
                                 <tbody ui-sortable="criteriaView.sortableListener" ng-model="criteriaView.trialDetailObj.other_criteria">
-                                <tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="{'deleted-text': row._destroy, 'edit-selected': row.edit}">
-                                    <td>
-                                        {{$index + 1}}
-                                    </td>
+                                <tr class="cursor-move" ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="{'deleted-text': row._destroy, 'edit-selected': row.edit}">
                                     <td>
                                         {{row.criteria_type}}
                                     </td>
@@ -271,9 +266,8 @@
                    <div class="row">
                       <div class="col-sm-3"></div>
                       <div class="btn-toolbar col-xs-12 col-sm-9">
-                        <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field
-                                ctrp-confirm ctrp-click="criteriaView.updateCriteria(true)"
-                                ng-attr-confirm-off="{{(criteriaView.trialDetailObj.other_criteria | findObjByAttribute:'_destroy':true).length === 0 || undefined}}"
+                        <button class="btn btn-primary pull-right" id="save_btn" restriction-field
+                                ctrp-confirm ng-attr-confirm-off="{{(criteriaView.trialDetailObj.other_criteria | findObjByAttribute:'_destroy':true).length === 0 || undefined}}"
                                 confirm-msg="Click OK to remove selected Eligibility Criteria(s) from the study. Click Cancel to abort." ng-disabled="criteriaView.addOtherCriterionFormShown || criteriaView.disableBtn">
                           <i class="glyphicon glyphicon-ok"></i>  Save
                         </button>

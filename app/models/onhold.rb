@@ -33,7 +33,7 @@ class Onhold < ActiveRecord::Base
 
   def send_email
     # Original email
-    if self.offhold_date.nil?
+    if self.offhold_date.nil? && self.onhold_reason.present? && ['SIC', 'SIM', 'SIG', 'SOT'].include?(self.onhold_reason.code)
       mail_template = MailTemplate.find_by_code('ONHOLD_ORIGINAL')
       if mail_template.present?
         lead_protocol_id = self.trial.lead_protocol_id.present? ? self.trial.lead_protocol_id : ''

@@ -71,7 +71,7 @@ class  User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
-  scope :matches, -> (column, value) { where("users.#{column} = ?", "#{value}") }
+  scope :matches, -> (column, value) { where("users.#{column} = ?", "#{value}").distinct }
 
   scope :matches_wc, -> (column, value) {
     join_clause  = "LEFT JOIN organizations user_org ON user_org.id = users.organization_id "
@@ -95,23 +95,51 @@ class  User < ActiveRecord::Base
 
     if column == 'site_admin'
       if  value == true
-        joins(join_clause).where("users.role IN ('ROLE_SITE-SU','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR')")
+        joins(join_clause).where("users.role IN ('ROLE_SITE-SU')").distinct
       else
-        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR')")
+        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU')").distinct
       end
+    elsif column == 'user_statuses'
+      joins(join_clause).where("users.user_status_id in (#{value.join(',')})").distinct
     elsif column == 'user_status_id' || column == 'organization_id'
-      joins(join_clause).where("#{column_str} = #{value}")
-    elsif column == 'organization_family_id'
-      joins(join_clause).where("family_memberships.family_id = #{value}")
+      joins(join_clause).where("#{column_str} = #{value}").distinct
     elsif value[0] == '*' && value[str_len - 1] != '*'
-      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}")
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}").distinct
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(join_clause).where("#{column_str} ilike ?", "#{value[0..str_len - 2]}%")
+      joins(join_clause).where("#{column_str} ilike ?", "#{value[0..str_len - 2]}%").distinct
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 2]}%")
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 2]}%").distinct
     else
-      joins(join_clause).where("#{column_str} ilike ?", "#{value}")
+      joins(join_clause).where("#{column_str} ilike ?", "#{value}").distinct
     end
+  }
+
+  scope :family_unexpired_matches_by_family, -> (value) {
+    familyOrganizations = FamilyMembership.where(
+        family_id: value
+    ).where("(family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
+    .pluck(:organization_id)
+
+    where(organization_id: familyOrganizations).distinct
+
+  }
+
+  scope :family_unexpired_matches_by_org, -> (value) {
+    familyFamilies = FamilyMembership.where(
+        organization_id: value
+    ).where("(family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
+        .pluck(:family_id)
+
+    familyOrganizations = FamilyMembership.where(
+        family_id: familyFamilies
+    ).where("(family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
+        .pluck(:organization_id)
+
+    where(organization_id: familyOrganizations).distinct
+
   }
 
   attr_accessor :password
