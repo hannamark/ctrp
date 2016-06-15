@@ -1,0 +1,27 @@
+<div id="unsaved-changes-modal">
+    <div class="modal-header">
+        <strong class="modal-title">Warning: Unsaved Changes</strong>
+        <button type="button" class="close" data-dismiss="modal" ng-click="unChgs.cancel()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                This page has unsaved changes. Leaving this page will result in any unsaved changes being lost. Are you sure you want to leave?
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-12">
+            <div class="btn-toolbar">
+                <button class="btn btn-primary pull-right" ng-click="unChgs.confirm()">
+                    <class="glyphicon glyphicon-ok"></i> Leave Page
+                </button>
+                <button class="btn btn-cancel pull-right" ng-click="unChgs.cancel()">
+                    <i class="glyphicon glyphicon-remove"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
