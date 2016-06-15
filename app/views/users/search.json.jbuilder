@@ -1,8 +1,8 @@
 
 json.users do
   json.array!(@users) do |user|
-    if current_user.role == 'ROLE_ACCOUNT-APPROVER' || current_user.role == 'ROLE_SITE-SU' || current_user.role == 'ROLE_SUPER' || current_user.role == 'ROLE_ADMIN'  || current_user.role == 'ROLE_ABSTRACTOR' || current_user.role == 'ROLE_ABSTRACTOR-SU'
-      json.extract! user, :domain, :id, :username, :first_name, :last_name, :email, :user_status_id, :role
+    if current_user.role == 'ROLE_ACCOUNT-APPROVER' || current_user.role == 'ROLE_SITE-SU' || current_user.role == 'ROLE_SUPER' || current_user.role == 'ROLE_ADMIN'  || current_user.role == 'ROLE_RO'  || current_user.role == 'ROLE_ABSTRACTOR' || current_user.role == 'ROLE_ABSTRACTOR-SU'
+      json.extract! user, :domain, :id, :username, :first_name, :middle_name, :last_name, :email, :user_status_id, :role
       json.user_status_name user.user_status ? user.user_status.name : ''
       json.url user_url(user, format: :json)
       org_family_name = ''

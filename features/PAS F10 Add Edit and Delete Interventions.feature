@@ -64,7 +64,7 @@ Then the selected intervention will be added to the intervention table with fiel
       |Intervention Name is Required  |
 
 
-Scenario: #3 Intervention Desciption field Characters Rule
+Scenario: #3 Intervention Description field Characters Rule
    Given I am on the Add Intervention screen
    And I can type 1000 characters in the Intervention description field
    When I start typing text in the Intervention Description field
@@ -102,7 +102,7 @@ Scenario: #3 Intervention Desciption field Characters Rule
      Then the changes made will be saved to the selected Intervention
      
       Scenario:#7 Intervention Type field Edit
-    Given I am logged in as a superabstractor 
+    Given I am logged in as a superabstractor or Admin 
     And I am on the Edit Intervention screen
     And the intervention name is not editable
     And I can add or update Intervention Description

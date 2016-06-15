@@ -51,7 +51,8 @@
                                         <textarea class="form-control input-sm" id="comment" name="status_comment"
                                             rows="1"
                                             ng-maxlength="160" maxlength="160"
-                                            ng-model="trialStatusView.statusObj.comment">
+                                            ng-model="trialStatusView.statusObj.comment"
+                                            placeholder="Comment">
                                         </textarea>
                                         <span ng-show="trial_status_form.status_comment.$dirty">
                                             {{160 - trial_status_form.status_comment.$viewValue.length}} characters left
@@ -62,7 +63,8 @@
                                             rows="1"
                                             ng-maxlength="160" maxlength="160"
                                             ng-model="trialStatusView.statusObj.why_stopped"
-                                            ng-disabled="!trialStatusView.showWhyStoppedField">
+                                            ng-disabled="!trialStatusView.showWhyStoppedField"
+                                            placeholder="Why study stopped">
                                         </textarea>
                                         <!-- <input type="text" name="why_stopped" id="why_stopped" class="form-control input-sm"
                                             maxlength="160" ng-model="trialStatusView.statusObj.why_stopped" ng-disabled="!trialStatusView.showWhyStoppedField" /> -->
