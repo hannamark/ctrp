@@ -26,7 +26,9 @@ And the Section is displayed as a link to the form
  Scenario Outline: #3 Administration Validation Display for Errors
     Given I have selected a Trial
     When the <Rule> is met
-    Then the associated <Description> and <Comment> display  
+    Then the Header 'Abstraction Validation failed.  Please check Admin Data Menu error(s)' displays
+    And Header Error_Count 'item(s) found
+    And the associated <Description> and <Comment> display  
   
   |Section |Rule|Description  | Comment|     
   |PAA General Trial Details|IF NCT Number > 30 characters      | NCT Number cannot be more than 30 characters |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                       
@@ -35,7 +37,9 @@ And the Section is displayed as a link to the form
  Scenario Outline: #4 Scientific  Validation Display for Errors
     Given I have selected a Trial
     When the <Rule> is met
-    Then the associated <Description> and <Comment> display  
+    Then the Header 'Abstraction Validation failed.  Please check Scientific Data Menu error(s)' displays
+    And Header: Error_Count 'item(s) found
+    And the associated <Description> and <Comment> display  
     
   |Section                   |Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                       
   |PAS Trial Design | IF Clinical Research Category = ‘Interventional’ or ‘expanded access’, AND Masking is null  | IF Clinical Research Category = ‘Interventional’ or ‘expanded access’, Masking is required   |[Select Trial Design] from Scientific Data. |                                                                                                                                                                                                                                                                              
@@ -44,7 +48,9 @@ And the Section is displayed as a link to the form
  Scenario Outline: #5 Administration Validation Display for Warnings
     Given I have selected a Trial
     When the <Rule> is met
-    Then the associated <Description> and <Comment> display  
+    Then the Header 'Abstraction Validation Warnings.  Please check Admin Data Warnings' displays
+    And Header Error_Count 'item(s) found
+    And the associated <Description> and <Comment> display  
     
   |Section                   |Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                         
   |PAA General Trial Details|Official Title null | Official Title is required  |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                                                                            
@@ -53,7 +59,9 @@ And the Section is displayed as a link to the form
  Scenario Outline: #6 Scientific Validation Display for Warnings
     Given I have selected a Trial
     When the <Rule> is met
-    Then the associated <Description> and <Comment> display  
+    Then the Header 'Abstraction Validation Warnings.  Please check Scientific Data Warnings' displays
+    And Header Error_Count 'item(s) found
+    And the associated <Description> and <Comment> display  
     
   |Section                   |Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                         
   |PAA General Trial Details|IF Detailed Description >  than 32000 characters | Detailed Description must not be more than 32000 characters|[Select Trial Design ] from Scientific Data |                                                                                                                                                                                                                                                                             
