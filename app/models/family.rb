@@ -86,4 +86,13 @@ class Family < ActiveRecord::Base
       order("LOWER(families.#{column}) #{order}")
     end
   }
+
+  scope :find_unexpired_matches_by_org, -> (value) {
+    familyFamilies = FamilyMembership.where(
+        organization_id: value
+    ).where("(family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
+          .pluck(:family_id)
+    where(id: familyFamilies)
+  }
 end

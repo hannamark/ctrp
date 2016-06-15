@@ -58,7 +58,9 @@ class Submission < TrialBase
     join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
     join_clause += "LEFT JOIN users ON submissions.user_id = users.id "
 
-    if column == 'user_id'
+    if column == 'internal_source_id'
+      joins(join_clause).where("submitted_trial.internal_source_id = #{value}")
+    elsif column == 'user_id'
       joins(join_clause).where("submissions.user_id = #{value} AND submissions.trial_id is not null")
     end
   }

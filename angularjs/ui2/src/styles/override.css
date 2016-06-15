@@ -1411,6 +1411,10 @@ div[disabled] {
     cursor: pointer;
 }
 
+.cursor-move {
+    cursor: move;
+}
+
 .small-header-text {
     font-size: 75%;
 }
