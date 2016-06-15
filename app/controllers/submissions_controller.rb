@@ -72,6 +72,7 @@ class SubmissionsController < ApplicationController
 
     @trial_submissions = Submission.all
     @trial_submissions = @trial_submissions.matches('user_id', params[:user_id])
+    @trial_submissions  = @trial_submissions.matches('internal_source_id', InternalSource.find_by_code('PRO').id)
     @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
     unless params[:rows].nil?
       @trial_submissions = @trial_submissions.page(params[:start]).per(params[:rows])

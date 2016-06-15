@@ -104,7 +104,7 @@
                         </tr>
                         </thead>
                         <tbody ui-sortable="interventionView.sortableListener" ng-model="interventionView.trialDetailObj.interventions">
-                            <tr ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'edit-selected': interventionView.curInterventionObj.index === t.index}">
+                            <tr class="cursor-move" ng-repeat="t in interventionView.trialDetailObj.interventions track by $index" ng-class="{'edit-selected': interventionView.curInterventionObj.index === t.index}">
                                 <td>
                                     {{t.name}}
                                 </td>

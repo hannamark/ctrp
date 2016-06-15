@@ -221,7 +221,7 @@
                                 </tr>
                                 </thead>
                                 <tbody ui-sortable="criteriaView.sortableListener" ng-model="criteriaView.trialDetailObj.other_criteria">
-                                <tr ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="{'deleted-text': row._destroy, 'edit-selected': row.edit}">
+                                <tr class="cursor-move" ng-repeat="row in criteriaView.trialDetailObj.other_criteria track by $index" ng-class="{'deleted-text': row._destroy, 'edit-selected': row.edit}">
                                     <td>
                                         {{row.criteria_type}}
                                     </td>
