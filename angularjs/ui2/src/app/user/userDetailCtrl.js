@@ -32,7 +32,7 @@
             vm.showTransferTrialsModal = false;
             vm.showAddTrialsModal = false;
             if(vm.selectedOrgsArray.length >0) {
-                vm.userDetails.organization_id = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id;
+                vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
 
             UserService.upsertUser(vm.userDetails).then(function(response) {
@@ -76,12 +76,12 @@
 
         vm.validateSave = function() {
             vm.showValidation = true;
-            var newOrg = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1];
+            var newOrg = vm.selectedOrgsArray[0];
             // If form is invalid, return and let AngularJS show validation errors.
             if ($scope.userDetail_form.$invalid) {
                 return;
             } else {
-                if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
+                if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
                         if (vm.gridTrialsOwnedOptions.totalItems > 0
                                 && (vm.userRole === 'ROLE_ADMIN'
@@ -104,7 +104,7 @@
 
         vm.checkForOrgChange = function() {
             var redirect = false;
-            var newOrg = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1];
+            var newOrg = vm.selectedOrgsArray[0];
             if (vm.userDetailsOrig.organization_id !== newOrg.id) {
                 var review_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 if (vm.gridTrialsOwnedOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER'
@@ -359,9 +359,7 @@
         var activate = function() {
             if(vm.userDetails.organization_id != null) {
                 OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
-                    var curOrg = {'id' : vm.userDetails.organization_id, 'name': organization.name};
-                    vm.savedSelection.push(curOrg);
-                    vm.selectedOrgsArray = angular.copy(vm.savedSelection);
+                    vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': organization.name}];
                 });
             }
             listenToStatesProvinces();
