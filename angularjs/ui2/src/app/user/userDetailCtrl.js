@@ -103,7 +103,8 @@
 
         vm.checkForOrgChange = function() {
             var redirect = false;
-            if (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id) {
+            var newOrg = vm.selectedOrgsArray[vm.selectedOrgsArray.length-1];
+            if (vm.userDetailsOrig.organization_id !== newOrg.id) {
                 var review_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
                 if (vm.gridTrialsOwnedOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER'
                     || vm.userRole === 'ROLE_ACCOUNT-APPROVER' || vm.userRole === 'ROLE_SITE-SU')) {
@@ -112,9 +113,13 @@
                 if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
-                } else if (vm.userRole !== 'ROLE_ADMIN') {
-                    vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].id = vm.userDetailsOrig.organization_id;
-                    vm.selectedOrgsArray[vm.selectedOrgsArray.length-1].name = 'Request has been sent';
+                } else if (
+                    //new org is not part of the family and user is not an admin
+                    _.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length === 0
+
+                    && vm.userRole !== 'ROLE_ADMIN') {
+                    newOrg.id = vm.userDetailsOrig.organization_id;
+                    newOrg.name = 'Request has been sent';
                 }
             }
             return redirect;
