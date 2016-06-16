@@ -23,7 +23,11 @@ Then the Description and Comment fields display grouped by section
 And the Section in the Comment field is displayed as a link to the form
 
 
+<<<<<<< HEAD
  Scenario Outline: #3 Administration Validation Display for Errors
+=======
+ Scenario: #3 Administration Validation Display for Errors
+>>>>>>> 7dae06d2f5b0ce570c9979b73cde3e75ed30ab7a
     Given I have selected a Trial
     When the <Admin_Error_Rule> is met
     Then Administration_Error_Count is incremented
@@ -31,12 +35,25 @@ And the Section in the Comment field is displayed as a link to the form
     Then the Header 'Abstraction Validation failed.  Please check Admin Data Menu error(s)' displays
     And Header "Administration_Error_Count item(s) found" displays
     And the associated <Description> and <Comment> display  
+<<<<<<< HEAD
   
   |Section |Admin_Error_Rule|Description  | Comment|     
   |PAA General Trial Details|IF NCT Number > 30 characters      | NCT Number cannot be more than 30 characters |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                       
   |PAA General Trial Details| IF ‘CTEP Number’ >  30 characters | CTEP Number cannot be more than 30 characters| [Select General Trial Details] from Administration Data | 
 
  Scenario Outline: #4 Scientific  Validation Display for Errors
+=======
+    When Abstraction is complete
+    Then the for the Section <Section>, the below Admin Rules <Admin_Error_Rule> will checked and the screen will display the below description <Description> and comment <Comment> 
+   
+   
+  
+  |Section |Admin_Error_Rule|Description  | Comment|     
+  |PAA General Trial Details|IF NCT Number > 30 characters      | NCT Number cannot be more than 30 characters |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                       
+  |PAA General Trial Details|IF <CTEP Number>  30 characters | CTEP Number cannot be more than 30 characters| [Select General Trial Details] from Administration Data | 
+
+ Scenario: #4 Scientific  Validation Display for Errors
+>>>>>>> 7dae06d2f5b0ce570c9979b73cde3e75ed30ab7a
     Given I have selected a Trial
     When the <Scientific_Error_Rule> is met
      Then Scientific_Error_Count is incremented
@@ -46,10 +63,17 @@ And the Section in the Comment field is displayed as a link to the form
     And the associated <Description> and <Comment> display  
     
   |Section                   |Scientific_Error_Rule	                     |Description                                 |Comment                                         |                                                                                                                                                                                                                                                       
+<<<<<<< HEAD
   |PAS Trial Design | IF Clinical Research Category = ‘Interventional’ or ‘expanded access’, AND Masking is null  | IF Clinical Research Category = ‘Interventional’ or ‘expanded access’, Masking is required   |[Select Trial Design] from Scientific Data. |                                                                                                                                                                                                                                                                              
   |PAS Trial Design | IF Clinical Research Category = ‘Interventional’ or ‘expanded access’ AND Masking = ‘Double blind’, AND masking roles count < 2 |  Clinical Research Category of ‘Interventional’ or ‘expanded access’, If Double blind masking is selected, at least two masking roles must be specified   |[Select Trial Design] from Scientific Data. | 
 
  Scenario Outline: #5 Administration Validation Display for Warnings
+=======
+  |PAS Trial Design | IF Clinical Research Category = â€˜Interventionalâ€™ or â€˜expanded accessâ€™, AND Masking is null  | IF Clinical Research Category = â€˜Interventionalâ€™ or â€˜expanded accessâ€™, Masking is required   |[Select Trial Design] from Scientific Data. |                                                                                                                                                                                                                                                                              
+  |PAS Trial Design | IF Clinical Research Category = â€˜Interventionalâ€™ or â€˜expanded accessâ€™ AND Masking = â€˜Double blindâ€™, AND masking roles count < 2 |  Clinical Research Category of â€˜Interventionalâ€™ or â€˜expanded accessâ€™, If Double blind masking is selected, at least two masking roles must be specified   |[Select Trial Design] from Scientific Data. | 
+
+ Scenario: #5 Administration Validation Display for Warnings
+>>>>>>> 7dae06d2f5b0ce570c9979b73cde3e75ed30ab7a
     Given I have selected a Trial
     When the <Admin_Warning_Rule> is met
      Then Administration_Warning_Count is incremented

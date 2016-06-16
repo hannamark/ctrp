@@ -26,7 +26,7 @@
             </p>
         </div>
         <div class="row md-sidenav-push-in-target">
-            <form class="form form-horizontal" name="family_form" role="form" novalidate ctrp-submit="familyDetailView.updateFamily()">
+            <form class="form form-horizontal" name="family_form" role="form" novalidate ctrp-submit="familyDetailView.updateFamily()" unsaved-changes>
                 <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.family_form.needsAttention(family_form.name) || familyDetailView.showUniqueWarning}">
                     <label class="control-label col-xs-12 col-sm-3">Family Name:</label>
                     <div class="col-xs-12 col-sm-6">

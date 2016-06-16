@@ -18,6 +18,23 @@ Feature: Reg F05 Register Trial Protocol Identifiers
       |National                  |
       |Externally Peer-Reviewed  |
       |Institutional             |
+      
+   Scenario Outline: #1a Trial Identifiers Character Limit Rules
+    Given  I have selected the option to register a trial <TrialType>
+    And I am on the Register Trial Protocol Identifiers screen
+     When I have entered more than 30 charaters for the Identifier Type <IdentifierType> then an error message will display <ErrorType> 
+       
+      |IdentifierType                      |ErrorType                                                             |
+      |Lead Organization Trial Identifier  |Lead Organization Trial Identifier cannot be more than 30 characters  |
+      |Other Identifier                    |Other Identifier cannot be more than 30 characters                    |
+
+    
+    Examples:
+
+      |TrialType                 |
+      |National                  |
+      |Externally Peer-Reviewed  |
+      |Institutional             |
 
   Scenario Outline: #2 I must enter the lead organization trial identifier
     Given I have selected the option to register a trial <TrialType>
