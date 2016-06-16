@@ -47,7 +47,8 @@
             <h2>3. Select Trials</h2>
             <ctrptransferselect options="trialOwnershipView.trialOptions"> </ctrptransferselect>
         </div>
-        <div class="row btn-toolbar" ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
+        <div class="form-group row btn-toolbar" ng-if="trialOwnershipView.showSelects
+        && trialOwnershipView.userOptions.resetItems.length && trialOwnershipView.trialOptions.selectedItems.length && trialOwnershipView.userOptions.selectedItems.length">
             <button
                     type="button" class="btn btn-primary pull-right ng-isolate-scope"
                     id="save_btn"
