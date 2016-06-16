@@ -28,6 +28,7 @@ Feature: Reg F05 Register Trial Protocol Identifiers
       |Lead Organization Trial Identifier  |Lead Organization Trial Identifier cannot be more than 30 characters  |
       |Other Identifier                    |Other Identifier cannot be more than 30 characters                    |
 
+    
     Examples:
 
       |TrialType                 |
