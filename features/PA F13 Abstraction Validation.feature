@@ -34,6 +34,7 @@ And the Section in the Comment field is displayed as a link to the form
     When Abstraction is complete
     Then the for the Section <Section>, the below Admin Rules <Admin_Error_Rule> will checked and the screen will display the below description <Description> and comment <Comment> 
    
+   
   
   |Section |Admin_Error_Rule|Description  | Comment|     
   |PAA General Trial Details|IF NCT Number > 30 characters      | NCT Number cannot be more than 30 characters |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                       
