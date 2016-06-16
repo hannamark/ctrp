@@ -46,6 +46,7 @@ Feature: Reg F06 Register Trial Details
       |Externally Peer-Reviewed|
       |Institutional           |
 
+  
   Scenario Outline: #1a Trial Official Title Character Limit rule
     Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Details screen
