@@ -19,6 +19,7 @@
         vm.trialGlobalOpen = true;
         vm.toggleGlobal = toggleGlobal;
         vm.informationSourceCode = ''; // IMP for import; PRO for protocol
+        vm.curMilestoneCode = '';
         // milestone codes that trigger validation menus
         var MILESTONE_CODES_FOR_VALIDATION = ['SRD', 'VPS', 'VPC']; // "Submission Received Date" , "Validation Processing Start Date" or "Validation Processing Completed Date"
         // mile stone codes that DO not trigger abstraction menus
@@ -41,6 +42,7 @@
                 var milestones = _.map(currentTrialDetailObj.milestone_wrappers, function(msObj) {
                     return msObj.milestone; // {id: '', code: '', name: ''}
                 });
+                vm.curMilestoneCode = milestones.length > 0 ? milestones[0].code : ''; // get the current mile stone code
             });
         } //activate
 
