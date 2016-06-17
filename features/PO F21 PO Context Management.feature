@@ -1,9 +1,37 @@
 @Global@PO
 
-Feature: PO F21 Search CTEP Organizations with Pending Source Status
+Feature: PO F21 Create a CTEP Organization with Pending Source Status
 
- Scenario: #1 As a PO Curator,I can create a NEW CTRP Organization to associate it with an Organization in the CTEP Context
+1.	CTEP creates a new organization and sends it via RESTful Services to CTRP
+a.	CTRP creates a CTEP Context with a CTEP Context Status of Pending and returns a CTEP Context ID to CTEP
+
+
+ Scenario: #1 As a PO Curator,I can create a CTEP Context with a Pending Status in CTRP
     Given I am logged into the CTRP PO application
+    When CTRP receives newly created CTEP organizations through Restful Services
+    Then The CTRP curator creates a CTEP Context with CTEP Context Status of pending in CTRP and information type
+    |CTEP Context|
+    |CTEP Organization ID|
+    |CTEP Organization Type|
+    |CTEP Organization Status (Active, Inactive, Legacy)|
+    |Name|
+    |Address|
+    |Address2|
+    |Address3|
+    |City|
+    |State_province|
+    |Postal_code|
+    |Country|
+    |Public Research Email|
+    |Public Research Phone|
+    |Funding Mechanism|
+    |CTEP Context ID|
+    |CTEP Context Status|
+    And CTRP Curator returns a CTEP Context ID to CTEP
+
+
+Scenario: #2 As a PO Curator, I can search a NEW CTRP Organization to associate it with an Organization in the CTEP Context
+    Given Given I am logged into the CTRP PO application
     And I am on the Search Organizations Screen
     When I select Source status as pending
     And I select Source context as CTEP
@@ -76,10 +104,10 @@ Feature: PO F21 Search CTEP Organizations with Pending Source Status
     And The CTRP Organization ID (PO ID) and CTEP Organization ID is sent to CTEP
     
   
- Scenario: #3 As a CTRP PO Curator, I can update an Organization Address with the New address information received from CTEP
+ Scenario: #3 As a CTRP PO Curator, I can update Organization information with the New information received from CTEP
     Given I am on the Search Organizations Screen
-    And I can view Organizations in the CTEP Context with Pending status and updated organization address sent to CTRP via Restful service
-    And the CTRP Curator update the CTEP Context with the new address information
+    And I can view Organizations in the CTEP Context with Pending status and updated organization information sent to CTRP via Restful service
+    And the CTRP Curator update the CTEP Context with the new information
     And The CTRP Context is automatically updated 
     When the CTEP Organization Status is inactive
     Then the CTRP Context won't be automatically updated
