@@ -1347,6 +1347,7 @@ div.datepicker {
 
 .popover-confirm {
     width: 300px;
+    padding-bottom: 10px;
 }
 .popover-confirm .popover-message {
     margin-bottom:3px;

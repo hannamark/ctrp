@@ -3,7 +3,7 @@ Feature: Reg F06 Register Trial Details
 
   As a CTRP User, I can Register Trial Details
 
-  Scenario Outline: #1 I can enter the trail Details
+  Scenario Outline: #1 I can enter the trial Details
     Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Details screen
     When I have entered the trial's title
@@ -45,6 +45,20 @@ Feature: Reg F06 Register Trial Details
       |National                |
       |Externally Peer-Reviewed|
       |Institutional           |
+
+  
+  Scenario Outline: #1a Trial Official Title Character Limit rule
+    Given I have selected the option to register a trial <TrialType>
+    And I am on the Register Trial Details screen
+     When The enter more than 600 charaters for the official title
+     Then the error message wil be displayed " Official Title cannot be more than 600 charaters"
+     
+     Examples:
+      |TrialType               |
+      |National                |
+      |Externally Peer-Reviewed|
+      |Institutional           |
+
 
 
   Scenario Outline: #2 I must enter Trial Details Types
