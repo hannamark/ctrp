@@ -878,6 +878,7 @@
         function appendNewTrialFlag() {
             if ($state.$current.name.indexOf('add') > -1) {
                 vm.curTrial.new = true;  //
+                vm.curTrial.edit_type = 'original';
             }
         }
 

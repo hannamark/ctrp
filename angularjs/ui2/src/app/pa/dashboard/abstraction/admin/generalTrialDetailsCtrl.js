@@ -59,6 +59,10 @@
       }).map(function(idObj) { return idObj.name});
 
       vm.centralContactTypes = centralContactTypes.types;
+      var piObj = _.findWhere(vm.centralContactTypes, {'code': 'PI'});
+      if (!!piObj) {
+          piObj.name = 'PI'; // change the value for the key 'name' to 'PI'
+      }
 
       activate();
 
@@ -199,11 +203,8 @@
           vm.otherIdentifier.trial_id = vm.generalTrialDetailsObj.id;
           vm.otherIdentifier.identifierName = otherIdentifierNameObj.name;
           vm.otherIdentifier._destroy = false;
-          if (otherIdentifierNameObj.code === 'NCT' ||
-                otherIdentifierNameObj.code === 'ONCT') {
-              // force to upper case
-              vm.otherIdentifier.protocol_id = vm.otherIdentifier.protocol_id.toUpperCase();
-          }
+          // force to upper case
+          vm.otherIdentifier.protocol_id = vm.otherIdentifier.protocol_id.toUpperCase();
           // validation on other identifier
           var errorMsg = TrialService.checkOtherId(vm.otherIdentifier.protocol_id_origin_id,
                 otherIdentifierNameObj.code, vm.otherIdentifier.protocol_id,

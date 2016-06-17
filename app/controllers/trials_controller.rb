@@ -321,6 +321,7 @@ class TrialsController < ApplicationController
     if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type)
 
       @trial = Trial.find(params[:trial_id])
+      @trial.edit_type = 'checkoutin' # so as to avoid sending emails
       checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
 
       if checkout_type == "admin" and (@trial.admin_checkout.nil? || @current_user.role == "ROLE_ADMIN" || @current_user.role == "ROLE_SUPER")
@@ -362,6 +363,7 @@ class TrialsController < ApplicationController
     if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type) and checkin_comment.present?
 
       @trial = Trial.find(params[:trial_id])
+      @trial.edit_type = 'checkoutin' # so as to avoid sending emails
 
       if checkin_type == "admin"
         @trial.update_attribute('admin_checkout', nil)
@@ -633,7 +635,7 @@ class TrialsController < ApplicationController
       lead_protocol_id = xml.xpath('//org_study_id').text
       org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
 
-      dup_trial = Trial.joins(:lead_org).where('organizations.name = ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
+      dup_trial = Trial.joins(:lead_org).where('organizations.name ilike ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
       if dup_trial.length > 0
         @search_result[:error_msg] = 'Combination of Lead Organization Trial ID and Lead Organization must be unique.'
         return

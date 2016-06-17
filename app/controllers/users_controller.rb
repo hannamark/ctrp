@@ -18,17 +18,18 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_username(params[:username])
+    @families = Family.find_unexpired_matches_by_org(@user.organization_id)
+    @userWriteAccess = userWriteAccess(@user)
   end
-
 
   def update
     @user = User.find_by_username(params[:user][:username])
     initalUserRole = @user.role
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
-
+    @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     respond_to do |format|
-      #@person.po_affiliations.destroy
-      if @user.update_attributes(user_params)
+      #must be correct admin for the org, or with correct role or user him/herself
+      if userWriteAccess(@user) && @user.update_attributes(user_params)
         if user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU'
           begin
             mail_template = MailTemplate.find_by_code('SITE-ADMIN-ACCESS-GRANTED')
@@ -37,9 +38,10 @@ class UsersController < ApplicationController
             logger.warn "SITE-ADMIN-ACCESS-GRANTED: Email delivery error = #{e}"
           end
         end
-        format.html { redirect_to @user, notice: 'User was successfully updated.' + initalUserRole }
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render json: @user}
       else
+        @user.errors.add('error', 'Not authorized to make changes.')
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -134,7 +136,7 @@ end
     end
     @users = User.all
 
-    if ['ROLE_ADMIN'].include? current_user.role
+    if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER'].include? current_user.role
       if params[:family_id].present?
           @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
       elsif params[:organization_id].present?
@@ -142,16 +144,17 @@ end
       end
     end
 
-    if ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
-      family = FamilyMembership.find_by_organization_id(current_user.organization_id)
-      if family
+    if ['ROLE_SITE-SU'].include? current_user.role
+      any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
+      @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
+      if any_membership
           @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
       else
           @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
       end
     end
 
-    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU'
+    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU' && current_user.role != 'ROLE_ACCOUNT-APPROVER'
       @users = @users.matches_wc('user_statuses', [UserStatus.find_by_code('ACT').id, UserStatus.find_by_code('INR').id]) unless @users.blank?
       @status = 'Active'
     end
@@ -193,6 +196,30 @@ end
 
 
   private
+    def isSiteAdminForOrg user, orgId
+      family = FamilyMembership.find_by_organization_id(orgId)
+      if family
+        org_users = User.family_unexpired_matches_by_org(orgId)
+      else
+        org_users = User.matches('organization_id', orgId)
+      end
+      user_found = org_users.find_by_id user.id
+      user_found && user_found.role == "ROLE_SITE-SU"
+    end
+
+    def userWriteAccess userToUpdate
+      auth_string = request.headers['Authorization']
+      if !auth_string.blank?
+        token = auth_string.split(" ")[1]
+        user_id = decode_token(token)
+        user = User.find(user_id)
+      end
+      user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
+          user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
+          user.role == 'ROLE_SUPER' || user.id == userToUpdate.id ||
+          (userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id))
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       unless params.nil? || params[:id].nil? || params[:username].nil?

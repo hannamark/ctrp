@@ -196,11 +196,11 @@
                 vm.searchOrganizationFamily = '';
             }
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (!vm.registeredUsersPage){
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (vm.registeredUsersPage) {
-            vm.gridOptions.columnDefs.push(lastName, firstName, middleName, optionOrg);
+            vm.gridOptions.columnDefs.push(lastName, firstName, optionOrg);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -215,13 +215,21 @@
         };
         vm.gridOptions.exporterAllDataFn = function () {
             var allSearchParams = angular.copy(vm.searchParams);
+            var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
+
+            //add extra fields here
+            vm.gridOptions.columnDefs.push(middleName);
+
             allSearchParams.start = null;
             allSearchParams.rows = null;
+
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
                 function (data) {
                     vm.gridOptions.useExternalPagination = false;
                     vm.gridOptions.useExternalSorting = false;
                     vm.gridOptions.data = data['users'];
+
+                    vm.gridOptions.columnDefs = origGridColumnDefs;
                 }
             );
         };

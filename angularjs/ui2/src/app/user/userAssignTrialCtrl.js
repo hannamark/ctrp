@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userAssignTrialCtrl', userAssignTrialCtrl);
 
-    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', '$scope', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS'];
+    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', '$scope', 'toastr', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS'];
 
-    function userAssignTrialCtrl(PromiseTimeoutService, $scope, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS) {
+    function userAssignTrialCtrl(PromiseTimeoutService, $scope, toastr, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS) {
         var vm = this;
         vm.curUser = userDetailObj;
         if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
@@ -67,6 +67,7 @@
                 };
                 PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams).then(function (data) {
                     if(data.results === 'success') {
+                        toastr.success('Trial Ownership(s) Created', 'Success!');
                         vm.resetAll();
                     }
                 });

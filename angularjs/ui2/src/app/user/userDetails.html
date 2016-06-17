@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.first_name)}">
-                        <label class="control-label col-xs-12 col-sm-3">First Name</label>
+                        <label class="control-label col-xs-12 col-sm-3">First Name:</label>
                         <div class="col-xs-12 col-sm-6">
                             <input type="text" class="form-control input-sm" name="first_name" required ng-model="userDetailView.userDetails.first_name" placeholder="First Name">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.first_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.first_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.last_name)}">
-                        <label class="control-label col-xs-12 col-sm-3">Last Name</label>
+                        <label class="control-label col-xs-12 col-sm-3">Last Name:</label>
                         <div class="col-xs-12 col-sm-6">
                             <input type="text" class="form-control input-sm" name="last_name" required ng-model="userDetailView.userDetails.last_name" placeholder="Last Name">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.last_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.last_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -177,16 +177,17 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': !userDetailView.selectedOrgsArray.length}">
                         <label class="control-label col-xs-12 col-sm-3">Affiliated Organization:</label>
                         <div class="col-xs-12 col-sm-4">
-                            <input class="form-control input-sm" type="text" id="lead_org" name="lead_organization" ng-model="userDetailView.selectedOrgsArray[userDetailView.selectedOrgsArray.length-1].name" disabled class="form-control input-sm" placeholder="Affiliated Organization" ng-required="true">
+                            <input class="form-control input-sm" type="text" id="lead_org" name="lead_organization" ng-model="userDetailView.selectedOrgsArray[0].name" disabled class="form-control input-sm" placeholder="Affiliated Organization" ng-required="true">
                         </div>
-                        <ctrp-org-adv-search-modal-button class="col-xs-12 col-sm-3"  max-row-selectable="1" use-built-in-template="false" allow-overwrite="false" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
+                        <ctrp-org-adv-search-modal-button class="col-xs-12 col-sm-3"  max-row-selectable="1" use-built-in-template="false" allow-overwrite="true" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
                     </div>
 
                     <div class="form-group no-bottom-margin">
                         <div class="col-xs-12 col-sm-3"></div>
                         <div class="btn-toolbar col-xs-12 col-sm-6">
                             <a class="hand-hover pull-left"
-                               ng-if="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_SITE-SU'"
+                               ng-if="(userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_SITE-SU')
+                               && userDetailView.isCurrentUser"
                                ng-click="userDetailView.userRequestAdmin({username : userDetailView.userDetails.username})">Request for Admin Access</a>
                             <button type="button" class="btn btn-primary pull-right" id="save_btn"
                                     ng-click="userDetailView.showValidation = true"

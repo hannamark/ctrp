@@ -308,7 +308,7 @@ And I have select Yes/No for each of the following actions
 |Completion Date entered in PRS |
 |Designee Access Revoked? |
 |All Changes made Action|
-|Confirm “Send to CT.Gov” |
+|Confirm ï¿½Send to CT.Govï¿½ |
 And Select Save
 And the information will be saved to the trial
 And my name will be associated with the Trial record
@@ -328,4 +328,4 @@ Scenario: #23 Send Coversheet Email
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial on the CTRP Results Reporting Dashboard
 And I select the "Email Coversheet" 
-Then an email entitled "Results Comparison & Cover Sheet" will be sent to the CCCT (Email list in the shared drive under Functional/PA: CTRP System Generated Emails)
+Then an email entitled "Trial Results Comparison" will be sent to the CCCT (Email list in the shared drive under Functional/PA: CTRP System Generated PA Emails)
