@@ -26,6 +26,7 @@
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = curTrial;
+        console.info('trialDetailObj: ', curTrial);
         vm.adminCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.admin_checkout);
         vm.scientificCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.scientific_checkout);
 
@@ -77,7 +78,6 @@
         function checkoutTrial(checkoutType) {
             // To prevent multiple submissions before Ajax call is completed
             vm.disableBtn = true;
-
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
                 var status = res.server_response.status;
                 if (status >= 200 && status <= 210) {
