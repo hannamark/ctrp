@@ -151,12 +151,12 @@
             vm.currentParticipatingSite.participating_site_investigators_attributes = [];
             for (var i = 0; i < invGrid.length; i++) {
                 var invObj = invGrid[i];
-                if(vm.currentParticipatingSite.contact_type != "Site Investigator"){
+                if(vm.currentParticipatingSite.contact_type != "PI"){
                     invObj.set_as_contact = false;
                 } else if(vm.currentParticipatingSite.person && (invObj.person.id == vm.currentParticipatingSite.person.id)){
                     vm.setParticipatingSiteContactInfo();
                     invObj.set_as_contact = true;
-                    vm.currentParticipatingSite.contact_type = "Site Investigator"; // should have been set before
+                    vm.currentParticipatingSite.contact_type = "PI"; // should have been set before
                 } else {
                     invObj.set_as_contact = false;
                 }
@@ -303,7 +303,7 @@
             vm.current_investigator.edit = false;
             vm.current_investigator.uiEdit = false;
             vm.showInvestigatorRoleError = false;
-            vm.current_investigator.new = false;        
+            vm.current_investigator.new = false;
 
             vm.currentParticipatingSite = {
                 contact_type: 'General'
@@ -408,7 +408,7 @@
                     vm.currentParticipatingSite.person = vm.persisted_contact.persisted_person;
                     vm.currentParticipatingSite.person_id = vm.persisted_contact.persisted_person.id;
                 }
-                if(vm.currentParticipatingSite.contact_type == "Site Investigator"){
+                if(vm.currentParticipatingSite.contact_type == "PI"){
                     if (vm.currentParticipatingSite.person && vm.currentParticipatingSite.person.id == invObj.person.id) {
                         invObj.set_as_contact = true;
                     } else {
@@ -576,7 +576,7 @@
             if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators') && vm.currentParticipatingSite.participating_site_investigators[index]){
                 vm.currentParticipatingSite.participating_site_investigators[index].edit = false;
                 vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
-                if (vm.currentParticipatingSite.contact_type === "Site Investigator") {
+                if (vm.currentParticipatingSite.contact_type === "PI") {
                     // refreshing the current participating site person
                     if(vm.persisted_contact && vm.persisted_contact.persisted_person) {
                         vm.currentParticipatingSite.person = vm.persisted_contact.persisted_person;
@@ -632,7 +632,7 @@
                 vm.currentParticipatingSite.person = vm.persisted_contact.persisted_person;
                 vm.currentParticipatingSite.person_id = vm.persisted_contact.persisted_person.id;
             }
-            if(vm.currentParticipatingSite.contact_type == "Site Investigator") {
+            if(vm.currentParticipatingSite.contact_type == "PI") {
                 if (vm.currentParticipatingSite.person && vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
                     vm.current_investigator.set_as_contact = true;
                 } else {
@@ -668,11 +668,11 @@
                          if(vm.current_investigator.set_as_contact){
                              vm.currentParticipatingSite.person_id = vm.current_investigator.person.id;
                              vm.currentParticipatingSite.person = vm.current_investigator.person;
-                             vm.currentParticipatingSite.contact_type = "Site Investigator";
+                             vm.currentParticipatingSite.contact_type = "PI";
                          } else {
                          */
                          /*
-                         if (vm.currentParticipatingSite.contact_type == "Site Investigator") {
+                         if (vm.currentParticipatingSite.contact_type == "PI") {
                              if (vm.currentParticipatingSite.person && vm.currentParticipatingSite.person.id == vm.current_investigator.person.id) {
                                  vm.currentParticipatingSite.contact_name = null;
                                  vm.currentParticipatingSite.contact_phone = null;
@@ -728,7 +728,7 @@
 
         function watchContactType() {
             $scope.$watch(function() {return vm.currentParticipatingSite.contact_type;}, function(newVal, oldVal) {
-                if(newVal == "Site Investigator"){
+                if(newVal == "PI"){
                     vm.selectedContactTypePI = true;
                     vm.investigatorArray = [];
                     /* To resolve property undefined error when participating_site_investigators array does not exist */
@@ -740,7 +740,7 @@
                             vm.investigatorArray.push({"id": id, "name": name});
                         }
                     }
-                    if(vm.persisted_contact.contact_type == "Site Investigator" && vm.currentParticipatingSite.id){
+                    if(vm.persisted_contact.contact_type == "PI" && vm.currentParticipatingSite.id){
                         vm.currentParticipatingSite.contact_name = vm.persisted_contact.contact_name;
                         vm.currentParticipatingSite.contact_phone = vm.persisted_contact.contact_phone;
                         vm.currentParticipatingSite.extension = vm.persisted_contact.extension;
@@ -858,7 +858,7 @@
                             vm.currentParticipatingSite.contact_phone = newVal.id === oldVal.id && vm.currentParticipatingSite.contact_phone ? vm.currentParticipatingSite.contact_phone : inv.phone;
                             vm.currentParticipatingSite.extension = newVal.id === oldVal.id && vm.currentParticipatingSite.extension? vm.currentParticipatingSite.extension : inv.extension;
                             vm.currentParticipatingSite.contact_email = newVal.id === oldVal.id && vm.currentParticipatingSite.contact_email ? vm.currentParticipatingSite.contact_email : inv.email;
-                            //vm.currentParticipatingSite.contact_type = "Site Investigator"; // replace hardcoding
+                            //vm.currentParticipatingSite.contact_type = "PI"; // replace hardcoding
                             vm.currentParticipatingSite.person = inv;
                             vm.currentParticipatingSite.person_id = inv.id;
                         }

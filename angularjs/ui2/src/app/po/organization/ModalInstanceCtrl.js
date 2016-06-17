@@ -15,22 +15,27 @@
 
     function ModalInstanceCtrl($uibModalInstance, OrgService, orgId, $timeout) {
         var vm = this;
-        vm.modalTitle = "Please confirm";
-        vm.deletionStatus = "";
+        vm.modalTitle = 'Please confirm';
+        vm.deletionStatus = '';
+        vm.disableBtn = false;
+
         vm.ok = function() {
+            vm.disableBtn = true;
+
             OrgService.deleteOrg(orgId).then(function(data) {
-                console.log("delete data returned: " + JSON.stringify(data));
                 if (data.status > 206) {
-                    vm.modalTitle = "Deletion failed";
+                    vm.modalTitle = 'Deletion failed';
                     timeoutCloseModal(data.data.family || data.data.person);
                 } else {
-                    vm.modalTitle = "Deletion is successful";
+                    vm.modalTitle = 'Deletion is successful';
                     timeoutCloseModal("Permanently deleted", data.status); //204 for successful deletion
                 }
             }).catch(function(err) {
                 vm.modalTitle = "Deletion failed";
                 console.log("failed to delete the organization, error code: " + err.status);
                 timeoutCloseModal(err.data || "Failed to delete", err.status);
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 

@@ -22,7 +22,7 @@
             function linkerFn(scope, element, attrs) {
                 var formName = attrs.name;
 
-                $window.onbeforeunload = function(event) {
+                window.onbeforeunload = function(event) {
                     if (scope[formName].$dirty) {
                         return 'Are you sure you want to leave this page? You may have unsaved changes.';
                     }
