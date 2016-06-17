@@ -59,6 +59,10 @@
       }).map(function(idObj) { return idObj.name});
 
       vm.centralContactTypes = centralContactTypes.types;
+      var piObj = _.findWhere(vm.centralContactTypes, {'code': 'PI'});
+      if (!!piObj) {
+          piObj.name = 'PI'; // change the value for the key 'name' to 'PI'
+      }
 
       activate();
 
