@@ -20,11 +20,7 @@
                     controller: 'userCtrl as userView',
 
                     resolve: {
-                        UserService: 'UserService',
-                        loginBulletin: function(UserService, $q) {
-
-                            return UserService.getLoginBulletin();
-                        }
+                        UserService: 'UserService'
                     },
                     onEnter: function($state, UserService, toastr) {
                         if (UserService.isLoggedIn()) {

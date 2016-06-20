@@ -66,11 +66,28 @@ class TrialOwnershipsController < ApplicationController
   def end
     @results_msgs = 'fail'
     begin
-      toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
+      #for single user
+      unless params[:user_id].nil?
+        toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
+      end
+
+      #for group of users
+      unless params[:user_ids].nil?
+        toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_ids])
+      end
+
+      #for selected trials using ownership id
       unless params[:ids].nil?
         #to only end selected
         toEnd = toEnd.where(:id => params[:ids])
       end
+
+      #for selected trials trial id
+      unless params[:trial_ids].nil?
+        #to only end selected
+        toEnd = toEnd.where(:trial_id => params[:trial_ids])
+      end
+
       toEnd.update_all(:ended_at => Time.now)
       @results_msgs = 'success'
     rescue

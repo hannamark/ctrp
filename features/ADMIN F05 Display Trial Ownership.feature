@@ -10,8 +10,8 @@ Then I will see a list of all CTRP Users:
 | Last Name, First Name, Organization Affiliation|
 And I can select a user
 And the user's profile will be displayed
-And All the trials the user is an owner of will be displayed
-And All the trials the user submitted will be displayed
+And All the trials the user is an owner of will be displayed (Protocol Trials)
+And All the trials the user submitted will be displayed (Protocol and Imported Trials)
 
 Scenario: #1a I can view Registered User Details as a Site Administrator
 Given I am logged into CTRP
@@ -20,8 +20,8 @@ Then I will see a list of all CTRP Users in my Family:
 | Last Name, First Name, Organization Affiliation|
 And I can select a user
 And the user's profile will be displayed
-And All the trials the user is an owner of will be displayed
-And All the trials the user submitted will be displayed
+And All the trials the user is an owner of will be displayed (Protocol Trials)
+And All the trials the user submitted will be displayed (Protocol and Imported Trials)
 
 Scenario: #1b I can view Registered User Details as a Site Trial Submitter
 Given I am logged into CTRP
@@ -30,8 +30,8 @@ Then I will only see my name in the list of CTRP Users:
 | Last Name, First Name, Organization Affiliation|
 And I can select a user
 And the user's profile will be displayed
-And All the trials the user is an owner of will be displayed
-And All the trials the user submitted will be displayed
+And All the trials the user is an owner of will be displayed (Protocol Trials)
+And All the trials the user submitted will be displayed (Protocol and Imported Trials)
 
 
 Scenario: #2 I can view Registered User Details - user details

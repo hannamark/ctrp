@@ -12,8 +12,16 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-danger" id="delete_btn" ng-click="vm.ok()">Delete Now</button>
-            <button class="btn btn-primary" id="cancel_btn" ng-click="vm.cancel()">Cancel</button>
+            <div class="col-sm-12">
+                <div class="btn-toolbar">
+                    <button class="btn btn-danger pull-right" id="delete_btn" ng-click="vm.ok()" ng-disabled="vm.disableBtn">
+                        <i class="glyphicon glyphicon-trash"></i> Delete Now
+                    </button>
+                    <button class="btn btn-warning pull-right" id="cancel_btn" ng-click="vm.cancel()">
+                        <i class="glyphicon glyphicon-remove"></i> Cancel
+                    </button>
+                </div>
+            </div>
         </div>
     </script>
     <script type="text/ng-template" id="ctrp">CTRP Context</script>
