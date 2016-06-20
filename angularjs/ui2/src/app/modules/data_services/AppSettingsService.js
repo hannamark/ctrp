@@ -16,8 +16,13 @@
 
         var _getRequestedSettings = function (requestedSettings) {
             var requestURL = '/ctrp/';
-            requestURL = requestedSettings.json_path ? requestURL + requestedSettings.json_path : (requestedSettings.external ? requestURL + 'app_settings_ext/'  + requestedSettings.setting: requestURL + 'app_settings/' + requestedSettings.setting);
-            appSettingsService.appSettings[requestedSettings.setting] = PromiseService.getData(requestURL + '.json');
+            requestURL = requestedSettings.json_path ? requestURL + requestedSettings.json_path : (requestedSettings.external ?
+                requestURL + 'app_settings_ext/'  + requestedSettings.setting: requestURL + 'app_settings/' + requestedSettings.setting);
+            requestURL += '.json';
+            if (requestedSettings.location) {
+                requestURL += '?location=' + requestedSettings.location;
+            }
+            appSettingsService.appSettings[requestedSettings.setting] = PromiseService.getData(requestURL);
             return appSettingsService.appSettings[requestedSettings.setting];
         };
 

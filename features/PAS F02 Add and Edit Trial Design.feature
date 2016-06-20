@@ -139,7 +139,7 @@ As a CTRP PA Abstractor, I can add and edit Trial Design
       | Primary Purpose           | Primary Purpose is Required       | 
       | Trial Phase               | Trial Phase is Required           | 
       | Intervention Model        | Intervention Model is Required    | 
-      | Number of Arms/Groups     | Number of Arms/Groups is Requiredd | 
+      | Number of Arms/Groups     | Number of Arms/Groups is Required | 
       | Masking                   | Masking is Required                | 
       | Allocation                | Allocation is Required           | 
       | Target Enrollment         | Target Enrollment is Required     | 

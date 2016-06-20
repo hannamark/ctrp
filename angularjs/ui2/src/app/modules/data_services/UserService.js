@@ -168,10 +168,6 @@
             return PromiseTimeoutService.getData(DMZ_UTILS.APP_VERSION);
         };
 
-        this.getAppRelMilestoneFromDMZ = function () {
-            return PromiseTimeoutService.getData(DMZ_UTILS.APP_REL_MILESTONE);
-        };
-
         this.setAppVersion = function (version) {
             _setAppVersion(version);
         };
@@ -186,10 +182,6 @@
 
         this.getAppRelMilestone = function () {
             return LocalCacheService.getCacheWithKey('app_rel_milestone');
-        };
-
-        this.getLoginBulletin = function () {
-            return PromiseTimeoutService.getData(DMZ_UTILS.LOGIN_BULLETIN);
         };
 
         this.getGsa = function () {
