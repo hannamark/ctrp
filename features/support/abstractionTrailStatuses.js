@@ -12,6 +12,7 @@ var moment = require ('moment');
 var should = chai.should();
 var helperFunctions = require('../support/helper');
 var addTrialPage = require('../support/registerTrialPage');
+var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 //File System
 var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
@@ -19,9 +20,11 @@ var testFileUpload = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/tes
 
 var abstractionTrailStatuses = function(){
 
+    var commonFunctions = new abstractionCommonMethods();
     var dateFunctions = new addTrialPage();
     var helper = new helperFunctions();
     var self = this;
+
     /*
      * Trial Status object(s)
      */
@@ -37,6 +40,7 @@ var abstractionTrailStatuses = function(){
     this.commentCharaLeft = element(by.css('.row.table-responsive .table.table-striped.table-condensed:nth-child(01) tbody tr:nth-child(1) td:nth-child(3) .ng-binding'));
     this.whyStdyCharaLeft = element(by.css('.row.table-responsive .table.table-striped.table-condensed:nth-child(01) tbody tr:nth-child(1) td:nth-child(4) .ng-binding'));
 
+    this.trialStatusTbleExists = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody'));
     this.trialStatusTbleAll = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
     this.trialStatusTble = element(by.css('.table.table-bordered.table-striped.table-hover'));
 
@@ -64,6 +68,8 @@ var abstractionTrailStatuses = function(){
     this.tblEditRWB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(06) td:nth-child(06) #edit_btn'));
     this.tblDeleteRWB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(07) td:nth-child(07) #delete_btn'));
 
+    this.researchCategory = element(by.binding('paTrialOverview.trialDetailObj.research_category.name'));
+
     //trial status edit
     this.statuesesCancel = element(by.id('trial_status_cancel'));
     this.statuesesConfirm = element(by.id('trial_status_confirm'));
@@ -85,7 +91,10 @@ var abstractionTrailStatuses = function(){
     this.completionDateRadioActual = element(by.id('completion_date_radio_btn_actual'));
     this.completionDateRadioAnticipated = element(by.id('completion_date_radio_btn_anticipated'));
 
-    this.primaryCompletionDateNAErr = element(by.css('.col-sm-7 .help-block'));
+    this.primaryCompletionDateNAErr = element(by.id('primary_completion_date_radio_btn_na_err'));
+    this.primaryCompletionDateErr = element(by.id('primary_completion_date_type_err'));
+    this.trialStartDateErr = element.all(by.css('.help-block.ng-scope'));
+    this.statusAlreadyExists = element.all(by.css('.add-association-error.ng-binding'));
 
     //Trial Comment
     this.trialComment = element(by.id('status_comment'));
@@ -120,6 +129,16 @@ var abstractionTrailStatuses = function(){
     this.selectStatus = function(getValue){
       helper.selectValueFromList(this.statuesesStatus, getValue, 'Select Status');
       helper.wait_for(200);
+    };
+
+    this.selectStatusByXpath = function(trialStatus)  {
+        var  selectTrialStatus =  element(by.xpath('//*[@id="status_select"]/option[.="' + trialStatus + '"]'));
+        var  selectTrialStatusDefault =  element(by.xpath('//*[@id="status_select"]/option[.="Select a status"]'));
+        if(trialStatus === '') {
+            helper.selectValue(selectTrialStatusDefault,'Select a status',"Default trial status");
+        } else{
+            helper.selectValue(selectTrialStatus, trialStatus, "Trial Status");
+        }
     };
 
     this.selectDisableStatus = function(getValue){
@@ -270,6 +289,7 @@ var abstractionTrailStatuses = function(){
                         getErrWrngs = errorsWarnings.getText('value');
                         getErrWrngs.then(function(getErWarn){
                             expect(errWarnings.toString()).to.eql(getErWarn.toString());
+                            console.log('Expected Errors/Warnings: ['+errWarnings+']');
                             console.log('Current Errors/Warnings: ['+getErWarn+']');
                         });
                     } else if (whatToDo === 'notExists'){
@@ -288,6 +308,50 @@ var abstractionTrailStatuses = function(){
         }
     };
 
+    //Delete Status
+    this.findTrialStatusToDel = function(what){
+        this.trialStatusTbleAll.then(function(rows){
+            console.log('Trial Statuses Total Row:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                if (i === 1){
+                    console.log('i:['+i+']');
+                    fNm('1', what);
+                } else if (i === 2){
+                    console.log('i:['+i+']');
+                    fNm('2', what);
+                } else if (i === 3){
+                    console.log('i:['+i+']');
+                    fNm('3', what);
+                } else if (i === 4){
+                    console.log('i:['+i+']');
+                    fNm('4', what);
+                } else if (i === 5){
+                    console.log('i:['+i+']');
+                    fNm('5', what);
+                } else if (i === 6){
+                    console.log('i:['+i+']');
+                    fNm('6', what);
+                } else if (i === 7){
+                    console.log('i:['+i+']');
+                    fNm('7', what);
+                } else if (i === 8){
+                    console.log('i:['+i+']');
+                    fNm('8', what);
+                }
+            }
+        });
+        function fNm(iVal, whatToDo){
+            var tableStatus = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
+            getStatus = tableStatus.getText('value');
+            getStatus.then(function(Test1){
+                console.log("Identified Current Trial Status:["+Test1+"]");
+                    if(whatToDo === 'delete'){
+                        var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(07) #delete_btn'));
+                        helper.clickButton(deleteDataRw, "Delete - Button");
+                    }
+            });
+        }
+    };
 
     //Trial Dates
 
@@ -371,6 +435,7 @@ var abstractionTrailStatuses = function(){
 
     this.clickSave = function(){
         helper.clickButton(this.trialStatusSaveBtn, "Trial Status Save - Button");
+        helper.wait_for(300);
     };
 
     this.clickReset = function(){

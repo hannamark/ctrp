@@ -240,6 +240,7 @@ var helper = function() {
 
     this.verifyElementDisplayed =function (fieldName, fieldValueTrueOrFalse) {
         expect(fieldName.isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
+        //expect(fieldName.isDisplayed()).to.become(fieldValueTrueOrFalse);
     };
 
     this.verifyElementDisplayedByIndex =function (fieldName, index, fieldValueTrueOrFalse) {
