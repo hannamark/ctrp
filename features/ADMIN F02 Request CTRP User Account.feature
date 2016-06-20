@@ -55,7 +55,7 @@ As someone without a CTRP User Account, I can request a user account
       |Email            |
       |Phone Number     |
       |Organization Name|
-      |CAPTCH           |
+      |CAPTCHA           |
 
    When the answer to the question "Do you have an NIH Account" is "yes,I have an NIH Account"
    Then the field "Username" is required

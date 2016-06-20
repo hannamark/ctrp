@@ -77,7 +77,6 @@
         function checkoutTrial(checkoutType) {
             // To prevent multiple submissions before Ajax call is completed
             vm.disableBtn = true;
-
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
                 var status = res.server_response.status;
                 if (status >= 200 && status <= 210) {
