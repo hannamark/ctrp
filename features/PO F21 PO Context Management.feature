@@ -1,6 +1,31 @@
 @Global@PO
 
-Feature: PO F21 Create a CTEP Organization with Pending Source Status
+Feature: PO F21 PO CTRP-CTEP-NLM Context Management Functionality
+
+
+Scenario:#10 As a PO Curator,I can create a CTEP Context of a new Organization record 
+    Given I am logged into the CTRP PO application
+    When CTRP receives newly created CTEP Organization record through Restful Services
+    Then The CTRP curator creates a new Organization in the CTEP Context with CTEP Context Status of pending in CTRP with information type
+    
+    |CTEP Context|
+    |CTEP Organization ID|
+    |CTEP Organization Type|
+    |CTEP Organization Status (Active, Inactive, Legacy)|
+    |Name|
+    |Address|
+    |Address2|
+    |Address3|
+    |City|
+    |State_province|
+    |Postal_code|
+    |Country|
+    |Public Research Email|
+    |Public Research Phone|
+    |Funding Mechanism|
+    |CTEP Context ID|
+    |CTEP Context Status|
+      
 
 Scenario: #1 As a PO Curator, I can search a NEW CTEP Organization to create a CTRP Context 
     Given Given I am logged into the CTRP PO application
@@ -84,15 +109,15 @@ Scenario: #1 As a PO Curator, I can search a NEW CTEP Organization to create a C
     When the CTEP Organization Status is inactive
     Then the CTRP Context won't be automatically updated
  
-   Scenario: #4 As a CTRP PO Curator I can approve or deny a request for a new organization in CTRP (Who sends the request to the curator)
+   Scenario: #4 As a CTRP PO Curator I can approve or deny a request for a new organization in CTRP 
     Given I am logged into the CTRP PO Application 
-     And I have received a request to create a a new organization in CTRP
+     And I have received a request to create a new organization in CTRP
      When I have searched existing organizations in CTRP
      And the requested organization exists in the CTRP Context
     Then I can deny the request 
     When the requested organization does not exist in the CTRP Context
     Then I can create the requested organization in the CTRP Context
-    And I can send the CTRP Organization context to the CTEP-ECM
+    And I can send the CTRP Organization context to the CTEP-ECM (Do we get information back: CTEP Context ID and Status)
 
 
       Scenario:#5 As a CTRP PO Curator, I can link CTEP Organization with an existing CTRP organization 
