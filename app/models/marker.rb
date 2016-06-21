@@ -24,7 +24,7 @@
 #  index_markers_on_trial_id          (trial_id)
 #
 
-class Marker < ActiveRecord::Base
+class Marker < TrialBase
   include BasicConcerns
 
   belongs_to :biomarker_use
@@ -40,6 +40,17 @@ class Marker < ActiveRecord::Base
   accepts_nested_attributes_for  :marker_eval_type_associations, allow_destroy: true
   accepts_nested_attributes_for  :marker_spec_type_associations, allow_destroy: true
   accepts_nested_attributes_for  :marker_biomarker_purpose_associations, allow_destroy: true
+
+  after_save :touch_trial
+
+  private
+
+  def touch_trial
+    p "touching trial"
+    self.trial.update(updated_by:"murali", updated_at:Time.now)
+
+  end
+
 
 
 end
