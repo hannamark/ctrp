@@ -53,6 +53,11 @@ class TrialsController < ApplicationController
 
     Rails.logger.info "params in update: #{params}"
 
+    if params[:trial][:edit_type] == 'amend'
+      trial_service = TrialService.new({trial: @trial})
+      trial_json = trial_service.get_json
+    end
+
     respond_to do |format|
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
@@ -61,6 +66,10 @@ class TrialsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
       end
+    end
+
+    if trial_json.present?
+      trial_service.save_history(trial_json)
     end
   end
 
