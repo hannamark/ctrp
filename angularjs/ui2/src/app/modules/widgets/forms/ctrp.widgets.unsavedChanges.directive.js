@@ -21,45 +21,27 @@
 
             function linkerFn(scope, element, attrs) {
                 var formName = attrs.name;
+                scope.controller = attrs.ucController;
 
-                window.onbeforeunload = function(event) {
-                    if (scope[formName].$dirty) {
+
+
+                $window.onbeforeunload = function(event) {
+                    var arrayChanged = scope[scope.controller].arraysChanged;
+
+                    if (scope[formName].$dirty || arrayChanged) {
                         return 'Are you sure you want to leave this page? You may have unsaved changes.';
                     }
                 };
 
                 scope.$on('$stateChangeStart', function(event) {
-                    if (scope[formName].$dirty) {
+                    var arrayChanged = scope[scope.controller].arraysChanged;
+
+                    if ((arrayChanged || scope[formName].$dirty) && !scope[formName].$submitted) {
                         if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
                             event.preventDefault();
                         }
                     }
                 });
-/*
-                function activateModal() {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: 'app/pa/dashboard/abstraction/scientific/directives/advanced_cadsr_search_form_modal2.html',
-                        controller: 'unSavedChangesModalCtrl as unChgs',
-                        size: 'md'
-                    });
-                }
-*/
             }
         }
-
-/*
-        function unSavedChangesModalCtrl($scope, $uibModalInstance) {
-            var vm = this;
-
-
-            vm.confirm = function() {
-
-            };
-
-            vm.cancel = function() {
-                $uibModalInstance.close();
-            };
-        }
-*/
 })();

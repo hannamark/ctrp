@@ -22,6 +22,7 @@
         vm.savedSelection = []; //save selected organizations
         vm.selectedOrgFilter = "";
         vm.disableBtn = false;
+        vm.arraysChanged = false;
 
         vm.updateFamily = function() {
             vm.curFamily.family_memberships_attributes = prepareFamilyMembershipsArr(vm.savedSelection); //append an array of affiliated organizations
@@ -136,6 +137,8 @@
             if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
                 populateFamilyMemberships();
             }
+
+            vm.arraysChanged = false;
         };
 
         activate();
@@ -184,6 +187,7 @@
 
                     modalInstance.result.then(function (selectedItem) {
                         console.log("about to delete the familyDetail " + vm.curFamily.id);
+                        $scope.family_form.$submitted = true;
                         $state.go('main.families');
                     }, function () {
                         console.log("operation canceled")
@@ -200,6 +204,7 @@
                     //prevent pushing duplicated org
                     if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
                         vm.savedSelection.unshift(OrgService.initSelectedOrg(anOrg));
+                        vm.arraysChanged = true;
                     }
                 });
 
