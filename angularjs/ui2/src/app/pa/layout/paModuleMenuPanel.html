@@ -56,21 +56,27 @@
               <li><a ui-sref="main.pa.trialOverview.bioMarkers" class="menu-bio-markers">Biomarkers</a></li>
           </ul>
       </uib-accordion-group>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
-          <uib-accordion-heading>
-              <strong>Complete</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.completeOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.completeOpen}"></i>
-          </uib-accordion-heading>
-          <!--
-          <ul class="nav nav-pills nav-stacked">
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-              <li><a href=""></a></li>
-          </ul>
-          -->
-      </uib-accordion-group>
+      <div ng-show="paMenuPanel.menuTypes.abstraction">
+          <!-- only show this menu in abstraction mode -->
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
+              <uib-accordion-heading>
+                  <strong>Complete</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.completeOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.completeOpen}"></i>
+              </uib-accordion-heading>
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a href="" class="menu-trial-design">Abstraction Validation</a></li>
+                  <li><a href="" class="menu-trial-description">Results Information</a></li>
+              </ul>
+          </uib-accordion-group>
+      </div>
+      <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">          
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialValidOpen">
+              <uib-accordion-heading>
+                  <strong>Trial Validation</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialValidOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialValidOpen}"></i>
+              </uib-accordion-heading>
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a href="" class="menu-trial-design">Submission Validation</a></li>
+              </ul>
+          </uib-accordion-group>
+      </div>
   </uib-accordion>
 </div>
