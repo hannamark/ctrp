@@ -315,5 +315,11 @@ class  User < ActiveRecord::Base
     self.username.downcase == username_value.downcase
   end
 
+  def email_required?
+    false
+  end
 
+  def email_changed?
+    false
+  end
 end

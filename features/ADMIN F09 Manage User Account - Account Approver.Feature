@@ -1,7 +1,7 @@
 @Admin @Global 
 Feature: ADMIN F09 Manage User Account - Account Approver
 
-As someone with a CTRP Account Approver access, I can manage all accounts
+As someone with a CTRP Account Approver, Super Abstractor, Admin access, I can manage all accounts
 
 Scenario: #1 I can view all CTRP Users 
 Given I am logged into CTRP 
@@ -59,13 +59,8 @@ When I enter or edit information in the following required fields
 | Email Address |
 | First Name |
 | Last Name |
-| Street Address |
-| City |
-| ZIP/Postal Code |
 | Phone Number |
 And I select the following required information
-| Country |
-| State |
 | Organizational Affiliation |
 |Username|
 |Domain|
@@ -78,7 +73,7 @@ And I select to either receive or not receive email notifications
 And I select the Save option
 Then the account information will be updated in CTRP
 
-Scenario: #3 e-mail notificaiton for user account changes
+Scenario: #3 e-mail notification for user account changes
 Given I am logged into CTRP
 And I select the option to update a user account 
 When I select or change 

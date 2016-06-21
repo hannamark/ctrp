@@ -59,6 +59,12 @@
             vm.userOptions.reset();
             vm.trialOptions.reset();
         };
+        vm.validateAssignment = function () {
+            vm.showErrors = false;
+            if (vm.trialOptions.selectedItems.length === 0 || vm.userOptions.selectedItems.length === 0) {
+                vm.showErrors = true;
+            }
+        };
         vm.save = function () {
             if (vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
                 var searchParams = {
@@ -72,6 +78,20 @@
                     }
                 });
             }
-        }
+        };
+        vm.removeTrialsOwnerships = function () {
+            if (vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
+                var searchParams = {
+                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
+                    trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
+                };
+                UserService.endUserTrialsOwnership(searchParams).then(function (data) {
+                    if (data.results === 'success') {
+                        toastr.success('Trial Ownership Removed', 'Success!');
+                        vm.resetAll();
+                    }
+                });
+            }
+        };
     }
 })();
