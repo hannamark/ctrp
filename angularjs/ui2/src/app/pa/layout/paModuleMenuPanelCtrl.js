@@ -65,7 +65,6 @@
                     vm.menuTypes = _falsifyValuesExcept(vm.menuTypes, 'abstraction');
                 }
                 console.info('vm.menuTypes: ', vm.menuTypes);
-
             });
         } //activate
 
@@ -85,11 +84,10 @@
          */
         function _falsifyValuesExcept(jsonObj, exceptKey) {
             var clonedObj = JSON.parse(JSON.stringify(jsonObj)); // clone
-            angular.forEach(clonedObj, function(key) {
+            Object.keys(clonedObj).forEach(function(key) {
                 if (clonedObj.hasOwnProperty(key)) {
-                    clonedObj[key] = false;
+                    clonedObj[key] = key === exceptKey ? true : false;
                 }
-                clonedObj[exceptKey] = true;
             });
             return clonedObj;
         }
