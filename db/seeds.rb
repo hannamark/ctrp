@@ -10,7 +10,7 @@ require 'roo'
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #Remove Data
-#DataImport.delete_trial_data
+#.delete_trial_data
 #NameAlias.delete_all
 #Organization.delete_all
 #Person.delete_all
