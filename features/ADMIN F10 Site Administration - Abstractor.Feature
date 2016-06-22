@@ -43,7 +43,7 @@ And the list can be sorted by
 |Status|
 
 
-Scenario: #3 I can enable Site Administrative privileges for CTRP Trial Submitters with the roles: CTRP-RO, Abstractor, Super, Admin, Account Approver
+Scenario: #3 I can enable Site Administrative privileges for CTRP Trial Submitters with the roles: Abstractor, Super, Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature
 And I will see a list of all CTRP Users 
@@ -54,7 +54,7 @@ And I can change the privileges for the CTRP User to
 And the CTRP User will be able to access the Administrative features in CTRP
 And an e-mail will be sent to the user (Admin Access e-mail)
 
-Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: CTRP-RO, Abstractor, Super, Admin, Account Approver
+Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: Abstractor, Super, Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature
 And I will see a list of all CTRP Users with the same Site Affiliation as I have 
@@ -64,7 +64,7 @@ And I can change the privileges for the CTRP User to
 |Trial Submitter|
 And the CTRP User will not have access the Site Administrative features in CTRP
 
-Scenario: #5 I can inactivate a Trial Submitter with the roles: Admin, Account Approver
+Scenario: #5 I can inactivate a Trial Submitter with the roles: Abstractor, Super, Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature
 And I select a site user
@@ -85,7 +85,7 @@ And the trials displayed will be for selected user
 And the account will not be inactivated
 
 
-Scenario: #6 Change site affiliation with the roles: Admin, Account Approver
+Scenario: #6 Change site affiliation with the roles: Abstractor, Super, Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature (User Management)
 Then I will see a list of all CTRP Users 
