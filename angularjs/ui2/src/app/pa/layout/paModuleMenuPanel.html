@@ -3,7 +3,11 @@
   <uib-accordion close-others="false">
       <uib-accordion-group ng-hide="paMenuPanel.nciTrialId==''" is-open="paMenuPanel.trialGlobalOpen">
           <uib-accordion-heading>
-              <strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong>  <i class="pull-right glyphicon" ng-click="paMenuPanel.toggleGlobal()" ng-class="{'glyphicon-chevron-down': paMenuPanel.trialGlobalOpen, 'glyphicon-chevron-right': !paMenuPanel.trialGlobalOpen}"></i>
+              <strong>
+                  <div ng-show="paMenuPanel.menuTypes.abstraction">Trial Abstraction:</div>
+                  <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">Trial Validation:</div>
+                  NCI Trial ID: {{paMenuPanel.nciTrialId}}<i class="pull-right glyphicon" ng-click="paMenuPanel.toggleGlobal()" ng-class="{'glyphicon-chevron-down': paMenuPanel.trialGlobalOpen, 'glyphicon-chevron-right': !paMenuPanel.trialGlobalOpen}"></i>
+              </strong>
           </uib-accordion-heading>
       </uib-accordion-group>
       <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialOverviewOpen">
@@ -21,41 +25,45 @@
               <li><a ui-sref="main.pa.trialOverview.emailLogs" class="menu-email-logs">Email Logs</a></li>
           </ul>
       </uib-accordion-group>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
-          <uib-accordion-heading>
-              <strong>Admin Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
-          </uib-accordion-heading>
-          <ul class="nav nav-pills nav-stacked">
-              <li><a ui-sref="main.pa.trialOverview.generalTrialDetails" class="menu-general-trial-details">General Trial Details</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryFda" class="menu-reg-fda">Regulatory Information - FDAAA</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryInfoHumanSafety" class="menu-regulatory-info-human-subject-safety">Regulatory Information - Human Subject Safety</a></li>
-              <li><a ui-sref="main.pa.trialOverview.regulatoryInd" class="menu-reg-ind">Regulatory Information - IND/IDE</a></li>
-              <li><a ui-sref="main.pa.trialOverview.paTrialStatus" class="menu-trial-status">Trial Status</a></li>
-              <li><a ui-sref="main.pa.trialOverview.funding" class="menu-funding">Trial Funding</a></li>
-              <li><a ui-sref="main.pa.trialOverview.participatingSites" class="menu-participating-sites">Participating Sites</a></li>
-              <li><a ui-sref="main.pa.trialOverview.collaborators" class="menu-collaborators">Collaborators</a></li>
-              <li><a ui-sref="main.pa.trialOverview.paTrialRelatedDocs" class="menu-trial-related-documents">Trial Related Documents</a></li>
-              <li><a ui-sref="main.pa.trialOverview.nciInfo" class="menu-nci-info">NCI Specific Information</a></li>
-          </ul>
-      </uib-accordion-group>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
-          <uib-accordion-heading>
-              <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
-          </uib-accordion-heading>
-          <ul class="nav nav-pills nav-stacked">
-              <li><a ui-sref="main.pa.trialOverview.trialDesign" class="menu-trial-design">Trial Design</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialDescription" class="menu-trial-description">Trial Description</a></li>
-              <li><a ui-sref="main.pa.trialOverview.intervention">Interventions</a></li>
-              <li><a ui-sref="main.pa.trialOverview.armsGroups" class="menu-arms-groups">Arms/Groups</a></li>
-              <li><a ui-sref="main.pa.trialOverview.eligibilityCriteria" class="menu-eligibility-critiera">Eligibility Criteria</a></li>
-              <li><a ui-sref="main.pa.trialOverview.associatedTrials" class="menu-associated-trials">Associated Trials</a></li>
-              <li><a ui-sref="main.pa.trialOverview.disease" class="menu-disease">Diseases/Conditions</a></li>
-              <li><a ui-sref="main.pa.trialOverview.anatomicSites" class="menu-anatomic-sites">Data Table 4 Anatomic Sites</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialOutcomeMeasures" class="menu-trial-outcome-measures">Outcome Measures</a></li>
-              <li><a ui-sref="main.pa.trialOverview.trialSubGroups" class="menu-trial-sub-groups">Sub-Groups Stratification</a></li>
-              <li><a ui-sref="main.pa.trialOverview.bioMarkers" class="menu-bio-markers">Biomarkers</a></li>
-          </ul>
-      </uib-accordion-group>
+      <div ng-hide="paMenuPanel.menuTypes.rejection">
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
+              <uib-accordion-heading>
+                  <strong>Admin Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
+              </uib-accordion-heading>
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a ui-sref="main.pa.trialOverview.generalTrialDetails" class="menu-general-trial-details">General Trial Details</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.regulatoryFda" class="menu-reg-fda">Regulatory Information - FDAAA</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.regulatoryInfoHumanSafety" class="menu-regulatory-info-human-subject-safety">Regulatory Information - Human Subject Safety</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.regulatoryInd" class="menu-reg-ind">Regulatory Information - IND/IDE</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.paTrialStatus" class="menu-trial-status">Trial Status</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.funding" class="menu-funding">Trial Funding</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidProtocol"><a ui-sref="main.pa.trialOverview.participatingSites" class="menu-participating-sites">Participating Sites</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.collaborators" class="menu-collaborators">Collaborators</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.paTrialRelatedDocs" class="menu-trial-related-documents">Trial Related Documents</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.nciInfo" class="menu-nci-info">NCI Specific Information</a></li>
+              </ul>
+          </uib-accordion-group>
+      </div>
+      <div ng-hide="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport || paMenuPanel.menuTypes.rejection">
+          <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
+              <uib-accordion-heading>
+                  <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
+              </uib-accordion-heading>
+              <ul class="nav nav-pills nav-stacked">
+                  <li><a ui-sref="main.pa.trialOverview.trialDesign" class="menu-trial-design">Trial Design</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.trialDescription" class="menu-trial-description">Trial Description</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.intervention">Interventions</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.armsGroups" class="menu-arms-groups">Arms/Groups</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.eligibilityCriteria" class="menu-eligibility-critiera">Eligibility Criteria</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.associatedTrials" class="menu-associated-trials">Associated Trials</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.disease" class="menu-disease">Diseases/Conditions</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.anatomicSites" class="menu-anatomic-sites">Data Table 4 Anatomic Sites</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.trialOutcomeMeasures" class="menu-trial-outcome-measures">Outcome Measures</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.trialSubGroups" class="menu-trial-sub-groups">Sub-Groups Stratification</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.bioMarkers" class="menu-bio-markers">Biomarkers</a></li>
+              </ul>
+          </uib-accordion-group>
+      </div>
       <div ng-show="paMenuPanel.menuTypes.abstraction">
           <!-- only show this menu in abstraction mode -->
           <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
@@ -68,7 +76,7 @@
               </ul>
           </uib-accordion-group>
       </div>
-      <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">          
+      <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">
           <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialValidOpen">
               <uib-accordion-heading>
                   <strong>Trial Validation</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialValidOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialValidOpen}"></i>
