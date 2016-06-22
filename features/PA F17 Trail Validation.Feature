@@ -1,7 +1,8 @@
 @PA @global
+
 Feature: PA F17 Trial Validation (Submission)
 
-As any CTRP PA User, I can enter Trial Validaiton (Submission) 
+As any CTRP PA User, I can enter Trial Validation (Submission) 
 
 Scenario: #1 I view menu items - Protocol Trial
 Given I have selected a trial for Trail Validation
@@ -86,7 +87,7 @@ Scenario: #6 I can view the study Primary Purpose Description for the trial on t
 Given I have selected a trial for Trail Validation 
 And I am on the Submission Validation screen
 And I the Primary Purpose is "Other"
-When the Primary Purpose Description is dispalyed 
+When the Primary Purpose Description is displayed 
 Then a description must be entered
 
 Scenario: #7 I can add and edit the Amendment Reason Code 
@@ -128,19 +129,39 @@ When select Cancel
 Then the information entered or edited for the Trail will not be saved to the trial record (rollback)
 And the screen will be refreshed with the existing data
 
-Scenario: #12 Reject Trial Validation
+Scenario: #12 Reject Trial Validation - amendment
 Given I have selected a trial for Trail Validation 
 And I am on the Submission Validation screen
 And I select Reject
-When I select a Rejection Reason from the list:
+And the submission is an amendment
+Then the warning message will be displayed "Rejecting this submission and roll back the trial to the prior submission
+And I must select a Rejection Reason from the list:
 |Out of Scope|
 |Duplicate|
 |Other|
 And I can optionally add a Rejection Reason Comment
-Then the information entered or edited for the trail will be saved to the trial record (rollback)
+Then the information entered or edited for the trail will not be saved to the trial record (rollback)
 And the trial processing status will be Rejected
 And the trial milestone Submission Rejection Date will be created with the current date and time 
 And the trail rejection e-mail will be sent to the trial submitter
+
+Scenario: #12a Reject Trial Validation - original
+Given I have selected a trial for Trail Validation 
+And I am on the Submission Validation screen
+And I select Reject
+And the submission is not an amendment
+Then the warning message will be displayed "Rejecting this submission will reject this trial"
+And I must select a Rejection Reason from the list:
+|Out of Scope|
+|Duplicate|
+|Other|
+And I can optionally add a Rejection Reason Comment
+Then the information entered or edited for the trail will not be saved to the trial record
+And the trial processing status will be Rejected
+And the trial milestone Submission Rejection Date will be created with the current date and time 
+And the trail rejection e-mail will be sent to the trial submitter
+
+
 
 Scenario: #13 Place On Hold Trial Validation
 Given I have selected a trial for Trail Validation 
@@ -154,11 +175,11 @@ Given I have selected a trial for Trail Validation
 And I am on the Submission Validation screen
 And the trial information source is
 |Protocol|
-And the trial submission number is (orginal)
+And the trial submission number is (original)
 |1|
 When I select Accept
 And any of the mandatory fields have not be entered:
-|Lead Organizaiton identifier|
+|Lead Organization identifier|
 |Official Title|
 |Phase|
 |Primary Purpose|
@@ -180,7 +201,7 @@ And the trial submission number is (Amendment)
 |>1|
 When I select Accept
 And any of the mandatory fields have not be entered:
-|Lead Organizaiton identifier|
+|Lead Organization identifier|
 |Official Title|
 |Phase|
 |Primary Purpose|
@@ -201,7 +222,7 @@ And the trial information source is
 |Imported|
 When I select Accept
 And any of the mandatory fields have not be entered:
-|Lead Organizaiton identifier|
+|Lead Organization identifier|
 |Official Title|
 |Phase|
 |Primary Purpose|
