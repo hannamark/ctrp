@@ -24,6 +24,11 @@ And the XML from ClinicalTrials.gov will be added to the trial related document
 And the trial milestone "Submission Received Date" will be added with the date of the import
 |Import Mappings are in CTRP AUM\Functional\Registration\ClinicalTrials Import Data Element Mapping v3.docx|
 
+Scenario:#2a  NLM Context will be created for an Imported trial  
+    Given I am logged into the CTRP PO Application
+     When a trial has been imported with a Sponsor Name that does not exist in the NLM Context in the CTRP
+     Then I can create an NLM Context with an NLM Context Status of Pending in CTRP
+
 
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to Import an Industrial or Other Trial
