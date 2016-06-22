@@ -1,9 +1,9 @@
 @Admin @Global  
 Feature: ADMIN F10 Site Administration - Account Approver
 
-As a CTRP User with Abstractor, Super, Admin, Account Approver privileges, I can grant Site Administrator privileges to CTRP Users
+As a CTRP User with Admin, Account Approver privileges, I can grant Site Administrator privileges to CTRP Users
 
-Scenario: #1 I can view CTRP Users with the roles: CTRP-RO, Abstractor, Super, Admin, Account Approver
+Scenario: #1 I can view CTRP Users with the roles:  Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature (User Management)
 Then I will see a list of all CTRP Users 
@@ -17,7 +17,7 @@ Then I will see a list of all CTRP Users
 |display an indicator if the CTRP Users will receive e-mails|
 |Status|
 
-Scenario: #2 I can search for CTRP Users with the roles: CTRP-RO, Abstractor, Super, Admin, Account Approver
+Scenario: #2 I can search for CTRP Users with the roles: Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature (User Management)
 And I enter search criteria as
@@ -43,7 +43,7 @@ And the list can be sorted by
 |Status|
 
 
-Scenario: #3 I can enable Site Administrative privileges for CTRP Trial Submitters with the roles: CTRP-RO, Abstractor, Super, Admin, Account Approver
+Scenario: #3 I can enable Site Administrative privileges for CTRP Trial Submitters with the roles: Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature
 And I will see a list of all CTRP Users 
@@ -54,7 +54,7 @@ And I can change the privileges for the CTRP User to
 And the CTRP User will be able to access the Administrative features in CTRP
 And an e-mail will be sent to the user (Admin Access e-mail)
 
-Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: CTRP-RO, Abstractor, Super, Admin, Account Approver
+Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature
 And I will see a list of all CTRP Users with the same Site Affiliation as I have 
