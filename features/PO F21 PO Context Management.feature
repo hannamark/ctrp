@@ -255,6 +255,21 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |CTEP Context ID|
       |CTEP Context Status|
       
+        Scenario:#9a CTEP Person Context Mandatory Fields 
+    Given I am logged into the CTRP PO application
+     When CTEP Context of a person record is created
+     Then the person record fields type are mandatory
+
+      |CTEP Person ID|
+      |CTEP Person Registration Type|
+      |CTEP Person Registration Status|
+      |First Name|
+      |Last Name|
+      |Person Status|
+      |Affiliated Organization CTEP ID|
+      
+
+      
 Scenario: #10 As a PO Curator, I can search a NEW person record to associate it with a person in the CTEP Context
     Given Given I am logged into the CTRP PO application
     And I am on the Search Persons Screen
@@ -281,6 +296,18 @@ Scenario: #10 As a PO Curator, I can search a NEW person record to associate it 
     When the viewed CTEP Person exists in CTRP
     Then A CTRP Curator associates an existing CTRP Person record with the CTEP Context
     And The CTEP Context Status is changed from Pending to Active
+    
+    Scenario:#10a CTRP Person Context Mandatory Fields 
+    Given I am logged into the CTRP PO application
+     When CTRP Context of a person record is created
+     Then the person record fields type are mandatory
+     
+      |CTRP Person ID|
+      |CTRP Person Status|
+      |First Name|
+      |Last Name|
+      |Person Status|
+      |Affiliated Organization CTRP ID|
     
      Scenario: #11 Rules for CTRP Organization Status based on CTEP Organization Status
     Given I am logged into the CTRP PO application
