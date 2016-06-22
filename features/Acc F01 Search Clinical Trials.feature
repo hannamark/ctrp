@@ -1,6 +1,6 @@
 @Acc @global
 
-Feature: Acc F01 Search Clinical Trials
+Feature: Acc F01 Search Clinical Trials 
 As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrual Application 
 
     Scenario: # I can submit Accrual Data
