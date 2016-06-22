@@ -21,20 +21,15 @@
 
             function linkerFn(scope, element, attrs) {
                 var formName = attrs.name;
-                scope.controller = attrs.ucController ? attrs.ucController : null;
 
                 window.onbeforeunload = function(event) {
-                    var arrayChanged = scope.controller && scope[scope.controller].arraysChanged ? scope[scope.controller].arraysChanged : false;
-
-                    if (scope[formName].$dirty || arrayChanged) {
+                    if (scope[formName].$dirty) {
                         return 'Are you sure you want to leave this page? You may have unsaved changes.';
                     }
                 };
 
                 scope.$on('$stateChangeStart', function(event) {
-                    var arrayChanged = scope.controller && scope[scope.controller].arraysChanged ? scope[scope.controller].arraysChanged : false;
-
-                    if ((arrayChanged || scope[formName].$dirty) && !scope[formName].$submitted) {
+                    if (scope[formName].$dirty && !scope[formName].$submitted) {
                         if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
                             event.preventDefault();
                         }
