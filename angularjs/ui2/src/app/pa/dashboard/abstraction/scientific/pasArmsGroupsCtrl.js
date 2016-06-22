@@ -158,10 +158,10 @@
 
                 if (status >= 200 && status <= 210) {
                     vm.curTrial.lock_version = response.lock_version || '';
-                    $scope.$emit('updatedInChildScope', {});
                     vm.curTrial = response;
                     vm.curTrial.arms_groups_attributes=[];
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
                     //if(vm.currentArmsGroup.new){
                         vm.currentArmsGroup.new =false;
                         vm.addEditMode = false;
