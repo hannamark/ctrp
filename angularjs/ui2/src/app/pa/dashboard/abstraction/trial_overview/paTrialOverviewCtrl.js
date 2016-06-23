@@ -276,6 +276,15 @@
             });
             var updatedPAMenuTypes;
             var curMilestoneCode = milestones.length > 0 ? milestones[milestones.length - 1].code : ''; // get the current mile stone code
+            // if current milestone code is 'SRE', use the latest milestone prior to 'STR'
+            if (curMilestoneCode === 'SRE') {
+                var altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'STR'});
+                if (altCurMilestoneIndex > 0) {
+                    altCurMilestoneIndex -= 1;
+                    curMilestoneCode = milestones[altCurMilestoneIndex].code;
+                }
+            }
+
             if (MILESTONE_CODES_FOR_VALIDATION.indexOf(curMilestoneCode) > -1) {
                 if (informationSourceCode === 'IMP') {
                     updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'trialValidImport');
