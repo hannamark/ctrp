@@ -22,7 +22,6 @@
         var vm = this;
         var curUserRole = UserService.getUserRole() || '';
         var researchCats = researchCategories;
-        console.info('curTrial: ', curTrial);
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = curTrial;
@@ -271,7 +270,6 @@
          */
         function _checkMilestoneCode(trialDetailObj) {
             var informationSourceCode = trialDetailObj.internal_source.code;
-            console.info('milestone_wrappers: ', trialDetailObj.milestone_wrappers);
             var milestones = _.map(trialDetailObj.milestone_wrappers, function(msObj) {
                 msObj.milestone.submission_id = msObj.submission.id; // move attribute one-level up
                 msObj.milestone.submission_num = parseInt(msObj.submission.submission_num); // move one-level up
@@ -280,7 +278,6 @@
             });
             var updatedPAMenuTypes;
             var curMilestone = milestones.length > 0 ? milestones[milestones.length - 1] : null;
-            console.info('curMilestone submission id: ', curMilestone.submission_id);
             var curMilestoneCode = !!curMilestone ? curMilestone.code : ''; // get the current mile stone code
             var altCurMilestoneIndex = -1;
             // if current milestone code is 'SRE', use the latest milestone prior to 'STR'
