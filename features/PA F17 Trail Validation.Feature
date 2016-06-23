@@ -113,14 +113,26 @@ And I am on the Submission Validation screen
 When select save 
 Then the information entered or edited for the trail will be saved to the trial record
 
-Scenario: #10 Accept Trial Validation
+Scenario: #10 Accept Trial Validation - Origional
 Given I have selected a trial for Trail Validation 
 And I am on the Submission Validation screen
 When select Accept
+And the submission is not an amendment
 Then the information entered or edited for the trail will be saved to the trial record
 And the trial processing status will be Accepted 
-And the trail acceptance e-mail will be sent to the trial submitter
+And the "Submission Accepted Trial" e-mail will be sent to the trial submitter
 Then the trial milestone "Submission Accepted Date" will be created with the current date and time 
+
+Scenario: #10a Accept Trial Validation - Amendment
+Given I have selected a trial for Trail Validation 
+And I am on the Submission Validation screen
+When select Accept
+And the submission is an amendment
+Then the information entered or edited for the trail will be saved to the trial record
+And the trial processing status will be Accepted 
+And the "Amendment Submission Accepted" e-mail will be sent to the trial submitter
+Then the trial milestone "Submission Accepted Date" will be created with the current date and time
+
 
 Scenario: #11 Cancel Trial Validation 
 Given I have selected a trial for Trail Validation 
@@ -143,7 +155,7 @@ And I can optionally add a Rejection Reason Comment
 Then the information entered or edited for the trail will not be saved to the trial record (rollback)
 And the trial processing status will be Rejected
 And the trial milestone Submission Rejection Date will be created with the current date and time 
-And the trail rejection e-mail will be sent to the trial submitter
+And the "Amendment Submission Rejected" e-mail will be sent to the trial submitter
 
 Scenario: #12a Reject Trial Validation - original
 Given I have selected a trial for Trail Validation 
@@ -159,7 +171,7 @@ And I can optionally add a Rejection Reason Comment
 Then the information entered or edited for the trail will not be saved to the trial record
 And the trial processing status will be Rejected
 And the trial milestone Submission Rejection Date will be created with the current date and time 
-And the trail rejection e-mail will be sent to the trial submitter
+And the "Submission Rejected Trial" e-mail will be sent to the trial submitter
 
 
 
