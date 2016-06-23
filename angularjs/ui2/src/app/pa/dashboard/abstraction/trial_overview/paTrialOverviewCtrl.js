@@ -58,7 +58,7 @@
         // milestone codes that trigger validation menus
         var MILESTONE_CODES_FOR_VALIDATION = ['SRD', 'VPS', 'VPC']; // "Submission Received Date" , "Validation Processing Start Date" or "Validation Processing Completed Date"
         // milestone code that triggers rejection menus
-        var MILESTONE_CODES_FOR_REJECTION = ['LRD'];
+        var MILESTONE_CODES_FOR_REJECTION = ['LRD'， 'STR'];
         // mile stone codes that DO not trigger abstraction menus
         var MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT = MILESTONE_CODES_FOR_REJECTION.concat(MILESTONE_CODES_FOR_VALIDATION); // Late Rejection Date and VALIDATION codes
 
@@ -282,7 +282,7 @@
                 } else if (informationSourceCode === 'PRO') {
                     updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'trialValidProtocol');
                 }
-            } else if (MILESTONE_CODES_FOR_REJECTION.indexOf(curMilestoneCode) > -1) {
+            } else if (MILESTONE_CODES_FOR_REJECTION.indexOf(curMilestoneCode) > -1 && informationSourceCode === 'PRO') {
                 updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'rejection');
             } else if (MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT.indexOf(curMilestoneCode) === -1) {
                 updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'abstraction');
