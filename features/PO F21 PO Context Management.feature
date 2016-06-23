@@ -135,7 +135,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
     
   
- Scenario: #3  CTRP Organization information gets updated with the New information received from CTEP
+ Scenario: #4  CTRP Organization information gets updated with the New information received from CTEP
     Given I am on the Search Organizations Screen
     When CTEP updated organization information is sent to CTRP via Restful service
     Then CTEP Context will be updated automatically with the new information received from the Restful service
@@ -144,7 +144,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     When the CTEP Organization Status is inactive
     Then the CTRP Context won't be automatically updated
  
-   Scenario: #4 As a CTRP PO Curator I can approve or deny a request for a new organization in CTRP 
+   Scenario: #5 As a CTRP PO Curator I can approve or deny a request for a new organization in CTRP 
     Given I am logged into the CTRP PO Application 
      And I have received a request to create a new organization in CTRP
      When I have searched existing organizations in CTRP
@@ -155,7 +155,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And I can send the CTRP Organization context to the CTEP-ECM 
     
     
-    Scenario:#5 CTRP links CTEP created organization record based on a new organization created in CTRP
+    Scenario:#6 CTRP links CTEP created organization record based on a new organization created in CTRP
     Given I am logged into the CTRP PO Application
     When CTEP creates an organization based on a new organization created in CTRP
     Then CTEP sends organization records to CTRP via Restful Services
@@ -183,7 +183,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
    Then a CTEP Context for the received organization is created and automatically linked to the CTRP Context
 
      
-       Scenario:#6 I can search a NLM Organization associated with an Organization in the CTRP Context 
+       Scenario:#7 I can search a NLM Organization associated with an Organization in the CTRP Context 
     Given I am logged into the CTRP PO Application 
     And And I am on the Search Organizations Screen
     When I select Source status as pending
@@ -221,13 +221,13 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     Then the CTRP Curator associates an existing CTRP Organization with the NLM Context
     And The NLM Context Status is changed from Pending to Active
 
-  Scenario:#7 Curator will be notified when two organizations are to be merged 
+  Scenario:#8 Curator will be notified when two organizations are to be merged 
     Given I am logged into the CTRP PO Application 
      When CTEP Indicates via REST Service that two Organizations are to be merged
      And CTEP identifies one Organization will be Active and Another Organization will be Inactive as the result of a merger
      Then the pending CTRP Nullification event will be added to the curator work queue (New Functionality to dicuss)
       
-       Scenario: #8 I can Nullify the Inactive Organization 
+       Scenario: #9 I can Nullify the Inactive Organization 
     Given I am logged into the CTRP PO Application
      When A curator is notified that a CTEP Organization merger is pending
     Then The curator will select the CTRP organization associated with the CTEP Inactive organization to be nullified
@@ -235,7 +235,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
     
 
-	Scenario:#9 CTEP Context of a new person record created
+	Scenario:#10 CTEP Context of a new person record created
     Given I am logged into the CTRP PO application
     When CTRP receives newly created CTEP person record through Restful Services
     Then a new person record will be created in the CTEP Context with CTEP Context Status of pending in CTRP with information type
@@ -255,7 +255,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |CTEP Context ID|
       |CTEP Context Status|
       
-        Scenario:#9a CTEP Person Context Mandatory Fields 
+        Scenario:#10a CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP PO application
      When CTEP Context of a person record is created
      Then the person record fields type are mandatory
@@ -270,7 +270,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       
 
       
-Scenario: #10 As a PO Curator, I can search a NEW person record to associate it with a person in the CTEP Context
+Scenario: #11 As a PO Curator, I can search a NEW person record to associate it with a person in the CTEP Context
     Given Given I am logged into the CTRP PO application
     And I am on the Search Persons Screen
     When I select Source status as pending
@@ -297,7 +297,7 @@ Scenario: #10 As a PO Curator, I can search a NEW person record to associate it 
     Then A CTRP Curator associates an existing CTRP Person record with the CTEP Context
     And The CTEP Context Status is changed from Pending to Active
     
-    Scenario:#10a CTRP Person Context Mandatory Fields 
+    Scenario:#12 CTRP Person Context Mandatory Fields 
     Given I am logged into the CTRP PO application
      When CTRP Context of a person record is created
      Then the person record fields type are mandatory
@@ -309,14 +309,14 @@ Scenario: #10 As a PO Curator, I can search a NEW person record to associate it 
       |Person Status|
       |Affiliated Organization CTRP ID|
     
-     Scenario: #11 Rules for CTRP Organization Status based on CTEP Organization Status
+     Scenario: #13 Rules for CTRP Organization Status based on CTEP Organization Status
     Given I am logged into the CTRP PO application
      When the Organization CTEP context status is Active
      Then the Organization CTRP context status must be active  
      When the Organization CTEP context status is Inactive
      Then the CTRP context can be Inactive OR Nullified
      
-      Scenario: #12 I can Nullify a Duplicate Person record in CTRP
+      Scenario: #14 I can Nullify a Duplicate Person record in CTRP
      Given I am logged into the CTRP PO application
      And I am on the CTRP PO Curator Review screen
      When I have been notified of a CTEP Duplicate Person Record (Curator work Queue)
