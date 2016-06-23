@@ -1,7 +1,7 @@
 @Admin @Global 
 Feature: ADMIN F09 Manage User Account - Account Approver
 
-As someone with a CTRP Account Approver, Super Abstractor, Admin access, I can manage all accounts
+As someone with a CTRP Account Approver, Admin roles, I can manage all accounts
 
 Scenario: #1 I can view all CTRP Users 
 Given I am logged into CTRP 
@@ -24,9 +24,9 @@ And I have Account Approver privileges
 When I select the Site Administation feature
 And I enter search criteria as
 |Username|
-| Last Name |
-| First Name |
-| Email |
+|Last Name |
+|First Name |
+|Email |
 |Organization|
 |Family|
 |Site Admin Privilege|
@@ -56,19 +56,19 @@ Scenario: #3 I can enter or update account information
 Given I am logged into CTRP
 And I have selectd a CTRP User 
 When I enter or edit information in the following required fields
-| Email Address |
-| First Name |
-| Last Name |
-| Phone Number |
+|Email Address |
+|First Name |
+|Last Name |
+|Phone Number |
 And I select the following required information
-| Organizational Affiliation |
+|Organizational Affiliation |
 |Username|
 |Domain|
 |Status|
 |Role|
 And I enter the folowing option fields
-| Middle Initial |
-| PRS Organization Name |
+|Middle Initial |
+|PRS Organization Name |
 And I select to either receive or not receive email notifications
 And I select the Save option
 Then the account information will be updated in CTRP

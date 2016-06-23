@@ -24,7 +24,7 @@ And the current milestone is
 |Initial Abstraction Verified Date|
 |On-going Abstraction Verified Date|
 Then the sidebar menu will be displayed expanded:
-|Trial Abstraction - <Current Trial ID>|
+|NCI Trial ID: <Current Trial ID>|
 |Trial Overview (Section)|
 |Trial Identification|
 |Trial History|
@@ -65,7 +65,7 @@ Given I am logged into the CTRP application
 And I have selected a trial
 And I have selected the unexpand arrow on the Trial Abstraction menu item
 Then the sidebar menu will collapse displayed the section headers:
-|Trial Abstraction - <Current Trial ID>|
+|NCI Trial ID: <Current Trial ID>|
 |Trial Overview|
 |Administrative Data|
 |Scientific Data|
@@ -77,7 +77,7 @@ And I have selected a trial
 And the side bar is collapsed
 And I have selected the expand arrow on the Trial Abstraction menu item
 Then the sidebar menu will be fully expanded collapse displayed the section headers:
-|Trial Abstraction - <Current Trial ID>|
+|NCI Trial ID: <Current Trial ID>|
 |Trial Overview|
 |Administrative Data|
 |Scientific Data|
@@ -89,7 +89,7 @@ And I have selected a trial to abstract
 And the side bar is collapsed
 And I have selected the expand arrow on the the side bar section
 Then that sidebar menu section will be expanded"
-|Trial Abstraction - <Current Trial ID>|
+|NCI Trial ID: <Current Trial ID>|
 |Trial Overview|
 |Administrative Data|
 |Scientific Data|
@@ -105,7 +105,7 @@ And the current milestone is
 And the trial information source is
 |Imported|
 Then the sidebar menu will be displayed expanded:
-|Trial Validation - <Current Trial ID>|
+|NCI Trial ID: <Current Trial ID>|
 |Trial Overview (Section)|
 |Trial History|
 |Trial Milestones|
@@ -130,7 +130,7 @@ And the current milestone is
 And the trial information source is
 |Protocol|
 Then the sidebar menu will be displayed expanded:
-|Trial Validation - <Current Trial ID>|
+|NCI Trial ID: <Current Trial ID>|
 |Trial Overview (Section)|
 |Trial History|
 |Trial Milestones|
@@ -158,7 +158,7 @@ And the current milestone is
 And the trial information source is
 |Protocol|
 Then the sidebar menu will be displayed expanded:
-|Trial Validation - <Current Trial ID>|
+|NCI Trial ID: <Current Trial ID>|
 |Trial Overview (Section)|
 |Trial History|
 |Trial Milestones|

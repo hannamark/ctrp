@@ -21,7 +21,7 @@
         </div>
 
         <div class="row">
-            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
+            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()" unsaved-changes>
                 <uib-accordion close-others="false">
                     <uib-accordion-group ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
                         <uib-accordion-heading>

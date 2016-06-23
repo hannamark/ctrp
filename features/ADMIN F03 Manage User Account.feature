@@ -31,20 +31,15 @@ And I can view the following fields for my account
 And I select the Save option
 Then my account information will be updated in CTRP
 
-Scenario: #2 I can request Administrative Access privileges
-Given I am logged into CTRP
-And I select the option to update my user account information in CTRP
-And I select the option to request Admin Access
-And the system will send an email to the site Admin(s) for the organization family for the organization that is selected for my account
 
-Scenario: #3 Admin Access for change in an organization in Family
+Scenario: #3 Admin Access for change to an organization in Family
 Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
 And I select or change my Organizational Affiliation
 And the selected organiziton is in my organization Family
 Then the new organization will be affilliated to my account
 
-Scenario: #4 Admin Access for change in an organization not in my Family
+Scenario: #4 Admin Access for change to an organization not in my Family
 Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
 And I select or change my Organizational Affiliation
@@ -52,16 +47,16 @@ And the selected organiziton is not my organization Family
 Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
-And the system will send an email to the site Admin(s) for the organization family for the organization that is selected for my account
+And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family
 
-Scenario: #5 Admin Access for change in an organization 
+Scenario: #5 Admin Access for change to a different organization not associated with a family 
 Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
 And I select or change my Organizational Affiliation
 Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
-And the system will send an email to the site Admin(s) for the organization family for the organization that is selected for my account
+And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family
 
 Scenario: #6 I can view a users Trials
 Given I am logged into CTRP
@@ -292,7 +287,7 @@ And I can export the list of owned trials to Excel including the following field
 |Checked Out for Admin. Use by|
 |Checked Out for Scientific Use by|
 
-Scenario: #10 I can view the trial details - Site Admin and Site User 
+Scenario: #10 I can view the trial details - Site User (Site Admin and Site User) 
 Given I am logged into CTRP
 And I select the User from the list
 Then the user's profile will be displayed

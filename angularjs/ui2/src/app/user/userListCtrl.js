@@ -89,10 +89,9 @@
             displayName: 'Username',
             minWidth: '100',
             width: '*',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                ' title="{{COL_FIELD}}">' +
-                ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
         var firstName = {

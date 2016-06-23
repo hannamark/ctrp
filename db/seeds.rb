@@ -10,7 +10,7 @@ require 'roo'
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #Remove Data
-#DataImport.delete_trial_data
+#.delete_trial_data
 #NameAlias.delete_all
 #Organization.delete_all
 #Person.delete_all
@@ -22,196 +22,196 @@ puts "Begin seeding"
 
 puts "Seeding static members"
 
-SourceContext.find_or_create_by(code: 'CTEP', name: 'CTEP')
-SourceContext.find_or_create_by(code: 'CTRP', name: 'CTRP')
-SourceContext.find_or_create_by(code: 'NLM', name: 'NLM')
+SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
+SourceContext.find_or_create_by(code: 'CTRP').update( name: 'CTRP')
+SourceContext.find_or_create_by(code: 'NLM').update( name: 'NLM')
 
-SourceStatus.find_or_create_by(code: 'ACT', name: 'Active')
-SourceStatus.find_or_create_by(code: 'PEND', name: 'Pending')
-SourceStatus.find_or_create_by(code: 'INACT', name: 'InActive')
-SourceStatus.find_or_create_by(code: 'NULLIFIED', name: 'Nullified')
+SourceStatus.find_or_create_by(code: 'ACT').update( name: 'Active')
+SourceStatus.find_or_create_by(code: 'PEND').update( name: 'Pending')
+SourceStatus.find_or_create_by(code: 'INACT').update( name: 'InActive')
+SourceStatus.find_or_create_by(code: 'NULLIFIED').update( name: 'Nullified')
 
-FamilyRelationship.find_or_create_by(code: 'ORG', name: 'Organizational')
-FamilyRelationship.find_or_create_by(code: 'AFF', name: 'Affiliation')
+FamilyRelationship.find_or_create_by(code: 'ORG').update( name: 'Organizational')
+FamilyRelationship.find_or_create_by(code: 'AFF').update( name: 'Affiliation')
 
-InternalSource.find_or_create_by(code: 'IMP', name: 'Import')
-InternalSource.find_or_create_by(code: 'PRO', name: 'Protocol')
+InternalSource.find_or_create_by(code: 'IMP').update( name: 'Import')
+InternalSource.find_or_create_by(code: 'PRO').update( name: 'Protocol')
 
 #family_statuses
-FamilyStatus.find_or_create_by(code:'ACTIVE',name:'Active')
-FamilyStatus.find_or_create_by(code:'INACTIVE',name:'Inactive')
+FamilyStatus.find_or_create_by(code:'ACTIVE').update(name:'Active')
+FamilyStatus.find_or_create_by(code:'INACTIVE').update(name:'Inactive')
 
 #family_types
-FamilyType.find_or_create_by(code:'CANCERCENTER',name:'Cancer Center')
-FamilyType.find_or_create_by(code:'NCTN',name:'NCTN')
-FamilyType.find_or_create_by(code:'NIH',name:'NIH')
-FamilyType.find_or_create_by(code:'RESEARCHCENTER',name:'Research Cancer Center')
+FamilyType.find_or_create_by(code:'CANCERCENTER').update(name:'Cancer Center')
+FamilyType.find_or_create_by(code:'NCTN').update(name:'NCTN')
+FamilyType.find_or_create_by(code:'NIH').update(name:'NIH')
+FamilyType.find_or_create_by(code:'RESEARCHCENTER').update(name:'Research Cancer Center')
 
-StudySource.find_or_create_by(code: 'NAT', name: 'National')
-StudySource.find_or_create_by(code: 'EPR', name: 'Externally Peer-Reviewed')
-StudySource.find_or_create_by(code: 'INS', name: 'Institutional')
-StudySource.find_or_create_by(code: 'IND', name: 'Industrial')
-StudySource.find_or_create_by(code: 'OTH', name: 'Other')
+StudySource.find_or_create_by(code: 'NAT').update(name: 'National')
+StudySource.find_or_create_by(code: 'EPR').update(name: 'Externally Peer-Reviewed')
+StudySource.find_or_create_by(code: 'INS').update(name: 'Institutional')
+StudySource.find_or_create_by(code: 'IND').update(name: 'Industrial')
+StudySource.find_or_create_by(code: 'OTH').update(name: 'Other')
 
-Phase.find_or_create_by(code: '0', name: '0')
-Phase.find_or_create_by(code: 'I', name: 'I')
-Phase.find_or_create_by(code: 'I/II', name: 'I/II')
-Phase.find_or_create_by(code: 'II', name: 'II')
-Phase.find_or_create_by(code: 'II/III', name: 'II/III')
-Phase.find_or_create_by(code: 'III', name: 'III')
-Phase.find_or_create_by(code: 'IV', name: 'IV')
-Phase.find_or_create_by(code: 'NA', name: 'NA')
+Phase.find_or_create_by(code: '0').update( name: '0')
+Phase.find_or_create_by(code: 'I').update( name: 'I')
+Phase.find_or_create_by(code: 'I/II').update( name: 'I/II')
+Phase.find_or_create_by(code: 'II').update(name: 'II')
+Phase.find_or_create_by(code: 'II/III').update( name: 'II/III')
+Phase.find_or_create_by(code: 'III').update( name: 'III')
+Phase.find_or_create_by(code: 'IV').update(name: 'IV')
+Phase.find_or_create_by(code: 'NA').update(name: 'NA')
 
-PrimaryPurpose.find_or_create_by(code: 'TRM', name: 'Treatment')
-PrimaryPurpose.find_or_create_by(code: 'PRV', name: 'Prevention')
-PrimaryPurpose.find_or_create_by(code: 'SUP', name: 'Supportive Care')
-PrimaryPurpose.find_or_create_by(code: 'SCR', name: 'Screening')
-PrimaryPurpose.find_or_create_by(code: 'DIA', name: 'Diagnostic')
-PrimaryPurpose.find_or_create_by(code: 'HSR', name: 'Health Services Research')
-PrimaryPurpose.find_or_create_by(code: 'BSC', name: 'Basic Science')
-PrimaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
+PrimaryPurpose.find_or_create_by(code: 'TRM').update(name: 'Treatment')
+PrimaryPurpose.find_or_create_by(code: 'PRV').update(name: 'Prevention')
+PrimaryPurpose.find_or_create_by(code: 'SUP').update(name: 'Supportive Care')
+PrimaryPurpose.find_or_create_by(code: 'SCR').update(name: 'Screening')
+PrimaryPurpose.find_or_create_by(code: 'DIA').update(name: 'Diagnostic')
+PrimaryPurpose.find_or_create_by(code: 'HSR').update(name: 'Health Services Research')
+PrimaryPurpose.find_or_create_by(code: 'BSC').update(name: 'Basic Science')
+PrimaryPurpose.find_or_create_by(code: 'OTH').update(name: 'Other')
 
-TimePerspective.find_or_create_by(code: 'PRO', name: 'Prospective')
-TimePerspective.find_or_create_by(code: 'RET', name: 'Retrospective')
-TimePerspective.find_or_create_by(code: 'CRO', name: 'Cross sectional')
-TimePerspective.find_or_create_by(code: 'OTH', name: 'Other')
+TimePerspective.find_or_create_by(code: 'PRO').update(name: 'Prospective')
+TimePerspective.find_or_create_by(code: 'RET').update(name: 'Retrospective')
+TimePerspective.find_or_create_by(code: 'CRO').update(name: 'Cross sectional')
+TimePerspective.find_or_create_by(code: 'OTH').update(name: 'Other')
 
-BiospecimenRetention.find_or_create_by(code: 'NONE', name: 'None Retained')
-BiospecimenRetention.find_or_create_by(code: 'SDNA', name: 'Samples With DNA')
-BiospecimenRetention.find_or_create_by(code: 'SNODNA', name: 'Samples Without DNA')
+BiospecimenRetention.find_or_create_by(code: 'NONE').update(name: 'None Retained')
+BiospecimenRetention.find_or_create_by(code: 'SDNA').update(name: 'Samples With DNA')
+BiospecimenRetention.find_or_create_by(code: 'SNODNA').update(name: 'Samples Without DNA')
 
-SecondaryPurpose.find_or_create_by(code: 'ANC', name: 'Ancillary-Correlative')
-SecondaryPurpose.find_or_create_by(code: 'OTH', name: 'Other')
+SecondaryPurpose.find_or_create_by(code: 'ANC').update(name: 'Ancillary-Correlative')
+SecondaryPurpose.find_or_create_by(code: 'OTH').update(name: 'Other')
 
-AccrualDiseaseTerm.find_or_create_by(code: 'SDC', name: 'SDC')
-AccrualDiseaseTerm.find_or_create_by(code: 'ICD9', name: 'ICD9')
-AccrualDiseaseTerm.find_or_create_by(code: 'ICD10', name: 'ICD10')
-AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3', name: 'ICD-O-3')
+AccrualDiseaseTerm.find_or_create_by(code: 'SDC').update(name: 'SDC')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD9').update(name: 'ICD9')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD10').update(name: 'ICD10')
+AccrualDiseaseTerm.find_or_create_by(code: 'ICD-O-3').update(name: 'ICD-O-3')
 
-ResponsibleParty.find_or_create_by(code: 'SPONSOR', name: 'Sponsor')
-ResponsibleParty.find_or_create_by(code: 'PI', name: 'Principal Investigator')
-ResponsibleParty.find_or_create_by(code: 'SI', name: 'Sponsor-Investigator')
+ResponsibleParty.find_or_create_by(code: 'SPONSOR').update(name: 'Sponsor')
+ResponsibleParty.find_or_create_by(code: 'PI').update(name: 'Principal Investigator')
+ResponsibleParty.find_or_create_by(code: 'SI').update(name: 'Sponsor-Investigator')
 
-ProtocolIdOrigin.find_or_create_by(code: 'NCT', name: 'ClinicalTrials.gov Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CTEP', name: 'CTEP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DCP', name: 'DCP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CCR', name: 'CCR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CDR', name: 'CDR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DNCI', name: 'Duplicate NCI Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'ONCT', name: 'Obsolete ClinicalTrials.gov Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'OTH', name: 'Other Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'CDR').update(name: 'CDR Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'DNCI').update(name: 'Duplicate NCI Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'ONCT').update(name: 'Obsolete ClinicalTrials.gov Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'OTH').update(name: 'Other Identifier')
 
-HolderType.find_or_create_by(code: 'INV', name: 'Investigator')
-HolderType.find_or_create_by(code: 'ORG', name: 'Organization')
-HolderType.find_or_create_by(code: 'IND', name: 'Industry')
-HolderType.find_or_create_by(code: 'NIH', name: 'NIH')
-HolderType.find_or_create_by(code: 'NCI', name: 'NCI')
+HolderType.find_or_create_by(code: 'INV').update(name: 'Investigator')
+HolderType.find_or_create_by(code: 'ORG').update(name: 'Organization')
+HolderType.find_or_create_by(code: 'IND').update(name: 'Industry')
+HolderType.find_or_create_by(code: 'NIH').update(name: 'NIH')
+HolderType.find_or_create_by(code: 'NCI').update(name: 'NCI')
 
-TrialStatus.find_or_create_by(code: 'INR', name: 'In Review', explanation: 'The trial is in development and waiting for final approval')
-TrialStatus.find_or_create_by(code: 'APP', name: 'Approved', explanation: 'Trial has been approved')
-TrialStatus.find_or_create_by(code: 'ACT', name: 'Active', explanation: 'The trial is open for Accrual')
-TrialStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation', explanation: '')
-TrialStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual', explanation: 'Trial has been closed to participant accrual. Participants are still receiving treatment/intervention')
-TrialStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention', explanation: 'Trial is temporarily not accruing. Participants are not receiving intervention')
-TrialStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual', explanation: 'Trial is temporarily not accruing')
-TrialStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention', explanation: 'Trial has been closed to participant accrual. No participants are receiving treatment/intervention, but participants are still being followed according to the primary objectives of the study')
-TrialStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn', explanation: 'Trial has been withdrawn from development and review')
-TrialStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete', explanation: 'Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)')
-TrialStatus.find_or_create_by(code: 'COM', name: 'Complete', explanation: 'Trial has been closed to accrual; participants have completed treatment/intervention, and the study has met its primary objectives')
-TrialStatus.find_or_create_by(code: 'AVA', name: 'Available', explanation: 'Currently available for this treatment')
-TrialStatus.find_or_create_by(code: 'NLA', name: 'No longer available', explanation: 'Was available for this treatment previously but is not currently available and will not be available in the future')
-TrialStatus.find_or_create_by(code: 'TNA', name: 'Temporarily not available', explanation: 'Not currently available for this treatment, but is expected to be available in the future')
-TrialStatus.find_or_create_by(code: 'AFM', name: 'Approved for marketing', explanation: 'Treatment has been approved for sale to the public')
+TrialStatus.find_or_create_by(code: 'INR').update(name: 'In Review', explanation: 'The trial is in development and waiting for final approval')
+TrialStatus.find_or_create_by(code: 'APP').update(name: 'Approved', explanation: 'Trial has been approved')
+TrialStatus.find_or_create_by(code: 'ACT').update(name: 'Active', explanation: 'The trial is open for Accrual')
+TrialStatus.find_or_create_by(code: 'EBI').update(name: 'Enrolling by Invitation', explanation: '')
+TrialStatus.find_or_create_by(code: 'CAC').update(name: 'Closed to Accrual', explanation: 'Trial has been closed to participant accrual. Participants are still receiving treatment/intervention')
+TrialStatus.find_or_create_by(code: 'CAI').update(name: 'Closed to Accrual and Intervention', explanation: 'Trial is temporarily not accruing. Participants are not receiving intervention')
+TrialStatus.find_or_create_by(code: 'TCL').update(name: 'Temporarily Closed to Accrual', explanation: 'Trial is temporarily not accruing')
+TrialStatus.find_or_create_by(code: 'TCA').update(name: 'Temporarily Closed to Accrual and Intervention', explanation: 'Trial has been closed to participant accrual. No participants are receiving treatment/intervention, but participants are still being followed according to the primary objectives of the study')
+TrialStatus.find_or_create_by(code: 'WIT').update(name: 'Withdrawn', explanation: 'Trial has been withdrawn from development and review')
+TrialStatus.find_or_create_by(code: 'ACO').update(name: 'Administratively Complete', explanation: 'Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)')
+TrialStatus.find_or_create_by(code: 'COM').update(name: 'Complete', explanation: 'Trial has been closed to accrual; participants have completed treatment/intervention, and the study has met its primary objectives')
+TrialStatus.find_or_create_by(code: 'AVA').update(name: 'Available', explanation: 'Currently available for this treatment')
+TrialStatus.find_or_create_by(code: 'NLA').update(name: 'No longer available', explanation: 'Was available for this treatment previously but is not currently available and will not be available in the future')
+TrialStatus.find_or_create_by(code: 'TNA').update(name: 'Temporarily not available', explanation: 'Not currently available for this treatment, but is expected to be available in the future')
+TrialStatus.find_or_create_by(code: 'AFM').update(name: 'Approved for marketing', explanation: 'Treatment has been approved for sale to the public')
 
-ResearchCategory.find_or_create_by(code: 'INT', name: 'Interventional')
-ResearchCategory.find_or_create_by(code: 'OBS', name: 'Observational')
-ResearchCategory.find_or_create_by(code: 'EXP', name: 'Expanded Access')
-ResearchCategory.find_or_create_by(code: 'ANC', name: 'Ancillary Correlative')
+ResearchCategory.find_or_create_by(code: 'INT').update(name: 'Interventional')
+ResearchCategory.find_or_create_by(code: 'OBS').update(name: 'Observational')
+ResearchCategory.find_or_create_by(code: 'EXP').update(name: 'Expanded Access')
+ResearchCategory.find_or_create_by(code: 'ANC').update(name: 'Ancillary Correlative')
 
-ProcessingStatus.find_or_create_by(code: 'SUB', name: 'Submitted')
-ProcessingStatus.find_or_create_by(code: 'STM', name: 'Submission Terminated')
-ProcessingStatus.find_or_create_by(code: 'SRE', name: 'Submission Reactivated')
-ProcessingStatus.find_or_create_by(code: 'AMS', name: 'Amendment Submitted')
-ProcessingStatus.find_or_create_by(code: 'ACC', name: 'Accepted')
-ProcessingStatus.find_or_create_by(code: 'REJ', name: 'Rejected')
-ProcessingStatus.find_or_create_by(code: 'ABS', name: 'Abstracted')
-ProcessingStatus.find_or_create_by(code: 'VFP', name: 'Verification Pending')
-ProcessingStatus.find_or_create_by(code: 'AVR', name: 'Abstraction Verified Response')
-ProcessingStatus.find_or_create_by(code: 'VNR', name: 'Abstraction Verified No Response')
-ProcessingStatus.find_or_create_by(code: 'OHD', name: 'On-Hold')
+ProcessingStatus.find_or_create_by(code: 'SUB').update(name: 'Submitted')
+ProcessingStatus.find_or_create_by(code: 'STM').update(name: 'Submission Terminated')
+ProcessingStatus.find_or_create_by(code: 'SRE').update(name: 'Submission Reactivated')
+ProcessingStatus.find_or_create_by(code: 'AMS').update(name: 'Amendment Submitted')
+ProcessingStatus.find_or_create_by(code: 'ACC').update(name: 'Accepted')
+ProcessingStatus.find_or_create_by(code: 'REJ').update(name: 'Rejected')
+ProcessingStatus.find_or_create_by(code: 'ABS').update(name: 'Abstracted')
+ProcessingStatus.find_or_create_by(code: 'VFP').update(name: 'Verification Pending')
+ProcessingStatus.find_or_create_by(code: 'AVR').update(name: 'Abstraction Verified Response')
+ProcessingStatus.find_or_create_by(code: 'VNR').update(name: 'Abstraction Verified No Response')
+ProcessingStatus.find_or_create_by(code: 'OHD').update(name: 'On-Hold')
 
-Milestone.find_or_create_by(code: 'SRD', name: 'Submission Received Date')
-Milestone.find_or_create_by(code: 'VPS', name: 'Validation Processing Start Date')
-Milestone.find_or_create_by(code: 'VPC', name: 'Validation Processing Completed Date')
-Milestone.find_or_create_by(code: 'SAC', name: 'Submission Acceptance Date')
-Milestone.find_or_create_by(code: 'STR', name: 'Submission Terminated Date')
-Milestone.find_or_create_by(code: 'SRE', name: 'Submission Reactivated Date')
-Milestone.find_or_create_by(code: 'SRJ', name: 'Submission Rejection Date')
-Milestone.find_or_create_by(code: 'APS', name: 'Administrative Processing Start Date')
-Milestone.find_or_create_by(code: 'APC', name: 'Administrative Processing Completed Date')
-Milestone.find_or_create_by(code: 'RAQ', name: 'Ready for Administrative QC Date')
-Milestone.find_or_create_by(code: 'AQS', name: 'Administrative QC Start Date')
-Milestone.find_or_create_by(code: 'AQC', name: 'Administrative QC Completed Date')
-Milestone.find_or_create_by(code: 'SPS', name: 'Scientific Processing Start Date')
-Milestone.find_or_create_by(code: 'SPC', name: 'Scientific Processing Completed Date')
-Milestone.find_or_create_by(code: 'RSQ', name: 'Ready for Scientific QC Date')
-Milestone.find_or_create_by(code: 'SQS', name: 'Scientific QC Start Date')
-Milestone.find_or_create_by(code: 'SQC', name: 'Scientific QC Completed Date')
-Milestone.find_or_create_by(code: 'RTS', name: 'Ready for Trial Summary Report Date')
-Milestone.find_or_create_by(code: 'TSR', name: 'Trial Summary Report Date')
-Milestone.find_or_create_by(code: 'STS', name: 'Submitter Trial Summary Report Feedback Date')
-Milestone.find_or_create_by(code: 'IAV', name: 'Initial Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'ONG', name: 'On-going Abstraction Verified Date')
-Milestone.find_or_create_by(code: 'LRD', name: 'Late Rejection Date')
+Milestone.find_or_create_by(code: 'SRD').update(name: 'Submission Received Date')
+Milestone.find_or_create_by(code: 'VPS').update(name: 'Validation Processing Start Date')
+Milestone.find_or_create_by(code: 'VPC').update(name: 'Validation Processing Completed Date')
+Milestone.find_or_create_by(code: 'SAC').update(name: 'Submission Acceptance Date')
+Milestone.find_or_create_by(code: 'STR').update(name: 'Submission Terminated Date')
+Milestone.find_or_create_by(code: 'SRE').update(name: 'Submission Reactivated Date')
+Milestone.find_or_create_by(code: 'SRJ').update(name: 'Submission Rejection Date')
+Milestone.find_or_create_by(code: 'APS').update(name: 'Administrative Processing Start Date')
+Milestone.find_or_create_by(code: 'APC').update(name: 'Administrative Processing Completed Date')
+Milestone.find_or_create_by(code: 'RAQ').update(name: 'Ready for Administrative QC Date')
+Milestone.find_or_create_by(code: 'AQS').update(name: 'Administrative QC Start Date')
+Milestone.find_or_create_by(code: 'AQC').update(name: 'Administrative QC Completed Date')
+Milestone.find_or_create_by(code: 'SPS').update(name: 'Scientific Processing Start Date')
+Milestone.find_or_create_by(code: 'SPC').update(name: 'Scientific Processing Completed Date')
+Milestone.find_or_create_by(code: 'RSQ').update(name: 'Ready for Scientific QC Date')
+Milestone.find_or_create_by(code: 'SQS').update(name: 'Scientific QC Start Date')
+Milestone.find_or_create_by(code: 'SQC').update(name: 'Scientific QC Completed Date')
+Milestone.find_or_create_by(code: 'RTS').update(name: 'Ready for Trial Summary Report Date')
+Milestone.find_or_create_by(code: 'TSR').update(name: 'Trial Summary Report Date')
+Milestone.find_or_create_by(code: 'STS').update(name: 'Submitter Trial Summary Report Feedback Date')
+Milestone.find_or_create_by(code: 'IAV').update(name: 'Initial Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'ONG').update(name: 'On-going Abstraction Verified Date')
+Milestone.find_or_create_by(code: 'LRD').update(name: 'Late Rejection Date')
 
-MilestoneType.find_or_create_by(code: 'ADM', name: 'Administrative')
-MilestoneType.find_or_create_by(code: 'SCI', name: 'Scientific')
-MilestoneType.find_or_create_by(code: 'GEN', name: 'General')
+MilestoneType.find_or_create_by(code: 'ADM').update(name: 'Administrative')
+MilestoneType.find_or_create_by(code: 'SCI').update(name: 'Scientific')
+MilestoneType.find_or_create_by(code: 'GEN').update(name: 'General')
 
-SubmissionType.find_or_create_by(code: 'ORI', name: 'Original')
-SubmissionType.find_or_create_by(code: 'AMD', name: 'Amendment')
-SubmissionType.find_or_create_by(code: 'UPD', name: 'Update')
+SubmissionType.find_or_create_by(code: 'ORI').update(name: 'Original')
+SubmissionType.find_or_create_by(code: 'AMD').update(name: 'Amendment')
+SubmissionType.find_or_create_by(code: 'UPD').update(name: 'Update')
 
-SubmissionSource.find_or_create_by(code: 'CCR', name: 'CCR')
-SubmissionSource.find_or_create_by(code: 'CTEP', name: 'CTEP')
-SubmissionSource.find_or_create_by(code: 'DCP', name: 'DCP')
-SubmissionSource.find_or_create_by(code: 'CCT', name: 'Cancer Center')
+SubmissionSource.find_or_create_by(code: 'CCR').update(name: 'CCR')
+SubmissionSource.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
+SubmissionSource.find_or_create_by(code: 'DCP').update(name: 'DCP')
+SubmissionSource.find_or_create_by(code: 'CCT').update(name: 'Cancer Center')
 
-SubmissionMethod.find_or_create_by(code: 'REG', name: 'Registry')
-SubmissionMethod.find_or_create_by(code: 'BAT', name: 'Batch')
-SubmissionMethod.find_or_create_by(code: 'CTI', name: 'ClinicalTrials.gov Import')
-SubmissionMethod.find_or_create_by(code: 'GSV', name: 'Grid Service')
-SubmissionMethod.find_or_create_by(code: 'RSV', name: 'REST Service')
-SubmissionMethod.find_or_create_by(code: 'OTHER', name: 'Other')
+SubmissionMethod.find_or_create_by(code: 'REG').update(name: 'Registry')
+SubmissionMethod.find_or_create_by(code: 'BAT').update(name: 'Batch')
+SubmissionMethod.find_or_create_by(code: 'CTI').update(name: 'ClinicalTrials.gov Import')
+SubmissionMethod.find_or_create_by(code: 'GSV').update(name: 'Grid Service')
+SubmissionMethod.find_or_create_by(code: 'RSV').update(name: 'REST Service')
+SubmissionMethod.find_or_create_by(code: 'OTHER').update(name: 'Other')
 
-SiteRecruitmentStatus.find_or_create_by(code: 'INR', name: 'In Review')
-SiteRecruitmentStatus.find_or_create_by(code: 'APP', name: 'Approved')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACT', name: 'Active')
-SiteRecruitmentStatus.find_or_create_by(code: 'EBI', name: 'Enrolling by Invitation')
-SiteRecruitmentStatus.find_or_create_by(code: 'CAC', name: 'Closed to Accrual')
-SiteRecruitmentStatus.find_or_create_by(code: 'CAI', name: 'Closed to Accrual and Intervention')
-SiteRecruitmentStatus.find_or_create_by(code: 'TCL', name: 'Temporarily Closed to Accrual')
-SiteRecruitmentStatus.find_or_create_by(code: 'TCA', name: 'Temporarily Closed to Accrual and Intervention')
-SiteRecruitmentStatus.find_or_create_by(code: 'WIT', name: 'Withdrawn')
-SiteRecruitmentStatus.find_or_create_by(code: 'ACO', name: 'Administratively Complete')
-SiteRecruitmentStatus.find_or_create_by(code: 'COM', name: 'Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'INR').update(name: 'In Review')
+SiteRecruitmentStatus.find_or_create_by(code: 'APP').update(name: 'Approved')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACT').update(name: 'Active')
+SiteRecruitmentStatus.find_or_create_by(code: 'EBI').update(name: 'Enrolling by Invitation')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAC').update(name: 'Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'CAI').update(name: 'Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCL').update(name: 'Temporarily Closed to Accrual')
+SiteRecruitmentStatus.find_or_create_by(code: 'TCA').update(name: 'Temporarily Closed to Accrual and Intervention')
+SiteRecruitmentStatus.find_or_create_by(code: 'WIT').update(name: 'Withdrawn')
+SiteRecruitmentStatus.find_or_create_by(code: 'ACO').update(name: 'Administratively Complete')
+SiteRecruitmentStatus.find_or_create_by(code: 'COM').update(name: 'Complete')
 
-Gender.find_or_create_by(code: 'M', name: 'Male')
-Gender.find_or_create_by(code: 'F', name: 'Female')
-Gender.find_or_create_by(code: 'B', name: 'Both')
+Gender.find_or_create_by(code: 'M').update(name: 'Male')
+Gender.find_or_create_by(code: 'F').update(name: 'Female')
+Gender.find_or_create_by(code: 'B').update(name: 'Both')
 
-InterventionType.find_or_create_by(code: 'DRUG', name: 'Drug', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'DEVI', name: 'Device', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'BIOL', name: 'Biological/Vaccine', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'PROC', name: 'Procedure/Surgery', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'RAD', name: 'Radiation', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'BEHA', name: 'Behavioral', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'GENE', name: 'Genetic', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'DSUP', name: 'Dietary Supplement', category: 'clinicaltrials.gov')
-InterventionType.find_or_create_by(code: 'OTH', name: 'Other', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DRUG').update(name: 'Drug', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DEVI').update(name: 'Device', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BIOL').update(name: 'Biological/Vaccine', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'PROC').update(name: 'Procedure/Surgery', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'RAD').update(name: 'Radiation', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'BEHA').update(name: 'Behavioral', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'GENE').update(name: 'Genetic', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'DSUP').update(name: 'Dietary Supplement', category: 'clinicaltrials.gov')
+InterventionType.find_or_create_by(code: 'OTH').update(name: 'Other', category: 'clinicaltrials.gov')
 
-NcitStatus.find_or_create_by(code:'ACT',name:'Active')
-NcitStatus.find_or_create_by(code:'INA',name:'Inactive')
+NcitStatus.find_or_create_by(code:'ACT').update(name:'Active')
+NcitStatus.find_or_create_by(code:'INA').update(name:'Inactive')
 
 ## seed 50 NcitIntervention records with C_Code
 act = NcitStatus.find_by_code('ACT')
@@ -268,354 +268,216 @@ NcitIntervention.create(preferred_name: 'Anti-inflammatory Antibody ALXN1007', s
 
 
 
-StudyClassification.find_or_create_by(code: 'SAFE', name: 'Safety')
-StudyClassification.find_or_create_by(code: 'EFFI', name: 'Efficacy')
-StudyClassification.find_or_create_by(code: 'SAEF', name: 'Safety/Efficacy')
-StudyClassification.find_or_create_by(code: 'BAV', name: 'Bioavailability')
-StudyClassification.find_or_create_by(code: 'BEQ', name: 'Bioequivalence')
-StudyClassification.find_or_create_by(code: 'PD', name: 'Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'PKPD', name: 'Pharmacokinetics/Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'NA', name: 'NA')
+StudyClassification.find_or_create_by(code: 'SAFE').update(name: 'Safety')
+StudyClassification.find_or_create_by(code: 'EFFI').update(name: 'Efficacy')
+StudyClassification.find_or_create_by(code: 'SAEF').update(name: 'Safety/Efficacy')
+StudyClassification.find_or_create_by(code: 'BAV').update(name: 'Bioavailability')
+StudyClassification.find_or_create_by(code: 'BEQ').update(name: 'Bioequivalence')
+StudyClassification.find_or_create_by(code: 'PD').update(name: 'Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'PKPD').update(name: 'Pharmacokinetics/Pharmacodynamics')
+StudyClassification.find_or_create_by(code: 'NA').update(name: 'NA')
 
-StudyModel.find_or_create_by(code: 'COH', name: 'Cohort')
-StudyModel.find_or_create_by(code: 'CASECO', name: 'Case-control')
-StudyModel.find_or_create_by(code: 'CASEON', name: 'Case-only')
-StudyModel.find_or_create_by(code: 'CASECR', name: 'Case-crossover')
-StudyModel.find_or_create_by(code: 'EORCS', name: 'Ecologic or Community Studies')
-StudyModel.find_or_create_by(code: 'FAMB', name: 'Family-based')
-StudyModel.find_or_create_by(code: 'OTH', name: 'Other')
+StudyModel.find_or_create_by(code: 'COH').update(name: 'Cohort')
+StudyModel.find_or_create_by(code: 'CASECO').update(name: 'Case-control')
+StudyModel.find_or_create_by(code: 'CASEON').update(name: 'Case-only')
+StudyModel.find_or_create_by(code: 'CASECR').update(name: 'Case-crossover')
+StudyModel.find_or_create_by(code: 'EORCS').update(name: 'Ecologic or Community Studies')
+StudyModel.find_or_create_by(code: 'FAMB').update(name: 'Family-based')
+StudyModel.find_or_create_by(code: 'OTH').update(name: 'Other')
 
-OutcomeMeasureType.find_or_create_by(code: 'PRI', name: 'Primary')
-OutcomeMeasureType.find_or_create_by(code: 'SEC', name: 'Secondary')
-OutcomeMeasureType.find_or_create_by(code: 'OTH', name: 'Other Prespecified')
+OutcomeMeasureType.find_or_create_by(code: 'PRI').update(name: 'Primary')
+OutcomeMeasureType.find_or_create_by(code: 'SEC').update(name: 'Secondary')
+OutcomeMeasureType.find_or_create_by(code: 'OTH').update(name: 'Other Prespecified')
 
-Allocation.find_or_create_by(code: 'NA', name: 'NA')
-Allocation.find_or_create_by(code: 'RCT', name: 'Randomized Controlled Trial')
-Allocation.find_or_create_by(code: 'NRT', name: 'Non-Randomized Trial')
+Allocation.find_or_create_by(code: 'NA').update(name: 'NA')
+Allocation.find_or_create_by(code: 'RCT').update(name: 'Randomized Controlled Trial')
+Allocation.find_or_create_by(code: 'NRT').update(name: 'Non-Randomized Trial')
 
-InterventionModel.find_or_create_by(code: 'SG', name: 'Single Group')
-InterventionModel.find_or_create_by(code: 'PL', name: 'Parallel')
-InterventionModel.find_or_create_by(code: 'CO', name: 'Cross-Over')
-InterventionModel.find_or_create_by(code: 'FT', name: 'Factorial')
+InterventionModel.find_or_create_by(code: 'SG').update(name: 'Single Group')
+InterventionModel.find_or_create_by(code: 'PL').update(name: 'Parallel')
+InterventionModel.find_or_create_by(code: 'CO').update(name: 'Cross-Over')
+InterventionModel.find_or_create_by(code: 'FT').update(name: 'Factorial')
 
-Masking.find_or_create_by(code: 'OP', name: 'Open')
-Masking.find_or_create_by(code: 'SB', name: 'Single Blind')
-Masking.find_or_create_by(code: 'DB', name: 'Double Blind')
+Masking.find_or_create_by(code: 'OP').update(name: 'Open')
+Masking.find_or_create_by(code: 'SB').update(name: 'Single Blind')
+Masking.find_or_create_by(code: 'DB').update(name: 'Double Blind')
 
-# AgeUnit.find_or_create_by(code: 'YR', name: 'Year')
-AgeUnit.find_or_create_by(code: 'YRS', name: 'Years')
-# AgeUnit.find_or_create_by(code: 'MO', name: 'Month')
-AgeUnit.find_or_create_by(code: 'MOS', name: 'Months')
-# AgeUnit.find_or_create_by(code: 'WK', name: 'Week')
-AgeUnit.find_or_create_by(code: 'WKS', name: 'Weeks')
-# AgeUnit.find_or_create_by(code: 'DY', name: 'Day')
-AgeUnit.find_or_create_by(code: 'DYS', name: 'Days')
-# AgeUnit.find_or_create_by(code: 'HR', name: 'Hour')
-AgeUnit.find_or_create_by(code: 'HRS', name: 'Hours')
-# AgeUnit.find_or_create_by(code: 'MN', name: 'Minute')
-AgeUnit.find_or_create_by(code: 'MNS', name: 'Minutes')
+# AgeUnit.find_or_create_by(code: 'YR').update(name: 'Year')
+AgeUnit.find_or_create_by(code: 'YRS').update(name: 'Years')
+# AgeUnit.find_or_create_by(code: 'MO').update(name: 'Month')
+AgeUnit.find_or_create_by(code: 'MOS').update(name: 'Months')
+# AgeUnit.find_or_create_by(code: 'WK').update(name: 'Week')
+AgeUnit.find_or_create_by(code: 'WKS').update(name: 'Weeks')
+# AgeUnit.find_or_create_by(code: 'DY').update(name: 'Day')
+AgeUnit.find_or_create_by(code: 'DYS').update(name: 'Days')
+# AgeUnit.find_or_create_by(code: 'HR').update(name: 'Hour')
+AgeUnit.find_or_create_by(code: 'HRS').update(name: 'Hours')
+# AgeUnit.find_or_create_by(code: 'MN').update(name: 'Minute')
+AgeUnit.find_or_create_by(code: 'MNS').update(name: 'Minutes')
 
-AmendmentReason.find_or_create_by(code: 'AS', name: 'Acknowledged Scientific')
-AmendmentReason.find_or_create_by(code: 'AA', name: 'Acknowledged Administrative')
-AmendmentReason.find_or_create_by(code: 'AAS', name: 'Acknowledged Administrative and Scientific')
+AmendmentReason.find_or_create_by(code: 'AS').update(name: 'Acknowledged Scientific')
+AmendmentReason.find_or_create_by(code: 'AA').update(name: 'Acknowledged Administrative')
+AmendmentReason.find_or_create_by(code: 'AAS').update(name: 'Acknowledged Administrative and Scientific')
 
-AnatomicSite.find_or_create_by(code:'AN', name: 'Anus')
-AnatomicSite.find_or_create_by(code:'BJ', name: 'Bones and Joints')
-AnatomicSite.find_or_create_by(code:'BN', name: 'Brain and Nervous System')
-AnatomicSite.find_or_create_by(code:'BF', name: 'Breast - Female')
-AnatomicSite.find_or_create_by(code:'BM', name: 'Breast - Male')
-AnatomicSite.find_or_create_by(code:'CE', name: 'Cervix')
-AnatomicSite.find_or_create_by(code:'CO', name: 'Colon')
-AnatomicSite.find_or_create_by(code:'CU', name: 'Corpus Uteri')
-AnatomicSite.find_or_create_by(code:'ES', name: 'Esophagus')
-AnatomicSite.find_or_create_by(code:'ET', name: 'Eye and Orbit')
-AnatomicSite.find_or_create_by(code:'HL', name: "Hodgkin's Lymphoma")
-AnatomicSite.find_or_create_by(code:'IS', name: 'Ill-Defined Sites')
-AnatomicSite.find_or_create_by(code:'KA', name: "Kaposi's Sarcoma")
-AnatomicSite.find_or_create_by(code:'KI', name: "Kidney")
-AnatomicSite.find_or_create_by(code:'LA', name: 'Larynx')
-AnatomicSite.find_or_create_by(code:'LN', name: 'Leukemia, not otherwise specified')
-AnatomicSite.find_or_create_by(code:'LO', name: 'Leukemia, other')
-AnatomicSite.find_or_create_by(code:'LP', name: 'Lip, Oral Cavity and Pharynx')
-AnatomicSite.find_or_create_by(code:'LR', name: 'Liver')
-AnatomicSite.find_or_create_by(code:'LU', name: 'Lung')
-AnatomicSite.find_or_create_by(code:'LY', name: 'Lymphoid Leukemia')
-AnatomicSite.find_or_create_by(code:'ME', name: 'Melanoma, Skin')
-AnatomicSite.find_or_create_by(code:'ML', name: 'Multiple')
-AnatomicSite.find_or_create_by(code:'MM', name: 'Multiple Myeloma')
-AnatomicSite.find_or_create_by(code:'MY', name: 'Mycosis Fungoides')
-AnatomicSite.find_or_create_by(code:'MZ', name: 'Myeloid and Monocyte Leukemia')
-AnatomicSite.find_or_create_by(code:'NL', name: "Non-Hodgkin's Lymphoma")
-AnatomicSite.find_or_create_by(code:'OD', name: "Other Digestive Organ")
-AnatomicSite.find_or_create_by(code:'OE', name: "Other Endocrine System")
-AnatomicSite.find_or_create_by(code:'OF', name: "Other Female Genital")
-AnatomicSite.find_or_create_by(code:'OH', name: "Other Hematopoietic")
-AnatomicSite.find_or_create_by(code:'OM', name: "Other Male Genital")
-AnatomicSite.find_or_create_by(code:'OR', name: "Other Respiratory/Intrathoracic Organs")
-AnatomicSite.find_or_create_by(code:'OS', name: "Other Skin")
-AnatomicSite.find_or_create_by(code:'OU', name: "Other Urinary")
-AnatomicSite.find_or_create_by(code:'OV', name: "Ovary")
-AnatomicSite.find_or_create_by(code:'PA', name: "Pancreas")
-AnatomicSite.find_or_create_by(code:'PR', name: "Prostate")
-AnatomicSite.find_or_create_by(code:'RE', name: "Rectum")
-AnatomicSite.find_or_create_by(code:'SI', name: "Small Intestine")
-AnatomicSite.find_or_create_by(code:'SO', name: "Soft Tissue / Sarcoma")
-AnatomicSite.find_or_create_by(code:'ST', name: "Stomach")
-AnatomicSite.find_or_create_by(code:'TH', name: "Thyroid")
-AnatomicSite.find_or_create_by(code:'UM', name: "Unknown Sites")
-AnatomicSite.find_or_create_by(code:'UR', name: "Urinary Bladder")
+AnatomicSite.find_or_create_by(code:'AN').update(name: 'Anus')
+AnatomicSite.find_or_create_by(code:'BJ').update(name: 'Bones and Joints')
+AnatomicSite.find_or_create_by(code:'BN').update(name: 'Brain and Nervous System')
+AnatomicSite.find_or_create_by(code:'BF').update(name: 'Breast - Female')
+AnatomicSite.find_or_create_by(code:'BM').update(name: 'Breast - Male')
+AnatomicSite.find_or_create_by(code:'CE').update(name: 'Cervix')
+AnatomicSite.find_or_create_by(code:'CO').update(name: 'Colon')
+AnatomicSite.find_or_create_by(code:'CU').update(name: 'Corpus Uteri')
+AnatomicSite.find_or_create_by(code:'ES').update(name: 'Esophagus')
+AnatomicSite.find_or_create_by(code:'ET').update(name: 'Eye and Orbit')
+AnatomicSite.find_or_create_by(code:'HL').update(name: "Hodgkin's Lymphoma")
+AnatomicSite.find_or_create_by(code:'IS').update(name: 'Ill-Defined Sites')
+AnatomicSite.find_or_create_by(code:'KA').update(name: "Kaposi's Sarcoma")
+AnatomicSite.find_or_create_by(code:'KI').update(name: "Kidney")
+AnatomicSite.find_or_create_by(code:'LA').update(name: 'Larynx')
+AnatomicSite.find_or_create_by(code:'LN').update(name: 'Leukemia, not otherwise specified')
+AnatomicSite.find_or_create_by(code:'LO').update(name: 'Leukemia, other')
+AnatomicSite.find_or_create_by(code:'LP').update(name: 'Lip, Oral Cavity and Pharynx')
+AnatomicSite.find_or_create_by(code:'LR').update(name: 'Liver')
+AnatomicSite.find_or_create_by(code:'LU').update(name: 'Lung')
+AnatomicSite.find_or_create_by(code:'LY').update(name: 'Lymphoid Leukemia')
+AnatomicSite.find_or_create_by(code:'ME').update(name: 'Melanoma, Skin')
+AnatomicSite.find_or_create_by(code:'ML').update(name: 'Multiple')
+AnatomicSite.find_or_create_by(code:'MM').update(name: 'Multiple Myeloma')
+AnatomicSite.find_or_create_by(code:'MY').update(name: 'Mycosis Fungoides')
+AnatomicSite.find_or_create_by(code:'MZ').update(name: 'Myeloid and Monocyte Leukemia')
+AnatomicSite.find_or_create_by(code:'NL').update(name: "Non-Hodgkin's Lymphoma")
+AnatomicSite.find_or_create_by(code:'OD').update(name: "Other Digestive Organ")
+AnatomicSite.find_or_create_by(code:'OE').update(name: "Other Endocrine System")
+AnatomicSite.find_or_create_by(code:'OF').update(name: "Other Female Genital")
+AnatomicSite.find_or_create_by(code:'OH').update(name: "Other Hematopoietic")
+AnatomicSite.find_or_create_by(code:'OM').update(name: "Other Male Genital")
+AnatomicSite.find_or_create_by(code:'OR').update(name: "Other Respiratory/Intrathoracic Organs")
+AnatomicSite.find_or_create_by(code:'OS').update(name: "Other Skin")
+AnatomicSite.find_or_create_by(code:'OU').update(name: "Other Urinary")
+AnatomicSite.find_or_create_by(code:'OV').update(name: "Ovary")
+AnatomicSite.find_or_create_by(code:'PA').update(name: "Pancreas")
+AnatomicSite.find_or_create_by(code:'PR').update(name: "Prostate")
+AnatomicSite.find_or_create_by(code:'RE').update(name: "Rectum")
+AnatomicSite.find_or_create_by(code:'SI').update(name: "Small Intestine")
+AnatomicSite.find_or_create_by(code:'SO').update(name: "Soft Tissue / Sarcoma")
+AnatomicSite.find_or_create_by(code:'ST').update(name: "Stomach")
+AnatomicSite.find_or_create_by(code:'TH').update(name: "Thyroid")
+AnatomicSite.find_or_create_by(code:'UM').update(name: "Unknown Sites")
+AnatomicSite.find_or_create_by(code:'UR').update(name: "Urinary Bladder")
 
-UserStatus.find_or_create_by(code: 'INR', name: 'In Review')
-UserStatus.find_or_create_by(code: 'ACT', name: 'Active')
-UserStatus.find_or_create_by(code: 'INA', name: 'Inactive')
-UserStatus.find_or_create_by(code: 'DEL', name: 'Deleted')
+UserStatus.find_or_create_by(code: 'INR').update(name: 'In Review')
+UserStatus.find_or_create_by(code: 'ACT').update(name: 'Active')
+UserStatus.find_or_create_by(code: 'INA').update(name: 'Inactive')
+UserStatus.find_or_create_by(code: 'DEL').update(name: 'Deleted')
 
 
 ### MARKER STATIC DATA
 
-CadsrMarkerStatus.find_or_create_by(code: 'ACT', name: 'Active')
-CadsrMarkerStatus.find_or_create_by(code: 'INA', name: 'Inactive')
+CadsrMarkerStatus.find_or_create_by(code: 'ACT').update(name: 'Active')
+CadsrMarkerStatus.find_or_create_by(code: 'INA').update(name: 'Inactive')
 
 ##### Here ids are important to given statically to display codes in a specific order on front end
-AssayType.find_or_create_by(id:21,  code:  'Other' , name:'Other')
-AssayType.find_or_create_by(id:16,  code:  'HPLC' , name:'High Performance Liquid Chromatography')
-AssayType.find_or_create_by(id:5,   code:  'Immunohistochemistry (IHC)' , name:'Immunohistochemistry Staining Method')
-AssayType.find_or_create_by(id:6,   code:  'Western Blot (Immunoblot)' , name:'Western Blotting')
-AssayType.find_or_create_by(id:10,  code:  'ELISPOT' , name:'Enzyme-linked Immunosorbent Spot Assay')
-AssayType.find_or_create_by(id:17,  code:  'RT-PCR' , name:'RT-PCR')
-AssayType.find_or_create_by(id:12,  code:  'Cytotoxicity Assay' , name:'Cytotoxicity Assay')
-AssayType.find_or_create_by(id:8,   code:  'Sequencing' , name:'Nucleic Acid Sequencing')
-AssayType.find_or_create_by(id:18,  code:  'Multiplex Immunoassay' , name:'Multiple Immunologic Technique')
-AssayType.find_or_create_by(id:11,  code:  'Proliferation Assay' , name:'Proliferation Assay')
-AssayType.find_or_create_by(id:20,  code:  'Unspecified' , name:'Unspecified')
-AssayType.find_or_create_by(id:13,  code:  'Mass Spectrometry' , name:'Mass Spectrometry')
-AssayType.find_or_create_by(id:19,  code:  'Real-Time PCR (quantitative PCR)' , name:'Real Time PCR')
-AssayType.find_or_create_by(id:3,   code:  'Microarray' , name:'Microarray')
-AssayType.find_or_create_by(id:4,   code:  'ELISA' , name:'ELISA')
-AssayType.find_or_create_by(id:7,   code:  'Flow Cytometry' , name:'Flow Cytometry')
-AssayType.find_or_create_by(id:2,   code:  'In Situ Hybridization' , name:'in situ Hybridization')
-AssayType.find_or_create_by(id:14,  code:  'TUNEL assay' , name:'TdT-Mediated dUTP Nick End Labeling Assay')
-AssayType.find_or_create_by(id:1,   code:  'PCR' , name:'Polymerase Chain Reaction')
-AssayType.find_or_create_by(id:9,   code:  'Microscopy/Imaging' , name:'Microscopy Imaging Technique')
-AssayType.find_or_create_by(id:15,  code:  'Real-Time RT-PCR (qRT-PCR)' , name:'Quantitative Reverse Transcriptase PCR')
+AssayType.find_or_create_by(id:21,  code:  'Other' ).update(name:'Other')
+AssayType.find_or_create_by(id:16,  code:  'HPLC' ).update(name:'High Performance Liquid Chromatography')
+AssayType.find_or_create_by(id:5,   code:  'Immunohistochemistry (IHC)' ).update(name:'Immunohistochemistry Staining Method')
+AssayType.find_or_create_by(id:6,   code:  'Western Blot (Immunoblot)' ).update(name:'Western Blotting')
+AssayType.find_or_create_by(id:10,  code:  'ELISPOT' ).update(name:'Enzyme-linked Immunosorbent Spot Assay')
+AssayType.find_or_create_by(id:17,  code:  'RT-PCR' ).update(name:'RT-PCR')
+AssayType.find_or_create_by(id:12,  code:  'Cytotoxicity Assay' ).update(name:'Cytotoxicity Assay')
+AssayType.find_or_create_by(id:8,   code:  'Sequencing' ).update(name:'Nucleic Acid Sequencing')
+AssayType.find_or_create_by(id:18,  code:  'Multiplex Immunoassay' ).update(name:'Multiple Immunologic Technique')
+AssayType.find_or_create_by(id:11,  code:  'Proliferation Assay' ).update(name:'Proliferation Assay')
+AssayType.find_or_create_by(id:20,  code:  'Unspecified' ).update(name:'Unspecified')
+AssayType.find_or_create_by(id:13,  code:  'Mass Spectrometry' ).update(name:'Mass Spectrometry')
+AssayType.find_or_create_by(id:19,  code:  'Real-Time PCR (quantitative PCR)' ).update(name:'Real Time PCR')
+AssayType.find_or_create_by(id:3,   code:  'Microarray' ).update(name:'Microarray')
+AssayType.find_or_create_by(id:4,   code:  'ELISA' ).update(name:'ELISA')
+AssayType.find_or_create_by(id:7,   code:  'Flow Cytometry' ).update(name:'Flow Cytometry')
+AssayType.find_or_create_by(id:2,   code:  'In Situ Hybridization' ).update(name:'in situ Hybridization')
+AssayType.find_or_create_by(id:14,  code:  'TUNEL assay' ).update(name:'TdT-Mediated dUTP Nick End Labeling Assay')
+AssayType.find_or_create_by(id:1,   code:  'PCR' ).update(name:'Polymerase Chain Reaction')
+AssayType.find_or_create_by(id:9,   code:  'Microscopy/Imaging' ).update(name:'Microscopy Imaging Technique')
+AssayType.find_or_create_by(id:15,  code:  'Real-Time RT-PCR (qRT-PCR)' ).update(name:'Quantitative Reverse Transcriptase PCR')
 
-EvaluationType.find_or_create_by(id:16, code:  'Other', name:  'Other')
-EvaluationType.find_or_create_by(id:9,  code: 'Acetylation', name:  'Acetylation')
-EvaluationType.find_or_create_by(id:11,  code: 'Loss of Heterozygosity (LOH)', name:  'Loss of Heterozygosity')
-EvaluationType.find_or_create_by(id:7,  code: 'Phosphorylation', name:  'Phosphorylation Process')
-EvaluationType.find_or_create_by(id:6,  code: 'Proteolytic Cleavage', name:  'Protein Cleavage')
-EvaluationType.find_or_create_by(id:5,  code: 'Protein Activity', name:  'Protein or Enzyme Activity')
-EvaluationType.find_or_create_by(id:4,  code: 'Subtyping', name:  'Subtype')
-EvaluationType.find_or_create_by(id:3,  code: 'Cell Functionality', name:  'Cell Function')
-EvaluationType.find_or_create_by(id:2,  code: 'Genetic Analysis', name:  'Genetic Testing')
-EvaluationType.find_or_create_by(id:1,  code: 'Level/Quantity', name:  'Level Quantity Value')
-EvaluationType.find_or_create_by(id:12, code: 'Germline Variant', name:  'Germline Mutation')
-EvaluationType.find_or_create_by(id:13, code: 'Somatic Variant', name:  'Somatic Mutation')
-EvaluationType.find_or_create_by(id:14, code: 'Chromosomal Amplification', name:  'Chromosomal Duplication')
-EvaluationType.find_or_create_by(id:15, code: 'Chromosomal Deletion', name:  'Chromosomal Deletion')
-EvaluationType.find_or_create_by(id:10,  code: 'Activation Status', name:  'Protein Activation Status')
-EvaluationType.find_or_create_by(id:8,  code: 'Methylation', name:  'Methylation')
+EvaluationType.find_or_create_by(id:16, code:  'Other').update(name:  'Other')
+EvaluationType.find_or_create_by(id:9,  code: 'Acetylation').update(name:  'Acetylation')
+EvaluationType.find_or_create_by(id:11,  code: 'Loss of Heterozygosity (LOH)').update(name:  'Loss of Heterozygosity')
+EvaluationType.find_or_create_by(id:7,  code: 'Phosphorylation').update(name:  'Phosphorylation Process')
+EvaluationType.find_or_create_by(id:6,  code: 'Proteolytic Cleavage').update(name:  'Protein Cleavage')
+EvaluationType.find_or_create_by(id:5,  code: 'Protein Activity').update(name:  'Protein or Enzyme Activity')
+EvaluationType.find_or_create_by(id:4,  code: 'Subtyping').update(name:  'Subtype')
+EvaluationType.find_or_create_by(id:3,  code: 'Cell Functionality').update(name:  'Cell Function')
+EvaluationType.find_or_create_by(id:2,  code: 'Genetic Analysis').update(name:  'Genetic Testing')
+EvaluationType.find_or_create_by(id:1,  code: 'Level/Quantity').update(name:  'Level Quantity Value')
+EvaluationType.find_or_create_by(id:12, code: 'Germline Variant').update(name:  'Germline Mutation')
+EvaluationType.find_or_create_by(id:13, code: 'Somatic Variant').update(name:  'Somatic Mutation')
+EvaluationType.find_or_create_by(id:14, code: 'Chromosomal Amplification').update(name:  'Chromosomal Duplication')
+EvaluationType.find_or_create_by(id:15, code: 'Chromosomal Deletion').update(name:  'Chromosomal Deletion')
+EvaluationType.find_or_create_by(id:10,  code: 'Activation Status').update(name:  'Protein Activation Status')
+EvaluationType.find_or_create_by(id:8,  code: 'Methylation').update(name:  'Methylation')
 
-SpecimenType.find_or_create_by(id:14, code: 'Other', name:'Other')
-SpecimenType.find_or_create_by(id:9,  code: 'Saliva', name:'Saliva')
-SpecimenType.find_or_create_by(id:12, code: 'Feces', name:'Feces')
-SpecimenType.find_or_create_by(id:1,  code: 'Serum', name:'Serum')
-SpecimenType.find_or_create_by(id:11, code: 'Buccal Mucosa', name:'Buccal Mucosa')
-SpecimenType.find_or_create_by(id:4,  code: 'Tissue', name:'Tissue')
-SpecimenType.find_or_create_by(id:13, code: 'Unspecified', name:'Unspecified')
-SpecimenType.find_or_create_by(id:7,  code: 'CSF', name:'Cerebrospinal Fluid')
-SpecimenType.find_or_create_by(id:2,  code: 'Plasma', name:'Plasma')
-SpecimenType.find_or_create_by(id:3,  code: 'Blood', name:'Blood')
-SpecimenType.find_or_create_by(id:5,  code: 'Urine', name:'Urine')
-SpecimenType.find_or_create_by(id:6,  code: 'PBMCs', name:'Peripheral Blood Mononuclear Cell')
-SpecimenType.find_or_create_by(id:10, code: 'Cryopreserved Cells', name:'Cryopreserved Cell')
-SpecimenType.find_or_create_by(id:8,  code: 'Bone Marrow', name:'Bone Marrow (biopsy/aspirate)')
+SpecimenType.find_or_create_by(id:14, code: 'Other').update(name:'Other')
+SpecimenType.find_or_create_by(id:9,  code: 'Saliva').update(name:'Saliva')
+SpecimenType.find_or_create_by(id:12, code: 'Feces').update(name:'Feces')
+SpecimenType.find_or_create_by(id:1,  code: 'Serum').update(name:'Serum')
+SpecimenType.find_or_create_by(id:11, code: 'Buccal Mucosa').update(name:'Buccal Mucosa')
+SpecimenType.find_or_create_by(id:4,  code: 'Tissue').update(name:'Tissue')
+SpecimenType.find_or_create_by(id:13, code: 'Unspecified').update(name:'Unspecified')
+SpecimenType.find_or_create_by(id:7,  code: 'CSF').update(name:'Cerebrospinal Fluid')
+SpecimenType.find_or_create_by(id:2,  code: 'Plasma').update(name:'Plasma')
+SpecimenType.find_or_create_by(id:3,  code: 'Blood').update(name:'Blood')
+SpecimenType.find_or_create_by(id:5,  code: 'Urine').update(name:'Urine')
+SpecimenType.find_or_create_by(id:6,  code: 'PBMCs').update(name:'Peripheral Blood Mononuclear Cell')
+SpecimenType.find_or_create_by(id:10, code: 'Cryopreserved Cells').update(name:'Cryopreserved Cell')
+SpecimenType.find_or_create_by(id:8,  code: 'Bone Marrow').update(name:'Bone Marrow (biopsy/aspirate)')
 
-BiomarkerUse.find_or_create_by(id:2, code:'Integrated', name:'Integrated')
-BiomarkerUse.find_or_create_by(id:1, code:'Integral', name:'Integral')
+BiomarkerUse.find_or_create_by(id:2, code:'Integrated').update(name:'Integrated')
+BiomarkerUse.find_or_create_by(id:1, code:'Integral').update(name:'Integral')
 
-BiomarkerPurpose.find_or_create_by(id:3, code: 'Stratification Factor', name:'Stratification Factor')
-BiomarkerPurpose.find_or_create_by(id:2, code: 'Treatment Assignment', name:'Therapy Assignment')
-BiomarkerPurpose.find_or_create_by(id:1, code: 'Eligibility Criterion', name:'Eligibility Determination')
-BiomarkerPurpose.find_or_create_by(id:4, code: 'Research', name:'Research')
-BiomarkerPurpose.find_or_create_by(id:5, code: 'Response Assessment', name:'Response Assessment')
+BiomarkerPurpose.find_or_create_by(id:3, code: 'Stratification Factor').update(name:'Stratification Factor')
+BiomarkerPurpose.find_or_create_by(id:2, code: 'Treatment Assignment').update(name:'Therapy Assignment')
+BiomarkerPurpose.find_or_create_by(id:1, code: 'Eligibility Criterion').update(name:'Eligibility Determination')
+BiomarkerPurpose.find_or_create_by(id:4, code: 'Research').update(name:'Research')
+BiomarkerPurpose.find_or_create_by(id:5, code: 'Response Assessment').update(name:'Response Assessment')
 
-IdentifierType.find_or_create_by(code: 'NCI', name: 'NCI')
-IdentifierType.find_or_create_by(code: 'NCT', name: 'NCT')
-
-CadsrMarker.find_or_create_by(id:659,
-                              name: 'SLC2A4 (GLUT4, name:  solute carrier family 2 (facilitated glucose transporter), member 4)',
-                              meaning: 'SLC2A4 Gene',
-                              description: 'This gene plays a role in glucose transport regulation.',
-                              cadsr_id: 3335290,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
-                              nv_term_identifier: 'C89034',
-                              pv_name: 'SLC2A4')
-
-CadsrMarker.find_or_create_by(id:47,
-                              name: 'AFP (FETA, name:  alpha-fetoprotein)',
-                              meaning: 'Alpha-Fetoprotein',
-                              description: 'This gene plays a role in glucose transport regulation.',
-                              cadsr_id: 3335290,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
-                              nv_term_identifier: 'C89034',
-                              pv_name: 'SLC2A4')
+IdentifierType.find_or_create_by(code: 'NCI').update(name: 'NCI')
+IdentifierType.find_or_create_by(code: 'NCT').update(name: 'NCT')
 
 
-
-
-CadsrMarker.find_or_create_by(id:3543,
-                              name: 'Citrate',
-                              meaning: 'Citrate',
-                              description: 'A salt or ester of citric acid.',
-                              cadsr_id: 3192535,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C63374', pv_name: 'Citrate')
-
-CadsrMarker.find_or_create_by(id:169,
-                              name: 'PDE5A (PDE5, name:  CN5A, name:  phosphodiesterase 5A (cGMP-specific), name:  CGB-PDE)',
-                              meaning: 'cGMP-Specific 3,5-Cyclic Phosphodiesterase',
-                              description: 'cGMP-specific 3,5-cyclic phosphodiesterase (875 aa, ~100 kDa) is encoded by the human PDE5A gene. This protein plays a role in the mediation of cyclic GMP metabolism.',
-                              cadsr_id: 3243311, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C96469', pv_name: 'PDE5A')
-
-CadsrMarker.find_or_create_by(id:375,
-                              name: 'ITGAM (integrin, alpha M, name:  CR3A, name:  MAC-1, name:  CD11b)',
-                              meaning: 'ITGAM gene',
-                              description: 'This gene plays a role in extracellular matrix interactions and cellular adhesion.',
-                              cadsr_id: 3279303, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1366562', pv_name: 'ITGAM')
-
-
-CadsrMarker.find_or_create_by(id:394,
-                              name: 'CD24 (CD24 antigen (small cell lung carcinoma cluster 4 antigen), name:  CD24A)',
-                              meaning: 'CD24 gene',
-                              description: 'This gene is involved in the immune responsiveness of B-cells.',
-                              cadsr_id: 3281849, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1413212', pv_name: 'CD24')
-
-CadsrMarker.find_or_create_by(id:494,
-                              name: 'TNFAIP3 (A20, name:  OTUD7C, name:  tumor necrosis factor alpha-induced protein 3)',
-                              meaning: 'TNFAIP3 gene',
-                              description: 'This gene may play a role in the regulation of apoptosis.',
-                              cadsr_id: 3288476, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1420799', pv_name: 'TNFAIP3');
-
-CadsrMarker.find_or_create_by(id:568,
-                              name: 'tumor protein p53 binding protein 1 (TP53BP1, name:  53BP1)',
-                              meaning: 'TP53BP1 Gene',
-                              description: 'This gene may play a role in the modulation of the response to DNA damage.',
-                              cadsr_id: 3302801,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C88925', pv_name: 'tumor protein p53 binding protein 1')
-
-CadsrMarker.find_or_create_by(id:702,
-                              name: 'BCL2A1 (BCL2-related protein A1, name:  ACC-1, name:  GRS, name:  BCL2L5, name:  BFL1, name:  HBPA1, name:  ACC-2)',
-                              meaning: 'BCL2A1 gene',
-                              description: 'No Value Exists',
-                              cadsr_id: 3351678,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1412761', pv_name: 'BCL2A1')
-
-CadsrMarker.find_or_create_by(id:724,
-                              name: 'MIR382 (MIRN382, name:  microRNA 382, name:  hsa-mir-382)',
-                              meaning: 'MIR382 gene',
-                              description: 'No Value Exists',
-                              cadsr_id: 3359747,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1537903', pv_name: 'MIR382')
-
-CadsrMarker.find_or_create_by(id:374,
-                              name: 'CD33 (SIGLEC3, name:  CD33 antigen (gp67), name:  sialic acid binding Ig-like lectin 3, name:  FLJ00391, name:  SIGLEC-3, name:  p67)',
-                              meaning: 'CD33 gene',
-                              description: 'No Value Exists',
-                              cadsr_id: 3279301,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1439292', pv_name: 'CD33')
-
-CadsrMarker.find_or_create_by(id:856,
-                              name: 'AKT2',
-                              meaning: 'AKT2 Gene',
-                              description: 'This gene plays a role in glucose homeostasis and the inhibition of apoptosis.',
-                              cadsr_id: 3412274,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C18352', pv_name: 'AKT2')
-
-CadsrMarker.find_or_create_by(id:924,
-                              name: 'IGHV3-21 (immunoglobulin heavy variable 3-21)',
-                              meaning: 'IGHV3-21 gene',
-                              description: 'No Value Exists',
-                              cadsr_id: 3430847, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
-                              nv_term_identifier: 'C1416035', pv_name: 'IGHV3-21')
-CadsrMarker.find_or_create_by(id:1781,
-                              name: 'SPIB (SPI-B, name:  Transcription Factor Spi-B, name:  Spi-B Transcription Factor (Spi-1/PU.1 Related))',
-                              meaning: 'SPIB Gene',
-                              description: 'This gene is involved in the modulation of gene transcription.',
-                              cadsr_id: 3684777,
-                              cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C99651', pv_name: 'SPIB')
-
-
-
-CadsrMarkerSynonym.find_or_create_by(id: 678,alternate_name:  'CGB-PDE',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 677,alternate_name:  'phosphodiesterase 5A (cGMP-specific)',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 676,alternate_name:  'CN5A',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 675,alternate_name:  'PDE5',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-
-
-CadsrMarkerSynonym.find_or_create_by(id: 1914,alternate_name:  'tumor necrosis factor alpha-induced protein 3',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1912,alternate_name:  'A20',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1913,alternate_name:  'OTUD7C',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-
-CadsrMarkerSynonym.find_or_create_by(id: 1563,alternate_name:  'CD24 antigen (small cell lung carcinoma cluster 4 antigen)',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1564,alternate_name:  'CD24A',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-
-CadsrMarkerSynonym.find_or_create_by(id: 2740,alternate_name:  'BCL2L5',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2737,alternate_name:  'BCL2-related protein A1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2739,alternate_name:  'GRS',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2742,alternate_name:  'HBPA1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2738,alternate_name:  'ACC-1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2743,alternate_name:  'ACC-2',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2741,alternate_name:  'BFL1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1431,alternate_name:  'sialic acid binding Ig-like lectin 3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1432,alternate_name:  'FLJ00391',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1429,alternate_name:  'SIGLEC3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1430,alternate_name:  'CD33 antigen (gp67)',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1434,alternate_name:  'SIGLEC-3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 1433,alternate_name:  'p67',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2800,alternate_name:  'microRNA 382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2801,alternate_name:  'hsa-mir-382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2799,alternate_name:  'MIRN382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 3554,alternate_name:  'immunoglobulin heavy variable 3-21',cadsr_marker_id:  924,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2296,alternate_name:  '53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 2295,alternate_name:  'TP53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 7725,alternate_name:  'Spi-B Transcription Factor (Spi-1/PU.1 Related)',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 7723,alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-CadsrMarkerSynonym.find_or_create_by(id: 7724,alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
-
-OnholdReason.find_or_create_by(code: 'SIC', name: 'Submission Incomplete')
-OnholdReason.find_or_create_by(code: 'SIM', name: 'Submission Incomplete - Missing Documents')
-OnholdReason.find_or_create_by(code: 'SIG', name: 'Submission Invalid Grant')
-OnholdReason.find_or_create_by(code: 'SOT', name: 'Submission Other (Submitter)')
-OnholdReason.find_or_create_by(code: 'PCR', name: 'Pending CTRO Review')
-OnholdReason.find_or_create_by(code: 'PDC', name: 'Pending Disease Curation')
-OnholdReason.find_or_create_by(code: 'PPC', name: 'Pending Person Curation')
-OnholdReason.find_or_create_by(code: 'POC', name: 'Pending Organization Curation')
-OnholdReason.find_or_create_by(code: 'PIC', name: 'Pending Intervention Curation')
-OnholdReason.find_or_create_by(code: 'POT', name: 'Pending Other (CTRO)')
+OnholdReason.find_or_create_by(code: 'SIC').update(name: 'Submission Incomplete')
+OnholdReason.find_or_create_by(code: 'SIM').update(name: 'Submission Incomplete - Missing Documents')
+OnholdReason.find_or_create_by(code: 'SIG').update(name: 'Submission Invalid Grant')
+OnholdReason.find_or_create_by(code: 'SOT').update(name: 'Submission Other (Submitter)')
+OnholdReason.find_or_create_by(code: 'PCR').update(name: 'Pending CTRO Review')
+OnholdReason.find_or_create_by(code: 'PDC').update(name: 'Pending Disease Curation')
+OnholdReason.find_or_create_by(code: 'PPC').update(name: 'Pending Person Curation')
+OnholdReason.find_or_create_by(code: 'POC').update(name: 'Pending Organization Curation')
+OnholdReason.find_or_create_by(code: 'PIC').update(name: 'Pending Intervention Curation')
+OnholdReason.find_or_create_by(code: 'POT').update(name: 'Pending Other (CTRO)')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########
 
-AppSetting.find_or_create_by(code: 'FM', name: 'Funding Mechanism List', value: 'see big value', big_value: 'B01,B08,B09,C06,D43,D71,DP1,DP2,DP3,E11,F05,F30,F31,F32,F33,F34,F37,F38,G07,G08,G11,G12,G13,G20,G94,H13,H23,H25,H28,H50,H57,H62,H64,H75,H79,HD4,HR1,HS5,I01,K01,K02,K05,K06,K07,K08,K12,K14,K18,K21,K22,K23,K24,K25,K26,K30,K99,KD1,KL1,KL2,L30,L32,L40,L50,L60,M01,N01,N02,N03,N43,N44,P01,P20,P30,P40,P41,P42,P50,P51,P60,P76,PL1,PN1,PN2,R00,R01,R03,R04,R06,R08,R13,R15,R17,R18,R21,R24,R25,R30,R33,R34,R36,R37,R41,R42,R43,R44,R49,R55,R56,R90,RC1,RC2,RC3,RC4,RL1,RL2,RL5,RL9,RS1,S06,S10,S11,S21,S22,SC1,SC2,SC3,T01,T02,T03,T06,T09,T14,T15,T32,T34,T35,T36,T37,T42,T90,TL1,TU2,U01,U09,U10,U11,U13,U14,U17,U18,U19,U1A,U1Q,U1S,U1T,U1V,U21,U22,U23,U24,U27,U2G,U2R,U30,U32,U34,U36,U38,U41,U42,U43,U44,U45,U47,U48,U49,U50,U51,U52,U53,U54,U55,U56,U57,U58,U59,U60,U61,U62,U65,U66,U75,U79,U81,U82,U83,U84,U87,U88,U90,UA1,UC1,UC2,UC3,UC6,UC7,UD1,UE1,UE2,UG1,UH1,UH2,UH3,UL1,UM1,UR1,UR3,UR6,UR8,US3,US4,UT1,UT2,VF1,X01,X02,X06,X98,Y01,Y02,Z01,Z02,Z1A')
+AppSetting.find_or_create_by(code: 'FM').update(name: 'Funding Mechanism List', value: 'see big value', big_value: 'B01,B08,B09,C06,D43,D71,DP1,DP2,DP3,E11,F05,F30,F31,F32,F33,F34,F37,F38,G07,G08,G11,G12,G13,G20,G94,H13,H23,H25,H28,H50,H57,H62,H64,H75,H79,HD4,HR1,HS5,I01,K01,K02,K05,K06,K07,K08,K12,K14,K18,K21,K22,K23,K24,K25,K26,K30,K99,KD1,KL1,KL2,L30,L32,L40,L50,L60,M01,N01,N02,N03,N43,N44,P01,P20,P30,P40,P41,P42,P50,P51,P60,P76,PL1,PN1,PN2,R00,R01,R03,R04,R06,R08,R13,R15,R17,R18,R21,R24,R25,R30,R33,R34,R36,R37,R41,R42,R43,R44,R49,R55,R56,R90,RC1,RC2,RC3,RC4,RL1,RL2,RL5,RL9,RS1,S06,S10,S11,S21,S22,SC1,SC2,SC3,T01,T02,T03,T06,T09,T14,T15,T32,T34,T35,T36,T37,T42,T90,TL1,TU2,U01,U09,U10,U11,U13,U14,U17,U18,U19,U1A,U1Q,U1S,U1T,U1V,U21,U22,U23,U24,U27,U2G,U2R,U30,U32,U34,U36,U38,U41,U42,U43,U44,U45,U47,U48,U49,U50,U51,U52,U53,U54,U55,U56,U57,U58,U59,U60,U61,U62,U65,U66,U75,U79,U81,U82,U83,U84,U87,U88,U90,UA1,UC1,UC2,UC3,UC6,UC7,UD1,UE1,UE2,UG1,UH1,UH2,UH3,UL1,UM1,UR1,UR3,UR6,UR8,US3,US4,UT1,UT2,VF1,X01,X02,X06,X98,Y01,Y02,Z01,Z02,Z1A')
 
-AppSetting.find_or_create_by(code: 'IC', name: 'Institute Code List', value: 'see big value', big_value: 'AA,AE,AF,AG,AI,AM,AO,AR,AT,BC,BX,CA,CB,CD,CE,CH,CI,CK,CL,CM,CN,CO,CP,CR,CT,CU,CX,DA,DC,DD,DE,DK,DP,EB,EH,EM,EP,ES,EY,FD,GD,GH,GM,GW,HB,HC,HD,HG,HI,HK,HL,HM,HO,HP,HR,HS,HV,HX,HY,IP,JT,LM,MD,MH,MN,NB,NH,NR,NS,NU,OA,OC,OD,OF,OH,OL,OR,PC,PH,PR,PS,RC,RD,RG,RM,RR,RX,SC,SF,SH,SM,SP,SU,TI,TP,TR,TS,TW,VA,WC,WH,WT')
+AppSetting.find_or_create_by(code: 'IC').update(name: 'Institute Code List', value: 'see big value', big_value: 'AA,AE,AF,AG,AI,AM,AO,AR,AT,BC,BX,CA,CB,CD,CE,CH,CI,CK,CL,CM,CN,CO,CP,CR,CT,CU,CX,DA,DC,DD,DE,DK,DP,EB,EH,EM,EP,ES,EY,FD,GD,GH,GM,GW,HB,HC,HD,HG,HI,HK,HL,HM,HO,HP,HR,HS,HV,HX,HY,IP,JT,LM,MD,MH,MN,NB,NH,NR,NS,NU,OA,OC,OD,OF,OH,OL,OR,PC,PH,PR,PS,RC,RD,RG,RM,RR,RX,SC,SF,SH,SM,SP,SU,TI,TP,TR,TS,TW,VA,WC,WH,WT')
 
-AppSetting.find_or_create_by(code: 'NCI', name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
+AppSetting.find_or_create_by(code: 'NCI').update(name: 'NCI Division/Program Code List', value: 'see big value', big_value: 'CCR,CCT/CTB,CIP,CDP,CTEP,DCB,DCCPS,DCEG,DCP,DEA,DTP,OD,OSB/SPOREs,TRP,RRP,N/A')
 
-AppSetting.find_or_create_by(code: 'NIH', name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
+AppSetting.find_or_create_by(code: 'NIH').update(name: 'NIH Institution Code List', value: 'see big value', big_value: 'NEI-National Eye Institute;NHLBI-National Heart, Lung, and Blood Institute;NHGRI-National Human Genome Research Institute;NIA-National Institute on Aging;NIAAA-National Institute on Alcohol Abuse and Alcoholism;NIAID-National Institute of Allergy and Infectious Diseases;NIAMS-National Institute of Arthritis and Musculoskeletal and Skin Diseases;NIBIB-National Institute of Biomedical Imaging and Bioengineering;NICHD-NICHD-Eunice Kennedy Shriver National Institute of Child Health and Human Development;NIDCD-National Institute on Deafness and Other Communication Disorders;NIDCR-National Institute of Dental and Craniofacial Research;NIDDK-National Institute of Diabetes and Digestive and Kidney Diseases;NIDA-National Institute on Drug Abuse;NIEHS-National Institute of Environmental Health Sciences;NIGMS-National Institute of General Medical Sciences;NIMH-National Institute of Mental Health;NINDS-National Institute of Neurological Disorders and Stroke;NINR-National Institute of Nursing Research;NLM-National Library of Medicine;CIT-Center for Information Technology;CSR-Center for Scientific Review;FIC-John E. Fogarty International Center for Advanced Study in the Health Sciences;NCCAM-National Center for Complementary and Alternative Medicine;NCMHD-National Center on Minority Health and Health Disparities;NCRR-National Center for Research Resources (NCRR);CC-NIH Clinical Center;OD-Office of the Director')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG', name: 'Accepted File Types for Registry', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG').update(name: 'Accepted File Types for Registry', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
 
-AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES', name: 'Accepted File Types for PA', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
+AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES').update(name: 'Accepted File Types for PA', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
 
-AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES', name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES').update(name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent,Change Memo Document,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA', name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCCPS,DCP,NHLBI')
+AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA').update(name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCCPS,DCP,NHLBI')
 
-AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA', name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering Commitee Reviewed')
+AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA').update(name: 'NCI Division/Program Code List for PA', value: 'see big value', big_value: 'BIQSFP,SPORE,Steering Commitee Reviewed')
 
-AppSetting.find_or_create_by(code: 'SAMPLING_METHOD_PA', name: 'Sampling Method', value: 'Probability Sample,Non-Probability Sample', big_value: 'see value')
+AppSetting.find_or_create_by(code: 'SAMPLING_METHOD_PA').update(name: 'Sampling Method', value: 'Probability Sample,Non-Probability Sample', big_value: 'see value')
 
 trial_status_transition = '{
                              "STATUSZERO": {
@@ -776,7 +638,7 @@ trial_status_transition = '{
                              }
                            }'
 
-AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION', name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
+AppSetting.find_or_create_by(code: 'TRIAL_STATUS_TRANSITION').update(name: 'Trial Status Transition Matrix', value: 'see big value', big_value: trial_status_transition)
 
 sr_status_transition = '{
                              "STATUSZERO": {
@@ -937,24 +799,24 @@ sr_status_transition = '{
                              }
                            }'
 
-AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION', name: 'Site Recruitment Status Transition Matrix', value: 'see big value', big_value: sr_status_transition)
+AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION').update(name: 'Site Recruitment Status Transition Matrix', value: 'see big value', big_value: sr_status_transition)
 
-AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL', name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
+AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL').update(name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 
-AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL', name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL').update(name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
 
-AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES', name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES').update(name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
-AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INFO_URL', name: 'NCI Thesaurus page for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=NCI_Thesaurus&code=')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INFO_URL').update(name: 'NCI Thesaurus page for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=NCI_Thesaurus&code=')
 
-AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL', name: 'NCI Thesaurus tree for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ajax?action=search_hierarchy&ontology_node_ns=NCI_Thesaurus&ontology_display_name=NCI_Thesaurus&ontology_node_id=')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL').update(name: 'NCI Thesaurus tree for a term', value: 'https://ncit.nci.nih.gov/ncitbrowser/ajax?action=search_hierarchy&ontology_node_ns=NCI_Thesaurus&ontology_display_name=NCI_Thesaurus&ontology_node_id=')
 
-AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS', name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS').update(name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
 
-AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values', name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
+AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values').update(name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
 
 #AUM Role Matrix (roles will be assigned per environment i.e. prod, qa, demo)
-AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values', name: 'User Roles', value: 'see big value',
+AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values').update(name: 'User Roles', value: 'see big value',
                              big_value:
                                  '[
                                      {
@@ -1015,11 +877,11 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                  ]'
 )
 
-AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons, Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
+AppSetting.find_or_create_by(code: 'NIH_USER_FUNCTIONS').update(description: 'Double pipe delimited values', name: 'NIH User Functions', value: 'see big value', big_value: 'View Information||Manage and Curate Persons, Organizations and Families||Manage and Abstract Trial Registrations and Results||Manage Abstraction functionally||Administer/Approve CTRP Accounts||Administer and Manage all Functionality and Configurations')
 
-AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
+AppSetting.find_or_create_by(code: 'NIHEXT_USER_FUNCTIONS').update(description: 'Double pipe delimited values', name: 'NIHEXT User Functions', value: 'see big value', big_value: 'Submit Trials||Manage/Approve Trial ownership, Accruals, Site accounts')
 
-AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS', description: 'Double pipe delimited values', name: 'Federated User Functions', value: 'see big value', big_value: 'Submit Trials')
+AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS').update(description: 'Double pipe delimited values', name: 'Federated User Functions', value: 'see big value', big_value: 'Submit Trials')
 
 ########## SEEDING APP SETTINGS ENDS ##########
 
@@ -1335,6 +1197,147 @@ dcp = Organization.find_or_create_by( id: 10000002,
                                        email: "ncictrpdev@mail.nih.gov"
 )
 
+
+CadsrMarker.find_or_create_by(id:659).update(
+    name: 'SLC2A4 (GLUT4, name:  solute carrier family 2 (facilitated glucose transporter), member 4)',
+    meaning: 'SLC2A4 Gene',
+    description: 'This gene plays a role in glucose transport regulation.',
+    cadsr_id: 3335290,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+    nv_term_identifier: 'C89034',
+    pv_name: 'SLC2A4')
+
+CadsrMarker.find_or_create_by(id:47).update(
+    name: 'AFP (FETA, name:  alpha-fetoprotein)',
+    meaning: 'Alpha-Fetoprotein',
+    description: 'This gene plays a role in glucose transport regulation.',
+    cadsr_id: 3335290,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+    nv_term_identifier: 'C89034',
+    pv_name: 'SLC2A4')
+
+
+
+
+CadsrMarker.find_or_create_by(id:3543).update(
+    name: 'Citrate',
+    meaning: 'Citrate',
+    description: 'A salt or ester of citric acid.',
+    cadsr_id: 3192535,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C63374', pv_name: 'Citrate')
+
+CadsrMarker.find_or_create_by(id:169).update(
+    name: 'PDE5A (PDE5, name:  CN5A, name:  phosphodiesterase 5A (cGMP-specific), name:  CGB-PDE)',
+    meaning: 'cGMP-Specific 3,5-Cyclic Phosphodiesterase',
+    description: 'cGMP-specific 3,5-cyclic phosphodiesterase (875 aa, ~100 kDa) is encoded by the human PDE5A gene. This protein plays a role in the mediation of cyclic GMP metabolism.',
+    cadsr_id: 3243311, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C96469', pv_name: 'PDE5A')
+
+CadsrMarker.find_or_create_by(id:375).update(
+    name: 'ITGAM (integrin, alpha M, name:  CR3A, name:  MAC-1, name:  CD11b)',
+    meaning: 'ITGAM gene',
+    description: 'This gene plays a role in extracellular matrix interactions and cellular adhesion.',
+    cadsr_id: 3279303, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1366562', pv_name: 'ITGAM')
+
+
+CadsrMarker.find_or_create_by(id:394).update(
+    name: 'CD24 (CD24 antigen (small cell lung carcinoma cluster 4 antigen), name:  CD24A)',
+    meaning: 'CD24 gene',
+    description: 'This gene is involved in the immune responsiveness of B-cells.',
+    cadsr_id: 3281849, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1413212', pv_name: 'CD24')
+
+CadsrMarker.find_or_create_by(id:494).update(
+    name: 'TNFAIP3 (A20, name:  OTUD7C, name:  tumor necrosis factor alpha-induced protein 3)',
+    meaning: 'TNFAIP3 gene',
+    description: 'This gene may play a role in the regulation of apoptosis.',
+    cadsr_id: 3288476, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1420799', pv_name: 'TNFAIP3');
+
+CadsrMarker.find_or_create_by(id:568).update(
+    name: 'tumor protein p53 binding protein 1 (TP53BP1, name:  53BP1)',
+    meaning: 'TP53BP1 Gene',
+    description: 'This gene may play a role in the modulation of the response to DNA damage.',
+    cadsr_id: 3302801,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C88925', pv_name: 'tumor protein p53 binding protein 1')
+
+CadsrMarker.find_or_create_by(id:702).update(
+    name: 'BCL2A1 (BCL2-related protein A1, name:  ACC-1, name:  GRS, name:  BCL2L5, name:  BFL1, name:  HBPA1, name:  ACC-2)',
+    meaning: 'BCL2A1 gene',
+    description: 'No Value Exists',
+    cadsr_id: 3351678,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1412761', pv_name: 'BCL2A1')
+
+CadsrMarker.find_or_create_by(id:724).update(
+    name: 'MIR382 (MIRN382, name:  microRNA 382, name:  hsa-mir-382)',
+    meaning: 'MIR382 gene',
+    description: 'No Value Exists',
+    cadsr_id: 3359747,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1537903', pv_name: 'MIR382')
+
+CadsrMarker.find_or_create_by(id:374).update(
+    name: 'CD33 (SIGLEC3, name:  CD33 antigen (gp67), name:  sialic acid binding Ig-like lectin 3).update(name:  FLJ00391, name:  SIGLEC-3, name:  p67)',
+    meaning: 'CD33 gene',
+    description: 'No Value Exists',
+    cadsr_id: 3279301,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C1439292', pv_name: 'CD33')
+
+CadsrMarker.find_or_create_by(id:856).update(
+    name: 'AKT2',
+    meaning: 'AKT2 Gene',
+    description: 'This gene plays a role in glucose homeostasis and the inhibition of apoptosis.',
+    cadsr_id: 3412274,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C18352', pv_name: 'AKT2')
+
+CadsrMarker.find_or_create_by(id:924).update(
+    name: 'IGHV3-21 (immunoglobulin heavy variable 3-21)',
+    meaning: 'IGHV3-21 gene',
+    description: 'No Value Exists',
+    cadsr_id: 3430847, cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'),
+    nv_term_identifier: 'C1416035', pv_name: 'IGHV3-21')
+CadsrMarker.find_or_create_by(id:1781).update(
+    name: 'SPIB (SPI-B, name:  Transcription Factor Spi-B, name:  Spi-B Transcription Factor (Spi-1/PU.1 Related))',
+    meaning: 'SPIB Gene',
+    description: 'This gene is involved in the modulation of gene transcription.',
+    cadsr_id: 3684777,
+    cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'), nv_term_identifier: 'C99651', pv_name: 'SPIB')
+
+
+
+CadsrMarkerSynonym.find_or_create_by(id: 678).update(alternate_name:  'CGB-PDE',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 677).update(alternate_name:  'phosphodiesterase 5A (cGMP-specific)',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 676).update(alternate_name:  'CN5A',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 675).update(alternate_name:  'PDE5',cadsr_marker_id:  169,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+
+CadsrMarkerSynonym.find_or_create_by(id: 1914).update(alternate_name:  'tumor necrosis factor alpha-induced protein 3',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1912).update(alternate_name:  'A20',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1913).update(alternate_name:  'OTUD7C',cadsr_marker_id:  494,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+CadsrMarkerSynonym.find_or_create_by(id: 1563).update(alternate_name:  'CD24 antigen (small cell lung carcinoma cluster 4 antigen)',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1564).update(alternate_name:  'CD24A',cadsr_marker_id:  394,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+CadsrMarkerSynonym.find_or_create_by(id: 2740).update(alternate_name:  'BCL2L5',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2737).update(alternate_name:  'BCL2-related protein A1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2739).update(alternate_name:  'GRS',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2742).update(alternate_name:  'HBPA1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2738).update(alternate_name:  'ACC-1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2743).update(alternate_name:  'ACC-2',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2741).update(alternate_name:  'BFL1',cadsr_marker_id:  702,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1431).update(alternate_name:  'sialic acid binding Ig-like lectin 3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1432).update(alternate_name:  'FLJ00391',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1429).update(alternate_name:  'SIGLEC3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1430).update(alternate_name:  'CD33 antigen (gp67)',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1434).update(alternate_name:  'SIGLEC-3',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 1433).update(alternate_name:  'p67',cadsr_marker_id:  374,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2800).update(alternate_name:  'microRNA 382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2801).update(alternate_name:  'hsa-mir-382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2799).update(alternate_name:  'MIRN382',cadsr_marker_id:  724,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 3554).update(alternate_name:  'immunoglobulin heavy variable 3-21',cadsr_marker_id:  924,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2296).update(alternate_name:  '53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 2295).update(alternate_name:  'TP53BP1',cadsr_marker_id:  568,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7725).update(alternate_name:  'Spi-B Transcription Factor (Spi-1/PU.1 Related)',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7723).update(alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+CadsrMarkerSynonym.find_or_create_by(id: 7724).update(alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
+
+
 if !Rails.env.qa?
 
   test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
@@ -1373,7 +1376,8 @@ if !Rails.env.qa?
    user.password = "Welcome01"
    user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
    user.user_status = UserStatus.find_by_code('ACT')
-   user.save!
+   does_user_exists = User.find_by_username(user.username)
+   user.save! if !does_user_exists
   end
 
   test_users.each do |u|

@@ -29,37 +29,12 @@
                 };
 
                 scope.$on('$stateChangeStart', function(event) {
-                    if (scope[formName].$dirty) {
+                    if (scope[formName].$dirty && !scope[formName].$submitted) {
                         if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
                             event.preventDefault();
                         }
                     }
                 });
-/*
-                function activateModal() {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: 'app/pa/dashboard/abstraction/scientific/directives/advanced_cadsr_search_form_modal2.html',
-                        controller: 'unSavedChangesModalCtrl as unChgs',
-                        size: 'md'
-                    });
-                }
-*/
             }
         }
-
-/*
-        function unSavedChangesModalCtrl($scope, $uibModalInstance) {
-            var vm = this;
-
-
-            vm.confirm = function() {
-
-            };
-
-            vm.cancel = function() {
-                $uibModalInstance.close();
-            };
-        }
-*/
 })();

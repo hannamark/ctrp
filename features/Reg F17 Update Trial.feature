@@ -91,18 +91,18 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
      Then the documents type will be displayed during update
      
      
-      |Revised Protocol  |
-      |Change Memo  |
-      |IRB Approval  |
+      |Current Protocol  |
+      |Current Change Memo  |
+      |Current IRB Approval  |
       |Other-C |
       |Other-D  |
 
      When I have selected the Update option when Initial Abstraction Verified Milestone is entered for an Amendment
      Then the documents type will be displayed during update
      
-      |Revised Protocol  |
-      |Change Memo  |
-      |IRB Approval  |
+      |Current Protocol  |
+      |Current Change Memo  |
+      |Current IRB Approval  |
       |Other-C  |
       |TRS #2  |
       |Other-D  |

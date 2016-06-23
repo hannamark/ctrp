@@ -598,6 +598,12 @@
             var piOption = vm.responsiblePartyArr.filter(findPiOption);
             if (piOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.selectedInvArray = vm.selectedPiArray;
+                $scope.trial_form.$setDirty();
+            }
+
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('pi different');
+                $scope.trial_form.$setDirty();
             }
         });
 
@@ -609,7 +615,30 @@
             if (siOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.selectedIaArray = vm.selectedSponsorArray;
             }
+
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('sponsor different');
+                $scope.trial_form.$setDirty();
+            }
         });
+
+        $scope.$watch(function() {
+            return vm.selectedLoArray;
+        }, function(newValue, oldValue) {
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('lo different');
+                $scope.trial_form.$setDirty();
+            }
+        });
+
+        $scope.$watch(function() {
+            return vm.addedFses;
+        }, function(newValue, oldValue) {
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('fses different');
+                $scope.trial_form.$setDirty();
+            }
+        }, true);
 
         $scope.$watch(function() {
             return vm.curTrial.intervention_indicator;
@@ -617,6 +646,8 @@
             if (newValue == 'No') {
                 vm.curTrial.sec801_indicator = 'No';
             }
+
+
         });
 
         vm.watchOption = function(type) {
