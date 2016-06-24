@@ -36,7 +36,7 @@
         var optionOrg = {
             name: 'organization_name',
             displayName: 'Organizational Affiliation',
-            enableSorting: false,
+            enableSorting: true,
             minWidth: '100',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
