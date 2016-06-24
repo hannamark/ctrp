@@ -4,8 +4,8 @@
       <uib-accordion-group ng-hide="paMenuPanel.nciTrialId==''" is-open="paMenuPanel.trialGlobalOpen">
           <uib-accordion-heading>
               <strong>
-                  <div ng-show="paMenuPanel.menuTypes.abstraction">Trial Abstraction:</div>
-                  <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">Trial Validation:</div>
+                  <!-- <div ng-show="paMenuPanel.menuTypes.abstraction">Trial Abstraction:</div>
+                  <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">Trial Validation:</div> -->
                   NCI Trial ID: {{paMenuPanel.nciTrialId}}<i class="pull-right glyphicon" ng-click="paMenuPanel.toggleGlobal()" ng-class="{'glyphicon-chevron-down': paMenuPanel.trialGlobalOpen, 'glyphicon-chevron-right': !paMenuPanel.trialGlobalOpen}"></i>
               </strong>
           </uib-accordion-heading>
