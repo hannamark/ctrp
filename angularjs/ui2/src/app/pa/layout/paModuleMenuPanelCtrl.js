@@ -23,7 +23,7 @@
             'adminDataOpen': true,
             'scientificDataOpen': true,
             'completeOpen': true,
-            'trialValidOpen': false,
+            'trialValidOpen': true,
         };
         vm.menuTypes = {
             'abstraction': false,

@@ -196,7 +196,7 @@
                 user_id: vm.userDetails.id,
                 sort: 'nci_id',
                 order: 'desc',
-                rows: 10,
+                rows: 50,
                 start: 1
             }
         }; //initial User Search Parameters
@@ -215,7 +215,7 @@
             totalItems: null,
             rowHeight: 22,
             paginationPageSizes: [10, 25, 50, 100, 1000],
-            paginationPageSize: 10,
+            paginationPageSize: 50,
             useExternalPagination: true,
             useExternalSorting: true,
             enableFiltering: false,
@@ -226,13 +226,15 @@
                     name: 'nci_id',
                     enableSorting: true,
                     displayName: 'NCI Trial Identifier',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
                     width: '180'
                 },
                 {
                     name: 'lead_org_name',
                     displayName: 'Lead Organization',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: false,
                     width: '*'
                 },
@@ -245,21 +247,24 @@
                 {
                     name: 'process_priority',
                     displayName: 'Processing Priority',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.process_priority })">{{COL_FIELD}}</a></div>',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.viewTrial({trialId: row.entity.process_priority })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
                     width: '*'
                 },
                 {
                     name: 'ctep_id',
                     displayName: 'CTEP ID',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.ctep_id })">{{COL_FIELD}}</a></div>',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.viewTrial({trialId: row.entity.ctep_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
                     width: '*'
                 },
                 {
                     name: 'official_title',
                     displayName: 'Official Title for Trial',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
                     width: '*'
                 }
@@ -288,7 +293,7 @@
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
+            vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
@@ -307,7 +312,35 @@
                 }
             );
         };
+
         vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
+
+        vm.gridTrialsSubmittedOptions.exporterPdfHeader.text = 'Trials submitted by ' + vm.userDetails.username + ':';
+        vm.gridTrialsSubmittedOptions.exporterPdfFooter = function ( currentPage, pageCount ) {
+            return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' submitted a total of ' + vm.gridTrialsSubmittedOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
+        };
+
+        vm.gridTrialsSubmittedOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+            vm.gridApi.core.on.sortChanged($scope, sortSubmittedChangedCallBack);
+            vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                vm.searchParams.start = newPage;
+                vm.searchParams.rows = pageSize;
+                vm.getUserSubmittedTrials();
+            });
+        };
+        vm.gridTrialsSubmittedOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
+                function (data) {
+                    vm.gridTrialsSubmittedOptions.useExternalPagination = false;
+                    vm.gridTrialsSubmittedOptions.useExternalSorting = false;
+                    vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                }
+            );
+        };
         vm.getUserSubmittedTrials = function () {
             vm.gridTrialsSubmittedOptions.useExternalPagination = true;
             vm.gridTrialsSubmittedOptions.useExternalSorting = true;
@@ -397,7 +430,7 @@
          * @param grid
          * @param sortColumns
          */
-        function sortChangedCallBack(grid, sortColumns) {
+        function sortOwnedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
                 vm.searchParams.sort = 'nci_id';
@@ -418,6 +451,28 @@
 
             //do the search with the updated sorting
             vm.getUserTrials();
+        } //sortChangedCallBack
+        function sortSubmittedChangedCallBack(grid, sortColumns) {
+
+            if (sortColumns.length === 0) {
+                vm.searchParams.sort = 'nci_id';
+                vm.searchParams.order = 'desc';
+            } else {
+                vm.searchParams.sort = sortColumns[0].name; //sort the column
+                switch (sortColumns[0].sort.direction) {
+                    case uiGridConstants.ASC:
+                        vm.searchParams.order = 'ASC';
+                        break;
+                    case uiGridConstants.DESC:
+                        vm.searchParams.order = 'DESC';
+                        break;
+                    case undefined:
+                        break;
+                }
+            }
+
+            //do the search with the updated sorting
+            vm.getUserSubmittedTrials();
         } //sortChangedCallBack
 
         //Listen to the write-mode switch

@@ -1338,7 +1338,6 @@ CadsrMarkerSynonym.find_or_create_by(id: 7723).update(alternate_name:  'SPI-B',c
 CadsrMarkerSynonym.find_or_create_by(id: 7724).update(alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 
 
-if !Rails.env.qa?
 
   test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
                  {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "first_name" => "Frank", "last_name" => "Lee"},
@@ -1476,7 +1475,6 @@ if !Rails.env.qa?
     Rails.logger.info "Exception thrown #{e.inspect}"
   end
 
-end
 
 #Line to include seeds from passed environment variable
 puts "Begin seeding environment-specfic data"

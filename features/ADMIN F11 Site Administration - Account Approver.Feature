@@ -52,8 +52,8 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Site Administrator|
 And the CTRP User will be able to access the Administrative features in CTRP
-And an e-mail will be sent to the user (Admin Access e-mail)
-
+And the Account Activation(Site User) e-mail will be sent to the user 
+ 
 Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature
@@ -63,6 +63,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Trial Submitter|
 And the CTRP User will not have access the Site Administrative features in CTRP
+And the Account Activation(Site User) e-mail will be sent to the user
 
 Scenario: #5 I can inactivate a Trial Submitter with the roles: Admin, Account Approver
 Given I am logged into CTRP 
@@ -99,6 +100,7 @@ And the system will display the following action buttons
 |Transfer ownership|
 When I can Select Save without Transferring ownership
 Then the new organization will be assigned to the user
+And the Account Activation(Site User) e-mail will be sent to the user
 And the user account status will be Active 
 When I select Transfer Ownership
 Then the system will open the trial management screen to reassign the trials (Feature Admin F06)
