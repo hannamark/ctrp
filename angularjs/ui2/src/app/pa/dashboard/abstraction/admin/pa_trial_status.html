@@ -4,7 +4,7 @@
             <div class="panel-title">Trial Status</div>
         </div>
         <div class="panel-body">
-            <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialStatusView.updateTrialStatuses()">
+            <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialStatusView.updateTrialStatuses()" unsaved-changes>
                 <!-- fieldset for trial statuses -->
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialStatusView.disableBtn">
                     <legend class="sub-bordered">Trial Statuses</legend>
