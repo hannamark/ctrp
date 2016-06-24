@@ -44,6 +44,9 @@ Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
 And I select or change my Organizational Affiliation
 And the selected organiziton is not my organization Family
+When I select save 
+Then a warning message will be displayed "If you change your organization, you will lose any existing Site Admin, Report Viewing, Accrual Submission and Trial Ownership privileges and your account will be set to a Pending status requiring reauthorization"
+When I select OK
 Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
@@ -53,6 +56,9 @@ Scenario: #5 Admin Access for change to a different organization not associated 
 Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
 And I select or change my Organizational Affiliation
+When I select save 
+Then a warning message will be displayed "If you change your organization, you will lose any existing Site Admin, Report Viewing, Accrual Submission and Trial Ownership privileges and your account will be set to a Pending status requiring reauthorization"
+When I select OK
 Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
