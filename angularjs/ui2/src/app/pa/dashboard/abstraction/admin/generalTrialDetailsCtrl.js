@@ -8,10 +8,10 @@
     .controller('generalTrialDetailsCtrl', generalTrialDetailsCtrl);
 
     generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
-            'MESSAGES', 'protocolIdOriginObj', '_', '$timeout', 'centralContactTypes', 'PersonService'];
+            'MESSAGES', 'protocolIdOriginObj', '_', '$timeout', 'centralContactTypes', 'PersonService', '$state'];
 
     function generalTrialDetailsCtrl($scope, TrialService, PATrialService, toastr,
-        MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes, PersonService) {
+        MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes, PersonService, $state) {
       var vm = this;
       var _defaultCountry = 'United States'; // for phone number validation
       var _curCentralContactId = '';
@@ -120,13 +120,19 @@
               if (status >= 200 && status <= 210) {
                   vm.generalTrialDetailsObj = res;
                   vm.generalTrialDetailsObj.lock_version = res.lock_version;
-                  PATrialService.setCurrentTrial(vm.generalTrialDetailsObj); // update to cache
+                  PATrialService.setCurrentTrial(res); // update to cache
                   $scope.$emit('updatedInChildScope', {});
                   toastr.success('Trial general details has been updated', 'Successful!', {
                       extendedTimeOut: 1000,
                       timeOut: 0
                   });
                   getTrialDetailCopy();
+
+                  // To make sure setPristine() is executed after all $watch functions are complete
+                  $timeout(function() {
+                     $scope.general_trial_details_form.$setPristine();
+                 }, 1);
+
               }
           }).catch(function(err) {
               // handle err
@@ -305,6 +311,11 @@
                  vm.leadOrg.name = newVal[0].name;
                  vm.generalTrialDetailsObj.lead_org = newVal[0];
                  vm.generalTrialDetailsObj.lead_org_id = newVal[0].id; // update lead organization
+
+                 if (oldVal.length && !angular.equals(newVal[0], oldVal[0])) {
+                     $scope.general_trial_details_form.$setDirty();
+                     console.log('lead org: form dirty status is now: ', $scope.general_trial_details_form.$dirty);
+                 }
              }
           });
       }
@@ -319,6 +330,11 @@
               if (vm.centralContactType === 'PI') {
                   _usePIAsCentralContact();
               }
+
+              if (oldVal.length && !angular.equals(newVal[0], oldVal[0])) {
+                  $scope.general_trial_details_form.$setDirty();
+                  console.log('pi: form dirty status is now: ', $scope.general_trial_details_form.$dirty);
+              }
           }
         });
       }
@@ -329,6 +345,11 @@
                  vm.sponsor.name = !!newVal[0].name ? newVal[0].name : '';
                  vm.generalTrialDetailsObj.sponsor = newVal[0];
                  vm.generalTrialDetailsObj.sponsor_id = !!newVal[0].id ? newVal[0].id : ''; // update sponsor
+
+                 if (oldVal.length && !angular.equals(newVal[0], oldVal[0])) {
+                     $scope.general_trial_details_form.$setDirty();
+                     console.log('sponsor: form dirty status is now: ', $scope.general_trial_details_form.$dirty);
+                 }
              }
           });
       }
@@ -346,6 +367,11 @@
               vm.generalTrialDetailsObj.central_contacts[0].person_id = newVal[0].id || '';
               vm.generalTrialDetailsObj.central_contacts[0].phone = newVal[0].phone.replace(regex, '');
               delete vm.generalTrialDetailsObj.central_contacts[0].id;
+
+              if (!angular.equals(newVal, oldVal)) {
+                  $scope.general_trial_details_form.$setDirty();
+                  console.log('cc: form dirty status is now: ', $scope.general_trial_details_form.$dirty);
+              }
           }
         });
       }

@@ -6,9 +6,9 @@
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="trial_form"
                   novalidate ctrp-submit="trialDetailView.updateTrial()"
-                  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable">
+                  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" unsaved-changes>
 
-                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn" ng-if="trialDetailView.addMode"> 
+                <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn" ng-if="trialDetailView.addMode" unsaved-changes> 
                     <legend class="sub-bordered">Add Collaborators</legend>
                     <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                         <label class="control-label col-xs-12 col-sm-3">Add Collaborator:</label>
@@ -49,6 +49,7 @@
         <div class="panel-title">List of Trial Collaborators</div>
     </div>
     <div class="panel-body">
+        <form class="form" role="form" name="trial_collaborators_list_form" novalidate unsaved-changes>
         <div ng-disabled="!paTrialOverview.trialDetailObj.pa_editable" class="table-responsive">
             <table class="table table-bordered table-striped table-hover" ng-show="trialDetailView.curTrial.collaborators.length" >
                 <thead>
@@ -91,5 +92,6 @@
                 </button>
             </div>
         </div>
+    </form>
     </div>
 </div>

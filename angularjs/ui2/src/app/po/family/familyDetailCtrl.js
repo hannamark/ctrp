@@ -53,7 +53,10 @@
                     });
                 }
 
-                $scope.family_form.$setPristine();
+                // To make sure setPristine() is executed after all $watch functions are complete
+                $timeout(function() {
+                   $scope.family_form.$setPristine();
+               }, 1);
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));
             }).finally(function() {
