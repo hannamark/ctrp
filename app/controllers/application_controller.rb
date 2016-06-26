@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :xml, :json
   around_filter :global_request_logging
+
+
   #before_filter :wrapper_authenticate_user unless Rails.env.test?
   #check_authorization :unless => :devise_controller?
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|

@@ -2,6 +2,7 @@ class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   ## Please comment the next two lines if you donot want the Authorization checks
   before_filter :wrapper_authenticate_user, :except => [:search, :select] unless Rails.env.test?
+  before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy, :curate]
 
   respond_to :html, :json
 
