@@ -20,46 +20,23 @@
             return directiveObject;
 
             function linkerFn(scope, element, attrs) {
-                var formName = attrs.name;
+                var formName = attrs.name ? attrs.name : element.parent().prop('name');
+                console.log(formName);
 
-                window.onbeforeunload = function(event) {
-                    if (scope[formName].$dirty) {
+                $window.onbeforeunload = function(event) {
+                    console.log('lets c forms tatus here: ', formName, scope[formName].$dirty);
+                    if (formName && scope[formName].$dirty) {
                         return 'Are you sure you want to leave this page? You may have unsaved changes.';
                     }
                 };
 
                 scope.$on('$stateChangeStart', function(event) {
-                    if (scope[formName].$dirty) {
+                    if (scope[formName].$dirty && !scope[formName].$submitted) {
                         if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
                             event.preventDefault();
                         }
                     }
                 });
-/*
-                function activateModal() {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: 'app/pa/dashboard/abstraction/scientific/directives/advanced_cadsr_search_form_modal2.html',
-                        controller: 'unSavedChangesModalCtrl as unChgs',
-                        size: 'md'
-                    });
-                }
-*/
             }
         }
-
-/*
-        function unSavedChangesModalCtrl($scope, $uibModalInstance) {
-            var vm = this;
-
-
-            vm.confirm = function() {
-
-            };
-
-            vm.cancel = function() {
-                $uibModalInstance.close();
-            };
-        }
-*/
 })();

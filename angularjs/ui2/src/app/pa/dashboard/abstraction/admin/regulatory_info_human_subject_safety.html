@@ -4,7 +4,7 @@
             <div class="panel-title">Human Subject Safety Information</div>
         </div>
         <div class="panel-body">
-            <form class="form form-horizontal" role="form" name="human_safety_form" novalidate ctrp-submit="regInfoSafetyView.updateHumanSafetyInfo()">
+            <form class="form form-horizontal" role="form" name="human_safety_form" novalidate ctrp-submit="regInfoSafetyView.updateHumanSafetyInfo()" unsaved-changes>
                 <!-- board approval status -->
                 <div class="form-group" ng-class="{'has-feedback required': regInfoSafetyView.approvalStatusRequired, 'has-error': ctrpbtn.human_safety_form.needsAttention(human_safety_form.approval_status)}">
                     <label for="board_approval_status" class="control-label col-xs-12 col-sm-4">Board Approval Status:</label>

@@ -131,6 +131,7 @@ module.exports = function() {
     var futureDateTwoMonth = '';
     var pastDate = '';
     var replacePastDate = '';
+    var replaceStartDate = '';
     var replacePrimaryDate = '';
     var replaceCompletionDate = '';
     var hlodReasonA = '';
@@ -1107,7 +1108,7 @@ module.exports = function() {
         futrDateYear = dateSplitC[2];
         trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Anticipated');
         trialStatus.clickSave();
-        browser.sleep(9500).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.When(/^I add a trial status from (.*) to trial status (.*) along with why study stopped reason (.*) and same day rule (.*) the respective checks (.*) will be displayed$/, function (statusFrom, statusTo, whyStudyStopped, Sameday, errorsWarnings, table, callback) {
@@ -1502,7 +1503,7 @@ module.exports = function() {
                     var statusInStatusToB = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1513,7 +1514,7 @@ module.exports = function() {
                     var statusInStatusToC = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1524,7 +1525,7 @@ module.exports = function() {
                     var statusInStatusToD = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     //errorStatusAlreadyExists = 'Status already exists';
                     commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
                     //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
@@ -1537,7 +1538,7 @@ module.exports = function() {
                     var statusInStatusToE = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1548,7 +1549,7 @@ module.exports = function() {
                     var statusInStatusToF = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1559,7 +1560,7 @@ module.exports = function() {
                     var statusInStatusToG = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1570,7 +1571,7 @@ module.exports = function() {
                     var statusInStatusToH = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1581,7 +1582,7 @@ module.exports = function() {
                     var statusInStatusToI = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1592,7 +1593,7 @@ module.exports = function() {
                     var statusInStatusToJ = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1603,7 +1604,7 @@ module.exports = function() {
                     var statusInStatusToK = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
@@ -1614,35 +1615,1175 @@ module.exports = function() {
                     var statusInStatusToL = '' + statusTable[i].statusTo + '';
                     statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
                     trialStatus.clickSave();
-                    console.log('Approved convErrorsWarningsString: '+convErrorsWarningsString);
+                    console.log('Withdrawn convErrorsWarningsString: '+convErrorsWarningsString);
                     trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
                     deleteTrialStatus();
                     trialStatus.clickSave();
                     statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
                     trialStatus.clickSave();
                 }
+                /*
+                 |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Active	                                        |STATUSZERO	                                    |			        |yes    |                                                                                                                                                                                                                                                                           |
+                 |Active	                                        |In Review	                                    |			        |yes    |ERROR: Invalid status transition from [Active] to [In Review]	                                                                                                                                                                                                                |
+                 |Active	                                        |Approved	                                    |			        |yes    |ERROR: Invalid status transition from [Active] to [Approved]	                                                                                                                                                                                                                |
+                 |Active	                                        |Withdrawn	                                    |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
+                 |Active	                                        |Active	                                        |			        |yes    |ERROR: Duplicate [Active] status is not allowed	                                                                                                                                                                                                                            |
+                 |Active	                                        |Enrolling by Invitation	                    |			        |yes    |ERROR: Invalid status transition from [Active] to [Enrolling by Invitation]	                                                                                                                                                                                                |
+                 |Active	                                        |Closed to Accrual	                            |			        |no     |WARNING: Statuses [Active] and [Closed to Accrual] have the same date                                                                                                                                                                                      |
+                 |Active	                                        |Closed to Accrual and Intervention             |			        |no     |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Statuses [Active] and [Closed to Accrual and Intervention] have the same date                                                                                                                |
+                 |Active	                                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|no     |WARNING: Statuses [Active] and [Temporarily Closed to Accrual] have the same date  	                                                                                                                                                                        |
+                 |Active	                                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no     |WARNING: Statuses [Active] and [Temporarily Closed to Accrual and Intervention] have the same date                                                                                                                                                         |
+                 |Active	                                        |Complete	                                    |			        |yes    |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                                                                |
+                 |Active	                                        |Administratively Complete	                    |Add Stopped Reason	|yes    |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
+                 */
             } else if (statusTable[i].statusFrom === 'Active'){
-
+                if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Active convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
+                /*
+                 |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday   |errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Enrolling by Invitation	                        |STATUSZERO	                                    |			        |yes       |                                                                                                                                                                                                                                                                        |
+                 |Enrolling by Invitation	                        |In Review	                                    |			        |yes       |ERROR: Invalid status transition from [Enrolling by Invitation] to [In Review]	                                                                                                                                                                                                |
+                 |Enrolling by Invitation	                        |Approved	                                    |			        |yes       |ERROR: Invalid status transition from [Enrolling by Invitation] to [Approved]	                                                                                                                                                                                                |
+                 |Enrolling by Invitation	                        |Withdrawn	                                    |Add Stopped Reason	|yes       |                                                                                                                                                                                                                                                                        |
+                 |Enrolling by Invitation	                        |Active	                                        |			        |yes       |ERROR: Invalid status transition from [Enrolling by Invitation] to [Active]                                                                                                                                                                                                    |
+                 |Enrolling by Invitation	                        |Enrolling by Invitation	                    |			        |yes       |ERROR: Duplicate [Enrolling by Invitation] status is not allowed	                                                                                                                                                                                                            |
+                 |Enrolling by Invitation	                        |Closed to Accrual	                            |			        |no        |WARNING: Statuses [Enrolling by Invitation] and [Closed to Accrual] have the same date                                                                                                                                                                                                                                                                        |
+                 |Enrolling by Invitation	                        |Closed to Accrual and Intervention             |			        |no        |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Statuses [Enrolling by Invitation] and [Closed to Accrual and Intervention] have the same date 	                                                                                                                                                                                                                        |
+                 |Enrolling by Invitation	                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|no        |WARNING: Statuses [Enrolling by Invitation] and [Temporarily Closed to Accrual] have the same date                                                                                                                                                                                                                                                                       |
+                 |Enrolling by Invitation	                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|no        |WARNING: Statuses [Enrolling by Invitation] and [Temporarily Closed to Accrual and Intervention] have the same date                                                                                                                                                                                                                                                                       |
+                 |Enrolling by Invitation	                        |Complete	                                    |			        |yes       |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
+                 |Enrolling by Invitation	                        |Administratively Complete	                    |Add Stopped Reason	|yes       |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
+                 */
             } else if (statusTable[i].statusFrom === 'Enrolling by Invitation'){
-
+                if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Enrolling by Invitation' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Enrolling by Invitation convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
+                /*
+                 |statusFrom	                                |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Closed to Accrual	                            |STATUSZERO	                                    |			        |yes    |                                                                                                                                                                                                                                                                           |
+                 |Closed to Accrual	                            |In Review	                                    |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual] to [In Review]	                                                                                                                                                                                                    |
+                 |Closed to Accrual                             |Approved	                                    |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual] to [Approved]	                                                                                                                                                                                                    |
+                 |Closed to Accrual                            	|Withdrawn	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Closed to Accrual] to [Withdrawn]	                                                                                                                                                                                                    |
+                 |Closed to Accrual                            	|Active	                                        |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual] to [Active]	                                                                                                                                                                                                        |
+                 |Closed to Accrual                            	|Enrolling by Invitation	                    |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual] to [Enrolling by Invitation]	                                                                                                                                                                                        |
+                 |Closed to Accrual                            	|Closed to Accrual	                            |			        |yes    |ERROR: Duplicate [Closed to Accrual] status is not allowed 	                                                                                                                                                                                                                |
+                 |Closed to Accrual                            	|Closed to Accrual and Intervention             |			        |yes    |                                                                                                                                                                                                                                                                               |
+                 |Closed to Accrual	                            |Temporarily Closed to Accrual                  |Add Stopped Reason	|yes    |WARNING: Invalid status transition from [Closed to Accrual] to [Temporarily Closed to Accrual]	                                                                                                                                                                                |
+                 |Closed to Accrual	                            |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes    |WARNING: Invalid status transition from [Closed to Accrual] to [Temporarily Closed to Accrual and Intervention]                                                                                                                                                                |
+                 |Closed to Accrual	                            |Complete	                                    |			        |yes    |WARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                                                                                    |
+                 |Closed to Accrual	                            |Administratively Complete	                    |Add Stopped Reason	|yes    |WARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                                                                                    |
+                 */
             } else if (statusTable[i].statusFrom === 'Closed to Accrual'){
-
+                if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
+                /*
+                 |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Closed to Accrual and Intervention	            |STATUSZERO	                                    |			        |yes    |                                                                                                                                                                                                                                                                          |
+                 |Closed to Accrual and Intervention	            |In Review	                                    |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [In Review]	                                                                                                                                                                                    |
+                 |Closed to Accrual and Intervention	            |Approved	                                    |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Approved]	                                                                                                                                                                                    |
+                 |Closed to Accrual and Intervention	            |Withdrawn	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Withdrawn]	                                                                                                                                                                                    |
+                 |Closed to Accrual and Intervention	            |Active	                                        |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Active]	                                                                                                                                                                                        |
+                 |Closed to Accrual and Intervention	            |Enrolling by Invitation	                    |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Enrolling by Invitation]	                                                                                                                                                                    |
+                 |Closed to Accrual and Intervention	            |Closed to Accrual	                            |			        |yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Closed to Accrual]	                                                                                                                                                                            |
+                 |Closed to Accrual and Intervention	            |Closed to Accrual and Intervention             |			        |yes    |ERROR: Duplicate [Closed to Accrual and Intervention] status is not allowed	                                                                                                                                                                                                |
+                 |Closed to Accrual and Intervention	            |Temporarily Closed to Accrual                  |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Temporarily Closed to Accrual]	                                                                                                                                                                |
+                 |Closed to Accrual and Intervention	            |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Closed to Accrual and Intervention] to [Temporarily Closed to Accrual and Intervention]                                                                                                                                                 |
+                 |Closed to Accrual and Intervention	            |Complete	                                    |			        |yes    |                                                                                                                                                                                                                                                                        |
+                 |Closed to Accrual and Intervention	            |Administratively Complete	                    |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                        |
+                 */
             } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention'){
-
+                if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
+                /*
+                 |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Temporarily Closed to Accrual                  	|STATUSZERO	                                    |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                            |
+                 |Temporarily Closed to Accrual                  	|In Review	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [In Review]	                                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual                  	|Approved	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [Approved]	                                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual                  	|Withdrawn	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [Withdrawn]	                                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual                  	|Active	                                        |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                                 |
+                 |Temporarily Closed to Accrual                  	|Enrolling by Invitation	                    |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                                |
+                 |Temporarily Closed to Accrual                  	|Closed to Accrual	                            |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
+                 |Temporarily Closed to Accrual  	                |Closed to Accrual and Intervention             |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
+                 |Temporarily Closed to Accrual                  	|Temporarily Closed to Accrual                  |Add Stopped Reason	|yes    |ERROR: Duplicate [Temporarily Closed to Accrual] status is not allowed	                                                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual  	                |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
+                 |Temporarily Closed to Accrual  	                |Complete	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Temporarily Closed to Accrual] to [Complete]	                                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual  	                |Administratively Complete	                    |Add Stopped Reason	|yes    |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing                                                                                                                                                |
+                 */
             } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual'){
-
+                if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
+                /*
+                 |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday  |errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Temporarily Closed to Accrual and Intervention	|STATUSZERO	                                    |Add Stopped Reason	|yes      |WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing                                                                                                                                                                                                                                                                         |
+                 |Temporarily Closed to Accrual and Intervention	|In Review	                                    |Add Stopped Reason	|yes      |ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [In Review]	                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual and Intervention	|Approved	                                    |Add Stopped Reason	|yes      |ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [Approved]	                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual and Intervention	|Withdrawn	                                    |Add Stopped Reason	|yes      |ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [Withdrawn]	                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual and Intervention	|Active	                                        |Add Stopped Reason	|yes      |                                                                                                                                                                                                                                                                         |
+                 |Temporarily Closed to Accrual and Intervention	|Enrolling by Invitation	                    |Add Stopped Reason	|yes      |                                                                                                                                                                                                                                                                         |
+                 |Temporarily Closed to Accrual and Intervention	|Closed to Accrual	                            |Add Stopped Reason	|yes      |                                                                                                                                                                                                                                                                         |
+                 |Temporarily Closed to Accrual and Intervention	|Closed to Accrual and Intervention             |Add Stopped Reason	|yes      |WARNING: Interim status [Closed to Accrual] is missing	                                                                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual and Intervention	|Temporarily Closed to Accrual                  |Add Stopped Reason	|yes      |ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [Temporarily Closed to Accrual]	                                                                                                                                                    |
+                 |Temporarily Closed to Accrual and Intervention	|Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes      |ERROR: Duplicate [Temporarily Closed to Accrual and Intervention] status is not allowed	                                                                                                                                                                                    |
+                 |Temporarily Closed to Accrual and Intervention	|Complete	                                    |Add Stopped Reason	|yes      |ERROR: Invalid status transition from [Temporarily Closed to Accrual and Intervention] to [Complete]	                                                                                                                                                                        |
+                 |Temporarily Closed to Accrual and Intervention	|Administratively Complete	                    |Add Stopped Reason	|yes      |WARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	                                                                                                                                            |
+                 */
             } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention'){
-
+                if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Temporarily Closed to Accrual and Intervention' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Temporarily Closed to Accrual and Intervention convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
+                /*
+                 |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday |errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Complete	                                        |STATUSZERO	                                    |			        |yes     |                                                                                                                                                                                                                                                                           |
+                 |Complete	                                        |In Review	                                    |			        |yes     |ERROR: Invalid status transition from [Complete] to [In Review]	                                                                                                                                                                                                            |
+                 |Complete                                    	    |Approved	                                    |			        |yes     |ERROR: Invalid status transition from [Complete] to [Approved]	                                                                                                                                                                                                                |
+                 |Complete                                    	    |Withdrawn	                                    |Add Stopped Reason	|yes     |ERROR: Invalid status transition from [Complete] to [Withdrawn]	                                                                                                                                                                                                            |
+                 |Complete                                    	    |Active	                                        |			        |yes     |ERROR: Invalid status transition from [Complete] to [Active]	                                                                                                                                                                                                                |
+                 |Complete	                                        |Enrolling by Invitation	                    |			        |yes     |ERROR: Invalid status transition from [Complete] to [Enrolling by Invitation]	                                                                                                                                                                                                |
+                 |Complete	                                        |Closed to Accrual	                            |			        |yes     |ERROR: Invalid status transition from [Complete] to [Closed to Accrual]	                                                                                                                                                                                                    |
+                 |Complete	                                        |Closed to Accrual and Intervention             |			        |yes     |ERROR: Invalid status transition from [Complete] to [Closed to Accrual and Intervention]                                                                                                                                                                                       |
+                 |Complete	                                        |Temporarily Closed to Accrual                  |Add Stopped Reason	|yes     |ERROR: Invalid status transition from [Complete] to [Temporarily Closed to Accrual]	                                                                                                                                                                                        |
+                 |Complete	                                        |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes     |ERROR: Invalid status transition from [Complete] to [Temporarily Closed to Accrual and Intervention]                                                                                                                                                                           |
+                 |Complete	                                        |Complete	                                    |			        |yes     |ERROR: Duplicate [Complete] status is not allowed	                                                                                                                                                                                                                            |
+                 |Complete	                                        |Administratively Complete	                    |Add Stopped Reason	|yes     |ERROR: Invalid status transition from [Complete] to [Administratively Complete]	                                                                                                                                                                                            |
+                 */
             } else if (statusTable[i].statusFrom === 'Complete'){
-
+                if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Complete' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
+                /*
+                 |statusFrom	                                    |statusTo	                                    |whyStudyStopped    |Sameday|errorsWarnings	                                                                                                                                                                                                                                                                |
+                 |Administratively Complete	                    |STATUSZERO	                                    |Add Stopped Reason	|yes    |                                                                                                                                                                                                                                                                           |
+                 |Administratively Complete	                    |In Review	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [In Review]	                                                                                                                                                                                            |
+                 |Administratively Complete	                    |Approved	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Approved]	                                                                                                                                                                                            |
+                 |Administratively Complete	                    |Withdrawn	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Withdrawn]	                                                                                                                                                                                            |
+                 |Administratively Complete	                    |Active	                                        |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Active]	                                                                                                                                                                                                |
+                 |Administratively Complete	                    |Enrolling by Invitation	                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Enrolling by Invitation]	                                                                                                                                                                                |
+                 |Administratively Complete	                    |Closed to Accrual	                            |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Closed to Accrual]	                                                                                                                                                                                    |
+                 |Administratively Complete	                    |Closed to Accrual and Intervention             |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Closed to Accrual and Intervention]                                                                                                                                                                      |
+                 |Administratively Complete	                    |Temporarily Closed to Accrual                  |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Temporarily Closed to Accrual]	                                                                                                                                                                        |
+                 |Administratively Complete	                    |Temporarily Closed to Accrual and Intervention	|Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Temporarily Closed to Accrual and Intervention]	                                                                                                                                                        |
+                 |Administratively Complete	                    |Complete	                                    |Add Stopped Reason	|yes    |ERROR: Invalid status transition from [Administratively Complete] to [Complete]	                                                                                                                                                                                            |
+                 |Administratively Complete	                    |Administratively Complete	                    |Add Stopped Reason	|yes    |ERROR: Duplicate [Administratively Complete] status is not allowed	                                                                                                                                                                                                            |
+                 */
             } else if (statusTable[i].statusFrom === 'Administratively Complete'){
-
+                if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'STATUSZERO') {
+                    var statusInStatusToA = '' + statusTable[i].statusFrom + '';
+                    statusAndTrialsDate(statusInStatusToA, whyStudyStopped);
+                    trialStatus.clickSave();
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToA, 'verifyErrors', convErrorsWarningsString);
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'In Review') {
+                    var statusInStatusFromB = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToB = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToB, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToB, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromB, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Approved') {
+                    var statusInStatusFromC = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToC = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToC, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToC, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromC, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Withdrawn') {
+                    var statusInStatusFromD = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToD = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToD, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToD, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromD, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Active') {
+                    var statusInStatusFromE = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToE = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToE, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToE, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromE, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Enrolling by Invitation') {
+                    var statusInStatusFromF = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToF = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToF, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToF, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromF, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Closed to Accrual') {
+                    var statusInStatusFromG = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToG = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToG, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToG, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromG, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Closed to Accrual and Intervention') {
+                    var statusInStatusFromH = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToH = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToH, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToH, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromH, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Temporarily Closed to Accrual') {
+                    var statusInStatusFromI = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToI = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToI, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToI, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromI, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Temporarily Closed to Accrual and Intervention') {
+                    var statusInStatusFromJ = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToJ = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToJ, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromJ, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Complete') {
+                    var statusInStatusFromK = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToK = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToK, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    trialStatus.findTrialStatusVerfEdtDel(statusInStatusToK, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromK, whyStudyStopped);
+                    trialStatus.clickSave();
+                } else if (statusTable[i].statusFrom === 'Administratively Complete' && statusTable[i].statusTo === 'Administratively Complete') {
+                    var statusInStatusFromL = '' + statusTable[i].statusFrom + '';
+                    var statusInStatusToL = '' + statusTable[i].statusTo + '';
+                    statusAndTrialsDate(statusInStatusToL, whyStudyStopped);
+                    trialStatus.clickSave();
+                    console.log('Administratively Complete convErrorsWarningsString: '+convErrorsWarningsString);
+                    //errorStatusAlreadyExists = 'Status already exists';
+                    commonFunctions.verifyTxtByIndex(trialStatus.statusAlreadyExists, errorStatusAlreadyExists, '0', 'Status already exists error verification');
+                    //trialStatus.findTrialStatusVerfEdtDel(statusInStatusToL, 'verifyErrors', convErrorsWarningsString);
+                    deleteTrialStatus();
+                    trialStatus.clickSave();
+                    statusAndTrialsDate(statusInStatusFromL, whyStudyStopped);
+                    trialStatus.clickSave();
+                }
             }
-
-
         }
-
-
         function statusAndTrialsDate(selectStatus, whyStudyStopped){
             var statusToSelect = ''+selectStatus+'';
             if (statusToSelect === 'Complete'){
@@ -1653,6 +2794,9 @@ module.exports = function() {
                 trialStatus.selectStatusByXpath(statusToSelect);
             } else if (statusToSelect === 'Approved'){
                 console.log('Trial Status identified as Approved');
+                trialStatus.selectStatusByXpath(statusToSelect);
+            } else if (statusToSelect === 'Closed to Accrual'){
+                console.log('Trial Status identified as Closed to Accrual');
                 trialStatus.selectStatusByXpath(statusToSelect);
             } else {
                 trialStatus.selectStatus(statusToSelect);
@@ -1673,7 +2817,6 @@ module.exports = function() {
             trialStatus.setTrialStartDate(crntDateYear, crntDateMonth, crtnDateDay, 'Actual');
             trialStatus.setPrimaryCompletionDate(crntDateYear, crntDateMonth, crtnDateDay, 'Anticipated');
         }
-
         function deleteTrialStatus (){
             trialStatus.trialStatusTbleExists.isDisplayed().then(function(dispC){
                 console.log('Trial Status Table Exists: ' + dispC);
@@ -1682,9 +2825,552 @@ module.exports = function() {
                 }
             });
         }
-
-        browser.sleep(9500).then(callback);
+        browser.sleep(2500).then(callback);
     });
+
+    /*
+     Scenario Outline: #18 I can enter a trial status and trial status date for a trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Status Screen
+     And the Trial Information source is "Protocol"
+     When I add a <status date> and a status <statusType> and explained why study stopped <whyStudyStopped>
+
+     |status date                                            |statusType                                    |whyStudyStopped             |
+     |Date Entered                                           |In Review                                     |                            |
+     |Future Date based on previous status entered           |Approved                                      | 					         |
+     |Future Date based on previous status entered           |Active                                        |                   	     |
+     |Future Date based on previous status entered           |Enrolling by invitation                       |                            |
+     |Future Date based on previous status entered           |Closed to accrual                             |                            |
+     |Future Date based on previous status entered           |Close to accrual and Intervention             |                            |
+     |Future Date based on previous status entered           |Temporarily Closed to accrual                 |Text                        |
+     |Future Date based on previous status entered           |Temporarily closed to accrual and Intervention|Text                        |
+     |Future Date based on previous status entered           |Withdrawn                                     |                            |
+     |Future Date based on previous status entered           |Administratively Complete                     |Text                        |
+     |Future Date based on previous status entered           |Complete                                      |Text                        |
+
+     Then no errors will be displayed
+     */
+
+    this.Given(/^the Trial Information source is (.*)$/, function (sourceTrial, callback) {
+        trialStatus.clickBackToSearchResults();
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDE);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.verifyPASearchResultCount(searchResultCountText);
+        commonFunctions.clickLinkText(leadProtocolIDE);
+        commonFunctions.adminCheckOut();
+        trialDoc.clickAdminDataTrialStatus();
+        trialCollaborators.waitForElement(trialStatus.statuesesStatusDate , "Trial Status Screen");
+        trialStatus.trialStatusTbleExists.isDisplayed().then(function(dispC){
+            console.log('Trial Status Table Exists: ' + dispC);
+            if (dispC) {
+                trialStatus.findTrialStatusToDel('delete');
+            }
+        });
+        pastDate = trialDoc.getPastDate();
+        console.log('future date: '+futureDate);
+        var dateSplitB = pastDate.toString().split("-");
+        pstDateDay = dateSplitB[0];
+        pstDateMonth = dateSplitB[1];
+        pstDateYear = dateSplitB[2];
+        trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+
+        futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+        console.log('Next two month ahead future date: '+futureDateTwoMonth);
+        var dateSplitC = futureDateTwoMonth.toString().split("-");
+        futrDateDay = dateSplitC[0];
+        futrDateMonth = dateSplitC[1];
+        futrDateYear = dateSplitC[2];
+        trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Anticipated');
+        trialStatus.clickSave();
+        browser.sleep(2500).then(callback);
+    });
+
+    this.When(/^I add a (.*) and a status (.*) and explained why study stopped (.*)$/, function (statusDate, statusType, whyStudyStopped, table, callback) {
+        statusTable = table.hashes();
+        for (var i = 0; i < statusTable.length; i++) {
+            var convStatusDateString = statusTable[i].statusType.toString().replace(/\\n/g, "\n", -1);
+            console.log('****** Status Type String *****');
+            console.log(convStatusDateString);
+            console.log('*********************************');
+            if (statusTable[i].statusType === 'In Review'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                currentDate = trialDoc.getCrrentDte();
+                console.log('current date: '+currentDate);
+                var dateSplitA = currentDate.toString().split("-");
+                crtnDateDay = dateSplitA[0];
+                crntDateMonth = dateSplitA[1];
+                crntDateYear = dateSplitA[2];
+                trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Approved'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Active'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            }  else if(statusTable[i].statusType === 'Enrolling by Invitation'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextThreeMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            }  else if(statusTable[i].statusType === 'Closed to Accrual'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextFourMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Closed to Accrual and Intervention'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextFourMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Temporarily Closed to Accrual'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Temporarily Closed to Accrual and Intervention'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Withdrawn'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Administratively Complete'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            } else if(statusTable[i].statusType === 'Complete'){
+                var statusToSelect = ''+ statusTable[i].statusType +'';
+                trialStatus.selectStatusByXpath(statusToSelect);
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+            }
+        }
+        trialStatus.clickSave();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^no errors will be displayed$/, function (callback) {
+        var noErrorsWarningsString = '';
+        trialStatus.findTrialStatusVerfEdtDel('In Review', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Approved', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Active', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Enrolling by Invitation', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Closed to Accrual', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Closed to Accrual and Intervention', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Temporarily Closed to Accrual', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Temporarily Closed to Accrual and Intervention', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Withdrawn', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Administratively Complete', 'verifyErrors', noErrorsWarningsString);
+        trialStatus.findTrialStatusVerfEdtDel('Complete', 'verifyErrors', noErrorsWarningsString);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario Outline:#19 I can enter a trial status and trial status date for a trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Status Screen
+     And the Trial Information source is "Protocol"
+     When I add a trial date <statusDateFrom> and trial status from <statusFrom> to trial date <statusDateTo> trial status <statusTo> along with why study stopped reason <whyStudyStopped> the respective checks <errorsWarnings> will be there
+
+     |statusDateFrom   |statusFrom   |statusDateTo                                    |statusTo	    |whyStudyStopped    |errorsWarnings	                                           |
+     |Date Entered Now |Approved     |Same Date entered later                         |In Review    |                   |Warning: Invalid Transition from [Approved] to [In Review]|
+     |Date Entered Now |Approved     |Different Date in the Future                    |In Review    |                   |Warning: Invalid Transition from [Approved] to [In Review]|
+     |Date Entered past|Active       |Date entered Now                                |Aproved      |                   |Warning: Invalid Transition from [Active] to [Approved]   |
+     */
+
+    this.When(/^I add a trial date (.*) and trial status from (.*) to trial date (.*) trial status (.*) along with why study stopped reason (.*) the respective checks (.*) will be there$/, function (statusDateFrom, statusFrom, statusDateTo, statusTo, whyStudyStopped, errorsWarnings, table, callback) {
+        statusTable = table.hashes();
+        for (var i = 0; i < statusTable.length; i++) {
+            var convErrorsWarningsString = statusTable[i].errorsWarnings.toString().replace(/\\n/g, "\n", -1);
+            console.log('****** Status Error String *****');
+            console.log(convErrorsWarningsString);
+            console.log('*********************************');
+            if (statusTable[i].statusFrom === 'Approved' && statusTable[i].statusTo === 'In Review' && statusTable[i].statusDateFrom === 'Date Entered Now' && statusTable[i].statusDateTo === 'Same Date entered later') {
+                var statusFromSelect = ''+ statusTable[i].statusFrom +'';
+                var statusToSelect = ''+ statusTable[i].statusTo +'';
+                //Future Date
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                //Current Date
+                currentDate = trialDoc.getCrrentDte();
+                console.log('current date: '+currentDate);
+                var dateSplitA = currentDate.toString().split("-");
+                crtnDateDay = dateSplitA[0];
+                crntDateMonth = dateSplitA[1];
+                crntDateYear = dateSplitA[2];
+                //Past Date
+                pastDate = trialDoc.getPastDate();
+                console.log('future date: '+futureDate);
+                var dateSplitB = pastDate.toString().split("-");
+                pstDateDay = dateSplitB[0];
+                pstDateMonth = dateSplitB[1];
+                pstDateYear = dateSplitB[2];
+                //From
+                trialStatus.selectStatusByXpath(statusFromSelect);
+                trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusFromSelect + '');
+                //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+                //To
+                trialStatus.selectStatusByXpath(statusToSelect);
+                trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+                //Save
+                trialStatus.clickSave();
+                //Verification
+                trialStatus.findTrialStatusVerfEdtDel(statusToSelect, 'verifyErrors', convErrorsWarningsString);
+                trialStatus.trialStatusTbleExists.isDisplayed().then(function(dispC){
+                    console.log('Trial Status Table Exists: ' + dispC);
+                    if (dispC) {
+                        trialStatus.findTrialStatusToDel('delete');
+                    }
+                });
+                trialStatus.clickSave();
+            } else if (statusTable[i].statusFrom === 'Approved' && statusTable[i].statusTo === 'In Review' && statusTable[i].statusDateFrom === 'Date Entered Now' && statusTable[i].statusDateTo === 'Different Date in the Future') {
+                var statusFromSelect = ''+ statusTable[i].statusFrom +'';
+                var statusToSelect = ''+ statusTable[i].statusTo +'';
+                //Future Date
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                //Current Date
+                currentDate = trialDoc.getCrrentDte();
+                console.log('current date: '+currentDate);
+                var dateSplitA = currentDate.toString().split("-");
+                crtnDateDay = dateSplitA[0];
+                crntDateMonth = dateSplitA[1];
+                crntDateYear = dateSplitA[2];
+                //Past Date
+                pastDate = trialDoc.getPastDate();
+                console.log('future date: '+futureDate);
+                var dateSplitB = pastDate.toString().split("-");
+                pstDateDay = dateSplitB[0];
+                pstDateMonth = dateSplitB[1];
+                pstDateYear = dateSplitB[2];
+                //From
+                trialStatus.selectStatusByXpath(statusFromSelect);
+                trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusFromSelect + '');
+                //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+                //To
+                trialStatus.selectStatusByXpath(statusToSelect);
+                trialStatus.setStatusDate(futrDateYear, futrDateMonth, futrDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+                //Save
+                trialStatus.clickSave();
+                //Verification
+                trialStatus.findTrialStatusVerfEdtDel(statusToSelect, 'verifyErrors', convErrorsWarningsString);
+                trialStatus.trialStatusTbleExists.isDisplayed().then(function(dispC){
+                    console.log('Trial Status Table Exists: ' + dispC);
+                    if (dispC) {
+                        trialStatus.findTrialStatusToDel('delete');
+                    }
+                });
+                trialStatus.clickSave();
+            } else if (statusTable[i].statusFrom === 'Active' && statusTable[i].statusTo === 'Approved' && statusTable[i].statusDateFrom === 'Date Entered past' && statusTable[i].statusDateTo === 'Date entered Now') {
+                var statusFromSelect = ''+ statusTable[i].statusFrom +'';
+                var statusToSelect = ''+ statusTable[i].statusTo +'';
+                //Future Date
+                futureDateTwoMonth = trialDoc.getFutureDateNextFiveMonth();
+                console.log('future date: '+futureDateTwoMonth);
+                var dateSplit = futureDateTwoMonth.toString().split("-");
+                futrDateDay = dateSplit[0];
+                futrDateMonth = dateSplit[1];
+                futrDateYear = dateSplit[2];
+                //Current Date
+                currentDate = trialDoc.getCrrentDte();
+                console.log('current date: '+currentDate);
+                var dateSplitA = currentDate.toString().split("-");
+                crtnDateDay = dateSplitA[0];
+                crntDateMonth = dateSplitA[1];
+                crntDateYear = dateSplitA[2];
+                //Past Date
+                pastDate = trialDoc.getPastDate();
+                console.log('future date: '+futureDate);
+                var dateSplitB = pastDate.toString().split("-");
+                pstDateDay = dateSplitB[0];
+                pstDateMonth = dateSplitB[1];
+                pstDateYear = dateSplitB[2];
+                //From
+                trialStatus.selectStatusByXpath(statusFromSelect);
+                trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusFromSelect + '');
+                //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+                //To
+                trialStatus.selectStatusByXpath(statusToSelect);
+                trialStatus.setStatusDate(pstDateYear, pstDateMonth, pstDateDay);
+                trialStatus.setStatusComment('Status Comment: '+ statusToSelect + '');
+                //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+                trialStatus.clickAddTrialStatus();
+                trialStatus.verifyTrialStatusTblHdr();
+                //Save
+                trialStatus.clickSave();
+                //Verification
+                trialStatus.findTrialStatusVerfEdtDel(statusToSelect, 'verifyErrors', convErrorsWarningsString);
+                trialStatus.trialStatusTbleExists.isDisplayed().then(function(dispC){
+                    console.log('Trial Status Table Exists: ' + dispC);
+                    if (dispC) {
+                        trialStatus.findTrialStatusToDel('delete');
+                    }
+                });
+                trialStatus.clickSave();
+            }
+        }
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario Outline: #20 Rules for Status/Dates relationships
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Status Screen
+     And the Trial Information source is "Protocol"
+     When Current Trial Status is <TrialStatusType>
+     Then The Trial date Type is <DateType>
+
+     Examples:
+     |TrialStatusType                          |DateType                                             |
+     |Active                                   |Trial Start Date must be Actual                      |
+     |Enrolling by Invitation                  |Trial Start Date must be Actual                      |
+     |Closed to Accrual                        |Trial Start Date must be Actual                      |
+     |Closed to Accrual and Intervention       |Trial Start Date must be Actual                      |
+     |Temp Closed to Accrual                   |Trial Start Date must be Actual                      |
+     |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual                      |
+     |Complete                                 |All date types must be Actual                        |
+     |Administratively Complete                |Trial Start Date must be Actual                      |
+     |In Review                                |Trial Start Date could be Actual or Anticipated      |
+     |Approved                                 |Trial Start Date could be Actual or Anticipated      |
+     */
+
+    this.When(/^Current Trial Status is (.*)$/, function (TrialStatusType, callback) {
+        currentDate = trialDoc.getCrrentDte();
+        console.log('current date: '+currentDate);
+        var dateSplitA = currentDate.toString().split("-");
+        crtnDateDay = dateSplitA[0];
+        crntDateMonth = dateSplitA[1];
+        crntDateYear = dateSplitA[2];
+        trialStatus.selectStatusByXpath(TrialStatusType);
+        trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+        trialStatus.setStatusComment('Status Comment: '+ TrialStatusType + '');
+        //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+        trialStatus.clickAddTrialStatus();
+        trialStatus.clickSave();
+        trialStatus.verifyTrialStatusTblHdr();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^The Trial date Type is (.*)$/, function (DateType, callback) {
+        if (DateType === 'Trial Start Date must be Actual'){
+            pastDate = trialDoc.getPastDate();
+            console.log('future date: '+futureDate);
+            var dateSplitB = pastDate.toString().split("-");
+            pstDateDay = dateSplitB[0];
+            pstDateMonth = dateSplitB[1];
+            pstDateYear = dateSplitB[2];
+            trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+
+            futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+            console.log('Next two month ahead future date: '+futureDateTwoMonth);
+            var dateSplitC = futureDateTwoMonth.toString().split("-");
+            futrDateDay = dateSplitC[0];
+            futrDateMonth = dateSplitC[1];
+            futrDateYear = dateSplitC[2];
+            trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Anticipated');
+
+            var dateSplit = futureDateTwoMonth.toString().split("-");
+            futrDateDay = dateSplit[0];
+            futrDateMonth = dateSplit[1];
+            futrDateYear = dateSplit[2];
+            trialStatus.setCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Anticipated');
+
+            trialStatus.clickSave();
+
+            replaceStartDate = trialDoc.replaceMonth(pastDate);
+            replacePrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
+            replaceCompletionDate = trialDoc.replaceMonth(futureDateTwoMonth);
+
+            trialStatus.verifyTrialDates ('all', replaceStartDate, 'Actual', replacePrimaryDate, 'Anticipated', replaceCompletionDate, 'Anticipated');
+        } else if (DateType === 'All date types must be Actual'){
+            pastDate = trialDoc.getPastDate();
+            console.log('future date: '+futureDate);
+            var dateSplitB = pastDate.toString().split("-");
+            pstDateDay = dateSplitB[0];
+            pstDateMonth = dateSplitB[1];
+            pstDateYear = dateSplitB[2];
+            trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+
+            futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+            console.log('Next two month ahead future date: '+futureDateTwoMonth);
+            var dateSplitC = futureDateTwoMonth.toString().split("-");
+            futrDateDay = dateSplitC[0];
+            futrDateMonth = dateSplitC[1];
+            futrDateYear = dateSplitC[2];
+            trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Actual');
+
+            var dateSplit = futureDateTwoMonth.toString().split("-");
+            futrDateDay = dateSplit[0];
+            futrDateMonth = dateSplit[1];
+            futrDateYear = dateSplit[2];
+            trialStatus.setCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Actual');
+
+            trialStatus.clickSave();
+
+            replaceStartDate = trialDoc.replaceMonth(pastDate);
+            replacePrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
+            replaceCompletionDate = trialDoc.replaceMonth(futureDateTwoMonth);
+            trialStatus.verifyTrialDates ('all', replaceStartDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        } else if (DateType === 'Trial Start Date could be Actual or Anticipated'){
+            pastDate = trialDoc.getPastDate();
+            console.log('future date: '+futureDate);
+            var dateSplitB = pastDate.toString().split("-");
+            pstDateDay = dateSplitB[0];
+            pstDateMonth = dateSplitB[1];
+            pstDateYear = dateSplitB[2];
+            trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+
+            futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+            console.log('Next two month ahead future date: '+futureDateTwoMonth);
+            var dateSplitC = futureDateTwoMonth.toString().split("-");
+            futrDateDay = dateSplitC[0];
+            futrDateMonth = dateSplitC[1];
+            futrDateYear = dateSplitC[2];
+            trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Actual');
+
+            var dateSplit = futureDateTwoMonth.toString().split("-");
+            futrDateDay = dateSplit[0];
+            futrDateMonth = dateSplit[1];
+            futrDateYear = dateSplit[2];
+            trialStatus.setCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Actual');
+            trialStatus.clickSave();
+            trialStatus.setTrialStartDate(futrDateYear, futrDateMonth, futrDateDay, 'Anticipated');
+            trialStatus.clickSave();
+
+            replacePastDate = trialDoc.replaceMonth(futureDateTwoMonth);
+            replacePrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
+            replaceCompletionDate = trialDoc.replaceMonth(futureDateTwoMonth);
+
+            trialStatus.verifyTrialDates ('all', replacePastDate, 'Anticipated', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        }
+        browser.sleep(25).then(callback);
+    });
+
+
+
 
 
 };

@@ -52,6 +52,11 @@
                         timeOut: 0
                     });
                 }
+
+                // To make sure setPristine() is executed after all $watch functions are complete
+                $timeout(function() {
+                   $scope.family_form.$setPristine();
+               }, 1);
             }).catch(function(err) {
                 console.log("error in updating family " + JSON.stringify(vm.curFamily));
             }).finally(function() {
@@ -184,6 +189,7 @@
 
                     modalInstance.result.then(function (selectedItem) {
                         console.log("about to delete the familyDetail " + vm.curFamily.id);
+                        $scope.family_form.$submitted = true;
                         $state.go('main.families');
                     }, function () {
                         console.log("operation canceled")
@@ -200,6 +206,7 @@
                     //prevent pushing duplicated org
                     if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
                         vm.savedSelection.unshift(OrgService.initSelectedOrg(anOrg));
+                        $scope.family_form.$setDirty();
                     }
                 });
 

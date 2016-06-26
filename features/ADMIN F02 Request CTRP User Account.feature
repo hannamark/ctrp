@@ -21,7 +21,7 @@ As someone without a CTRP User Account, I can request a user account
   And I fill in the CAPTCHA correctly
   And I press "Register"
   Then the system will save the User request to the database 
-  And the system will send an email to the Account Admin(s) for that new request
+  And the system will send the "CTRP Account Request" email to appsupport for the new request
   
   
   Scenario: #2 I can request a user account 
@@ -41,7 +41,7 @@ As someone without a CTRP User Account, I can request a user account
   And I fill in the CAPTCHA correctly
   And I press "Register"
   Then the system will save the User request to the database 
-  And the system will send an email to the Account Admin(s) for that new request
+  And the system will send the "CTRP Account Request" email to appsupport for the new request
 
 
 
