@@ -105,4 +105,9 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |Current TSR | (Generated after Trial Summary report Date Milestone)  
       |Other-D  |
 
-       
+         Scenario:#5 Delete option should not be included for existing documents 
+    Given I am in the CTRP Registration Application 
+     When I update a trial 
+     Then I can see the most current documents
+     And the delete option should not be included for existing documents
+
