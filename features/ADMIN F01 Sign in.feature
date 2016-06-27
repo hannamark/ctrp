@@ -6,7 +6,7 @@ As a CTRP User, I can sign in to the CTRP application
 Scenario: #1 I can sign in using my NIH credentials 
 Given I am a valid account in CTRP
 And I am on the CTRP Login Page
-And I enter my user id 
+And I enter my user id '
 And I enter my password 
 And my user id is NIH Credentialed (LDAP Account, NIH Domain) 
 And I select sign in
