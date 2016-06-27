@@ -44,9 +44,9 @@
         };
 
         var optionOrgFamilies = {
-            name: 'organization_family_name',
+            name: 'organization_family',
             displayName: 'Organization Family',
-            enableSorting: false,
+            enableSorting: true,
             minWidth: '100',
             width: '*'
         };
