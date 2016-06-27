@@ -30,7 +30,15 @@
             rows: 5,
             start: 1
 
-        }
+        };
+
+        var initAuditInitialSearchParams = {
+            sort: '',
+            order: '',
+            rows: 20,
+            start: 1
+        };
+
         var updatesGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
@@ -134,6 +142,8 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
+            flatEntityAccess: true,
+
             columnDefs: [
 
                 {name: 'deletion_date',displayName:'Deletion Date', enableSorting: true, minWidth: '100', width: '*',
@@ -182,35 +192,18 @@
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.created_at | date: "dd-MMM-yyyy"}}</div>'},
 
                 {name: 'event', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140'},
-                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
+                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+                {name: 'lead_protocol_id', displayName: 'Lead Protocol', enableSorting: true, minWidth: '140', width: '*'},
+
                 {name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+                {name: 'pilot', enabledSorting: true , minWidth: '100', width: '*'},
+
                 {name: 'program_code', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'grant_question', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'ind_ide_question', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'pilot', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'primary_purpose', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'study_source', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'phase', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'responsible_party', enabledSorting: true , minWidth: '100', width: '*'},
-
-
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '5%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'sponsor', enableSorting: true, minWidth: '100', width: '3%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-
-                {name: 'research_category', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'accrual_disease_term', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'start_date', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'start_date_qual', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'primary_comp_date', enabledSorting: true , minWidth: '100', width: '*'},
@@ -221,30 +214,182 @@
                 {name: 'intervention_indicator', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'sec801_indicator', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'data_monitor_indicator', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
+                {name: 'study_source', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'phase', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'primary_purpose', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'primary_purpose_other', enableSorting: true, minWidth: '170', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'grants', enableSorting: true, minWidth: '400', width: '25%',
+
+                {name: 'secondary_purpose', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'secondary_purpose_other', enableSorting: true, minWidth: '170', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+
+                {name: 'responsible_party', enabledSorting: true , minWidth: '100', width: '*'},
+
+
+                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'sponsor', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'investigator', enableSorting: true, minWidth: '100', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'research_category', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'accrual_disease_term', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'investigator_title', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'investigator_aff_id', enableSorting: true, minWidth: '170', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'created_by', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'updated_by', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'process_priority', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'process_comment', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'acronym', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'keywords', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'nih_nci_div', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'nih_nci_prog', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'send_trial', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_approval_num', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'brief_title', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'brief_summary', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'detailed_description', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'objective', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'target_enrollment', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'final_enrollment', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'accruals', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'study_model', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'study_model_other', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'time_perspective', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'time_perspective_other', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'accept_vol', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'min_age', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'max_age', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_approval_status', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'intervention_model', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'masking', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'masking_role_caregiver', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'masking_role_investigator', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'masking_role_outcome_assessor', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'masking_role_subject', enabledSorting: true , minWidth: '100', width: '*'},
+
+                {name: 'allocation', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'study_classification', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'gender', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'min_age', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'max_age', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'anatomic_site', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'num_of_arms', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'verification_date', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'sampling_method', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'study_pop_desc', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_name', enabledSorting: true , minWidth: '100', width: '*'},
+                {name: 'board_affiliation', enabledSorting: true , minWidth: '100', width: '*'},
+
+
+                {name: 'other_ids', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'outcome_measures',dispalyName: 'Outcome Measures', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'grants',dispalyName: 'Grants', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'eligibility_criteria',dispalyName: 'Eligibility Criteria', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'associated_trials', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'interventions', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'arms_groups', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'sub_groups', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'trial_owners', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'trial_documents', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'alternative_titles', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'central_contacts', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'citations', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'collaborators', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'ind_ides', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'links', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'milestones', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'submissions', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+                {name: 'oversight_authorities', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'processing_statuses', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'trial_co_leads', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'trial_co_pis', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+                {name: 'trial_statuses', enableSorting: true, minWidth: '400', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                },
+
+
+
                 {name: 'submission_number', enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date', enabledSorting: true , minWidth: '100', width: '*'},
 
-                {name: 'created_by', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'updated_by', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'min_age', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'max_age', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'process_priority', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'process_comment', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'nih_nci_div', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'nih_nci_prog', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'masking', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'investigator_id', enabledSorting: true , minWidth: '100', width: '*'},
+
+
+
+
                 {name: 'nci_specific_comment', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_name', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_affiliation_id', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_approval_num', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_approval_status', enabledSorting: true , minWidth: '100', width: '*'}
+
 
             ]
         };
@@ -262,7 +407,8 @@
             upsertSubmission:upsertSubmission,
             getDeletedDocs:getDeletedDocs,
             getDeleteDocsGridOptions:getDeleteDocsGridOptions,
-            getSubmissionInitialSearchParams:getSubmissionInitialSearchParams
+            getSubmissionInitialSearchParams:getSubmissionInitialSearchParams,
+            getAuditInitialSearchParams:getAuditInitialSearchParams
         };
 
         return services;
@@ -277,6 +423,11 @@
         function getSubmissionInitialSearchParams() {
             return  initSubmissionSearchParams;
         }
+
+        function getAuditInitialSearchParams() {
+            return  initAuditInitialSearchParams;
+        }
+
         function getAudits(obj){
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.AUDIT_HISTORY, obj);
 

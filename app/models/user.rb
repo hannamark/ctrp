@@ -64,6 +64,7 @@ class  User < ActiveRecord::Base
   has_many :trial_checkout_logs
 
   attr_accessor :organization_name
+  attr_accessor :organization_family
   attr_accessor :selected_functions
 
   #Define roles here to drive dropdown menu when adding users
@@ -71,7 +72,7 @@ class  User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
-  scope :matches, -> (column, value) { where("users.#{column} = ?", "#{value}").distinct }
+  scope :matches, -> (column, value) { where("users.#{column} = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value) {
     join_clause  = "LEFT JOIN organizations user_org ON user_org.id = users.organization_id "
@@ -95,50 +96,54 @@ class  User < ActiveRecord::Base
 
     if column == 'site_admin'
       if  value == true
-        joins(join_clause).where("users.role IN ('ROLE_SITE-SU')").distinct
+        joins(join_clause).where("users.role IN ('ROLE_SITE-SU')")
       else
-        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU')").distinct
+        joins(join_clause).where("users.role NOT IN ('ROLE_SITE-SU')")
       end
     elsif column == 'user_statuses'
-      joins(join_clause).where("users.user_status_id in (#{value.join(',')})").distinct
+      joins(join_clause).where("users.user_status_id in (#{value.join(',')})")
     elsif column == 'user_status_id' || column == 'organization_id'
-      joins(join_clause).where("#{column_str} = #{value}").distinct
+      joins(join_clause).where("#{column_str} = #{value}")
     elsif value[0] == '*' && value[str_len - 1] != '*'
-      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}").distinct
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 1]}")
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(join_clause).where("#{column_str} ilike ?", "#{value[0..str_len - 2]}%").distinct
+      joins(join_clause).where("#{column_str} ilike ?", "#{value[0..str_len - 2]}%")
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 2]}%").distinct
+      joins(join_clause).where("#{column_str} ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      joins(join_clause).where("#{column_str} ilike ?", "#{value}").distinct
+      joins(join_clause).where("#{column_str} ilike ?", "#{value}")
     end
   }
 
   scope :family_unexpired_matches_by_family, -> (value) {
     familyOrganizations = FamilyMembership.where(
         family_id: value
-    ).where("(family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
-        and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
+    ).where("(family_memberships.effective_date <= '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date >= '#{DateTime.now}' or family_memberships.expiration_date is null)")
     .pluck(:organization_id)
 
-    where(organization_id: familyOrganizations).distinct
+    where(organization_id: familyOrganizations)
 
   }
 
   scope :family_unexpired_matches_by_org, -> (value) {
-    familyFamilies = FamilyMembership.where(
+    familyMemberships = FamilyMembership.where(
         organization_id: value
-    ).where("(family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
-        and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
+    ).where("(family_memberships.effective_date <= '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date >= '#{DateTime.now}' or family_memberships.expiration_date is null)")
         .pluck(:family_id)
 
+    activeFamilies = Family.where(
+        id: familyMemberships
+    ).where(family_status_id: FamilyStatus.find_by_code('ACTIVE').id).pluck(:id)
+
     familyOrganizations = FamilyMembership.where(
-        family_id: familyFamilies
-    ).where("(family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
-        and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
+        family_id: activeFamilies
+    ).where("(family_memberships.effective_date <= '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date >= '#{DateTime.now}' or family_memberships.expiration_date is null)")
         .pluck(:organization_id)
 
-    where(organization_id: familyOrganizations).distinct
+    where(organization_id: familyOrganizations)
 
   }
 

@@ -36,7 +36,7 @@
         var optionOrg = {
             name: 'organization_name',
             displayName: 'Organizational Affiliation',
-            enableSorting: false,
+            enableSorting: true,
             minWidth: '100',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
@@ -44,9 +44,9 @@
         };
 
         var optionOrgFamilies = {
-            name: 'organization_family_name',
+            name: 'organization_family',
             displayName: 'Organization Family',
-            enableSorting: false,
+            enableSorting: true,
             minWidth: '100',
             width: '*'
         };
@@ -89,10 +89,9 @@
             displayName: 'Username',
             minWidth: '100',
             width: '*',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                ' title="{{COL_FIELD}}">' +
-                ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
         var firstName = {
@@ -175,9 +174,14 @@
 
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
             vm.statusArr = response.data;
-            if (vm.curUser.role == 'ROLE_SITE-SU' || vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+            if (vm.curUser.role == 'ROLE_SITE-SU') {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
                     return _.contains(['ACT', 'INR'], item.code);
+                });
+            }
+            if (vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
                 });
             }
         }).catch(function (err) {

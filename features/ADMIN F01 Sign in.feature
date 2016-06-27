@@ -3,13 +3,13 @@ Feature: ADMIN F01 Sign in
 
 As a CTRP User, I can sign in to the CTRP application
 
-Scenario: #1 I can sign in using my NIH credentials
+Scenario: #1 I can sign in using my NIH credentials 
 Given I am a valid account in CTRP
 And I am on the CTRP Login Page
-and I enter my user id 
+And I enter my user id 
 And I enter my password 
 And my user id is NIH Credentialed (LDAP Account, NIH Domain) 
-and I select sign in
+And I select sign in
 When the system displays the Goverment System Authorization acknowledgement: 
 |NCI CLINICAL TRIALS REPORTING PROGRAM (CTRP) SYSTEM
 This is a U.S. Government computer system, which may be accessed and used only for authorized Government business by authorized personnel. Unauthorized access or use of this computer system may subject violators to criminal, civil, and/or administrative action.
@@ -20,9 +20,9 @@ Then I will be loged in to the system
 Scenario: #2 I can sign in using my CTRP credentials
 Given I am a valid account in CTRP 
 And I am on the CTRP Login Page
-and I enter my user id 
+And I enter my user id 
 And I enter my password 
-and I select sign in
+And I select sign in
 When the system displays the Goverment System Authorization and Estimation of Burden acknowledgements: 
 |NCI CLINICAL TRIALS REPORTING PROGRAM (CTRP) SYSTEM
 This is a U.S. Government computer system, which may be accessed and used only for authorized Government business by authorized personnel. Unauthorized access or use of this computer system may subject violators to criminal, civil, and/or administrative action.
@@ -38,9 +38,9 @@ Then I will be loged in to the system
 Scenario: #3 I do not accept the GSA acknowledgement when signing in using my NIH credentials
 Given I am a valid account in CTRP
 And I am on the CTRP Login Page
-and I enter my user id 
+And I enter my user id 
 And I enter my password 
-and I select sign in
+And I select sign in
 When the system displays the Goverment System Authorization acknowledgement: 
 |NCI CLINICAL TRIALS REPORTING PROGRAM (CTRP) SYSTEM
 This is a U.S. Government computer system, which may be accessed and used only for authorized Government business by authorized personnel. Unauthorized access or use of this computer system may subject violators to criminal, civil, and/or administrative action.
@@ -52,9 +52,9 @@ And I will return to the sign in page
 Scenario: #4 I do not accept the GSA acknowledgement when signing in using CTRP credentials
 Given I am a valid account in CTRP
 And I am on the CTRP Login Page
-and I enter my user id 
+And I enter my user id 
 And I enter my password 
-and I select sign in
+And I select sign in
 When the system displays the Goverment System Authorization and Estimation of Burden acknowledgements: 
 |NCI CLINICAL TRIALS REPORTING PROGRAM (CTRP) SYSTEM
 This is a U.S. Government computer system, which may be accessed and used only for authorized Government business by authorized personnel. Unauthorized access or use of this computer system may subject violators to criminal, civil, and/or administrative action.

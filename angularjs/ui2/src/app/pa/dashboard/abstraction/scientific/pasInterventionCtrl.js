@@ -18,7 +18,6 @@
 
             var vm = this;
             vm.interventionTypes = interventionTypes;
-            console.info('interventionTypes: ', interventionTypes);
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};

@@ -38,6 +38,7 @@
 
         vm.auditGridOptions = AuditService.getAuditsGridOptions();
         vm.disableBtn = false;
+        vm.auditParams = AuditService.getAuditInitialSearchParams();
 
         vm.showSubmissions= showSubmissions;
 
@@ -50,6 +51,7 @@
             vm.auditGridOptions = AuditService.getAuditsGridOptions();
             vm.auditGridOptions.data =null;
             vm.auditGridOptions.totalItems = null;
+
 
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
@@ -90,6 +92,23 @@
         };
 
         function showAuditTrials() {
+            vm.auditGridOptions.onRegisterApi = function (gridApi) {
+                vm.gridApi = gridApi;
+                vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                    vm.auditParams.start = newPage;
+                    vm.auditParams.rows = pageSize;
+                    loadAuditTrials();
+                });
+            }; //gridOptions
+
+            $timeout( function() {
+                for (var colIndex = 0; colIndex < 100; colIndex++) {
+                    $scope.auditGridOptions.columnDefs.push({
+                        width: Math.floor(Math.random() * (120 - 50 + 1)) + 50
+                    });
+                }
+            });
+
             loadAuditTrials();
         }
 
@@ -226,8 +245,9 @@
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             var startDate = vm.start_date;
             var endDate = vm.end_date;
-            vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate};
+            vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate, start: vm.auditParams.start, rows: vm.auditParams.rows};
             vm.disableBtn = true;
+
 
             //if (startDate != null && endDate != null) {
                 vm.searchWarningMessage=''
@@ -237,7 +257,7 @@
                     if (status >= 200 && status <= 210) {
                         console.log('received search results: ' + JSON.stringify(data.trial_versions));
                         vm.auditGridOptions.data = data.trial_versions;
-                        vm.auditGridOptions.totalItems = data.trial_versions["length"];
+                        vm.auditGridOptions.totalItems = data.total;
                     }
                 }).catch(function (err) {
                     console.log('Getting audit trials failed');

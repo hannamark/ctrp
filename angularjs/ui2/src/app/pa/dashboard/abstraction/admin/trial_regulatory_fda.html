@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidImport || || paTrialOverview.trialDetailObj.menuTypes.rejection">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">Regulatory Information – FDAAA</div>
@@ -8,7 +8,7 @@
                 The information in this section is REQUIRED to enable "Upload from NCI CTRP" in ClinicalTrials.gov.
             </span>
 
-            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
+            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()" unsaved-changes>
                 <fieldset class="sub-bordered" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <legend class="sub-bordered">Responsible Party:</legend>
 

@@ -56,6 +56,8 @@
                         extendedTimeOut: 1000,
                         timeOut: 0
                     });
+
+                    $scope.trial_form.$setPristine();
                 }
             }).finally(function() {
                 vm.disableBtn = false;

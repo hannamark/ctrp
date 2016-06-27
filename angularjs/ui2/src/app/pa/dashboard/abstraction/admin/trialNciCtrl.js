@@ -110,6 +110,11 @@
                         extendedTimeOut: 1000,
                         timeOut: 0
                     });
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.trial_form.$setPristine();
+                   }, 1);
                 }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
@@ -151,6 +156,8 @@
                 newFs._destroy = false;
                 vm.addedFses.push(newFs);
                 vm.fsNum++;
+
+                $scope.trial_form.$setDirty();
             }
         });
 
