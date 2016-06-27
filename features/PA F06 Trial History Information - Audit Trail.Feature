@@ -1,5 +1,5 @@
-﻿@PA @global
-Feature: PA F05 Trial History Information - Audit Trail.Feature
+@PA @global
+Feature: PA F05 Trial History Information - Audit Trail.Feature  (update 6/23/16: participating sites removed.)
 
 As any CTRP PA User, I can View the Trial History Information Audit Trail
 
@@ -121,7 +121,7 @@ Then the audit trail will be displayed for the Trial ordered by date with newest
 |submissions (multiple) xxxx submission.submission_num, submission_date, amendment_date,amendment_reason_id: cccc, submission_type_id: cccc, submission_source_id: submission_sources.name, submission_method_id: submission_methods.name|
 
 | oversight_authorities (multiple) xxxx oversight_authorities.country, organization|
-| participating_sites (multiple) xxxx participating_sites.protocol_id, program_code, contact_name, contact_phone, contact_email, organization_id: organizations.name, person_id: people.fname, mname, lname|
+
 
 |Processing Status processing_status_wrappers.status_date, processing_status_id: processing_statuses.name |
 | Trial co leads (multiple) xxxx trial_co_lead_orgs.organization_id: organizations.name|
@@ -129,6 +129,7 @@ Then the audit trail will be displayed for the Trial ordered by date with newest
 | Trial Status trial_status_wrappers.status_date, why_stopped, trial_status_id: trial_statuses.name|
 
 Examples:
+|field name| data example|
 |NCI-ID| NCI-2015-01299 |
 |Lead Protocol| 9226 |
 |official_title|Individualized Treatment for Relapsed/Refractory Acute Leukemia Based on Chemosensitivity and Genomics/Gene Expression Data|
@@ -247,7 +248,7 @@ Examples:
 |submissions (multiple) xxxx submission.submission_num, submission_date, amendment_date,amendment_reason_id: cccc, submission_type_id: cccc, submission_source_id: submission_sources.name, submission_method_id: submission_methods.name|XXX|
 
 | oversight_authorities (multiple) xxxx oversight_authorities.country, organization|XXX|
-| participating_sites (multiple) xxxx participating_sites.protocol_id, program_code, contact_name, contact_phone, contact_email, organization_id: organizations.name, person_id: people.fname, mname, lname|XXX|
+
 
 |Processing Status processing_status_wrappers.status_date, processing_status_id: processing_statuses.name |XXX|
 | Trial co leads (multiple) xxxx trial_co_lead_orgs.organization_id: organizations.name|XXX|

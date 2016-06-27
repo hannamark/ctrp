@@ -70,9 +70,9 @@ And if there are no errors, I can select the option to Edit the trial informatio
      When I have selected the Amend option after an Amendment 
      Then the documents type will be displayed 
        
-      |Revised Protocol  |
-      |Change Memo  |
-      |IRB Approval  |
+      |Current Protocol  |
+      |Current Change Memo  |
+      |Current IRB Approval  |
       |Other-C  |
       |TRS #2  |
 

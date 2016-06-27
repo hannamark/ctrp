@@ -20,10 +20,12 @@
             return directiveObject;
 
             function linkerFn(scope, element, attrs) {
-                var formName = attrs.name;
+                var formName = attrs.name ? attrs.name : element.parent().prop('name');
+                console.log(formName);
 
-                window.onbeforeunload = function(event) {
-                    if (scope[formName].$dirty) {
+                $window.onbeforeunload = function(event) {
+                    console.log('lets c forms tatus here: ', formName, scope[formName].$dirty);
+                    if (formName && scope[formName].$dirty) {
                         return 'Are you sure you want to leave this page? You may have unsaved changes.';
                     }
                 };

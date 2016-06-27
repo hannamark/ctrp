@@ -4,7 +4,7 @@
             <div class="panel-title">Trial Related Documents</div>
         </div>
         <div class="panel-body">
-            <form name="trial_docs_form" role="form" class="form form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments('true', 'trial_docs_form')">
+            <form name="trial_docs_form" role="form" class="form form-horizontal" novalidate ctrp-submit="trialRelatedDocsView.saveDocuments('true', 'trial_docs_form')" unsaved-changes>
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialRelatedDocsView.disableBtn">
                     <legend class="sub-bordered">Trial Related Documents</legend>
                     <div class="form-group">

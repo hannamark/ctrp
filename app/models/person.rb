@@ -52,6 +52,23 @@ class Person < ActiveRecord::Base
   before_destroy :check_for_organization
   after_create   :save_id_to_ctrp_id
 
+  def fullname
+
+    fullname = self.lname if self.lname
+    if fullname && self.fname
+      fullname = fullname.concat(" ,")
+      fullname =  fullname.concat(self.fname)
+    end
+
+    if fullname && self.mname
+      fullname = fullname.concat(" ,")
+      fullname =  fullname.concat(self.mname)
+    end
+    fullname.nil? ? "" :fullname
+
+  end
+
+
   # Get an array of maps of the people with the same ctrp_id
   def cluster
     tmp_arr = []
