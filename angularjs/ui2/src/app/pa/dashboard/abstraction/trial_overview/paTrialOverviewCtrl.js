@@ -313,8 +313,8 @@
             return updatedPAMenuTypes;
         }
 
+        var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
         function _checkEditableStatus() {
-            var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
             vm.trialDetailObj.pa_editable = vm.adminCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
             vm.trialDetailObj.pa_sci_editable = vm.scientificCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
         }
