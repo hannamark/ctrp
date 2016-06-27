@@ -17,7 +17,7 @@
 #  index_citations_on_trial_id  (trial_id)
 #
 
-class Citation < TrialBaseBase
+class Citation < TrialBase
   include BasicConcerns
 
   belongs_to :trial
