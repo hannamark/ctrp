@@ -514,7 +514,7 @@ When I add a trial date <statusDateFrom> and trial status from <statusFrom> to t
       Examples:
             |sourceTrial |
             |Protocol    |
-@runthis
+
 Scenario Outline: #20 Rules for Status/Dates relationships
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
@@ -523,17 +523,17 @@ When Current Trial Status is <TrialStatusType>
 Then The Trial date Type is <DateType>
 
       Examples:
-      |TrialStatusType                          |DateType                                             |
-      |Active                                   |Trial Start Date must be Actual                      |
-      |Enrolling by Invitation                  |Trial Start Date must be Actual                      |
-      |Closed to Accrual                        |Trial Start Date must be Actual                      |
-      |Closed to Accrual and Intervention       |Trial Start Date must be Actual                      |
-      |Temp Closed to Accrual                   |Trial Start Date must be Actual                      |
-      |Temp Closed to Accrual and Intervention  |Trial Start Date must be Actual                      |
-      |Complete                                 |All date types must be Actual                        |
-      |Administratively Complete                |Trial Start Date must be Actual                      |
-      |In Review                                |Trial Start Date could be Actual or Anticipated      |
-      |Approved                                 |Trial Start Date could be Actual or Anticipated      |
+      |TrialStatusType                                      |DateType                                             |
+      |Active                                               |Trial Start Date must be Actual                      |
+      |Enrolling by Invitation                              |Trial Start Date must be Actual                      |
+      |Closed to Accrual                                    |Trial Start Date must be Actual                      |
+      |Closed to Accrual and Intervention                   |Trial Start Date must be Actual                      |
+      |Temporarily Closed to Accrual                        |Trial Start Date must be Actual                      |
+      |Temporarily Closed to Accrual and Intervention       |Trial Start Date must be Actual                      |
+      |Complete                                             |All date types must be Actual                        |
+      |Administratively Complete                            |Trial Start Date must be Actual                      |
+      |In Review                                            |Trial Start Date could be Actual or Anticipated      |
+      |Approved                                             |Trial Start Date could be Actual or Anticipated      |
 
 Scenario: #21 Rules for Study Date types
 Given I am logged into the CTRP Protocol Abstraction application
@@ -546,19 +546,18 @@ Then the Trial Date type could be actual
 And the Trial date Type could be anticipated
 When the Trial date is in the future
 Then the Trial date type must always be anticipated
-
+@runthis
 Scenario: #22 general rules for Study Date values are as follows
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen
 And the Trial Information source is "Protocol"
-And The Trial Start Date can be in the past, present, or future
-And The Trial Start Date can be in the past, present, or future
-And The Completion Date is always the same as, or later than, the Primary Completion Date
-And The Primary Completion Date is always the same as, or later than, the Trial Start Date
-And The Primary Completion Date can be earlier than the Current Trial Status Dates Complete
+And the Trial status Start Date can be in the past, present, or future
+And the Trial status Primary Completion Date is always the same as, or later than, the Trial Start Date
+And the Primary Completion Date can be earlier than the Current Trial Status Dates Complete
+And the Trial status Completion Date is always the same as, or later than, the Primary Completion Date
 When the Primary Completion Date is Actual
 Then the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete 
-And The Completion Date is always the same as, or later than, the Primary Completion Date
+And the Trial status Completion Date is always the same as, or later than, the Primary Completion Date
 
 Scenario: #23 Delete Trial Status Comment not null
 Given I am logged into the CTRP Protocol Abstraction application
