@@ -1,0 +1,36 @@
+/**
+ * wangg5
+ * June 27, 2016
+ *
+ * Configure routes for trial-validation component
+ */
+
+(function() {
+    'use strict';
+    angular.module('ctrp.module.routes').config(trialValidationRoutes);
+    trialValidationRoutes.$inject = ['$stateProvider'];
+
+    function trialValidationRoutes($stateProvider) {
+        $stateProvider
+            .state('main.pa.trialOverview.submissionValidation', {
+                url: '/submission-validation',
+                templateUrl: 'app/pa/dashboard/abstraction/trial_validation/submission_validation.html',
+                controller:   'submissionValidCtrl as subValidView',
+                section: 'pa',
+                /*
+                resolve: {
+                    DateService: 'DateService',
+                    UserService:'UserService',
+                    userDetailObj: function (UserService) {
+                        return UserService.getCurrentUserDetails();
+                    }
+                },
+                */
+                ncyBreadcrumb: {
+                    parent: 'main.pa.trialOverview',
+                    label: 'Submission Validation'
+                }
+            });
+    } // trialValidationRoutes
+
+})();

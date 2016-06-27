@@ -76,13 +76,14 @@
               </ul>
           </uib-accordion-group>
       </div>
-      <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">
+      <div>
+          <!-- ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport" -->
           <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialValidOpen">
               <uib-accordion-heading>
                   <strong>Trial Validation</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialValidOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialValidOpen}"></i>
               </uib-accordion-heading>
               <ul class="nav nav-pills nav-stacked">
-                  <li><a href="" class="menu-trial-design">Submission Validation</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.submissionValidation" class="menu-submission-validation">Submission Validation</a></li>
               </ul>
           </uib-accordion-group>
       </div>
