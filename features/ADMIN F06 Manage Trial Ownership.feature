@@ -35,7 +35,7 @@ And the Information Source is "Protocol"
 And the NIH/NCI Division/Department Identifier is Null
 And I have selected the "Assign" trial ownership operation
 Then the CTRP Users selected will be assigned trial ownership on the trials selected
-And the system will send the "Added as Trial Owner" email to the users selected to be trial owners
+And the system will send the "Added as Trial Owner" email to the users selected to be trial owners (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
 
 Scenario: #3 I can remove Trial Ownership privileges from CTRP Users that are affiliated with an Organization in my Family
 Given I am logged into CTRP 
@@ -47,4 +47,4 @@ And I have selected one or more trial ownership assignments, displayed as:
 |Lead Org ID|
 |Organization (Lead Organization)|
 Then trial ownership privileges will be removed from the CTRP Users selected
-And the system will send the "Removed as Trial Owner" email to the users selected to be trial owners
+And the system will send the "Removed as Trial Owner" email to the users selected to be trial owners (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)

@@ -177,7 +177,8 @@
         });
 
         vm.statusArr = [];
-        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
+
+        UserService.getUserStatuses().then(function (response) {
             vm.statusArr = response.data;
             if (vm.userRole == 'ROLE_SITE-SU') {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
@@ -189,9 +190,6 @@
                     return _.contains(['ACT', 'INR', 'REJ'], item.code);
                 });
             }
-        }).catch(function (err) {
-            vm.statusArr = [];
-            console.log("Error in retrieving USER_STATUSES " + err);
         });
 
         /**** USER TRIALS *****/

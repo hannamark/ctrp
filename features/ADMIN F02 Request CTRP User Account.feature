@@ -22,7 +22,8 @@ As someone without a CTRP User Account, I can request a user account
   And I press "Register"
   Then the system will save the User request to the database 
   And the system will send the "CTRP Account Request" email to appsupport for the new request (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
-
+  When the account request is approved 
+  Then the system will send the "Registration Activation(NIH)" email to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
   
   
   Scenario: #2 I can request a user account 
@@ -43,7 +44,9 @@ As someone without a CTRP User Account, I can request a user account
   And I press "Register"
   Then the system will save the User request to the database 
   And the system will send the "CTRP Account Request" email to appsupport for the new request (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
-
+  When the request is approved
+  Then Then the system will send the "Account Activation(Site User)" email to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
+  
 
 
  Scenario: #3 User account Required Fields
