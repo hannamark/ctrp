@@ -174,9 +174,14 @@
 
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
             vm.statusArr = response.data;
-            if (vm.curUser.role == 'ROLE_SITE-SU' || vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+            if (vm.curUser.role == 'ROLE_SITE-SU') {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
                     return _.contains(['ACT', 'INR'], item.code);
+                });
+            }
+            if (vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
                 });
             }
         }).catch(function (err) {
