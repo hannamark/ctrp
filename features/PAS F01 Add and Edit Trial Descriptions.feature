@@ -1,7 +1,7 @@
 @PA @global
 Feature:  PAS F01 Add and Edit Trial descriptions 
 As a CTRP PA Abstractor, I can add and edit Trial Descriptions 
-
+@runthis
 Scenario: #1 I can add and edit Trial Description for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
@@ -20,7 +20,7 @@ And I have selected a trial with a Information Source is 'Protocol'
 And I am on the Trial Description screen
 And information text appears above the Brief Title field as 'Mandatory at Abstraction Validation'
 When Brief Title is null 
-And I select Save
+And I select the Save button
 Then an error message will appear with the message “Brief Title is Required”
 
 Scenario: #3 Brief Summary is not null 

@@ -83,13 +83,18 @@
             } else {
                 if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                        if (vm.gridTrialsOwnedOptions.totalItems > 0
-                                && (vm.userRole === 'ROLE_ADMIN'
+                        if (vm.gridTrialsOwnedOptions.totalItems > 0) {
+                           if (vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
                                         || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
-                                            || vm.userRole === 'ROLE_SITE-SU')) {
-                            vm.chooseTransferTrials = true;
-                            return;
+                                            || vm.userRole === 'ROLE_SITE-SU') {
+                                vm.chooseTransferTrials = true;
+                                return;
+                            } else if (vm.isCurrentUser) {
+                               vm.updateAfterModalSave = true;
+                               vm.confirmRemoveTrialOwnershipsPopUp = true;
+                               return;
+                            }
                         } else {
                             vm.updateUser(vm.checkForOrgChange());
                             return;
@@ -107,20 +112,15 @@
             var newOrg = vm.selectedOrgsArray[0];
             if (vm.userDetailsOrig.organization_id !== newOrg.id) {
                 var review_id = _.where(vm.statusArr, {code: 'INR'})[0].id;
-                if (vm.gridTrialsOwnedOptions.data.length && (vm.userRole === 'ROLE_ADMIN' || vm.userRole === 'ROLE_SUPER'
-                    || vm.userRole === 'ROLE_ACCOUNT-APPROVER' || vm.userRole === 'ROLE_SITE-SU')) {
-                    vm.userDetails.user_status_id = review_id;
-                }
                 if (vm.userRole === 'ROLE_SITE-SU') {
                     //because site admin loses accessibility to user
                     redirect = true;
-                } else if (
-                    //new org is not part of the family and user is not an admin
+                }
+                if (//new org is not part of the family and user is not an admin
                     !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length
-
-                    && vm.userRole !== 'ROLE_ADMIN') {
-                    newOrg.id = vm.userDetailsOrig.organization_id;
-                    newOrg.name = 'Request has been sent';
+                        && vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER'
+                            && vm.userRole !== 'ROLE_ACCOUNT-APPROVER') {
+                    vm.userDetails.user_status_id = review_id;
                 }
             }
             return redirect;
@@ -179,9 +179,14 @@
         vm.statusArr = [];
         AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: 'users/user_statuses'}).then(function (response) {
             vm.statusArr = response.data;
-            if (vm.userRole == 'ROLE_SITE-SU' || vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+            if (vm.userRole == 'ROLE_SITE-SU') {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
                     return _.contains(['ACT', 'INA', 'INR'], item.code);
+                });
+            }
+            if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
                 });
             }
         }).catch(function (err) {
@@ -373,6 +378,10 @@
             vm.trialOwnershipRemoveIdArr = trialOwnershipIdArr;
         };
         vm.removeTrialsOwnerships = function () {
+            vm.confirmRemoveTrialOwnershipsPopUp = false;
+            vm.updateAfterModalSave = false;
+        };
+        vm.removeTrialsOwnerships = function () {
             var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
 
              var searchParams = {user_id: vm.userDetails.id};
@@ -385,6 +394,10 @@
                     vm.getUserTrials();
                  }
                  vm.trialOwnershipRemoveIdArr = null;
+                 if (vm.updateAfterModalSave) {
+                     vm.updateUser(vm.checkForOrgChange());
+                     vm.updateAfterModalSave = false;
+                 }
              });
             vm.confirmRemoveTrialOwnershipsPopUp = false;
         };

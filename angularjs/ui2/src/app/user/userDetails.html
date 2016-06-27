@@ -28,7 +28,7 @@
                                 class="form-control input-sm"
                                 ng-model="userDetailView.userDetails.user_status_id"
                                 ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_SITE-SU' && userDetailView.userRole !== 'ROLE_ACCOUNT-APPROVER'"
-                                ng-options="status.id as status.name for status in (userDetailView.statusArrForROLESITESU || userDetailView.statusArr)"
+                                ng-options="status.id as status.name for status in (userDetailView.statusArrForROLEAPPROVER || userDetailView.statusArrForROLESITESU || userDetailView.statusArr)"
                                 required>
                                 <option value="">Select a status</option>
                             </select>
@@ -243,11 +243,11 @@
 </modal>
 
 <modal visible="userDetailView.confirmRemoveTrialOwnershipsPopUp" title="Please confirm" id="confirmRemoveTrials">
-    <div class="modal-body">You have chosen to remove some or all trial(s) from this user.</div>
+    <div class="modal-body">With this action you have chosen to remove some or all trial(s) from this user.</div>
     <div class="modal-footer">
         <div class="btn-toolbar">
             <button type="button" class="btn btn-primary pull-right" id="cancelRemOwn"
-                    ng-click="userDetailView.confirmRemoveTrialOwnershipsPopUp = false"><i class="glyphicon glyphicon-ok"></i>
+                    ng-click="userDetailView.cancelRemoveTrialsOwnerships()"><i class="glyphicon glyphicon-ok"></i>
                     Cancel
             </button>
             <button type="button" class="btn btn-danger pull-right"  id="remOwn"
