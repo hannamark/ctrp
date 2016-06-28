@@ -77,4 +77,8 @@ And if there are no errors, I can select the option to Edit the trial informatio
       |TRS #2  |
 
     
-
+ Scenario:#5 Delete option should not be included for existing documents 
+    Given I am in the CTRP Registration Application 
+     When I Amend a trial 
+     Then I can see the most current documents
+     And the delete option should not be included for existing documents

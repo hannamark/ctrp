@@ -64,7 +64,7 @@ class  User < ActiveRecord::Base
   has_many :trial_checkout_logs
 
   attr_accessor :organization_name
-  attr_accessor :organization_family_name
+  attr_accessor :organization_family
   attr_accessor :selected_functions
 
   #Define roles here to drive dropdown menu when adding users

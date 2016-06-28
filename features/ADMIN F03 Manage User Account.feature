@@ -62,7 +62,7 @@ When I select OK
 Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
-And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family
+And the system will send the "CTRP Account Request" email to appsupport for an organizaton change to a different family (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
 
 Scenario: #6 I can view a users Trials
 Given I am logged into CTRP

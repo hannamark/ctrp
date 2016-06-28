@@ -17,6 +17,7 @@ Then I will see a list of all CTRP Users listing:
 And the list will display an indicator if the CTRP Users have Site Administrator privileges 
 And the list will display an indicator if the CTRP Users will receive e-mails
 And Status
+And Current Status Date
 
 Scenario: #2 I can search for CTRP Users 
 Given I am logged into CTRP 
@@ -51,6 +52,7 @@ And the list can be sorted by
 |Family|
 |Site Admin Privilege|
 |Status|
+|Status Date (Current Status Date)|
 
 Scenario: #3 I can enter or update account information
 Given I am logged into CTRP

@@ -170,9 +170,9 @@ end
     @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
 
-    if (sortBy != 'admin_role' && sortBy != 'organization_family_name')
+    if sortBy != 'admin_role' && sortBy != 'organization_family'
       @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
-    else
+    elsif sortBy == 'admin_role'
       temp0 = []
       temp1 = []
       @users.each do |user|
@@ -189,7 +189,8 @@ end
       end
     end
 
-    @users = remove_repeated(@users)
+    @users = remove_repeated(@users, sortBy, params[:order])
+
     unless params[:rows].nil?
       @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows]) unless @users.blank?
     end
@@ -198,7 +199,7 @@ end
 
   private
 
-  def remove_repeated(array)
+  def remove_repeated(array, sortBy, order)
     found = Hash.new(0)
     uniqueArr = []
     array.each{ |val|
@@ -211,11 +212,20 @@ end
              org_family_name = org_family_name.chomp(", ")
            end
         end
-        val.organization_family_name = org_family_name
+        val.organization_family = org_family_name
         uniqueArr.push(val)
         found[val.id] = 1
       end
     }
+
+    if order && sortBy == 'organization_family'
+      if  order.downcase == "asc"
+        uniqueArr = uniqueArr.sort_by { |hsh| hsh.organization_family }
+      elsif order.downcase == "desc"
+        uniqueArr = uniqueArr.sort_by { |hsh| hsh.organization_family }.reverse
+      end
+    end
+
     uniqueArr
   end
 

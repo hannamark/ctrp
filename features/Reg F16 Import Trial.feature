@@ -66,7 +66,7 @@ Given I have selected the option to Import an Industrial or Other Trial
 And I have entered a NCT Number
 When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has NOT been Rejected OR Submission Terminated
 Then The Trial with the associated lead organization and lead organization ID should not be allowed to be imported
-And the error message will be displayed "Error Message: gov.nih.nci.pa.service.PAException: Duplicate Trial Submission: A trial exists in the system with the same Lead Organization Trial Identifier for the selected Lead Organization" 
+And the error message will be displayed "Duplicate Trial Submission: A trial exists in the system with the same Lead Organization Trial Identifier for the selected Lead Organization" 
 
 
 Scenario: #4d.1 I will be able to Import a trial for the same lead organization and lead organization ID

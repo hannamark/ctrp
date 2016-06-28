@@ -365,9 +365,10 @@ AnatomicSite.find_or_create_by(code:'TH').update(name: "Thyroid")
 AnatomicSite.find_or_create_by(code:'UM').update(name: "Unknown Sites")
 AnatomicSite.find_or_create_by(code:'UR').update(name: "Urinary Bladder")
 
-UserStatus.find_or_create_by(code: 'INR').update(name: 'In Review')
+UserStatus.find_or_create_by(code: 'INR').update(name: 'Pending')
 UserStatus.find_or_create_by(code: 'ACT').update(name: 'Active')
 UserStatus.find_or_create_by(code: 'INA').update(name: 'Inactive')
+UserStatus.find_or_create_by(code: 'REJ').update(name: 'Rejected')
 UserStatus.find_or_create_by(code: 'DEL').update(name: 'Deleted')
 
 
