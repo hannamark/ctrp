@@ -400,7 +400,7 @@
 
             delete curTrial.admin_checkout;
             delete curTrial.scientific_checkout;
-            return curTrial;
+            return angular.copy(curTrial);
         }
 
         function checkoutTrial(trialId, checkoutType) {
