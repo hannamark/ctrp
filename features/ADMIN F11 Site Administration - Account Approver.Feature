@@ -53,7 +53,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Site Administrator|
 And the CTRP User will be able to access the Administrative features in CTRP
-And the Account Activation(Site User) e-mail will be sent to the user 
+And the "Account Activation(Site User)" e-mail will be sent to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
  
 Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: Admin, Account Approver
 Given I am logged into CTRP 
@@ -64,7 +64,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Trial Submitter|
 And the CTRP User will not have access the Site Administrative features in CTRP
-And the Account Activation(Site User) e-mail will be sent to the user
+And the "Account Activation(Site User)" e-mail will be sent to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
 
 Scenario: #5 I can inactivate a Trial Submitter with the roles: Admin, Account Approver
 Given I am logged into CTRP 
