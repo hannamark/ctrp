@@ -7,9 +7,9 @@
     angular.module('ctrp.app.po')
         .controller('familyDetailCtrl', familyDetailCtrl);
     familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','toastr',
-        '$scope', '$state', 'Common', '$uibModal'];
+        '$scope', '$state', 'Common', '$uibModal', '$timeout'];
     function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
-                              OrgService, DateService, toastr, $scope, $state, Common, $uibModal ) {
+                              OrgService, DateService, toastr, $scope, $state, Common, $uibModal, $timeout) {
         var vm = this;
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
         console.log('familyDetailObj: ' + JSON.stringify(familyDetailObj));
