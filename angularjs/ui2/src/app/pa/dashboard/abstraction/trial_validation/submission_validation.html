@@ -39,6 +39,24 @@
                         </div>
                     </div>
                     <!-- end of pilot -->
+                    <!-- primary purposes -->
+                    <div class="form-group has-feedback required" ng-class="{'has-feedback required': subValidView.isInfoSourceImport || subValidView.isInfoSourceProtocol, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.primary_purpose)}">
+                        <label for="primary_purpose" class="control-label col-xs-12 col-sm-5">Primary Purpose:</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <select name="primary_purpose" id="primary_purpose"
+                                class="form-control input-sm"
+                                ng-required="subValidView.isInfoSourceImport || subValidView.isInfoSourceProtocol"
+                                ng-model="subValidView.trialDetailObj.primary_purpose_id"
+                                ng-options="purpose.id as purpose.name for purpose in subValidView.primaryPurposeArr"
+                                >
+                                <option value="">- Please select a primary purpose...</option>
+                            </select>
+                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.primary_purpose) && sub_validation_form.primary_purpose.$error">
+                                <span class="help-block" ng-message="required">Primary Purpose is Required</span>
+                           </span>
+                        </div>
+                    </div>
+                    <!-- end of primary purposes -->
                 </fieldset>
             </form>
         <!-- </div>
