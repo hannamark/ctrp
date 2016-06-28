@@ -111,15 +111,13 @@
                             });
                         }
                         _getTrialDetailCopy();
+                        vm.curInterventionObj = null;
+                        vm.showInterventionForm = false; // hide the form
                     }
                 }).catch(function(err) {
                     console.error('trial upsert error: ', err);
                 }).finally(function() {
-                    console.info('hiding intervention form now!');
-                    vm.curInterventionObj = null;
-                    vm.showInterventionForm = false; // hide the form
                     vm.disableBtn = false;
-                    // resetLookupForm();
                 });
             }
 
