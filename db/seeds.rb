@@ -315,9 +315,9 @@ AgeUnit.find_or_create_by(code: 'HRS').update(name: 'Hours')
 # AgeUnit.find_or_create_by(code: 'MN').update(name: 'Minute')
 AgeUnit.find_or_create_by(code: 'MNS').update(name: 'Minutes')
 
-AmendmentReason.find_or_create_by(code: 'AS').update(name: 'Acknowledged Scientific')
-AmendmentReason.find_or_create_by(code: 'AA').update(name: 'Acknowledged Administrative')
-AmendmentReason.find_or_create_by(code: 'AAS').update(name: 'Acknowledged Administrative and Scientific')
+AmendmentReason.find_or_create_by(code: 'AA').update(name: 'Administrative')
+AmendmentReason.find_or_create_by(code: 'AS').update(name: 'Scientific')
+AmendmentReason.find_or_create_by(code: 'AAS').update(name: 'Both')
 
 AnatomicSite.find_or_create_by(code:'AN').update(name: 'Anus')
 AnatomicSite.find_or_create_by(code:'BJ').update(name: 'Bones and Joints')

@@ -84,17 +84,17 @@
                     </legend>
                     <!-- amendment reasons -->
                     <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
-                        <label for="trial_phase" class="control-label col-xs-12 col-sm-5">Trial Phase:</label>
+                        <label for="amend_reason" class="control-label col-xs-12 col-sm-5">Amendment Reason Code:</label>
                         <div class="col-xs-12 col-sm-4">
-                            <select name="trial_phase" id="trial_phase"
+                            <select name="amend_reason" id="amend_reason"
                                 class="form-control input-sm"
                                 ng-required="true"
-                                ng-model="subValidView.trialDetailObj.phase_id"
-                                ng-options="phase.id as phase.name for phase in subValidView.trialPhaseArr">
-                                <option value="">- Please select a trial phase...</option>
+                                ng-model="subValidView.trialDetailObj.amend_reason_id"
+                                ng-options="amend.id as amend.name for amend in subValidView.amendReasonArr">
+                                <option value="">- Please select a amendment reason code...</option>
                             </select>
-                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase) && sub_validation_form.trial_phase.$error">
-                                <span class="help-block" ng-message="required">Trial Phase is Required</span>
+                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.amend_reason) && sub_validation_form.amend_reason.$error">
+                                <span class="help-block" ng-message="required">Amendment Reason Code is Required</span>
                            </span>
                         </div>
                     </div>

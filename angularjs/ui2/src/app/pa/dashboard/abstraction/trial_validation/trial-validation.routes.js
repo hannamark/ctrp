@@ -26,7 +26,7 @@
                     primaryPurposeArr: function(TrialService) {
                         return TrialService.getPrimaryPurposes();
                     },
-                    amendmentReasonArr: function(PATrialService) {
+                    amendmentReasonObj: function(PATrialService) {
                         return PATrialService.getAmendReasons();
                     }
                 },

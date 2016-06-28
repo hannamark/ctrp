@@ -159,7 +159,7 @@ class TrialsController < ApplicationController
   def amendment_reasons
     @amendment_reasons = AmendmentReason.all
     respond_to do |format|
-      format.json { render :json => @amendment_reasons }
+      format.json { render :json => {:data => @amendment_reasons} }
     end
   end
 
