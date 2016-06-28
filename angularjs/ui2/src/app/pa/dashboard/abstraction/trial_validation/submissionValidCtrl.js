@@ -14,6 +14,7 @@
         PATrialService, _) {
         var vm = this;
         vm.trialDetailObj = {};
+        vm.disableBtn = false;
         vm.isOtherPrimaryPurpose = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
