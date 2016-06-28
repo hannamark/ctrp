@@ -156,6 +156,13 @@ class TrialsController < ApplicationController
     end
   end
 
+  def amendment_reasons
+    @amendment_reasons = AmendmentReason.all
+    respond_to do |format|
+      format.json { render :json => @amendment_reasons }
+    end
+  end
+
   def study_models
     @study_models = StudyModel.all
     respond_to do |format|

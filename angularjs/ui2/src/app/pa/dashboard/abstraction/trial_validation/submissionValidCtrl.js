@@ -8,23 +8,22 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'PATrialService', '_'];
+    'PATrialService', '_', 'amendmentReasonArr'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        PATrialService, _) {
+        PATrialService, _, amendmentReasonArr) {
         var vm = this;
         vm.trialDetailObj = {};
         vm.disableBtn = false;
         vm.isOtherPrimaryPurpose = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
+        vm.amendReasonArr = amendmentReasonArr;
 
         // actions
         vm.validateSubmission = validateSubmission;
         vm.resetForm = resetForm;
-
-        console.info('trialPhaseArr: ', trialPhaseArr);
-        console.info('primaryPurposeArr: ', primaryPurposeArr);
+        console.info('amendmentReasonArr: ', vm.amendReasonArr);
 
         activate();
         function activate() {

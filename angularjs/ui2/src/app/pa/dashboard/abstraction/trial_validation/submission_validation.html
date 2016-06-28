@@ -82,6 +82,23 @@
                     <legend class="sub-bordered">
                         Amendment Information
                     </legend>
+                    <!-- amendment reasons -->
+                    <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
+                        <label for="trial_phase" class="control-label col-xs-12 col-sm-5">Trial Phase:</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <select name="trial_phase" id="trial_phase"
+                                class="form-control input-sm"
+                                ng-required="true"
+                                ng-model="subValidView.trialDetailObj.phase_id"
+                                ng-options="phase.id as phase.name for phase in subValidView.trialPhaseArr">
+                                <option value="">- Please select a trial phase...</option>
+                            </select>
+                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase) && sub_validation_form.trial_phase.$error">
+                                <span class="help-block" ng-message="required">Trial Phase is Required</span>
+                           </span>
+                        </div>
+                    </div>
+                    <!-- end of amendment reasons -->
                 </fieldset>
             </form>
         </div>

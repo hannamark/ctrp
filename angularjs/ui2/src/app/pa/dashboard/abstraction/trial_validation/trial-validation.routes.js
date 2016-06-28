@@ -19,11 +19,15 @@
                 section: 'pa',
                 resolve: {
                     TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
                     trialPhaseArr: function(TrialService) {
                         return TrialService.getPhases();
                     },
                     primaryPurposeArr: function(TrialService) {
                         return TrialService.getPrimaryPurposes();
+                    },
+                    amendmentReasonArr: function(PATrialService) {
+                        return PATrialService.getAmendReasons();
                     }
                 },
                 ncyBreadcrumb: {
