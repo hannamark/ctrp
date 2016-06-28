@@ -57,6 +57,25 @@
                         </div>
                     </div>
                     <!-- end of primary purposes -->
+                    <!-- description if primary purpose is Other -->
+                    <div class="form-group" ng-show="subValidView.isOtherPrimaryPurpose" ng-class="{'has-feedback required': subValidView.isOtherPrimaryPurpose, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.description_other)}">
+                        <label for="description_other" class="control-label col-xs-12 col-sm-5">Description of Other Primary Purpose</label>
+                        <div class="col-xs-12 col-sm-5">
+                            <textarea class="form-control"
+                                name="description_other" id="description_other"
+                                maxlength="200" ng-maxlength="200"
+                                ng-required="subValidView.isOtherPrimaryPurpose"
+                                ng-model="subValidView.trialDetailObj.primary_purpose_other" rows="3">
+                            </textarea>
+                            <span class="help-block" ng-show="sub_validation_form.description_other.$viewValue.length > 0">
+                                {{200 - sub_validation_form.description_other.$viewValue.length}} characters left
+                            </span>
+                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.description_other) && sub_validation_form.description_other.$error">
+                                <span class="help-block" ng-message="required">Description is required for Primary Purpose Of Other</span>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- end of description -->
                 </fieldset>
             </form>
         <!-- </div>
