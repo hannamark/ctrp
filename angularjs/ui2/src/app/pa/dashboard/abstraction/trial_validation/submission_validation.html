@@ -1,10 +1,33 @@
 <div class="row"> <!-- ng-disabled="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport" -->
-    <div class="panel panel-default">
+    <!-- <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">Submission Validation</div>
         </div>
-        <div class="panel-body">
-
-        </div>
-    </div>
+        <div class="panel-body"> -->
+            <form class="form-horizontal" role="form" name="sub_validation_form" novalidate ctrp-submit="subValidView.validateSubmission()">
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || subValidView.disableBtn">
+                    <legend class="sub-bordered">
+                        Submission Validation
+                    </legend>
+                    <!-- trial phase -->
+                    <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
+                        <label for="trial_phase" class="control-label col-xs-12 col-sm-4">Trial Phase:</label>
+                        <div class="col-xs-12 col-sm-5">
+                            <select name="trial_phase" id="trial_phase"
+                                class="form-control input-sm"
+                                ng-required="true"
+                                ng-model="subValidView.trialDetailObj.phase_id"
+                                ng-options="phase.id as phase.name for phase in subValidView.trialPhaseArr">
+                                <option value="">- Please select a trial phase...</option>
+                            </select>
+                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase) && sub_validation_form.trial_phase.$error">
+                                <span class="help-block" ng-message="required">Research Category is Required</span>
+                           </span>
+                        </div>
+                    </div>
+                    <!-- end of trial phase -->
+                </fieldset>
+            </form>
+        <!-- </div>
+    </div> -->
 </div>

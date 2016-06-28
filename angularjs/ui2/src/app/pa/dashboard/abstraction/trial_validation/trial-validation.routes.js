@@ -17,15 +17,15 @@
                 templateUrl: 'app/pa/dashboard/abstraction/trial_validation/submission_validation.html',
                 controller:   'submissionValidCtrl as subValidView',
                 section: 'pa',
-                /*
                 resolve: {
-                    DateService: 'DateService',
-                    UserService:'UserService',
-                    userDetailObj: function (UserService) {
-                        return UserService.getCurrentUserDetails();
+                    TrialService: 'TrialService',
+                    trialPhaseArr: function(TrialService) {
+                        return TrialService.getPhases();
+                    },
+                    primaryPurposeArr: function(TrialService) {
+                        return TrialService.getPrimaryPurposes();
                     }
                 },
-                */
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Submission Validation'

@@ -7,12 +7,39 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('submissionValidCtrl', submissionValidCtrl);
 
-    submissionValidCtrl.$inject = ['$scope', '$timeout'];
+    submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
+    'PATrialService'];
 
-    function submissionValidCtrl($scope, emailLogs) {
+    function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
+        PATrialService) {
         var vm = this;
-        console.info('hello from submission validation controller!');
+        vm.trialDetailObj = {};
+        vm.trialPhaseArr = trialPhaseArr;
+        vm.primaryPurposeArr = primaryPurposeArr;
 
+        // actions
+        vm.validateSubmission = validateSubmission;
+        vm.resetForm = resetForm;
+
+        console.info('trialPhaseArr: ', trialPhaseArr);
+        console.info('primaryPurposeArr: ', primaryPurposeArr);
+
+        activate();
+        function activate() {
+            _getTrialDetailCopy();
+        }
+
+        function _getTrialDetailCopy() {
+            vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+        }
+
+        function validateSubmission() {
+            console.info('validating submission....');
+        } // validateSubmission
+
+        function resetForm() {
+            _getTrialDetailCopy();
+        } // resetForm
     } // trialEmailLogsCtrl
 
 })();
