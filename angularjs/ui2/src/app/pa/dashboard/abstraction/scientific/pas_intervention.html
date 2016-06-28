@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <form name="intervention_form" role="form" class="form form-horizontal" novalidate ctrp-submit="interventionView.upsertIntervention(interventionView.curInterventionObj)">
+            <form name="intervention_form" role="form" class="form form-horizontal" novalidate ctrp-submit="interventionView.upsertIntervention(interventionView.curInterventionObj)" unsaved-changes>
                 <!-- fieldset for list of interventions -->
                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || interventionView.disableBtn" ng-show="interventionView.showInterventionForm">
                     <legend class="sub-bordered">

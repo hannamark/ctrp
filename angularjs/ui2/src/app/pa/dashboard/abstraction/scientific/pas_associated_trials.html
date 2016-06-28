@@ -4,7 +4,7 @@
             <div class="panel-title">Associated Trial Details</div>
         </div>
         <div class="panel-body">
-            <form name="associated_trials_form" role="form" class="form form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()">
+            <form name="associated_trials_form" role="form" class="form form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()" unsaved-changes>
                 <!-- fieldset for eligibility criteria -->
                 <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" ng-show="assoTrialsView.showLookupForm || assoTrialsView.disableBtn">
                     <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.associated_trials_form.needsAttention(associated_trials_form.identifier_type)}">

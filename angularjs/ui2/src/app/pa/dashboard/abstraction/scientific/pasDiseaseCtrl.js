@@ -7,9 +7,9 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasDiseaseCtrl', pasDiseaseCtrl);
 
-    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'DiseaseService', '$window', 'trialDetailObj', 'TrialService', '$anchorScroll', '$location'];
+    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'DiseaseService', '$window', 'trialDetailObj', 'TrialService', '$anchorScroll', '$location', '$timeout'];
 
-    function pasDiseaseCtrl($scope, $state, toastr, DiseaseService, $window, trialDetailObj, TrialService, $anchorScroll, $location) {
+    function pasDiseaseCtrl($scope, $state, toastr, DiseaseService, $window, trialDetailObj, TrialService, $anchorScroll, $location, $timeout) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.addMode = false;
@@ -77,6 +77,11 @@
                 if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Record(s) deleted', 'Operation Successful!');
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.disease_form.$setPristine();
+                   }, 1);
                 }
             }).catch(function(err) {
                 console.log("Error in deleting diseases " + JSON.stringify(outerTrial));
@@ -108,6 +113,11 @@
                 if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Diseases have been updated', 'Operation Successful!');
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.disease_form.$setPristine();
+                   }, 1);
                 }
             }).catch(function(err) {
                 console.log("Error in updating diseases " + JSON.stringify(outerTrial));
@@ -201,6 +211,11 @@
                 if (status >= 200 && status <= 210) {
                     $state.go('main.pa.trialOverview.disease', {}, {reload: true});
                     toastr.success('Diseases have been recorded', 'Operation Successful!');
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.saved_disease_form.$setPristine();
+                    }, 1);
                 }
             }).catch(function(err) {
                 console.log("Error in saving diseases " + JSON.stringify(outerTrial));

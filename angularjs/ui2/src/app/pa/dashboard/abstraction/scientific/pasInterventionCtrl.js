@@ -111,6 +111,11 @@
                             });
                         }
                         _getTrialDetailCopy();
+
+                        // To make sure setPristine() is executed after all $watch functions are complete
+                        $timeout(function() {
+                           $scope.intervention_form.$setPristine();
+                       }, 1);
                     }
                 }).catch(function(err) {
                     console.error('trial upsert error: ', err);
@@ -206,6 +211,8 @@
                     vm.curInterventionObj.intervention_type_id = selectedInterventionObj.intervention_type_id || '';
                     vm.isInterventionTypeListEnabled = vm.curInterventionObj.intervention_type_id === '' && isUserAllowedToSelectType;
                     console.info('received vm.curInterventionObj: ', vm.curInterventionObj);
+
+                    $scope.intervention_form.$setDirty();
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
                 }).finally(function() {

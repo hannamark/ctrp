@@ -5,7 +5,7 @@
             <div class="panel-title">Add Anatomic Sites</div>
         </div>
         <div class="panel-body">
-            <form name="anatomic_sites" class="form form-horizontal" role="form" ctrp-submit="anatomicView.saveSelection()">
+            <form name="anatomic_sites" class="form form-horizontal" role="form" ctrp-submit="anatomicView.saveSelection()" unsaved-changes>
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
                     <legend class="sub-bordered">Select Anatomic Sites</legend>
 
