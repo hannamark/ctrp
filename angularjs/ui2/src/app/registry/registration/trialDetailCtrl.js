@@ -207,6 +207,7 @@
                     var intvl = setInterval(function() {
                         if (vm.docUploadedCount === docCount) {
                             clearInterval(intvl);
+                            $scope.trial_form.$setSubmitted();
                             if (vm.curTrial.is_draft) {
                                 $state.go('main.trialDetail', {trialId: response.id, editType: 'complete'}, {reload: true});
                             } else {
@@ -646,8 +647,6 @@
             if (newValue == 'No') {
                 vm.curTrial.sec801_indicator = 'No';
             }
-
-
         });
 
         vm.watchOption = function(type) {

@@ -16,6 +16,7 @@ Then I will see a list of all CTRP Users
 |display an indicator if the CTRP Users have Site Administrator privileges |
 |display an indicator if the CTRP Users will receive e-mails|
 |Status|
+|Status Date (Current status date)|
 
 Scenario: #2 I can search for CTRP Users with the roles: CTRP-RO, Abstractor, Super, Admin, Account Approver
 Given I am logged into CTRP 
@@ -30,7 +31,7 @@ And I enter search criteria as
 |Site Admin Privilege|
 |Status|
 And I select the Search option
-Then I will see a list of all CTRP Users that are Active, and are Not Expired
+Then I will see a list of all CTRP Users 
 And the list will be ordered by Last Name and then First name
 And the list can be sorted by
 |Username|
@@ -41,7 +42,7 @@ And the list can be sorted by
 |Family|
 |Site Admin Privilege|
 |Status|
-
+|Status Date (Current status date)|
 
 Scenario: #3 I can enable Site Administrative privileges for CTRP Trial Submitters with the roles: Abstractor, Super, Admin, Account Approver
 Given I am logged into CTRP 

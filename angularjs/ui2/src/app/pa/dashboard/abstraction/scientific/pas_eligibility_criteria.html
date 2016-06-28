@@ -4,7 +4,7 @@
             <div class="panel-title">Eligibility Criteria</div>
         </div>
         <div class="panel-body">
-            <form name="criteria_form" role="form" class="form form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria(true)" ctrp-submit-delete>
+            <form name="criteria_form" role="form" class="form form-horizontal" novalidate ctrp-submit="criteriaView.updateCriteria(true)" ctrp-submit-delete unsaved-changes>
                 <!-- fieldset for eligibility criteria -->
                     <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || criteriaView.disableBtn">
                         <legend class="sub-bordered">Eligibility Criteria</legend>

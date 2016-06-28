@@ -4,7 +4,7 @@
             <div class="panel-title">Outcome Measure Details</div>
         </div>
         <div class="panel-body">
-            <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()">
+            <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()" unsaved-changes>
                 <!-- fieldset for outcome measure details-->
                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || omView.disableBtn">
                     <legend class="sub-bordered">Outcome Measure Details</legend>
