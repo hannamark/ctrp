@@ -10,10 +10,10 @@
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
         '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal',
-        'GeoLocationService'];
+        'GeoLocationService', '$timeout'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
-                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal) {
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout) {
         var vm = this;
         $scope.organization_form = {};
         vm.addedNameAliases = [];
@@ -59,6 +59,11 @@
                     } else if (status === 200) {
                         // updated
                         vm.curOrg = response;
+
+                        // To make sure setPristine() is executed after all $watch functions are complete
+                        $timeout(function() {
+                           $scope.organization_form.$setPristine();
+                       }, 1);
                     }
 
                     showToastr(vm.curOrg.name);

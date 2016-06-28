@@ -129,6 +129,7 @@ module.exports = function() {
     var currentDate = '';
     var futureDate = '';
     var futureDateTwoMonth = '';
+    var futureDateThreeMonth = '';
     var pastDate = '';
     var replacePastDate = '';
     var replaceStartDate = '';
@@ -3369,7 +3370,295 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario: #21 Rules for Study Date types
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Status Screen
+     And the Trial Information source is "Protocol"
+     When the Trial date is in the past
+     Then the Trial date type must be actual
+     When  the Trial date is today
+     Then the Trial Date type could be actual
+     And the Trial date Type could be anticipated
+     When the Trial date is in the future
+     Then the Trial date type must always be anticipated
+     */
 
+    
+
+
+    /*
+     Scenario: #22 general rules for Study Date values are as follows
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Status Screen
+     And the Trial Information source is "Protocol"
+     And The Trial Start Date can be in the past, present, or future
+     And The Trial Start Date can be in the past, present, or future
+     And The Completion Date is always the same as, or later than, the Primary Completion Date
+     And The Primary Completion Date is always the same as, or later than, the Trial Start Date
+     And The Primary Completion Date can be earlier than the Current Trial Status Dates Complete
+     When the Primary Completion Date is Actual
+     Then the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete
+     And The Completion Date is always the same as, or later than, the Primary Completion Date
+
+     Updated:
+     Scenario: #22 general rules for Study Date values are as follows
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Status Screen
+     And the Trial Information source is "Protocol"
+     And the Trial status Start Date can be in the past, present, or future
+     And the Trial status Primary Completion Date is always the same as, or later than, the Trial Start Date
+     And the Primary Completion Date can be earlier than the Current Trial Status Dates Complete
+     And the Trial status Completion Date is always the same as, or later than, the Primary Completion Date
+     When the Primary Completion Date is Actual
+     Then the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete
+     And the Trial status Completion Date is always the same as, or later than, the Primary Completion Date
+
+     */
+
+    this.Given(/^the Trial status Start Date can be in the past, present, or future$/, function (callback) {
+        currentDate = trialDoc.getCrrentDte();
+        console.log('current date: '+currentDate);
+        var dateSplitA = currentDate.toString().split("-");
+        crtnDateDay = dateSplitA[0];
+        crntDateMonth = dateSplitA[1];
+        crntDateYear = dateSplitA[2];
+        trialStatus.selectStatusByXpath('Complete');
+        trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+        trialStatus.setStatusComment('Status Comment: Complete');
+        //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+        trialStatus.clickAddTrialStatus();
+        trialStatus.clickSave();
+        //past
+        getTrialStartDate = trialDoc.getPastDate();
+        console.log('getTrialStartDate: '+getTrialStartDate);
+        var dateSplitE = getTrialStartDate.toString().split("-");
+        slctDateDay = dateSplitE[0];
+        slctDateMonth = dateSplitE[1];
+        slctDateYear = dateSplitE[2];
+        console.log('slctDateDay :'+slctDateDay);
+        console.log('slctDateMonth :'+slctDateMonth);
+        console.log('slctDateYear :'+slctDateYear);
+        trialStatus.setTrialStartDate(slctDateYear, slctDateMonth, slctDateDay, 'Actual');
+        futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+        console.log('Next two month ahead future date: '+futureDateTwoMonth);
+        var dateSplitC = futureDateTwoMonth.toString().split("-");
+        futrDateDay = dateSplitC[0];
+        futrDateMonth = dateSplitC[1];
+        futrDateYear = dateSplitC[2];
+        trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Actual');
+        futureDateThreeMonth = trialDoc.getFutureDateNextThreeMonth();
+        var dateSplitD = futureDateThreeMonth.toString().split("-");
+        futrDateDayThree = dateSplitD[0];
+        futrDateMonthThree = dateSplitD[1];
+        futrDateYearThree = dateSplitD[2];
+        trialStatus.setCompletionDate(futrDateYearThree, futrDateMonthThree, futrDateDayThree, 'Actual');
+        trialStatus.clickSave();
+        verifyStartDate = trialDoc.replaceMonth(getTrialStartDate);
+        verifyPrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
+        verifyCompletionDate = trialDoc.replaceMonth(futureDateThreeMonth);
+        console.log('verifyStartDate :'+verifyStartDate);
+        console.log('verifyPrimaryDate :'+verifyPrimaryDate);
+        console.log('verifyCompletionDate :'+verifyCompletionDate);
+        console.log('pastDate :'+pastDate);
+        console.log('futureDateTwoMonth :'+futureDateTwoMonth);
+        console.log('futureDateThreeMonth :'+futureDateThreeMonth);
+        trialStatus.verifyTrialDates ('all', verifyStartDate, 'Actual', verifyPrimaryDate, 'Actual', verifyCompletionDate, 'Actual');
+        //present
+        currentDate = trialDoc.getCrrentDte();
+        console.log('current date: '+currentDate);
+        var dateSplit = currentDate.toString().split("-");
+        crtnDateDay = dateSplit[0];
+        crntDateMonth = dateSplit[1];
+        crntDateYear = dateSplit[2];
+        trialStatus.setTrialStartDate(crntDateYear, crntDateMonth, crtnDateDay, 'Actual');
+        trialStatus.clickSave();
+        replaceStartDate = trialDoc.replaceMonth(currentDate);
+        trialStatus.verifyTrialDates ('all', replaceStartDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        //future
+        replaceStartDate = trialDoc.replaceMonth(futureDateTwoMonth);
+        trialStatus.setTrialStartDate(futrDateYear, futrDateMonth, futrDateDay, 'Actual');
+        trialStatus.clickSave();
+        trialStatus.verifyTrialDates ('all', replaceStartDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the Trial status Primary Completion Date is always the same as, or later than, the Trial Start Date$/, function (callback) {
+        //Same Primary Completion Date
+        pastDate = trialDoc.getPastDate();
+        console.log('future date: '+futureDate);
+        var dateSplitB = pastDate.toString().split("-");
+        pstDateDay = dateSplitB[0];
+        pstDateMonth = dateSplitB[1];
+        pstDateYear = dateSplitB[2];
+        trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        trialStatus.setPrimaryCompletionDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        futureDateTwoMonth = trialDoc.getFutureDateNextTwoMonth();
+        console.log('Next two month ahead future date: '+futureDateTwoMonth);
+        var dateSplitC = futureDateTwoMonth.toString().split("-");
+        futrDateDay = dateSplitC[0];
+        futrDateMonth = dateSplitC[1];
+        futrDateYear = dateSplitC[2];
+        futureDateThreeMonth = trialDoc.getFutureDateNextThreeMonth();
+        var dateSplitD = futureDateThreeMonth.toString().split("-");
+        futrDateDayThree = dateSplitD[0];
+        futrDateMonthThree = dateSplitD[1];
+        futrDateYearThree = dateSplitD[2];
+        trialStatus.setCompletionDate(futrDateYearThree, futrDateMonthThree, futrDateDayThree, 'Actual');
+        trialStatus.clickSave();
+        replacePastDate = trialDoc.replaceMonth(pastDate);
+        replacePrimaryDate = trialDoc.replaceMonth(pastDate);
+        replaceCompletionDate = trialDoc.replaceMonth(futureDateThreeMonth);
+        trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        //later
+        trialStatus.setPrimaryCompletionDate(futrDateYear, futrDateMonth, futrDateDay, 'Actual');
+        trialStatus.clickSave();
+        replaceStartDate = trialDoc.replaceMonth(pastDate);
+        replacePrimaryDate = trialDoc.replaceMonth(futureDateTwoMonth);
+        trialStatus.verifyTrialDates ('all', replaceStartDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the Primary Completion Date can be earlier than the Current Trial Status Dates Complete$/, function (callback) {
+        currentDate = trialDoc.getCrrentDte();
+        console.log('current date: '+currentDate);
+        var dateSplitA = currentDate.toString().split("-");
+        crtnDateDay = dateSplitA[0];
+        crntDateMonth = dateSplitA[1];
+        crntDateYear = dateSplitA[2];
+        trialStatus.selectStatusByXpath('Complete');
+        trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+        trialStatus.setStatusComment('Status Comment: Complete');
+        //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+        trialStatus.clickAddTrialStatus();
+        trialStatus.clickSave();
+        //Same Primary Completion Date
+        pastDate = trialDoc.getPastDate();
+        console.log('future date: '+futureDate);
+        var dateSplitB = pastDate.toString().split("-");
+        pstDateDay = dateSplitB[0];
+        pstDateMonth = dateSplitB[1];
+        pstDateYear = dateSplitB[2];
+        trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        trialStatus.setPrimaryCompletionDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        futureDateThreeMonth = trialDoc.getFutureDateNextThreeMonth();
+        var dateSplitD = futureDateThreeMonth.toString().split("-");
+        futrDateDayThree = dateSplitD[0];
+        futrDateMonthThree = dateSplitD[1];
+        futrDateYearThree = dateSplitD[2];
+        trialStatus.setCompletionDate(futrDateYearThree, futrDateMonthThree, futrDateDayThree, 'Actual');
+        trialStatus.clickSave();
+        replacePastDate = trialDoc.replaceMonth(pastDate);
+        replacePrimaryDate = trialDoc.replaceMonth(pastDate);
+        replaceCompletionDate = trialDoc.replaceMonth(futureDateThreeMonth);
+        trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the Trial status Completion Date is always the same as, or later than, the Primary Completion Date$/, function (callback) {
+        //Same Primary Completion Date
+        pastDate = trialDoc.getPastDate();
+        console.log('future date: '+futureDate);
+        var dateSplitB = pastDate.toString().split("-");
+        pstDateDay = dateSplitB[0];
+        pstDateMonth = dateSplitB[1];
+        pstDateYear = dateSplitB[2];
+        trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        trialStatus.setPrimaryCompletionDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        trialStatus.setCompletionDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        trialStatus.clickSave();
+        replacePastDate = trialDoc.replaceMonth(pastDate);
+        replacePrimaryDate = trialDoc.replaceMonth(pastDate);
+        replaceCompletionDate = trialDoc.replaceMonth(pastDate);
+        trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        futureDateThreeMonth = trialDoc.getFutureDateNextThreeMonth();
+        var dateSplitD = futureDateThreeMonth.toString().split("-");
+        futrDateDayThree = dateSplitD[0];
+        futrDateMonthThree = dateSplitD[1];
+        futrDateYearThree = dateSplitD[2];
+        trialStatus.setCompletionDate(futrDateYearThree, futrDateMonthThree, futrDateDayThree, 'Actual');
+        trialStatus.clickSave();
+        replacePastDate = trialDoc.replaceMonth(pastDate);
+        replacePrimaryDate = trialDoc.replaceMonth(pastDate);
+        replaceCompletionDate = trialDoc.replaceMonth(futureDateThreeMonth);
+        trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^the Primary Completion Date is Actual$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the primary Completion Date can be earlier than the Current Trial Status Dates Administratively Complete$/, function (callback) {
+        currentDate = trialDoc.getCrrentDte();
+        console.log('current date: '+currentDate);
+        var dateSplitA = currentDate.toString().split("-");
+        crtnDateDay = dateSplitA[0];
+        crntDateMonth = dateSplitA[1];
+        crntDateYear = dateSplitA[2];
+        trialStatus.selectStatusByXpath('Administratively Complete');
+        trialStatus.setStatusDate(crntDateYear, crntDateMonth, crtnDateDay);
+        trialStatus.setStatusComment('Status Comment: Administratively Complete');
+        //trialStatus.setWhyStudyStopped('Status Comment: '+ statusTable[i].whyStudyStopped + '');
+        trialStatus.clickAddTrialStatus();
+        trialStatus.clickSave();
+        //Same Primary Completion Date
+        pastDate = trialDoc.getPastDate();
+        console.log('future date: '+futureDate);
+        var dateSplitB = pastDate.toString().split("-");
+        pstDateDay = dateSplitB[0];
+        pstDateMonth = dateSplitB[1];
+        pstDateYear = dateSplitB[2];
+        trialStatus.setTrialStartDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        trialStatus.setPrimaryCompletionDate(pstDateYear, pstDateMonth, pstDateDay, 'Actual');
+        futureDateThreeMonth = trialDoc.getFutureDateNextThreeMonth();
+        var dateSplitD = futureDateThreeMonth.toString().split("-");
+        futrDateDayThree = dateSplitD[0];
+        futrDateMonthThree = dateSplitD[1];
+        futrDateYearThree = dateSplitD[2];
+        trialStatus.setCompletionDate(futrDateYearThree, futrDateMonthThree, futrDateDayThree, 'Actual');
+        trialStatus.clickSave();
+        replacePastDate = trialDoc.replaceMonth(pastDate);
+        replacePrimaryDate = trialDoc.replaceMonth(pastDate);
+        replaceCompletionDate = trialDoc.replaceMonth(futureDateThreeMonth);
+        trialStatus.verifyTrialDates ('all', replacePastDate, 'Actual', replacePrimaryDate, 'Actual', replaceCompletionDate, 'Actual');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Trial status Completion Date is always the same as, or later than, the Primary Completion Date$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #23 Delete Trial Status Comment not null
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Trial Status screen
+     When I select Delete a Trial Status
+     And I have not entered a Comment
+     Then the will display the error "A comment must be entered"
+     */
+
+    this.When(/^I select Delete a Trial Status$/, function (callback) {
+        trialStatus.trialStatusTbleExists.isDisplayed().then(function(dispC){
+            console.log('Trial Status Table Exists: ' + dispC);
+            if (dispC) {
+                trialStatus.findTrialStatusToDel('delete');
+            }
+        });
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have not entered a Comment$/, function (callback) {
+        console.log('The delete comment feature has not been implemented');
+        callback.pending();
+    });
+
+    this.Then(/^the will display the error "([^"]*)"$/, function (arg1, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
 
 

@@ -16,7 +16,7 @@
 
         var _getRequestedSettings = function (requestedSettings) {
             var requestURL = '/ctrp/';
-            requestURL = requestedSettings.json_path ? requestURL + requestedSettings.json_path : (requestedSettings.external ?
+            requestURL = requestedSettings.json_path ? requestedSettings.json_path : (requestedSettings.external ?
                 requestURL + 'app_settings_ext/'  + requestedSettings.setting: requestURL + 'app_settings/' + requestedSettings.setting);
             requestURL += '.json';
             if (requestedSettings.location) {

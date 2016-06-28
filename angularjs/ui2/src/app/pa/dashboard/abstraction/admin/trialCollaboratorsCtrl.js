@@ -107,7 +107,6 @@
                     // To make sure setPristine() is executed after all $watch functions are complete
                     $timeout(function() {
                        $scope.trial_form.$setPristine();
-                       $scope.trial_collaborators_list_form.$setPristine();
                    }, 1);
                 }
             }).catch(function(err) {

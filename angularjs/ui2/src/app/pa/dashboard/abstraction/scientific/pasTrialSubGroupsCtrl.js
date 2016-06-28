@@ -81,6 +81,9 @@
                         extendedTimeOut: 1000,
                         timeOut: 0
                     })
+
+                    $scope.sg_form.$setPristine();
+
                     vm.addEditMode=false;
                     vm.selectedAllSG = false;
                 }
