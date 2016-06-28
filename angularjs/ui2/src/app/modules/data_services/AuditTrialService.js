@@ -35,7 +35,7 @@
         var initAuditInitialSearchParams = {
             sort: '',
             order: '',
-            rows: 20,
+            rows: 500,
             start: 1
         };
 
