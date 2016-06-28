@@ -67,6 +67,13 @@ Then I can view the trail milestone information for the current (most recent) su
 |Creator (Last Name, First Name)|
 |Creation Date (Date and Time)|
 
+Scenario: #3a Displaying Deleted values
+Given I am logged into the CTRP Protocol Abstraction application 
+And I have selected a Trial
+And I am on the Trial History Information Audit Trail Screen 
+When a value is deleted 
+Then the value will be displayed with the (D) suffix
+
 Scenario: #4 I view any submission trial milestones
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial

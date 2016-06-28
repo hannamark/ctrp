@@ -8,10 +8,10 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'TrialService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS', 'AppSettingsService'];
 
     function UserService(LocalCacheService, TrialService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS, AppSettingsService) {
 
         var service = this;
         var appVersion = '';
@@ -294,81 +294,94 @@
             return service.allOrgUsers;
         };
 
-        this.createTransferTrialsOwnership = function (controller, trialIdArr) {
-            service.getAllOrgUsers({
-                    'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
-                    'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id
-            }).then(function (data) {
-                if (controller.showTransferTrialsModal === false) {
-                    controller.showTransferTrialsModal = true;
-                }
-                controller.userOptions = {
-                    title: '',
-                    type: 'users',
-                    filterPlaceHolder: 'Start typing to filter the users below.',
-                    labelAll: 'Unselected Users',
-                    labelSelected: 'Selected Users',
-                    helpMessage: ' Click on names to transfer users between selected and unselected.',
-                    orderProperty: 'name',
-                    resetItems: [],
-                    items: [],
-                    selectedItems: [],
-                    openModal: controller.showTransferTrialsModal,
-                    showSave: controller.showTransferTrialsModal,
-                    confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
-                    close: function () {
-                        controller.showTransferTrialsModal = false;
-                    },
-                    reset: function () {
-                        controller.userOptions.searchTerm = '';
-                        controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
-                        controller.userOptions.selectedItems = [];
-                    },
-                    save: function () {
+        this.getUserStatuses = function () {
+            var statuses = AppSettingsService.getSettings({
+                setting: 'USER_STATUSES',
+                json_path: URL_CONFIGS.USER_STATUSES
+            });
+            return statuses;
+        };
 
-                        var searchParams = {
-                            from_user_id: controller.userDetails.id,
-                            transfers: []
-                        };
-                        var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
-                        if (trialIdArr && trialIdArr.length){
-                            _.each(user_ids, function(user_id) {
-                                _.each(trialIdArr, function (trial_id) {
-                                    searchParams.transfers.push({'user_id': user_id, 'trial_id': trial_id});
+        this.createTransferTrialsOwnership = function (controller, trialIdArr) {
+            service.getUserStatuses().then(function (response) {
+                var review_id = _.where(response.data, {code: 'ACT'})[0].id;
+                service.getAllOrgUsers({
+                    'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
+                    'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id,
+                    'user_status_id': review_id
+                }).then(function (data) {
+                    if (controller.showTransferTrialsModal === false) {
+                        controller.showTransferTrialsModal = true;
+                    }
+                    controller.userOptions = {
+                        title: '',
+                        type: 'users',
+                        filterPlaceHolder: 'Start typing to filter the users below.',
+                        labelAll: 'Unselected Users',
+                        labelSelected: 'Selected Users',
+                        helpMessage: ' Click on names to transfer users between selected and unselected.',
+                        orderProperty: 'name',
+                        resetItems: [],
+                        items: [],
+                        selectedItems: [],
+                        openModal: controller.showTransferTrialsModal,
+                        showSave: controller.showTransferTrialsModal,
+                        confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
+                        close: function () {
+                            controller.showTransferTrialsModal = false;
+                        },
+                        reset: function () {
+                            controller.userOptions.searchTerm = '';
+                            controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
+                            controller.userOptions.selectedItems = [];
+                        },
+                        save: function () {
+
+                            var searchParams = {
+                                from_user_id: controller.userDetails.id,
+                                transfers: []
+                            };
+                            var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
+                            if (trialIdArr && trialIdArr.length){
+                                _.each(user_ids, function(user_id) {
+                                    _.each(trialIdArr, function (trial_id) {
+                                        searchParams.transfers.push({'user_id': user_id, 'trial_id': trial_id});
+                                    });
                                 });
-                            });
-                            searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value();
-                        } else {
-                            _.each(user_ids, function(user_id) {
-                                searchParams.transfers.push({'user_id': user_id});
+                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value();
+                            } else {
+                                _.each(user_ids, function(user_id) {
+                                    searchParams.transfers.push({'user_id': user_id});
+                                });
+                            }
+
+                            service.transferUserTrialsOwnership(searchParams).then(function (data) {
+                                if(data.results === 'success') {
+                                    toastr.success('Trial Ownership Transferred', 'Success!');
+                                    if (controller.passiveTransferMode) {
+                                        controller.passiveTransferMode = false;
+                                        controller.updateUser(controller.checkForOrgChange());
+                                    } else {
+                                        controller.getUserTrials();
+                                    }
+                                }
                             });
                         }
-
-                        service.transferUserTrialsOwnership(searchParams).then(function (data) {
-                            if(data.results === 'success') {
-                                toastr.success('Trial Ownership Transferred', 'Success!');
-                                if (controller.passiveTransferMode) {
-                                    controller.passiveTransferMode = false;
-                                    controller.updateUser(controller.checkForOrgChange());
-                                } else {
-                                    controller.getUserTrials();
-                                }
-                            }
-                        });
-                    }
-                };
-                _.each(data.users, function (user) {
-                    if(user.id !== (controller.userDetails ? controller.userDetails.id : null)) {
-                        controller.userOptions.items.push({
-                            'id': user.id,
-                            'col1': user.last_name + ', ' + user.first_name,
-                            'col2': user.email,
-                            'col3': user.organization_name
-                        });
-                    }
+                    };
+                    _.each(data.users, function (user) {
+                        if(user.id !== (controller.userDetails ? controller.userDetails.id : null)) {
+                            controller.userOptions.items.push({
+                                'id': user.id,
+                                'col1': user.last_name + ', ' + user.first_name,
+                                'col2': user.email,
+                                'col3': user.organization_name
+                            });
+                        }
+                    });
+                    controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
                 });
-                controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
             });
+
         };
         
         this.TransferTrialsGridMenuItems = function (scope, controller) {

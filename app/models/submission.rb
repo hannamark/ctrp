@@ -47,7 +47,13 @@ class Submission < TrialBase
 
   before_create :set_acknowledge_as_no
 
-  private
+  ## Audit Trail Callbacks
+  #after_save :touch_trial      ##Commented out since When a trial updated , amended, or created then only submission create.
+  #after_destroy :touch_trial   ##Commented out since A submission will never be destroyed
+
+
+
+
 
   def set_acknowledge_as_no
       self.acknowledge = 'No'

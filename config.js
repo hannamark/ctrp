@@ -53,7 +53,9 @@ exports.config = {
         'features/PAA\ F03\ Add\ and\ Edit\ Regulatory\ Information.Feature',
         'features/PAA\ F04\ Add\ and\ Edit\ Regulatory\ Information\ Human\ Subject\ Safety.Feature',
         'features/PAA\ F05\ Add\ and\ Edit\ Regulatory\ Information\ IND-IDE.Feature',
+        'features/PAA\ F06\ Add\ and\ Edit\ Trial\ Status.Feature',
         'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',
+        'features/PAA\ F08\ Add\ and\ Edit\ Trial\ Participating\ Sites.Feature',
         'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature',
 
         /************* Registry Features ************/
@@ -75,6 +77,8 @@ exports.config = {
         'features/Reg\ F14\ Register\ Trial\ Review\ and\ Submit.feature',
         'features/Reg\ F15\ Register\ Trial\ Save\ as\ Draft.feature',
 
+        /************* PAS Features ************/
+        'features/PAS\ F01\ Add\ and\ Edit\ Trial\ Descriptions.Feature',
 
         /************* PO F2-F15 ************/
         'features/PO\ F2\ Search\ for\ Organizations.feature',
