@@ -24,6 +24,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation to t
 |display an indicator if the CTRP Users have Site Administrator privileges |
 |display an indicator if the CTRP Users will receive e-mails|
 |Status|
+|Status Date (Current status date)|
 
 Scenario: #1a I can view CTRP Users as a Site Admin without a family
 Given I am logged into CTRP 
@@ -44,7 +45,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation as m
 |display an indicator if the CTRP Users have Site Administrator privileges |
 |display an indicator if the CTRP Users will receive e-mails|
 |Status|
-
+|Status Date (Current status date)|
 Scenario: #2 I can search for CTRP Users as a Site Admin
 Given I am logged into CTRP 
 And I have Site Administrator privileges
@@ -77,6 +78,7 @@ And the list can be sorted by
 |Family|
 |Site Admin Privilege|
 |Status|
+|Status Date (Current status date)|
 
 Scenario: #2a I can search for CTRP Users as a Site Admin without a Family
 Given I am logged into CTRP 
@@ -108,7 +110,7 @@ And the list can be sorted by
 |Family|
 |Site Admin Privilege|
 |Status|
-
+|Status Date (Current status date)|
 
 Scenario: #3 I can enable Site Administrative privileges for CTRP Trial Submitters with the same site affiliation
 Given I am logged into CTRP 
@@ -127,7 +129,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Site Administrator|
 And the CTRP User will be able to access the Administrative features in CTRP.
-And the Account Activation(Site User) e-mail will be sent to the user 
+And the "Account Activation(Site User)" e-mail will be sent to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin) 
 
 Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the same site affiliation
 Given I am logged into CTRP 
@@ -146,7 +148,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Trial Submitter|
 And the CTRP User will not have access the Site Administrative features in CTRP
-And the Account Activation(Site User) e-mail will be sent to the user
+And the "Account Activation(Site User)" e-mail will be sent to the user(Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
 
 Scenario: #5 I can inactivate a Trial Submitter when I am a CTRP Site Administrator with the same site affiliation as the trial submitter
 Given I am logged into CTRP 
@@ -185,7 +187,7 @@ And the system will display the following action buttons
 When I can Select Save without Transferring ownership
 Then the new organization will be assigned to the user
 And the user account status will be pending 
-And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family
+And the system will send the "CTRP Account Request" email to appsupport for an organization change to a different family (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin) 
 When I select Transfer Ownership
 Then the system will open the trial management screen to allow the admin to reassign the trials (Feature Admin F06)
 And the trials displayed will be for selected user

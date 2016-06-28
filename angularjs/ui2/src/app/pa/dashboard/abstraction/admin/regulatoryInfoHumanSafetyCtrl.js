@@ -8,10 +8,10 @@
     .controller('regulatoryInfoHumanSafetyCtrl', regulatoryInfoHumanSafetyCtrl);
 
     regulatoryInfoHumanSafetyCtrl.$inject = ['$scope', 'PATrialService', 'TrialService',
-        'boardApprovalStatuses', '_', '$timeout', 'toastr', 'MESSAGES', 'DateService'];
+        'boardApprovalStatuses', '_', '$timeout', 'toastr', 'MESSAGES', 'DateService', '$state'];
 
     function regulatoryInfoHumanSafetyCtrl($scope, PATrialService, TrialService,
-        boardApprovalStatuses, _, $timeout, toastr, MESSAGES, DateService) {
+        boardApprovalStatuses, _, $timeout, toastr, MESSAGES, DateService, $state) {
 
         var vm = this;
         vm.boardAffiliationArray = [];
@@ -56,6 +56,10 @@
                     vm.trialDetailsObj.board_affiliation_id = newVal[0].id;
                     // vm.trialDetailsObj.board_name = newVal[0].name;
                     vm.trialDetailsObj.board_affiliated_org = newVal[0];
+
+                    if (!angular.equals(newVal, oldVal)) {
+                        $scope.human_safety_form.$setDirty();
+                    }
                 }
             });
         } // watchAffiliationSelection
@@ -129,6 +133,11 @@
                         timeOut: 0
                     });
                     _getTrialDetailCopy();
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.human_safety_form.$setPristine();
+                    }, 1);
                 }
             }).finally(function() {
                 vm.disableBtn = false;

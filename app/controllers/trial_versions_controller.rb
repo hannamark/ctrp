@@ -1,4 +1,5 @@
 class TrialVersionsController < ApplicationController
+  helper TrialVersionsHelper
 
 #before_action :set_version, only: [:show,  :update, :destroy]
 
@@ -42,14 +43,19 @@ end
 
 def history
 
+  params[:start] = 1 if params[:start].blank?
+  params[:rows]  = 20 if params[:rows].blank?
+  params[:order] = 'asc' if params[:order].blank?
+
   params[:start_date].nil? ? start_date =nil : start_date = params[:start_date].to_date.beginning_of_day
   params[:end_date].nil? ? end_date=nil : end_date = params[:end_date].to_date.end_of_day
 
   @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at BETWEEN ? AND ? ", "Trial",params[:trial_id],start_date,end_date).order('created_at desc') if start_date && end_date
-
   @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at > ? ", "Trial",params[:trial_id],start_date).order('created_at desc') if start_date && !end_date
   @trial_versions =TrialVersion.where("item_type = ? AND item_id = ? and created_at < ? ", "Trial",params[:trial_id],end_date).order('created_at desc') if !start_date && end_date
   @trial_versions =TrialVersion.where("item_type = ? AND item_id = ?", "Trial", params[:trial_id]).order('created_at desc') if !start_date && !end_date
+
+  @trial_versions = @trial_versions.page(params[:start]).per(params[:rows])
 
 
 end

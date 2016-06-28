@@ -37,7 +37,10 @@
         vm.searchWarningMessage = '';
 
         vm.auditGridOptions = AuditService.getAuditsGridOptions();
+        var pageSize = 500;//audit grid page size
+
         vm.disableBtn = false;
+        vm.auditParams = AuditService.getAuditInitialSearchParams();
 
         vm.showSubmissions= showSubmissions;
 
@@ -47,9 +50,10 @@
 
         activate();
         function activate() {
-            vm.auditGridOptions = AuditService.getAuditsGridOptions();
+            //vm.auditGridOptions = getGridOptions();
             vm.auditGridOptions.data =null;
             vm.auditGridOptions.totalItems = null;
+
 
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
@@ -68,6 +72,38 @@
             showDeletedDocs();
 
         }
+
+        function getGridOptions() {
+            var options = {
+                // rowData: vm.checkoutHistoryArr,
+                rowModelType: 'pagination',
+                columnDefs: getColumnDefs(),
+                enableColResize: true,
+                enableSorting: false,
+                enableFilter: true,
+                rowHeight: 30,
+                angularCompileRows: true,
+                suppressRowClickSelection: true,
+                suppressSizeToFit: false,
+            };
+
+            return options;
+        }
+
+
+        function getColumnDefs() {
+            var columns = [
+                {field: 'created_at'},
+                {field: 'event'},
+                {field: 'nci_id'},
+                {field: 'lead_protocol_id'},
+                {field: 'official_title'}
+            ];
+
+            return columns;
+        }
+
+
 
         /*Implementations below*/
 
@@ -90,6 +126,34 @@
         };
 
         function showAuditTrials() {
+
+            var columnDefs = [
+                {headerName: "Make", field: "make"},
+                {headerName: "Model", field: "model"},
+                {headerName: "Price", field: "price"}
+            ];
+
+            var rowData = [
+                {make: "Toyota", model: "Celica", price: 35000},
+                {make: "Ford", model: "Mondeo", price: 32000},
+                {make: "Porsche", model: "Boxter", price: 72000}
+            ];
+
+
+            vm.auditGridOptions.data =null;
+            vm.auditGridOptions.totalItems = null;
+
+            vm.auditGridOptions.onRegisterApi = function (gridApi) {
+                vm.gridApi = gridApi;
+                vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                    vm.auditParams.start = newPage;
+                    vm.auditParams.rows = pageSize;
+                    loadAuditTrials();
+                });
+            }; //gridOptions
+
+
+
             loadAuditTrials();
         }
 
@@ -222,12 +286,19 @@
 
     //***Audit Trial Tab Logic ***//
 
+        function onPageSizeChanged(newPageSize) {
+            pageSize = new Number(newPageSize);
+            //createNewDatasource(vm.checkoutHistoryArr);
+        }
+
+
         function loadAuditTrials() {
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             var startDate = vm.start_date;
             var endDate = vm.end_date;
-            vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate};
+            vm.trialHistoryObj = {trial_id: trialId, start_date: startDate, end_date: endDate, start: vm.auditParams.start, rows: vm.auditParams.rows};
             vm.disableBtn = true;
+
 
             //if (startDate != null && endDate != null) {
                 vm.searchWarningMessage=''
@@ -236,8 +307,15 @@
 
                     if (status >= 200 && status <= 210) {
                         console.log('received search results: ' + JSON.stringify(data.trial_versions));
-                        vm.auditGridOptions.data = data.trial_versions;
-                        vm.auditGridOptions.totalItems = data.trial_versions["length"];
+                       vm.auditGridOptions.rowData=data.trial_versions
+                        //vm.auditGridOptions.api.setRowData(data.trial_versions);
+                        //$scope.auditGridOptions.rowData = data.trial_versions
+
+                        //vm.auditGridOptions.data = data.trial_versions;
+                        //vm.auditGridOptions.api.refreshView();
+                        //vm.auditGridOptions.api.sizeColumnsToFit();
+
+                        vm.auditGridOptions.totalItems = data.total;
                     }
                 }).catch(function (err) {
                     console.log('Getting audit trials failed');
@@ -251,6 +329,8 @@
             //}
 
         }
+
+
 
         function openCalendar($event, type) {
             $event.preventDefault();

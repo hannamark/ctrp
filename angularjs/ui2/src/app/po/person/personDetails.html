@@ -26,7 +26,7 @@
         </div>
         <div class="row">
           <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
-          <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()">
+          <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()" unsaved-changes>
             <md-tabs md-dynamic-height md-border-bottom md-selected="personDetailView.tabIndex">
                 <md-tab ng-repeat="clusterPerson in personDetailView.curPerson.cluster track by $index">
                     <md-tab-label>{{clusterPerson.context}}</md-tab-label>

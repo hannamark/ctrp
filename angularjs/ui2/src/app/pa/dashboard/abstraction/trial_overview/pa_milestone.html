@@ -46,7 +46,7 @@
         </div>
         <div class="panel-body">
             <div class="form-group no-bottom-margin">
-                <form class="form form-horizontal" role="form" name="milestone_form" novalidate ctrp-submit="milestoneView.saveMilestone()">
+                <form class="form form-horizontal" role="form" name="milestone_form" novalidate ctrp-submit="milestoneView.saveMilestone()" unsaved-changes>
                     <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">Milestone Details</legend>
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.milestone_form.needsAttention(milestone_form.milestone) || milestoneView.validationErrors.length > 0}">

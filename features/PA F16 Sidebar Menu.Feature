@@ -182,7 +182,7 @@ And the current milestone is
 When the submission is an amendment
 Then the milesone to be used for determining the sidebar menu will the latest milestone in the prior active Submission  
 When the submission is the origional
-Then the milesone to be used for determining the sidebar menu will the latest milestone prior to the Submission Rejection Milestone
+Then the milesone to be used for determining the sidebar menu will the latest milestone prior to the Submission Rejection Date Milestone
 
 
 

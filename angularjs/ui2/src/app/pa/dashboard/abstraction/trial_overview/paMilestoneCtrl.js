@@ -77,10 +77,10 @@
 
                     TrialService.upsertTrial(outerTrial).then(function (response) {
                         if (response.server_response.status < 300) {
-                            // $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
                             toastr.success('Milestone have been recorded', 'Operation Successful!');
-                            PATrialService.setCurrentTrial(response); // cache the updated trial 
+                            PATrialService.setCurrentTrial(response); // cache the updated trial
                             $scope.$emit('updatedInChildScope', {}); // signal for updates
+                            $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
                         } else {
                             // Enable buttons in case of backend error
                             vm.disableBtn = false;

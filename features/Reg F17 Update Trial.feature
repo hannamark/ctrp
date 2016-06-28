@@ -70,14 +70,14 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |Other-A  |
       |Other-B  |
 
-      When I have selected the Update option when initial Abstraction Verified Milestone is entered
+      When I have selected the Update option when Trial Summary Report Date Milestone is entered
       Then the documents type will be displayed during update
        
       |Original Protocol  |
       |Original IRB Aproval  |
       |Original Informed Consent  |
       |Other-A  |
-      |TSR     |
+      |Original TSR     |
       |Other-B  |
 
 
@@ -90,21 +90,24 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
      When I have selected the Update option when Amendment Submission Accepted is entered
      Then the documents type will be displayed during update
      
-     
-      |Current Protocol  |
+      |Current Protocol |
       |Current Change Memo  |
       |Current IRB Approval  |
       |Other-C |
       |Other-D  |
-
-     When I have selected the Update option when Initial Abstraction Verified Milestone is entered for an Amendment
+     When I have selected the Update option when Trial Summary Report Date Milestone is entered for an Amendment
      Then the documents type will be displayed during update
      
       |Current Protocol  |
       |Current Change Memo  |
       |Current IRB Approval  |
       |Other-C  |
-      |TRS #2  |
+      |Current TSR | (Generated after Trial Summary report Date Milestone)  
       |Other-D  |
 
-       
+         Scenario:#5 Delete option should not be included for existing documents 
+    Given I am in the CTRP Registration Application 
+     When I update a trial 
+     Then I can see the most current documents
+     And the delete option should not be included for existing documents
+

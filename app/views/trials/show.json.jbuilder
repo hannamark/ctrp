@@ -244,7 +244,8 @@ json.milestone_wrappers do
 
     if milestone.submission.present?
       json.submission do
-        json.extract! milestone.submission, :id, :submission_num
+        json.extract! milestone.submission, :id, :submission_num, :submission_type_id
+        json.set! :submission_type_code, SubmissionType.find_by_id(milestone.submission.submission_type_id).code
       end
     end
 
@@ -325,6 +326,8 @@ json.last_amendment_num last_amd.amendment_num if last_amd.present?
 json.last_amendment_date last_amd.amendment_date if last_amd.present?
 
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
+
+json.last_submission_type_code @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_type.nil? ? '' : @trial.submissions.last.submission_type.code)
 
 ## get trial's last submitter
 submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)

@@ -44,19 +44,25 @@ Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
 And I select or change my Organizational Affiliation
 And the selected organiziton is not my organization Family
+When I select save 
+Then a warning message will be displayed "If you change your organization, you will lose any existing Site Admin, Report Viewing, Accrual Submission and Trial Ownership privileges and your account will be set to a Pending status requiring reauthorization"
+When I select OK
 Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
-And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family
+And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin) 
 
 Scenario: #5 Admin Access for change to a different organization not associated with a family 
 Given I am logged into CTRP
 And I select the option to update my user account information in CTRP
 And I select or change my Organizational Affiliation
+When I select save 
+Then a warning message will be displayed "If you change your organization, you will lose any existing Site Admin, Report Viewing, Accrual Submission and Trial Ownership privileges and your account will be set to a Pending status requiring reauthorization"
+When I select OK
 Then the new organization will be affilliated to my account
 And my role will be set to Trial Submitter
 And my status will be set to Pending
-And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family
+And the system will send the "CTRP Account Request" email to appsupport for an organizaton change to a different family (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
 
 Scenario: #6 I can view a users Trials
 Given I am logged into CTRP
@@ -66,7 +72,7 @@ And All the trials the user is an owner of will be displayed (Protocol Trials)
 And All the trials the user submitted will be displayed (Protocol and Imported Trials)
 And All the trials the user is a participationg site on will be displayed (Protocol and Imported Trials)
 
-Scenario: #7 I can view a users Trials - Owned
+Scenario: #7 I can view a users Trials - Owned (CTRP-RO, Account Approver, Abstractor, Curator, Super, Admin)
 Given I am logged into CTRP
 And I select the User from the list
 Then the user's profile will be displayed
@@ -84,7 +90,6 @@ And All the trials the user is an owner of will be displayed (Protocol Trials)in
 |Current Processing Status|
 |Current Processing Status Date|
 |Clinical Research Category|
-|Trial Sub-type|
 |Record Verification Date|
 |On Hold Reasons|
 |On Hold Dates|
@@ -108,7 +113,6 @@ And I can sort the trials by the fields:
 |Current Processing Status|
 |Current Processing Status Date|
 |Clinical Research Category|
-|Trial Sub-type|
 |Record Verification Date|
 |On Hold Reasons|
 |On Hold Dates|
@@ -130,7 +134,6 @@ And I can export the list of owned trials to Excel including the following field
 |Current Processing Status|
 |Current Processing Status Date|
 |Clinical Research Category|
-|Trial Sub-type|
 |Record Verification Date|
 |On Hold Reasons|
 |On Hold Dates|
@@ -139,8 +142,44 @@ And I can export the list of owned trials to Excel including the following field
 |Checked Out for Admin. Use by|
 |Checked Out for Scientific Use by|
 
+Scenario: #7a I can view a users Trials - Owned (roles: Site Admin, Trial Submitter)
+Given I am logged into CTRP
+And I select the User from the list
+Then the user's profile will be displayed
+And All the trials the user is an owner of will be displayed (Protocol Trials)including the following fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
+And the default sort order will be by NCI ID with the newest trial ID first
+And I can sort the trials by the fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
+And I can export the list of owned trials to Excel including the following fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
 
-Scenario: #8 I can view a users Trials - Submitted
+
+Scenario: #8 I can view a users Trials - Submitted (CTRP-RO, Account Approver, Abstractor, Curator, Super, Admin)
 Given I am logged into CTRP
 And I select the User from the list
 Then the user's profile will be displayed
@@ -158,7 +197,6 @@ And All the trials the user is an owner of will be displayed (Protocol and Impor
 |Current Processing Status|
 |Current Processing Status Date|
 |Clinical Research Category|
-|Trial Sub-type|
 |Record Verification Date|
 |On Hold Reasons|
 |On Hold Dates|
@@ -182,7 +220,6 @@ And I can sort the trials by the fields:
 |Current Processing Status|
 |Current Processing Status Date|
 |Clinical Research Category|
-|Trial Sub-type|
 |Record Verification Date|
 |On Hold Reasons|
 |On Hold Dates|
@@ -204,17 +241,51 @@ And I can export the list of owned trials to Excel including the following field
 |Current Processing Status|
 |Current Processing Status Date|
 |Clinical Research Category|
-|Trial Sub-type|
 |Record Verification Date|
 |On Hold Reasons|
 |On Hold Dates|
 |current Submission Type (O for Original, A for Amendment, U for Updated|
 |Submission Method|
 |Checked Out for Admin. Use by|
-|Checked Out for Scientific Use by|
+|Checked Out for Scientific Use by
 
+Scenario: #8a I can view a users Trials - Submitted (roles: Site Admin, Trial Submitter)
+Given I am logged into CTRP
+And I select the User from the list
+Then the user's profile will be displayed
+And All the trials the user is an owner of will be displayed (Protocol and Imported Trials)including the following fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
+And the default sort order will be by NCI ID with the newest trial ID first
+And I can sort the trials by the fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
+And I can export the list of owned trials to Excel including the following fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
 
-Scenario: #9 I can view a users Trials - Participating Sites
+Scenario: #9 I can view a users Trials - Participating Sites (CTRP-RO, Account Approver, Abstractor, Curator, Super, Admin)
 Given I am logged into CTRP
 And I select the User from the list
 Then the user's profile will be displayed
@@ -286,6 +357,42 @@ And I can export the list of owned trials to Excel including the following field
 |Submission Method|
 |Checked Out for Admin. Use by|
 |Checked Out for Scientific Use by|
+
+Scenario: #9a I can view a users Trials - Participating Sites (roles: Site Admin, Trial Submitter)
+Given I am logged into CTRP
+And I select the User from the list
+Then the user's profile will be displayed
+And All the trials the user is a a participating site on will be displayed (Protocol and Imported Trials)including the following fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
+And the default sort order will be by NCI ID with the newest trial ID first
+And I can sort the trials by the fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
+And I can export the list of owned trials to Excel including the following fields:
+|NCI Trial Identifier|
+|Lead Organization|
+|CTEP ID|
+|DCP ID|
+|Official Title|
+|Current Processing Status|
+|Current Processing Status Date|
+|Clinical Research Category|
+|Record Verification Date|
 
 Scenario: #10 I can view the trial details - Site User (Site Admin and Site User) 
 Given I am logged into CTRP

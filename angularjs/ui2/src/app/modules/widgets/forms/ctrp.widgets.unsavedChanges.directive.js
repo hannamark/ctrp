@@ -20,18 +20,59 @@
             return directiveObject;
 
             function linkerFn(scope, element, attrs) {
-                var formName = attrs.name;
+                var formName;
+                var formArray = element.find('form'); // For the case there are multiple forms on a single page
 
-                window.onbeforeunload = function(event) {
-                    if (scope[formName].$dirty) {
-                        return 'Are you sure you want to leave this page? You may have unsaved changes.';
+                if (!formArray.length) {
+                    formName = attrs.name ? attrs.name : element.parent().prop('name');
+                }
+
+                $window.onbeforeunload = function(event) {
+                    if (!formArray.length) {
+                        if (formName && scope[formName].$dirty) {
+                            return 'Are you sure you want to leave this page? You may have unsaved changes.';
+                        }
+                    } else {
+                        // For multiple forms
+                        var dirtyFlag = false;
+                        var formItem;
+
+                        for (var i = 0; i < formArray.length; i++) {
+                            formItem = $(formArray[i]).prop('name');
+                            if (scope[formItem].$dirty) {
+                                dirtyFlag = true;
+                            }
+                        }
+
+                        if (dirtyFlag) {
+                            return 'Are you sure you want to leave this page? You may have unsaved changes.';
+                        }
                     }
                 };
 
                 scope.$on('$stateChangeStart', function(event) {
-                    if (scope[formName].$dirty && !scope[formName].$submitted) {
-                        if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
-                            event.preventDefault();
+                    if (!formArray.length) {
+                        if (scope[formName].$dirty && !scope[formName].$submitted) {
+                            if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
+                                event.preventDefault();
+                            }
+                        }
+                    } else {
+                        // For multiple forms
+                        var formItem;
+                        var dirtyFlag = false;
+
+                        for (var i = 0; i < formArray.length; i++) {
+                            formItem = $(formArray[i]).prop('name');
+                            if (scope[formItem].$dirty && !scope[formItem].$submitted) {
+                                dirtyFlag = true;
+                            }
+                        }
+
+                        if (dirtyFlag) {
+                            if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
+                                event.preventDefault();
+                            }
                         }
                     }
                 });

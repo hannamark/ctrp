@@ -169,9 +169,10 @@ end
     @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present? unless @users.blank?
     @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
     @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
-    if (sortBy != 'admin_role')
+
+    if sortBy != 'admin_role' && sortBy != 'organization_family'
       @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
-    else
+    elsif sortBy == 'admin_role'
       temp0 = []
       temp1 = []
       @users.each do |user|
@@ -187,16 +188,48 @@ end
         @users = (temp1 + temp0)
       end
     end
+
+    @users = remove_repeated(@users, sortBy, params[:order])
+
     unless params[:rows].nil?
       @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows]) unless @users.blank?
     end
     Rails.logger.info "In User controller, search @users = #{@users.inspect}"
-    @users
   end
 
-
   private
-    def isSiteAdminForOrg user, orgId
+
+  def remove_repeated(array, sortBy, order)
+    found = Hash.new(0)
+    uniqueArr = []
+    array.each{ |val|
+      if found[val.id] == 0
+        org_family_name = ''
+        if val.organization_id.present?
+           families = Family.find_unexpired_matches_by_org(val.organization_id)
+           if families
+             families.each{|family| org_family_name += family.name + ', '}
+             org_family_name = org_family_name.chomp(", ")
+           end
+        end
+        val.organization_family = org_family_name
+        uniqueArr.push(val)
+        found[val.id] = 1
+      end
+    }
+
+    if order && sortBy == 'organization_family'
+      if  order.downcase == "asc"
+        uniqueArr = uniqueArr.sort_by { |hsh| hsh.organization_family }
+      elsif order.downcase == "desc"
+        uniqueArr = uniqueArr.sort_by { |hsh| hsh.organization_family }.reverse
+      end
+    end
+
+    uniqueArr
+  end
+
+  def isSiteAdminForOrg user, orgId
       family = FamilyMembership.find_by_organization_id(orgId)
       if family
         org_users = User.family_unexpired_matches_by_org(orgId)
