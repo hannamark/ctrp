@@ -7,10 +7,10 @@
 
     angular.module('ctrp.app.registry').controller('trialCtrl', trialCtrl);
 
-    trialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$uibModal',
+    trialCtrl.$inject = ['TrialService', 'uiGridConstants', 'uiGridExporterConstants', 'uiGridExporterService', '$scope', '$rootScope', 'Common', '$uibModal',
                          'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj','HOST'];
 
-    function trialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $uibModal,
+    function trialCtrl(TrialService, uiGridConstants, uiGridExporterConstants, uiGridExporterService, $scope, $rootScope, Commo, $uibModal,
                        studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,HOST) {
 
         var vm = this;
@@ -53,7 +53,18 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
-            columnDefs: []
+            columnDefs: [],
+            exporterCsvFilename: 'trials.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As Excel',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }]
         };
 
         $scope.$watch(function() {return vm.searchParams.searchType;}, function(newVal, oldVal) {
@@ -224,6 +235,28 @@
                 vm.searchTrials();
             });
         }; //gridOptions
+
+        vm.gridOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
+
+            //add extra fields here
+            //vm.gridOptions.columnDefs.push(middleName);
+
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+
+            return TrialService.searchTrials(allSearchParams).then(
+                function (data) {
+                    vm.gridOptions.useExternalPagination = false;
+                    vm.gridOptions.useExternalSorting = false;
+                    vm.gridOptions.data = data['trials'];
+
+                    vm.gridOptions.columnDefs = origGridColumnDefs;
+                }
+            );
+        };
+
 
         vm.searchTrials = function(newSearchFlag, searchType) {
             if (newSearchFlag === 'fromStart') {
