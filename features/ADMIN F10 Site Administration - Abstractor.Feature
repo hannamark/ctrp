@@ -53,7 +53,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Site Administrator|
 And the CTRP User will be able to access the Administrative features in CTRP
-And an e-mail will be sent to the user (Admin Access e-mail)
+And an e-mail "Admin Access Granted" will be sent to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
 
 Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: Abstractor, Super, Admin, Account Approver
 Given I am logged into CTRP 
