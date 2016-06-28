@@ -144,6 +144,9 @@
                         vm.setToDefaultMode();
                         PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                     }
+
+                    $scope.om_form.$setPristine();
+
                     vm.selectedAllOM = false;
                 }
             }).catch(function(err) {
