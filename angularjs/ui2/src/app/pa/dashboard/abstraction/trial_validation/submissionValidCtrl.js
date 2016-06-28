@@ -24,6 +24,7 @@
         vm.validateSubmission = validateSubmission;
         vm.resetForm = resetForm;
         console.info('amendmentReasonArr: ', vm.amendReasonArr);
+        console.info('amend_reason_id: ', vm.trialDetailObj.amendment_reason_id);
 
         activate();
         function activate() {

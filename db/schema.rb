@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628185324) do
+ActiveRecord::Schema.define(version: 20160621142848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1407,12 +1407,10 @@ ActiveRecord::Schema.define(version: 20160628185324) do
     t.integer  "internal_source_id"
     t.string   "nci_specific_comment",          limit: 4000
     t.string   "send_trial_flag"
-    t.integer  "amendment_reason_id"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree
   add_index "trials", ["allocation_id"], name: "index_trials_on_allocation_id", using: :btree
-  add_index "trials", ["amendment_reason_id"], name: "index_trials_on_amendment_reason_id", using: :btree
   add_index "trials", ["assigned_to_id"], name: "index_trials_on_assigned_to_id", using: :btree
   add_index "trials", ["biospecimen_retention_id"], name: "index_trials_on_biospecimen_retention_id", using: :btree
   add_index "trials", ["board_affiliation_id"], name: "index_trials_on_board_affiliation_id", using: :btree
@@ -1617,7 +1615,6 @@ ActiveRecord::Schema.define(version: 20160628185324) do
   add_foreign_key "trials", "age_units", column: "max_age_unit_id"
   add_foreign_key "trials", "age_units", column: "min_age_unit_id"
   add_foreign_key "trials", "allocations"
-  add_foreign_key "trials", "amendment_reasons"
   add_foreign_key "trials", "biospecimen_retentions"
   add_foreign_key "trials", "board_approval_statuses"
   add_foreign_key "trials", "genders"

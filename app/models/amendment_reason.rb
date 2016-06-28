@@ -13,6 +13,5 @@
 
 class AmendmentReason < ActiveRecord::Base
   include BasicConcerns
-  has_many :trials
   validates :code, uniqueness: true
 end

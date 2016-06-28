@@ -140,7 +140,6 @@ class Trial < TrialBase
   belongs_to :sponsor, class_name: "Organization"
   belongs_to :investigator, class_name: "Person"
   belongs_to :investigator_aff, class_name: "Organization"
-  belongs_to :amendment_reason
   has_many :other_ids, -> { order 'other_ids.id' }
   has_many :ind_ides, -> { order 'ind_ides.id' }
   has_many :grants, -> { order 'grants.id' }
