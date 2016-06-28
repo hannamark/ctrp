@@ -24,6 +24,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation to t
 |display an indicator if the CTRP Users have Site Administrator privileges |
 |display an indicator if the CTRP Users will receive e-mails|
 |Status|
+|Status Date (Current status date)|
 
 Scenario: #1a I can view CTRP Users as a Site Admin without a family
 Given I am logged into CTRP 
@@ -44,7 +45,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation as m
 |display an indicator if the CTRP Users have Site Administrator privileges |
 |display an indicator if the CTRP Users will receive e-mails|
 |Status|
-
+|Status Date (Current status date)|
 Scenario: #2 I can search for CTRP Users as a Site Admin
 Given I am logged into CTRP 
 And I have Site Administrator privileges
@@ -77,6 +78,7 @@ And the list can be sorted by
 |Family|
 |Site Admin Privilege|
 |Status|
+|Status Date (Current status date)|
 
 Scenario: #2a I can search for CTRP Users as a Site Admin without a Family
 Given I am logged into CTRP 
@@ -108,7 +110,7 @@ And the list can be sorted by
 |Family|
 |Site Admin Privilege|
 |Status|
-
+|Status Date (Current status date)|
 
 Scenario: #3 I can enable Site Administrative privileges for CTRP Trial Submitters with the same site affiliation
 Given I am logged into CTRP 
