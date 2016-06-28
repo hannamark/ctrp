@@ -12,7 +12,7 @@
                     <!-- trial phase -->
                     <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
                         <label for="trial_phase" class="control-label col-xs-12 col-sm-5">Trial Phase:</label>
-                        <div class="col-xs-12 col-sm-5">
+                        <div class="col-xs-12 col-sm-4">
                             <select name="trial_phase" id="trial_phase"
                                 class="form-control input-sm"
                                 ng-required="true"
@@ -31,10 +31,10 @@
                         <label class="control-label col-xs-12 col-sm-5">Is this a pilot?</label>
                         <div class="col-xs-12 col-sm-5">
                             <label class="radio-inline">
-                                <input type="radio" restriction-field ng-model="subValidView.trialDetailObj.pilot" value="No" name="pilot"> No
+                                <input type="radio" id="pilot_no" ng-model="subValidView.trialDetailObj.pilot" value="No" name="pilot"> No
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" restriction-field ng-model="subValidView.trialDetailObj.pilot" value="Yes" name="pilot"> Yes
+                                <input type="radio" id="pilot_yes" ng-model="subValidView.trialDetailObj.pilot" value="Yes" name="pilot"> Yes
                             </label>
                         </div>
                     </div>
