@@ -35,8 +35,8 @@ class MilestoneWrapper < TrialBase
   after_create :recording_triggers
 
   ## Audit Trail Callbacks
-  after_save :touch_trial
-  after_destroy :touch_trial
+  #after_save :touch_trial
+  #after_destroy :touch_trial
 
 
   def touch_trial
