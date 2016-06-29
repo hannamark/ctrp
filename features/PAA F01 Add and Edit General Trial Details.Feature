@@ -1,4 +1,4 @@
-﻿@PA @global
+@PA @global
 Feature: PAA F01 Add and Edit General Trial Details
 
 As any CTRP PA User, I can enter general trial details
@@ -10,7 +10,7 @@ When I can edit the lead organization trial identifier
 And I can optionally enter or edit one or more Other Trial Identifiers
 Then the Protocol Identifier section will be complete
 
-Scenario #1a Duplicate and format rules for Other Trial Identifiers
+Scenario: #1a Duplicate and format rules for Other Trial Identifiers
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 Then I should be allowed to enter only one "ClinicalTrials.gov Identifier"
@@ -27,12 +27,14 @@ And I should be allowed to enter more than one "DCP Identifier" with unique IDs
 And I should be allowed to enter more than one "CTEP Identifier" with unique IDs
 And I should be allowed to enter more than one "CCR Identifier" with unique IDs
 And I should be allowed to enter more than one "CDR Identifier" with unique IDs
+And all Trial Identifiers should not be more than 30 characters in Length 
 Then the Protocol Identifiers section will indicate zero errors
 
 Scenario: #2 I can enter the Acronym and Official Title for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
-When I edit the Official Title for the trial  
+When I edit the Official Title for the trial
+And the official Title should not be more than 30 characters in length
 And I can optionally enter or edit the Acronym for the trial
 Then the title section will be complete
 
