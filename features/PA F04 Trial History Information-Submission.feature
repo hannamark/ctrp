@@ -128,7 +128,7 @@ Scenario: #12 I can view Trial History Information for Submissions with more the
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I am on the Trial History Information for Submissions Screen
-ANd the Trial History Information table is displayed
+And the Trial History Information table is displayed
 And a submission has more than 4 documents
 Then the 4 Documents will be displayed with a function that will allow the user to popup and view all the documents for this submission.
 And I can select the Documents Pop Up Box
