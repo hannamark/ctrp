@@ -16,6 +16,9 @@
         vm.trialDetailObj = {};
         vm.disableBtn = false;
         vm.isOtherPrimaryPurpose = false;
+        vm.isAmendmentSubmission = false; // TODO: submission_type_code in submissions array of objects
+        vm.isOriginalSubmission = false; // TODO:
+        // TODO: assign submissions to submissions_attributes if any 
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
         vm.amendReasonArr = amendmentReasonObj.data || [];

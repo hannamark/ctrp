@@ -77,29 +77,30 @@
                     </div>
                     <!-- end of description -->
                 </fieldset>
-
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || subValidView.disableBtn">
-                    <legend class="sub-bordered">
-                        Amendment Information
-                    </legend>
-                    <!-- amendment reasons -->
-                    <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
-                        <label for="amend_reason" class="control-label col-xs-12 col-sm-5">Amendment Reason Code:</label>
-                        <div class="col-xs-12 col-sm-4">
-                            <select name="amend_reason" id="amend_reason"
-                                class="form-control input-sm"
-                                ng-required="true"
-                                ng-model="subValidView.trialDetailObj.amendment_reason_id"
-                                ng-options="amend.id as amend.name for amend in subValidView.amendReasonArr">
-                                <option value="">- Please select a amendment reason code...</option>
-                            </select>
-                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.amend_reason) && sub_validation_form.amend_reason.$error">
-                                <span class="help-block" ng-message="required">Amendment Reason Code is Required</span>
-                           </span>
+                <div ng-show="paTrialOverview.trialDetailObj.last_submission_type_code === 'AMD' && subValidView.trialDetailObj.submissions.length > 0">
+                    <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || subValidView.disableBtn">
+                        <legend class="sub-bordered">
+                            Amendment Information
+                        </legend>
+                        <!-- amendment reasons -->
+                        <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
+                            <label for="amend_reason" class="control-label col-xs-12 col-sm-5">Amendment Reason Code:</label>
+                            <div class="col-xs-12 col-sm-4">
+                                <select name="amend_reason" id="amend_reason"
+                                    class="form-control input-sm"
+                                    ng-required="paTrialOverview.trialDetailObj.last_submission_type_code === 'AMD'"
+                                    ng-model="subValidView.trialDetailObj.submissions[subValidView.trialDetailObj.submissions.length-1].amendment_reason_id"
+                                    ng-options="amend.id as amend.name for amend in subValidView.amendReasonArr">
+                                    <option value="">- Please select a amendment reason code...</option>
+                                </select>
+                                <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.amend_reason) && sub_validation_form.amend_reason.$error">
+                                    <span class="help-block" ng-message="required">Amendment Reason Code is Required</span>
+                               </span>
+                            </div>
                         </div>
-                    </div>
-                    <!-- end of amendment reasons -->
-                </fieldset>
+                        <!-- end of amendment reasons -->
+                    </fieldset>
+                </div>
             </form>
         </div>
     </div>

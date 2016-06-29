@@ -302,6 +302,8 @@ json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
                   :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user_id, :submission_source_id
+
+    json.set! :submission_type, SubmissionType.find(submission.submission_type_id)
   end
 end
 
