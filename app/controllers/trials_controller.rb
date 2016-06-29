@@ -1,5 +1,5 @@
 class TrialsController < ApplicationController
-  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone]
+  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone, :rollback]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy]
@@ -82,6 +82,14 @@ class TrialsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to trials_url, notice: 'Trial was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def rollback
+    trial_service = TrialService.new({trial: @trial})
+    trial_service.rollback(params[:submission_id])
+    respond_to do |format|
+      format.json { render :json => params }
     end
   end
 
@@ -739,7 +747,9 @@ class TrialsController < ApplicationController
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
                                   milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
-                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy])
+                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy],
+                                  citations_attributes:[:id, :pub_med_id, :description, :results_reference, :_destroy],
+                                  links_attributes:[:id, :url, :description, :_destroy], trial_ownerships_attributes:[:id, :user_id, :_destroy])
   end
 
   # Convert status code to name in validation messages

@@ -36,7 +36,7 @@
                   <li ng-hide="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.regulatoryInfoHumanSafety" ui-sref-opts="{reload: true}" class="menu-regulatory-info-human-subject-safety">Regulatory Information - Human Subject Safety</a></li>
                   <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.regulatoryInd" ui-sref-opts="{reload: true}" class="menu-reg-ind">Regulatory Information - IND/IDE</a></li>
                   <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.paTrialStatus" ui-sref-opts="{reload: true}" class="menu-trial-status">Trial Status</a></li>
-                  <li><a ui-sref="main.pa.trialOverview.funding" ui-sref-opts="{reload: true}" class="menu-funding">Trial Funding</a></li>
+                  <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.funding" ui-sref-opts="{reload: true}" class="menu-funding">Trial Funding</a></li>
                   <li ng-hide="paMenuPanel.menuTypes.trialValidProtocol"><a ui-sref="main.pa.trialOverview.participatingSites" ui-sref-opts="{reload: true}" class="menu-participating-sites">Participating Sites</a></li>
                   <li ng-hide="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.collaborators" ui-sref-opts="{reload: true}" class="menu-collaborators">Collaborators</a></li>
                   <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.paTrialRelatedDocs" ui-sref-opts="{reload: true}" class="menu-trial-related-documents">Trial Related Documents</a></li>

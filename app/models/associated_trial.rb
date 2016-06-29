@@ -32,8 +32,8 @@ class AssociatedTrial < TrialBase
   }
 
   ## Audit Trail Callbacks
-  after_save :touch_trial
-  after_destroy :touch_trial
+  #after_save :touch_trial
+  #after_destroy :touch_trial
 
   private
 
