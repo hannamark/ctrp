@@ -510,6 +510,24 @@
                 };
                 $scope.gridOptions.enableVerticalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
                 $scope.gridOptions.enableHorizontalScrollbar = 2; //uiGridConstants.scrollbars.NEVER;
+
+                $scope.gridOptions.exporterAllDataFn = function () {
+                    var allSearchParams = angular.copy($scope.searchParams);
+                    var origGridColumnDefs = angular.copy($scope.gridOptions.columnDefs);
+
+                    allSearchParams.start = null;
+                    allSearchParams.rows = null;
+
+                    return OrgService.searchOrgs(allSearchParams).then(
+                        function (data) {
+                            $scope.gridOptions.useExternalPagination = false;
+                            $scope.gridOptions.useExternalSorting = false;
+                            $scope.gridOptions.data = data['orgs'];
+
+                            $scope.gridOptions.columnDefs = origGridColumnDefs;
+                        }
+                    );
+                };
                 $scope.gridOptions.onRegisterApi = function (gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
@@ -526,6 +544,8 @@
                         });
                     });
                 }; //gridOptions
+
+
 
                 /**
                  * Toggle curation on and off

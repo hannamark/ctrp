@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$rootScope', '$state', '$timeout', '$scope', 'countryList', 'AppSettingsService', 'URL_CONFIGS'];
+    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$rootScope', '$state', '$timeout', '$scope', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, countryList, AppSettingsService, URL_CONFIGS) {
+    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
         $scope.userDetail_form = {};
@@ -20,8 +20,6 @@
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
         vm.states = [];
-        vm.countriesArr = countryList;
-        vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.userRole = UserService.getUserRole();
         vm.isCurrentUser = UserService.getCurrentUserId() === vm.userDetailsOrig.id;
         $rootScope.$broadcast('isWriteModeSupported', vm.userDetailsOrig.write_access);
@@ -36,10 +34,13 @@
             }
 
             UserService.upsertUser(vm.userDetails).then(function(response) {
-                if ( response.username ) {
+                if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
                 }
-                if (redirect) {
+                if (vm.logUserOut === true){
+                    vm.logUserOut = false;
+                    UserService.logout();
+                } else if (redirect) {
                     UserService.allOrgUsers = null;
                     $timeout(function() {
                         $state.go('main.users', {}, {reload: true});
@@ -51,12 +52,6 @@
             }).catch(function(err) {
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             });
-        };
-
-        vm.isValidPhoneNumber = function(){
-            vm.IsPhoneValid = isValidNumberPO(vm.userDetails.phone, vm.userDetails.country);
-            vm.showPhoneWarning = true;
-            console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
 
         vm.reset = function() {
@@ -81,20 +76,22 @@
             if ($scope.userDetail_form.$invalid) {
                 return;
             } else {
+                // if inactivating user or changing org of user, check to transfer trials if trials exist
+                // otherwise if it is current user changing org, give warning popup up and safe after po up OK
                 if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                        if (vm.gridTrialsOwnedOptions.totalItems > 0) {
-                           if (vm.userRole === 'ROLE_ADMIN'
+                        if (vm.gridTrialsOwnedOptions.totalItems > 0
+                               && vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
                                         || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
                                             || vm.userRole === 'ROLE_SITE-SU') {
                                 vm.chooseTransferTrials = true;
                                 return;
-                            } else if (vm.isCurrentUser) {
-                               vm.updateAfterModalSave = true;
-                               vm.confirmRemoveTrialOwnershipsPopUp = true;
-                               return;
-                            }
+                        } else if (vm.isCurrentUser) {
+                            vm.updateAfterModalSave = true;
+                            vm.logUserOut = true;
+                            vm.confirmChangeFamilyPopUp = true;
+                            return;
                         } else {
                             vm.updateUser(vm.checkForOrgChange());
                             return;
@@ -371,13 +368,16 @@
 
         vm.trialOwnershipRemoveIdArr = null;
         vm.confirmRemoveTrialOwnershipsPopUp = false;
+        vm.confirmChangeFamilyPopUp = false;
         vm.confirmRemoveTrialsOwnerships = function (trialOwnershipIdArr) {
             vm.confirmRemoveTrialOwnershipsPopUp = true;
             vm.trialOwnershipRemoveIdArr = trialOwnershipIdArr;
         };
-        vm.removeTrialsOwnerships = function () {
+        vm.cancelRemoveTrialsOwnerships = function () {
             vm.confirmRemoveTrialOwnershipsPopUp = false;
+            vm.confirmChangeFamilyPopUp = false;
             vm.updateAfterModalSave = false;
+            vm.logUserOut = false;
         };
         vm.removeTrialsOwnerships = function () {
             var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
@@ -398,6 +398,7 @@
                  }
              });
             vm.confirmRemoveTrialOwnershipsPopUp = false;
+            vm.confirmChangeFamilyPopUp = false;
         };
         /****************** implementations below ***************/
         var activate = function() {
@@ -406,31 +407,7 @@
                     vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': organization.name}];
                 });
             }
-            listenToStatesProvinces();
         }();
-
-        /**
-         * Listen to the message for availability of states or provinces
-         * for the selected country
-         */
-        function listenToStatesProvinces() {
-            if (vm.userDetails.country) {
-                vm.watchCountrySelection(vm.userDetails.country);
-            } else {
-                vm.userDetails.country = 'United States'; //default country
-                vm.watchCountrySelection(vm.userDetails.country);
-            }
-
-            $scope.$on(MESSAGES.STATES_AVAIL, function () {
-                vm.states = OrgService.getStatesOrProvinces();
-            });
-
-            $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
-                vm.states = [];
-            });
-
-
-        } //listenToStatesProvinces
         
         $scope.$on(vm.redirectToAllUsers, function () {
             vm.states = [];

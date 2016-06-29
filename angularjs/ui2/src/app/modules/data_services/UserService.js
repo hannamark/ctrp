@@ -96,8 +96,7 @@
         /**
          *
          * @param searchParams, JSON object whose keys can include:
-         * username, po_id, source_id, source_status, family_name, address, address2, city, state_province, country,
-         * postal_code, and email
+         * username, po_id, source_id, source_status, family_name and email
          *
          * @returns Array of JSON objects
          */

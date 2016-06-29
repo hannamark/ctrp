@@ -164,6 +164,13 @@ class TrialsController < ApplicationController
     end
   end
 
+  def amendment_reasons
+    @amendment_reasons = AmendmentReason.all
+    respond_to do |format|
+      format.json { render :json => {:data => @amendment_reasons} }
+    end
+  end
+
   def study_models
     @study_models = StudyModel.all
     respond_to do |format|
@@ -735,7 +742,7 @@ class TrialsController < ApplicationController
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document,:deleted_by,:deletion_date, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
                                   interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :c_code, :_destroy],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
-                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
+                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :amendment_reason_id, :_destroy],
                                   sub_groups_attributes:[:id,:index,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
                                   outcome_measures_attributes: [:id, :index,:title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
