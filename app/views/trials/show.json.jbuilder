@@ -382,3 +382,5 @@ end
 
 json.current_submission_num @trial.current_submission.submission_num if @trial.current_submission.present?
 json.current_submission_id @trial.current_submission.id if @trial.current_submission.present?
+json.current_submission_type_code @trial.current_submission.submission_type.code if @trial.current_submission.present?
+
