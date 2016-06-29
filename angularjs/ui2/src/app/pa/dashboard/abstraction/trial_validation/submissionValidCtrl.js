@@ -8,10 +8,10 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'PATrialService', '_', 'amendmentReasonObj'];
+    'PATrialService', '_', 'amendmentReasonObj', 'toastr'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        PATrialService, _, amendmentReasonObj) {
+        PATrialService, _, amendmentReasonObj, toastr) {
         var vm = this;
         vm.trialDetailObj = {};
         vm.disableBtn = false;
@@ -24,9 +24,9 @@
         vm.amendReasonArr = amendmentReasonObj.data || [];
 
         // actions
-        vm.validateSubmission = validateSubmission;
+        vm.saveValidation = saveValidation;
         vm.resetForm = resetForm;
-        
+
         activate();
         function activate() {
             _getTrialDetailCopy();
@@ -65,9 +65,35 @@
             return val;
         }
 
-        function validateSubmission() {
+        function saveValidation() {
             console.info('validating submission....');
-        } // validateSubmission
+            vm.trialDetailObj.submissions_attributes = vm.trialDetailObj.submissions; // for update
+            vm.disableBtn = true;
+            PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
+                var status = res.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.trialDetailObj = res;
+                    PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+                    toastr.clear();
+                    toastr.success('Submission validation has been updated', 'Successful!', {
+                        extendedTimeOut: 1000,
+                        timeOut: 0
+                    });
+
+                    _getTrialDetailCopy();
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.sub_validation_form.$setPristine();
+                    }, 1);
+                }
+            }).catch(function(err) {
+                console.error('trial upsert error: ', err);
+            }).finally(function() {
+                vm.disableBtn = false;
+            });
+        } // saveValidation
 
         function resetForm() {
             _getTrialDetailCopy();
