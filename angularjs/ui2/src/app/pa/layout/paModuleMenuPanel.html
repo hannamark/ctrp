@@ -76,8 +76,7 @@
               </ul>
           </uib-accordion-group>
       </div>
-      <div>
-          <!-- ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport" -->
+      <div ng-show="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport">
           <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialValidOpen">
               <uib-accordion-heading>
                   <strong>Trial Validation</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialValidOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialValidOpen}"></i>
