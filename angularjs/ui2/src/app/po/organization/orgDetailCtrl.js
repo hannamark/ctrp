@@ -9,8 +9,8 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal',
-        'GeoLocationService', '$timeout'];
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal', '$timeout',
+        'GeoLocationService'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout) {
