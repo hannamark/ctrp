@@ -221,6 +221,9 @@ class Trial < TrialBase
   accepts_nested_attributes_for :diseases, allow_destroy: true
   accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
   accepts_nested_attributes_for :onholds, allow_destroy: true
+  accepts_nested_attributes_for :citations, allow_destroy: true
+  accepts_nested_attributes_for :links, allow_destroy: true
+  accepts_nested_attributes_for :trial_ownerships, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
   validates :lead_protocol_id, uniqueness: { scope: :lead_org_id, message: "Combination of Lead Organization Trial ID and Lead Organization must be unique" }
