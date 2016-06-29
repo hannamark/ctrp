@@ -90,7 +90,6 @@
             }
 
             function updateInterventions(showToastr) {
-                console.info('interventions: ', vm.trialDetailObj.interventions);
                 vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
                 vm.deleteBtnDisabled = true;
                 vm.upsertBtnDisabled = true;
