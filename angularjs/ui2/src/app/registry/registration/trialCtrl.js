@@ -240,9 +240,6 @@
             var allSearchParams = angular.copy(vm.searchParams);
             var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
 
-            //add extra fields here
-            //vm.gridOptions.columnDefs.push(middleName);
-
             allSearchParams.start = null;
             allSearchParams.rows = null;
 
