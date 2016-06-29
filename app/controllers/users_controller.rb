@@ -23,7 +23,14 @@ class UsersController < ApplicationController
   end
 
   def update
+    current_user = current_site_user
     @user = User.find_by_username(params[:user][:username])
+    if current_user.role == 'ROLE_TRIAL-SUBMITTER'
+      params[:user][:domain] = current_user.domain
+      params[:user][:role] = current_user.role
+      params[:user][:user_status_id] = current_user.user_status_id
+    end
+
     initalUserRole = @user.role
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
     @families = Family.find_unexpired_matches_by_org(@user.organization_id)
@@ -239,14 +246,17 @@ end
       user_found = org_users.find_by_id user.id
       user_found && user_found.role == "ROLE_SITE-SU"
     end
-
-    def userWriteAccess userToUpdate
+    def current_site_user
       auth_string = request.headers['Authorization']
       if !auth_string.blank?
         token = auth_string.split(" ")[1]
         user_id = decode_token(token)
         user = User.find(user_id)
       end
+      user
+    end
+    def userWriteAccess userToUpdate
+      user = current_site_user
       user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
           user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
           user.role == 'ROLE_SUPER' || user.id == userToUpdate.id ||
