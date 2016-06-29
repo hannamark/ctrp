@@ -29,7 +29,7 @@
             restrict: 'A',
             priority: 200,
             scope: {
-                ngClick: '&ctrpClick'
+                ngClick: '&ctrpClick',
             },
             link: linkerFn
         };
@@ -37,6 +37,8 @@
         return directiveObj;
 
         function linkerFn(scope, element, attrs) {
+            var popover;
+            /*
             var popover = $popover(element, {
                 title: 'Please Confirm',
                 templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
@@ -47,6 +49,21 @@
                 content: attrs.confirmMsg || 'Are you sure?',
                 autoClose: true,
                 scope: scope
+            });
+            */
+            // watch for the confirm-msg dynamically
+            attrs.$observe('confirmMsg', function(newVal) {
+                popover = $popover(element, {
+                    title: 'Please Confirm',
+                    templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
+                    html: true,
+                    trigger: 'manual',
+                    placement: 'top',
+                    animation: 'am-flip-x',
+                    content: newVal || 'Are you sure?',
+                    autoClose: true,
+                    scope: scope
+                });
             });
 
             element.bind('click', function(event) {
