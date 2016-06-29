@@ -25,13 +25,20 @@ class UsersController < ApplicationController
   def update
     current_user = current_site_user
     @user = User.find_by_username(params[:user][:username])
-    if current_user.role == 'ROLE_TRIAL-SUBMITTER'
+    if current_user.role == 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
       params[:user][:domain] = current_user.domain
       params[:user][:role] = current_user.role
       params[:user][:user_status_id] = current_user.user_status_id
+    elsif current_user.role != 'ROLE_ADMIN'
+      params[:user][:domain] = current_user.domain
     end
 
     initalUserRole = @user.role
+    initalUserStatusId = @user.user_status_id
+    if params[:user_status_id] != initalUserStatusId
+      @user[:status_date] = Time.now
+    end
+
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
     @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     respond_to do |format|
@@ -277,6 +284,6 @@ end
       params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username,
                                    :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
                                    :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
-                                   :phone, :user_status_id)
+                                   :phone, :user_status_id, :status_date)
     end
 end

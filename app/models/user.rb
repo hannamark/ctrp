@@ -39,6 +39,7 @@
 #  phone                       :string
 #  city                        :string
 #  domain                      :string
+#  status_date                 :datetime
 #
 # Indexes
 #
