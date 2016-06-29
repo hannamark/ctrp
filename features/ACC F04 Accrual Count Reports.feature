@@ -19,7 +19,7 @@ As a CTRP Accrual Submitter, I can download Accrual Count Reports in the CTRP Ac
       |Trial Accrual Count  |
       |Last Accrual Update Submitted  |
       
-      
+     And the accrual report trial list will be paganiated  
      And I can filter Accrual Count types by using the filter capabilities on the right end of the column headings
      And I can sort column data by clicking on the arrow displayed on every cloumn heading
      And I can click "CVS" at the botton of the list to download the Accrual Count report as a comma-separated-value text file
