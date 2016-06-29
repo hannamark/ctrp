@@ -342,27 +342,33 @@
             );
         };
         vm.getUserSubmittedTrials = function () {
-            vm.gridTrialsSubmittedOptions.useExternalPagination = true;
-            vm.gridTrialsSubmittedOptions.useExternalSorting = true;
-            UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
-                vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
-                vm.gridTrialsSubmittedOptions.totalItems =  data.total;
-            }).catch(function (err) {
-                console.log('Get User Submitted Trials failed');
-            });
+            //user_id is undefined if no user was found to begin with
+            if (vm.searchParams.user_id) {
+                vm.gridTrialsSubmittedOptions.useExternalPagination = true;
+                vm.gridTrialsSubmittedOptions.useExternalSorting = true;
+                UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
+                    vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                    vm.gridTrialsSubmittedOptions.totalItems = data.total;
+                }).catch(function (err) {
+                    console.log('Get User Submitted Trials failed');
+                });
+            }
         };
         vm.getUserSubmittedTrials();
 
         vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         vm.getUserTrials = function () {
-            vm.gridTrialsOwnedOptions.useExternalPagination = true;
-            vm.gridTrialsOwnedOptions.useExternalSorting = true;
-            UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
-                vm.gridTrialsOwnedOptions.totalItems =  data.total;
-            }).catch(function (err) {
-                console.log('Get User Trials failed');
-            });
+            //user_id is undefined if no user was found to begin with
+            if (vm.searchParams.user_id) {
+                vm.gridTrialsOwnedOptions.useExternalPagination = true;
+                vm.gridTrialsOwnedOptions.useExternalSorting = true;
+                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                    vm.gridTrialsOwnedOptions.totalItems = data.total;
+                }).catch(function (err) {
+                    console.log('Get User Trials failed');
+                });
+            }
         };
         vm.getUserTrials();
 

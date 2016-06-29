@@ -17,9 +17,13 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by_username(params[:username])
-    @families = Family.find_unexpired_matches_by_org(@user.organization_id)
-    @userWriteAccess = userWriteAccess(@user)
+    show_user = User.find_by_username(params[:username])
+    access = userWriteAccess(show_user)
+    if access
+      @user = show_user
+      @families = Family.find_unexpired_matches_by_org(@user.organization_id)
+    end
+    @userWriteAccess = access
   end
 
   def update
@@ -145,74 +149,78 @@ end
 
 
   def search
-    Rails.logger.info "In User controller params = #{params.inspect}"
-    # Pagination/sorting params initialization
-    params[:start] = 1 if params[:start].blank?
-    sortBy = params[:sort]
-    if sortBy == 'organization_name'
-      sortBy = 'user_org.name'
-    end
-    @users = User.all
-
-    if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER'].include? current_user.role
-      if params[:family_id].present?
-          @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
-      elsif params[:organization_id].present?
-          @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
+    access = searchAccess
+    if access
+      Rails.logger.info "In User controller params = #{params.inspect}"
+      # Pagination/sorting params initialization
+      params[:start] = 1 if params[:start].blank?
+      sortBy = params[:sort]
+      if sortBy == 'organization_name'
+        sortBy = 'user_org.name'
       end
-    end
+      @users = User.all
 
-    if ['ROLE_SITE-SU'].include? current_user.role
-      any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
-      @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
-      if any_membership
-          @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
-      else
-          @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
-      end
-    end
-
-    if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU' && current_user.role != 'ROLE_ACCOUNT-APPROVER'
-      @users = @users.matches_wc('user_statuses', [UserStatus.find_by_code('ACT').id, UserStatus.find_by_code('INR').id]) unless @users.blank?
-      @status = 'Active'
-    end
-
-    @searchType = current_user.role
-
-    @users = @users.matches_wc('username', params[:username]) if params[:username].present? unless @users.blank?
-    @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present? unless @users.blank?
-    @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present? unless @users.blank?
-    @users = @users.matches_wc('email', params[:email]) if params[:email].present? unless @users.blank?
-    @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
-    @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present? unless @users.blank?
-    @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
-    @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
-
-    if sortBy != 'admin_role' && sortBy != 'organization_family'
-      @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
-    elsif sortBy == 'admin_role'
-      temp0 = []
-      temp1 = []
-      @users.each do |user|
-        if user.role == 'ROLE_SITE-SU'
-          temp0.push(user)
-        else
-          temp1.push(user)
+      if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER'].include? current_user.role
+        if params[:family_id].present?
+            @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
+        elsif params[:organization_id].present?
+            @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
         end
       end
-      if params[:order].upcase == 'DESC'
-        @users = (temp0 + temp1)
-      else
-        @users = (temp1 + temp0)
+
+      if ['ROLE_SITE-SU'].include? current_user.role
+        any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
+        @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
+        if any_membership
+            @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
+        else
+            @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
+        end
       end
-    end
 
-    @users = remove_repeated(@users, sortBy, params[:order])
+      if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU' && current_user.role != 'ROLE_ACCOUNT-APPROVER'
+        @users = @users.matches_wc('user_statuses', [UserStatus.find_by_code('ACT').id, UserStatus.find_by_code('INR').id]) unless @users.blank?
+        @status = 'Active'
+      end
 
-    unless params[:rows].nil?
-      @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows]) unless @users.blank?
+      @searchType = current_user.role
+
+      @users = @users.matches_wc('username', params[:username]) if params[:username].present? unless @users.blank?
+      @users = @users.matches_wc('first_name', params[:first_name]) if params[:first_name].present? unless @users.blank?
+      @users = @users.matches_wc('last_name', params[:last_name]) if params[:last_name].present? unless @users.blank?
+      @users = @users.matches_wc('email', params[:email]) if params[:email].present? unless @users.blank?
+      @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
+      @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present? unless @users.blank?
+      @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
+      @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
+
+      if sortBy != 'admin_role' && sortBy != 'organization_family'
+        @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
+      elsif sortBy == 'admin_role'
+        temp0 = []
+        temp1 = []
+        @users.each do |user|
+          if user.role == 'ROLE_SITE-SU'
+            temp0.push(user)
+          else
+            temp1.push(user)
+          end
+        end
+        if params[:order].upcase == 'DESC'
+          @users = (temp0 + temp1)
+        else
+          @users = (temp1 + temp0)
+        end
+      end
+
+      @users = remove_repeated(@users, sortBy, params[:order])
+
+      unless params[:rows].nil?
+        @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows]) unless @users.blank?
+      end
+      Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     end
-    Rails.logger.info "In User controller, search @users = #{@users.inspect}"
+    @userWriteAccess = access
   end
 
   private
@@ -266,12 +274,20 @@ end
       end
       user
     end
+
     def userWriteAccess userToUpdate
       user = current_site_user
       user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
           user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-          user.role == 'ROLE_SUPER' || user.id == userToUpdate.id ||
-          (userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id))
+          user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
+          (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id))
+    end
+
+    def searchAccess
+      user = current_site_user
+      user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
+          user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
+          user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id)
     end
 
     # Use callbacks to share common setup or constraints between actions.
