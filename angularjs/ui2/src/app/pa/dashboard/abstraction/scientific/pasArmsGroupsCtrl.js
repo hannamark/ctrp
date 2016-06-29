@@ -66,9 +66,14 @@
 
         vm.checkDuplicates = function () {
             var isConfirmed = false;
-            var confirmMsg = 'Click OK to add a duplicate Label.  Click Cancel to abort';
+            var confirmMsg = 'Click OK to add a duplicate entry.  Click Cancel to abort';
+            console.info('vm.curTrial.arms_groups: ', vm.curTrial.arms_groups);
             //check for duplicates
             var duplicateLabelIndex = _.findIndex(vm.curTrial.arms_groups, {label: vm.currentArmsGroup.label});
+            if (duplicateLabelIndex === -1) {
+                // also check the description field for duplication
+                duplicateLabelIndex = _.findIndex(vm.curTrial.arms_groups, {description: vm.currentArmsGroup.description});
+            }
             if (duplicateLabelIndex > -1 && duplicateLabelIndex !== vm.currentArmsGroup.index) {
                 vm.disableBtn = true;
                 Common.alertConfirm(confirmMsg).then(function(ok) {
@@ -153,10 +158,10 @@
 
                 if (status >= 200 && status <= 210) {
                     vm.curTrial.lock_version = response.lock_version || '';
-                    $scope.$emit('updatedInChildScope', {});
                     vm.curTrial = response;
                     vm.curTrial.arms_groups_attributes=[];
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
                     //if(vm.currentArmsGroup.new){
                         vm.currentArmsGroup.new =false;
                         vm.addEditMode = false;

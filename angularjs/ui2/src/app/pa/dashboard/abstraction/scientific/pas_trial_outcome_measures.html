@@ -1,10 +1,10 @@
-<div class="row" id="section_top">
+<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.trialValidImport || paTrialOverview.trialDetailObj.menuTypes.rejection">
     <div class="panel panel-default ctrp-ui" ng-show="omView.editMode || omView.addMode || omView.copyMode" id="outcomeMeasure">
         <div class="panel-heading">
             <div class="panel-title">Outcome Measure Details</div>
         </div>
         <div class="panel-body">
-            <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()">
+            <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()" unsaved-changes>
                 <!-- fieldset for outcome measure details-->
                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || omView.disableBtn">
                     <legend class="sub-bordered">Outcome Measure Details</legend>
@@ -163,7 +163,7 @@
                         </thead>
                         <tbody ui-sortable="omView.sortableListener" ng-model="omView.curTrial.outcome_measures">
 
-                        <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item" style="cursor: move;">
+                        <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item cursor-move">
                             <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
                            <td>
                              {{$index+1}}

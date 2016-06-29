@@ -106,10 +106,34 @@ var abstractionCommonMethods = function(){
     };
 
     /*****************************************
+     * Multi Select Common Methods
+     *****************************************/
+    this.selectMultiListItem = function(obj, selectList, index)  {
+        if (selectList !== '') {
+            helper.wait(obj.get(index), 'Multi-Select list');
+            obj.get(index).click();
+            helper.wait(element(by.linkText(selectList)), 'Select an option from the list as -- ' + selectList + '');
+            element(by.linkText(selectList)).click();
+        }
+    };
+
+    /*****************************************
      * Click on the link Text
      *****************************************/
     this.clickLinkText = function(lnkTxt){
         element(by.linkText(''+ lnkTxt +'')).click();
+    };
+
+
+    /*****************************************
+     * Verify Text from a Index Object
+     *****************************************/
+    this.verifyTxtByIndex = function(obj, verifyTxt, index, errorMessage)  {
+        if (verifyTxt !== '') {
+            helper.wait(obj.get(index), 'Waiting for expected text to verify');
+            expect(obj.get(index).getText()).to.eventually.equal(verifyTxt);
+            console.log(errorMessage + " - Required field value");
+        }
     };
 
     /*****************************************

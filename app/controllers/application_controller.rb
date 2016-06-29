@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :xml, :json
   around_filter :global_request_logging
+
+
   #before_filter :wrapper_authenticate_user unless Rails.env.test?
   #check_authorization :unless => :devise_controller?
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
@@ -218,7 +220,7 @@ class ApplicationController < ActionController::Base
     #end
   #end
 
-=begin
+
   ### ActiveRecord ####
   ### \----------------------------/ Big Basket for Active Record
   rescue_from ActiveRecord::ActiveRecordError do |e|
@@ -275,7 +277,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-=end
+
 
 
 

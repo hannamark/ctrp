@@ -36,7 +36,7 @@
         var optionOrg = {
             name: 'organization_name',
             displayName: 'Organizational Affiliation',
-            enableSorting: false,
+            enableSorting: true,
             minWidth: '100',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
@@ -44,9 +44,9 @@
         };
 
         var optionOrgFamilies = {
-            name: 'organization_family_name',
+            name: 'organization_family',
             displayName: 'Organization Family',
-            enableSorting: false,
+            enableSorting: true,
             minWidth: '100',
             width: '*'
         };
@@ -89,10 +89,9 @@
             displayName: 'Username',
             minWidth: '100',
             width: '*',
-            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                ' title="{{COL_FIELD}}">' +
-                ' <a ui-sref="main.userDetail({username : row.entity.username })">' +
-                '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
         var firstName = {
@@ -173,18 +172,19 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
-            vm.statusArr = response.data;
-            if (vm.curUser.role == 'ROLE_SITE-SU' || vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+         UserService.getUserStatuses().then(function (response) {
+             vm.statusArr = response.data;
+            if (vm.curUser.role == 'ROLE_SITE-SU') {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
                     return _.contains(['ACT', 'INR'], item.code);
                 });
             }
-        }).catch(function (err) {
-            vm.statusArr = [];
-            console.log("Error in retrieving USER_STATUSES " + err);
-        });
-
+            if (vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
+                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
+                });
+            }
+         });
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
@@ -196,11 +196,11 @@
                 vm.searchOrganizationFamily = '';
             }
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (!vm.registeredUsersPage){
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, middleName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
         } else if (vm.registeredUsersPage) {
-            vm.gridOptions.columnDefs.push(lastName, firstName, middleName, optionOrg);
+            vm.gridOptions.columnDefs.push(lastName, firstName, optionOrg);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -215,13 +215,21 @@
         };
         vm.gridOptions.exporterAllDataFn = function () {
             var allSearchParams = angular.copy(vm.searchParams);
+            var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
+
+            //add extra fields here
+            vm.gridOptions.columnDefs.push(middleName);
+
             allSearchParams.start = null;
             allSearchParams.rows = null;
+
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
                 function (data) {
                     vm.gridOptions.useExternalPagination = false;
                     vm.gridOptions.useExternalSorting = false;
                     vm.gridOptions.data = data['users'];
+
+                    vm.gridOptions.columnDefs = origGridColumnDefs;
                 }
             );
         };

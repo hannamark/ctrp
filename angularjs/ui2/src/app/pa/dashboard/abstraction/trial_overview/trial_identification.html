@@ -56,7 +56,7 @@
             <hr />
 
             <div class="row">
-                <form name="abstraction_form" class="form form-horizontal" role="form" novalidate ctrp-submit="trialIdView.saveProcessingInfo()">
+                <form name="abstraction_form" class="form form-horizontal" role="form" novalidate ctrp-submit="trialIdView.saveProcessingInfo()" unsaved-changes>
                     <div class="col-xs-12">
                         <!-- first form-group -->
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.abstraction_form.needsAttention(abstraction_form.priority_selection)}">

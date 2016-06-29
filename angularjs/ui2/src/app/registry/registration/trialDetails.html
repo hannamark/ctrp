@@ -21,7 +21,7 @@
         </div>
 
         <div class="row">
-            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
+            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()" unsaved-changes>
                 <uib-accordion close-others="false">
                     <uib-accordion-group ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
                         <uib-accordion-heading>
@@ -419,7 +419,7 @@
 
                                             <td class="col-md-2">
                                                 <div class="select2-results-absolute">
-                                                    <ui-select restriction-field ng-model="trialDetailView.serial_number"
+                                                    <ui-select ng-model="trialDetailView.serial_number"
                                                                theme="select2"
                                                                ng-disabled="grantsInputs.disabled"
                                                                reset-search-input="false"

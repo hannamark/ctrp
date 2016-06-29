@@ -81,6 +81,12 @@ var helper = function() {
         });
     };
 
+    this.selectDisableValueFromList = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.element(by.cssContainingText('option', fieldValue)).click();
+        console.log(errorMessage + ' ' + fieldValue + " Value selected");
+    };
+
     this.selectValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.click();
@@ -234,6 +240,7 @@ var helper = function() {
 
     this.verifyElementDisplayed =function (fieldName, fieldValueTrueOrFalse) {
         expect(fieldName.isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
+        //expect(fieldName.isDisplayed()).to.become(fieldValueTrueOrFalse);
     };
 
     this.verifyElementDisplayedByIndex =function (fieldName, index, fieldValueTrueOrFalse) {

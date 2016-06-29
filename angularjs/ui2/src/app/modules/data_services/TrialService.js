@@ -828,9 +828,9 @@
                 return errorMsg;
             }
             var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
-            var codeArr = ['OTH', 'ONCT'];
+            var codeArr = ['OTH', 'ONCT', 'DNCI'];
             if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
-                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + 'already exists';
+                errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ' already exists';
                 return errorMsg;
             } else if (angular.isDefined(idObj) && idObj.protocol_id === protocolId &&
                 _.contains(codeArr, protocolIdOriginCode)) {

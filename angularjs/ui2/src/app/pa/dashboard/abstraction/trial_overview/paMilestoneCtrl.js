@@ -7,9 +7,9 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('paMilestoneCtrl', paMilestoneCtrl);
 
-    paMilestoneCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'milestoneObj', 'TrialService', 'userDetailObj', 'DateService'];
+    paMilestoneCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'milestoneObj', 'TrialService', 'userDetailObj', 'DateService', 'PATrialService'];
 
-    function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, milestoneObj, TrialService, userDetailObj, DateService) {
+    function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, milestoneObj, TrialService, userDetailObj, DateService, PATrialService) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.curUser = userDetailObj;
@@ -77,8 +77,10 @@
 
                     TrialService.upsertTrial(outerTrial).then(function (response) {
                         if (response.server_response.status < 300) {
-                            $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
                             toastr.success('Milestone have been recorded', 'Operation Successful!');
+                            PATrialService.setCurrentTrial(response); // cache the updated trial
+                            $scope.$emit('updatedInChildScope', {}); // signal for updates
+                            $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
                         } else {
                             // Enable buttons in case of backend error
                             vm.disableBtn = false;

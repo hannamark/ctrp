@@ -1,7 +1,9 @@
 class TrialsController < ApplicationController
-  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone]
+  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone, :rollback]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
+  before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy]
+
 
   # GET /trials
   # GET /trials.json
@@ -53,6 +55,11 @@ class TrialsController < ApplicationController
 
     Rails.logger.info "params in update: #{params}"
 
+    if params[:trial][:edit_type] == 'amend'
+      trial_service = TrialService.new({trial: @trial})
+      trial_json = trial_service.get_json
+    end
+
     respond_to do |format|
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
@@ -61,6 +68,10 @@ class TrialsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
       end
+    end
+
+    if trial_json.present?
+      trial_service.save_history(trial_json)
     end
   end
 
@@ -71,6 +82,14 @@ class TrialsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to trials_url, notice: 'Trial was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def rollback
+    trial_service = TrialService.new({trial: @trial})
+    trial_service.rollback(params[:submission_id])
+    respond_to do |format|
+      format.json { render :json => params }
     end
   end
 
@@ -321,6 +340,7 @@ class TrialsController < ApplicationController
     if params.has_key?(:trial_id) and available_checkout_types.include? (checkout_type)
 
       @trial = Trial.find(params[:trial_id])
+      @trial.edit_type = 'checkoutin' # so as to avoid sending emails
       checkout_json = {"by": @current_user.username, "date": Time.now}.to_json
 
       if checkout_type == "admin" and (@trial.admin_checkout.nil? || @current_user.role == "ROLE_ADMIN" || @current_user.role == "ROLE_SUPER")
@@ -362,6 +382,7 @@ class TrialsController < ApplicationController
     if params.has_key?(:trial_id) and available_checkin_types.include? (checkin_type) and checkin_comment.present?
 
       @trial = Trial.find(params[:trial_id])
+      @trial.edit_type = 'checkoutin' # so as to avoid sending emails
 
       if checkin_type == "admin"
         @trial.update_attribute('admin_checkout', nil)
@@ -633,7 +654,7 @@ class TrialsController < ApplicationController
       lead_protocol_id = xml.xpath('//org_study_id').text
       org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
 
-      dup_trial = Trial.joins(:lead_org).where('organizations.name = ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
+      dup_trial = Trial.joins(:lead_org).where('organizations.name ilike ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
       if dup_trial.length > 0
         @search_result[:error_msg] = 'Combination of Lead Organization Trial ID and Lead Organization must be unique.'
         return
@@ -726,7 +747,9 @@ class TrialsController < ApplicationController
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
                                   milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
-                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy])
+                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy],
+                                  citations_attributes:[:id, :pub_med_id, :description, :results_reference, :_destroy],
+                                  links_attributes:[:id, :url, :description, :_destroy], trial_ownerships_attributes:[:id, :user_id, :_destroy])
   end
 
   # Convert status code to name in validation messages

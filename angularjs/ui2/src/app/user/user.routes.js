@@ -20,11 +20,7 @@
                     controller: 'userCtrl as userView',
 
                     resolve: {
-                        UserService: 'UserService',
-                        loginBulletin: function(UserService, $q) {
-
-                            return UserService.getLoginBulletin();
-                        }
+                        UserService: 'UserService'
                     },
                     onEnter: function($state, UserService, toastr) {
                         if (UserService.isLoggedIn()) {
@@ -155,6 +151,27 @@
                     }
                 })
 
+                .state('main.myprofile', {
+                    url: '/settings/profile',
+                    templateUrl: 'app/user/userDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
+                    resolve: {
+                        UserService: 'UserService',
+                        GeoLocationService : 'GeoLocationService',
+                        countryList : function(GeoLocationService) {
+                            return GeoLocationService.getCountryList();
+                        },
+                        userDetailObj : function(UserService) {
+                            return UserService.getUserDetailsByUsername(UserService.currentUser());
+                        }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.defaultContent',
+                        label: 'User Profile'
+                    }
+                })
+
                 .state('main.userDetail', {
                     url: '/user-detail/:username',
                     templateUrl: 'app/user/userDetails.html',
@@ -171,7 +188,7 @@
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
-                        parent: 'main.defaultContent',
+                        parent: 'main.users',
                         label: 'User Profile'
                     }
                 });

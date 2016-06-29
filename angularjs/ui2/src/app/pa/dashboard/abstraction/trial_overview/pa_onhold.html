@@ -45,7 +45,7 @@
         </div>
         <div class="panel-body">
             <div class="form-group no-bottom-margin">
-                <form class="form form-horizontal" role="form" name="onhold_form" novalidate ctrp-submit="onholdView.saveOnhold()">
+                <form class="form form-horizontal" role="form" name="onhold_form" novalidate ctrp-submit="onholdView.saveOnhold()" unsaved-changes>
                     <fieldset class="sub-bordered" restriction-field>
                         <legend class="sub-bordered">On Hold Details</legend>
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.onhold_form.needsAttention(onhold_form.onhold_reason)}">

@@ -64,21 +64,20 @@ And I can view TSR document
      And the TSR Trial Details Section fields will be displayed following the rules below
      
      
-      |TSR Section     |Field                              |Field Required  |Conditional Fields                                      |Display Rule when Field Blank  |
-      |General Details |Research Category                  |Required        |                                                        |Display "No data available"    |
-      |                |Lead Organization                  |Required        |                                                        |Display "No data available"    |
-      |                |Sponsor                            |Required        |                                                        |Display "No data available"    |
-      |                |Responsible Party                  |Required        |                                                        |Display "No data available"    |
-      |                |Investigator                       |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
-      |                |Investigator Title                 |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
-      |                |Investigator Affiliation           |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
-      |                |Principal Investigator             |Required        |                                                        |Display "No data available"    |
-      |                |Affiliation                        |Required        |                                                        |Display "No data available"    |
-      |Collaborators   |Name                               |Not Required    |                                                        |Field not Displayed            |
-      |Status/Dates    |Current Trial Status               |Required        |                                                        |Display "No data available"    |
-      |                |Trial Start Date-Actual            |Required        |                                                        |Display "No data available"    |
-      |                |Primary Completion Date-Anticipated|Required        |                                                        |Display "No data available"    |                 
-      |                |Trial Completion Date              |Not Required    |                                                        |Field not Displayed            |
+      |TSR Section     |Field                                        |Field Required  |Conditional Fields                                      |Display Rule when Field t  |General Details |Research Category                            |Required        |                                                        |Display "No data available"    |
+      |                |Lead Organization                            |Required        |                                                        |Display "No data available"    |
+      |                |Sponsor                                      |Required        |                                                        |Display "No data available"    |
+      |                |Responsible Party                            |Required        |                                                        |Display "No data available"    |
+      |                |Investigator                                 |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
+      |                |Investigator Title                           |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
+      |                |Investigator Affiliation                     |Required        |Only Displayed when Responsible Party is not the Sponsor|Display "No data available"    |
+      |                |Principal Investigator                       |Required        |                                                        |Display "No data available"    |
+      |                |Affiliation                                  |Required        |                                                        |Display "No data available"    |
+      |Collaborators   |Name                                         |Not Required    |                                                        |Field not Displayed            |
+      |Status/Dates    |Current Trial Status                         |Required        |                                                        |Display "No data available"    |
+      |                |Trial Start Date-Actual/Anticipated          |Required        |                                                        |Display "No data available"    |
+      |                |Primary Completion Date-Actual/Anticipated/NA|Required        |                                                        |Display "No data available"    |                 
+      |                |Trial Completion Date-Actual/Anticipated     |Not Required    |                                                        |Field not Displayed            |
       
      
       Scenario:#5 HIN Grants Section Display Rules 
@@ -101,10 +100,10 @@ And I can view TSR document
      Given I can View TSR document
      And the TSR Summary 4 Information Section fields will be displayed following the rules below
 
-      |TSR Section          |Field                              |Field Required  |Display Rule when Field Blank  |
-      |Summary 4 Information|Study Source                       |Required        |Display "No data available"    |
-      |                     |Funding Sponsor/Source             |Required        |Display "No data available"    |
-      |                     |Anatomic Site Code                 |Required        |Display "No data available"    |
+      |TSR Section             |Field                              |Field Required  |Display Rule when Field Blank  |
+      |Data Table 4 Information|Study Source                       |Required        |Display "No data available"    |
+      |                        |Funding Sponsor/Source             |Required        |Display "No data available"    |
+      |                        |Anatomic Site Code                 |Required        |Display "No data available"    |
    
    
    Scenario:#7 Regulatory Information Section Display Rules 
@@ -151,7 +150,7 @@ And I can view TSR document
     
          
       
-    Scenario:#8 Trial Design Section Display Rules Associated with Observational Research Category
+    Scenario:#8a Trial Design Section Display Rules Associated with Observational Research Category
      Given I can View TSR document
      And the Trial Design Section fields will be displayed following the rules below 
      
@@ -242,10 +241,53 @@ And I can view TSR document
      Given I can View TSR document
      And the Secondary Outcome Measures Section fields will be displayed following the rules below
      
+      |TSR Section               |Field        |Field Required |Display Rule when Field Blank| 
+      |Secondary Outcome Measures|Title        |Required       |Display "No data available"  |
+      |                          |Description  |Required       |Display "No data available"  |
+      |                          |Time Frame   |Required       |Display "No data available"  |
+      |                          |Safety Issue |Required       |Display "No data available"  |
+      
      
      
+      Scenario:#16 Sub-Groups Stratification Criteria Section Display Rules 
+     Given I can View TSR document
+     And the Sub-Groups Stratification Criteria Section fields will be displayed following the rules below
      
+      |TSR Section                         |Field        |Field Required |Display Rule when Field Blank|
+      |Sub-Groups Stratification Criteria  |Label        |Required       |Display "No data available"  |
+      |                                    |Description  |Required       |Display "No data available"  |
      
       
       
+     Scenario:#17 Biomarkers Section Display Rules 
+     Given I can View TSR document
+     And the Biomarkers Section fields will be displayed following the rules below
+     
+      |TSR Section |Field            |Field Required |Display Rule when Field Blank| 
+      |Biomarkers  |Protocol Name    |Required       |Display "No data available"  |
+      |            |Evaluation Type  |Required       |Display "No data available"  |
+      |            |Assay Type       |Required       |Display "No data available"  |
+      |            |Biomarker Use    |Required       |Display "No data available"  |
+      |            |Biomarker Purpose|Required       |Display "No data available"  |
+      |            |Specimen Type    |Required       |Display "No data available"  |
+
+      
+       
+     Scenario:#18 Participating Sites Section Display Rules 
+     Given I can View TSR document
+     And the Participating Sites  Section fields will be displayed following the rules below
+     
+      |TSR Section         |Field                         |Field Required |Display Rule when Field Blank|
+      |Participating Sites |Facility                      |Required       |Display "No data available"  |
+      |                    |Contact                       |Required       |Display "No data available"  |
+      |                    |Recruitment Status & Date(s)  |Required       |Display "No data available"  |
+      |                    |Target Accrual                |Required       |Display "No data available"  |
+      |                    |Investigator(s)               |Required       |Display "No data available"  |
+
+     
+     
+     
+     
+     
+     
       

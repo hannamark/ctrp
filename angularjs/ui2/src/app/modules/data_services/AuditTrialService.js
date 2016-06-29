@@ -30,7 +30,15 @@
             rows: 5,
             start: 1
 
-        }
+        };
+
+        var initAuditInitialSearchParams = {
+            sort: '',
+            order: '',
+            rows: 500,
+            start: 1
+        };
+
         var updatesGridOptions = {
             rowTemplate: '<div>'+
             '<div>' +
@@ -134,6 +142,8 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
+            flatEntityAccess: true,
+
             columnDefs: [
 
                 {name: 'deletion_date',displayName:'Deletion Date', enableSorting: true, minWidth: '100', width: '*',
@@ -157,98 +167,153 @@
 
 
         var auditsGridOptions = {
-            rowTemplate: '<div>'+
-            '<div>' +
-            ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"' +
-            ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader,' +
-            ' \'nonselectable-row\': grid.appScope.curationShown && grid.appScope.userRole === \'curator\' &&' +
-            ' grid.appScope.rowFormatter( row )}" ui-grid-cell></div></div>',
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            // enableFullRowSelection: true,
-            enableSelectAll: false,
-            enableRowSelection: true,
-            paginationPageSizes: [20, 50, 100],
-            paginationPageSize: 20,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableGridMenu: true,
-            enableFiltering: true,
-            enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
-            enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            rowModelType: 'pagination',
+            enableColResize: true,
+            enableSorting: false,
+            enableFilter: true,
+            rowHeight: 30,
+            rowData:null,
+            angularCompileRows: true,
+            suppressRowClickSelection: true,
+            suppressSizeToFit: false,
+
             columnDefs: [
-                {name: 'created_at', enableSorting: true, minWidth: '100', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.created_at | date: "dd-MMM-yyyy"}}</div>'},
+                {field: 'created_at',  headerName:'Created At'},
+                {field: 'event',  headerName:'Event '},
+                {field: 'nci_id', headerName: 'NCI ID'},
+                {field: 'lead_protocol_id', headerName: 'Lead Protocol'},
 
-                {name: 'event', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '140', width: '140'},
-                {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '120', width: '120',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'program_code', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'grant_question', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'ind_ide_question', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'pilot', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'primary_purpose', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'study_source', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'phase', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'responsible_party', enabledSorting: true , minWidth: '100', width: '*'},
+                {field: 'official_title', headerName:'Official Title'},
+                {field: 'pilot',   headerName:'Pilot'},
+
+                {field: 'program_code',   headerName:'Program Code'},
+                {field: 'grant_question',   headerName:'Grant Question'},
+                {field: 'start_date',   headerName:'Start Date'},
+                {field: 'start_date_qual',   headerName:'Start Date Qual'},
+                {field: 'primary_comp_date',   headerName:'Primary Comp Date'},
+                {field: 'primary_comp_date_qual',   headerName:'Primary Comp Date Qual'},
+                {field: 'comp_date',   headerName:'Completion Date'},
+                {field: 'comp_date_qual',   headerName:'Completion Date Qual'},
+                {field: 'ind_ide_question',   headerName:'Ind Ide Question'},
+                {field: 'intervention_indicator',   headerName:'Intervention Indicator'},
+                {field: 'sec801_indicator',   headerName:'Sec801 Indicator'},
+                {field: 'data_monitor_indicator',   headerName:'Data Monitor Indicator'},
+                {field: 'study_source',   headerName:'Study Source'},
+                {field: 'phase',   headerName:'Phase'},
+                {field: 'primary_purpose',   headerName:'Primary Purpose'},
+                {field: 'primary_purpose_other',   headerName:'Primary Purpose Other'},
+
+                {field: 'secondary_purpose',   headerName:'Secondary Purpose'},
+                {field: 'secondary_purpose_other',   headerName:'Secondary Purpose Other'},
+
+                {field: 'responsible_party',   headerName:'Responsible Party'},
 
 
-                {name: 'pi', displayName: 'Principal Investigator', enableSorting: true, minWidth: '150', width: '5%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '170', width: '5%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'sponsor', enableSorting: true, minWidth: '100', width: '3%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
+                {field: 'pi', headerName: 'Principal Investigator'},
+                {field: 'lead_org', headerName: 'Lead Organization'},
+                {field: 'sponsor',  headerName:'Sponsor'},
 
-                {name: 'research_category', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'accrual_disease_term', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'start_date', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'start_date_qual', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'primary_comp_date', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'primary_comp_date_qual', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'comp_date', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'comp_date_qual', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'ind_ide_question', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'intervention_indicator', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'sec801_indicator', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'data_monitor_indicator', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'grants', enableSorting: true, minWidth: '400', width: '25%',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                },
-                {name: 'submission_number', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'submission_date', enabledSorting: true , minWidth: '100', width: '*'},
+                {field: 'investigator',  headerName:'Investigator'},
 
-                {name: 'created_by', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'updated_by', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'min_age', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'max_age', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'process_priority', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'process_comment', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'nih_nci_div', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'nih_nci_prog', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'masking', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'investigator_id', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'nci_specific_comment', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_name', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_affiliation_id', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_approval_num', enabledSorting: true , minWidth: '100', width: '*'},
-                {name: 'board_approval_status', enabledSorting: true , minWidth: '100', width: '*'}
+                {field: 'research_category',   headerName:'Research Category'},
+                {field: 'accrual_disease_term',   headerName:'Accrual Disease Term'},
+                {field: 'investigator_title', headerName: 'Investigator Title'},
+                {field: 'investigator_aff_id',   headerName:'Investigator Aff Id'},
+                {field: 'created_by',   headerName:'Created By'},
+                {field: 'updated_by',   headerName:'Updated By'},
+                {field: 'process_priority',   headerName:'Process Priority'},
+                {field: 'process_comment',   headerName:'Process Comment'},
+                {field: 'acronym',   headerName:'Acronym'},
+                {field: 'keywords',   headerName:'Keywords'},
+                {field: 'nih_nci_div',   headerName:'Nih Nci Div'},
+                {field: 'nih_nci_prog',   headerName:'Nih Nci Program'},
+                {field: 'send_trial',   headerName:'Send Trial'},
+                {field: 'board_approval_num',   headerName:'Board Approval Num'},
+                {field: 'brief_title',   headerName:'Brief Title'},
+                {field: 'brief_summary',   headerName:'Brief Summary'},
+                {field: 'detailed_description',   headerName:'Detailed Description'},
+                {field: 'objective',   headerName:'Objective'},
+                {field: 'target_enrollment',   headerName:'Target Enrollment'},
+                {field: 'final_enrollment',   headerName:'Final Enrollment'},
+                {field: 'accruals',   headerName:'Accruals'},
+                {field: 'study_model',   headerName:'Study Model'},
+                {field: 'study_model_other',   headerName:'Study Model Other'},
+                {field: 'time_perspective',   headerName:'Time Perspective Other'},
+                {field: 'time_perspective_other',   headerName:''},
+                {field: 'accept_vol',   headerName:'Accept Vol'},
+                {field: 'min_age',   headerName:'Min Age'},
+                {field: 'max_age',   headerName:'Max Age'},
+                {field: 'board_approval_status',   headerName:'Board Approval Status'},
+                {field: 'intervention_model',   headerName:'Intervention Model'},
+                {field: 'masking',   headerName:'Masking'},
+                {field: 'masking_role_caregiver',   headerName:'Masking Role Caregiver'},
+                {field: 'masking_role_investigator',   headerName:'Masking Role Investigator'},
+                {field: 'masking_role_outcome_assessor',   headerName:'Masking Role Outcome Assessor'},
+                {field: 'masking_role_subject',   headerName:'Masking Role Subject'},
+
+                {field: 'allocation',   headerName:'Allocation'},
+                {field: 'study_classification',   headerName:'Study Classification'},
+                {field: 'gender',   headerName:'Gender'},
+                {field: 'min_age',   headerName:'Min Age'},
+                {field: 'max_age',   headerName:'Max Age'},
+                {field: 'anatomic_site',   headerName:'Anatomic Site'},
+                {field: 'num_of_arms',   headerName:'Number of Arms'},
+                {field: 'verification_date',   headerName:'Verification Date'},
+                {field: 'sampling_method',   headerName:'Samplinh Method'},
+                {field: 'study_pop_desc',   headerName:'Study Pop Description'},
+                {field: 'board_name',   headerName:'Board Name'},
+                {field: 'board_affiliation',   headerName:'Board  Affiliation'},
+
+
+                {field: 'other_ids',   headerName:'Other IDs'},
+
+                {field: 'outcome_measures',headerName: 'Outcome Measures'},
+
+                {field: 'grants',headerName: 'Grants'},
+
+                {field: 'eligibility_criteria',headerName: 'Eligibility Criteria'},
+                {field: 'associated_trials',   headerName:'Associated Trials'},
+                {field: 'interventions', headerName:'Interventions'},
+                {field: 'arms_groups',  headerName:'Arms Groups'},
+                {field: 'sub_groups',  headerName:'Sub Groups'},
+                {field: 'trial_owners',  headerName:'Trial Owners'},
+                {field: 'trial_documents', headerName:'Trial Documents'},
+
+                {field: 'alternative_titles',   headerName:''},
+
+                {field: 'central_contacts',   headerName:'Central Contacts'},
+
+                {field: 'citations',   headerName:'Citations'},
+
+                {field: 'collaborators',   headerName:'Collaborators'},
+                {field: 'ind_ides',   headerName:'Ind Ides'},
+
+                {field: 'links',   headerName:'Links'},
+
+                {field: 'milestones',   headerName:'Milestones'},
+
+                {field: 'submissions',   headerName:'Submissions'},
+
+                {field: 'oversight_authorities',   headerName:'Oversight Authorities'},
+                {field: 'processing_statuses',   headerName:'Processing Statuses'},
+                {field: 'trial_co_leads',   headerName:'Trial co Leads'},
+                {field: 'trial_co_pis',   headerName:'Trial co PIs'},
+                {field: 'trial_statuses',   headerName:'Trial Statuses'},
+
+
+
+                {field: 'submission_number',   headerName:'Submission Number'},
+                {field: 'submission_date',   headerName:'Submission Date'},
+
+
+
+
+
+                {field: 'nci_specific_comment',   headerName:'Nci Specific Comment'},
+
 
             ]
         };
-
 
 
         var services = {
@@ -262,7 +327,8 @@
             upsertSubmission:upsertSubmission,
             getDeletedDocs:getDeletedDocs,
             getDeleteDocsGridOptions:getDeleteDocsGridOptions,
-            getSubmissionInitialSearchParams:getSubmissionInitialSearchParams
+            getSubmissionInitialSearchParams:getSubmissionInitialSearchParams,
+            getAuditInitialSearchParams:getAuditInitialSearchParams
         };
 
         return services;
@@ -277,6 +343,11 @@
         function getSubmissionInitialSearchParams() {
             return  initSubmissionSearchParams;
         }
+
+        function getAuditInitialSearchParams() {
+            return  initAuditInitialSearchParams;
+        }
+
         function getAudits(obj){
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.AUDIT_HISTORY, obj);
 
