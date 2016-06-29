@@ -61,7 +61,7 @@
                 vm.gridOptions.columnDefs = [
                     {
                         name: 'nci_id', displayName: 'NCI Trial Identifier', enableSorting: true, minWidth: '120', width: '*',
-                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                     },
                     {
                         name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
@@ -160,7 +160,7 @@
                 vm.gridOptions.columnDefs = [
                     {
                         name: 'nci_id', displayName: 'NCI Trial Identifier', enableSorting: true, minWidth: '120', width: '*',
-                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                     },
                     {
                         name: 'official_title', enableSorting: true, minWidth: '200', width: '*',
