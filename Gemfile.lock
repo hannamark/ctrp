@@ -1,5 +1,5 @@
 GEM
-  remote: https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/
+  remote: https://rubygems.org/
   specs:
     actionmailer (4.2.0)
       actionpack (= 4.2.0)
@@ -326,3 +326,6 @@ DEPENDENCIES
   web-console (~> 2.0)
   wicked
   xml-mapping
+
+BUNDLED WITH
+   1.11.2

@@ -137,10 +137,6 @@
                     section: 'user',
                     resolve: {
                         UserService: 'UserService',
-                        GeoLocationService : 'GeoLocationService',
-                        countryList : function(GeoLocationService) {
-                            return GeoLocationService.getCountryList();
-                        },
                         userDetailObj : function(UserService, $stateParams) {
                             return UserService.getUserDetailsByUsername($stateParams.username);
                         }
@@ -158,10 +154,6 @@
                     section: 'user',
                     resolve: {
                         UserService: 'UserService',
-                        GeoLocationService : 'GeoLocationService',
-                        countryList : function(GeoLocationService) {
-                            return GeoLocationService.getCountryList();
-                        },
                         userDetailObj : function(UserService) {
                             return UserService.getUserDetailsByUsername(UserService.currentUser());
                         }
@@ -179,10 +171,6 @@
                     section: 'user',
                     resolve: {
                         UserService: 'UserService',
-                        GeoLocationService : 'GeoLocationService',
-                        countryList : function(GeoLocationService) {
-                            return GeoLocationService.getCountryList();
-                        },
                         userDetailObj : function(UserService, $stateParams) {
                             return UserService.getUserDetailsByUsername($stateParams.username);
                         }
