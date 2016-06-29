@@ -34,10 +34,13 @@
             }
 
             UserService.upsertUser(vm.userDetails).then(function(response) {
-                if ( response.username ) {
+                if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
                 }
-                if (redirect) {
+                if (vm.logUserOut === true){
+                    vm.logUserOut = false;
+                    UserService.logout();
+                } else if (redirect) {
                     UserService.allOrgUsers = null;
                     $timeout(function() {
                         $state.go('main.users', {}, {reload: true});
@@ -73,20 +76,22 @@
             if ($scope.userDetail_form.$invalid) {
                 return;
             } else {
+                // if inactivating user or changing org of user, check to transfer trials if trials exist
+                // otherwise if it is current user changing org, give warning popup up and safe after po up OK
                 if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                        if (vm.gridTrialsOwnedOptions.totalItems > 0) {
-                           if (vm.userRole === 'ROLE_ADMIN'
+                        if (vm.gridTrialsOwnedOptions.totalItems > 0
+                               && vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
                                         || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
                                             || vm.userRole === 'ROLE_SITE-SU') {
                                 vm.chooseTransferTrials = true;
                                 return;
-                            } else if (vm.isCurrentUser) {
-                               vm.updateAfterModalSave = true;
-                               vm.confirmRemoveTrialOwnershipsPopUp = true;
-                               return;
-                            }
+                        } else if (vm.isCurrentUser) {
+                            vm.updateAfterModalSave = true;
+                            vm.logUserOut = true;
+                            vm.confirmChangeFamilyPopUp = true;
+                            return;
                         } else {
                             vm.updateUser(vm.checkForOrgChange());
                             return;
@@ -363,13 +368,16 @@
 
         vm.trialOwnershipRemoveIdArr = null;
         vm.confirmRemoveTrialOwnershipsPopUp = false;
+        vm.confirmChangeFamilyPopUp = false;
         vm.confirmRemoveTrialsOwnerships = function (trialOwnershipIdArr) {
             vm.confirmRemoveTrialOwnershipsPopUp = true;
             vm.trialOwnershipRemoveIdArr = trialOwnershipIdArr;
         };
-        vm.removeTrialsOwnerships = function () {
+        vm.cancelRemoveTrialsOwnerships = function () {
             vm.confirmRemoveTrialOwnershipsPopUp = false;
+            vm.confirmChangeFamilyPopUp = false;
             vm.updateAfterModalSave = false;
+            vm.logUserOut = false;
         };
         vm.removeTrialsOwnerships = function () {
             var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
@@ -390,6 +398,7 @@
                  }
              });
             vm.confirmRemoveTrialOwnershipsPopUp = false;
+            vm.confirmChangeFamilyPopUp = false;
         };
         /****************** implementations below ***************/
         var activate = function() {
