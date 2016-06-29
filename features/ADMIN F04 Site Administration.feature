@@ -129,7 +129,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Site Administrator|
 And the CTRP User will be able to access the Administrative features in CTRP.
-And the Account Activation(Site User) e-mail will be sent to the user 
+And the "Account Activation(Site User)" e-mail will be sent to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin) 
 
 Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the same site affiliation
 Given I am logged into CTRP 
@@ -148,7 +148,7 @@ Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
 |Trial Submitter|
 And the CTRP User will not have access the Site Administrative features in CTRP
-And the Account Activation(Site User) e-mail will be sent to the user
+And the "Account Activation(Site User)" e-mail will be sent to the user(Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
 
 Scenario: #5 I can inactivate a Trial Submitter when I am a CTRP Site Administrator with the same site affiliation as the trial submitter
 Given I am logged into CTRP 
@@ -187,7 +187,7 @@ And the system will display the following action buttons
 When I can Select Save without Transferring ownership
 Then the new organization will be assigned to the user
 And the user account status will be pending 
-And the system will send the "CTRP Account Request" email to appsupport for an organizaiton change to a different family
+And the system will send the "CTRP Account Request" email to appsupport for an organization change to a different family (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin) 
 When I select Transfer Ownership
 Then the system will open the trial management screen to allow the admin to reassign the trials (Feature Admin F06)
 And the trials displayed will be for selected user
