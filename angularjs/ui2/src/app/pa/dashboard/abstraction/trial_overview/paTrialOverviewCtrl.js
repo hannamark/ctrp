@@ -25,6 +25,7 @@
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = curTrial;
+        console.info('curTrial: ', curTrial);
         vm.adminCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.admin_checkout);
         vm.scientificCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.scientific_checkout);
 

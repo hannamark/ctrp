@@ -237,6 +237,7 @@ Rails.application.routes.draw do
           get  'get_mail_logs'
           get  'get_trial_checkout_history'
           post 'rollback'
+          get  'amendment_reasons'
         end
       end
 
