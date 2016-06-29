@@ -84,6 +84,18 @@ class MilestoneWrapper < TrialBase
         if self.submission.present? && sre.present?
           ProcessingStatusWrapper.create(status_date: Date.today, processing_status: sre, submission: self.submission, trial: self.trial)
         end
+      elsif self.milestone.code == 'SRJ'
+        current_submission = self.trial.current_submission
+        if current_submission.present? && current_submission.submission_type.code == 'ORI'
+          rej = ProcessingStatus.find_by_code('REJ')
+          if self.submission.present? && rej.present?
+            ProcessingStatusWrapper.create(status_date: Date.today, processing_status: rej, submission: self.submission, trial: self.trial)
+          end
+        elsif current_submission.present? && current_submission.submission_type.code == 'AMD'
+          # Rollback
+          trial_service = TrialService.new({trial: self.trial})
+          trial_service.rollback(current_submission.id)
+        end
       elsif self.milestone.code == 'APC'
         MilestoneWrapper.create(milestone: Milestone.find_by_code('RAQ'), submission: self.submission, trial: self.trial, created_by: 'CTRP application')
       elsif self.milestone.code == 'SPC'
