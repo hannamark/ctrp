@@ -25,6 +25,7 @@
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = curTrial;
+        console.info('curTrial: ', curTrial);
         vm.adminCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.admin_checkout);
         vm.scientificCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.scientific_checkout);
 
@@ -313,8 +314,8 @@
             return updatedPAMenuTypes;
         }
 
+        var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
         function _checkEditableStatus() {
-            var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
             vm.trialDetailObj.pa_editable = vm.adminCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
             vm.trialDetailObj.pa_sci_editable = vm.scientificCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
         }

@@ -302,6 +302,8 @@ json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
                   :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user_id, :submission_source_id
+
+    json.set! :submission_type_code, SubmissionType.find(submission.submission_type_id).nil? ? nil : SubmissionType.find(submission.submission_type_id).code
   end
 end
 
@@ -380,3 +382,5 @@ end
 
 json.current_submission_num @trial.current_submission.submission_num if @trial.current_submission.present?
 json.current_submission_id @trial.current_submission.id if @trial.current_submission.present?
+json.current_submission_type_code @trial.current_submission.submission_type.code if @trial.current_submission.present?
+

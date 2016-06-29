@@ -37,7 +37,7 @@
             name: 'organization_name',
             displayName: 'Organizational Affiliation',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '210',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
             '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -47,7 +47,7 @@
             name: 'organization_family',
             displayName: 'Organization Family',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '210',
             width: '*'
         };
 
@@ -55,7 +55,7 @@
             name: 'admin_role',
             displayName: 'Site Administrator Privileges',
             enableSorting: true,
-            width: '110'
+            width: '235'
         };
 
         var optionEmail = {
@@ -83,11 +83,18 @@
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
         };
 
+        var optionStatusDate = {
+            name: 'status_date',
+            displayName: 'Status Date',
+            enableSorting: false,
+            width: '200',
+            cellFilter: 'date:"medium"'};
+
         var userName = {
             name: 'username',
             enableSorting: true,
             displayName: 'Username',
-            minWidth: '100',
+            minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
@@ -98,7 +105,7 @@
             name: 'first_name',
             displayName: 'First Name',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
@@ -109,7 +116,7 @@
             name: 'last_name',
             displayName: 'Last Name',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
@@ -172,8 +179,8 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-        AppSettingsService.getSettings({ setting: 'USER_STATUSES', json_path: URL_CONFIGS.USER_STATUSES}).then(function (response) {
-            vm.statusArr = response.data;
+         UserService.getUserStatuses().then(function (response) {
+             vm.statusArr = response.data;
             if (vm.curUser.role == 'ROLE_SITE-SU') {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
                     return _.contains(['ACT', 'INR'], item.code);
@@ -184,11 +191,7 @@
                     return _.contains(['ACT', 'INR', 'REJ'], item.code);
                 });
             }
-        }).catch(function (err) {
-            vm.statusArr = [];
-            console.log("Error in retrieving USER_STATUSES " + err);
-        });
-
+         });
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
@@ -200,11 +203,11 @@
                 vm.searchOrganizationFamily = '';
             }
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
         } else if (!vm.registeredUsersPage){
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
         } else if (vm.registeredUsersPage) {
-            vm.gridOptions.columnDefs.push(lastName, firstName, optionOrg);
+            vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;

@@ -39,6 +39,7 @@
 #  phone                       :string
 #  city                        :string
 #  domain                      :string
+#  status_date                 :datetime
 #
 # Indexes
 #
@@ -233,12 +234,12 @@ class  User < ActiveRecord::Base
                            {pa_write_mode: false}]
                         when  "ROLE_ABSTRACTOR"
                           [{po_write_mode: false},
-                           {registry_write_mode: false},
+                           {registry_write_mode: true},
                            {user_write_mode: true},
                            {pa_write_mode: true}]
                         when  "ROLE_ABSTRACTOR-SU"
                           [{po_write_mode: false},
-                           {registry_write_mode: false},
+                           {registry_write_mode: true},
                            {user_write_mode: true},
                            {pa_write_mode: true}]
                         when  "ROLE_ACCOUNT-APPROVER"

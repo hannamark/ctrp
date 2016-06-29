@@ -18,6 +18,7 @@
         vm.milestoneArr = milestoneObj;
         vm.showRejectionReason = false;
         vm.validationErrors = [];
+        vm.confirmMsg = '';
 
         vm.setAddMode = function (mode) {
             vm.addMode = mode;
@@ -37,6 +38,19 @@
                     vm.showRejectionReason = false;
                     vm.rejection_reason = '';
                 }
+            }
+
+            var srjOption = vm.milestoneArr.filter(findSrjOption);
+            if (srjOption[0].id === vm.milestone_id) {
+                if (vm.curTrial.current_submission_type_code === 'ORI') {
+                    vm.confirmMsg = 'Adding the Submission Rejection Date will reject this Trial';
+                } else if (vm.curTrial.current_submission_type_code === 'AMD') {
+                    vm.confirmMsg = 'Adding the Submission Rejection Date will reject this submission and roll back the trial to the prior submission';
+                } else {
+                    vm.confirmMsg = '';
+                }
+            } else {
+                vm.confirmMsg = '';
             }
         };
 
@@ -104,6 +118,14 @@
         // Return true if the option is rejection option
         function findRejectionOptions (option) {
             if (option.code === 'SRJ' || option.code === 'LRD') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function findSrjOption (option) {
+            if (option.code === 'SRJ') {
                 return true;
             } else {
                 return false;

@@ -1,16 +1,15 @@
 module TrialVersionsHelper
 
   def decorate(o,field)
+    Rails.logger.info("In decorate method for the field " +field)
     if field.nil?
       return ""
     end
 
-    p field
-    val =""
     if o.event =="update"
       if o.object_changes[field]
         val = o.object_changes[field][1]
-        val = val + " (U)"
+        val = val + " (U)" if val
       else
         val = o.object[field] if o.object[field]
       end
@@ -19,14 +18,14 @@ module TrialVersionsHelper
     elsif o.event == "destroy"
       val = o.object[field] if o.object[field]
     end
-    p val
+
     return val
   end
 
   def decorate_lookup(o,field,lookup)
 
-    p field
-    val =""
+    Rails.logger.info("In decorate_lookup method for the field " + field)
+
 
     if o.event =="update"
       if o.object_changes[field]
@@ -39,17 +38,14 @@ module TrialVersionsHelper
     elsif o.event == "destroy"
       id = o.object[field] if o.object[field]
     end
-    p id
 
     if id.nil?
-      return ""
+      return " "
     end
     lookup_obj = lookup.find_by_id(id) if id
     p lookup_obj
     val = lookup_obj.name if lookup_obj
-    p val
     val = val + " (U) " if o.event = "update"
-    p val
     return val
   end
 
@@ -57,19 +53,8 @@ module TrialVersionsHelper
   def concatenate(o,string, *args )
     delimiter = " | "
     o.event == "destroy"? destroy_sign = " (D) " : destroy_sign=""
-    p "joined params"
-    p args
-
     joined_params = args.join(' , ')
-
-    p joined_params
-
-    p " after joined params"
-    p string
-
     string = string + delimiter + joined_params + destroy_sign + delimiter
-
     return string
-
   end
 end

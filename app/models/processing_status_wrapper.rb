@@ -25,8 +25,8 @@ class ProcessingStatusWrapper < TrialBase
   belongs_to :trial
 
   ## Audit Trail Callbacks
-  after_save :touch_trial
-  after_destroy :touch_trial
+  #after_save :touch_trial
+  #after_destroy :touch_trial
 
   scope :latest, -> {
     order("updated_at DESC").first

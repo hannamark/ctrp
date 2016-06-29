@@ -17,12 +17,14 @@ As someone without a CTRP User Account, I can request a user account
   And I  must enter my Last Name "Last Name"
   And I must enter an Email Address "Email"
   And I must enter a phone Number "Phone Number"
+  And I can enter a phone Number Extension "Phone Extension"
   And I must enter my Organization Name "Organization Name"
   And I fill in the CAPTCHA correctly
   And I press "Register"
   Then the system will save the User request to the database 
   And the system will send the "CTRP Account Request" email to appsupport for the new request (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
-
+  When the account request is approved 
+  Then the system will send the "Registration Activation(NIH)" email to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
   
   
   Scenario: #2 I can request a user account 
@@ -43,7 +45,9 @@ As someone without a CTRP User Account, I can request a user account
   And I press "Register"
   Then the system will save the User request to the database 
   And the system will send the "CTRP Account Request" email to appsupport for the new request (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
-
+  When the request is approved
+  Then Then the system will send the "Account Activation(Site User)" email to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
+  
 
 
  Scenario: #3 User account Required Fields
@@ -56,7 +60,7 @@ As someone without a CTRP User Account, I can request a user account
       |Email            |
       |Phone Number     |
       |Organization Name|
-      |CAPTCHA           |
+      |CAPTCHA          |
 
    When the answer to the question "Do you have an NIH Account" is "yes,I have an NIH Account"
    Then the field "Username" is required

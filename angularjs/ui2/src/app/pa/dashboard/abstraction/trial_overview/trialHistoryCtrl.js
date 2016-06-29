@@ -37,6 +37,8 @@
         vm.searchWarningMessage = '';
 
         vm.auditGridOptions = AuditService.getAuditsGridOptions();
+        var pageSize = 500;//audit grid page size
+
         vm.disableBtn = false;
         vm.auditParams = AuditService.getAuditInitialSearchParams();
 
@@ -48,7 +50,7 @@
 
         activate();
         function activate() {
-            vm.auditGridOptions = AuditService.getAuditsGridOptions();
+            //vm.auditGridOptions = getGridOptions();
             vm.auditGridOptions.data =null;
             vm.auditGridOptions.totalItems = null;
 
@@ -71,6 +73,38 @@
 
         }
 
+        function getGridOptions() {
+            var options = {
+                // rowData: vm.checkoutHistoryArr,
+                rowModelType: 'pagination',
+                columnDefs: getColumnDefs(),
+                enableColResize: true,
+                enableSorting: false,
+                enableFilter: true,
+                rowHeight: 30,
+                angularCompileRows: true,
+                suppressRowClickSelection: true,
+                suppressSizeToFit: false,
+            };
+
+            return options;
+        }
+
+
+        function getColumnDefs() {
+            var columns = [
+                {field: 'created_at'},
+                {field: 'event'},
+                {field: 'nci_id'},
+                {field: 'lead_protocol_id'},
+                {field: 'official_title'}
+            ];
+
+            return columns;
+        }
+
+
+
         /*Implementations below*/
 
         vm.toggleDeletedDocs = function toggleDeletedDocs() {
@@ -92,6 +126,23 @@
         };
 
         function showAuditTrials() {
+
+            var columnDefs = [
+                {headerName: "Make", field: "make"},
+                {headerName: "Model", field: "model"},
+                {headerName: "Price", field: "price"}
+            ];
+
+            var rowData = [
+                {make: "Toyota", model: "Celica", price: 35000},
+                {make: "Ford", model: "Mondeo", price: 32000},
+                {make: "Porsche", model: "Boxter", price: 72000}
+            ];
+
+
+            vm.auditGridOptions.data =null;
+            vm.auditGridOptions.totalItems = null;
+
             vm.auditGridOptions.onRegisterApi = function (gridApi) {
                 vm.gridApi = gridApi;
                 vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
@@ -101,13 +152,7 @@
                 });
             }; //gridOptions
 
-            $timeout( function() {
-                for (var colIndex = 0; colIndex < 100; colIndex++) {
-                    $scope.auditGridOptions.columnDefs.push({
-                        width: Math.floor(Math.random() * (120 - 50 + 1)) + 50
-                    });
-                }
-            });
+
 
             loadAuditTrials();
         }
@@ -241,6 +286,12 @@
 
     //***Audit Trial Tab Logic ***//
 
+        function onPageSizeChanged(newPageSize) {
+            pageSize = new Number(newPageSize);
+            //createNewDatasource(vm.checkoutHistoryArr);
+        }
+
+
         function loadAuditTrials() {
             var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
             var startDate = vm.start_date;
@@ -256,7 +307,14 @@
 
                     if (status >= 200 && status <= 210) {
                         console.log('received search results: ' + JSON.stringify(data.trial_versions));
-                        vm.auditGridOptions.data = data.trial_versions;
+                       vm.auditGridOptions.rowData=data.trial_versions
+                        //vm.auditGridOptions.api.setRowData(data.trial_versions);
+                        //$scope.auditGridOptions.rowData = data.trial_versions
+
+                        //vm.auditGridOptions.data = data.trial_versions;
+                        //vm.auditGridOptions.api.refreshView();
+                        //vm.auditGridOptions.api.sizeColumnsToFit();
+
                         vm.auditGridOptions.totalItems = data.total;
                     }
                 }).catch(function (err) {
@@ -271,6 +329,8 @@
             //}
 
         }
+
+
 
         function openCalendar($event, type) {
             $event.preventDefault();

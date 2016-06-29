@@ -4,7 +4,7 @@
             <div class="panel-title">Sub Groups Details</div>
         </div>
         <div class="panel-body">
-            <form class="form form-horizontal" role="form" name="sg_form" novalidate ctrp-submit="sgView.saveSubGroup()">
+            <form class="form form-horizontal" role="form" name="sg_form" novalidate ctrp-submit="sgView.saveSubGroup()" unsaved-changes>
                 <!-- fieldset for Sub Groups details-->
                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || sgView.disableBtn">
                     <legend class="sub-bordered">Sub Group Details</legend>

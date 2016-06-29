@@ -9,11 +9,11 @@
         .factory('OrgService', OrgService);
 
     OrgService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService', 'uiGridExporterConstants', 'uiGridExporterService'];
 
     function OrgService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService,UserService) {
+                        PromiseTimeoutService,UserService, uiGridExporterConstants, uiGridExporterService) {
 
         var statesOrProvinces = [];
         var initOrgSearchParams = {
@@ -61,6 +61,17 @@
             useExternalSorting: true,
             enableGridMenu: true,
             enableFiltering: true,
+            exporterCsvFilename: 'organizations.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As Excel',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }],
             columnDefs: [
                 {name: 'Nullify', displayName: 'Nullify',
                     enableSorting: false,

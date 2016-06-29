@@ -1,5 +1,5 @@
 class TrialsController < ApplicationController
-  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone]
+  before_action :set_trial, only: [:show, :edit, :update, :destroy, :validate_milestone, :rollback]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy]
@@ -85,6 +85,14 @@ class TrialsController < ApplicationController
     end
   end
 
+  def rollback
+    trial_service = TrialService.new({trial: @trial})
+    trial_service.rollback(params[:submission_id])
+    respond_to do |format|
+      format.json { render :json => params }
+    end
+  end
+
   def genders
     @genders = Gender.all
     respond_to do |format|
@@ -153,6 +161,13 @@ class TrialsController < ApplicationController
     @perspectives = TimePerspective.all
     respond_to do |format|
       format.json { render :json => {:data => @perspectives} }
+    end
+  end
+
+  def amendment_reasons
+    @amendment_reasons = AmendmentReason.all
+    respond_to do |format|
+      format.json { render :json => {:data => @amendment_reasons} }
     end
   end
 
@@ -727,7 +742,7 @@ class TrialsController < ApplicationController
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document,:deleted_by,:deletion_date, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
                                   interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :c_code, :_destroy],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
-                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
+                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :amendment_reason_id, :_destroy],
                                   sub_groups_attributes:[:id,:index,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
                                   outcome_measures_attributes: [:id, :index,:title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
@@ -739,7 +754,9 @@ class TrialsController < ApplicationController
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
                                   milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
-                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy])
+                                  onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy],
+                                  citations_attributes:[:id, :pub_med_id, :description, :results_reference, :_destroy],
+                                  links_attributes:[:id, :url, :description, :_destroy], trial_ownerships_attributes:[:id, :user_id, :_destroy])
   end
 
   # Convert status code to name in validation messages

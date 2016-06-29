@@ -23,7 +23,7 @@
             'USER_GSA': '/ctrp/users/gsa',
             'SEARCH_USER': '/ctrp/users/search.json',
             'USER_LIST': '/ctrp/users.json',
-            'USER_STATUSES': 'users/user_statuses',
+            'USER_STATUSES': '/ctrp/users/user_statuses',
             'USER_TRIALS': '/ctrp/trial_ownerships/search.json',
             'USER_TRIALS_END': '/ctrp/trial_ownerships/end.json',
             'USER_TRIALS_ADD': '/ctrp/trial_ownerships/add.json',
@@ -139,7 +139,8 @@
                 'SEARCH_CTRP_INTERVENTIONS': '/ctrp/registry/trials/search_ctrp_interventions.json?c_code={:c_code}',
                 'MAIL_LOGS': '/ctrp/registry/trials/get_mail_logs.json?trial_id={:trial_id}',
                 'CHECKOUT_HISTORY': '/ctrp/registry/trials/get_trial_checkout_history.json?trial_id={:trial_id}',
-                'INTERNAL_SOURCES': '/ctrp/registry/internal_sources.json'
+                'INTERNAL_SOURCES': '/ctrp/registry/internal_sources.json',
+                'AMENDMENT_REASONS': '/ctrp/registry/trials/amendment_reasons.json',
             }
         })
         .constant('MESSAGES', {

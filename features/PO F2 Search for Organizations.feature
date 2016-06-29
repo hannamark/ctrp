@@ -4,7 +4,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#1 As any Curator,I am able to search for organizations by name including aliases
     Given I know the name of the organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the full or partial name of the organization I wish to search for
     And I indicate to include aliases
@@ -14,7 +14,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#2 As any Curator, I am able to search for organizations by name without including aliases
     Given I know the name of the organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the full or partial name of the organization I wish to search for
     And I indicate to not search Aliases
@@ -25,7 +25,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#3 As any Curator, I am able to search for organizations by Source Context and Source ID
     Given I know the Source Context and Source ID of the organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the Source Context and Source ID of the organization I wish to search for
     And I submit my search request
@@ -34,7 +34,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#4 As any Curator, I am able to search for organizations by Source ID
     Given I know the Source ID of the organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the Source ID of the organization I wish to search for
     And I submit my search request
@@ -43,7 +43,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#5 As any Curator, I am able to search for organizations by Family Name
     Given I know the Family name to which the organization I wish to search for belongs to
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the full or partial Family name of the organization I wish to search for
     And I submit my search request
@@ -52,7 +52,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#6 As any Curator, I am able to search for organizations by city
     Given I know the name of the city I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the full or partial city of the organization I wish to search for
     And I submit my search request
@@ -61,7 +61,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#7 As any Curator, I am able to search for organizations by state
     Given I know the name of the state I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I select the state from a list of states displayed by CTRP
     And I submit my search request
@@ -70,7 +70,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#8 As any Curator, I am able to search for organizations by country
     Given I know the name of the country I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I select the country from a list of countries displayed by CTRP
     And I submit my search request
@@ -79,17 +79,17 @@ Feature: PO F2 Search for Organization
   @runthis
  
  Scenario:#9 As any Curator, I am able to search for organizations by Postal Code
-    Given I know the name of the Postal Code I wish to search for
-    And I am logged in to CTRP 
+    Given I know the name of the zip code I wish to search for
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
-    When I provide the full or partial Postal Code of the organization I wish to search for
+    When I provide the full or partial zip code of the organization I wish to search for
     And I submit my search request
     Then the system should display all organizations whose address contains the Postal Code
     And the result should be sorted by Organization Name
 
   Scenario:#10 As any Curator, I am able to search for organizations by phone number
     Given I know the organization phone number I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application 
     And I have selected the option to search for an organization
     When I provide the full or partial phone number of the organization I wish to search for
     And I submit my search request
@@ -99,7 +99,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#11 As any Curator, search for organizations with multiple parameters
     Given I know multiple parameters of the organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I am on the search organizations screen
     When I provide the parameters of the organization I wish to search for
     And I submit my search request
@@ -109,7 +109,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#12 As a Curator, Search for organizations by curator date
     Given I know the date of the curator date I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I am on the search organizations screen
     When I provide the curator date of the organization I wish to search for
     And I submit my search request
@@ -118,7 +118,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#13 As a Curator, Search for organizations by curator user name
     Given I know the name of the curator user name I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I am on the search organizations screen
     When I provide the curator user name of the organization I wish to search for
     And I submit my search request
@@ -127,7 +127,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#14 As a Curator or a CTRP Administrator, I can search for organizations by status
     Given I know the status of the organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I am on a search organizations screen
     When I provide the status of the organization I wish to search for
       |Organization Status|
@@ -141,7 +141,7 @@ Feature: PO F2 Search for Organization
 
   Scenario Outline:#15 As a Curator, I am able to search for organizations by multiple parameters
     Given I know the parameters of organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the partial name with wild card '*' of the <Organization Name> I wish to search for
     And I indicate to include or not include a <Search Aliases>
@@ -186,7 +186,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#16 As a Curator, I will get message if no Search Parameter is provided
     Given I know the parameters of organization I wish to search for
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I searched without providing any search parameters
     Then I should get message as "At least one selection value must be entered prior to running the search"
     And I searched without any search parameters and Search Alias box unchecked
@@ -194,7 +194,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#17 As a Curator, I can select any organization with Family in a search result and display the detailed organization information
     Given I want to see the detail information of organization when linked with Family
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I select an organization name in the search results
     Then the complete family organization information will be displayed including:
@@ -218,7 +218,7 @@ Feature: PO F2 Search for Organization
 
   Scenario:#18 As a Curator, I can select any organization in a search result and display the detailed organization information
     Given I want to see the detail information of organization
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I select organization name in the search results
     Then the complete organization information will be displayed including:
@@ -241,14 +241,14 @@ Feature: PO F2 Search for Organization
 
   Scenario:#19 As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected
     Given I want to search for an Organization with wild card
-    And I am logged in to CTRP 
+    And I am logged in to CTRP PO application
     And I am on a Organization search screen
     And Exact Search is selected
     When I enter "*" in a search field
     Then Organization Search Results will display all found organizations
 
   Scenario:#20 As a Curator, I can clear all my search selections
-    Given I am logged in to CTRP 
+    Given I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     And I want to clear the organization search fields
     When  I select the Clear option
@@ -256,7 +256,7 @@ Feature: PO F2 Search for Organization
 
 
   Scenario:#21 As a curator, I can Search Organizations when the Exact Search box is checked
-    Given I am logged in to CTRP 
+    Given I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     And Exact Search is selected
     When I have entered the "exact" organization name
@@ -278,7 +278,7 @@ Feature: PO F2 Search for Organization
 
 
   Scenario:#22 As a curator, I can Search Organizations when the Exact Search box is NOT checked
-    Given I am logged in to CTRP 
+    Given I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     And Exact Search is not selected
     When I have entered the "partial" organization name
@@ -299,7 +299,7 @@ Feature: PO F2 Search for Organization
     Then the exact email will be displayed on the Organization search results table
 
   Scenario:#23 As a curator, I cannot Search Results when the Exact Search box is checked and Exact Match is not provided
-    Given I am logged in to CTRP 
+    Given I am logged in to CTRP PO application
     And Exact Search is selected
     And I dont provide the Exact criteria
     Then the search result should not be displayed
