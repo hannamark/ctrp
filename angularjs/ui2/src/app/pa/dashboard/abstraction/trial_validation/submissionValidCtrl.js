@@ -16,9 +16,8 @@
         vm.trialDetailObj = {};
         vm.disableBtn = false;
         vm.isOtherPrimaryPurpose = false;
-        vm.isAmendmentSubmission = false; // TODO: submission_type_code in submissions array of objects
-        vm.isOriginalSubmission = false; // TODO:
-        // TODO: assign submissions to submissions_attributes if any
+        vm.isAmendmentSubmission = false;
+        vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
         vm.amendReasonArr = amendmentReasonObj.data || [];
@@ -50,6 +49,9 @@
                     vm.isOtherPrimaryPurpose = curPrimaryPurposeObj.name.toLowerCase().indexOf('other') > -1;
                     // reset to original data or empty
                     vm.trialDetailObj.primary_purpose_other = _resetValueForField('primary_purpose_other');
+                } else {
+                    vm.isOtherPrimaryPurpose = false;
+                    vm.trialDetailObj.primary_purpose_other = '';
                 }
             });
         } // _watchPrimaryPurpose
