@@ -198,12 +198,32 @@
     <div class="modal-footer">
         <div class="btn-toolbar">
             <button type="button" class="btn btn-primary pull-right" id="cancelRemOwn"
-                    ng-click="userDetailView.cancelRemoveTrialsOwnerships()"><i class="glyphicon glyphicon-ok"></i>
+                    ng-click="userDetailView.cancelRemoveTrialsOwnerships()"><i class="glyphicon glyphicon-remove"></i>
                     Cancel
             </button>
             <button type="button" class="btn btn-danger pull-right"  id="remOwn"
                     ng-click="userDetailView.removeTrialsOwnerships()"><i class="glyphicon glyphicon-ok"></i>
                     Remove Ownership
+            </button>
+        </div>
+    </div>
+</modal>
+
+<modal visible="userDetailView.confirmChangeFamilyPopUp" title="Please confirm" id="confirmChangeFamily">
+    <div class="modal-body">
+        If you change your organization, you will lose any existing Site Admin, Report Viewing,
+        Accrual Submission and Trial Ownership privileges and your account will be set to a Pending status requiring
+        reauthorization.
+    </div>
+    <div class="modal-footer">
+        <div class="btn-toolbar">
+            <button type="button" class="btn btn-primary pull-right" id="cancelRemOwnChangeFam"
+                    ng-click="userDetailView.cancelRemoveTrialsOwnerships()"><i class="glyphicon glyphicon-remove"></i>
+                Cancel
+            </button>
+            <button type="button" class="btn btn-danger pull-right"  id="remOwnChangeFam"
+                    ng-click="userDetailView.removeTrialsOwnerships()"><i class="glyphicon glyphicon-ok"></i>
+                OK
             </button>
         </div>
     </div>

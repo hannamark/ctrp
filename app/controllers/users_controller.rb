@@ -28,7 +28,11 @@ class UsersController < ApplicationController
     if current_user.role != 'ROLE_ACCOUNT-APPROVER' && current_user.role != 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
       params[:user][:domain] = @user.domain
       params[:user][:role] = @user.role
-      params[:user][:user_status_id] = @user.user_status_id
+      if params[:user][:user_status_id] != @user.user_status_id && current_user.username == @user.username
+        params[:user][:user_status_id] = UserStatus.find_by_code('INR').id
+      else
+        params[:user][:user_status_id] = @user.user_status_id
+      end
     elsif current_user.role != 'ROLE_ADMIN'
       params[:user][:domain] = current_user.domain
     end
