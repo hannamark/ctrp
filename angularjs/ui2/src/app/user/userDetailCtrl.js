@@ -494,7 +494,7 @@
                 vm.gridTrialsOwnedOptions.useExternalPagination = true;
                 vm.gridTrialsOwnedOptions.useExternalSorting = true;
                 UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trials'];
+                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
                     vm.gridTrialsOwnedOptions.totalItems = data.total;
                 }).catch(function (err) {
                     console.log('Get User Trials failed');
