@@ -304,9 +304,9 @@ class CreateTrialSummaryReportService
 
     h.store("   Investigator", investigator_name)
     h.store("   Investigator Title", @trial.investigator_title)
-    h.store("   Investigator Affilliation", investigator_affiliation)
+    h.store("   Investigator Affiliation", investigator_affiliation)
     h.store("Principal Investigator",principle_investigator_name )
-    h.store("Affilliation", "")
+    h.store("Affiliation", "")
 
     i=0
     h.each do |k,v|
