@@ -6,10 +6,10 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasEligibilityCtrl', pasEligibilityCtrl);
 
-    pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
+    pasEligibilityCtrl.$inject = ['$scope', 'TrialService', 'UserService', 'PATrialService', 'toastr',
         'MESSAGES', '_', '$timeout', 'genderList', 'ageUnits', 'samplingMethods', 'Common'];
 
-    function pasEligibilityCtrl($scope, TrialService, PATrialService, toastr,
+    function pasEligibilityCtrl($scope, TrialService, UserService, PATrialService, toastr,
         MESSAGES, _, $timeout, genderList, ageUnits, samplingMethods, Common) {
         var vm = this;
         var MAX_CHARS = 5000; // maximal character counts for the description field in ALL other criterion
@@ -33,7 +33,15 @@
         vm.resetForm = resetForm;
         vm.cancelEditOtherCriterion = cancelEditOtherCriterion;
         vm.updateOtherCriteria = updateOtherCriteria;
-        vm.sortableListener = {};
+        vm.isCurationEnabled = UserService.isCurationModeEnabled() || false;
+        vm.sortableListener = {
+            cancel: '.locked'
+        };
+        $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+            vm.isCurationEnabled = UserService.isCurationModeEnabled();
+        });
+
+
         vm.sortableListener.stop = dragItemCallback;
         vm.disableBtn = false;
         //vm.updateOtherCriteriaDesc = updateOtherCriteriaDesc;
