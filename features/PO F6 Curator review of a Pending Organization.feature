@@ -1,4 +1,4 @@
-﻿@PO @Global
+@PO @Global
 Feature: PO F6 Curator review of a Pending Organization
 
   Scenario: #1 As a PO Curator, I can display all Organizations with Pending status
@@ -28,9 +28,21 @@ Feature: PO F6 Curator review of a Pending Organization
     And I am on the Search Organizations screen
     And I have identified two organizations with a CTRP source context, one to be nullified and one to be retained
     When I select one of the organizations to be nullified
-    Then all references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
-    And all references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
-    And all references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
+    Then all references in CTRP to the nullified organization will reference the retained organization in the field type
+    
+    |Lead Organization|
+    |Sponsor Organization|
+    |board affiliation (IRB)|
+    |Investigator affiliation organization|
+    |CTRP User organization affiliation|
+    |Trial co-investigator’s organization|
+    |funding source|
+    |Participating Site|
+    |Person’s affiliated organization|
+    |aliases organization|
+    |Family organization|
+    |Collaborators|
+   
     And all accrual submitted in CTRP on the nullified organization as a Participating Site will be transferred to the retained organization as a Participating Site
     And all person records affiliated with the nullified organization will be affiliated with the retained organization
     And the name of the Nullified organization will be listed as an alias on the retained organization
