@@ -16,6 +16,7 @@
         if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
             vm.familySearchParams = FamilyService.getInitialFamilySearchParams();
             vm.familySearchParams.name = '*';
+            vm.familySearchParams.rows = undefined;
             vm.familySearchParams.allrows = true;
             FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
                 if (data.data) {
@@ -33,6 +34,7 @@
         if(!(vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
             vm.orgSearchParams = OrgService.getInitialOrgSearchParams();
             vm.orgSearchParams.name = '*';
+            vm.orgSearchParams.rows = undefined;
             vm.orgSearchParams.allrows = true;
             vm.orgSearchParams.no_family = true;
             OrgService.searchOrgs(vm.orgSearchParams).then(function (data) {
