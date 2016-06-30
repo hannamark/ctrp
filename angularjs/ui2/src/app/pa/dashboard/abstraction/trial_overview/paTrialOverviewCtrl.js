@@ -179,6 +179,9 @@
             vm.trialDetailObj.isInterventional = vm.trialDetailObj.researchCategoryName.indexOf('intervention') > -1;
             vm.trialDetailObj.isObservational = vm.trialDetailObj.researchCategoryName.indexOf('observation') > -1;
             vm.trialDetailObj.isAncillary = vm.trialDetailObj.researchCategoryName.indexOf('ancillary') > -1;
+            var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
+            vm.trialDetailObj.isInfoSourceProtocol = infoSourceName.indexOf('proto') > -1;
+            vm.trialDetailObj.isInfoSourceImport = !vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
 
             vm.curPAMenuTypes = _checkMilestoneCode(vm.trialDetailObj); // TODO: use this in subscreen to control their visbility
             vm.trialDetailObj.menuTypes = vm.curPAMenuTypes; // update the menuTypes so that PAMenu controller can use it

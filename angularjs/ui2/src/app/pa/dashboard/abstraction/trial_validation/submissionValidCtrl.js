@@ -22,6 +22,12 @@
         vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
+        vm.formErrors = {
+            phase: false,
+            primaryPurpose: false,
+            otherDesc: false,
+            amendReason: false,
+        };
         $scope.rejectionReasonArr = ['Out of Scope', 'Duplicate', 'Other'];
         var subAcceptDateCode = 'SAC'; // code for Submission Accepted Date
         var subRejectDateCode = 'SRJ'; // code for Submission Rejection Date
@@ -114,6 +120,9 @@
         } // resetForm
 
         function confirmRejection(evt) {
+            if (!_isFormValid(vm.trialDetailObj)) {
+                return;
+            }
             $scope.rejectionObj = {reason: null, comment: null};
             var confirmMsg = '';
             if (vm.isOriginalSubmission) {
@@ -150,14 +159,14 @@
         };
 
         function placeTrialOnHold() {
-            if (isFormValid(vm.trialDetailObj)) {
+            if (_isFormValid(vm.trialDetailObj)) {
                 saveValidation();
                 $state.go('main.pa.trialOverview.onhold', {}, {reload: true});
             }
         }
 
         function _rejectTrialValidation() {
-            if (isFormValid(vm.trialDetailObj)) {
+            if (_isFormValid(vm.trialDetailObj)) {
                 // concatenate the reason and comment in the popover confirm dialog
                 var rejectionComment = $scope.rejectionObj.reason + ': ' + $scope.rejectionObj.comment;
                 var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, rejectionComment); // TODO: get rejection reason from confirm popover!
@@ -171,7 +180,7 @@
         }
 
         function acceptTrialValidation() {
-            if (isFormValid(vm.trialDetailObj)) {
+            if (_isFormValid(vm.trialDetailObj)) {
                 var milestone = _genMilestone(subAcceptDateCode, vm.trialDetailObj.current_submission_id, null);
                 vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
 
@@ -216,9 +225,31 @@
         }
 
         // check if the form is valid
-        function isFormValid(trialObj) {
-            // TODO: validate form here
+        function _isFormValid(trialObj) {
+
+            if (!angular.isDefined(trialObj.phase_id)) {
+                vm.formErrors.phase = true; // show error
+                return false;
+            }
+            if ((trialObj.isInfoSourceImport || trialObj.isInfoSourceProtocol) && !angular.isDefined(trialObj.primary_purpose_id)) {
+                vm.formErrors.primaryPurpose = true; // show error
+                return false;
+            }
+            if (vm.isOtherPrimaryPurpose && !trialObj.primary_purpose_other) {
+                vm.formErrors.otherDesc = true; // show error
+                return false;
+            }
+            if (vm.isAmendmentSubmission && !angular.isDefined(trialObj.submissions[trialObj.submissions.length-1].amendment_reason_id)) {
+                vm.formErrors.amendReason = true;
+                return false;
+            }
+            // re-init to false - no errors!
+            Object.keys(vm.formErrors).forEach(function(key) {
+                vm.formErrors[key] = false;
+            });
+
             return true;
+
         }
 
         function _checkSubmissionType(trialObj) {
