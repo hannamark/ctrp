@@ -7,10 +7,10 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasArmsGroupsCtrl', pasArmsGroupsCtrl);
 
-    pasArmsGroupsCtrl.$inject = ['$scope','$filter', '$state', 'TrialService', 'PATrialService', 'toastr',
+    pasArmsGroupsCtrl.$inject = ['$scope','$filter','UserService', '$state', 'TrialService', 'PATrialService', 'toastr',
         'MESSAGES', '_', '$timeout', '$anchorScroll', '$location', 'Common'];
 
-    function pasArmsGroupsCtrl($scope,$filter, $state, TrialService, PATrialService, toastr,
+    function pasArmsGroupsCtrl($scope,$filter, UserService,$state, TrialService, PATrialService, toastr,
                                      MESSAGES, _, $timeout, $anchorScroll, $location, Common) {
         var vm = this;
         vm.curTrial = {};
@@ -25,11 +25,18 @@
         vm.interventionList = [];
         vm.trial_interventions = [];
         vm.interventional = false;
-        vm.sortableListener = {};
+        vm.isCurationEnabled = UserService.isCurationModeEnabled() || false;
+        vm.sortableListener = {
+            cancel: '.locked'
+        };
         vm.sortableListener.stop = dragItemCallback;
         vm.disableBtn = false;
         vm.deleteBtnDisabled = true;
         vm.old_assigned_interventions_array = [];
+
+        $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+            vm.isCurationEnabled = UserService.isCurationModeEnabled();
+        });
 
         //vm.watchArmLabel = watchArmLabel();
         activate();
