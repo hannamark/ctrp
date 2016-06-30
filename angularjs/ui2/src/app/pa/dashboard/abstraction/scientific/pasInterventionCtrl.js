@@ -18,7 +18,6 @@
 
             var vm = this;
             vm.interventionTypes = interventionTypes;
-            console.info('interventionTypes: ', interventionTypes);
             vm.trialDetailObj = {};
             vm.showInterventionForm = false;
             vm.curInterventionObj = {};
@@ -28,7 +27,8 @@
             vm.sortableListener = {};
             vm.sortableListener.stop = dragItemCallback;
             var curUserRole = UserService.getUserRole() || '';
-            var isUserAllowedToSelectType = curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ABSTRACTOR-SU'; // only super userss are allowed
+            var USERS_ALLOWED_CHANGE_TYPE = ['ROLE_SUPER', 'ROLE_ABSTRACTOR-SU', 'ROLE_ADMIN']; // user roles allowed to change intervention type
+            var isUserAllowedToSelectType = _.contains(USERS_ALLOWED_CHANGE_TYPE, curUserRole);
 
             // actions
             vm.addIntervention = addIntervention;
@@ -90,7 +90,6 @@
             }
 
             function updateInterventions(showToastr) {
-                console.info('interventions: ', vm.trialDetailObj.interventions);
                 vm.trialDetailObj.interventions_attributes = _labelSortableIndex(vm.trialDetailObj.interventions);
                 vm.deleteBtnDisabled = true;
                 vm.upsertBtnDisabled = true;
@@ -111,15 +110,19 @@
                             });
                         }
                         _getTrialDetailCopy();
+
+                        // To make sure setPristine() is executed after all $watch functions are complete
+                        $timeout(function() {
+                           $scope.intervention_form.$setPristine();
+                        }, 1);
+
+                        vm.curInterventionObj = null;
+                        vm.showInterventionForm = false; // hide the form
                     }
                 }).catch(function(err) {
                     console.error('trial upsert error: ', err);
                 }).finally(function() {
-                    console.info('hiding intervention form now!');
-                    vm.curInterventionObj = null;
-                    vm.showInterventionForm = false; // hide the form
                     vm.disableBtn = false;
-                    // resetLookupForm();
                 });
             }
 
@@ -206,6 +209,8 @@
                     vm.curInterventionObj.intervention_type_id = selectedInterventionObj.intervention_type_id || '';
                     vm.isInterventionTypeListEnabled = vm.curInterventionObj.intervention_type_id === '' && isUserAllowedToSelectType;
                     console.info('received vm.curInterventionObj: ', vm.curInterventionObj);
+
+                    $scope.intervention_form.$setDirty();
                 }).catch(function(err) {
                     console.error('error in modal instance: ', err);
                 }).finally(function() {

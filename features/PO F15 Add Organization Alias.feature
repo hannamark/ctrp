@@ -1,7 +1,7 @@
 @PO @Global
 Feature: PO F15 Add Organization Alias
 
-  Scenario: As a Po Curator, I can add an organization name alias
+  Scenario:#1 As a Po Curator, I can add an organization name alias
     Given I know the name of the alias I wish to add for an organization
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit

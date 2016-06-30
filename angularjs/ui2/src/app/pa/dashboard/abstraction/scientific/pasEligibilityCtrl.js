@@ -85,6 +85,11 @@
                         });
                     }
                     _getTrialDetailCopy();
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.criteria_form.$setPristine();
+                   }, 1);
                 }
 
             }).catch(function(err) {

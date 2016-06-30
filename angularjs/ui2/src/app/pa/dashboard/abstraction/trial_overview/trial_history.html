@@ -273,7 +273,7 @@
                         <form class="form form-horizontal" role="form" name="trial_status_form" novalidate ctrp-submit="trialHistoryView.updateTrialStatuses()">
                             <div class="form-group" date-date-format="yyyy-mm-dd">
                                 <label for="start_date" class="control-label col-xs-12 col-sm-3">Start Date:</label>
-                                <div class="col-xs-12 col-sm-2 search-calendar-grid">
+                                <div class="col-xs-12 col-sm-2">
                                     <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                         <input type="text" id="start_date" name="status_date" class="form-control input-sm"
                                                uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
@@ -289,7 +289,7 @@
                                     </div>
                                 </div>
                                 <label for="end_date" class="control-label col-xs-12 col-sm-1">End Date:</label>
-                                <div class="col-xs-12 col-sm-2 search-calendar-grid">
+                                <div class="col-xs-12 col-sm-2">
                                     <div class="input-group add-on date datepicker">
                                         <input type="text" id="end_date" name="end_date" class="form-control input-sm"
                                                uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
@@ -305,16 +305,17 @@
                                                 </span>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-4"></div>
-                            </div>
-                            <div class="form-group no-bottom-margin" >
-                                <div class="col-sm-3"></div>
-                                <div class="btn-toolbar col-xs-12 col-sm-9">
+                                <!--div class="col-xs-12 col-sm-4"></div-->
+
+                            <!--div class="form-group no-bottom-margin" -->
+                                <!--div class="col-sm-3"></div-->
+                                <div class="btn-toolbar col-xs-12 col-sm-2">
                                     <button type="button" class="btn btn-primary pull-right" id="search_btn" ng-click="trialHistoryView.loadAuditTrials()" ng-disabled="trialHistoryView.disableBtn">
-                                        <i class="glyphicon"></i> Search
+                                        <i class="glyphicon glyphicon-filter"></i> Filter
                                     </button>
                                 </div>
                             </div>
+
                         </form>
 
                         <!-- list of audit trials -->
@@ -323,9 +324,12 @@
                                 <div class="row" ng-if="trialHistoryView.auditGridOptions.totalItems != null">
                                     <p><h4>Audit Trail Results: {{trialHistoryView.auditGridOptions.totalItems}} found</h4></p>
                                 </div>
-                                <div class="row animated-item" ng-if="trialHistoryView.auditGridOptions.data.length > 0">
+                                <div class="row animated-item" ng-if="trialHistoryView.auditGridOptions.totalItems > 0">
                                     <div class="col-xs-12">
-                                        <div ui-grid="trialHistoryView.auditGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid"></div>
+                                        <div style="width: 100%; height:300px"
+                                             ag-grid="trialHistoryView.auditGridOptions"
+                                             class="ag-fresh ag-basic">
+                                        </div>
                                     </div>
                                 </div>
                             </div>

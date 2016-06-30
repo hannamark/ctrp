@@ -311,6 +311,11 @@
                         timeOut: 0
                     })
 
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.marker_form.$setPristine();
+                   }, 1);
+
                     vm.addEditMode = false;
                     vm.selectedAllBM = false;
                 }
@@ -399,6 +404,8 @@
                         vm.currentBioMarker.record_status="Active";
                         vm.currentBioMarker.status_alert=true;
                     }
+
+                    $scope.marker_form.$setDirty();
                 }
                 console.log(newVal);
                 console.log(vm.currentBioMarker.cadsr_marker_id);

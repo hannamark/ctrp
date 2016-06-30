@@ -168,7 +168,8 @@
             getMailLogs: getMailLogs,
             getTrialCheckoutHistory: getTrialCheckoutHistory,
             annotateTrialStatusWithNameAndCode: annotateTrialStatusWithNameAndCode,
-            getInternalSources: getInternalSources
+            getInternalSources: getInternalSources,
+            getAmendReasons: getAmendReasons,
         };
 
         return services;
@@ -400,7 +401,7 @@
 
             delete curTrial.admin_checkout;
             delete curTrial.scientific_checkout;
-            return curTrial;
+            return angular.copy(curTrial);
         }
 
         function checkoutTrial(trialId, checkoutType) {
@@ -484,6 +485,10 @@
 
         function getTrialIdentifierTypes() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.TRIAL_ID_TYPES);
+        }
+
+        function getAmendReasons() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.PA.AMENDMENT_REASONS);
         }
 
         /**

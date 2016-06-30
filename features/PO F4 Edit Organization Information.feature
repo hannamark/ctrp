@@ -2,7 +2,7 @@
 Feature: PO F4 Edit Organization Information
 
 
-  Scenario: As a Curator, I can Edit organization name
+  Scenario:#1 As a Curator, I can Edit organization name
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -15,7 +15,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can Edit organization address
+  Scenario:#2 As a Curator, I can Edit organization address
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -28,7 +28,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As Curator, I can Edit organization phone number
+  Scenario:#3 As Curator, I can Edit organization phone number
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -41,7 +41,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can Edit organization email
+  Scenario:#4 As a Curator, I can Edit organization email
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -54,7 +54,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can Edit organization city
+  Scenario:#5 As a Curator, I can Edit organization city
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -67,7 +67,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can Edit organization state
+  Scenario:#6 As a Curator, I can Edit organization state
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -80,7 +80,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can Edit organization country
+  Scenario:#7 As a Curator, I can Edit organization country
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -93,7 +93,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can Edit organization zip code
+  Scenario:#8 As a Curator, I can Edit organization zip code
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -106,7 +106,7 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can Edit organizations with multiple parameters
+  Scenario:#9 As a Curator, I can Edit organizations with multiple parameters
     Given I know which organization I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a CTRP organization and found the one I wish to edit
@@ -119,13 +119,13 @@ Feature: PO F4 Edit Organization Information
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
 
-  Scenario: As a Curator, I can reset the edit values during the edit process
+  Scenario:#10 As a Curator, I can reset the edit values during the edit process
     Given I am in the Edit Organization feature
     And I want to cancel my changes
     When I select the Reset function
     Then edit form will be refreshed with the last committed values for the selected organization
 
-  Scenario: As a Curator, I am allowed to Edit Organization when I am on the CTRP Context
+  Scenario:#11 As a Curator, I am allowed to Edit Organization when I am on the CTRP Context
     Given I know which organization I want to edit
     And I am logged in to the CTRP PO Application
     And I have selected the organization I want to edit
@@ -135,7 +135,7 @@ Feature: PO F4 Edit Organization Information
     When I am on the CTRP Context and my write mode is off
     Then I will not be able to edit editable features
 
-  Scenario: As a Curator, I should not be allowed to Edit Organization when I am on the CTEP Context
+  Scenario:#12 As a Curator, I should not be allowed to Edit Organization when I am on the CTEP Context
     Given I know wich organization I want to edit
     And I am logged in to the CTRP PO Application
     And I have selected the organization I want to edit

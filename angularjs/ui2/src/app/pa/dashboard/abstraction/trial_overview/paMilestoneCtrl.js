@@ -7,9 +7,9 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('paMilestoneCtrl', paMilestoneCtrl);
 
-    paMilestoneCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'milestoneObj', 'TrialService', 'userDetailObj', 'DateService'];
+    paMilestoneCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'milestoneObj', 'TrialService', 'userDetailObj', 'DateService', 'PATrialService'];
 
-    function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, milestoneObj, TrialService, userDetailObj, DateService) {
+    function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, milestoneObj, TrialService, userDetailObj, DateService, PATrialService) {
         var vm = this;
         vm.curTrial = trialDetailObj;
         vm.curUser = userDetailObj;
@@ -18,6 +18,7 @@
         vm.milestoneArr = milestoneObj;
         vm.showRejectionReason = false;
         vm.validationErrors = [];
+        vm.confirmMsg = '';
 
         vm.setAddMode = function (mode) {
             vm.addMode = mode;
@@ -37,6 +38,19 @@
                     vm.showRejectionReason = false;
                     vm.rejection_reason = '';
                 }
+            }
+
+            var srjOption = vm.milestoneArr.filter(findSrjOption);
+            if (srjOption[0].id === vm.milestone_id) {
+                if (vm.curTrial.current_submission_type_code === 'ORI') {
+                    vm.confirmMsg = 'Adding the Submission Rejection Date will reject this Trial';
+                } else if (vm.curTrial.current_submission_type_code === 'AMD') {
+                    vm.confirmMsg = 'Adding the Submission Rejection Date will reject this submission and roll back the trial to the prior submission';
+                } else {
+                    vm.confirmMsg = '';
+                }
+            } else {
+                vm.confirmMsg = '';
             }
         };
 
@@ -77,8 +91,10 @@
 
                     TrialService.upsertTrial(outerTrial).then(function (response) {
                         if (response.server_response.status < 300) {
-                            $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
                             toastr.success('Milestone have been recorded', 'Operation Successful!');
+                            PATrialService.setCurrentTrial(response); // cache the updated trial
+                            $scope.$emit('updatedInChildScope', {}); // signal for updates
+                            $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
                         } else {
                             // Enable buttons in case of backend error
                             vm.disableBtn = false;
@@ -102,6 +118,14 @@
         // Return true if the option is rejection option
         function findRejectionOptions (option) {
             if (option.code === 'SRJ' || option.code === 'LRD') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function findSrjOption (option) {
+            if (option.code === 'SRJ') {
                 return true;
             } else {
                 return false;

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160610142618) do
+ActiveRecord::Schema.define(version: 20160629152531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1254,6 +1254,17 @@ ActiveRecord::Schema.define(version: 20160610142618) do
   add_index "trial_funding_sources", ["organization_id"], name: "index_trial_funding_sources_on_organization_id", using: :btree
   add_index "trial_funding_sources", ["trial_id"], name: "index_trial_funding_sources_on_trial_id", using: :btree
 
+  create_table "trial_histories", force: :cascade do |t|
+    t.json     "snapshot"
+    t.integer  "submission_id"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "uuid",          limit: 255
+    t.integer  "lock_version",              default: 0
+  end
+
+  add_index "trial_histories", ["submission_id"], name: "index_trial_histories_on_submission_id", using: :btree
+
   create_table "trial_ownerships", force: :cascade do |t|
     t.integer  "trial_id"
     t.integer  "user_id"
@@ -1471,9 +1482,9 @@ ActiveRecord::Schema.define(version: 20160610142618) do
     t.string   "phone"
     t.string   "city"
     t.string   "domain"
+    t.datetime "status_date"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["organization_id"], name: "index_users_on_organization_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
@@ -1596,6 +1607,7 @@ ActiveRecord::Schema.define(version: 20160610142618) do
   add_foreign_key "trial_documents", "users", column: "added_by_id"
   add_foreign_key "trial_funding_sources", "organizations"
   add_foreign_key "trial_funding_sources", "trials"
+  add_foreign_key "trial_histories", "submissions"
   add_foreign_key "trial_ownerships", "trials"
   add_foreign_key "trial_ownerships", "users"
   add_foreign_key "trial_status_wrappers", "trial_statuses"
@@ -1731,6 +1743,7 @@ ActiveRecord::Schema.define(version: 20160610142618) do
   create_sequence "trial_co_pis_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_documents_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_funding_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "trial_histories_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_ownerships_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_status_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "trial_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

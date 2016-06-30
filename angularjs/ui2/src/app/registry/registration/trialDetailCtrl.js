@@ -207,6 +207,7 @@
                     var intvl = setInterval(function() {
                         if (vm.docUploadedCount === docCount) {
                             clearInterval(intvl);
+                            $scope.trial_form.$setSubmitted();
                             if (vm.curTrial.is_draft) {
                                 $state.go('main.trialDetail', {trialId: response.id, editType: 'complete'}, {reload: true});
                             } else {
@@ -598,6 +599,12 @@
             var piOption = vm.responsiblePartyArr.filter(findPiOption);
             if (piOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.selectedInvArray = vm.selectedPiArray;
+                $scope.trial_form.$setDirty();
+            }
+
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('pi different');
+                $scope.trial_form.$setDirty();
             }
         });
 
@@ -609,7 +616,30 @@
             if (siOption[0].id == vm.curTrial.responsible_party_id) {
                 vm.selectedIaArray = vm.selectedSponsorArray;
             }
+
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('sponsor different');
+                $scope.trial_form.$setDirty();
+            }
         });
+
+        $scope.$watch(function() {
+            return vm.selectedLoArray;
+        }, function(newValue, oldValue) {
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('lo different');
+                $scope.trial_form.$setDirty();
+            }
+        });
+
+        $scope.$watch(function() {
+            return vm.addedFses;
+        }, function(newValue, oldValue) {
+            if (!angular.equals(newValue, oldValue)) {
+                console.log('fses different');
+                $scope.trial_form.$setDirty();
+            }
+        }, true);
 
         $scope.$watch(function() {
             return vm.curTrial.intervention_indicator;
@@ -878,6 +908,7 @@
         function appendNewTrialFlag() {
             if ($state.$current.name.indexOf('add') > -1) {
                 vm.curTrial.new = true;  //
+                vm.curTrial.edit_type = 'original';
             }
         }
 

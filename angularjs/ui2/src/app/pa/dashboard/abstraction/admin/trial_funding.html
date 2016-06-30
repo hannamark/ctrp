@@ -1,10 +1,10 @@
-<div class="row">
+<div class="row" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.rejection || paTrialOverview.trialDetailObj.menuTypes.trialValidImport">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">NIH Grant Information (for NIH funded Trials)</div>
         </div>
         <div class="panel-body">
-            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()">
+            <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()" unsaved-changes>
                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || trialDetailView.disableBtn">
                     <legend class="sub-bordered">NCI Grant</legend>
 

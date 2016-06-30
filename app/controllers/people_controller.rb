@@ -2,6 +2,8 @@ class PeopleController < ApplicationController
   before_action :set_person, only: [:show, :edit, :update, :destroy]
   before_filter :wrapper_authenticate_user unless Rails.env.test?
   load_and_authorize_resource unless Rails.env.test?
+  before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy]
+
   # skip_authorize_resource :only => [:search]
   #http_basic_authenticate_with name: "ctrpadmin", password: "Welcome02", except: :index
 

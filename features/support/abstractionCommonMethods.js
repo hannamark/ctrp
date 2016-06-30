@@ -47,6 +47,7 @@ var abstractionCommonMethods = function(){
     var reader;
     var nciSpecific = new abstractionNCISpecific();
     var trialDocCommon = new abstractionTrialRelatedDocument();
+    var self = this;
     var loginTxtVerif = 'CTRP Sign In';
     var loginCredTxtVerif = 'Please sign in to continue.';
     var loginNwUsrSngVerif = 'New User? Sign Up';
@@ -106,10 +107,34 @@ var abstractionCommonMethods = function(){
     };
 
     /*****************************************
+     * Multi Select Common Methods
+     *****************************************/
+    this.selectMultiListItem = function(obj, selectList, index)  {
+        if (selectList !== '') {
+            helper.wait(obj.get(index), 'Multi-Select list');
+            obj.get(index).click();
+            helper.wait(element(by.linkText(selectList)), 'Select an option from the list as -- ' + selectList + '');
+            element(by.linkText(selectList)).click();
+        }
+    };
+
+    /*****************************************
      * Click on the link Text
      *****************************************/
     this.clickLinkText = function(lnkTxt){
         element(by.linkText(''+ lnkTxt +'')).click();
+    };
+
+
+    /*****************************************
+     * Verify Text from a Index Object
+     *****************************************/
+    this.verifyTxtByIndex = function(obj, verifyTxt, index, errorMessage)  {
+        if (verifyTxt !== '') {
+            helper.wait(obj.get(index), 'Waiting for expected text to verify');
+            expect(obj.get(index).getText()).to.eventually.equal(verifyTxt);
+            console.log(errorMessage + " - Required field value");
+        }
     };
 
     /*****************************************
@@ -378,7 +403,20 @@ var abstractionCommonMethods = function(){
      * Verify expected value : Text Box
      *****************************************/
     this.verifyValueFromTextBox = function(obj, expectedValue, errorMessage){
-        helper.getVerifyValue(obj, expectedValue, "Funding Source Organization field");
+        self.wait(obj, errorMessage);
+        expect(obj.getAttribute('value')).to.eventually.equal(expectedValue);
+        obj.isDisplayed().then(function(result) {
+            if (result) {
+                obj.getAttribute('value').then(function(value){
+                    if (value === expectedValue){
+                        console.log('Expected value from text box: '+ value +'');
+                    } else {
+                        throw new Error('Expected assertion: (' + expectedValue + ') has no match with Actual value: (' + value + ')');
+                    }
+                })
+            }
+        });
+        //helper.getVerifyValue(obj, expectedValue, "Funding Source Organization field");
     };
 
     /*****************************************
@@ -386,6 +424,12 @@ var abstractionCommonMethods = function(){
      *****************************************/
     this.verifyIndicator = function(getObject ,getIndicator, result)  {
         expect(getObject.get(getIndicator).isSelected()).to.eventually.equal(result);
+    };
+
+    this.getVerifyValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Got value");
     };
 
     /***************************************

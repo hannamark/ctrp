@@ -244,7 +244,8 @@ json.milestone_wrappers do
 
     if milestone.submission.present?
       json.submission do
-        json.extract! milestone.submission, :id, :submission_num
+        json.extract! milestone.submission, :id, :submission_num, :submission_type_id
+        json.set! :submission_type_code, SubmissionType.find_by_id(milestone.submission.submission_type_id).code
       end
     end
 
@@ -301,6 +302,8 @@ json.submissions do
   json.array!(@trial.submissions) do |submission|
     json.extract! submission, :trial_id, :id, :submission_num, :submission_date, :amendment_num, :amendment_date,
                   :amendment_reason_id, :amendment_reason, :created_at, :updated_at, :user_id, :submission_source_id
+
+    json.set! :submission_type_code, SubmissionType.find(submission.submission_type_id).nil? ? nil : SubmissionType.find(submission.submission_type_id).code
   end
 end
 
@@ -325,6 +328,8 @@ json.last_amendment_num last_amd.amendment_num if last_amd.present?
 json.last_amendment_date last_amd.amendment_date if last_amd.present?
 
 json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
+
+json.last_submission_type_code @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_type.nil? ? '' : @trial.submissions.last.submission_type.code)
 
 ## get trial's last submitter
 submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)
@@ -377,3 +382,5 @@ end
 
 json.current_submission_num @trial.current_submission.submission_num if @trial.current_submission.present?
 json.current_submission_id @trial.current_submission.id if @trial.current_submission.present?
+json.current_submission_type_code @trial.current_submission.submission_type.code if @trial.current_submission.present?
+

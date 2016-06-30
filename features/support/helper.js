@@ -81,6 +81,12 @@ var helper = function() {
         });
     };
 
+    this.selectDisableValueFromList = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.element(by.cssContainingText('option', fieldValue)).click();
+        console.log(errorMessage + ' ' + fieldValue + " Value selected");
+    };
+
     this.selectValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.click();
@@ -171,18 +177,6 @@ var helper = function() {
     this.setReadOnlyFieldValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.sendKeys(fieldValue);
-
-        //if(fieldValue == '[object Object]'){
-        //    var store = fieldName.getAttribute('value');
-        //    fieldValue.then(function(value){
-        //        console.log(errorMessage + ' ' + value + " Value entered");
-        //        expect(store).to.eventually.equal(value);});
-        //}
-        //else {
-        //    console.log(errorMessage + ' ' + fieldValue + " Value entered");
-        //    expect(fieldName.getAttribute('value')).to.eventually.equal((fieldValue));
-        //}
-
     };
 
 
@@ -234,6 +228,7 @@ var helper = function() {
 
     this.verifyElementDisplayed =function (fieldName, fieldValueTrueOrFalse) {
         expect(fieldName.isDisplayed()).to.eventually.equal(fieldValueTrueOrFalse);
+        //expect(fieldName.isDisplayed()).to.become(fieldValueTrueOrFalse);
     };
 
     this.verifyElementDisplayedByIndex =function (fieldName, index, fieldValueTrueOrFalse) {

@@ -22,10 +22,10 @@
         var vm = this;
         var curUserRole = UserService.getUserRole() || '';
         var researchCats = researchCategories;
-
         vm.accordionOpen = true; //default open accordion
         vm.loadingTrialDetail = true;
         vm.trialDetailObj = curTrial;
+        console.info('curTrial: ', curTrial);
         vm.adminCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.admin_checkout);
         vm.scientificCheckoutObj = Common.jsonStrToObject(vm.trialDetailObj.scientific_checkout);
 
@@ -49,6 +49,18 @@
             templateUrl: 'submitterPopOverTemplate.html',
             title: 'Last Trial Submitter'
         };
+        var paMenuTypes = {
+            'abstraction': false,
+            'trialValidProtocol': false,
+            'trialValidImport': false,
+            'rejection': false,
+        };
+        // milestone codes that trigger validation menus
+        var MILESTONE_CODES_FOR_VALIDATION = ['SRD', 'VPS', 'VPC']; // "Submission Received Date" , "Validation Processing Start Date" or "Validation Processing Completed Date"
+        // milestone code that triggers rejection menus
+        var MILESTONE_CODES_FOR_REJECTION = ['LRD', 'STR'];
+        // mile stone codes that DO not trigger abstraction menus
+        var MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT = MILESTONE_CODES_FOR_REJECTION.concat(MILESTONE_CODES_FOR_VALIDATION); // Late Rejection Date and VALIDATION codes
 
         vm.disableBtn = false;
 
@@ -77,7 +89,6 @@
         function checkoutTrial(checkoutType) {
             // To prevent multiple submissions before Ajax call is completed
             vm.disableBtn = true;
-
             PATrialService.checkoutTrial(vm.trialId, checkoutType).then(function(res) {
                 var status = res.server_response.status;
                 if (status >= 200 && status <= 210) {
@@ -169,6 +180,8 @@
             vm.trialDetailObj.isObservational = vm.trialDetailObj.researchCategoryName.indexOf('observation') > -1;
             vm.trialDetailObj.isAncillary = vm.trialDetailObj.researchCategoryName.indexOf('ancillary') > -1;
 
+            vm.curPAMenuTypes = _checkMilestoneCode(vm.trialDetailObj); // TODO: use this in subscreen to control their visbility
+            vm.trialDetailObj.menuTypes = vm.curPAMenuTypes; // update the menuTypes so that PAMenu controller can use it
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
             vm.trialDetailObj.is_draft = ''
@@ -251,10 +264,76 @@
             });
         }
 
+        /**
+         * Check the current milestone and decide the visibility of certain PA menu items and screens
+         * @param  {JSON object} trialDetailObj [fetched trial detail object]
+         * @return {JSON object, updated values are all boolean}                [paMenuTypes to control visibility of certain menu items/screens]
+         */
+        function _checkMilestoneCode(trialDetailObj) {
+            var informationSourceCode = trialDetailObj.internal_source.code;
+            var milestones = _.map(trialDetailObj.milestone_wrappers, function(msObj) {
+                msObj.milestone.submission_id = msObj.submission.id; // move attribute one-level up
+                msObj.milestone.submission_num = parseInt(msObj.submission.submission_num); // move one-level up
+                msObj.milestone.submission_type_code = msObj.submission.submission_type_code; // move one-level up
+                return msObj.milestone; // {id: '', code: '', name: ''}
+            });
+            var updatedPAMenuTypes;
+            var curMilestone = milestones.length > 0 ? milestones[milestones.length - 1] : null;
+            var curMilestoneCode = !!curMilestone ? curMilestone.code : ''; // get the current mile stone code
+            var altCurMilestoneIndex = -1;
+            // if current milestone code is 'SRE', use the latest milestone prior to 'STR'
+            if (curMilestoneCode === 'SRE') {
+                altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'STR'});
+                if (altCurMilestoneIndex > 0) {
+                    altCurMilestoneIndex -= 1;
+                    curMilestoneCode = milestones[altCurMilestoneIndex].code;
+                }
+            } else if (curMilestoneCode === 'SRJ') {
+                // submission rejection date and last submission type is 'Amendment'
+                if (trialDetailObj.last_submission_type_code === 'AMD') {
+                    altCurMilestoneIndex = _.findLastIndex(milestones, {submission_num: curMilestone.submission_num - 1}); // find the active in last submission
+                    curMilestoneCode = altCurMilestoneIndex > -1 ? milestones[altCurMilestoneIndex].code : '';
+                } else if (trialDetailObj.last_submission_type_code === 'ORI') {
+                    altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'SRJ'});
+                    curMilestone = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
+                }
+            }
+
+            if (MILESTONE_CODES_FOR_VALIDATION.indexOf(curMilestoneCode) > -1) {
+                if (informationSourceCode === 'IMP') {
+                    updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'trialValidImport');
+                } else if (informationSourceCode === 'PRO') {
+                    updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'trialValidProtocol');
+                }
+            } else if (MILESTONE_CODES_FOR_REJECTION.indexOf(curMilestoneCode) > -1 && informationSourceCode === 'PRO') {
+                updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'rejection');
+            } else if (MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT.indexOf(curMilestoneCode) === -1) {
+                updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'abstraction');
+            }
+
+            return updatedPAMenuTypes;
+        }
+
+        var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
         function _checkEditableStatus() {
-            var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
             vm.trialDetailObj.pa_editable = vm.adminCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
             vm.trialDetailObj.pa_sci_editable = vm.scientificCheckinAllowed || _.contains(overridingUserRoles, curUserRole);
+        }
+
+        /**
+         * Mark all values in jsonObj to false with the exception for 'exceptKey'
+         * @param  {JSON object} jsonObj   [values are boolean]
+         * @param  {String} exceptKey [this value is to be set to true]
+         * @return {JSON object}           [values are boolean, with only one true value]
+         */
+        function _falsifyValuesExcept(jsonObj, exceptKey) {
+            var clonedObj = JSON.parse(JSON.stringify(jsonObj)); // clone
+            Object.keys(clonedObj).forEach(function(key) {
+                if (clonedObj.hasOwnProperty(key)) {
+                    clonedObj[key] = key === exceptKey ? true : false;
+                }
+            });
+            return clonedObj;
         }
 
         /**

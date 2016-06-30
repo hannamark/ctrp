@@ -20,11 +20,7 @@
                     controller: 'userCtrl as userView',
 
                     resolve: {
-                        UserService: 'UserService',
-                        loginBulletin: function(UserService, $q) {
-
-                            return UserService.getLoginBulletin();
-                        }
+                        UserService: 'UserService'
                     },
                     onEnter: function($state, UserService, toastr) {
                         if (UserService.isLoggedIn()) {
@@ -141,16 +137,28 @@
                     section: 'user',
                     resolve: {
                         UserService: 'UserService',
-                        GeoLocationService : 'GeoLocationService',
-                        countryList : function(GeoLocationService) {
-                            return GeoLocationService.getCountryList();
-                        },
                         userDetailObj : function(UserService, $stateParams) {
                             return UserService.getUserDetailsByUsername($stateParams.username);
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
                         parent: 'main.registeredUsers',
+                        label: 'User Profile'
+                    }
+                })
+
+                .state('main.submitterDetail', {
+                    url: '/user-trial-details/:username',
+                    templateUrl: 'app/user/regUserDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
+                    resolve: {
+                        UserService: 'UserService',
+                        userDetailObj : function(UserService, $stateParams) {
+                            return UserService.getUserDetailsByUsername($stateParams.username);
+                        }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
                         label: 'User Profile'
                     }
                 })
@@ -162,10 +170,6 @@
                     section: 'user',
                     resolve: {
                         UserService: 'UserService',
-                        GeoLocationService : 'GeoLocationService',
-                        countryList : function(GeoLocationService) {
-                            return GeoLocationService.getCountryList();
-                        },
                         userDetailObj : function(UserService) {
                             return UserService.getUserDetailsByUsername(UserService.currentUser());
                         }
@@ -183,10 +187,6 @@
                     section: 'user',
                     resolve: {
                         UserService: 'UserService',
-                        GeoLocationService : 'GeoLocationService',
-                        countryList : function(GeoLocationService) {
-                            return GeoLocationService.getCountryList();
-                        },
                         userDetailObj : function(UserService, $stateParams) {
                             return UserService.getUserDetailsByUsername($stateParams.username);
                         }

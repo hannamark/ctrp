@@ -47,6 +47,8 @@
                         extendedTimeOut: 1000,
                         timeOut: 0
                     });
+
+                    $scope.desc_form.$setPristine();
                 }
             }).catch(function(err) {
                 console.log('error in updating trial ' + JSON.stringify(outerTrial));
