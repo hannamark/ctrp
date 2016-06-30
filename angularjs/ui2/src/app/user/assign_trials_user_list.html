@@ -34,7 +34,7 @@
             <h2 ng-if="!trialOwnershipView.family_name">1. Organization: {{trialOwnershipView.organization_name}}</h2>
         </div>
         <div class="row"
-             ng-if="trialOwnershipView.showSelects && !trialOwnershipView.userOptions.resetItems.length">
+             ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems && !trialOwnershipView.userOptions.resetItems.length">
             <h2>2. Select Users</h2>
             <p>There are no users to assign trials to.</p>
         </div>
