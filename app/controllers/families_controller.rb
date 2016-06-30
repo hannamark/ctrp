@@ -87,6 +87,8 @@ class FamiliesController < ApplicationController
 
     if params[:allrows] != true
       params[:rows] = 20 if params[:rows].blank?
+    else
+      params[:rows] = nil
     end
 
     params[:sort] = 'name' if params[:sort].blank?
