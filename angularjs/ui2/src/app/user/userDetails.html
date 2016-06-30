@@ -50,7 +50,7 @@
                             <select name="domain" id="domain"
                                     class="form-control input-sm"
                                     ng-model="userDetailView.userDetails.domain"
-                                    ng-disabled="userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN'"
+                                    ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN'"
                                     required>
                                 <option value="">Select a domain</option>
                                 <option ng-repeat="item in userDetailView.domainArr" value="{{item}}">{{item}}</option>
@@ -194,7 +194,7 @@
     <ctrptransferselect options="userDetailView.userOptions"> </ctrptransferselect>
 </modal>
 
-<modal visible="userDetailView.showAddTrialsModal" title="{{'Assign Ownership of Trials to ' + userDetailView.userDetails.last_name + ' ' + userDetailView.userDetails.first_name}}" id="transferTrials">
+<modal visible="userDetailView.showAddTrialsModal" title="{{'Assign Ownership of Trials to ' + userDetailView.userDetails.first_name + ' ' + userDetailView.userDetails.last_name}}" id="transferTrials">
     <ctrptransferselect options="userDetailView.trialOptions"> </ctrptransferselect>
 </modal>
 

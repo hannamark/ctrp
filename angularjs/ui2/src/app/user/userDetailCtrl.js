@@ -255,7 +255,7 @@
             enableRowHeaderSelection : true,
             enableGridMenu: true,
             enableSelectAll: true,
-            exporterCsvFilename: vm.userDetails.username + '-trials.csv',
+            exporterCsvFilename: vm.userDetails.username + '-owned-trials.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
             exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
@@ -269,7 +269,7 @@
                 return docDefinition;
             },
             exporterMenuAllData: true,
-            exporterMenuPdfAll: true,
+            exporterMenuPdf: false,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700
         };
@@ -341,7 +341,7 @@
         };
 
         vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
-
+        vm.gridTrialsSubmittedOptions.exporterCsvFilename = vm.userDetails.username + '-submitted-trials.csv',
         vm.gridTrialsSubmittedOptions.exporterPdfHeader.text = 'Trials submitted by ' + vm.userDetails.username + ':';
         vm.gridTrialsSubmittedOptions.exporterPdfFooter = function ( currentPage, pageCount ) {
             return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' submitted a total of ' + vm.gridTrialsSubmittedOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };

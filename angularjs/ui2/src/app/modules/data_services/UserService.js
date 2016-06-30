@@ -387,7 +387,7 @@
             var menuArr =
                 [
                     {
-                        title: 'Assign Ownership of Trials to ' + controller.userDetails.last_name + ' ' + controller.userDetails.first_name,
+                        title: 'Assign Ownership of Trials to ' + controller.userDetails.first_name + ' ' + controller.userDetails.last_name,
                         order: 1,
                         action: function ($event) {
                             scope.showSelectedTrialsModal = true;
