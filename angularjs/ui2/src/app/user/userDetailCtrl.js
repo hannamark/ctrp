@@ -228,13 +228,14 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: false,
-                    width: '*'
+                    width: '*',
+                    minWidth: '300'
                 },
                 {
                     name: 'lead_protocol_id',
                     displayName: 'Lead Org PO ID',
                     enableSorting: true,
-                    width: '155'
+                    width: '205'
                 },
                 {
                     name: 'process_priority',
@@ -242,13 +243,13 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.viewTrial({trialId: row.entity.process_priority })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
-                    width: '*'
+                    width: '200'
                 },
                 {
                     name: 'ctep_id',
                     displayName: 'CTEP ID',
                     enableSorting: true,
-                    width: '*'
+                    width: '110'
                 }
             ],
             enableRowHeaderSelection : true,
@@ -296,7 +297,8 @@
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
         '<a ui-sref="main.pa.trialOverview({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
             enableSorting: true,
-            width: '*'
+            width: '*',
+            minWidth: '250'
         };
         var readTitle = {
             name: 'official_title',
@@ -304,10 +306,11 @@
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
             enableSorting: true,
-            width: '*'
+            width: '*',
+            minWidth: '250'
         };
 
-        if (vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
+        if (vm.userDetails.write_access && vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
             vm.gridTrialsOwnedOptions.columnDefs.unshift(writeNciId);
             vm.gridTrialsOwnedOptions.columnDefs.push(writeTitle);
         } else {

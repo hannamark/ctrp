@@ -1,5 +1,5 @@
 
-if @userWriteAccess
+if @userReadAccess
   json.extract! @user,
                 :id,
                 :domain,
@@ -20,6 +20,8 @@ if @userWriteAccess
                 :created_at, :updated_at
   json.org_families @user.organization.present? && @user.organization.families.present? ? @families : []
   json.write_access @userWriteAccess
-elsif
+  json.read_access @userReadAccess
+else
   json.write_access @userWriteAccess
+  json.read_access @userReadAccess
 end
