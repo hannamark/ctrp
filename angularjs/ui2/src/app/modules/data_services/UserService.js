@@ -227,7 +227,7 @@
         }; //upsertUserChangePassword
 
         this.getUserTrialsOwnership = function (searchParams) {
-            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, searchParams);
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_TRIAL_PA, searchParams);
             return user_list;
         }; //searchUsersTrialsOwnership
 
@@ -387,7 +387,7 @@
             var menuArr =
                 [
                     {
-                        title: 'Assign Ownership of Trials to ' + controller.userDetails.last_name + ' ' + controller.userDetails.first_name,
+                        title: 'Assign Ownership of Trials to ' + controller.userDetails.first_name + ' ' + controller.userDetails.last_name,
                         order: 1,
                         action: function ($event) {
                             scope.showSelectedTrialsModal = true;

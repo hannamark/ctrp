@@ -1,4 +1,4 @@
-if @userWriteAccess
+if @userSearchAccess
   json.users do
     json.array!(@users) do |user|
       if current_user.role == 'ROLE_ACCOUNT-APPROVER' || current_user.role == 'ROLE_SITE-SU' || current_user.role == 'ROLE_SUPER' || current_user.role == 'ROLE_ADMIN'  || current_user.role == 'ROLE_RO'  || current_user.role == 'ROLE_ABSTRACTOR' || current_user.role == 'ROLE_ABSTRACTOR-SU'
@@ -34,7 +34,7 @@ if @userWriteAccess
   json.total @users.respond_to?(:total_count) ? @users.total_count : @users.size
   json.sort params[:sort]
   json.order params[:order]
-
-elsif
-  json.search_access @userWriteAccess
+  json.search_access @userSearchAccess
+else
+  json.search_access @userSearchAccess
 end

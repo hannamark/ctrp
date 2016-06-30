@@ -18,12 +18,12 @@ class UsersController < ApplicationController
 
   def show
     show_user = User.find_by_username(params[:username])
-    access = userWriteAccess(show_user)
-    if access
+    @userReadAccess = userReadAccess(show_user)
+    if @userReadAccess
       @user = show_user
       @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     end
-    @userWriteAccess = access
+    @userWriteAccess = userWriteAccess(show_user)
   end
 
   def update
@@ -220,7 +220,7 @@ end
       end
       Rails.logger.info "In User controller, search @users = #{@users.inspect}"
     end
-    @userWriteAccess = access
+    @userSearchAccess = access
   end
 
   private
@@ -275,6 +275,11 @@ end
       user
     end
 
+    def userReadAccess userToUpdate
+      user = current_site_user
+      user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true
+    end
+
     def userWriteAccess userToUpdate
       user = current_site_user
       user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
@@ -285,7 +290,7 @@ end
 
     def searchAccess
       user = current_site_user
-      user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
+      user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
           user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
           user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id)
     end
