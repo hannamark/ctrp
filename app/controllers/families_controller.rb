@@ -84,7 +84,11 @@ class FamiliesController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 20 if params[:rows].blank?
+
+    if params[:allrows] != true
+      params[:rows] = 20 if params[:rows].blank?
+    end
+
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     print "ke;;;;;;;";
