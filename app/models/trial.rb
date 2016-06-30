@@ -1279,6 +1279,13 @@ class Trial < TrialBase
     joins(:internal_source).where(conditions)
   }
 
+
+  scope :user_trials, -> (user_id) {
+    trial_ownerships = TrialOwnership.matches('user_id', user_id)
+    trial_ownerships = trial_ownerships.matches('internal_source_id', InternalSource.find_by_code('PRO').id)
+    where(id: trial_ownerships.pluck(:trial_id))
+  }
+
   scope :sort_by_col, -> (params) {
     column = params[:sort]
     order = params[:order]
