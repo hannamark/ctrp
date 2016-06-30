@@ -133,7 +133,7 @@
                 placement: 'top', // bottom
                 templateUrl: 'app/pa/dashboard/abstraction/trial_validation/_reject_trial_popover.tpl.html',
                 animation: 'am-flip-x',
-                content: confirmMsg + '<strong>Rejection Reason:</strong>',
+                content: confirmMsg + '<strong>Rejection Reason: <small>(Required)</small></strong>',
                 autoClose: true,
                 scope: $scope,
             });
