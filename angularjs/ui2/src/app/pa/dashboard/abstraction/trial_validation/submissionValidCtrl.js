@@ -27,6 +27,7 @@
 
         // actions
         vm.acceptTrialValidation = acceptTrialValidation;
+        vm.rejectTrialValidation = rejectTrialValidation;
         vm.saveValidation = saveValidation;
         vm.resetForm = resetForm;
 
@@ -105,12 +106,18 @@
             _getTrialDetailCopy();
         } // resetForm
 
+        function rejectTrialValidation() {
+            if (isFormValid(vm.trialDetailObj)) {
+                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, null);
+                vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+                // TODO: send email for original and amendment type
+                saveValidation(); // update the trial validation
+            }
+        }
+
         function acceptTrialValidation() {
             if (isFormValid(vm.trialDetailObj)) {
                 var milestone = _genMilestone(subAcceptDateCode, vm.trialDetailObj.current_submission_id, null);
-                if (!angular.isDefined(vm.trialDetailObj.milestone_wrappers_attributes)) {
-                    vm.trialDetailObj.milestone_wrappers_attributes = [];
-                }
                 vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
                 // TODO: send email for original and amendment type
                 saveValidation(); // update the trial validation
@@ -128,6 +135,9 @@
                 milestone_date: new Date(),
                 created_by: curUser.last_name + ', ' + curUser.first_name // get full name
             };
+            if (!angular.isDefined(vm.trialDetailObj.milestone_wrappers_attributes)) {
+                vm.trialDetailObj.milestone_wrappers_attributes = [];
+            }
             return milestone;
         }
 
