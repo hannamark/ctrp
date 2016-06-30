@@ -108,7 +108,10 @@
                             <i class="glyphicon glyphicon-time"></i>  Place on Hold
                           </button>
 
-                          <button type="button" class="btn btn-danger pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn">
+                          <button type="button" class="btn btn-danger pull-right" id="save_btn"
+                              restriction-field
+                              ng-disabled="subValidView.disableBtn"
+                              ng-click="subValidView.rejectTrialValidation()">
                             <i class="glyphicon glyphicon-ban-circle"></i>  Reject
                           </button>
 
