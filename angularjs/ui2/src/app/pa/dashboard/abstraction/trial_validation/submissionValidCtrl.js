@@ -20,8 +20,6 @@
         vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
-        var milestoneArr = milestoneObj;
-        var curUser = userDetailObj;
         var subAcceptDateCode = 'SAC'; // code for Submission Accepted Date
         var subRejectDateCode = 'SRJ'; // code for Submission Rejection Date
 
@@ -109,14 +107,7 @@
 
         function acceptTrialValidation() {
             if (isFormValid(vm.trialDetailObj)) {
-                var milestoneObj = _.findWhere(milestoneArr, {code: subAcceptDateCode});
-                var milestone = {
-                    submission_id: vm.trialDetailObj.current_submission_id,
-                    milestone_id: !!milestoneObj ? milestoneObj.id : '',
-                    comment: null,
-                    milestone_date: new Date(),
-                    created_by: curUser.last_name + ', ' + curUser.first_name // get full name
-                };
+                var milestone = _genMilestone(subAcceptDateCode, vm.trialDetailObj.current_submission_id, null);
                 if (!angular.isDefined(vm.trialDetailObj.milestone_wrappers_attributes)) {
                     vm.trialDetailObj.milestone_wrappers_attributes = [];
                 }
@@ -124,6 +115,20 @@
                 // TODO: send email for original and amendment type
                 saveValidation(); // update the trial validation
             }
+        }
+
+        var milestoneArr = milestoneObj; // from resolved promise
+        var curUser = userDetailObj; // from resolved promise
+        function _genMilestone(milestoneCode, curSubmissionId, comment) {
+            var milestoneObj = _.findWhere(milestoneArr, {code: milestoneCode});
+            var milestone = {
+                submission_id: curSubmissionId,
+                milestone_id: !!milestoneObj ? milestoneObj.id : '',
+                comment: comment || null,
+                milestone_date: new Date(),
+                created_by: curUser.last_name + ', ' + curUser.first_name // get full name
+            };
+            return milestone;
         }
 
         // check if the form is valid
