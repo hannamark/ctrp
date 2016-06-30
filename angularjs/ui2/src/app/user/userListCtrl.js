@@ -207,7 +207,7 @@
         } else if (!vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
         } else if (vm.registeredUsersPage) {
-            vm.gridOptions.columnDefs.push(lastName, firstName, optionOrg);
+            vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;

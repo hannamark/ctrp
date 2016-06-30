@@ -16,8 +16,25 @@ var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var testFileUpload = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testSamples';
 
+//Trial Common Bar
+var trialMenuItemList = require('../support/trialCommonBar');
+//Abstraction Common Bar
+var abstractionPageMenu = require('../support/abstractionCommonBar');
+//PA Common Bar
+var poMenuItemList = require('../support/PoCommonBar');
+//Abstraction PA Search Trial Page
+var paSearchTrialPage = require('../support/abstractionSearchTrialPage');
+//Abstraction NCI Specific Information
+var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
+//Trial Related Document
+var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
+
+
+
 var abstractionLeftNav = function(){
 
+    var helper = new helperFunctions();
+    var self = this;
     /************************************************************************
      *  Admin & Scientific Check Out and Check In and Back to Search Results
      ************************************************************************/
@@ -64,6 +81,11 @@ var abstractionLeftNav = function(){
      ***********************************************/
     this.completeAbstractionValidation = element(by.linkText('Abstraction Validation'));
     this.completeResultsInformation = element(by.linkText('Results Information'));
+
+    /***********************************************
+     *  Panel Title
+     ***********************************************/
+    this.panelTitle = element.all(by.css('.panel-title'));
 
     //***********************************
     // Complete
@@ -113,8 +135,6 @@ var abstractionLeftNav = function(){
     this.clickScientificBiomarkers = function(){
         helper.clickButton(this.scientificBiomarkers, "Biomarkers Button");
     };
-
-    var helper = new helperFunctions();
 
     //***********************************
     // Admin Data
@@ -171,37 +191,57 @@ var abstractionLeftNav = function(){
     };
 
     /*****************************************
+     * Panel Title
+     *****************************************/
+    this.checkPanelTitle = function (titleTXT, index){
+        this.waitForElement(self.panelTitle.get(index), 'Waiting For Page title');
+        self.panelTitle.get(index).isDisplayed().then(function(result) {
+            if (result) {
+                expect(self.panelTitle.get(index).getText()).to.eventually.equal(titleTXT);
+            }
+        });
+    };
+
+    /*****************************************
      * Admin Checkout
      *****************************************/
     this.adminCheckOut = function (){
-        this.adminCheckInBtn.isDisplayed().then(function(result) {
+        self.adminCheckInBtn.isDisplayed().then(function(result) {
             if (result) {
-                this.adminCheckInBtn.getText().then(function(value)   {
+                self.adminCheckInBtn.getText().then(function(value)   {
                     if (value === 'Admin Check In') {
                         console.log('Trial has been already checked out');
                     }
                 });
             } else {
-                helper.clickButton(this.adminCheckOutBtn,"Admin Check Out - button");
+                self.clickAdminCheckOutButton();
             }
         });
+    };
+
+    this.clickAdminCheckOutButton = function(){
+        helper.clickButton(self.adminCheckOutBtn,"Admin Check Out - button");
     };
 
     /*****************************************
      * Scientific Checkout
      *****************************************/
     this.scientificCheckOut = function (){
-        this.scientificCheckInBtn.isDisplayed().then(function(result) {
+        self.scientificCheckInBtn.isDisplayed().then(function(result) {
             if (result) {
-                this.scientificCheckInBtn.getText().then(function(value)   {
+                self.scientificCheckInBtn.getText().then(function(value)   {
                     if (value === 'Scientific Check In') {
                         console.log('Trial has been already checked out');
                     }
                 });
             } else {
-                helper.clickButton(this.scientificCheckOutBtn,"Scientific Check Out - button");
+                self.clickScintificCheckOutButton();
             }
         });
+    };
+
+    this.clickScintificCheckOutButton = function(){
+        helper.clickButton(self.scientificCheckOutBtn,"Admin Check Out - button");
     };
 
     this.clickBackToSearchResults = function(){
