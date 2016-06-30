@@ -26,8 +26,14 @@
                     primaryPurposeArr: function(TrialService) {
                         return TrialService.getPrimaryPurposes();
                     },
+                    milestoneObj: function(TrialService) {
+                        return TrialService.getMilestones();
+                    },
                     amendmentReasonObj: function(PATrialService) {
                         return PATrialService.getAmendReasons();
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
                     }
                 },
                 ncyBreadcrumb: {
