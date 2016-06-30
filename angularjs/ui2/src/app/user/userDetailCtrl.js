@@ -194,6 +194,7 @@
         var TrialSearchParams = function (){
             return {
                 user_id: vm.userDetails.id,
+                protocol_id: '*',
                 sort: 'nci_id',
                 order: 'desc',
                 rows: 50,
@@ -335,7 +336,7 @@
                 function (data) {
                     vm.gridTrialsOwnedOptions.useExternalPagination = false;
                     vm.gridTrialsOwnedOptions.useExternalSorting = false;
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                    vm.gridTrialsOwnedOptions.data = data['trials'];
                 }
             );
         };
@@ -390,7 +391,7 @@
                 vm.gridTrialsOwnedOptions.useExternalPagination = true;
                 vm.gridTrialsOwnedOptions.useExternalSorting = true;
                 UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                    vm.gridTrialsOwnedOptions.data = data['trials'];
                     vm.gridTrialsOwnedOptions.totalItems = data.total;
                 }).catch(function (err) {
                     console.log('Get User Trials failed');

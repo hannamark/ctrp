@@ -227,7 +227,7 @@
         }; //upsertUserChangePassword
 
         this.getUserTrialsOwnership = function (searchParams) {
-            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, searchParams);
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_TRIAL_PA, searchParams);
             return user_list;
         }; //searchUsersTrialsOwnership
 
