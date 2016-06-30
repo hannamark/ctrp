@@ -9,11 +9,11 @@
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
     'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
-    'toastr', '$popover'];
+    'toastr', '$popover', '$state'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
         milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
-        toastr, $popover) {
+        toastr, $popover, $state) {
         var vm = this;
         vm.trialDetailObj = {};
         vm.disableBtn = false;
@@ -30,13 +30,13 @@
         var acceptStatusCode = 'ACC';
         var rejectStatusCode = 'REJ';
         var popover = null;
-
         vm.amendReasonArr = amendmentReasonObj.data || [];
 
         // actions
         vm.acceptTrialValidation = acceptTrialValidation;
-        // vm.rejectTrialValidation = rejectTrialValidation;
+        // vm._rejectTrialValidation = _rejectTrialValidation;
         vm.confirmRejection = confirmRejection;
+        vm.placeTrialOnHold = placeTrialOnHold;
         vm.saveValidation = saveValidation;
         vm.resetForm = resetForm;
 
@@ -130,17 +130,24 @@
             });
             popover.event = evt;
         }
-
+        // the following two $scope. functions
+        // are used in the popover dialog window
         $scope.closePopover = function() {
             popover.hide();
         };
-
         $scope.confirmReject = function() {
-            rejectTrialValidation();
+            _rejectTrialValidation();
             popover.hide();
         };
 
-        function rejectTrialValidation() {
+        function placeTrialOnHold() {
+            if (isFormValid(vm.trialDetailObj)) {
+                saveValidation();
+                $state.go('main.pa.trialOverview.onhold', {}, {reload: true});
+            }
+        }
+
+        function _rejectTrialValidation() {
             if (isFormValid(vm.trialDetailObj)) {
                 // concatenate the reason and comment in the popover confirm dialog
                 var rejectionComment = $scope.rejectionObj.reason + ': ' + $scope.rejectionObj.comment;
