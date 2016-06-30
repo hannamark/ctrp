@@ -8,10 +8,10 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'PATrialService', '_', 'amendmentReasonObj', 'toastr'];
+    'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj', 'toastr'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        PATrialService, _, amendmentReasonObj, toastr) {
+        milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj, toastr) {
         var vm = this;
         vm.trialDetailObj = {};
         vm.disableBtn = false;
@@ -20,9 +20,17 @@
         vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
+
+        var subAcceptDateCode = 'SAC'; // code for Submission Accepted Date
+        var subRejectDateCode = 'SRJ'; // code for Submission Rejection Date
+        var acceptStatusCode = 'ACC';
+        var rejectStatusCode = 'REJ';
+
         vm.amendReasonArr = amendmentReasonObj.data || [];
 
         // actions
+        vm.acceptTrialValidation = acceptTrialValidation;
+        vm.rejectTrialValidation = rejectTrialValidation;
         vm.saveValidation = saveValidation;
         vm.resetForm = resetForm;
 
@@ -101,11 +109,75 @@
             _getTrialDetailCopy();
         } // resetForm
 
+        function rejectTrialValidation() {
+            if (isFormValid(vm.trialDetailObj)) {
+                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, 'rejected reason here'); // TODO: get rejection reason from confirm popover!
+                vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+
+                var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
+                vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
+                // TODO: send email for original and amendment type
+                saveValidation(); // update the trial validation
+            }
+        }
+
+        function acceptTrialValidation() {
+            if (isFormValid(vm.trialDetailObj)) {
+                var milestone = _genMilestone(subAcceptDateCode, vm.trialDetailObj.current_submission_id, null);
+                vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+
+                var processStatus = _genProcessingStatus(acceptStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
+                vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
+                // TODO: send email for original and amendment type
+                saveValidation(); // update the trial validation
+            }
+        }
+
+        var processingStatusesArr = processingStatuses; // from resolved promise
+        function _genProcessingStatus(statusCode, curSubmissionId, trialId) {
+            var statusObj = _.findWhere(processingStatusesArr, {code: statusCode});
+            var processStatus = {
+                status_date: new Date(),
+                processing_status_id: statusObj.id || '',
+                trial_id: trialId,
+                submission_id: curSubmissionId,
+            };
+            if (!angular.isDefined(vm.trialDetailObj.processing_status_wrappers_attributes)) {
+                vm.trialDetailObj.processing_status_wrappers_attributes = [];
+            }
+
+            return processStatus;
+        }
+
+        var milestoneArr = milestoneObj; // from resolved promise
+        var curUser = userDetailObj; // from resolved promise
+        function _genMilestone(milestoneCode, curSubmissionId, comment) {
+            var milestoneObj = _.findWhere(milestoneArr, {code: milestoneCode});
+            var milestone = {
+                submission_id: curSubmissionId,
+                milestone_id: !!milestoneObj ? milestoneObj.id : '',
+                comment: comment || null,
+                milestone_date: new Date(),
+                created_by: curUser.last_name + ', ' + curUser.first_name // get full name
+            };
+            if (!angular.isDefined(vm.trialDetailObj.milestone_wrappers_attributes)) {
+                vm.trialDetailObj.milestone_wrappers_attributes = [];
+            }
+            return milestone;
+        }
+
+        // check if the form is valid
+        function isFormValid(trialObj) {
+            // TODO: validate form here
+            return true;
+        }
+
         function _checkSubmissionType(trialObj) {
             if (!angular.isArray(trialObj.submissions)) {
                 return;
             }
-            var latestSubNum = trialObj.submissions[trialObj.submissions.length-1].submission_num;
+            // var latestSubNum = trialObj.submissions[trialObj.submissions.length-1].submission_num;
+            var latestSubNum = trialObj.current_submission_num;
             vm.isAmendmentSubmission = _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
             vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
         }

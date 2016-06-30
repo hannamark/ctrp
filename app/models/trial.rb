@@ -220,6 +220,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :markers, allow_destroy: true
   accepts_nested_attributes_for :diseases, allow_destroy: true
   accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :processing_status_wrappers, allow_destroy: true
   accepts_nested_attributes_for :onholds, allow_destroy: true
   accepts_nested_attributes_for :citations, allow_destroy: true
   accepts_nested_attributes_for :links, allow_destroy: true
@@ -1276,6 +1277,13 @@ class Trial < TrialBase
     conditions.insert(0, q)
 
     joins(:internal_source).where(conditions)
+  }
+
+
+  scope :user_trials, -> (user_id) {
+    trial_ownerships = TrialOwnership.matches('user_id', user_id)
+    trial_ownerships = trial_ownerships.matches('internal_source_id', InternalSource.find_by_code('PRO').id)
+    where(id: trial_ownerships.pluck(:trial_id))
   }
 
   scope :sort_by_col, -> (params) {
