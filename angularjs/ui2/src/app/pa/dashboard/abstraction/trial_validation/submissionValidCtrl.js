@@ -22,8 +22,6 @@
         vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
-
-        $scope.rejectionObj = {reason: null, comment: null};
         $scope.rejectionReasonArr = ['Out of Scope', 'Duplicate', 'Other'];
         var subAcceptDateCode = 'SAC'; // code for Submission Accepted Date
         var subRejectDateCode = 'SRJ'; // code for Submission Rejection Date
@@ -116,6 +114,7 @@
         } // resetForm
 
         function confirmRejection(evt) {
+            $scope.rejectionObj = {reason: null, comment: null};            
             popover = $popover(angular.element(evt.target), {
                 title: 'Please Confirm Rejection',
                 show: true,
