@@ -223,14 +223,6 @@
             enableHorizontalScrollbar: 2,
             columnDefs: [
                 {
-                    name: 'nci_id',
-                    enableSorting: true,
-                    displayName: 'NCI Trial Identifier',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
-                    width: '180'
-                },
-                {
                     name: 'lead_org_name',
                     displayName: 'Lead Organization',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
@@ -255,16 +247,6 @@
                 {
                     name: 'ctep_id',
                     displayName: 'CTEP ID',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.viewTrial({trialId: row.entity.ctep_id })">{{COL_FIELD}}</a></div>',
-                    enableSorting: true,
-                    width: '*'
-                },
-                {
-                    name: 'official_title',
-                    displayName: 'Official Title for Trial',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
                     width: '*'
                 }
@@ -290,6 +272,48 @@
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700
         };
+
+
+        var writeNciId = {
+            name: 'nci_id',
+                enableSorting: true,
+            displayName: 'NCI Trial Identifier',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                '<a ui-sref="main.pa.trialOverview({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            width: '180'
+        };
+        var readNciId = {
+            name: 'nci_id',
+            enableSorting: true,
+            displayName: 'NCI Trial Identifier',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            '<a ui-sref="main.viewTrial({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            width: '180'
+        };
+        var writeTitle = {
+            name: 'official_title',
+                displayName: 'Official Title for Trial',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+        '<a ui-sref="main.pa.trialOverview({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            enableSorting: true,
+            width: '*'
+        };
+        var readTitle = {
+            name: 'official_title',
+            displayName: 'Official Title for Trial',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            enableSorting: true,
+            width: '*'
+        };
+
+        if (vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
+            vm.gridTrialsOwnedOptions.columnDefs.unshift(writeNciId);
+            vm.gridTrialsOwnedOptions.columnDefs.push(writeTitle);
+        } else {
+            vm.gridTrialsOwnedOptions.columnDefs.push(readTitle);
+            vm.gridTrialsOwnedOptions.columnDefs.unshift(readNciId);
+        }
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
