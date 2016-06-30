@@ -16,6 +16,7 @@
         if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
             vm.familySearchParams = FamilyService.getInitialFamilySearchParams();
             vm.familySearchParams.name = '*';
+            vm.familySearchParams.allrows = true;
             FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
                 if (data.data) {
                     vm.families = data.data.families;
