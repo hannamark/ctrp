@@ -4,7 +4,7 @@ Feature: PO F21 PO CTRP-CTEP-NLM Context Management Functionality
 
 
 Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
-    Given I am logged into the CTRP PO application
+    Given CTEP creates a new organization and sends it via RESTful Services to CTRP
     When CTRP receives newly created CTEP Organization record through Restful Services
     Then A new Organization in the CTEP Context with CTEP Context Status of pending gets created in CTRP with information type
     
@@ -28,7 +28,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     And CTEP Context ID will be sent to CTEP  
 
 Scenario: #1a CTEP Context Mandatory Fields
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
      When A CTEP Context is created in CTRP
      Then the fields type are mandatory
     
@@ -43,7 +43,7 @@ Scenario: #1a CTEP Context Mandatory Fields
      
 
 Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a CTRP Context 
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
     And I am on the Search Organizations Screen
     When I select Source status as pending
     And I select Source context as CTEP
@@ -68,6 +68,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
 
     When the viewed CTEP Organization does not exist in CTRP
     Then the Curator creates a new CTRP Organization associated with the CTEP Context with the information type
+   
     
      |CTRP Context|
      |CTRP Organization ID|
@@ -87,11 +88,12 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
     And the CTEP Context Status is changed from Pending to Active
     And The CTEP Organization Information Type is copied into the CTRP Context
+     And The CTRP Organization ID (PO ID) and CTEP Organization ID is sent to CTEP
       
       
       
       Scenario:#2a CTRP Context Mandatory Fields
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
      When A CTRP Context is created
      Then the fields type are mandatory 
      
@@ -105,7 +107,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
 
     
     Scenario: #3 As a PO Curator,I can associate an existing CTRP Organization with the Organization in the CTEP Context
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
     And I am on the Search Organizations Screen
     When I select Source status as pending
     And I select Source context as CTEP
@@ -145,7 +147,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     Then the CTRP Context won't be automatically updated
  
    Scenario: #5 As a CTRP PO Curator I can approve or deny a request for a new organization in CTRP 
-    Given I am logged into the CTRP PO Application 
+    Given I am logged into the CTRP  
      And I have received a request to create a new organization in CTRP
      When I have searched existing organizations in CTRP
      And the requested organization exists in the CTRP Context
@@ -156,7 +158,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
     
     Scenario:#6 CTRP links CTEP created organization record based on a new organization created in CTRP
-    Given I am logged into the CTRP PO Application
+    Given I am logged into the CTRP 
     When CTEP creates an organization based on a new organization created in CTRP
     Then CTEP sends organization records to CTRP via Restful Services
     And the CTEP Organization record includes the CTEP Organization ID and the CTRP Organization ID (PO ID) and other information type
@@ -184,8 +186,8 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
 
      
        Scenario:#7 I can search a NLM Organization associated with an Organization in the CTRP Context 
-    Given I am logged into the CTRP PO Application 
-    And And I am on the Search Organizations Screen
+    Given I am logged into the CTRP 
+    And I am on the Search Organizations Screen
     When I select Source status as pending
     And I select Source context as NLM
     Then I can view Organizations in the NLM Context with Pending status with information Type
@@ -222,13 +224,13 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And The NLM Context Status is changed from Pending to Active
 
   Scenario:#8 Curator will be notified when two organizations are to be merged 
-    Given I am logged into the CTRP PO Application 
+    Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Organizations are to be merged
      And CTEP identifies one Organization will be Active and Another Organization will be Inactive as the result of a merger
      Then the pending CTRP Nullification event will be added to the curator work queue (New Functionality to dicuss)
       
        Scenario: #9 I can Nullify the Inactive Organization 
-    Given I am logged into the CTRP PO Application
+    Given I am logged into the CTRP 
      When A curator is notified that a CTEP Organization merger is pending
     Then The curator will select the CTRP organization associated with the CTEP Inactive organization to be nullified
     And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trail associations of the nullified organization
@@ -236,7 +238,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
 
 	Scenario:#10 CTEP Context of a new person record created
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
     When CTRP receives newly created CTEP person record through Restful Services
     Then a new person record will be created in the CTEP Context with CTEP Context Status of pending in CTRP with information type
     
@@ -256,7 +258,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |CTEP Context Status|
       
         Scenario:#10a CTEP Person Context Mandatory Fields 
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
      When CTEP Context of a person record is created
      Then the person record fields type are mandatory
 
@@ -271,7 +273,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
 
       
 Scenario: #11 As a PO Curator, I can search a NEW person record to associate it with a person in the CTEP Context
-    Given Given I am logged into the CTRP PO application
+    Given Given I am logged into the CTRP 
     And I am on the Search Persons Screen
     When I select Source status as pending
     And I select Source context as CTEP
@@ -298,7 +300,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
     And The CTEP Context Status is changed from Pending to Active
     
     Scenario:#12 CTRP Person Context Mandatory Fields 
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
      When CTRP Context of a person record is created
      Then the person record fields type are mandatory
      
@@ -310,7 +312,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
       |Affiliated Organization CTRP ID|
     
      Scenario: #13 Rules for CTRP Organization Status based on CTEP Organization Status
-    Given I am logged into the CTRP PO application
+    Given I am logged into the CTRP 
      When the Organization CTEP context status is Active
      Then the Organization CTRP context status must be active  
      When the Organization CTEP context status is Inactive
