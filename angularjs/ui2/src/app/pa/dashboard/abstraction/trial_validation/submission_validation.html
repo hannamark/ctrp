@@ -104,19 +104,28 @@
                 <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                    <div class="row">
                       <div class="btn-toolbar col-xs-12 col-sm-12">
-                          <button type="button" class="btn btn-info pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn">
+                          <button type="button" class="btn btn-info pull-right" id="save_btn"
+                              restriction-field
+                              ng-disabled="subValidView.disableBtn"
+                              ng-click="subValidView.placeTrialOnHold()">
                             <i class="glyphicon glyphicon-time"></i>  Place on Hold
                           </button>
 
-                          <button type="button" class="btn btn-danger pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn">
+                          <button type="button" class="btn btn-danger pull-right" id="save_btn"
+                              restriction-field
+                              ng-disabled="subValidView.disableBtn"
+                              ng-click="subValidView.confirmRejection($event)">
                             <i class="glyphicon glyphicon-ban-circle"></i>  Reject
                           </button>
 
-                          <button type="button" class="btn btn-success pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn" ctrp-confirm confirm-msg="{{subValidView.trialDetailObj.pilot}}">
+                          <button type="button" class="btn btn-success pull-right" id="save_btn"
+                              restriction-field
+                              ng-disabled="subValidView.disableBtn"
+                              ng-click="subValidView.acceptTrialValidation()">
                             <i class="glyphicon glyphicon-ok-circle"></i>  Accept
                           </button>
 
-                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn">
+                        <button type="submit" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn" ctrp-confirm confirm-msg="{{subValidView.trialDetailObj.pilot}}">
                           <i class="glyphicon glyphicon-ok"></i>  Save
                         </button>
                         <button type="button" class="btn btn-warning pull-right" id="cancel_btn" ng-click="subValidView.resetForm()" restriction-field ng-disabled="subValidView.disableBtn">
