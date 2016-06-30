@@ -1,7 +1,7 @@
 @Global
 Feature: PO F10 Create a Person Record
   @runthis
-  Scenario Outline: As a Curator, I can request the creation of a new Person Record in CTRP
+  Scenario Outline:#1 As a Curator, I can request the creation of a new Person Record in CTRP
     Given I am logged in to CTRP PO application
     And I know the first name, last name, middle name, with any prefix or suffix, phone or email, and organization affiliation of the Person
     And I have complete a Search for Person and not found the Person in CTRP
@@ -22,7 +22,7 @@ Feature: PO F10 Create a Person Record
 
 
   @PO
-  Scenario: As a curator, I will receive a warning message for missing fields
+  Scenario:#2 As a curator, I will receive a warning message for missing fields
     Given I am logged in to CTRP PO application
     And I am on Add Person
     And I click on save person
@@ -31,7 +31,7 @@ Feature: PO F10 Create a Person Record
     And I should get validation message "Either Phone or Email is Required" for either Phone or Email
 
   @PO
-  Scenario: As a curator, I will recive a warning message for duplicate names
+  Scenario:#3 As a curator, I will recive a warning message for duplicate names
     Given I am logged in to CTRP PO application
     And I am on Add Person
     And I enter person first name which is duplicate
