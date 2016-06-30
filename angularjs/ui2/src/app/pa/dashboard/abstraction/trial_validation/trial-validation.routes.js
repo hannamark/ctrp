@@ -34,6 +34,9 @@
                     },
                     userDetailObj: function(UserService) {
                         return UserService.getCurrentUserDetails();
+                    },
+                    processingStatuses: function(PATrialService) {
+                        return PATrialService.getProcessingStatuses()
                     }
                 },
                 ncyBreadcrumb: {

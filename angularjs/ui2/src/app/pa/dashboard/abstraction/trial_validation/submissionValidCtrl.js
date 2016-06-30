@@ -8,10 +8,10 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'milestoneObj', 'userDetailObj', 'PATrialService', '_', 'amendmentReasonObj', 'toastr'];
+    'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj', 'toastr'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        milestoneObj, userDetailObj, PATrialService, _, amendmentReasonObj, toastr) {
+        milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj, toastr) {
         var vm = this;
         vm.trialDetailObj = {};
         vm.disableBtn = false;
@@ -20,8 +20,11 @@
         vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
+
         var subAcceptDateCode = 'SAC'; // code for Submission Accepted Date
         var subRejectDateCode = 'SRJ'; // code for Submission Rejection Date
+        var acceptStatusCode = 'ACC';
+        var rejectStatusCode = 'REJ';
 
         vm.amendReasonArr = amendmentReasonObj.data || [];
 
@@ -108,8 +111,11 @@
 
         function rejectTrialValidation() {
             if (isFormValid(vm.trialDetailObj)) {
-                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, null);
+                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, 'rejected reason here'); // TODO: get rejection reason from confirm popover!
                 vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+
+                var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
+                vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
                 // TODO: send email for original and amendment type
                 saveValidation(); // update the trial validation
             }
@@ -119,9 +125,28 @@
             if (isFormValid(vm.trialDetailObj)) {
                 var milestone = _genMilestone(subAcceptDateCode, vm.trialDetailObj.current_submission_id, null);
                 vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+
+                var processStatus = _genProcessingStatus(acceptStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
+                vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
                 // TODO: send email for original and amendment type
                 saveValidation(); // update the trial validation
             }
+        }
+
+        var processingStatusesArr = processingStatuses; // from resolved promise
+        function _genProcessingStatus(statusCode, curSubmissionId, trialId) {
+            var statusObj = _.findWhere(processingStatusesArr, {code: statusCode});
+            var processStatus = {
+                status_date: new Date(),
+                processing_status_id: statusObj.id || '',
+                trial_id: trialId,
+                submission_id: curSubmissionId,
+            };
+            if (!angular.isDefined(vm.trialDetailObj.processing_status_wrappers_attributes)) {
+                vm.trialDetailObj.processing_status_wrappers_attributes = [];
+            }
+
+            return processStatus;
         }
 
         var milestoneArr = milestoneObj; // from resolved promise

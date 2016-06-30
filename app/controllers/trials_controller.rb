@@ -754,6 +754,7 @@ class TrialsController < ApplicationController
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
                                   milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
+                                  processing_status_wrappers_attributes: [:id, :status_date, :processing_status_id, :trial_id, :submission_id],
                                   onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy],
                                   citations_attributes:[:id, :pub_med_id, :description, :results_reference, :_destroy],
                                   links_attributes:[:id, :url, :description, :_destroy], trial_ownerships_attributes:[:id, :user_id, :_destroy])
