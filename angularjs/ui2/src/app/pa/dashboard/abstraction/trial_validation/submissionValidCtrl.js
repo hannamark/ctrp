@@ -114,13 +114,13 @@
         } // resetForm
 
         function confirmRejection(evt) {
-            $scope.rejectionObj = {reason: null, comment: null};            
+            $scope.rejectionObj = {reason: null, comment: null};
             popover = $popover(angular.element(evt.target), {
                 title: 'Please Confirm Rejection',
                 show: true,
                 html: true,
                 trigger: 'manual',
-                placement: 'top',
+                placement: 'top', // bottom
                 templateUrl: 'app/pa/dashboard/abstraction/trial_validation/_reject_trial_popover.tpl.html',
                 animation: 'am-flip-x',
                 content: '<strong>Rejection Reason:</strong>',
