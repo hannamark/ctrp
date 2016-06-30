@@ -8,10 +8,12 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj', 'toastr'];
+    'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
+    'toastr', '$popover', '$state'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj, toastr) {
+        milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
+        toastr, $popover, $state) {
         var vm = this;
         vm.trialDetailObj = {};
         vm.disableBtn = false;
@@ -20,17 +22,19 @@
         vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
-
+        $scope.rejectionReasonArr = ['Out of Scope', 'Duplicate', 'Other'];
         var subAcceptDateCode = 'SAC'; // code for Submission Accepted Date
         var subRejectDateCode = 'SRJ'; // code for Submission Rejection Date
         var acceptStatusCode = 'ACC';
         var rejectStatusCode = 'REJ';
-
+        var popover = null;
         vm.amendReasonArr = amendmentReasonObj.data || [];
 
         // actions
         vm.acceptTrialValidation = acceptTrialValidation;
-        vm.rejectTrialValidation = rejectTrialValidation;
+        // vm._rejectTrialValidation = _rejectTrialValidation;
+        vm.confirmRejection = confirmRejection;
+        vm.placeTrialOnHold = placeTrialOnHold;
         vm.saveValidation = saveValidation;
         vm.resetForm = resetForm;
 
@@ -109,9 +113,54 @@
             _getTrialDetailCopy();
         } // resetForm
 
-        function rejectTrialValidation() {
+        function confirmRejection(evt) {
+            $scope.rejectionObj = {reason: null, comment: null};
+            var confirmMsg = '';
+            if (vm.isOriginalSubmission) {
+                confirmMsg = 'Rejecting this submission will reject this trial';
+            } else if (vm.isAmendmentSubmission) {
+                confirmMsg = 'Rejecting this submission will roll back the trial to the prior submission'
+            }
+            if (confirmMsg.length > 0) {
+                // decorate it with warning
+                confirmMsg = '<div class="alert alert-warning"><strong>' + confirmMsg + '</strong></div>';
+            }
+            popover = $popover(angular.element(evt.target), {
+                title: 'Please Confirm Rejection',
+                show: true,
+                html: true,
+                trigger: 'manual',
+                placement: 'top', // bottom
+                templateUrl: 'app/pa/dashboard/abstraction/trial_validation/_reject_trial_popover.tpl.html',
+                animation: 'am-flip-x',
+                content: confirmMsg + '<strong>Rejection Reason:</strong>',
+                autoClose: true,
+                scope: $scope,
+            });
+            popover.event = evt;
+        }
+        // the following two $scope. functions
+        // are used in the popover dialog window
+        $scope.closePopover = function() {
+            popover.hide();
+        };
+        $scope.confirmReject = function() {
+            _rejectTrialValidation();
+            popover.hide();
+        };
+
+        function placeTrialOnHold() {
             if (isFormValid(vm.trialDetailObj)) {
-                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, 'rejected reason here'); // TODO: get rejection reason from confirm popover!
+                saveValidation();
+                $state.go('main.pa.trialOverview.onhold', {}, {reload: true});
+            }
+        }
+
+        function _rejectTrialValidation() {
+            if (isFormValid(vm.trialDetailObj)) {
+                // concatenate the reason and comment in the popover confirm dialog
+                var rejectionComment = $scope.rejectionObj.reason + ': ' + $scope.rejectionObj.comment;
+                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, rejectionComment); // TODO: get rejection reason from confirm popover!
                 vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
 
                 var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
