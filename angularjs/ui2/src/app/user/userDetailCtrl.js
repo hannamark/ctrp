@@ -223,26 +223,19 @@
             enableHorizontalScrollbar: 2,
             columnDefs: [
                 {
-                    name: 'nci_id',
-                    enableSorting: true,
-                    displayName: 'NCI Trial Identifier',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
-                    width: '180'
-                },
-                {
                     name: 'lead_org_name',
                     displayName: 'Lead Organization',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: false,
-                    width: '*'
+                    width: '*',
+                    minWidth: '300'
                 },
                 {
                     name: 'lead_protocol_id',
                     displayName: 'Lead Org PO ID',
                     enableSorting: true,
-                    width: '155'
+                    width: '205'
                 },
                 {
                     name: 'process_priority',
@@ -250,29 +243,19 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.viewTrial({trialId: row.entity.process_priority })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
-                    width: '*'
+                    width: '200'
                 },
                 {
                     name: 'ctep_id',
                     displayName: 'CTEP ID',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.viewTrial({trialId: row.entity.ctep_id })">{{COL_FIELD}}</a></div>',
                     enableSorting: true,
-                    width: '*'
-                },
-                {
-                    name: 'official_title',
-                    displayName: 'Official Title for Trial',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
-                    enableSorting: true,
-                    width: '*'
+                    width: '110'
                 }
             ],
             enableRowHeaderSelection : true,
             enableGridMenu: true,
             enableSelectAll: true,
-            exporterCsvFilename: vm.userDetails.username + '-trials.csv',
+            exporterCsvFilename: vm.userDetails.username + '-owned-trials.csv',
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
             exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
@@ -286,10 +269,54 @@
                 return docDefinition;
             },
             exporterMenuAllData: true,
-            exporterMenuPdfAll: true,
+            exporterMenuPdf: false,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700
         };
+
+
+        var writeNciId = {
+            name: 'nci_id',
+                enableSorting: true,
+            displayName: 'NCI Trial Identifier',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                '<a ui-sref="main.pa.trialOverview({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            width: '180'
+        };
+        var readNciId = {
+            name: 'nci_id',
+            enableSorting: true,
+            displayName: 'NCI Trial Identifier',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            '<a ui-sref="main.viewTrial({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            width: '180'
+        };
+        var writeTitle = {
+            name: 'official_title',
+                displayName: 'Official Title for Trial',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+        '<a ui-sref="main.pa.trialOverview({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            enableSorting: true,
+            width: '*',
+            minWidth: '250'
+        };
+        var readTitle = {
+            name: 'official_title',
+            displayName: 'Official Title for Trial',
+            cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+            '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
+            enableSorting: true,
+            width: '*',
+            minWidth: '250'
+        };
+
+        if (vm.userDetails.write_access && vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
+            vm.gridTrialsOwnedOptions.columnDefs.unshift(writeNciId);
+            vm.gridTrialsOwnedOptions.columnDefs.push(writeTitle);
+        } else {
+            vm.gridTrialsOwnedOptions.columnDefs.push(readTitle);
+            vm.gridTrialsOwnedOptions.columnDefs.unshift(readNciId);
+        }
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
@@ -314,7 +341,7 @@
         };
 
         vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
-
+        vm.gridTrialsSubmittedOptions.exporterCsvFilename = vm.userDetails.username + '-submitted-trials.csv',
         vm.gridTrialsSubmittedOptions.exporterPdfHeader.text = 'Trials submitted by ' + vm.userDetails.username + ':';
         vm.gridTrialsSubmittedOptions.exporterPdfFooter = function ( currentPage, pageCount ) {
             return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' submitted a total of ' + vm.gridTrialsSubmittedOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
@@ -342,27 +369,33 @@
             );
         };
         vm.getUserSubmittedTrials = function () {
-            vm.gridTrialsSubmittedOptions.useExternalPagination = true;
-            vm.gridTrialsSubmittedOptions.useExternalSorting = true;
-            UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
-                vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
-                vm.gridTrialsSubmittedOptions.totalItems =  data.total;
-            }).catch(function (err) {
-                console.log('Get User Submitted Trials failed');
-            });
+            //user_id is undefined if no user was found to begin with
+            if (vm.searchParams.user_id) {
+                vm.gridTrialsSubmittedOptions.useExternalPagination = true;
+                vm.gridTrialsSubmittedOptions.useExternalSorting = true;
+                UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
+                    vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                    vm.gridTrialsSubmittedOptions.totalItems = data.total;
+                }).catch(function (err) {
+                    console.log('Get User Submitted Trials failed');
+                });
+            }
         };
         vm.getUserSubmittedTrials();
 
         vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         vm.getUserTrials = function () {
-            vm.gridTrialsOwnedOptions.useExternalPagination = true;
-            vm.gridTrialsOwnedOptions.useExternalSorting = true;
-            UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
-                vm.gridTrialsOwnedOptions.totalItems =  data.total;
-            }).catch(function (err) {
-                console.log('Get User Trials failed');
-            });
+            //user_id is undefined if no user was found to begin with
+            if (vm.searchParams.user_id) {
+                vm.gridTrialsOwnedOptions.useExternalPagination = true;
+                vm.gridTrialsOwnedOptions.useExternalSorting = true;
+                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                    vm.gridTrialsOwnedOptions.totalItems = data.total;
+                }).catch(function (err) {
+                    console.log('Get User Trials failed');
+                });
+            }
         };
         vm.getUserTrials();
 

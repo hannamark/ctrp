@@ -1,7 +1,7 @@
 @Global
 Feature: PO F9 Search for Persons
 
-  Scenario Outline: As a Curator, search for persons with multiple parameters
+  Scenario Outline:#1 As a Curator, search for persons with multiple parameters
     Given I know multiple parameters of the person I wish to search for
       |Person First Name| |Person last name| |Affiliation| |Source Status| |email| |phone|
       |shiFName         | |shiLName        | |shiPerOrgAff| |Active      | |shiPercuke@pr.com| |420-567-8906|
@@ -53,13 +53,13 @@ Feature: PO F9 Search for Persons
       |            ||shiLName   ||              ||         ||              ||shiPercuke@pr.com||420-567*      || shiPerOrgAff                 ||          ||        ||        ||true|
 
 
-  Scenario: As a Curator, I will get a message if searched with no parameters
+  Scenario:#2 As a Curator, I will get a message if searched with no parameters
     Given I am logged in to CTRP PO application
     And I am on the search persons screen
     When I searched without providing any search parameters
     Then I should get message as "At least one selection value must be entered prior to running the search"
 
-  Scenario: As a curator, I can Search Persons when the Exact Search box is checked
+  Scenario:#3 As a curator, I can Search Persons when the Exact Search box is checked
     Given I am logged in to CTRP PO application
     And I have selected the option to search persons
     And Exact Search is checked on search person
@@ -79,7 +79,7 @@ Feature: PO F9 Search for Persons
     Then the Username will be displayed on the People Search Results table
 
 
-  Scenario: As a curator, I can Search Organizations when the Exact Search box is NOT checked
+  Scenario:#4 As a curator, I can Search Organizations when the Exact Search box is NOT checked
     Given I am logged in to CTRP PO application
     And I have selected the option to search persons
     And Exact Search is not checked on search person
@@ -99,7 +99,7 @@ Feature: PO F9 Search for Persons
     Then the Username will be displayed on the People Search Results table
 
 
-  Scenario: As a curator, I cannot Search Results when the Exact Search box is checked and Exact Match is not provided
+  Scenario:#5 As a curator, I cannot Search Results when the Exact Search box is checked and Exact Match is not provided
     Given I am logged in to CTRP PO application
     And Exact Search is checked on search person
     And I dont provide the Exact criteria for Person

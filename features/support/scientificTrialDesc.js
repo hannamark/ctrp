@@ -18,7 +18,7 @@ var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var testFileUpload = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testSamples';
 
-var abstractionTrailStatuses = function(){
+var scientificTrialDesc = function(){
 
     var commonFunctions = new abstractionCommonMethods();
     var dateFunctions = new addTrialPage();
@@ -34,10 +34,13 @@ var abstractionTrailStatuses = function(){
     this.objectivesTxt = element(by.id('objective'));
     this.detailedDescriptionTxt = element(by.id('detailed_description'));
 
-    this.briefTitleLbl = element(by.css('label[for="brief_title"]'));
-    this.briefSummaryLbl = element(by.css('label.control-label.col-xs-12.col-sm-3'));
+    this.briefTitleLbl = element.all(by.css('label[for="brief_title"]'));
+    this.briefSummaryLbl = element(by.css('label[for="brief_title"]'));
     this.objecttivesLbl = element(by.css('label[for="objectives"]'));
     this.detailedDescriptionLbl = element(by.css('label[for="detailed_description"]'));
+
+    this.characterLeftLbl = element.all(by.css('.help-block.ng-binding'));
+    this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
 
     this.saveDesc = element(by.id('submit_processing'));
     this.resetDesc = element(by.css('button[ng-click="descView.reload()"]'));
@@ -64,10 +67,19 @@ var abstractionTrailStatuses = function(){
 
     this.verifyTrialDescLables = function (){
         var lbl = new Array("Brief Title:", "Brief Summary:", "Objectives:", "Detailed Description:");
-        helper.getVerifyLabel(this.briefTitleLbl, lbl[0], "Brief Title:");
-        helper.getVerifyLabel(this.briefSummaryLbl, lbl[1], "Brief Summary:");
-        helper.getVerifyLabel(this.objecttivesLbl, lbl[2], "Objectives:");
-        helper.getVerifyLabel(this.detailedDescriptionLbl, lbl[3], "Detailed Description:");
+        commonFunctions.verifyTxtByIndex(self.briefTitleLbl, lbl[0], '0', 'Brief Title');
+        commonFunctions.verifyTxtByIndex(self.briefTitleLbl, lbl[1], '1', 'Brief Summary');
+        helper.getVerifyLabel(this.objecttivesLbl, lbl[2], "Objectives");
+        helper.getVerifyLabel(this.detailedDescriptionLbl, lbl[3], "Detailed Description");
+    };
+
+    this.verifyCharLeft = function(charLeft, index){
+        this.waitForElement(self.characterLeftLbl.get(index), 'Waiting For Page title');
+        self.characterLeftLbl.get(index).isDisplayed().then(function(result) {
+            if (result) {
+                expect(self.characterLeftLbl.get(index).getText()).to.eventually.equal(charLeft);
+            }
+        });
     };
 
     //Save and Reset
@@ -86,4 +98,4 @@ var abstractionTrailStatuses = function(){
     };
 };
 
-module.exports = abstractionTrailStatuses;
+module.exports = scientificTrialDesc;
