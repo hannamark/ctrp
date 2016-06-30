@@ -168,7 +168,7 @@ end
         end
       end
 
-      if ['ROLE_SITE-SU'].include? current_user.role
+      if (['ROLE_SITE-SU'].include? current_user.role) && params[:registered_users] != true
         any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
         @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
         if any_membership
@@ -176,6 +176,8 @@ end
         else
             @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
         end
+      elsif !(['ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR','ROLE_ABSTRACTOR-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role) || params[:registered_users] == true
+          @users = @users.matches_all_active()
       end
 
       if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU' && current_user.role != 'ROLE_ACCOUNT-APPROVER'
