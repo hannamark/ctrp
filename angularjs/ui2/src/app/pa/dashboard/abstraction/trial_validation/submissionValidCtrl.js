@@ -115,6 +115,16 @@
 
         function confirmRejection(evt) {
             $scope.rejectionObj = {reason: null, comment: null};
+            var confirmMsg = '';
+            if (vm.isOriginalSubmission) {
+                confirmMsg = 'Rejecting this submission will reject this trial';
+            } else if (vm.isAmendmentSubmission) {
+                confirmMsg = 'Rejecting this submission will roll back the trial to the prior submission'
+            }
+            if (confirmMsg.length > 0) {
+                // decorate it with warning
+                confirmMsg = '<div class="alert alert-warning"><strong>' + confirmMsg + '</strong></div>';
+            }
             popover = $popover(angular.element(evt.target), {
                 title: 'Please Confirm Rejection',
                 show: true,
@@ -123,7 +133,7 @@
                 placement: 'top', // bottom
                 templateUrl: 'app/pa/dashboard/abstraction/trial_validation/_reject_trial_popover.tpl.html',
                 animation: 'am-flip-x',
-                content: '<strong>Rejection Reason:</strong>',
+                content: confirmMsg + '<strong>Rejection Reason:</strong>',
                 autoClose: true,
                 scope: $scope,
             });
