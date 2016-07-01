@@ -46,6 +46,8 @@
                 vm.onhold_reason_id = null;
                 vm.onhold_desc = null;
             }
+
+            $scope.onhold_form.$setPristine();
         };
 
         vm.dateFormat = DateService.getFormats()[1];

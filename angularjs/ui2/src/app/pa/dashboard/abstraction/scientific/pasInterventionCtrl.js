@@ -157,6 +157,7 @@
                     return;
                 }
                 vm.curInterventionObj = _newInterventionObj();
+                $scope.intervention_form.$setPristine();
             }
 
             function watchInterventionList() {

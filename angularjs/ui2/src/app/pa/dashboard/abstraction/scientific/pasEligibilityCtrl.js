@@ -63,6 +63,7 @@
             _getTrialDetailCopy();
             vm.addOtherCriterionFormShown = false;
             vm.otherCriterion.edit = false;
+            $scope.criteria_form.$setPristine();
         }
 
         function updateCriteria(showToastr) {
