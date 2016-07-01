@@ -1073,6 +1073,37 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
+    code: 'AMEND_SUB_REJECTED_TRIAL',
+    name: 'Amendment Submission Rejected',
+    from: 'ncictro@mail.nih.gov',
+    to: '${trialOwnerEmail}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD REJECTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${leadOrgName}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>CTEP ID: </b>${ctepId}</p>
+                                <p><b>NCT ID: </b>${nctId}</p>
+                                <p><b>DCP ID: </b>${dcpId}</p>
+                                ${otherIds}
+                                <p><b>Amendment Number: </b>${amendNum}</p>
+                                <p><b>Amendment Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>The Clinical Trials Reporting Office (CTRO) staff cannot amend the NCI Clinical Trials Reporting Program (CTRP) trial identified above for the following reason(s): </p>
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>Please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a> at your earliest convenience to resolve the issue.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+MailTemplate.find_or_create_by(
     code: 'USER_REGISTRATION',
     name: 'User Registration',
     from: 'noreply@ctrp.nci.nih.gov',
