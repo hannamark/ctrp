@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PA F13 Abstraction Validation
 
 As a CTRP PA Abstractor, I can access the Abstraction Validation to View the Trial History Information Audit Trail
@@ -12,9 +12,7 @@ And there are no errors
 Then the 'Abstraction is valid' message displays
 And the View Buttons <ViewButtons> type displays
 |ViewButtons|
-|View XML   |
 |View TSR   |
-And the milestone "Ready for Trial Summary Report Date" is added to the milestone for the study
 
 Scenario: #2 Abstraction Validation with warnings or errors
 Given I have selected a Trial
@@ -24,13 +22,13 @@ And there are errors
 Then the messages <MessageType> will be displayed in the sequence below
 
 |<MessageType>                                                               |              
-|"Abstraction validation failed. Please check Admin Data Menu error(s)."     |             
+|"Abstraction validation failed. Please check Administrative Data Menu error(s)."     |             
 |"Abstraction validation failed. Please check Scientific Data Menu error(s)."|             
 |"Abstraction Validation Warning(s)."                                        |             
 
-And the Admin error count will display in the Admin Error display section 
+And the Administrative error count will display in the Administrative Error display section 
 And the Scientific error count will display in the Scientific Error display section
-And the Warning count will display in the Admin warning display section 
+And the Warning count will display in the Warning display section 
 And the Abstraction Validation warnings and errors will be in the Description field
 And the Abstraction Validation warning and errors section will be in the comment field in brackets
 And the Section in the Comment field will be displayed as a link to direct the user to correct the errors and warnings 
@@ -46,11 +44,11 @@ And the Description and Comment will be grouped by Section
   |Section                                  |Admin_Error_Rule                                                                                                   |Description                                                                                                                | Comment                                                |     
   |PAA General Trial Details                |IF NCT Number >30 characters                                                                                       |NCT Number cannot be more than 30 characters                                                                               |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                       
   |PAA General Trial Details                |IF CTEP Number>30 characters                                                                                       |CTEP Number cannot be more than 30 characters                                                                              |[Select General Trial Details] from Administration Data | 
-  |PAA General Trial Details                |IF ‘NCT Number’ >30 characters                                                                 	                |NCT Number cannot be more than 30 characters                                                                               |[Select General Trial Details] from Admin Data.	       |
-  |PAA General Trial Details                |IF ‘CTEP Number’ >  30 characters	                                                                                |CTEP Number cannot be more than 30 characters                                                                              |[Select General Trial Details] from Admin Data.	       |
-  |PAA General Trial Details                |IF DCP Number  >  30 characters	                                                                                |DCP Number cannot be more than 30 characters                                                                               |[Select General Trial Details] from Admin Data.	       |
-  |PAA General Trial Details                |IF Lead Organization Trial Identifier > 30 characters                                            	                |	Lead Organization Trial Identifier  cannot be more than 30 characters	                                                |	[Select General Trial Details] from Admin Data.	|
-  |PAA General Trial Details                |IF Keywords > 160 characters	                                                                                    |	Keywords cannot be more than  160 characters	                                                                        |	[Select General Trial Details] from Admin Data.	|
+  |PAA General Trial Details                |IF ‘NCT Number’ >30 characters                                                                 	                |NCT Number cannot be more than 30 characters                                                                               |[Select General Trial Details] from Administration Data.	       |
+  |PAA General Trial Details                |IF ‘CTEP Number’ >  30 characters	                                                                                |CTEP Number cannot be more than 30 characters                                                                              |[Select General Trial Details] from Administration Data.	       |
+  |PAA General Trial Details                |IF DCP Number  >  30 characters	                                                                                |DCP Number cannot be more than 30 characters                                                                               |[Select General Trial Details] from Administration Data.	       |
+  |PAA General Trial Details                |IF Lead Organization Trial Identifier > 30 characters                                            	                |	Lead Organization Trial Identifier  cannot be more than 30 characters	                                                |	[Select General Trial Details] from Administration Data.	|
+  |PAA General Trial Details                |IF Keywords > 160 characters	                                                                                    |	Keywords cannot be more than  160 characters	                                                                        |	[Select General Trial Details] from Administration Data.	|
   |PAA Status	                            |IF Duplicate ‘In Review status’	                                                                                |	Duplicate IN REVIEW status is not allowed	                                                                            |	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |IF study status has [IN REVIEW] after [APPROVED]	                                                                |	Invalid status transition from APPROVED to  IN REVIEW	                                                                |	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |IF Duplicate ‘Approved’ status	                                                                                    |	Duplicate APPROVED status is not allowed	                                                                            |	[Select Trial Status] from Administrative Data menu, then click History.	|
@@ -135,7 +133,7 @@ And the Description and Comment will be grouped by Section
   |PAA Status	                            |IF Trial Status Date is null	                                                                                    |	Current trial Status Date must be entered.	                                                                            |	[Select Trial Status] from Administrative Data menu	|
   |PAA Regulatory Info – FDAAA	            |If trial has an associated IND/IDE AND Trial Oversight Authority Country is not USA	                            |	for IND protocols, Oversight Authorities must include the Country United States	                                        |	Select [Regulatory Information FDAAA] from Administrative menu	
   |PAA Regulatory Info – FDAAA	            |If trial has an associated IND/IDE AND Trial Oversight Authority  Organization is not FDA                          |	for IND protocols, Oversight Authorities must include organization:  Food and Drug Administration	                    |	Select [Regulatory Information FDAAA] from Administrative menu	|
-  |PAA Regulatory Info -Human Subject Safety|IF Review Board Approval Status is null	                                                                        |	Review Board Approval Status is missing. 	                                                                            |	Select [Regulatory Information - Human Subject Safety]	|
+  |PAA Regulatory Info -Human Subject Safety|IF Review Board Approval Status is null	                                                                        |	Review Board Approval Status is missing. 	                                                                            |	Select [Regulatory Information - Human Subject Safety]	from Administrative menu|
   |PAA Participating Sites	                |IF duplicate sites	                                                                                                |	Duplicate Sites are not allowed	                                                                                        |	[Select Participating Sites] from Administrative Data menu	|
   |PAA Participating Sites	                |IF duplicate Investigators at the same site	                                                                    |	Duplicate investigators for same site are not allowed.	                                                                |	[Select Participating Sites] from Administrative Data menu	|
   |PAA Documents	                        |IF ‘Protocol_Document’ Document Type is null for each submission	                                                |	Protocol_Document is required	                                                                                        |	[Select Trial Related Documents] from Administrative Data menu	|
@@ -201,7 +199,7 @@ And the Description and Comment will be grouped by Section
     Given I have selected a Trial
     And I am on the Abstraction Validation screen
     When the Abstraction Validation button is clicked
-    Then for the Section <Section>, the below Warning RUles <Warning_Rule> will be checked and the screen will display the below description <Description> and comment <Comment> 
+    Then for the Section <Section>, the below Warning Rules <Warning_Rule> will be checked and the screen will display the below description <Description> and comment <Comment> 
     
 |Section                                            |Warning_Rule	                                                                |Description                                 |Comment                                         |                                                                                                                                                                                                                                                         
 |PAA General Trial Details                          |Official Title null                                                            | Official Title is required  |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                                                                            
