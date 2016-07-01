@@ -24,8 +24,12 @@
             vm.deleteBtnDisabled = true;
             vm.upsertBtnDisabled = true;
             vm.disableBtn = false;
-            vm.sortableListener = {};
+            vm.isCurationEnabled = UserService.isCurationModeEnabled() || false;
+            vm.sortableListener = {
+                cancel: '.locked'
+             };
             vm.sortableListener.stop = dragItemCallback;
+
             var curUserRole = UserService.getUserRole() || '';
             var USERS_ALLOWED_CHANGE_TYPE = ['ROLE_SUPER', 'ROLE_ABSTRACTOR-SU', 'ROLE_ADMIN']; // user roles allowed to change intervention type
             var isUserAllowedToSelectType = _.contains(USERS_ALLOWED_CHANGE_TYPE, curUserRole);

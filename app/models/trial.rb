@@ -220,6 +220,7 @@ class Trial < TrialBase
   accepts_nested_attributes_for :markers, allow_destroy: true
   accepts_nested_attributes_for :diseases, allow_destroy: true
   accepts_nested_attributes_for :milestone_wrappers, allow_destroy: true
+  accepts_nested_attributes_for :processing_status_wrappers, allow_destroy: true
   accepts_nested_attributes_for :onholds, allow_destroy: true
   accepts_nested_attributes_for :citations, allow_destroy: true
   accepts_nested_attributes_for :links, allow_destroy: true

@@ -3,7 +3,7 @@
  * Date: 06/27/2016
  * Feature: PAS F01 Add and Edit Trial Descriptions.Feature
  *
- * Note: In the PAA search screen it has dependency on the seed data
+ * Note: In the PAA search screen it has dependency on the seeded data
  */
 
 //Common dependencies
@@ -104,6 +104,8 @@ module.exports = function() {
     var decrCharLftDetail = '31975 characters left';
     var decrCharLftDetailA = '27000 characters left';
     var noCharLft = '0 characters left';
+    var errorMSGBT = 'Brief Title is Required';
+    var errorMSGBS = 'Summary is Required';
 
 
     /*
@@ -138,22 +140,22 @@ module.exports = function() {
     });
 
     this.Given(/^I have entered a value for Brief Title$/, function (callback) {
-        trialDesc.setBriefTitleTxt('Test Brief Title');
+        trialDesc.setBriefTitleTxt(briefTitle);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have entered a value for Brief Summary$/, function (callback) {
-        trialDesc.setBriefSummaryTxt('Test Brief Summary');
+        trialDesc.setBriefSummaryTxt(briefSummary);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have entered a value for Objectives$/, function (callback) {
-        trialDesc.setObjectivesTxt('Test Objectives');
+        trialDesc.setObjectivesTxt(objectives);
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have entered a value for Detailed Description$/, function (callback) {
-        trialDesc.setDetailedDescriptionTxt('Test Detailed Description');
+        trialDesc.setDetailedDescriptionTxt(detailedDescription);
         browser.sleep(25).then(callback);
     });
 
@@ -164,15 +166,15 @@ module.exports = function() {
 
     this.Then(/^the Trial Description for the trial will be associated with the trial$/, function (callback) {
         trialDesc.verifyTrialDescLables();
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, 'Test Brief Title', 'Verifying Brief Ttitle');
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, 'Test Brief Summary', 'Verifying Brief Summary');
-        commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, 'Test Objectives', 'Verifying Objectives');
-        commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, 'Test Detailed Description', 'Verifying Detailed Description');
+        commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, briefTitle, 'Verifying Brief Title');
+        commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
+        commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
+        commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the message Record Updated displays$/, function (callback) {
-        console.log('Verifying toster message out of scope');
+        console.log('Out of scope: Toster message');
         browser.sleep(25).then(callback);
     });
 
@@ -209,7 +211,6 @@ module.exports = function() {
     });
 
     this.Then(/^an error message will appear with the message “Brief Title is Required”$/, function (callback) {
-        var errorMSGBT = 'Brief Title is Required';
         commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBT, '0', 'Verify Brief Title is Required');
         browser.sleep(25).then(callback);
     });
@@ -236,7 +237,6 @@ module.exports = function() {
     });
 
     this.Then(/^an error message will appear with the message “Summary is Required”$/, function (callback) {
-        var errorMSGBS = 'Summary is Required';
         commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBS, '0', 'Verify Brief Summary is Required');
         browser.sleep(25).then(callback);
     });
@@ -252,15 +252,15 @@ module.exports = function() {
      */
 
     this.Then(/^the information entered or edited on the Trial Description screen will not be saved to the trial record$/, function (callback) {
-        trialDesc.setBriefTitleTxt('Test Brief Title');
-        trialDesc.setBriefSummaryTxt('Test Brief Summary');
-        trialDesc.setObjectivesTxt('Test Objectives');
-        trialDesc.setDetailedDescriptionTxt('Test Detailed Description');
+        trialDesc.setBriefTitleTxt(briefTitle);
+        trialDesc.setBriefSummaryTxt(briefSummary);
+        trialDesc.setObjectivesTxt(objectives);
+        trialDesc.setDetailedDescriptionTxt(detailedDescription);
         trialDesc.clickSave();
-        trialDesc.setBriefTitleTxt('Reset Test Brief Title');
-        trialDesc.setBriefSummaryTxt('Reset Test Brief Summary');
-        trialDesc.setObjectivesTxt('Reset Test Objectives');
-        trialDesc.setDetailedDescriptionTxt('Reset Test Detailed Description');
+        trialDesc.setBriefTitleTxt('Reset '+briefTitle+'');
+        trialDesc.setBriefSummaryTxt('Reset '+briefSummary+'');
+        trialDesc.setObjectivesTxt('Reset '+objectives+'');
+        trialDesc.setDetailedDescriptionTxt('Reset '+detailedDescription+'');
         browser.sleep(25).then(callback);
     });
 
@@ -270,10 +270,10 @@ module.exports = function() {
     });
 
     this.Then(/^the screen will be refreshed with the data since the last save$/, function (callback) {
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, 'Test Brief Title', 'Verifying Brief Ttitle');
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, 'Test Brief Summary', 'Verifying Brief Summary');
-        commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, 'Test Objectives', 'Verifying Objectives');
-        commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, 'Test Detailed Description', 'Verifying Detailed Description');
+        commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, briefTitle, 'Verifying Brief Title');
+        commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
+        commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
+        commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
         browser.sleep(25).then(callback);
     });
 
@@ -376,7 +376,7 @@ module.exports = function() {
     });
 
     this.Then(/^the limited characters provided below the Detailed Description field will start to decrement$/, function (table, callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftObjective, '3', 'Verifying Detailed Description field Character left message');
+        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftDetail, '3', 'Verifying Detailed Description field Character left message');
         trialDesc.setDetailedDescriptionTxt('');
         var characLft = table.raw();
         strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
