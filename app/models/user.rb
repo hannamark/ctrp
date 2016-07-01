@@ -116,6 +116,20 @@ class  User < ActiveRecord::Base
     end
   }
 
+  scope :matches_all_active, -> () {
+
+    familyOrganizations = FamilyMembership.where(
+        "(family_memberships.effective_date <= '#{DateTime.now}' or family_memberships.effective_date is null)
+        and (family_memberships.expiration_date >= '#{DateTime.now}' or family_memberships.expiration_date is null)")
+                              .pluck(:organization_id)
+
+    familiedUsers = User.where(organization_id: familyOrganizations)
+    unFamiliedUsers = User.where.not(organization_id: FamilyMembership.pluck(:organization_id))
+    allActiveUserIds = familiedUsers.pluck(:id) + unFamiliedUsers.pluck(:id)
+
+    where(id: allActiveUserIds)
+  }
+
   scope :family_unexpired_matches_by_family, -> (value) {
     familyOrganizations = FamilyMembership.where(
         family_id: value

@@ -75,6 +75,7 @@
             function resetTrialLookupForm(form) {
                 vm.trialQueryObj = {identifierTypeId: 1, trialIdentifier: 'NCI-'};
                 vm.foundTrialObj = _initFoundTrialObj();
+                $scope.associated_trials_form.$setPristine();
                 // TODO: reset form to $pristine, etc.
             }
 

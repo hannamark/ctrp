@@ -89,6 +89,7 @@
             vm.addedNameAliases = [];
             appendNameAliases();
             listenToStatesProvinces();
+            $scope.organization_form.$setPristine();
         };
 
         vm.clearForm = function () {

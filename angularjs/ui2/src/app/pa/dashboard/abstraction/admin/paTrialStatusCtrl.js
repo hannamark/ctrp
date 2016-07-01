@@ -367,6 +367,7 @@
 
         function resetForm() {
             _getTrialDetailCopy();
+            $scope.trial_status_form.$setPristine();
         }
 
         function _watchTrialStatusChanges() {

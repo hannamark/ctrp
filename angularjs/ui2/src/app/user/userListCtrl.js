@@ -28,6 +28,7 @@
                 phone: '',
                 approved: '',
                 rows: 25,
+                registered_users: vm.registeredUsersPage ? true : false,
                 start: 1
             }
         }; //initial User Search Parameters

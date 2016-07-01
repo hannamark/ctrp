@@ -200,6 +200,7 @@
                 getTrialDetailCopy();
             }, 0);
 
+            $scope.sg_form.$setPristine();
         }
 
         function getTrialDetailCopy() {
