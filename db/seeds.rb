@@ -1000,7 +1000,7 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'SUBMISSION_ACCEPTED_TRIAL',
+    code: 'SUB_ACCEPTED_TRIAL',
     name: 'Submission Accepted Trial',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
@@ -1036,7 +1036,40 @@ MailTemplate.find_or_create_by(
                                </abbr>
                             </p>
                             </body></html>'
+)
 
+MailTemplate.find_or_create_by(
+    code: 'AMEND_SUB_ACCEPTED_TRIAL',
+    name: 'Amendment Submission Accepted',
+    from: 'ncictro@mail.nih.gov',
+    to: '${trialOwnerEmail}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD ACCEPTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${leadOrgName}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>CTEP ID: </b>${ctepId}</p>
+                                <p><b>NCT ID: </b>${nctId}</p>
+                                <p><b>DCP ID: </b>${dcpId}</p>
+                                ${otherIds}
+                                <p><b>Amendment Number: </b>${amendNum}</p>
+                                <p><b>Amendment Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>Thank you for submitting your trial amendment to the NCI Clinical Trials Reporting Office (CTRO). The amendment to the trial record identified above has been accepted for processing.</p>
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>The Clinical Trials Reporting Office (CTRO) staff is abstracting the amendment that you submitted to update your trial record in the NCI Clinical Trials Reporting Program (CTRP).</p>
+                            <p>When finished, they will send you a new Trial Summary Report (TSR) that reflects the changes indicated in the trial amendment. The new XML file attached to that message contains data formatted for submission to ClinicalTrials.gov (if required). </p>
+                            <p>It is important that you review and validate the XML file independently. </p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
 )
 
 MailTemplate.find_or_create_by(
