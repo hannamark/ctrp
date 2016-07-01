@@ -296,7 +296,7 @@ class TrialsController < ApplicationController
       if  params[:no_nih_nci_prog].present?
         @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
       end
-      if ['ROLE_ADMIN'].include? current_user.role
+      if ['ROLE_ADMIN','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
         if params[:family_id].present?
           @trials = @trials.in_family(params[:family_id], Date.today)
         elsif params[:organization_id].present?

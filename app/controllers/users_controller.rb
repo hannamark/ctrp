@@ -160,7 +160,7 @@ end
       end
       @users = User.all
 
-      if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER'].include? current_user.role
+      if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
         if params[:family_id].present?
             @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
         elsif params[:organization_id].present?
