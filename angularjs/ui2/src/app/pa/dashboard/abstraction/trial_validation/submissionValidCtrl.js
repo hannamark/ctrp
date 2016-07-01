@@ -8,11 +8,11 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
+    'milestoneList', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
     'toastr', '$popover', '$state'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
+        milestoneList, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
         toastr, $popover, $state) {
         var vm = this;
         vm.trialDetailObj = {};
@@ -233,7 +233,7 @@
             return processStatus;
         }
 
-        var milestoneArr = milestoneObj; // from resolved promise
+        var milestoneArr = milestoneList; // from resolved promise
         var curUser = userDetailObj; // from resolved promise
         function _genMilestone(milestoneCode, curSubmissionId, comment) {
             var milestoneObj = _.findWhere(milestoneArr, {code: milestoneCode});
@@ -326,6 +326,6 @@
             vm.isAmendmentSubmission = _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
             vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
         }
-    } // trialEmailLogsCtrl
+    } // submissionValidCtrl
 
 })();
