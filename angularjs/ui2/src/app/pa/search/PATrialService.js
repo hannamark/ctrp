@@ -9,10 +9,10 @@
         .factory('PATrialService', PATrialService);
 
     PATrialService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_', 'Common', 'Upload', 'TrialService',
-            '$rootScope', 'PromiseTimeoutService', 'DateService', 'HOST', 'LocalCacheService', 'uiGridConstants'];
+            '$rootScope', 'PromiseTimeoutService', 'DateService', 'HOST', 'LocalCacheService', 'uiGridConstants', 'uiGridExporterConstants', 'uiGridExporterService'];
 
     function PATrialService(URL_CONFIGS, MESSAGES, $log, _, Common, Upload, TrialService,
-            $rootScope, PromiseTimeoutService, DateService, HOST, LocalCacheService, uiGridConstants) {
+            $rootScope, PromiseTimeoutService, DateService, HOST, LocalCacheService, uiGridConstants, uiGridExporterConstants, uiGridExporterService) {
 
         var curTrial = {};
         var initTrialSearchParams = {
@@ -37,6 +37,17 @@
             enableFiltering: true,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
+            exporterCsvFilename: 'trials.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As Excel',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }],
             columnDefs: [
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
