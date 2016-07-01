@@ -136,6 +136,7 @@
                 console.error('trial upsert error: ', err);
             }).finally(function() {
                 vm.disableBtn = false;
+                vm.missingFieldsWarning = []; // re-init
             });
         } // saveValidation
 
