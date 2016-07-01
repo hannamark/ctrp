@@ -523,25 +523,6 @@
                             $scope.gridOptions.useExternalPagination = false;
                             $scope.gridOptions.useExternalSorting = false;
                             $scope.gridOptions.data = data['orgs'];
-
-                            _.each($scope.gridOptions.data, function(org) {
-                                for (var key in org) {
-                                    // If key value is array, needs to be 'stringified' properly
-                                    if (angular.isArray(org[key])) {
-                                        var nameArray = [];
-                                        // Iterate and push all array obj.Name values into new array
-                                        _.each(org[key], function(obj) {
-                                            nameArray.push(obj.Name);
-                                        });
-                                        nameArray = nameArray.join(',');
-
-                                        // Assign stringified value back to original key
-                                        org[key] = nameArray;
-
-                                    }
-                                };
-                            });
-
                             $scope.gridOptions.columnDefs = origGridColumnDefs;
                         }
                     );
