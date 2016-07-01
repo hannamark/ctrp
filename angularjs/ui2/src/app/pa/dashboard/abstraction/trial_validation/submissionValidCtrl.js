@@ -166,17 +166,18 @@
         }
 
         function _rejectTrialValidation() {
-            if (_isFormValid(vm.trialDetailObj)) {
-                // concatenate the reason and comment in the popover confirm dialog
-                var rejectionComment = $scope.rejectionObj.reason + ': ' + $scope.rejectionObj.comment;
-                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, rejectionComment); // TODO: get rejection reason from confirm popover!
-                vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+            resetForm(); // do not save data in the form
+            
+            // concatenate the reason and comment in the popover confirm dialog
+            var rejectionComment = $scope.rejectionObj.reason + ': ' + $scope.rejectionObj.comment;
+            var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, rejectionComment);
+            vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
 
-                var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
-                vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
-                // TODO: send email for original and amendment type
-                saveValidation(); // update the trial validation
-            }
+            var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
+            vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
+            // TODO: send email for original and amendment type
+            saveValidation(); // update the trial validation
+
         }
 
         function acceptTrialValidation() {

@@ -39,7 +39,6 @@ Feature: PO F6 Curator review of a Pending Organization
     |funding source|
     |Participating Site|
     |Person’s affiliated organization|
-    |aliases organization|
     |Family organization|
     |Collaborators|
    
