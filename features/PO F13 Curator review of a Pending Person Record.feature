@@ -47,7 +47,6 @@ Feature: PO F13 Curator review of a Pending Person Record
     |Participating site Investigator|
     |Central contact|
 
-    And any unique Person Organization Affiliations on the nullified Person Record will be added to the retained Person Record
     And the status of the Person Record to be nullified will be "Nullified"
 
   Scenario:#6 As a PO Curator, I cannot Nullify a Person Record with an Active CTEP Person ID

@@ -141,6 +141,7 @@
             if (vm.curFamily.family_memberships && vm.curFamily.family_memberships.length > 0) {
                 populateFamilyMemberships();
             }
+            $scope.family_form.$setPristine();
         };
 
         activate();

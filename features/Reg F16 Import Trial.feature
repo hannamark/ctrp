@@ -26,8 +26,9 @@ And the trial milestone "Submission Received Date" will be added with the date o
 
 Scenario:#2a  NLM Context will be created for an Imported trial  
     Given I am logged into the CTRP
-     When a trial has been imported with a Sponsor Name that does not exist in the NLM Context in the CTRP
-     Then an NLM Context with an NLM Context Status of Pendingwill be automatically created in CTRP
+     When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
+     And that "Sponsor Name" does not match an "Agency" name in CTRP
+     Then an NLM Context with an NLM Context Status of Pending will be automatically created in CTRP
 
 
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
