@@ -285,30 +285,35 @@
         function _isValidForAccept(trialObj) {
             vm.missingFieldsWarning = []; // to be filled with string values in required fields
             if (trialObj.current_submission_num === 1 && trialObj.isInfoSourceProtocol) {
-                Object.keys(REQUIRED_FIELDS_ORIGINAL_PROTOCOL).forEach(function(key) {
-                    if (!angular.isDefined(trialObj[key])) {
-                        vm.missingFieldsWarning.push(REQUIRED_FIELDS_ORIGINAL_PROTOCOL[key]); // push in the value string
-                    }
-                });
+                vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_ORIGINAL_PROTOCOL, trialObj);
             } else if (trialObj.current_submission_num > 1 && trialObj.isInfoSourceProtocol) {
-                Object.keys(REQUIRED_FIELDS_AMEND_PROTOCOL).forEach(function(key) {
-                    if (key === 'amendment_reason_id') {
-                        if (!angular.isDefined(trialObj.submissions[trialObj.submissions.length-1].amendment_reason_id)) {
-                            vm.missingFieldsWarning.push(REQUIRED_FIELDS_AMEND_PROTOCOL[key]);
-                        }
-                    } else if (!angular.isDefined(trialObj[key])) {
-                        vm.missingFieldsWarning.push(REQUIRED_FIELDS_AMEND_PROTOCOL[key]); // push in the value string
-                    }
-                });
+               vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_AMEND_PROTOCOL, trialObj);
             } else if (trialObj.isInfoSourceImport) {
-                Object.keys(REQUIRED_FIELDS_IMPORTED).forEach(function(key) {
-                    if (!angular.isDefined(trialObj[key])) {
-                        vm.missingFieldsWarning.push(REQUIRED_FIELDS_IMPORTED[key]); // push in the value string
-                    }
-                });
+               vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_IMPORTED, trialObj);
             }
-            console.info('is missing fields? ', vm.missingFieldsWarning.length === 0);
+
             return vm.missingFieldsWarning.length === 0
+        }
+
+        /**
+         * Find what field is missing in the trial
+         * @param  {[type]} fieldKVObj [description]
+         * @param  {[type]} trialObj   [description]
+         * @return {Array of string}            [description]
+         */
+        function _findMissingFields(fieldKVObj, trialObj) {
+            var missingFields = [];
+            Object.keys(fieldKVObj).forEach(function(key) {
+                if (key === 'amendment_reason_id') {
+                    if (!angular.isDefined(trialObj.submissions[trialObj.submissions.length-1].amendment_reason_id)) {
+                        missingFields.push(fieldKVObj[key]);
+                    }
+                } else if (!angular.isDefined(trialObj[key])) {
+                    missingFields.push(fieldKVObj[key]); // push in the value string
+                }
+            });
+
+            return missingFields;
         }
 
         function _checkSubmissionType(trialObj) {
