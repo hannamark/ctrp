@@ -8,11 +8,11 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
+    'milestoneList', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
     'toastr', '$popover', '$state'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
+        milestoneList, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
         toastr, $popover, $state) {
         var vm = this;
         vm.trialDetailObj = {};
@@ -22,6 +22,7 @@
         vm.isOriginalSubmission = false;
         vm.trialPhaseArr = trialPhaseArr;
         vm.primaryPurposeArr = primaryPurposeArr;
+        vm.amendReasonArr = amendmentReasonObj.data || [];
         vm.formErrors = {
             phase: false,
             primaryPurpose: false,
@@ -34,7 +35,30 @@
         var acceptStatusCode = 'ACC';
         var rejectStatusCode = 'REJ';
         var popover = null;
-        vm.amendReasonArr = amendmentReasonObj.data || [];
+
+        var REQUIRED_FIELDS_ORIGINAL_PROTOCOL = {
+            'lead_org_id': 'Lead Organization identifier',
+            'official_title': 'Official Title',
+            'phase_id': 'Phase',
+            'primary_purpose_id': 'Primary Purpose',
+            'lead_org': 'Lead Organization',
+            'pi_id': 'Principal Investigator',
+            'sponsor_id': 'Sponsor Organization',
+            'responsible_party_id': 'Responsible Party',
+            'investigator_id': 'Investigator',
+            'investigator_title': 'Investigator Title',
+            'investigator_aff': 'Investigator Affiliation',
+        }; // for submission_num = 1
+        var REQUIRED_FIELDS_AMEND_PROTOCOL = angular.copy(REQUIRED_FIELDS_ORIGINAL_PROTOCOL); // for submission_num > 1
+        REQUIRED_FIELDS_AMEND_PROTOCOL['amendment_reason_id'] = 'Amendment Reason Code';
+
+        var REQUIRED_FIELDS_IMPORTED = {
+            'lead_org_id': 'Lead Organization identifier',
+            'official_title': 'Official Title',
+            'phase_id': 'Phase',
+            'primary_purpose_id': 'Primary Purpose',
+            'lead_org': 'Lead Organization',
+        };
 
         // actions
         vm.acceptTrialValidation = acceptTrialValidation;
@@ -112,6 +136,7 @@
                 console.error('trial upsert error: ', err);
             }).finally(function() {
                 vm.disableBtn = false;
+                vm.missingFieldsWarning = []; // re-init
             });
         } // saveValidation
 
@@ -166,21 +191,22 @@
         }
 
         function _rejectTrialValidation() {
-            if (_isFormValid(vm.trialDetailObj)) {
-                // concatenate the reason and comment in the popover confirm dialog
-                var rejectionComment = $scope.rejectionObj.reason + ': ' + $scope.rejectionObj.comment;
-                var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, rejectionComment); // TODO: get rejection reason from confirm popover!
-                vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+            resetForm(); // do not save data in the form
 
-                var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
-                vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
-                // TODO: send email for original and amendment type
-                saveValidation(); // update the trial validation
-            }
+            // concatenate the reason and comment in the popover confirm dialog
+            var rejectionComment = $scope.rejectionObj.reason + ': ' + $scope.rejectionObj.comment;
+            var milestone = _genMilestone(subRejectDateCode, vm.trialDetailObj.current_submission_id, rejectionComment);
+            vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
+
+            var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
+            vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
+            // TODO: send email for original and amendment type
+            saveValidation(); // update the trial validation
+
         }
 
         function acceptTrialValidation() {
-            if (_isFormValid(vm.trialDetailObj)) {
+            if (_isFormValid(vm.trialDetailObj) && _isValidForAccept(vm.trialDetailObj)) {
                 var milestone = _genMilestone(subAcceptDateCode, vm.trialDetailObj.current_submission_id, null);
                 vm.trialDetailObj.milestone_wrappers_attributes.push(milestone);
 
@@ -207,7 +233,7 @@
             return processStatus;
         }
 
-        var milestoneArr = milestoneObj; // from resolved promise
+        var milestoneArr = milestoneList; // from resolved promise
         var curUser = userDetailObj; // from resolved promise
         function _genMilestone(milestoneCode, curSubmissionId, comment) {
             var milestoneObj = _.findWhere(milestoneArr, {code: milestoneCode});
@@ -252,6 +278,45 @@
 
         }
 
+        /**
+         * Validate the trial if has any missing fields
+         * @param  {[JSON]}  trialObj [description]
+         * @return {Boolean}
+         */
+        function _isValidForAccept(trialObj) {
+            vm.missingFieldsWarning = []; // to be filled with string values in required fields
+            if (trialObj.current_submission_num === 1 && trialObj.isInfoSourceProtocol) {
+                vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_ORIGINAL_PROTOCOL, trialObj);
+            } else if (trialObj.current_submission_num > 1 && trialObj.isInfoSourceProtocol) {
+               vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_AMEND_PROTOCOL, trialObj);
+            } else if (trialObj.isInfoSourceImport) {
+               vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_IMPORTED, trialObj);
+            }
+
+            return vm.missingFieldsWarning.length === 0
+        }
+
+        /**
+         * Find what field is missing in the trial
+         * @param  {[type]} fieldKVObj [description]
+         * @param  {[type]} trialObj   [description]
+         * @return {Array of string}            [description]
+         */
+        function _findMissingFields(fieldKVObj, trialObj) {
+            var missingFields = [];
+            Object.keys(fieldKVObj).forEach(function(key) {
+                if (key === 'amendment_reason_id') {
+                    if (!angular.isDefined(trialObj.submissions[trialObj.submissions.length-1].amendment_reason_id)) {
+                        missingFields.push(fieldKVObj[key]);
+                    }
+                } else if (!angular.isDefined(trialObj[key])) {
+                    missingFields.push(fieldKVObj[key]); // push in the value string
+                }
+            });
+
+            return missingFields;
+        }
+
         function _checkSubmissionType(trialObj) {
             if (!angular.isArray(trialObj.submissions)) {
                 return;
@@ -261,6 +326,6 @@
             vm.isAmendmentSubmission = _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
             vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
         }
-    } // trialEmailLogsCtrl
+    } // submissionValidCtrl
 
 })();

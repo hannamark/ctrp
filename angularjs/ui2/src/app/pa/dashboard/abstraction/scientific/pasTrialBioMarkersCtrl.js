@@ -523,6 +523,7 @@
                 return;
             }
             vm.setAddMode();
+            $scope.marker_form.$setPristine();
         }
 
         function getTrialDetailCopy() {

@@ -152,6 +152,8 @@
              getTrialDetailCopy();
              vm.centralContactType = _getCentralContactType(); // restore vm.centralContactType
           }, 0);
+
+          $scope.general_trial_details_form.$setPristine();
           // vm.generalTrialDetailsObj = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
       }
 

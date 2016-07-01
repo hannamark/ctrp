@@ -348,6 +348,7 @@
             }
 
             vm.setAddMode(true);
+            //$scope.arm_form.$setPristine();
         }
 
 
