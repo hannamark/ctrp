@@ -10,7 +10,7 @@
                         Submission Information
                     </legend>
                     <!-- trial phase -->
-                    <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
+                    <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase) || subValidView.formErrors.phase}">
                         <label for="trial_phase" class="control-label col-xs-12 col-sm-5">Trial Phase:</label>
                         <div class="col-xs-12 col-sm-4">
                             <select name="trial_phase" id="trial_phase"
@@ -20,8 +20,8 @@
                                 ng-options="phase.id as phase.name for phase in subValidView.trialPhaseArr">
                                 <option value="">- Please select a trial phase...</option>
                             </select>
-                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase) && sub_validation_form.trial_phase.$error">
-                                <span class="help-block" ng-message="required">Trial Phase is Required</span>
+                            <span class="help-block" ng-show="subValidView.formErrors.phase || (ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase) && sub_validation_form.trial_phase.$error)">
+                               Trial Phase is Required
                            </span>
                         </div>
                     </div>
@@ -40,25 +40,25 @@
                     </div>
                     <!-- end of pilot -->
                     <!-- primary purposes -->
-                    <div class="form-group has-feedback" ng-class="{'has-feedback required': subValidView.isInfoSourceImport || subValidView.isInfoSourceProtocol, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.primary_purpose)}">
+                    <div class="form-group has-feedback" ng-class="{'has-feedback required': subValidView.trialDetailObj.isInfoSourceImport || subValidView.trialDetailObj.isInfoSourceProtocol, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.primary_purpose) || subValidView.formErrors.primaryPurpose}">
                         <label for="primary_purpose" class="control-label col-xs-12 col-sm-5">Primary Purpose:</label>
                         <div class="col-xs-12 col-sm-4">
                             <select name="primary_purpose" id="primary_purpose"
                                 class="form-control input-sm"
-                                ng-required="subValidView.isInfoSourceImport || subValidView.isInfoSourceProtocol"
+                                ng-required="subValidView.trialDetailObj.isInfoSourceImport || subValidView.trialDetailObj.isInfoSourceProtocol"
                                 ng-model="subValidView.trialDetailObj.primary_purpose_id"
                                 ng-options="purpose.id as purpose.name for purpose in subValidView.primaryPurposeArr"
                                 >
                                 <option value="">- Please select a primary purpose...</option>
                             </select>
-                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.primary_purpose) && sub_validation_form.primary_purpose.$error">
-                                <span class="help-block" ng-message="required">Primary Purpose is Required</span>
+                            <span class="help-block" ng-show="subValidView.formErrors.primaryPurpose || (ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.primary_purpose) && sub_validation_form.primary_purpose.$error)">
+                                Primary Purpose is Required
                            </span>
                         </div>
                     </div>
                     <!-- end of primary purposes -->
                     <!-- description if primary purpose is Other -->
-                    <div class="form-group" ng-show="subValidView.isOtherPrimaryPurpose" ng-class="{'has-feedback required': subValidView.isOtherPrimaryPurpose, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.description_other)}">
+                    <div class="form-group" ng-show="subValidView.isOtherPrimaryPurpose" ng-class="{'has-feedback required': subValidView.isOtherPrimaryPurpose, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.description_other) || subValidView.formErrors.otherDesc}">
                         <label for="description_other" class="control-label col-xs-12 col-sm-5">If Primary Purpose is "Other", describe</label>
                         <div class="col-xs-12 col-sm-5">
                             <textarea class="form-control"
@@ -70,8 +70,8 @@
                             <span class="help-block" ng-show="sub_validation_form.description_other.$viewValue.length > 0">
                                 {{200 - sub_validation_form.description_other.$viewValue.length}} characters left
                             </span>
-                            <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.description_other) && sub_validation_form.description_other.$error">
-                                <span class="help-block" ng-message="required">Description is required for Primary Purpose Of Other</span>
+                            <span class="help-block" ng-show="subValidView.formErrors.otherDesc || (ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.description_other) && sub_validation_form.description_other.$error)">
+                                Description is required for Primary Purpose Of Other
                             </span>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <legend class="sub-bordered">
                             Amendment Information
                         </legend>
-                        <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase)}">
+                        <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.trial_phase) || subValidView.formErrors.amendReason}">
                             <label for="amend_reason" class="control-label col-xs-12 col-sm-5">Amendment Reason Code:</label>
                             <div class="col-xs-12 col-sm-4">
                                 <select name="amend_reason" id="amend_reason"
@@ -93,8 +93,8 @@
                                     ng-options="amend.id as amend.name for amend in subValidView.amendReasonArr">
                                     <option value="">- Please select a amendment reason code...</option>
                                 </select>
-                                <span ng-messages="ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.amend_reason) && sub_validation_form.amend_reason.$error">
-                                    <span class="help-block" ng-message="required">Amendment Reason Code is Required</span>
+                                <span class="help-block" ng-show="subValidView.formErrors.amendReason || (ctrpbtn.sub_validation_form.needsAttention(sub_validation_form.amend_reason) && sub_validation_form.amend_reason.$error)">
+                                    Amendment Reason Code is Required
                                </span>
                             </div>
                         </div>
@@ -104,15 +104,24 @@
                 <div class="form-group no-bottom-margin" ng-show="paTrialOverview.trialDetailObj.pa_sci_editable">
                    <div class="row">
                       <div class="btn-toolbar col-xs-12 col-sm-12">
-                          <button type="button" class="btn btn-info pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn">
+                          <button type="button" class="btn btn-info pull-right" id="save_btn"
+                              restriction-field
+                              ng-disabled="subValidView.disableBtn"
+                              ng-click="subValidView.placeTrialOnHold()">
                             <i class="glyphicon glyphicon-time"></i>  Place on Hold
                           </button>
 
-                          <button type="button" class="btn btn-danger pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn">
+                          <button type="button" class="btn btn-danger pull-right" id="save_btn"
+                              restriction-field
+                              ng-disabled="subValidView.disableBtn"
+                              ng-click="subValidView.confirmRejection($event)">
                             <i class="glyphicon glyphicon-ban-circle"></i>  Reject
                           </button>
 
-                          <button type="button" class="btn btn-success pull-right" id="save_btn" restriction-field ng-disabled="subValidView.disableBtn" ctrp-confirm confirm-msg="{{subValidView.trialDetailObj.pilot}}">
+                          <button type="button" class="btn btn-success pull-right" id="save_btn"
+                              restriction-field
+                              ng-disabled="subValidView.disableBtn"
+                              ng-click="subValidView.acceptTrialValidation()">
                             <i class="glyphicon glyphicon-ok-circle"></i>  Accept
                           </button>
 

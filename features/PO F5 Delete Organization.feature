@@ -1,7 +1,7 @@
 @PO @Global
 Feature: PO F5 Delete Organization
 
-  Scenario: As a PO Curator, I can Delete an Organization with no Trial Records
+  Scenario:#1 As a PO Curator, I can Delete an Organization with no Trial Records
     Given I know which organization I want to delete
     And I am logged in to CTRP PO application
     And I have searched for an organization and found the one I wish to delete
@@ -14,7 +14,7 @@ Feature: PO F5 Delete Organization
     And the organization is not part of a Family Organization
     Then the system will delete the organization record
 
-  Scenario: As a PO Curator, I cannot Delete Organization with Trial Records
+  Scenario:#2 As a PO Curator, I cannot Delete Organization with Trial Records
     Given I know which organization I want to delete
     And I am logged in to CTRP PO application
     And I have searched for an organization

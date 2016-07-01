@@ -14,7 +14,7 @@
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $uibModal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj, PATrialService,
-                         milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj, 
+                         milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj,
                          nciProgObj, submissionTypesObj, submissionMethodsObj, internalSourceObj) {
 
         var vm = this;
@@ -41,6 +41,26 @@
         vm.gridOptions = PATrialService.getGridOptions();
         //vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.NEVER;
         //vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.NEVER;
+
+        vm.gridOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
+
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+
+            return PATrialService.searchTrialsPa(allSearchParams).then(
+                function (data) {
+                    vm.gridOptions.useExternalPagination = false;
+                    vm.gridOptions.useExternalSorting = false;
+                    vm.gridOptions.data = data['trials'];
+
+                    vm.gridOptions.columnDefs = origGridColumnDefs;
+                }
+            );
+        };
+
+
         vm.gridOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);

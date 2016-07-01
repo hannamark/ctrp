@@ -1,7 +1,7 @@
 @PO @Global
 Feature: PO F08 Associate an Organization with a Family
 
-Scenario: As a PO Curator, I can Assign an organization to a Family
+Scenario:#1 As a PO Curator, I can Assign an organization to a Family
 Given I know which organization I wish to assign to an Organization Family
 And I am logged in to CTRP PO application
 And I have selected the option to search Families
@@ -22,7 +22,7 @@ And I select either Organization or Affiliate Family Relationship
 Then the Family is updated with the CTRP ID, CTEP ID, Organization Name, Family Relationship, effective date, and expiration date
 
 
-Scenario: As a PO Curator, I can remove an organization From a Family
+Scenario:#2 As a PO Curator, I can remove an organization From a Family
 Given I know which Family I want to update
 And I am logged in to CTRP PO application
 And I am have selected the option to search Families
