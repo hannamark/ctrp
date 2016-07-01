@@ -265,6 +265,10 @@
             } else {
                 vm.searchWarningMessage = '';
                 UserService.searchUsers(vm.searchParams).then(function (data) {
+
+                    if(!data.search_access){
+                        vm.searchWarningMessage = "You currently have no access to this search."
+                    }
                     vm.gridOptions.data = data['users'];
                     vm.gridOptions.totalItems =  data.total;
                     $location.hash('users_search_results');

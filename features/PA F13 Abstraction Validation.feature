@@ -30,7 +30,7 @@ Then the messages <MessageType> will be displayed in the sequence below
 
 And the Admin error count will display in the Admin Error display section 
 And the Scientific error count will display in the Scientific Error display section
-And the Warning count will display in the Admin warning display section 
+And the Warning count will display in the warning display section 
 And the Abstraction Validation warnings and errors will be in the Description field
 And the Abstraction Validation warning and errors section will be in the comment field in brackets
 And the Section in the Comment field will be displayed as a link to direct the user to correct the errors and warnings 
