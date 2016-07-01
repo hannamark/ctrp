@@ -1000,6 +1000,46 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
+    code: 'SUBMISSION_ACCEPTED_TRIAL',
+    name: 'Submission Accepted Trial',
+    from: 'ncictro@mail.nih.gov',
+    to: '${trialOwnerEmail}',
+    subject: 'NCI CTRP: Trial REGISTRATION ACCEPTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${leadOrgName}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>CTEP ID: </b>${ctepId}</p>
+                                <p><b>NCT ID: </b>${nctId}</p>
+                                <p><b>DCP ID: </b>${dcpId}</p>
+                                ${otherIds}
+                                <p><b>Submission Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>The NCI Clinical Trials Reporting Office (CTRO) has accepted the trial identified above for registration in the NCI Clinical Trials Reporting Program (CTRP).</p>
+                            <p><b>NEXT STEPS:</b></p>
+                            <ul>
+                                <li>CTRO staff process your trial, including abstracting the protocol document, to produce a CTRP trial record within ten (10) business days*. </li>
+                                <li>CTRO staff email you a Trial Summary Report (TSR) for review. The XML file attached to that email contains data formatted for submission to ClinicalTrials.gov (if required). This file contains a subset of the information contained in the TSR. It is important that you review and validate the XML file independently. </li>
+                           </ul>
+                            <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            <p>
+                               <abbr>
+                                * The NCI Clinical Trials Reporting Office (CTRO) makes every effort to process and return a Trial Summary Report (TSR) and XML file for all trials within a ten (10) day period. This ten-day period begins after a complete submission, and therefore the submitter should be available during that time to resolve any discrepancies (for example, missing documentation, regulatory information, etc.)  Additionally, the potential variability of submission volume at any given time and/or complexity of a protocol can impact the processing time. If trial submission volume exceeds the CTRO\'s capacity for processing, the CTRO will prioritize submissions based on submitter need. If a CTRP registrant requires expedited processing of a protocol submission, please contact the CTRO. Be sure to reference the NCI CTRP ID, and request priority processing.
+                               </abbr>
+                            </p>
+                            </body></html>'
+
+)
+
+MailTemplate.find_or_create_by(
     code: 'USER_REGISTRATION',
     name: 'User Registration',
     from: 'noreply@ctrp.nci.nih.gov',
