@@ -1039,6 +1039,37 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
+    code: 'SUB_REJECTED_TRIAL',
+    name: 'Submission Rejected Trial',
+    from: 'ncictro@mail.nih.gov',
+    to: '${trialOwnerEmail}',
+    subject: 'NCI CTRP: Trial REGISTRATION REJECTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    body_text: 'Text version',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                            </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
+                            <div>
+                                <p><b>Lead Organization Trial ID: </b>${leadOrgTrialIdentifier}</p>
+                                <p><b>Lead Organization: </b>${leadOrgName}</p>
+                                <p><b>CTRP-assigned Lead Organization ID: </b>${ctrp_assigned_lead_org_id}</p>
+                                <p><b>NCI Trial ID: </b>${nciTrialIdentifier}</p>
+                                <p><b>CTEP ID: </b>${ctepId}</p>
+                                <p><b>NCT ID: </b>${nctId}</p>
+                                <p><b>DCP ID: </b>${dcpId}</p>
+                                ${otherIds}
+                                <p><b>Submission Date: </b>${submissionDate}</p>
+                            </div>
+                            <hr>
+                            <p>Date: ${CurrentDate}</p>
+                            <p><b>Dear ${SubmitterName}</b>,</p>
+                            <p>The Clinical Trials Reporting Office (CTRO) staff cannot register the trial identified above in the NCI Clinical Trials Reporting Program (CTRP) for the following reason(s): </p>
+                            <p><b>NEXT STEPS:</b></p>
+                            <p>If you feel that this trial has been rejected in error, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a> at your earliest convenience to resolve the issue.</p>
+                            <p>If you have questions about this or other CTRP topics, please contact us at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>.</p>
+                            <p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>
+                            </body></html>'
+)
+
+MailTemplate.find_or_create_by(
     code: 'AMEND_SUB_ACCEPTED_TRIAL',
     name: 'Amendment Submission Accepted',
     from: 'ncictro@mail.nih.gov',
