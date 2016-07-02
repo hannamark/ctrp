@@ -29,11 +29,14 @@ Then the messages <MessageType> will be displayed in the sequence below
 |"Abstraction Validation Warning(s)."                                        |             
 
 And the Admin error count will display in the Admin Error display section 
+  |"Numbers_items_found" items found, displaying all items.|
 And the Scientific error count will display in the Scientific Error display section
+   |"Numbers_items_found" items found, displaying all items.|
 And the Warning count will display in the warning display section 
+    |"Numbers_items_found" items found, displaying all items.|
 And the Abstraction Validation warnings and errors triggers will be in the Description field "Description"
-And the Abstraction Validation warning and errors related section will be in the comment field in brackets "Comment"
-And the Section in the Comment field will be displayed as a link to direct the user to correct the errors and warnings 
+And the Abstraction Validation warning and errors AUM related section will be in the comment field in brackets "Comment"
+And the AUM Section in the Comment field will be displayed as a link to direct the user to correct the errors and warnings 
 And the Description and Comment will be grouped by Section
 
 
@@ -55,9 +58,9 @@ And the Description and Comment will be grouped by Section
   |PAA Status	                            |IF study status has [IN REVIEW] after [APPROVED]	                                                                |	Invalid status transition from APPROVED to  IN REVIEW	                                                                |	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |IF Duplicate ‘Approved’ status	                                                                                    |	Duplicate APPROVED status is not allowed	                                                                            |	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |IF study has  APPROVED and COMPLETE status but missing CLOSED TO ACCRUAL status	                                |	Study has Interim statuses of ACTIVE and CLOSED TO ACCRUAL but is missing CLOSED TO ACCRUAL AND INTERVENTION	        |	[Select Trial Status] from Administrative Data menu, then click History.	|
-  |PAA Status	                            |IF study has  APPROVED and COMPLETE status but missing CLOSED TO ACCRUAL AND INTERVENTION status	                |	Study has Interim statuses of ACTIVE and CLOSED TO ACCRUAL but  is missing CLOSED TO ACCRUAL AND INTERVENTION	        |	[Select Trial Status] from Administrative Data menu, then click History.	
+  |PAA Status	                            |IF study has  APPROVED and COMPLETE status but missing CLOSED TO ACCRUAL AND INTERVENTION status	                |	Study has Interim statuses of ACTIVE and CLOSED TO ACCRUAL but  is missing CLOSED TO ACCRUAL AND INTERVENTION	        |	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |IF study has statuses APPROVED and ADMINISTRATIVELY COMPLETE  but ACTIVE is missing	                            |	Interim statuses of ACTIVE is missing	                                                                                |	[Select Trial Status] from Administrative Data menu, then click History.	|
-  |PAA Status	                            |IF study has statuses APPROVED and ADMINISTRATIVELY COMPLETE  but missing CLOSED TO ACCRUAL	                    |	Interim statuses of  CLOSED TO ACCRUAL is missing                                                                     	|	[Select Trial Status] from Administrative Data menu, then click History.	
+  |PAA Status	                            |IF study has statuses APPROVED and ADMINISTRATIVELY COMPLETE  but missing CLOSED TO ACCRUAL	                    |	Interim statuses of  CLOSED TO ACCRUAL is missing                                                                     	|	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |IF status transitions from WITHDRAWN to IN REVIEW	                                                                |	Invalid status transition from WITHDRAWN to IN REVIEW	                                                                |	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |IF study status transitions from WITHDRAWN to APPROVED	                                                            |	 Invalid status transition from WITHDRAWN to APPROVED 	                                                                |	[Select Trial Status] from Administrative Data menu, then click History.	|
   |PAA Status	                            |Duplicate ‘Withdrawn’ study status	                                                                                |	Duplicate WITHDRAWN status is not allowed	                                                                            |	[Select Trial Status] from Administrative Data menu, then click History.	|
