@@ -1158,7 +1158,7 @@ MailTemplate.find_or_create_by(
     code: 'TRIAL_OWNER_ADD',
     name: 'Trial Ownerships Added',
     from: 'noreply@ctrp.nci.nih.gov',
-    subject: 'Trial Ownerships Added',
+    subject: 'NCI CTRP: Trial RECORD OWNER ADDED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
                 <div>${trialcontent}</div>
@@ -1175,7 +1175,7 @@ MailTemplate.find_or_create_by(
     code: 'TRIAL_OWNER_REMOVE',
     name: 'Trial Ownerships Removed',
     from: 'noreply@ctrp.nci.nih.gov',
-    subject: 'Trial Ownerships Removed',
+    subject: 'NCI CTRP: RECORD OWNERSHIP CANCELLED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
                 <div>${trialcontent}</div>

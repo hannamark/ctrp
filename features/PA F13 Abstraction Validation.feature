@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PA F13 Abstraction Validation
 
 As a CTRP PA Abstractor, I can access the Abstraction Validation to View the Trial History Information Audit Trail
@@ -14,7 +14,7 @@ And the View Buttons <ViewButtons> type displays
 |ViewButtons|
 |View XML   |
 |View TSR   |
-And the milestone "Ready for Trial Summary Report Date" is added to the milestone for the study
+
 
 Scenario: #2 Abstraction Validation with warnings or errors
 Given I have selected a Trial
@@ -24,7 +24,7 @@ And there are errors
 Then the messages <MessageType> will be displayed in the sequence below
 
 |<MessageType>                                                               |              
-|"Abstraction validation failed. Please check Admin Data Menu error(s)."     |             
+|"Abstraction validation failed. Please check Admin Data Menu error(s)."     |
 |"Abstraction validation failed. Please check Scientific Data Menu error(s)."|             
 |"Abstraction Validation Warning(s)."                                        |             
 
@@ -36,7 +36,7 @@ And the Warning count will display in the warning display section
     |"Numbers_items_found" items found, displaying all items.|
 And the Abstraction Validation warnings and errors triggers will be in the Description field "Description"
 And the Abstraction Validation warning and errors AUM related section will be in the comment field in brackets "Comment"
-And the AUM Section in the Comment field will be displayed as a link to direct the user to correct the errors and warnings 
+And the AUM Section in the Comment field will be displayed as a link to direct the user to correct the errors and warnings
 And the Description and Comment will be grouped by Section
 
 
@@ -204,7 +204,7 @@ And the Description and Comment will be grouped by Section
     Given I have selected a Trial
     And I am on the Abstraction Validation screen
     When the Abstraction Validation button is clicked
-    Then for the Section <Section>, the below Warning RUles <Warning_Rule> will be checked and the screen will display the below description <Description> and comment <Comment> 
+    Then for the Section <Section>, the below Warning RUles <Warning_Rule> will be checked and the screen will display the below description <Description> and comment <Comment>
     
 |Section                                            |Warning_Rule	                                                                                                                                        |Description                                                                                                                                                    |Comment                                         |                                                                                                                                                                                                                                                         
 |PAA General Trial Details                          |Official Title null                                                                                                                                    | Official Title is required                                                                                                                                    |[Select General Trial Details] from Administration Data |                                                                                                                                                                                                                                                                            

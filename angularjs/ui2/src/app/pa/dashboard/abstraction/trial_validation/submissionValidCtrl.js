@@ -202,7 +202,6 @@
             var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
             vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
             vm.trialDetailObj.edit_type = 'submission_rejected';
-            // TODO: send email for original and amendment type
             saveValidation(); // update the trial validation
         }
 
@@ -214,7 +213,6 @@
                 var processStatus = _genProcessingStatus(acceptStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
                 vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
                 vm.trialDetailObj.edit_type = 'submission_accepted';
-                // TODO: send email for original and amendment type
                 saveValidation(); // update the trial validation
             }
         }
