@@ -230,7 +230,7 @@ var abstractionCommonMethods = function(){
         console.log(configuration.trialSubmitterUID);
         console.log(configuration.trialSubmitterPWD);
         //App URL
-        browser.get(configuration.uiUrl);
+        //browser.get(configuration.uiUrl);
         helper.wait_for(300);
         //Verify Homepage
         var BrwsrVal = browser.getCurrentUrl();

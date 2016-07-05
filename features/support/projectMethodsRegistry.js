@@ -1810,117 +1810,127 @@ var projectMethodsRegistry = function () {
      * Method: This will verify the View screen of Imported Trial
      ******************************** ******************************** ******************************** ******************************** ********************************/
     this.verifyImportedTrialViewPage = function() {
-        ctGovElement.then(function(value) {
-            addTrial.viewTrialLeadProtocolIdentifier.isPresent().then(function (state) {
-                if (state) {
-                    addTrial.viewTrialLeadProtocolIdentifier.getText().then(function (leadProtocolIDTrial) {
-                        console.log('Trial Lead Protocol ID is ----> ' + leadProtocolIDTrial);
-                        expect(leadProtocolIDTrial).to.eql(value.clinical_study.id_info.org_study_id, 'Verification of Lead Protocol ID for Imported Trial');
-                    });
-                } else {
-                    console.log('Trial Lead Protocol ID does not exist in Page.');
-                }
-            });
-
-            expect(addTrial.viewTrialNCIID.isPresent()).to.eventually.equal(true);
-
-            //Check if Secondary ID is Present in Parsed XML
-            if (value.clinical_study.id_info.secondary_id) {
-                if (Array.isArray(value.clinical_study.id_info.secondary_id)) {
-                    console.log('Secondary ID is an ARRAY');
-                    var ctGovXMLSecondaryID = value.clinical_study.id_info.secondary_id.join(", ");
-                    var ctGovXMLOtherID = ctGovXMLSecondaryID + value.clinical_study.id_info.nct_id;
-                    addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
-                        expect(otherIDTrial).to.eql(ctGovXMLOtherID, 'Verification of Other ID for Imported Trial');
-                    });
-                } else {
-                    console.log('Condition is NOT an array');
-                    ctGovXMLSecondaryID = value.clinical_study.id_info.secondary_id.toString();
-                    ctGovXMLOtherID = ctGovXMLSecondaryID + value.clinical_study.id_info.nct_id;
-                    addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
-                        expect(otherIDTrial).to.eql(ctGovXMLOtherID, 'Verification of Other ID for Imported Trial');
-                    });
-                }
-            }
-            else {
-                ctGovXMLOtherID =  value.clinical_study.id_info.nct_id;
-                addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
-                    expect(otherIDTrial).to.eql(ctGovXMLOtherID, 'Verification of Other ID for Imported Trial');
+        expect(addTrial.viewTrialNCIID.isPresent()).to.eventually.equal(true);
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 40).then(function () {
+            ctGovElement.then(function (value) {
+                addTrial.viewTrialLeadProtocolIdentifier.isPresent().then(function (state) {
+                    if (state) {
+                        addTrial.viewTrialLeadProtocolIdentifier.getText().then(function (leadProtocolIDTrial) {
+                            console.log('Trial Lead Protocol ID is ----> ' + leadProtocolIDTrial);
+                            console.log(value.clinical_study.id_info.org_study_id);
+                            expect(leadProtocolIDTrial).to.eql(value.clinical_study.id_info.org_study_id, 'Verification of Lead Protocol ID for Imported Trial');
+                        });
+                    } else {
+                        console.log('Trial Lead Protocol ID does not exist in Page.');
+                    }
                 });
-            }
 
-            //Check if Official title is Present in Parsed XML
-            if (value.clinical_study.official_title) {
-                if (value.clinical_study.official_title === '') {
-                    console.log('Official Title is Empty so use Brief Title');
-                    var ctGovXMLTitle = value.clinical_study.brief_title;
+
+                //Check if Secondary ID is Present in Parsed XML
+                if (value.clinical_study.id_info.secondary_id) {
+                    if (Array.isArray(value.clinical_study.id_info.secondary_id)) {
+                        console.log('Secondary ID is an ARRAY');
+                        var ctGovXMLSecondaryID = value.clinical_study.id_info.secondary_id;//.join(", ");
+                        console.log('value of secondary id');
+                        console.log(ctGovXMLSecondaryID);
+                        var ctGovXMLOtherID = ctGovXMLSecondaryID.push(value.clinical_study.id_info.nct_id);//ctGovXMLSecondaryID + ', ' + value.clinical_study.id_info.nct_id;
+                        console.log('value of secondary plus nct id');
+                        console.log(ctGovXMLOtherID);
+                        addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
+                            expect(otherIDTrial).to.eql(ctGovXMLOtherID, 'Verification of Other ID for Imported Trial');
+                        });
+                    } else {
+                        console.log('Secondary ID is NOT an array');
+                        ctGovXMLSecondaryID = value.clinical_study.id_info.secondary_id.toString();
+                        ctGovXMLOtherID = ctGovXMLSecondaryID + value.clinical_study.id_info.nct_id;
+                        addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
+                            expect(otherIDTrial).to.eql(ctGovXMLOtherID, 'Verification of Other ID for Imported Trial');
+                        });
+                    }
+                }
+                else {
+                    ctGovXMLOtherID = value.clinical_study.id_info.nct_id;
+                    addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
+                        expect(otherIDTrial.toString()).to.eql(ctGovXMLOtherID, 'Verification of Other ID for Imported Trial');
+                    });
+                }
+
+                //Check if Official title is Present in Parsed XML
+                if (value.clinical_study.official_title) {
+                    if (value.clinical_study.official_title === '') {
+                        console.log('Official Title is Empty so use Brief Title');
+                        var ctGovXMLTitle = value.clinical_study.brief_title;
+                        addTrial.viewTrialOfficialTitle.getText().then(function (trialOfficialTitle) {
+                            expect(trialOfficialTitle).to.eql(ctGovXMLTitle, 'Verification of Official Title for Imported Trial when Official title is not there then display brief title');
+                        });
+                    } else {
+                        console.log('Official Title is Present');
+                        ctGovXMLTitle = value.clinical_study.official_title;
+                        addTrial.viewTrialOfficialTitle.getText().then(function (trialOfficialTitle) {
+                            expect(trialOfficialTitle).to.eql(ctGovXMLTitle, 'Verification of Official Title for Imported Trial');
+                        });
+                    }
+                } else {
+                    console.log('Official Title is Not there so use Brief Title');
+                    ctGovXMLTitle = value.clinical_study.brief_title;
                     addTrial.viewTrialOfficialTitle.getText().then(function (trialOfficialTitle) {
                         expect(trialOfficialTitle).to.eql(ctGovXMLTitle, 'Verification of Official Title for Imported Trial when Official title is not there then display brief title');
                     });
-                } else {
-                    console.log('Official Title is Present');
-                    ctGovXMLTitle = value.clinical_study.official_title;
-                    addTrial.viewTrialOfficialTitle.getText().then(function (trialOfficialTitle) {
-                        expect(trialOfficialTitle).to.eql(ctGovXMLTitle, 'Verification of Official Title for Imported Trial');
-                    });
                 }
-            } else {
-                console.log('Official Title is Not there so use Brief Title');
-                ctGovXMLTitle = value.clinical_study.brief_title;
-                addTrial.viewTrialOfficialTitle.getText().then(function (trialOfficialTitle) {
-                    expect(trialOfficialTitle).to.eql(ctGovXMLTitle, 'Verification of Official Title for Imported Trial when Official title is not there then display brief title');
-                });
-            }
 
-            //Check if Phase is Present in Parsed XML
-            if (value.clinical_study.phase) {
-                if (value.clinical_study.phase === 'Phase 0') {
-                    console.log('Phase is Phase 0');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('0', 'Verification of Phase for Imported Trial when Phase is 0');
-                    });
-                }
-                if (value.clinical_study.phase === 'Phase 1') {
-                    console.log('Phase is Phase 1');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('I', 'Verification of Phase for Imported Trial when Phase is 1');
-                    });
-                }
-                if (value.clinical_study.phase === 'Phase 2') {
-                    console.log('Phase is Phase 2');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('II', 'Verification of Phase for Imported Trial when Phase is 1 & 2');
-                    });
-                }
-                if (value.clinical_study.phase === 'Phase 1/Phase 2') {
-                    console.log('Phase is Phase 2');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('I/II', 'Verification of Phase for Imported Trial when Phase is 2');
-                    });
-                }
-                if (value.clinical_study.phase === 'Phase 3') {
-                    console.log('Phase is Phase 3');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('III', 'Verification of Phase for Imported Trial when Phase is 3');
-                    });
-                }
-                if (value.clinical_study.phase === 'IV') {
-                    console.log('Phase is Phase 4');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('Phase 4', 'Verification of Phase for Imported Trial when Phase is 4');
-                    });
-                }
-                if (value.clinical_study.phase === 'Phase 3/Phase 4') {
-                    console.log('Phase is Phase 4');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('III/IV', 'Verification of Phase for Imported Trial when Phase is 3 & 4');
-                    });
-                }
-                if (value.clinical_study.phase === 'N/A') {
-                    console.log('Phase is N/A');
-                    addTrial.viewTrialPhase.getText().then(function (trialPhase) {
-                        expect(trialPhase).to.eql('NA', 'Verification of Phase for Imported Trial when Phase is N/A');
-                    });
+                //Check if Phase is Present in Parsed XML
+                if (value.clinical_study.phase) {
+                    if (value.clinical_study.phase === 'Phase 0') {
+                        console.log('Phase is Phase 0');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('0', 'Verification of Phase for Imported Trial when Phase is 0');
+                        });
+                    }
+                    if (value.clinical_study.phase === 'Phase 1') {
+                        console.log('Phase is Phase 1');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('I', 'Verification of Phase for Imported Trial when Phase is 1');
+                        });
+                    }
+                    if (value.clinical_study.phase === 'Phase 2') {
+                        console.log('Phase is Phase 2');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('II', 'Verification of Phase for Imported Trial when Phase is 1 & 2');
+                        });
+                    }
+                    if (value.clinical_study.phase === 'Phase 1/Phase 2') {
+                        console.log('Phase is Phase 2');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('I/II', 'Verification of Phase for Imported Trial when Phase is 2');
+                        });
+                    }
+                    if (value.clinical_study.phase === 'Phase 3') {
+                        console.log('Phase is Phase 3');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('III', 'Verification of Phase for Imported Trial when Phase is 3');
+                        });
+                    }
+                    if (value.clinical_study.phase === 'IV') {
+                        console.log('Phase is Phase 4');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('Phase 4', 'Verification of Phase for Imported Trial when Phase is 4');
+                        });
+                    }
+                    if (value.clinical_study.phase === 'Phase 3/Phase 4') {
+                        console.log('Phase is Phase 4');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('III/IV', 'Verification of Phase for Imported Trial when Phase is 3 & 4');
+                        });
+                    }
+                    if (value.clinical_study.phase === 'N/A') {
+                        console.log('Phase is N/A');
+                        addTrial.viewTrialPhase.getText().then(function (trialPhase) {
+                            expect(trialPhase).to.eql('NA', 'Verification of Phase for Imported Trial when Phase is N/A');
+                        });
+                    }
                 }
 
                 //Check if Study_type is Present in Parsed XML
@@ -1949,96 +1959,153 @@ var projectMethodsRegistry = function () {
                             expect(trialResearchCategory).to.eql('Expanded Access', 'Verification of Research Category for Imported Trial when Category is Expanded Access');
                         });
                     }
-
-
-
-
-
-
-
-
-            addTrial.viewTrialPrimaryPurpose.isPresent().then(function (state) {
-                if (state) {
-                    purpose = addTrial.viewTrialPrimaryPurpose.getText().then(function (trialPurpose) {
-                        console.log('Trial Primary Purpose is ----> ' + trialPurpose);
-                        return trialPurpose;
-                    });
-                }
-                else {
-                    console.log('Trial Primary Purpose does not exist in Page.');
-                    return purpose = emptyPromise;
                 }
 
-
-
-
-
-
-
-            importTrial.addImportViewNCTIDInTbl.getText().then(function(NCTIDUI) {
-                console.log('******** NCT ID From UI *********');
-                console.log(NCTIDUI);
-                expect(NCTIDUI).to.eql(value.clinical_study.id_info.nct_id, 'Verification of NCI ID for Imported Trial');
-            });
-            importTrial.addImportViewStatusInTbl.getText().then(function(trialStatusUI) {
-                console.log('******** Trial Status From UI *********');
-                console.log(trialStatusUI);
-                expect(trialStatusUI).to.eql(value.clinical_study.overall_status, 'Verification of Trial Status for Imported Trial');
-            });
-            importTrial.addImportViewTitleCondIntInTbl.getText().then(function(trialTitleCondInterventionUI) {
-                console.log('******** Trial Title Condition Intervention From UI *********');
-                console.log(trialTitleCondInterventionUI);
-                //Check if Official title is Present in Parsed XML
-                if (value.clinical_study.official_title) {
-                    if (value.clinical_study.official_title === '') {
-                        console.log('Official Title is Empty so use Brief Title');
-                        var ctGovXMLTitle = value.clinical_study.brief_title;
-                    } else {
-                        console.log('Official Title is Present');
-                        ctGovXMLTitle = value.clinical_study.official_title;
+                if (value.clinical_study.overall_status) {
+                    if (value.clinical_study.overall_status === 'Not yet recruiting') {
+                        console.log('Study overall_status is Not yet recruiting');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('In Review', 'Verification of Trial Status for Imported Trial');
+                        });
                     }
-                } else {
-                    console.log('Official Title is Not there so use Brief Title');
-                    ctGovXMLTitle = value.clinical_study.brief_title;
+                    else if (value.clinical_study.overall_status === 'Withdrawn') {
+                        console.log('Study overall_status is Withdrawn');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('Withdrawn', 'Verification of Trial Status for Imported Trial');
+                        });
+                    }
+                    else if (value.clinical_study.overall_status === 'Recruiting') {
+                        console.log('Study overall_status is Recruiting');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('Active','Verification of Trial Status for Imported Trial');
+                        });
+                    }
+                    else if (value.clinical_study.overall_status === 'Enrolling by Invitation') {
+                        console.log('Study overall_status is Enrolling by Invitation');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('Enrolling by Invitation', 'Verification of Trial Status for Imported Trial');
+                        });
+                    }
+                    else if (value.clinical_study.overall_status === 'Suspended') {
+                        console.log('Study overall_status is Suspended');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('Temporarily Closed to Accrual', 'Verification of Trial Status for Imported Trial');
+                        });
+                    }
+                    else if (value.clinical_study.overall_status === 'Active, not recruiting') {
+                        console.log('Study overall_status is Active, not recruiting');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('Closed to Accrual', 'Verification of Trial Status for Imported Trial');
+                        });
+                    }
+                    else if (value.clinical_study.overall_status === 'Terminated') {
+                        console.log('Study overall_status is Terminated');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('Administratively Complete', 'Verification of Trial Status for Imported Trial');
+                        });
+                    }
+                    else if (value.clinical_study.overall_status === 'Completed') {
+                        console.log('Study overall_status is Completed');
+                        addTrial.viewTrialStatus.getText().then(function (trialStatusUI) {
+                            expect(trialStatusUI).to.eql('Complete', 'Verification of Trial Status for Imported Trial');
+                        });
+                    }
+                    else  {
+                        console.log('Study Type is no match');
+                        assert.fail(0,1,'no Match for Study Status');
+                    }
+
                 }
 
-                if (Array.isArray(value.clinical_study.condition)) {
-                    console.log('Condition is an ARRAY');
-                    var ctGovXMLCondition = value.clinical_study.condition.join(", ");
-                } else {
-                    console.log('Condition is NOT an array');
-                    ctGovXMLCondition = value.clinical_study.condition.toString();
-                }
-                //Check if Intervention is Present in Parsed XML
-                if (value.clinical_study.intervention) {
-                    if (Array.isArray(value.clinical_study.intervention)) {
-                        console.log('Intervention is an ARRAY');
-                        var arr1 = [];
-                        for (var i = 0; i < value.clinical_study.intervention.length; i++) {
-                            var arr2 = value.clinical_study.intervention[i].intervention_type + ': ' + value.clinical_study.intervention[i].intervention_name;
-                            arr1.push(arr2);
-                            console.log(arr2);
-                        }
-                        console.log('final Intervention arr1');
-                        console.log(arr1);
-                        var ctGovXMLIntervention = 'Intervention(s): ' + arr1.join(", ");
-                    } else {
-                        console.log('Intervention is NOT an array');
-                        ctGovXMLIntervention = 'Intervention(s): ' + value.clinical_study.intervention.intervention_type + ': ' + value.clinical_study.intervention.intervention_name;
-                    }
-                } else {
-                    ctGovXMLIntervention = 'Intervention(s):';
-                }
-                var studyTitleConditionIntervention = ctGovXMLTitle + '\n\n' +
-                    'Condition(s): ' + ctGovXMLCondition + '\n' +
-                    ctGovXMLIntervention;
-                console.log('******** Trial Title Condition Intervention From XML *********');
-                console.log(studyTitleConditionIntervention);
-                expect(trialTitleCondInterventionUI).to.eql(studyTitleConditionIntervention, 'Verification of Trial title, Condition, Intervention for Imported Trial');
+                /*
+
+
+
+                 addTrial.viewTrialPrimaryPurpose.isPresent().then(function (state) {
+                 if (state) {
+                 purpose = addTrial.viewTrialPrimaryPurpose.getText().then(function (trialPurpose) {
+                 console.log('Trial Primary Purpose is ----> ' + trialPurpose);
+                 return trialPurpose;
+                 });
+                 }
+                 else {
+                 console.log('Trial Primary Purpose does not exist in Page.');
+                 return purpose = emptyPromise;
+                 }
+
+
+
+
+
+
+
+                 importTrial.addImportViewNCTIDInTbl.getText().then(function(NCTIDUI) {
+                 console.log('******** NCT ID From UI *********');
+                 console.log(NCTIDUI);
+                 expect(NCTIDUI).to.eql(value.clinical_study.id_info.nct_id, 'Verification of NCI ID for Imported Trial');
+                 });
+                 importTrial.addImportViewStatusInTbl.getText().then(function(trialStatusUI) {
+                 console.log('******** Trial Status From UI *********');
+                 console.log(trialStatusUI);
+                 expect(trialStatusUI).to.eql(value.clinical_study.overall_status, 'Verification of Trial Status for Imported Trial');
+                 });
+                 importTrial.addImportViewTitleCondIntInTbl.getText().then(function(trialTitleCondInterventionUI) {
+                 console.log('******** Trial Title Condition Intervention From UI *********');
+                 console.log(trialTitleCondInterventionUI);
+                 //Check if Official title is Present in Parsed XML
+                 if (value.clinical_study.official_title) {
+                 if (value.clinical_study.official_title === '') {
+                 console.log('Official Title is Empty so use Brief Title');
+                 var ctGovXMLTitle = value.clinical_study.brief_title;
+                 } else {
+                 console.log('Official Title is Present');
+                 ctGovXMLTitle = value.clinical_study.official_title;
+                 }
+                 } else {
+                 console.log('Official Title is Not there so use Brief Title');
+                 ctGovXMLTitle = value.clinical_study.brief_title;
+                 }
+
+                 if (Array.isArray(value.clinical_study.condition)) {
+                 console.log('Condition is an ARRAY');
+                 var ctGovXMLCondition = value.clinical_study.condition.join(", ");
+                 } else {
+                 console.log('Condition is NOT an array');
+                 ctGovXMLCondition = value.clinical_study.condition.toString();
+                 }
+                 //Check if Intervention is Present in Parsed XML
+                 if (value.clinical_study.intervention) {
+                 if (Array.isArray(value.clinical_study.intervention)) {
+                 console.log('Intervention is an ARRAY');
+                 var arr1 = [];
+                 for (var i = 0; i < value.clinical_study.intervention.length; i++) {
+                 var arr2 = value.clinical_study.intervention[i].intervention_type + ': ' + value.clinical_study.intervention[i].intervention_name;
+                 arr1.push(arr2);
+                 console.log(arr2);
+                 }
+                 console.log('final Intervention arr1');
+                 console.log(arr1);
+                 var ctGovXMLIntervention = 'Intervention(s): ' + arr1.join(", ");
+                 } else {
+                 console.log('Intervention is NOT an array');
+                 ctGovXMLIntervention = 'Intervention(s): ' + value.clinical_study.intervention.intervention_type + ': ' + value.clinical_study.intervention.intervention_name;
+                 }
+                 } else {
+                 ctGovXMLIntervention = 'Intervention(s):';
+                 }
+                 var studyTitleConditionIntervention = ctGovXMLTitle + '\n\n' +
+                 'Condition(s): ' + ctGovXMLCondition + '\n' +
+                 ctGovXMLIntervention;
+                 console.log('******** Trial Title Condition Intervention From XML *********');
+                 console.log(studyTitleConditionIntervention);
+                 expect(trialTitleCondInterventionUI).to.eql(studyTitleConditionIntervention, 'Verification of Trial title, Condition, Intervention for Imported Trial');
+                 });
+                 });
+                 */
+                //     });
             });
         });
     };
-
 
 };
 module.exports = projectMethodsRegistry;
