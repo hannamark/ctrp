@@ -30,6 +30,7 @@ var paSearchTrialPage = require('../support/abstractionSearchTrialPage');
 var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
 //Trial Related Document
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
+var util = require('util');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -343,6 +344,26 @@ var abstractionCommonMethods = function(){
                 nciSpecific.clickAdminCheckOut();
             }
         });
+    };
+
+    /***************************************** 
+     * Alert Ok 
+     *****************************************/
+    this.alertMsgOK = function(){
+        browser.switchTo().alert().then(
+            function (alert) { alert.accept(); },
+            function (err) { }
+        );
+    };
+
+    /***************************************** 
+     * Alert Cancel
+     *****************************************/
+    this.alertMsgCancel = function(){
+        browser.switchTo().alert().then(
+            function (alert) { alert.dismiss(); },
+            function (err) { }
+        );
     };
 
     /*****************************************

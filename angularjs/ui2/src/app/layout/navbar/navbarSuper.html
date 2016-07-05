@@ -33,6 +33,15 @@
         <ul class="dropdown-menu" role="menu">
             <li><a ui-sref="main.trials" ui-sref-opts="{reload:true}">Search Trials (Reg)</a></li>
             <li><a ui-sref="main.paTrialSearch" ui-sref-opts="{reload:true}">Search Trials (PA)</a></li>
+            <li class="dropdown-submenu">
+                <a ui-sref="#" ui-sref-opts="{reload:true}">Register Trial</a>
+                <ul class="dropdown-menu">
+                    <li><a ui-sref="main.addTrial({studySourceCode: 'nat'})" ui-sref-opts="{reload:true}">National</a></li>
+                    <li><a ui-sref="main.addTrial({studySourceCode: 'epr'})" ui-sref-opts="{reload:true}">Externally Peer-Reviewed</a></li>
+                    <li><a ui-sref="main.addTrial({studySourceCode: 'ins'})" ui-sref-opts="{reload:true}">Institutional</a></li>
+                    <li><a ui-sref="main.importTrial" ui-sref-opts="{reload:true}">Industrial/Other</a></li>
+                </ul>
+            </li>
         </ul>
     </li>
     <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.accrual, main.pendingAccrualQueue, main.accrualsOutOfScopeTrials, main.manageFlaggedTrails, main.manageAccrualAccess') }">

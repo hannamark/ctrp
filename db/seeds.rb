@@ -1000,11 +1000,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'SUB_ACCEPTED_TRIAL',
+    code: 'ORI_SUB_ACCEPTED',
     name: 'Submission Accepted Trial',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial REGISTRATION ACCEPTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial REGISTRATION ACCEPTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
@@ -1039,11 +1039,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'SUB_REJECTED_TRIAL',
+    code: 'ORI_SUB_REJECTED',
     name: 'Submission Rejected Trial',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial REGISTRATION REJECTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial REGISTRATION REJECTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
@@ -1070,11 +1070,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'AMEND_SUB_ACCEPTED_TRIAL',
+    code: 'AMEND_SUB_ACCEPTED',
     name: 'Amendment Submission Accepted',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD ACCEPTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD ACCEPTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
@@ -1104,11 +1104,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'AMEND_SUB_REJECTED_TRIAL',
+    code: 'AMEND_SUB_REJECTED',
     name: 'Amendment Submission Rejected',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD REJECTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD REJECTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
@@ -1154,6 +1154,38 @@ MailTemplate.find_or_create_by(
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br><b>${username}</b>, a user in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application, is requesting admin access.</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ for the user\'s details and assign new role to grant access.<p></body></html>'
 )
 
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_OWNER_ADD',
+    name: 'Trial Ownerships Added',
+    from: 'noreply@ctrp.nci.nih.gov',
+    subject: 'Trial Ownerships Added',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <div>${trialcontent}</div>
+                <p>Dear ${username},</p>
+                <p>The Clinical Trials Reporting Office (CTRO) has added you as an owner of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
+                <p>As an owner of this trial record, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
+                <p><b>NEXT STEPS:</b></p>
+                <p>If you do not want ownership of this trial, or if you have questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'TRIAL_OWNER_REMOVE',
+    name: 'Trial Ownerships Removed',
+    from: 'noreply@ctrp.nci.nih.gov',
+    subject: 'Trial Ownerships Removed',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <div>${trialcontent}</div>
+                <p>Dear ${username},</p>
+                <p>The Clinical Trials Reporting Office (CTRO) cancelled your ownership of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
+                <p><b>NEXT STEPS:</b></p>
+                <p>If you believe this is an error, or if you have additional questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
+)
 
 MailTemplate.find_or_create_by(
     code: 'SITE-ADMIN-ACCESS-GRANTED',
