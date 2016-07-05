@@ -56,6 +56,8 @@
             vm.addedAuthorities = [];
             appendAuthorities();
             vm.initialize();
+
+            $scope.trial_form.$setPristine();
         };
 
         vm.deleteAllAuthorities  = function () {
@@ -293,7 +295,6 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 

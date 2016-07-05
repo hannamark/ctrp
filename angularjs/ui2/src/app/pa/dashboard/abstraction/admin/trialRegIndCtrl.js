@@ -34,6 +34,7 @@
             vm.nihNciArr = [];
 
             vm.showAddIndIdeError = false;
+            $scope.trial_form.$setPristine();
         };
 
         vm.updateTrial = function(updateType) {

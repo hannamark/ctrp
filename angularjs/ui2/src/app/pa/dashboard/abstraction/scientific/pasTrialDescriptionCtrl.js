@@ -18,6 +18,7 @@
 
         vm.reset = function() {
             getTrialDetailCopy();
+            $scope.desc_form.$setPristine();
         };
 
         vm.saveTrialDescription = function(){
