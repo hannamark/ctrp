@@ -16,9 +16,9 @@
         vm.curTrial = trialDetailObj;
         vm.disableBtn = false;
 
-        vm.reload = function() {
-            console.log("RELOAD");
-            $state.go($state.$current, null, { reload: true });
+        vm.reset = function() {
+            getTrialDetailCopy();
+            $scope.desc_form.$setPristine();
         };
 
         vm.saveTrialDescription = function(){
@@ -58,7 +58,11 @@
 
         }//saveTrial
 
-
+        function getTrialDetailCopy() {
+            $timeout(function() {
+                vm.curTrial = PATrialService.getCurrentTrialFromCache();
+            }, 1);
+        } //getTrialDetailCopy
 
     } //pasTrialDescriptionCtrl
 

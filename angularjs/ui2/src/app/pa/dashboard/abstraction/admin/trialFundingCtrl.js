@@ -38,6 +38,7 @@
             vm.showAddGrantError = false;
             vm.addedGrants = [];
             appendGrants();
+            $scope.trial_form.$setPristine();
         };
 
         vm.updateTrial = function(updateType) {

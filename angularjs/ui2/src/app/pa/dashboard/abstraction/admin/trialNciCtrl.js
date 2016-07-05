@@ -129,6 +129,7 @@
             getTrialDetailCopy();
             vm.addedFses = [];
             appendFses();
+            $scope.trial_form.$setPristine();
         };
 
 
