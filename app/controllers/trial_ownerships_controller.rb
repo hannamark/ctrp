@@ -47,6 +47,10 @@ class TrialOwnershipsController < ApplicationController
     trialIdsToAdd = params[:trial_ids]
     userIdsToAdd = params[:user_ids]
 
+
+    users_to_add = User.find(userIdsToAdd)
+    trials_to_add = Trial.find(trialIdsToAdd)
+
     if trialIdsToAdd && trialIdsToAdd.length > 0 && userIdsToAdd && userIdsToAdd.length > 0
       trialIdsToAdd.each do |trialId|
         userIdsToAdd.each do |userId|
@@ -58,6 +62,9 @@ class TrialOwnershipsController < ApplicationController
     end
 
     @results_msgs = 'success'
+
+    send_emails 'TRIAL_OWNER_ADD', users_to_add, trials_to_add
+
     @results_msgs
   end
 
@@ -65,27 +72,33 @@ class TrialOwnershipsController < ApplicationController
   # POST /trial_ownerships/end.json
   def end
     @results_msgs = 'fail'
+    users_to_remove = nil
+    trials_to_remove = nil
     begin
       #for single user
       unless params[:user_id].nil?
         toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
+        users_to_remove = User.find(params[:user_id])
       end
 
       #for group of users
       unless params[:user_ids].nil?
         toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_ids])
+        users_to_remove = User.find(params[:user_ids])
       end
 
       #for selected trials using ownership id
       unless params[:ids].nil?
         #to only end selected
         toEnd = toEnd.where(:id => params[:ids])
+        trials_to_remove = Trial.find(TrialOwnership.find(params[:ids]).map(&:trial_id))
       end
 
       #for selected trials trial id
       unless params[:trial_ids].nil?
         #to only end selected
         toEnd = toEnd.where(:trial_id => params[:trial_ids])
+        trials_to_remove = Trial.find(params[:trial_ids])
       end
 
       toEnd.update_all(:ended_at => Time.now)
@@ -93,6 +106,8 @@ class TrialOwnershipsController < ApplicationController
     rescue
       puts "Error ending trial ownership"
     ensure
+
+      send_emails 'TRIAL_OWNER_REMOVE', users_to_remove, trials_to_remove
       @results_msgs
     end
   end
@@ -175,6 +190,37 @@ class TrialOwnershipsController < ApplicationController
   end
 
   private
+    def send_emails template, users, trials
+      unless users.nil? || trials.nil?
+        email_trials_str = '<hr>'
+        trials.each do |trial|
+          email_trials_str += '<p><b>Title:</b> ' + trial.official_title + '</p>'
+          email_trials_str += '<ul>'
+          email_trials_str += '<li><b style="width: 350px;">NCI Trial ID:</b> ' + trial.nci_id + '</li>'
+          email_trials_str += '<li><b style="width: 350px;">Lead Organization Trial ID:</b> ' + trial.lead_protocol_id.to_s + '</li>'
+          email_trials_str += '<li><b style="width: 350px;">CTRP-assigned Lead Organization ID:</b> ' + trial.lead_org_id.to_s + '</li>'
+          email_trials_str += '</ul>'
+          email_trials_str += '<hr>'
+        end
+        email_trials_str += '<p>Date: ' + (Time.now).strftime('%v') + '</p>'
+
+        begin
+
+          users.each do |user|
+            mail_template = MailTemplate.find_by_code(template)
+            mail_template.body_html.sub!('${username}', user.first_name + ' ' + user.last_name)
+            mail_template.body_html.sub!('${trialcontent}', email_trials_str)
+            mail_template.to = user.email
+
+            CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+
+          end
+        rescue  Exception => e
+          logger.warn "#{template}: Email delivery error = #{e}"
+        end
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_trial_ownership
       @trial_ownership = TrialOwnership.find(params[:id])
