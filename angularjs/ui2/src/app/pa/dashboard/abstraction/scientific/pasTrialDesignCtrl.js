@@ -295,6 +295,7 @@
 
         function resetForm() {
             _getTrialDetailCopy();
+            $scope.trial_design_form.$setPristine();
         }
 
         /**

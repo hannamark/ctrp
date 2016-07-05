@@ -131,7 +131,12 @@ class OrganizationsController < ApplicationController
     # Pagination/sorting params initialization
     Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 20 if params[:rows].blank? && params[:allrows] != true
+
+    if params[:allrows] != true
+      params[:rows] = 20 if params[:rows].blank?
+    else
+      params[:rows] = nil
+    end
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
@@ -181,7 +186,12 @@ class OrganizationsController < ApplicationController
       @organizations = @organizations.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present?
       @organizations = @organizations.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
       @organizations = @organizations.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
-      @organizations = @organizations.sort_by_col(params[:sort], params[:order]).group(:'organizations.id').page(params[:start]).per(params[:rows])
+      @organizations = @organizations.sort_by_col(params[:sort], params[:order])
+
+      if params[:rows] != nil
+        @organizations = @organizations.page(params[:start]).per(params[:rows])
+      end
+
     else
       @organizations = []
     end

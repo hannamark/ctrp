@@ -523,7 +523,6 @@
                             $scope.gridOptions.useExternalPagination = false;
                             $scope.gridOptions.useExternalSorting = false;
                             $scope.gridOptions.data = data['orgs'];
-
                             $scope.gridOptions.columnDefs = origGridColumnDefs;
                         }
                     );

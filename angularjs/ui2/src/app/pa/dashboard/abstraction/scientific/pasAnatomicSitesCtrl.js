@@ -102,6 +102,7 @@
 
         vm.reset = function() {
             vm.anatomic_sites_selected = [];
+            //$scope.anatomic_sites_form.$setPristine();
         };
 
         function deleteListHandler(anatomicSitesSelectedInCheckboxes){

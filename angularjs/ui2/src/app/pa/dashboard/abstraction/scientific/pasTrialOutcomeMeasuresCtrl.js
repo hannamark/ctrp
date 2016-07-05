@@ -256,6 +256,7 @@
 
         function resetOutcomeMeasure() {
             vm.addMode || vm.editMode || vm.copyMode ? angular.copy(vm.copyOM, vm.currentOutcomeMeasure) : vm.currentOutcomeMeasure = {};
+            $scope.om_form.$setPristine();
         }
 
         function getTrialDetailCopy() {

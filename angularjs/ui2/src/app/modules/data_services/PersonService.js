@@ -9,10 +9,10 @@
         .factory('PersonService', PersonService);
 
     PersonService.$inject = ['PromiseService', 'URL_CONFIGS','$log',
-            '$rootScope', 'PromiseTimeoutService','UserService','Common'];
+            '$rootScope', 'PromiseTimeoutService','UserService','Common', 'uiGridExporterConstants', 'uiGridExporterService'];
 
     function PersonService(PromiseService, URL_CONFIGS, $log,
-                $rootScope, PromiseTimeoutService,UserService,Common) {
+                $rootScope, PromiseTimeoutService,UserService,Common, uiGridExporterConstants, uiGridExporterService) {
 
         var initPersonSearchParams = {
             fname: '',
@@ -61,6 +61,17 @@
             enableFiltering: true,
             enableHorizontalScrollbar: 2,
             enableVerticalScrollbar: 2,
+            exporterCsvFilename: 'persons.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As Excel',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }],
             columnDefs: [
                 {name: 'Nullify', displayName: 'Nullify',
                     enableSorting: false, enableFiltering: false,
@@ -79,7 +90,7 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
-                {name: 'lname', displayName: 'Last', enableSorting: true, minWidth: '100', width: '*', sort: { direction: 'asc', priority: 1}, 
+                {name: 'lname', displayName: 'Last', enableSorting: true, minWidth: '100', width: '*', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
