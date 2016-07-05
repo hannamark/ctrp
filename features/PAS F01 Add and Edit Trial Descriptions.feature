@@ -31,7 +31,7 @@ And information text appears above the Brief Summary field as 'Mandatory at Abst
 When Brief Summary is null
 And I select the Save button
 Then an error message will appear with the message “Summary is Required”
-
+@runthis
 Scenario:  #4 I can reset Trial Description screen for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
