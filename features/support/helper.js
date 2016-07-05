@@ -292,13 +292,13 @@ var helper = function() {
                             expect(value).to.equal(textToVerify);
                         });
                     }
-                    if (action === 'accept') {
+                    if (action.toUpperCase() === 'ACCEPT') {
                         alertDialog.accept();
                     }
-                    else if (action === 'OK') {
+                    else if (action.toUpperCase() === 'OK') {
                         alertDialog.accept();
                     }
-                    else if (action === 'dismiss') {
+                    else if (action.toUpperCase() === 'DISMISS') {
                         alertDialog.dismiss();
                     }
                     else   {
