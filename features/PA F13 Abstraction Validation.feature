@@ -14,7 +14,7 @@ And the View Buttons <ViewButtons> type displays
 |ViewButtons|
 |View XML   |
 |View TSR   |
-And the milestone "Ready for Trial Summary Report Date" is added to the milestone for the study
+
 
 Scenario: #2 Abstraction Validation with warnings or errors
 Given I have selected a Trial
