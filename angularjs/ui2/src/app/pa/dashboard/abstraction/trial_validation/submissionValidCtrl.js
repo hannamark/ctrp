@@ -168,7 +168,7 @@
                 templateUrl: 'app/pa/dashboard/abstraction/trial_validation/_reject_trial_popover.tpl.html',
                 animation: 'am-flip-x',
                 content: confirmMsg + '<strong>Rejection Reason: <small>(Required)</small></strong>',
-                autoClose: true,
+                autoClose: false,
                 scope: $scope,
             });
             popover.event = evt;
@@ -177,6 +177,7 @@
         // are used in the popover dialog window
         $scope.closePopover = function() {
             popover.hide();
+            vm.trialDetailObj.edit_type = ''; // clear edit_type when canceling rejection
         };
         $scope.confirmReject = function() {
             _rejectTrialValidation();
@@ -292,6 +293,10 @@
                vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_AMEND_PROTOCOL, trialObj);
             } else if (trialObj.isInfoSourceImport) {
                vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_IMPORTED, trialObj);
+            }
+            if (vm.missingFieldsWarning.length > 0) {
+                // empty the edit_type if not valid for acceptance
+                vm.trialDetailObj.edit_type = '';
             }
 
             return vm.missingFieldsWarning.length === 0
