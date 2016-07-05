@@ -970,16 +970,12 @@ class Trial < TrialBase
 
       elsif self.edit_type.include?('submission')
         if self.edit_type == 'submission_accepted_ori'
-          p "submission accepted original"
           mail_template = MailTemplate.find_by_code('ORI_SUB_ACCEPTED')
         elsif self.edit_type == 'submission_rejected_ori'
-          p "submission rejected original"
           mail_template = MailTemplate.find_by_code('ORI_SUB_REJECTED')
         elsif self.edit_type == 'submission_accepted_amd'
-          p "submission accepted amendment"
           mail_template = MailTemplate.find_by_code('AMEND_SUB_ACCEPTED')
         elsif self.edit_type == 'submission_rejected_amd'
-          p "submission rejected amendment"
           mail_template = MailTemplate.find_by_code('AMEND_SUB_REJECTED')
         end
 
