@@ -266,7 +266,8 @@ module.exports = function() {
 
     this.When(/^I have selected Reset$/, function (callback) {
         trialDesc.clickReset();
-        browser.sleep(25).then(callback);
+        commonFunctions.alertMsgOK();
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the screen will be refreshed with the data since the last save$/, function (callback) {
