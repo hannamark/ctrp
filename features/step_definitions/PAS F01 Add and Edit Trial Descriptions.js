@@ -32,29 +32,16 @@ var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
 var OrgPage = require('../support/ListOfOrganizationsPage');
 //Organization Search
 var orgSearch = require('../support/abstractionOrganizationSearch');
-//Person Search
-var searchPeoplePage = require('../support/ListOfPeoplePage');
 //Regulatory Information - IND/IDE
 var abstractionRegulatoryINDIDE = require('../support/abstractionRegulatoryIND');
 //Regulatory Information - Human Subject Safety
 var abstractionRegulatoryHuman = require('../support/abstractionRegulatoryHuman');
-//Collaborators
-var abstractionCollaborators = require('../support/abstractionTrialCollaborators');
-//General Trial Details
-var abstractionTrialDetails = require('../support/abstractionTrialDetails');
-//Regulatory Information - FDAAA
-var abstractionRegulatoryInfoFDAA = require('../support/abstractionRegulatoryInfo');
 //Trial Related Document
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
-//Participating Site
-var abstractionParticipatingSite = require('../support/abstractionParticipating');
-//Trial Status
-var abstractionTrialStatus = require('../support/abstractionTrailStatuses');
 //Left Navigation
 var abstractionLeftNavigationMenus = require('../support/abstractionLeftNav');
 //Scientific trial description
 var scientificTrialDesc = require('../support/scientificTrialDesc');
-//
 var projectFunctionsPage= require('../support/projectMethods');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
@@ -63,36 +50,13 @@ var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 module.exports = function() {
 
     var login = new loginPage();
-    var helper = new helperMethods();
-    var projectFunctions = new projectFunctionMethods();
     var commonFunctions = new abstractionCommonMethods();
     var pageMenu = new abstractionPageMenu();
     var pageSearchTrail = new abstractionTrialSearchPage();
-    var nciSpecific = new abstractionNCISpecific();
-    var indIDE = new abstractionRegulatoryINDIDE();
-    var humanSafety = new abstractionRegulatoryHuman();
-    var trialCollaborators = new abstractionCollaborators();
-    var trialDetails = new abstractionTrialDetails();
-    var fdaaa = new abstractionRegulatoryInfoFDAA();
-    var trialDoc = new abstractionTrialRelatedDocument();
-    var participatingSite = new abstractionParticipatingSite();
-    var trialStatus = new abstractionTrialStatus();
     var leftNav = new abstractionLeftNavigationMenus();
     var trialDesc = new scientificTrialDesc();
-    var searchOrg = new OrgPage();
-    var organizationSearch = new orgSearch();
-    var addTrial = new addTrialPage();
-    var projectFunctionsRegistry = new projectFunctionRegistryPage();
-    var searchPeople = new searchPeoplePage();
-    var searchTableHeader = '';
-    var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1789';
-    var leadProtocolIDA = 'CTRP_01_1777';
-    var optionA = '';
-    var optionB = '';
-    var optionC = '';
     var pageTtitle = 'Trial Descriptions';
-    var briefTitle = 'Test Brief Title';
     var briefSummary ='Test Brief Summary';
     var objectives = 'Test Objectives';
     var detailedDescription = 'Test Detailed Description';
@@ -106,7 +70,6 @@ module.exports = function() {
     var noCharLft = '0 characters left';
     var errorMSGBT = 'Brief Title is Required';
     var errorMSGBS = 'Summary is Required';
-
 
     /*
      Scenario: #1 I can add and edit Trial Description for a trial
@@ -212,6 +175,8 @@ module.exports = function() {
 
     this.Then(/^an error message will appear with the message “Brief Title is Required”$/, function (callback) {
         commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBT, '0', 'Verify Brief Title is Required');
+        login.logout();
+        commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -238,6 +203,8 @@ module.exports = function() {
 
     this.Then(/^an error message will appear with the message “Summary is Required”$/, function (callback) {
         commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBS, '0', 'Verify Brief Summary is Required');
+        login.logout();
+        commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -275,6 +242,8 @@ module.exports = function() {
         commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
         commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
         commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
+        login.logout();
+        commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -315,6 +284,8 @@ module.exports = function() {
 
     this.Then(/^no additional text can be entered$/, function (callback) {
         commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying Brief Title field Character left message');
+        login.logout();
+        commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
