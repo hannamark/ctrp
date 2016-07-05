@@ -153,6 +153,7 @@
 
         function resetHumanSafetyInfo() {
             activate();
+            $scope.human_safety_form.$setPristine();
         } // resetHumanSafetyInfo
 
     } // regulatoryInfoHumanSafetyCtrl

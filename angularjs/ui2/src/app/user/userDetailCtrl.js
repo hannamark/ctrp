@@ -80,11 +80,12 @@
                 // otherwise if it is current user changing org, give warning popup up and safe after po up OK
                 if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                        vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                        vm.gridTrialsOwnedOptions.totalItems = data.total;
                         if (vm.gridTrialsOwnedOptions.totalItems > 0
-                               && vm.userRole === 'ROLE_ADMIN'
+                               && (vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
-                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
-                                            || vm.userRole === 'ROLE_SITE-SU') {
+                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER')) {
                                 vm.chooseTransferTrials = true;
                                 return;
                         } else if (vm.isCurrentUser) {
@@ -194,6 +195,7 @@
         var TrialSearchParams = function (){
             return {
                 user_id: vm.userDetails.id,
+                protocol_id: '*',
                 sort: 'nci_id',
                 order: 'desc',
                 rows: 50,
@@ -250,6 +252,13 @@
                     displayName: 'CTEP ID',
                     enableSorting: true,
                     width: '110'
+                },
+                {
+                    name: 'dcp_idxxxxxxx',
+                    displayName: 'DCP ID',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '150'
                 }
             ],
             enableRowHeaderSelection : true,
@@ -293,7 +302,7 @@
         };
         var writeTitle = {
             name: 'official_title',
-                displayName: 'Official Title for Trial',
+                displayName: 'Official Title',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
         '<a ui-sref="main.pa.trialOverview({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
             enableSorting: true,
@@ -302,7 +311,7 @@
         };
         var readTitle = {
             name: 'official_title',
-            displayName: 'Official Title for Trial',
+            displayName: 'Official Title',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             '<a ui-sref="main.viewTrial({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
             enableSorting: true,
@@ -311,13 +320,109 @@
         };
 
         if (vm.userDetails.write_access && vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
-            vm.gridTrialsOwnedOptions.columnDefs.unshift(writeNciId);
-            vm.gridTrialsOwnedOptions.columnDefs.push(writeTitle);
+            vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, writeNciId);
+            vm.gridTrialsOwnedOptions.columnDefs.splice(4, 0, writeTitle);
+            addRemainingFields();
         } else {
-            vm.gridTrialsOwnedOptions.columnDefs.push(readTitle);
-            vm.gridTrialsOwnedOptions.columnDefs.unshift(readNciId);
+            vm.gridTrialsOwnedOptions.columnDefs.splice(4, 0, readTitle);
+            vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, readNciId);
+            addRemainingFields();
         }
-
+        function addRemainingFields() {
+            vm.gridTrialsOwnedOptions.columnDefs.splice(7, 0,
+                {
+                    name: 'current_milestone_xxx',
+                    displayName: 'Current Milestone, Milestone Date',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '300'
+                },
+                {
+                    name: 'current_admin_milestone_xxx',
+                    displayName: 'Current Admin Milestone, Milestone Date',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '350'
+                },
+                {
+                    name: 'current_scientific_milestone_xxx',
+                    displayName: 'Current Scientific Milestone, Milestone Date',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '350'
+                },
+                {
+                    name: 'current_processing_status_xxx',
+                    displayName: 'Current Processing Status',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '250'
+                },
+                {
+                    name: 'current_processing_status_date_xxx',
+                    displayName: 'Current Processing Status Date',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '250'
+                },
+                {
+                    name: 'submission_type_xxx',
+                    displayName: 'Trial Sub-type',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
+                    name: 'record_verification_date_xxx',
+                    displayName: 'Record Verification Date',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '250'
+                },
+                {
+                    name: 'on_hold_reasons',
+                    displayName: 'On Hold Reasons',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
+                    name: 'on_hold_dates',
+                    displayName: 'On Hold Dates',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
+                    name: 'current_submi_xxx',
+                    displayName: 'Current Submission Type (O for Original, A for Amendment, U for Updated)',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '650'
+                },
+                {
+                    name: 'submission_method',
+                    displayName: 'Submission Method',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
+                    name: 'admin_check_out_by_xxx',
+                    displayName: 'Checked Out for Admin. Use by',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
+                    name: 'admin_check_out_by_xxx',
+                    displayName: 'Checked Out for Scientific Use by',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '300'
+                }
+            );
+        }
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
@@ -335,7 +440,7 @@
                 function (data) {
                     vm.gridTrialsOwnedOptions.useExternalPagination = false;
                     vm.gridTrialsOwnedOptions.useExternalSorting = false;
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                    vm.gridTrialsOwnedOptions.data = data['trials'];
                 }
             );
         };
@@ -413,25 +518,37 @@
             vm.logUserOut = false;
         };
         vm.removeTrialsOwnerships = function () {
-            var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
 
-             var searchParams = {user_id: vm.userDetails.id};
-             if (trialOwnershipIdArr) {
-                searchParams['ids'] = trialOwnershipIdArr;
-             }
-             UserService.endUserTrialsOwnership(searchParams).then(function (data) {
-                 if(data.results === 'success') {
-                    toastr.success('Trial Ownership Removed', 'Success!');
-                    vm.getUserTrials();
-                 }
-                 vm.trialOwnershipRemoveIdArr = null;
-                 if (vm.updateAfterModalSave) {
-                     vm.updateUser(vm.checkForOrgChange());
-                     vm.updateAfterModalSave = false;
-                 }
-             });
-            vm.confirmRemoveTrialOwnershipsPopUp = false;
-            vm.confirmChangeFamilyPopUp = false;
+            if (vm.userRole === 'ROLE_SITE-SU') {
+                //demote
+                vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
+            }
+            
+            //if you are admin offer to transfer
+            if (vm.gridTrialsOwnedOptions.totalItems > 0 && vm.isCurrentUser && vm.userRole === 'ROLE_SITE-SU') {
+                vm.chooseTransferTrials = true;
+                vm.confirmChangeFamilyPopUp = false;
+            } else {
+                var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
+
+                var searchParams = {user_id: vm.userDetails.id};
+                if (trialOwnershipIdArr) {
+                    searchParams['ids'] = trialOwnershipIdArr;
+                }
+                UserService.endUserTrialsOwnership(searchParams).then(function (data) {
+                    if (data.results === 'success') {
+                        toastr.success('Trial Ownership Removed', 'Success!');
+                        vm.getUserTrials();
+                    }
+                    vm.trialOwnershipRemoveIdArr = null;
+                    if (vm.updateAfterModalSave) {
+                        vm.updateUser(vm.checkForOrgChange());
+                        vm.updateAfterModalSave = false;
+                    }
+                });
+                vm.confirmRemoveTrialOwnershipsPopUp = false;
+                vm.confirmChangeFamilyPopUp = false;
+            }
         };
         /****************** implementations below ***************/
         var activate = function() {

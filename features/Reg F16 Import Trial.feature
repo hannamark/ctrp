@@ -25,9 +25,10 @@ And the trial milestone "Submission Received Date" will be added with the date o
 |Import Mappings are in CTRP AUM\Functional\Registration\ClinicalTrials Import Data Element Mapping v3.docx|
 
 Scenario:#2a  NLM Context will be created for an Imported trial  
-    Given I am logged into the CTRP PO Application
-     When a trial has been imported with a Sponsor Name that does not exist in the NLM Context in the CTRP
-     Then I can create an NLM Context with an NLM Context Status of Pending in CTRP
+    Given I am logged into the CTRP
+     When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
+     And that "Sponsor Name" does not match an "Agency" name in CTRP
+     Then an NLM Context with an NLM Context Status of Pending will be automatically created in CTRP
 
 
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
@@ -40,7 +41,7 @@ Then I can import the trial information from ClinicalTrials.gov into CTRP
 And the trial Study Souce will be listed as Industrial
 And the trial Research Category will be listed as Expanded Access
 And the XML from ClinicalTrials.gov will be added to the trial related document
-And the trial milestone "Submission Received Date" will be added with the date of the import
+And the trial milestone "Submission Received Date" will be added with date of the import
 And the trial status will match the trial status in ClinicalTrials.gov as:
 |Available|
 |No Longer Available|
@@ -66,7 +67,7 @@ Given I have selected the option to Import an Industrial or Other Trial
 And I have entered a NCT Number
 When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has NOT been Rejected OR Submission Terminated
 Then The Trial with the associated lead organization and lead organization ID should not be allowed to be imported
-And the error message will be displayed "Duplicate Trial Submission: A trial exists in the system with the same Lead Organization Trial Identifier for the selected Lead Organization" 
+And the error message will be displayed "A trial exists in the system with the same Lead Organization Trial Identifier for the selected Lead Organization" 
 
 
 Scenario: #4d.1 I will be able to Import a trial for the same lead organization and lead organization ID
@@ -80,7 +81,7 @@ Scenario: #5 I can add my site as a participating site after a trial is imported
 Given I have selected the option to Import an Industrial or Other Trial
 And I am on the Import ClinicalTrials.gov Trials screen
 And I have entered a NCT Number
-And I have selected the option to Import from ClinicalTrials.gov
+And I have imported the trial successfully
 Then the trial information will be displayed including
 |Trial Identifiers (Title)| 
 |Lead Organization Trial Identifier|

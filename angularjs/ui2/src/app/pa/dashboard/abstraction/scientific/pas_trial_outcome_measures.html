@@ -163,8 +163,7 @@
                         </thead>
                         <tbody ui-sortable="omView.sortableListener" ng-model="omView.curTrial.outcome_measures">
 
-                        <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item cursor-move">
-                            <!--<tr ng-repeat="participating_site in omView.curTrial.participating_sites track by $index" class="animated-item" ng-class="participating_site._destroy ? 'deleted-text' : ''">-->
+                        <tr ng-repeat="outcome_measure in omView.curTrial.outcome_measures track by $index" class="animated-item cursor-move" ng-class="{'locked': !(paTrialOverview.trialDetailObj.pa_sci_editable && omView.isCurationEnabled) }">
                            <td>
                              {{$index+1}}
                            </td>

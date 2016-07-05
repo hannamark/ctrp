@@ -216,6 +216,7 @@
             function resetForm() {
                 _getTrialDetailCopy();
                 vm.curDoc = _initCurDoc();
+                $scope.trial_docs_form.$setPristine();
             }
 
             /**

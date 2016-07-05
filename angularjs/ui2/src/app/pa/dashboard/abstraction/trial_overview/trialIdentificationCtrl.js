@@ -85,6 +85,7 @@
         function resetView() {
             vm.trialProcessingObj.comment = $scope.$parent.paTrialOverview.trialDetailObj.comment || '';
             vm.trialProcessingObj.priority = $scope.$parent.paTrialOverview.trialDetailObj.priority || '';
+            $scope.abstraction_form.$setPristine();
         }
 
     } //trialIdentificationCtrl
