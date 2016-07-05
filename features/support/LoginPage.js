@@ -7,6 +7,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var menuItemList = require('../support/PoCommonBar');
+//var helperFunctions = require('../support/helper');
 
 var LoginPage = function(){
 
@@ -27,6 +28,7 @@ var LoginPage = function(){
     var params = browser.params;
     var login = new helper();
     var getMemCrntUsrNm = '';
+ //   var helper = new helperFunctions();
 
     this.setUsername = function(){
         login.setValue(this.username,params.login.user,"Username field");
@@ -58,6 +60,15 @@ var LoginPage = function(){
                     }
                     else {
                         element(by.css('a[ng-click="headerView.logOut()"]')).click();
+                        login.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+                        //var alertDialog = browser.switchTo().alert();
+                        //alertDialog.then(function(alert) {
+                        //
+                        //        alertDialog.getText().then(function (value) {
+                        //            console.log('Alert Message: ' + value);
+                        //        });
+                        //        alert.accept();},
+                        //    function (err) { });
                         element(by.model('userView.userObj.user.username')).sendKeys(userName);
                         element(by.model('userView.userObj.user.password')).sendKeys(password);
                         element(by.css('button[ng-click="userView.authenticate()"]')).click();
@@ -144,7 +155,8 @@ var LoginPage = function(){
     this.logout = function(){
         login.wait(this.logoutButton,"logout Button");
         this.logoutButton.click();
-       //expect(browser.getCurrentUrl()).to.eventually.equal('http://ctrp-ci.nci.nih.gov/ctrp/ui/#/main/sign_in');
+        login.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+        //expect(browser.getCurrentUrl()).to.eventually.equal('http://ctrp-ci.nci.nih.gov/ctrp/ui/#/main/sign_in');
     };
 
     this.clickWriteMode = function(writeModeOnOffValue){

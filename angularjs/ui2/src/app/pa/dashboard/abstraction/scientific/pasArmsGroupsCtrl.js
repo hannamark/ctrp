@@ -222,7 +222,7 @@
                 $anchorScroll();
             }
 
-            //$scope.arm_form.$setPristine();
+            $scope.arm_form.$setPristine();
         }
 
         /**
@@ -348,7 +348,6 @@
             }
 
             vm.setAddMode(true);
-            //$scope.arm_form.$setPristine();
         }
 
 
