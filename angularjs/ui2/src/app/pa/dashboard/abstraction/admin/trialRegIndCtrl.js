@@ -21,8 +21,19 @@
         vm.showAddIndIdeError = false;
         vm.disableBtn = false;
 
-        vm.reload = function() {
-            $state.go($state.$current, null, { reload: true });
+        vm.reset = function() {
+            getTrialDetailCopy();
+            vm.addedIndIdes = [];
+            appendIndIdes();
+
+            vm.ind_ide_type = null;
+            vm.ind_ide_number = null;
+            vm.grantor = null;
+            vm.holder_type_id = null;
+            vm.nih_nci = null;
+            vm.nihNciArr = [];
+
+            vm.showAddIndIdeError = false;
         };
 
         vm.updateTrial = function(updateType) {
@@ -47,6 +58,7 @@
                 var status = response.server_response.status;
 
                 if (status >= 200 && status <= 210) {
+                    vm.curTrial = response;
                     vm.curTrial.lock_version = response.lock_version || '';
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                     $scope.$emit('updatedInChildScope', {});
