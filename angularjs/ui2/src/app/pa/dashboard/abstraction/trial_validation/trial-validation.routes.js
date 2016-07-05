@@ -26,7 +26,7 @@
                     primaryPurposeArr: function(TrialService) {
                         return TrialService.getPrimaryPurposes();
                     },
-                    milestoneObj: function(TrialService) {
+                    milestoneList: function(TrialService) {
                         return TrialService.getMilestones();
                     },
                     amendmentReasonObj: function(PATrialService) {

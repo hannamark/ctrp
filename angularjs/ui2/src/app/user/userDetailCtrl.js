@@ -80,11 +80,12 @@
                 // otherwise if it is current user changing org, give warning popup up and safe after po up OK
                 if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                     UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                        vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                        vm.gridTrialsOwnedOptions.totalItems = data.total;
                         if (vm.gridTrialsOwnedOptions.totalItems > 0
-                               && vm.userRole === 'ROLE_ADMIN'
+                               && (vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
-                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
-                                            || vm.userRole === 'ROLE_SITE-SU') {
+                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER')) {
                                 vm.chooseTransferTrials = true;
                                 return;
                         } else if (vm.isCurrentUser) {
@@ -517,25 +518,37 @@
             vm.logUserOut = false;
         };
         vm.removeTrialsOwnerships = function () {
-            var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
 
-             var searchParams = {user_id: vm.userDetails.id};
-             if (trialOwnershipIdArr) {
-                searchParams['ids'] = trialOwnershipIdArr;
-             }
-             UserService.endUserTrialsOwnership(searchParams).then(function (data) {
-                 if(data.results === 'success') {
-                    toastr.success('Trial Ownership Removed', 'Success!');
-                    vm.getUserTrials();
-                 }
-                 vm.trialOwnershipRemoveIdArr = null;
-                 if (vm.updateAfterModalSave) {
-                     vm.updateUser(vm.checkForOrgChange());
-                     vm.updateAfterModalSave = false;
-                 }
-             });
-            vm.confirmRemoveTrialOwnershipsPopUp = false;
-            vm.confirmChangeFamilyPopUp = false;
+            if (vm.userRole === 'ROLE_SITE-SU') {
+                //demote
+                vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
+            }
+            
+            //if you are admin offer to transfer
+            if (vm.gridTrialsOwnedOptions.totalItems > 0 && vm.isCurrentUser && vm.userRole === 'ROLE_SITE-SU') {
+                vm.chooseTransferTrials = true;
+                vm.confirmChangeFamilyPopUp = false;
+            } else {
+                var trialOwnershipIdArr = vm.trialOwnershipRemoveIdArr;
+
+                var searchParams = {user_id: vm.userDetails.id};
+                if (trialOwnershipIdArr) {
+                    searchParams['ids'] = trialOwnershipIdArr;
+                }
+                UserService.endUserTrialsOwnership(searchParams).then(function (data) {
+                    if (data.results === 'success') {
+                        toastr.success('Trial Ownership Removed', 'Success!');
+                        vm.getUserTrials();
+                    }
+                    vm.trialOwnershipRemoveIdArr = null;
+                    if (vm.updateAfterModalSave) {
+                        vm.updateUser(vm.checkForOrgChange());
+                        vm.updateAfterModalSave = false;
+                    }
+                });
+                vm.confirmRemoveTrialOwnershipsPopUp = false;
+                vm.confirmChangeFamilyPopUp = false;
+            }
         };
         /****************** implementations below ***************/
         var activate = function() {

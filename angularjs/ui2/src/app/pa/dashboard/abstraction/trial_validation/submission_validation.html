@@ -133,6 +133,15 @@
                         </button>
                       </div>
                   </div>
+                  <div class="row" ng-show="subValidView.missingFieldsWarning.length > 0">
+                      <div class="col-xs-12 col-sm-6"></div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="alert alert-danger">
+                              <p><strong>Error from Accept - Following Fields are Missing in the Trial:</strong></p>
+                              <p ng-repeat="field in subValidView.missingFieldsWarning">{{field}}</p>
+                          </div>
+                      </div>
+                  </div>
                 </div>
             </form>
         </div>

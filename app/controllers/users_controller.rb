@@ -266,51 +266,52 @@ end
       end
       user_found = org_users.find_by_id user.id
       user_found && user_found.role == "ROLE_SITE-SU"
-    end
-    def current_site_user
-      auth_string = request.headers['Authorization']
-      if !auth_string.blank?
-        token = auth_string.split(" ")[1]
-        user_id = decode_token(token)
-        user = User.find(user_id)
-      end
-      user
-    end
+  end
 
-    def userReadAccess userToUpdate
-      user = current_site_user
-      user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true
+  def current_site_user
+    auth_string = request.headers['Authorization']
+    if !auth_string.blank?
+      token = auth_string.split(" ")[1]
+      user_id = decode_token(token)
+      user = User.find(user_id)
     end
+    user
+  end
 
-    def userWriteAccess userToUpdate
-      user = current_site_user
-      user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-          user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-          user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
-          (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id))
-    end
+  def userReadAccess userToUpdate
+    user = current_site_user
+    user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true
+  end
 
-    def searchAccess
-      user = current_site_user
-      user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-          user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-          user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id)
-    end
+  def userWriteAccess userToUpdate
+    user = current_site_user
+    user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
+        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
+        user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
+        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id))
+  end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      unless params.nil? || params[:id].nil? || params[:username].nil?
-        @user = User.find(params[:id]) || User.find(params[:username])
-      else
-        @user = current_user || current_local_user || current_ldap_user || current_omniauth_user
-      end
-    end
+  def searchAccess
+    user = current_site_user
+    user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
+        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
+        user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id)
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username,
-                                   :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
-                                   :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
-                                   :phone, :user_status_id, :status_date)
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    unless params.nil? || params[:id].nil? || params[:username].nil?
+      @user = User.find(params[:id]) || User.find(params[:username])
+    else
+      @user = current_user || current_local_user || current_ldap_user || current_omniauth_user
     end
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username,
+                                 :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
+                                 :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
+                                 :phone, :user_status_id, :status_date)
+  end
 end
