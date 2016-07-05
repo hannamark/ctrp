@@ -1000,11 +1000,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'SUB_ACCEPTED_TRIAL',
+    code: 'ORI_SUB_ACCEPTED',
     name: 'Submission Accepted Trial',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial REGISTRATION ACCEPTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial REGISTRATION ACCEPTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
@@ -1039,11 +1039,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'SUB_REJECTED_TRIAL',
+    code: 'ORI_SUB_REJECTED',
     name: 'Submission Rejected Trial',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial REGISTRATION REJECTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial REGISTRATION REJECTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
@@ -1070,11 +1070,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'AMEND_SUB_ACCEPTED_TRIAL',
+    code: 'AMEND_SUB_ACCEPTED',
     name: 'Amendment Submission Accepted',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD ACCEPTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD ACCEPTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>
@@ -1104,11 +1104,11 @@ MailTemplate.find_or_create_by(
 )
 
 MailTemplate.find_or_create_by(
-    code: 'AMEND_SUB_REJECTED_TRIAL',
+    code: 'AMEND_SUB_REJECTED',
     name: 'Amendment Submission Rejected',
     from: 'ncictro@mail.nih.gov',
     to: '${trialOwnerEmail}',
-    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD REJECTED for ${nciTrialIdentifier} ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial AMENDMENT ${amendNum} RECORD REJECTED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                             </head><body><hr> <p><b>Title: </b>${trialTitle}</p>

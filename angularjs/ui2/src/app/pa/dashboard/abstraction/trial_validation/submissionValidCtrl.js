@@ -110,8 +110,8 @@
         }
 
         function saveValidation() {
-            console.info('validating submission....');
             vm.trialDetailObj.submissions_attributes = vm.trialDetailObj.submissions; // for update
+            vm.trialDetailObj.edit_type += vm.isAmendmentSubmission ? '_amd' : '_ori'; // mark for 'amendment' or 'original'
             vm.disableBtn = true;
             PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
                 var status = res.server_response.status;
@@ -200,9 +200,9 @@
 
             var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
             vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
+            vm.trialDetailObj.edit_type = 'submission_rejected';
             // TODO: send email for original and amendment type
             saveValidation(); // update the trial validation
-
         }
 
         function acceptTrialValidation() {
@@ -212,6 +212,7 @@
 
                 var processStatus = _genProcessingStatus(acceptStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
                 vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
+                vm.trialDetailObj.edit_type = 'submission_accepted';
                 // TODO: send email for original and amendment type
                 saveValidation(); // update the trial validation
             }
