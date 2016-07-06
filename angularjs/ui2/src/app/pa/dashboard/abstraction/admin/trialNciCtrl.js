@@ -125,8 +125,11 @@
 
         } //updateTrial
 
-        vm.reload = function() {
-            $state.go($state.$current, null, { reload: true });
+        vm.reset = function() {
+            getTrialDetailCopy();
+            vm.addedFses = [];
+            appendFses();
+            $scope.trial_form.$setPristine();
         };
 
 
@@ -178,7 +181,6 @@
             appendFses();
             getTrialDetailCopy();
             watchTrialDetailObj();
-
         }
 
         /**

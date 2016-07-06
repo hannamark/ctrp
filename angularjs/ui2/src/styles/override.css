@@ -1169,7 +1169,9 @@ body.participating-sites a.menu-participating-sites,
 body.collaborators a.menu-collaborators,
 body.trial-related-documents a.menu-trial-related-documents,
 body.nci-info a.menu-nci-info,
+body.trial-email-logs a.menu-email-logs,
 body.trial-design a.menu-trial-design,
+body.interventions a.menu-interventions,
 body.trial-description a.menu-trial-description,
 body.trial-outcome-measures a.menu-trial-outcome-measures,
 body.eligibility-critiera a.menu-eligibility-critiera,
@@ -1178,6 +1180,7 @@ body.disease a.menu-disease,
 body.anatomic-sites a.menu-anatomic-sites,
 body.bio-markers a.menu-bio-markers,
 body.arms-groups a.menu-arms-groups,
+body.submission-validation a.menu-submission-validation,
 body.trial-sub-groups a.menu-trial-sub-groups {
     background: #eee;
     color: #555;

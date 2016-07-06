@@ -3,6 +3,9 @@ source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
+
+#gem 'thin'
+
 # Use pg as the database for Active Record
 gem 'pg'
 gem 'activerecord-postgresql-adapter'
@@ -100,3 +103,6 @@ gem 'prawn'
 #gem for RTF
 gem 'rtf', '~> 0.3.2'
 gem 'clbustos-rtf', '~> 0.5.0'
+
+##logging
+gem "lograge"

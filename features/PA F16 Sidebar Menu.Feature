@@ -107,6 +107,7 @@ And the trial information source is
 Then the sidebar menu will be displayed expanded:
 |NCI Trial ID: <Current Trial ID>|
 |Trial Overview (Section)|
+|Trial Identification|
 |Trial History|
 |Trial Milestones|
 |On Hold Info|
@@ -132,6 +133,7 @@ And the trial information source is
 Then the sidebar menu will be displayed expanded:
 |NCI Trial ID: <Current Trial ID>|
 |Trial Overview (Section)|
+|Trial Identification|
 |Trial History|
 |Trial Milestones|
 |On Hold Info|
@@ -160,6 +162,7 @@ And the trial information source is
 Then the sidebar menu will be displayed expanded:
 |NCI Trial ID: <Current Trial ID>|
 |Trial Overview (Section)|
+|Trial Identification|
 |Trial History|
 |Trial Milestones|
 |On Hold Info|

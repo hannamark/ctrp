@@ -164,6 +164,13 @@ class TrialsController < ApplicationController
     end
   end
 
+  def amendment_reasons
+    @amendment_reasons = AmendmentReason.all
+    respond_to do |format|
+      format.json { render :json => {:data => @amendment_reasons} }
+    end
+  end
+
   def study_models
     @study_models = StudyModel.all
     respond_to do |format|
@@ -275,11 +282,38 @@ class TrialsController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 20 if params[:rows].blank?
+    if params[:trial_ownership].blank?
+      params[:rows] = 20 if params[:rows].blank?
+    else
+      params[:rows] = nil
+    end
+
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
+    if params[:trial_ownership].present?
+
+      if  params[:no_nih_nci_prog].present?
+        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
+      end
+      if ['ROLE_ADMIN','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
+        if params[:family_id].present?
+          @trials = @trials.in_family(params[:family_id], Date.today)
+        elsif params[:organization_id].present?
+          @trials = @trials.matches('lead_org_id', params[:organization_id])
+        end
+      end
+
+      if ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
+        family = FamilyMembership.find_by_organization_id(current_user.organization_id)
+        if family
+          @trials = @trials.in_family(family.family_id, Date.today)
+        else
+          @trials = @trials.matches('lead_org_id', current_user.organization_id)
+        end
+      end
+
+    elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
@@ -290,28 +324,6 @@ class TrialsController < ApplicationController
         splits = params[:pi].split(',').map(&:strip)
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
-      end
-      if  params[:no_nih_nci_prog].present?
-        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
-      end
-
-      if params[:trial_ownership].present?
-        if ['ROLE_ADMIN'].include? current_user.role
-          if params[:family_id].present?
-            @trials = @trials.in_family(params[:family_id], Date.today)
-          elsif params[:organization_id].present?
-            @trials = @trials.matches('lead_org_id', params[:organization_id])
-          end
-        end
-
-        if ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
-          family = FamilyMembership.find_by_organization_id(current_user.organization_id)
-          if family
-            @trials = @trials.in_family(family.family_id, Date.today)
-          else
-            @trials = @trials.matches('lead_org_id', current_user.organization_id)
-          end
-        end
       end
 
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
@@ -437,6 +449,7 @@ class TrialsController < ApplicationController
         @trials = @trials.with_pi_lname(splits[0])
         @trials = @trials.with_pi_fname(splits[1]) if splits.length > 1
       end
+      @trials = @trials.user_trials(params[:user_id]) if params[:user_id].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
@@ -735,7 +748,7 @@ class TrialsController < ApplicationController
                                   trial_documents_attributes: [:id, :file_name, :document_type, :document_subtype,:source_document,:deleted_by,:deletion_date, :file, :_destroy, :status, :added_by_id, :why_deleted, :source_document],
                                   interventions_attributes: [:id, :name, :description, :other_name, :trial_id, :intervention_type_id, :index, :c_code, :_destroy],
                                   other_criteria_attributes: [:id, :index, :criteria_type, :trial_id, :lock_version, :criteria_desc, :_destroy],
-                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :_destroy],
+                                  submissions_attributes: [:id, :amendment_num, :amendment_date, :amendment_reason_id, :_destroy],
                                   sub_groups_attributes:[:id,:index,:label,:description,:_destroy],
                                   anatomic_site_wrappers_attributes: [:id, :anatomic_site_id, :_destroy],
                                   outcome_measures_attributes: [:id, :index,:title, :time_frame, :description, :safety_issue, :outcome_measure_type_id, :_destroy],
@@ -747,6 +760,7 @@ class TrialsController < ApplicationController
                                                        marker_biomarker_purpose_associations_attributes:[:id,:biomarker_purpose_id,:_destroy]],
                                   diseases_attributes:[:id, :preferred_name, :code, :thesaurus_id, :display_name, :parent_preferred, :rank, :_destroy],
                                   milestone_wrappers_attributes:[:id, :milestone_id, :milestone_date, :comment, :submission_id, :created_by, :_destroy],
+                                  processing_status_wrappers_attributes: [:id, :status_date, :processing_status_id, :trial_id, :submission_id],
                                   onholds_attributes:[:id, :onhold_reason_id, :onhold_desc, :onhold_date, :offhold_date, :_destroy],
                                   citations_attributes:[:id, :pub_med_id, :description, :results_reference, :_destroy],
                                   links_attributes:[:id, :url, :description, :_destroy], trial_ownerships_attributes:[:id, :user_id, :_destroy])

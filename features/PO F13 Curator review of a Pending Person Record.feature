@@ -38,13 +38,15 @@ Feature: PO F13 Curator review of a Pending Person Record
     When I select one of the Person Records to be retained
     And I select the other Person Record to be nullified
     And the Person Record to be nullified does not have an Active Status
-    Then all references in CTRP to the nullified Person Record will reference the retained Person Record
-    And Trial Principal Investigator references to the nullified Person Record will reference the retained Person Record
-    And Trial Co-Investigator references to the nullified Person Record will reference the retained person record
-    And Participating site investigator references to the nullified person record will reference the retained person record
-    And participating site person references to the nullified person record will reference theretained person record
-    And central contact references to the nullified person record will reference the retained person record
-    And any unique Person Organization Affiliations on the nullified Person Record will be added to the retained Person Record
+    Then all references in CTRP to the nullified Person Record will reference the retained Person Record in the field type
+    
+    |Trial Principle Investigator|
+    |Trial co-investigators|
+    |Participating Site Contact|
+    |Person affiliated organization|
+    |Participating site Investigator|
+    |Central contact|
+
     And the status of the Person Record to be nullified will be "Nullified"
 
   Scenario:#6 As a PO Curator, I cannot Nullify a Person Record with an Active CTEP Person ID

@@ -3,10 +3,10 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasTrialSubGroupsCtrl', pasTrialSubGroupsCtrl);
 
-    pasTrialSubGroupsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService','OutcomeMeasureService', 'toastr',
+    pasTrialSubGroupsCtrl.$inject = ['$scope', 'TrialService','UserService', 'PATrialService','OutcomeMeasureService', 'toastr',
         'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj','assayTypes', '$location', '$anchorScroll'];
 
-    function pasTrialSubGroupsCtrl($scope, TrialService, PATrialService,OutcomeMeasureService, toastr,
+    function pasTrialSubGroupsCtrl($scope, TrialService,UserService, PATrialService,OutcomeMeasureService, toastr,
                                          MESSAGES, _, $timeout, uiGridConstants,trialDetailObj,assayTypes, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
@@ -16,9 +16,12 @@
         vm.deleteListHandler = deleteListHandler;
         vm.deleteSelected = deleteSelected;
         vm.resetSubGroup = resetSubGroup;
+        vm.isCurationEnabled = UserService.isCurationModeEnabled() || false;
 
         vm.trialDetailObj = {};
-        vm.sortableListener = {};
+        vm.sortableListener = {
+            cancel: '.locked'
+        };
         vm.sortableListener.stop = dragItemCallback;
         vm.disableBtn = false;
 
@@ -28,6 +31,10 @@
             getTrialDetailCopy();
             console.log(JSON.stringify(assayTypes))
         }
+
+        $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+               vm.isCurationEnabled = UserService.isCurationModeEnabled();
+        });
 
         $scope.deleteRow = function(row) {
             OutcomeMeasureService.getGridOptions().data.splice(row.entity.id, 1);
@@ -193,6 +200,7 @@
                 getTrialDetailCopy();
             }, 0);
 
+            $scope.sg_form.$setPristine();
         }
 
         function getTrialDetailCopy() {

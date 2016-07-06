@@ -228,6 +228,9 @@
             vm.searchParams = {};
             vm.searchResult = [];
             vm.addedDiseases = [];
+            $scope.disease_form.$setPristine();
+            $scope.search_disease_form.$setPristine();
+            $scope.saved_disease_form.$setPristine();
         };
 
         activate();

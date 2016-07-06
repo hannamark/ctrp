@@ -1,5 +1,5 @@
 @PA @global
-Feature:  PAS F04 Add and Edit Outcome Measures
+Feature:  PAS F04 Outcome Measures
 As a CTRP PA Abstractor, I can add, edit, copy and delete Outcome Measures 
 
 Scenario: #1 I can add Outcome Measures for a trial
@@ -26,8 +26,6 @@ And <Created Message> displays
 |Created Message|
 |Record created|
 And the Outcome Measures table will display Outcomes Measures values
-
-
       |Outcome Measure Type  |
       |Title  |
       |Time Frame  |
@@ -36,7 +34,7 @@ And the Outcome Measures table will display Outcomes Measures values
       |Edit  |
       |Copy  |
       |Delete  |
- And I can add another Outcome Measure   
+And I can add another Outcome Measure
 
 
 Scenario: #2 I can edit Outcome Measures for a trial

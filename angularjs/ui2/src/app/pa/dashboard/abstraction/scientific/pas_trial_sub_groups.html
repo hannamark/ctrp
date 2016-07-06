@@ -87,8 +87,7 @@
                         </thead>
 
                         <tbody ui-sortable="sgView.sortableListener" ng-model="sgView.curTrial.sub_groups">
-                        <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'deleted-text': sub_group._destroy}">
-                            <td>
+                        <tr ng-repeat="sub_group in sgView.curTrial.sub_groups track by $index" class="animated-item" ng-class="{'locked': !(paTrialOverview.trialDetailObj.pa_sci_editable && sgView.isCurationEnabled) }" ng-class="{'deleted-text': sub_group._destroy}">                            <td>
                                 {{$index+1}}
                             </td>
                             <td>

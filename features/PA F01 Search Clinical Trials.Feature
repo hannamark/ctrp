@@ -106,6 +106,7 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Search Clinical Trials Screen
       When I enter text in the official title selection
+      And the official title should not be more than 600 characters
       And select a search option
       Then the search results will display all trials that contain the official title search text
       
@@ -125,7 +126,7 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       And I am on the Search Clinical Trials Screen
       When I select one or more Identifier Types
           |Lead Org|
-	  |CTRP (NCI)|
+	      |CTRP (NCI)|
           |CTEP|
           |DCP|
           |CCR|
@@ -138,6 +139,7 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Search Clinical Trials Screen
       When I enter text in the Identifier
+      And The entered identifier text should not be more than 30 characters
       And select search
       Then the search results will display trials that contain the identifier
 

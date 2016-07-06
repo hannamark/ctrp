@@ -1,3 +1,7 @@
+
+<div class="alert alert-warning fade in" ng-if="userView.searchWarningMessage && userView.searchWarningMessage.length" ng-cloak>
+    <strong>{{userView.searchWarningMessage}}</strong>
+</div>
 <div class="row">
     <div class="col-xs-12 drop-shadow">
         <div class="row">
@@ -5,16 +9,13 @@
                 <small>* for wild card (e.g. university* for any university)</small>
             </h4>
         </div>
-        <div class="alert alert-warning fade in" ng-if="userView.searchWarningMessage && userView.searchWarningMessage.length" ng-cloak>
-            <strong>{{userView.searchWarningMessage}}</strong>
-        </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
                 <!-- first row -->
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
                         <!-- username -->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group">
                             <label for="username" class="control-label col-sm-5">Username: </label>
                             <div class="col-sm-7">
                                 <input type="text" id="username" class="form-control input-sm" placeholder="Username" ng-model="userView.searchParams.username" auto-focus/>
@@ -26,7 +27,7 @@
                         <div class="form-group">
                             <label for="first_name" class="control-label col-sm-5">Last Name:</label>
                             <div class="col-sm-7">
-                                <input type="text" id="last_name" class="form-control input-sm" placeholder="Last Name" ng-model="userView.searchParams.last_name" auto-focus/>
+                                <input type="text" id="last_name" class="form-control input-sm" placeholder="Last Name" ng-model="userView.searchParams.last_name"/>
                             </div>
                         </div>
                         <!-- Last Name ends -->
@@ -47,7 +48,7 @@
                         <!-- Status ends -->
 
                         <!-- Organization Name-->
-                        <div class="form-group">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage">
                             <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
                             <div class="col-sm-7"  ng-if="!userView.searchOrganization">
                                 <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
@@ -102,6 +103,20 @@
                             </div>
                         </div>
                         <!-- Organization Family ends -->
+                        <!-- Organization Name-->
+                        <div class="form-group" ng-if="userView.registeredUsersPage">
+                            <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
+                            <div class="col-sm-7"  ng-if="!userView.searchOrganization">
+                                <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
+                                       autocomplete="off" placeholder="Organization Name" ng-model="userView.searchParams.organization_name"
+                                       uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
+                                       typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
+                            </div>
+                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganization">
+                                {{userView.searchOrganization}}
+                            </div>
+                        </div>
+                        <!-- Organization Name ends -->
                     </div>
                 </div><!-- first row ends -->
 

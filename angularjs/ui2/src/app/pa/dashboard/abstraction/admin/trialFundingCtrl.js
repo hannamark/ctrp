@@ -26,8 +26,19 @@
         vm.grantsInputs = {grantResults: [], disabled: true};
         vm.disableBtn = false;
 
-        vm.reload = function() {
-            $state.go($state.$current, null, { reload: true });
+        vm.reset = function() {
+            getTrialDetailCopy();
+
+            /* Reset form fields */
+            vm.serial_number = null;
+            vm.institute_code = null;
+            vm.funding_mechanism = null;
+            vm.nci = null;
+
+            vm.showAddGrantError = false;
+            vm.addedGrants = [];
+            appendGrants();
+            $scope.trial_form.$setPristine();
         };
 
         vm.updateTrial = function(updateType) {

@@ -87,6 +87,7 @@
             angular.copy(vm.masterCopy, vm.curPerson);
             vm.savedSelection = [];
             populatePoAffiliations();
+            $scope.person_form.$setPristine();
         };
 
         vm.clearForm = function() {

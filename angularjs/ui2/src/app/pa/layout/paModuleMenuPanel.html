@@ -52,7 +52,7 @@
               <ul class="nav nav-pills nav-stacked">
                   <li><a ui-sref="main.pa.trialOverview.trialDesign" ui-sref-opts="{reload: true}" class="menu-trial-design">Trial Design</a></li>
                   <li><a ui-sref="main.pa.trialOverview.trialDescription" ui-sref-opts="{reload: true}" class="menu-trial-description">Trial Description</a></li>
-                  <li><a ui-sref="main.pa.trialOverview.intervention" ui-sref-opts="{reload: true}">Interventions</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.intervention" ui-sref-opts="{reload: true}" class="menu-interventions">Interventions</a></li>
                   <li><a ui-sref="main.pa.trialOverview.armsGroups" ui-sref-opts="{reload: true}" class="menu-arms-groups">Arms/Groups</a></li>
                   <li><a ui-sref="main.pa.trialOverview.eligibilityCriteria" ui-sref-opts="{reload: true}" class="menu-eligibility-critiera">Eligibility Criteria</a></li>
                   <li><a ui-sref="main.pa.trialOverview.associatedTrials" ui-sref-opts="{reload: true}" class="menu-associated-trials">Associated Trials</a></li>
@@ -82,7 +82,7 @@
                   <strong>Trial Validation</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialValidOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialValidOpen}"></i>
               </uib-accordion-heading>
               <ul class="nav nav-pills nav-stacked">
-                  <li><a href="" class="menu-trial-design">Submission Validation</a></li>
+                  <li><a ui-sref="main.pa.trialOverview.submissionValidation" class="menu-submission-validation">Submission Validation</a></li>
               </ul>
           </uib-accordion-group>
       </div>

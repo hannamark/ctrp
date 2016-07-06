@@ -30,6 +30,7 @@ var paSearchTrialPage = require('../support/abstractionSearchTrialPage');
 var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
 //Trial Related Document
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
+var util = require('util');
 
 var abstractionCommonMethods = function(){
     /*******
@@ -47,6 +48,7 @@ var abstractionCommonMethods = function(){
     var reader;
     var nciSpecific = new abstractionNCISpecific();
     var trialDocCommon = new abstractionTrialRelatedDocument();
+    var self = this;
     var loginTxtVerif = 'CTRP Sign In';
     var loginCredTxtVerif = 'Please sign in to continue.';
     var loginNwUsrSngVerif = 'New User? Sign Up';
@@ -229,7 +231,7 @@ var abstractionCommonMethods = function(){
         console.log(configuration.trialSubmitterUID);
         console.log(configuration.trialSubmitterPWD);
         //App URL
-        browser.get(configuration.uiUrl);
+        //browser.get(configuration.uiUrl);
         helper.wait_for(300);
         //Verify Homepage
         var BrwsrVal = browser.getCurrentUrl();
@@ -344,6 +346,26 @@ var abstractionCommonMethods = function(){
         });
     };
 
+    /***************************************** 
+     * Alert Ok 
+     *****************************************/
+    this.alertMsgOK = function(){
+        browser.switchTo().alert().then(
+            function (alert) { alert.accept(); },
+            function (err) { }
+        );
+    };
+
+    /***************************************** 
+     * Alert Cancel
+     *****************************************/
+    this.alertMsgCancel = function(){
+        browser.switchTo().alert().then(
+            function (alert) { alert.dismiss(); },
+            function (err) { }
+        );
+    };
+
     /*****************************************
      * Wait for element
      *****************************************/
@@ -402,7 +424,20 @@ var abstractionCommonMethods = function(){
      * Verify expected value : Text Box
      *****************************************/
     this.verifyValueFromTextBox = function(obj, expectedValue, errorMessage){
-        helper.getVerifyValue(obj, expectedValue, "Funding Source Organization field");
+        self.wait(obj, errorMessage);
+        expect(obj.getAttribute('value')).to.eventually.equal(expectedValue);
+        obj.isDisplayed().then(function(result) {
+            if (result) {
+                obj.getAttribute('value').then(function(value){
+                    if (value === expectedValue){
+                        console.log('Expected value from text box: '+ value +'');
+                    } else {
+                        throw new Error('Expected assertion: (' + expectedValue + ') has no match with Actual value: (' + value + ')');
+                    }
+                })
+            }
+        });
+        //helper.getVerifyValue(obj, expectedValue, "Funding Source Organization field");
     };
 
     /*****************************************
@@ -410,6 +445,12 @@ var abstractionCommonMethods = function(){
      *****************************************/
     this.verifyIndicator = function(getObject ,getIndicator, result)  {
         expect(getObject.get(getIndicator).isSelected()).to.eventually.equal(result);
+    };
+
+    this.getVerifyValue = function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue);
+        console.log(errorMessage + " - Got value");
     };
 
     /***************************************

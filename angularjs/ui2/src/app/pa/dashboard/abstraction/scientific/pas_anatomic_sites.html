@@ -1,11 +1,11 @@
 <!-- Grid the shows all the Anatomic Sites -->
 <div class="row" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.trialValidImport || paTrialOverview.trialDetailObj.menuTypes.rejection">
-    <div class="panel panel-default" ng-if="anatomicView.addMode">
+    <div class="panel panel-default" ng-show="anatomicView.addMode">
         <div class="panel-heading">
             <div class="panel-title">Add Anatomic Sites</div>
         </div>
         <div class="panel-body">
-            <form name="anatomic_sites" class="form form-horizontal" role="form" ctrp-submit="anatomicView.saveSelection()" unsaved-changes>
+            <form name="anatomic_sites_form" class="form form-horizontal" role="form" ctrp-submit="anatomicView.saveSelection()" unsaved-changes>
                 <fieldset class="sub-bordered" ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable"> 
                     <legend class="sub-bordered">Select Anatomic Sites</legend>
 

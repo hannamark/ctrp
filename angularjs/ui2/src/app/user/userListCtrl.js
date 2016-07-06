@@ -28,6 +28,7 @@
                 phone: '',
                 approved: '',
                 rows: 25,
+                registered_users: vm.registeredUsersPage ? true : false,
                 start: 1
             }
         }; //initial User Search Parameters
@@ -37,7 +38,7 @@
             name: 'organization_name',
             displayName: 'Organizational Affiliation',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '210',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
             '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -47,7 +48,7 @@
             name: 'organization_family',
             displayName: 'Organization Family',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '210',
             width: '*'
         };
 
@@ -55,7 +56,7 @@
             name: 'admin_role',
             displayName: 'Site Administrator Privileges',
             enableSorting: true,
-            width: '110'
+            width: '235'
         };
 
         var optionEmail = {
@@ -83,11 +84,18 @@
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{row.entity.user_status_name}}">{{row.entity.user_status_name}}</div>'
         };
 
+        var optionStatusDate = {
+            name: 'status_date',
+            displayName: 'Status Date',
+            enableSorting: false,
+            width: '200',
+            cellFilter: 'date:"medium"'};
+
         var userName = {
             name: 'username',
             enableSorting: true,
             displayName: 'Username',
-            minWidth: '100',
+            minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
@@ -98,7 +106,7 @@
             name: 'first_name',
             displayName: 'First Name',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
@@ -109,7 +117,7 @@
             name: 'last_name',
             displayName: 'Last Name',
             enableSorting: true,
-            minWidth: '100',
+            minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
@@ -196,11 +204,11 @@
                 vm.searchOrganizationFamily = '';
             }
             vm.searchType = vm.curUser.role;
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
         } else if (!vm.registeredUsersPage){
-            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus);
+            vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
         } else if (vm.registeredUsersPage) {
-            vm.gridOptions.columnDefs.push(lastName, firstName, optionOrg);
+            vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -257,6 +265,10 @@
             } else {
                 vm.searchWarningMessage = '';
                 UserService.searchUsers(vm.searchParams).then(function (data) {
+
+                    if(!data.search_access){
+                        vm.searchWarningMessage = "You currently have no access to this search."
+                    }
                     vm.gridOptions.data = data['users'];
                     vm.gridOptions.totalItems =  data.total;
                     $location.hash('users_search_results');
