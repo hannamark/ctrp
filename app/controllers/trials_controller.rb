@@ -55,8 +55,8 @@ class TrialsController < ApplicationController
 
     Rails.logger.info "params in update: #{params}"
 
+    trial_service = TrialService.new({trial: @trial})
     if params[:trial][:edit_type] == 'amend'
-      trial_service = TrialService.new({trial: @trial})
       trial_json = trial_service.get_json
     end
 
@@ -73,6 +73,8 @@ class TrialsController < ApplicationController
     if trial_json.present?
       trial_service.save_history(trial_json)
     end
+
+    trial_service.send_email(@trial.edit_type)
   end
 
   # DELETE /trials/1
