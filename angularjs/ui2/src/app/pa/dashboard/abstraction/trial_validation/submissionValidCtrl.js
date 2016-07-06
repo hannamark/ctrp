@@ -8,11 +8,11 @@
         .controller('submissionValidCtrl', submissionValidCtrl);
 
     submissionValidCtrl.$inject = ['$scope', '$timeout', 'trialPhaseArr', 'primaryPurposeArr',
-    'milestoneObj', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
+    'milestoneList', 'userDetailObj', 'processingStatuses', 'PATrialService', '_', 'amendmentReasonObj',
     'toastr', '$popover', '$state'];
 
     function submissionValidCtrl($scope, $timeout, trialPhaseArr, primaryPurposeArr,
-        milestoneObj, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
+        milestoneList, userDetailObj, processingStatuses, PATrialService, _, amendmentReasonObj,
         toastr, $popover, $state) {
         var vm = this;
         vm.trialDetailObj = {};
@@ -110,8 +110,8 @@
         }
 
         function saveValidation() {
-            console.info('validating submission....');
             vm.trialDetailObj.submissions_attributes = vm.trialDetailObj.submissions; // for update
+            vm.trialDetailObj.edit_type += vm.isAmendmentSubmission ? '_amd' : '_ori'; // mark for 'amendment' or 'original'
             vm.disableBtn = true;
             PATrialService.updateTrial(vm.trialDetailObj).then(function(res) {
                 var status = res.server_response.status;
@@ -168,7 +168,7 @@
                 templateUrl: 'app/pa/dashboard/abstraction/trial_validation/_reject_trial_popover.tpl.html',
                 animation: 'am-flip-x',
                 content: confirmMsg + '<strong>Rejection Reason: <small>(Required)</small></strong>',
-                autoClose: true,
+                autoClose: false,
                 scope: $scope,
             });
             popover.event = evt;
@@ -177,6 +177,7 @@
         // are used in the popover dialog window
         $scope.closePopover = function() {
             popover.hide();
+            vm.trialDetailObj.edit_type = ''; // clear edit_type when canceling rejection
         };
         $scope.confirmReject = function() {
             _rejectTrialValidation();
@@ -200,9 +201,8 @@
 
             var processStatus = _genProcessingStatus(rejectStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
             vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
-            // TODO: send email for original and amendment type
+            vm.trialDetailObj.edit_type = 'submission_rejected';
             saveValidation(); // update the trial validation
-
         }
 
         function acceptTrialValidation() {
@@ -212,7 +212,7 @@
 
                 var processStatus = _genProcessingStatus(acceptStatusCode, vm.trialDetailObj.current_submission_id, vm.trialDetailObj.id);
                 vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
-                // TODO: send email for original and amendment type
+                vm.trialDetailObj.edit_type = 'submission_accepted';
                 saveValidation(); // update the trial validation
             }
         }
@@ -233,7 +233,7 @@
             return processStatus;
         }
 
-        var milestoneArr = milestoneObj; // from resolved promise
+        var milestoneArr = milestoneList; // from resolved promise
         var curUser = userDetailObj; // from resolved promise
         function _genMilestone(milestoneCode, curSubmissionId, comment) {
             var milestoneObj = _.findWhere(milestoneArr, {code: milestoneCode});
@@ -292,6 +292,10 @@
             } else if (trialObj.isInfoSourceImport) {
                vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_IMPORTED, trialObj);
             }
+            if (vm.missingFieldsWarning.length > 0) {
+                // empty the edit_type if not valid for acceptance
+                vm.trialDetailObj.edit_type = '';
+            }
 
             return vm.missingFieldsWarning.length === 0
         }
@@ -326,6 +330,6 @@
             vm.isAmendmentSubmission = _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
             vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(trialObj.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
         }
-    } // trialEmailLogsCtrl
+    } // submissionValidCtrl
 
 })();

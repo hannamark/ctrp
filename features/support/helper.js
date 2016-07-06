@@ -286,19 +286,27 @@ var helper = function() {
         var alertDialog = browser.switchTo().alert();
             alertDialog.then(
                 function(){
-                    alertDialog.getText().then(function(value){
-                        console.log('value of alert dialog' + value);
-                        expect(value).to.equal(textToVerify);
-                    });
-                    if (action === 'accept') {
+                    if(textToVerify !== '') {
+                        alertDialog.getText().then(function (value) {
+                            console.log('value of alert dialog' + value);
+                            expect(value).to.equal(textToVerify);
+                        });
+                    }
+                    if (action.toUpperCase() === 'ACCEPT') {
                         alertDialog.accept();
                     }
-                    else if (action === 'dismiss') {
+                    else if (action.toUpperCase() === 'OK') {
+                        alertDialog.accept();
+                    }
+                    else if (action.toUpperCase() === 'DISMISS') {
                         alertDialog.dismiss();
+                    }
+                    else   {
+                        assert.fail(0,1,'Option not found');
                     }
             },
                 function (err) {
-                    console.log('There was an error! ' + err);
+                 //   console.log('Alert box' + err);
                 }
             );
     };
