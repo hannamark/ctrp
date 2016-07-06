@@ -85,7 +85,11 @@
                         if (vm.gridTrialsOwnedOptions.totalItems > 0
                                && (vm.userRole === 'ROLE_ADMIN'
                                     || vm.userRole === 'ROLE_SUPER'
-                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER')) {
+                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
+                                            || vm.userRole === 'ROLE_SITE-SU') ) {
+                                if ( vm.isCurrentUser && vm.checkForOrgChange() ) {
+                                    vm.logUserOut = true;
+                                }
                                 vm.chooseTransferTrials = true;
                                 return;
                         } else if (vm.isCurrentUser) {
