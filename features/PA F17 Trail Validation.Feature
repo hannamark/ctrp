@@ -115,26 +115,45 @@ And I am on the Submission Validation screen
 When select save 
 Then the information entered or edited for the trail will be saved to the trial record
 
-Scenario: #10 Accept Trial Validation - Origional
+Scenario: #10 Accept Trial Validation - original
 Given I have selected a trial for Trail Validation 
 And I am on the Submission Validation screen
+And the current milestone is "Validation Processing Start Date"
+And the trial is not On Hold
 When select Accept
 And the submission is not an amendment
 Then the information entered or edited for the trail will be saved to the trial record
 And the trial processing status will be Accepted 
+And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the "Submission Accepted Trial" e-mail will be sent to the trial submitter
 Then the trial milestone "Submission Accepted Date" will be created with the current date and time 
 
 Scenario: #10a Accept Trial Validation - Amendment
 Given I have selected a trial for Trail Validation 
 And I am on the Submission Validation screen
+And the current milestone is "Validation Processing Start Date"
+And the trial is not On Hold
 When select Accept
 And the submission is an amendment
 Then the information entered or edited for the trail will be saved to the trial record
 And the trial processing status will be Accepted 
+And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the "Amendment Submission Accepted" e-mail will be sent to the trial submitter
 Then the trial milestone "Submission Accepted Date" will be created with the current date and time
 
+Scenario: #10b Accept Trial Validation - Validation Processing Start Date milestone check
+Given I have selected a trial for Trail Validation 
+And I am on the Submission Validation screen
+And the current milestone is not "Validation Processing Start Date"
+When select Accept
+Then the error message will be displayed "Validation Processing Start Date milestone is missing"
+
+Scenario: #10c Accept Trial Validation - On Hold check
+Given I have selected a trial for Trail Validation 
+And I am on the Submission Validation screen
+And the trail is On Hold
+When select Accept
+Then the error message will be displayed "Trial is currently On Hold"
 
 Scenario: #11 Cancel Trial Validation 
 Given I have selected a trial for Trail Validation 
@@ -146,6 +165,7 @@ And the screen will be refreshed with the existing data
 Scenario: #12 Reject Trial Validation - amendment
 Given I have selected a trial for Trail Validation 
 And I am on the Submission Validation screen
+And the current milestone is "Validation Processing Start Date"
 And I select Reject
 And the submission is an amendment
 Then the warning message will be displayed "Rejecting this submission and roll back the trial to the prior submission
@@ -156,12 +176,14 @@ And I must select a Rejection Reason from the list:
 And I can optionally add a Rejection Reason Comment
 Then the information entered or edited for the trail will not be saved to the trial record (rollback)
 And the trial processing status will be Rejected
+And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the trial milestone Submission Rejection Date will be created with the current date and time 
 And the "Amendment Submission Rejected" e-mail will be sent to the trial submitter
 
 Scenario: #12a Reject Trial Validation - original
 Given I have selected a trial for Trail Validation 
 And I am on the Submission Validation screen
+And the current milestone is "Validation Processing Start Date"
 And I select Reject
 And the submission is not an amendment
 Then the warning message will be displayed "Rejecting this submission will reject this trial"
@@ -172,10 +194,16 @@ And I must select a Rejection Reason from the list:
 And I can optionally add a Rejection Reason Comment
 Then the information entered or edited for the trail will not be saved to the trial record
 And the trial processing status will be Rejected
+And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the trial milestone Submission Rejection Date will be created with the current date and time 
 And the "Submission Rejected Trial" e-mail will be sent to the trial submitter
 
-
+Scenario: #12b Reject Trial Validation - Validation Processing Start Date milestone check
+Given I have selected a trial for Trail Validation 
+And I am on the Submission Validation screen
+And the current milestone is not "Validation Processing Start Date"
+And I select Reject
+Then the error message will be displayed "Validation Processing Start Date milestone is missing"
 
 Scenario: #13 Place On Hold Trial Validation
 Given I have selected a trial for Trail Validation 
@@ -201,7 +229,8 @@ And any of the mandatory fields have not be entered:
 |Principal Investigator|
 |Sponsor Organization|
 |Responsible Party|
-|Investigator|
+And any of the conditional fields have not be entered when the "responsible party is not "Sponsor"
+|Investigator |
 |Investigator Title|
 |Investigator Affiliation|
 Then an Error message will be displayed stating the missing fields are required
@@ -222,11 +251,12 @@ And any of the mandatory fields have not be entered:
 |Lead Organization|
 |Principal Investigator|
 |Sponsor Organization|
+|Amendment Reason Code|
 |Responsible Party|
+And any of the conditional fields have not be entered when the "responsible party is not "Sponsor"
 |Investigator|
 |Investigator Title|
 |Investigator Affiliation|
-|Amendment Reason Code|
 Then a Error message will be displayed stating the  missing fields are required
 
 Scenario: #16 Accept Trial Validation Errors Imported
@@ -242,3 +272,14 @@ And any of the mandatory fields have not be entered:
 |Primary Purpose|
 |Lead Organization|
 Then a Error message will be displayed stating the missing fields are required
+
+Scenario: #17 Check Out - Abstractor
+Given I have selected a trial for Trail Validation
+And I am an Abstractor 
+And I am on the Submission Validation screen
+When I select Admin Check Out
+Then I can edit this trail
+When I select Scientific Check Out
+Then I can edit this trail
+When I select Admin and Scientific Check Out
+Then I can edit this trail
