@@ -286,20 +286,26 @@
             var altCurMilestoneIndex = -1;
             // if current milestone code is 'SRE', use the latest milestone prior to 'STR'
             if (curMilestoneCode === 'SRE') {
+                console.info('curMilestoneCode: SRE!');
                 altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'STR'});
+                console.info('altCurMilestoneIndex: ', altCurMilestoneIndex);
                 if (altCurMilestoneIndex > 0) {
                     altCurMilestoneIndex -= 1;
                     curMilestoneCode = milestones[altCurMilestoneIndex].code;
                 }
             } else if (curMilestoneCode === 'SRJ') {
+                console.info('curMilestoneCode: SRJ -- submission rejection date');
                 // submission rejection date and last submission type is 'Amendment'
                 if (trialDetailObj.last_submission_type_code === 'AMD') {
+                    console.info('SRJ, last_submission_type_code is AMD!');
                     altCurMilestoneIndex = _.findLastIndex(milestones, {submission_num: curMilestone.submission_num - 1}); // find the active in last submission
                     curMilestoneCode = altCurMilestoneIndex > -1 ? milestones[altCurMilestoneIndex].code : '';
                 } else if (trialDetailObj.last_submission_type_code === 'ORI') {
+                    console.info('SRJ, last_submission_type_code is ORI!');
                     altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'SRJ'});
-                    curMilestone = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
+                    curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
                 }
+                console.info('curMilestoneCode: ', curMilestoneCode);
             }
 
             if (MILESTONE_CODES_FOR_VALIDATION.indexOf(curMilestoneCode) > -1) {
@@ -313,6 +319,7 @@
             } else if (MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT.indexOf(curMilestoneCode) === -1) {
                 updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'abstraction');
             }
+            console.info('updatedPAMenuTypes: ', updatedPAMenuTypes);
 
             return updatedPAMenuTypes;
         }

@@ -39,6 +39,7 @@
                 currentTrialDetailObj = PATrialService.getCurrentTrialFromCache();
                 vm.nciTrialId = currentTrialDetailObj.nci_id;
                 vm.menuTypes = currentTrialDetailObj.menuTypes;
+                console.info('in pamenu panels, vm.menuTypes: ', vm.menuTypes);
             });
         } //activate
 
