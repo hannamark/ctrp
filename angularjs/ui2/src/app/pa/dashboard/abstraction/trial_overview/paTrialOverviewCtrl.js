@@ -319,7 +319,6 @@
             } else if (MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT.indexOf(curMilestoneCode) === -1) {
                 updatedPAMenuTypes = _falsifyValuesExcept(paMenuTypes, 'abstraction');
             }
-            console.info('updatedPAMenuTypes: ', updatedPAMenuTypes);
 
             return updatedPAMenuTypes;
         }
