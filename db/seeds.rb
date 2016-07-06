@@ -1139,9 +1139,23 @@ MailTemplate.find_or_create_by(
     name: 'User Registration',
     from: 'noreply@ctrp.nci.nih.gov',
     to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
-    subject: 'New NCI CTRP Account Request',
+    subject: 'NCI Clinical Trials Reporting Program (CTRP) Account Request',
     body_text: 'Text version.',
-    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br>A new user account in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application.<br><br>The user information is as follows:<ul><li><b>First Name:</b> ${first_name}</li><li><b>Last Name:</b> ${last_name}</li><li><b>Affiliated Organization:</b> ${organization}</li><li><b>Email:</b> ${email}</li></ul></p><p>The user would like the following functions:${functions_list}</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ and activate user and assign role.<p></body></html>'
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <p>Date: ${date}</p>
+                <p>Dear Appsupport,</p>
+                <p>${user_name} has requested access to the Clinical Trials Reporting Program (CTRP) application.</p>
+                <p>Please review the provided user account information and forward to CCCT with the desired role if approved, if not approved please reply back to ${user_name}.</p>
+                <p>
+                Sign Up Form:<br>
+                NIH Account User Name:    ${user_username}<br>
+                Name:                     ${user_name}<br>
+                Email Address:            ${user_email}<br>
+                Phone Number/Extension:   ${user_phone}<br>
+                Organization Affiliation: ${user_org}<br>
+                </p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
 )
 
 MailTemplate.find_or_create_by(
@@ -1162,6 +1176,7 @@ MailTemplate.find_or_create_by(
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
                 <div>${trialcontent}</div>
+                <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) has added you as an owner of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
                 <p>As an owner of this trial record, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
@@ -1179,6 +1194,7 @@ MailTemplate.find_or_create_by(
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
                 <div>${trialcontent}</div>
+                <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) cancelled your ownership of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
                 <p><b>NEXT STEPS:</b></p>
@@ -1580,45 +1596,45 @@ CadsrMarkerSynonym.find_or_create_by(id: 7724).update(alternate_name:  'Transcri
   ##Add NCICTRPDEV team
   LdapUser.delete_all
 
-  charlie = {"email" => "shivece@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Charlie", "last_name" => "Shive" }
-  mahesh = {"email" => "yelisettim@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Mahesh", "last_name" => "Yelisetti" }
-  shilpi = {"email" => "singhs10@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shilpi", "last_name" => "Singh" }
-  shamim = {"email" => "ahmeds6@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shamim", "last_name" => "Ahmed" }
-  murali = {"email" => "dullam@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Murali", "last_name" => "Dulla" }
-  tony = {"email" => "wangg5@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Tony", "last_name" => "Wang" }
-  shenpei = {"email" => "wus4@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
-  sarada = {"email" => "schintal@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
-  hemant = {"email" => "undalehv@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
-  radhika = {"email" => "tekumall@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
-  vasu = {"email" => "nalluruvn@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Vasu", "last_name" => "Nalluru"}
-  barry = {"email" => "alkisbd@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Barry", "last_name" => "Alkis"}
+  charlie = {"email" => "shivece_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Charlie", "last_name" => "Shive" }
+  mahesh = {"email" => "yelisettim_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Mahesh", "last_name" => "Yelisetti" }
+  shilpi = {"email" => "singhs10_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shilpi", "last_name" => "Singh" }
+  shamim = {"email" => "ahmeds6_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shamim", "last_name" => "Ahmed" }
+  murali = {"email" => "dullam_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Murali", "last_name" => "Dulla" }
+  tony = {"email" => "wangg5_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Tony", "last_name" => "Wang" }
+  shenpei = {"email" => "wus4_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Shenpei", "last_name" => "Wu" }
+  sarada = {"email" => "schintal_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sarada", "last_name" => "Chintala" }
+  hemant = {"email" => "undalehv_xxx@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Hemant", "last_name" => "Undale" }
+  radhika = {"email" => "tekumall_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Radhika", "last_name" => "Tekumalla"}
+  vasu = {"email" => "nalluruvn_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Vasu", "last_name" => "Nalluru"}
+  barry = {"email" => "alkisbd_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Barry", "last_name" => "Alkis"}
 
 
   ncictrpdev_users = [charlie, mahesh, shilpi, shamim, murali, tony, shenpei, sarada, hemant, radhika, vasu, barry]
 
   ##Add CTRP Business Analysts
 
-  joe = {"email" => "martuccijj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Joe", "last_name" => "Martucci" }
-  michael = {"email" => "izbickimj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Michael", "last_name" => "Izbicki"}
-  sandy = {"email" => "lightbodysj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sandy", "last_name" => "Lightbody" }
-  susan = {"email" => "nonemakersl@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Susan", "last_name" => "Nonemaker"  }
-  sophia = {"email" => "rarhais@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sophia", "last_name" => "Rarhai"  }
+  joe = {"email" => "martuccijj_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Joe", "last_name" => "Martucci" }
+  michael = {"email" => "izbickimj_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Michael", "last_name" => "Izbicki"}
+  sandy = {"email" => "lightbodysj_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sandy", "last_name" => "Lightbody" }
+  susan = {"email" => "nonemakersl_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Susan", "last_name" => "Nonemaker"  }
+  sophia = {"email" => "rarhais_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Sophia", "last_name" => "Rarhai"  }
 
   ba_users = [joe, michael, sandy, susan, sophia]
 
   ##Add CTRO and Curator users
 
-  stephanie = {"email" => "whitleys@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
-  kirsten = {"email" => "larcokl@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
-  andrea = {"email" => "mooreaj@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
-  graysonra = {"email" => "graysonra@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
+  stephanie = {"email" => "whitleys_xxx@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Stephanie", "last_name" => "Whitley" }
+  kirsten = {"email" => "larcokl_xxx@mail.nih.gov", "role" => "ROLE_CURATOR", "first_name" => "Kirsten", "last_name" => "Larco" }
+  andrea = {"email" => "mooreaj_xxx@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Andrea", "last_name" => "Moore" }
+  graysonra = {"email" => "graysonra_xxx@mail.nih.gov", "role" => "ROLE_ABSTRACTOR-SU", "first_name" => "Rachel", "last_name" => "Grayson" }
 
   ctro_users = [stephanie, kirsten, andrea, graysonra]
 
   #Add Fed users
 
-  jose = {"email" => "galvezjj@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
-  gene = {"email" => "krausg@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Gene", "last_name" => "Kraus" }
+  jose = {"email" => "galvezjj_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Jose", "last_name" => "Galvez" }
+  gene = {"email" => "krausg_xxx@mail.nih.gov", "role" => "ROLE_SUPER", "first_name" => "Gene", "last_name" => "Kraus" }
 
   fed_users = [jose, gene]
 
