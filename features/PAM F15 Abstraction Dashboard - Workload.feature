@@ -102,7 +102,7 @@ And I am on the CTRP Abstraction Workload screen
 And I select a trial ID
 And the latest trial milestone is "Submission Received Date"
 Then the trail validaiton sidebar menu will appear
-And the trial details screen will be displayed (see PAM F17 Abstraction Dashboard - Details) 
+And the trial information screen will be displayed  
 
 Scenario: #5 I can view trail details - Abstract
 Given I am logged into the CTRP Protocol Abstraction application
@@ -110,7 +110,7 @@ And I am on the CTRP Abstraction Workload screen
 And I select a trial ID
 And the latest trial milestone is not "Submission Received Date"
 Then the trail abstraction sidebar menu will appear
-And the trial details screen will be displayed (see PAM F17 Abstraction Dashboard - Details)
+And the trial information screen will be displayed
 
 
 Scenario: #6 I can export Abstraction Dashboard WorkLoad into an Excel spreadsheet
