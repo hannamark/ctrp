@@ -285,6 +285,35 @@
          */
         function _isValidForAccept(trialObj) {
             vm.missingFieldsWarning = []; // to be filled with string values in required fields
+            if (trialObj.onholds.length > 0) {
+                _.each(trialObj.onholds, function(holdEntry) {
+                    if (!holdEntry.offhold_date) {
+
+                    }
+                });
+
+                for (var i = 0; i < trialObj.onholds.length; i++) {
+                    var holdEntry = trialObj.onholds[i];
+                    var isOnhold = false;
+                    if (!angular.isDefined(holdEntry.offhold_date)) {
+                        // null or undefined offhold_date means still on-hold
+                        isOnhold = true;
+                    } else {
+                        if (moment(holdEntry.offhold_date).isValid()) {
+                            var today = moment();
+                            isOnhold = moment(holdEntry.offhold_date).isAfter(today); // if offhold_date after today, the trial is still onhold
+                        } else {
+                            isOnhold = true; // if offhold_date (should be in the format '2016-07-30') cannot be parsed, assume the trial is still on hold
+                        }
+                    }
+                    if (isOnhold) {
+                        vm.missingFieldsWarning.unshift('This trial is currently on hold and cannot be accepted');
+                        vm.trialDetailObj.edit_type = '';
+                        return;
+                    }
+                }
+            }
+
             if (trialObj.current_submission_num === 1 && trialObj.isInfoSourceProtocol) {
                 vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_ORIGINAL_PROTOCOL, trialObj);
             } else if (trialObj.current_submission_num > 1 && trialObj.isInfoSourceProtocol) {
@@ -292,6 +321,7 @@
             } else if (trialObj.isInfoSourceImport) {
                vm.missingFieldsWarning = _findMissingFields(REQUIRED_FIELDS_IMPORTED, trialObj);
             }
+
             if (vm.missingFieldsWarning.length > 0) {
                 // empty the edit_type if not valid for acceptance
                 vm.trialDetailObj.edit_type = '';
@@ -311,10 +341,10 @@
             Object.keys(fieldKVObj).forEach(function(key) {
                 if (key === 'amendment_reason_id') {
                     if (!angular.isDefined(trialObj.submissions[trialObj.submissions.length-1].amendment_reason_id)) {
-                        missingFields.push(fieldKVObj[key]);
+                        missingFields.push(fieldKVObj[key] + ' is missing value');
                     }
                 } else if (!angular.isDefined(trialObj[key])) {
-                    missingFields.push(fieldKVObj[key]); // push in the value string
+                    missingFields.push(fieldKVObj[key] + ' is missing value'); // push in the value string
                 }
             });
 
