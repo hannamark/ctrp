@@ -294,15 +294,15 @@
                     curMilestoneCode = milestones[altCurMilestoneIndex].code;
                 }
             } else if (curMilestoneCode === 'SRJ') {
-                console.info('curMilestoneCode: SRJ -- submission rejection date');
+                console.info('curMilestoneCode: SRJ -- submission rejection date, curMilestone.submission_num: ', curMilestone.submission_num);
                 // submission rejection date and last submission type is 'Amendment'
                 if (trialDetailObj.last_submission_type_code === 'AMD') {
                     console.info('SRJ, last_submission_type_code is AMD!');
                     altCurMilestoneIndex = _.findLastIndex(milestones, {submission_num: curMilestone.submission_num - 1}); // find the active in last submission
                     curMilestoneCode = altCurMilestoneIndex > -1 ? milestones[altCurMilestoneIndex].code : '';
                 } else if (trialDetailObj.last_submission_type_code === 'ORI') {
-                    console.info('SRJ, last_submission_type_code is ORI!');
                     altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'SRJ'});
+                    console.info('SRJ, last_submission_type_code is ORI, altCurMilestoneIndex: ', altCurMilestoneIndex);
                     curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
                 }
                 console.info('curMilestoneCode: ', curMilestoneCode);
