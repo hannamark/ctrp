@@ -34,7 +34,7 @@
         };
 
         vm.userObj = new UserObj();
-        
+        vm.timestamp = Date.now();
         AppSettingsService.getSettings({ setting: 'USER_DOMAINS', external: true}).then(function (response) {
             vm.domainsArr = response.data[0].settings.split('||');
             vm.selectedFunctionsObj = [];
