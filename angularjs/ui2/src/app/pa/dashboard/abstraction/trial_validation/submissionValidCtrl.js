@@ -203,6 +203,7 @@
             vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
             vm.trialDetailObj.edit_type = 'submission_rejected';
             saveValidation(); // update the trial validation
+            $state.go('main.pa.trialOverview.trialIdentification', {}, {reload: true});
         }
 
         function acceptTrialValidation() {
@@ -214,6 +215,7 @@
                 vm.trialDetailObj.processing_status_wrappers_attributes.push(processStatus);
                 vm.trialDetailObj.edit_type = 'submission_accepted';
                 saveValidation(); // update the trial validation
+                $state.go('main.pa.trialOverview.trialIdentification', {}, {reload: true});
             }
         }
 
