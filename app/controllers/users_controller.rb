@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
   def update
     current_user = current_site_user
-    @user = User.find_by_username(params[:user][:username])
+    @user = User.find(params[:user][:id])
     if current_user.role != 'ROLE_ACCOUNT-APPROVER' && current_user.role != 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
       params[:user][:domain] = @user.domain
       params[:user][:role] = @user.role
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
       else
         params[:user][:user_status_id] = @user.user_status_id
       end
-    elsif current_user.role != 'ROLE_ADMIN'
+    elsif current_user.role != 'ROLE_ADMIN' || current_user.role != 'ROLE_ACCOUNT-APPROVER'
       params[:user][:domain] = current_user.domain
     end
 
