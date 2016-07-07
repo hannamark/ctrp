@@ -279,8 +279,10 @@ end
   end
 
   def userReadAccess userToUpdate
-    user = current_site_user
-    userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false;
+    if current_site_user
+      user = current_site_user
+      userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false;
+    end
   end
 
   def userWriteAccess userToUpdate
