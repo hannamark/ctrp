@@ -18,17 +18,17 @@ class UsersController < ApplicationController
 
   def show
     show_user = User.find_by_username(params[:username])
-    @userReadAccess = userReadAccess(show_user)
+    @userReadAccess  = userReadAccess(show_user)
     if @userReadAccess
       @user = show_user
       @families = Family.find_unexpired_matches_by_org(@user.organization_id)
+      @userWriteAccess = userWriteAccess(show_user)
     end
-    @userWriteAccess = userWriteAccess(show_user)
   end
 
   def update
     current_user = current_site_user
-    @user = User.find_by_username(params[:user][:username])
+    @user = User.find(params[:user][:id])
     if current_user.role != 'ROLE_ACCOUNT-APPROVER' && current_user.role != 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
       params[:user][:domain] = @user.domain
       params[:user][:role] = @user.role
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
       else
         params[:user][:user_status_id] = @user.user_status_id
       end
-    elsif current_user.role != 'ROLE_ADMIN'
+    elsif current_user.role != 'ROLE_ADMIN' || current_user.role != 'ROLE_ACCOUNT-APPROVER'
       params[:user][:domain] = current_user.domain
     end
 
@@ -279,16 +279,19 @@ end
   end
 
   def userReadAccess userToUpdate
-    user = current_site_user
-    user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true
+    if current_site_user
+      user = current_site_user
+      userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false;
+    end
   end
 
   def userWriteAccess userToUpdate
     user = current_site_user
-    user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
+    userToUpdate ?
+        ( user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
         user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
         user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
-        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id))
+        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) : false;
   end
 
   def searchAccess

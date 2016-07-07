@@ -25,8 +25,8 @@ class ProcessingStatusWrapper < TrialBase
   belongs_to :trial
 
   ## Audit Trail Callbacks
-  #after_save :touch_trial
-  #after_destroy :touch_trial
+  after_save :touch_trial
+  after_destroy :touch_trial
 
   scope :latest, -> {
     order("updated_at DESC").first
@@ -35,7 +35,11 @@ class ProcessingStatusWrapper < TrialBase
   private
 
   def touch_trial
-    find_current_user = nil
+    if self.trial.edit_type.nil?
+      ##Note down edit_type is null when processing status is being added from abstraction page, so we need to touch trial only in this case
+      ##Since trial edit_type is not nil when it is registering and amending or updating then trial get updated for sure so to avoid dead lock this condition check is essential.
+
+      find_current_user = nil
     updated_by = nil
     last_version_transaction_id = 0
     last_version = self.versions.last
@@ -52,5 +56,7 @@ class ProcessingStatusWrapper < TrialBase
     if does_trial_modified_during_this_transaction_size == 0
       self.trial.update(updated_by:updated_by, updated_at:Time.now)
     end
+    end
   end
+
 end
