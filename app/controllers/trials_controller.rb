@@ -45,6 +45,9 @@ class TrialsController < ApplicationController
         format.json { render json: @trial.errors, status: :unprocessable_entity }
       end
     end
+
+    trial_service = TrialService.new({trial: @trial})
+    trial_service.send_email(@trial.edit_type)
   end
 
   # PATCH/PUT /trials/1
