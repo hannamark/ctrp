@@ -35,6 +35,11 @@
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                    if (vm.userDetails !== response.username) {
+                        $timeout(function () {
+                            $state.go('main.userDetail', {'username': response.username}, {reload: true});
+                        }, 500);
+                    }
                 }
                 if (vm.logUserOut === true){
                     vm.logUserOut = false;
@@ -69,12 +74,8 @@
         };
 
         vm.validateSave = function() {
-            //vm.showValidation = true;
             var newOrg = vm.selectedOrgsArray[0];
-            // If form is invalid, return and let AngularJS show validation errors.
-            //if (isFormValid) {
-             //  return;
-            //} else {
+            
             // if inactivating user or changing org of user, check to transfer trials if trials exist
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
@@ -105,7 +106,6 @@
                 vm.updateUser();
                 return;
             }
-            //}
         };
 
         vm.checkForOrgChange = function() {
