@@ -46,19 +46,19 @@ class Submission < TrialBase
   has_many :trial_documents, -> { order 'trial_documents.id' }
 
   before_create :set_acknowledge_as_no
+  before_create :set_submission_status
 
   ## Audit Trail Callbacks
   #after_save :touch_trial      ##Commented out since When a trial updated , amended, or created then only submission create.
   #after_destroy :touch_trial   ##Commented out since A submission will never be destroyed
 
-
-
-
-
   def set_acknowledge_as_no
-      self.acknowledge = 'No'
+    self.acknowledge = 'No'
   end
 
+  def set_submission_status
+    self.status = 'Active'
+  end
 
   scope :matches, -> (column, value) {
     join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
