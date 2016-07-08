@@ -27,12 +27,15 @@ class UsersController < ApplicationController
   end
 
   def update
+    p "zzzzzzzzzzzzzzzzzzzzzzzzzz"
+    p params[:user]
+    p "shshshsshsshhs"
     current_user = current_site_user
     @user = User.find(params[:user][:id])
     if current_user.role != 'ROLE_ACCOUNT-APPROVER' && current_user.role != 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
       params[:user][:domain] = @user.domain
       params[:user][:role] = @user.role
-      if params[:user][:user_status_id] != @user.user_status_id && current_user.username == @user.username
+      if params[:user][:user_status_id] != @user.user_status_id && current_user.id == @user.id
         params[:user][:user_status_id] = UserStatus.find_by_code('INR').id
       else
         params[:user][:user_status_id] = @user.user_status_id
@@ -72,15 +75,6 @@ class UsersController < ApplicationController
     Rails.logger.info "In Users Controller, update after user = #{@user.inspect}"
   end
 
-  def approve
-    # When an ADMIN approves of the user request for privileges, the role is updated
-    # if it is not already chosen and the approved field is set to true
-    @user = User.find_by_username(params[:username])
-    @user.process_approval
-    redirect_to users_path
-
-  end
-
   def request_admin_access
     begin
       mail_template = MailTemplate.find_by_code('USER_ADMIN_REQUEST')
@@ -94,14 +88,6 @@ class UsersController < ApplicationController
       logger.warn "USER ADMIN REQUEST: Email delivery error = #{e}"
       @success = [false]
     end
-  end
-
-  def disapprove
-      # When an ADMIN disapproves of the user request for privileges, the role is set to nill
-      # and the approved field is set to false
-    @user = User.find_by_username(params[:username])
-    @user.process_disapproval
-    redirect_to users_path
   end
 
   def gsa
@@ -281,28 +267,35 @@ end
   def userReadAccess userToUpdate
     if current_site_user
       user = current_site_user
-      userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false;
     end
+    user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false
   end
 
   def userWriteAccess userToUpdate
-    user = current_site_user
-    userToUpdate ?
+    if current_site_user
+      user = current_site_user
+    end
+    user && userToUpdate ?
         ( user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
         user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
         user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
-        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) : false;
+        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) : false
   end
 
   def searchAccess
-    user = current_site_user
-    user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
+    if current_site_user
+      user = current_site_user
+    end
+    user ?
+        ( user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
         user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-        user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id)
+        user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id) ) : false
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
+    p params[:username]
+    p params[:username]
     unless params.nil? || params[:id].nil? || params[:username].nil?
       @user = User.find(params[:id]) || User.find(params[:username])
     else
@@ -312,7 +305,7 @@ end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name, :username,
+    params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name,
                                  :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
                                  :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
                                  :phone, :user_status_id, :status_date)

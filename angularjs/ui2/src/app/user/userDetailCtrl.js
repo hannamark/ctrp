@@ -31,14 +31,12 @@
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
-
+            console.log(vm.userDetails)
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
-                    if (vm.userDetails !== response.username) {
-                        $timeout(function () {
-                            $state.go('main.userDetail', {'username': response.username}, {reload: true});
-                        }, 500);
+                    if (vm.userDetailsOrig.username !== response.username) {
+                        $state.go('main.userDetail', response, {reload: true});
                     }
                 }
                 if (vm.logUserOut === true){
