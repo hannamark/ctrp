@@ -1521,7 +1521,9 @@ CadsrMarkerSynonym.find_or_create_by(id: 7725).update(alternate_name:  'Spi-B Tr
 CadsrMarkerSynonym.find_or_create_by(id: 7723).update(alternate_name:  'SPI-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 CadsrMarkerSynonym.find_or_create_by(id: 7724).update(alternate_name:  'Transcription Factor Spi-B',cadsr_marker_id:  1781,cadsr_marker_status: CadsrMarkerStatus.find_by_code('ACT'))
 
-
+ValidationRule.find_or_create_by(code: 'POE001', section: 'PO', item: 'organization', rule: 'organization name cannot be null', description: 'organization name is required', remark: 'no remark here')
+ValidationRule.find_or_create_by(code: 'PAAE001', section: 'PAA', item: 'trial_general_details', rule: 'Trial official title cannot be null', description: 'Trial official title is required', remark: 'Follow the menus to Trial General Details screen to do the correction')
+ValidationRule.find_or_create_by(code: 'PASE001', section: 'PAS', item: 'trial_design', rule: 'Research category cannot be null', description: 'Research category is required', remark: 'Follow the menus to do the correction')
 
   test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
                  {"username" => "ctrpsuper2", "role" => "ROLE_SUPER", "first_name" => "Frank", "last_name" => "Lee"},

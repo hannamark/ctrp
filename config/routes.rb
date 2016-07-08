@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  get 'validation_rule/index'
+
+  get 'validation_rule/show'
+
+  get 'validation_rule/validate'
+
   resources :marker_biomarker_purpose_associations
 
   resources :accrual_disease_terms

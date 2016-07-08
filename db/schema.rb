@@ -1492,6 +1492,18 @@ ActiveRecord::Schema.define(version: 20160708190334) do
   add_index "users", ["user_status_id"], name: "index_users_on_user_status_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  create_table "validation_rules", force: :cascade do |t|
+    t.string   "code"
+    t.string   "section"
+    t.string   "item"
+    t.string   "type"
+    t.string   "rule"
+    t.text     "description"
+    t.text     "remark"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "version_associations", force: :cascade do |t|
     t.integer "version_id"
     t.string  "foreign_key_name", null: false
@@ -1752,6 +1764,7 @@ ActiveRecord::Schema.define(version: 20160708190334) do
   create_sequence "trials_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "user_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "users_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "validation_rules_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "version_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "versions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
 
