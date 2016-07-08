@@ -13,7 +13,7 @@
     function paMilestoneCtrl($scope, $state, toastr, trialDetailObj, milestoneObj, TrialService, userDetailObj,
                              DateService, PATrialService, $popover) {
         var vm = this;
-        vm.curTrial = trialDetailObj;
+        vm.curTrial = PATrialService.getCurrentTrialFromCache();
         vm.curUser = userDetailObj;
         vm.addMode = false;
         vm.submission_num = vm.curTrial.current_submission_num;
@@ -125,17 +125,19 @@
             outerTrial.trial = vm.curTrial;
 
             TrialService.upsertTrial(outerTrial).then(function (response) {
-                if (response.server_response.status < 300) {
-                    toastr.success('Milestone have been recorded', 'Operation Successful!');
-                    PATrialService.setCurrentTrial(response); // cache the updated trial
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.curTrial = response;
+                    PATrialService.setCurrentTrial(vm.curTrial); // cache the updated trial
                     $scope.$emit('updatedInChildScope', {}); // signal for updates
-                    $state.go('main.pa.trialOverview.milestone', {}, {reload: true});
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
+                    vm.setAddMode(false);
+                    toastr.success('Milestone have been recorded', 'Operation Successful!');
                 }
             }).catch(function (err) {
                 console.log("Error in saving milestone " + JSON.stringify(outerTrial));
+            }).finally(function () {
+                vm.disableBtn = false;
             });
         };
 
