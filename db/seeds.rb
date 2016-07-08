@@ -1139,9 +1139,23 @@ MailTemplate.find_or_create_by(
     name: 'User Registration',
     from: 'noreply@ctrp.nci.nih.gov',
     to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
-    subject: 'New NCI CTRP Account Request',
+    subject: 'NCI Clinical Trials Reporting Program (CTRP) Account Request',
     body_text: 'Text version.',
-    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body><p>Dear Sir/Madam,<br><br>A new user account in the  Clinical Trials Reporting Program (CTRP) Clinical Trials Registration application.<br><br>The user information is as follows:<ul><li><b>First Name:</b> ${first_name}</li><li><b>Last Name:</b> ${last_name}</li><li><b>Affiliated Organization:</b> ${organization}</li><li><b>Email:</b> ${email}</li></ul></p><p>The user would like the following functions:${functions_list}</p><p>Please Navigate to http://ctrp-ci.nci.nih.gov/ and activate user and assign role.<p></body></html>'
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <p>Date: ${date}</p>
+                <p>Dear Appsupport,</p>
+                <p>${user_name} has requested access to the Clinical Trials Reporting Program (CTRP) application.</p>
+                <p>Please review the provided user account information and forward to CCCT with the desired role if approved, if not approved please reply back to ${user_name}.</p>
+                <p>
+                Sign Up Form:<br>
+                NIH Account User Name:    ${user_username}<br>
+                Name:                     ${user_name}<br>
+                Email Address:            ${user_email}<br>
+                Phone Number/Extension:   ${user_phone}<br>
+                Organization Affiliation: ${user_org}<br>
+                </p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
 )
 
 MailTemplate.find_or_create_by(
@@ -1158,10 +1172,11 @@ MailTemplate.find_or_create_by(
     code: 'TRIAL_OWNER_ADD',
     name: 'Trial Ownerships Added',
     from: 'noreply@ctrp.nci.nih.gov',
-    subject: 'Trial Ownerships Added',
+    subject: 'NCI CTRP: Trial RECORD OWNER ADDED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
                 <div>${trialcontent}</div>
+                <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) has added you as an owner of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
                 <p>As an owner of this trial record, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
@@ -1175,10 +1190,11 @@ MailTemplate.find_or_create_by(
     code: 'TRIAL_OWNER_REMOVE',
     name: 'Trial Ownerships Removed',
     from: 'noreply@ctrp.nci.nih.gov',
-    subject: 'Trial Ownerships Removed',
+    subject: 'NCI CTRP: RECORD OWNERSHIP CANCELLED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
                 <div>${trialcontent}</div>
+                <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) cancelled your ownership of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
                 <p><b>NEXT STEPS:</b></p>
