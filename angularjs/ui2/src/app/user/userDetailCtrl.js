@@ -180,13 +180,30 @@
         UserService.getUserStatuses().then(function (response) {
             vm.statusArr = response.data;
             if (vm.userRole == 'ROLE_SITE-SU') {
-                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INA', 'INR'], item.code);
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['INR'];
+                    if (vm.userDetails.status_date) {
+                        allowedStatus.push('ACT', 'INA');
+                    }
+                    return _.contains(allowedStatus, item.code);
                 });
-            }
-            if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
-                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
+            } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['ACT', 'INR'];
+                    if (!vm.userDetails.status_date) {
+                        allowedStatus.push('REJ');
+                    }
+                    return _.contains(allowedStatus, item.code);
+                });
+            } else {
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['ACT', 'INR'];
+                    if (!vm.userDetails.status_date) {
+                        allowedStatus.push('REJ');
+                    } else {
+                        allowedStatus.push('INA', 'DEL');
+                    }
+                    return _.contains(allowedStatus, item.code);
                 });
             }
         });
