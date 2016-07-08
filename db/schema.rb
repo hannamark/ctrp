@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629152531) do
+ActiveRecord::Schema.define(version: 20160708190334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1147,6 +1147,7 @@ ActiveRecord::Schema.define(version: 20160629152531) do
     t.text     "acknowledge_comment"
     t.date     "acknowledge_date"
     t.string   "acknowledged_by",      limit: 255
+    t.string   "status"
   end
 
   add_index "submissions", ["amendment_reason_id"], name: "index_submissions_on_amendment_reason_id", using: :btree
