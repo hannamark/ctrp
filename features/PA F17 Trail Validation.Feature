@@ -176,6 +176,7 @@ And I must select a Rejection Reason from the list:
 And I can optionally add a Rejection Reason Comment
 Then the information entered or edited for the trail will not be saved to the trial record (rollback)
 And the trial processing status will be Rejected
+And if the the trial is "On Hold" if will be take "Off Hold" by setting the off hold date to the current date and time 
 And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the trial milestone Submission Rejection Date will be created with the current date and time 
 And the "Amendment Submission Rejected" e-mail will be sent to the trial submitter
@@ -194,6 +195,7 @@ And I must select a Rejection Reason from the list:
 And I can optionally add a Rejection Reason Comment
 Then the information entered or edited for the trail will not be saved to the trial record
 And the trial processing status will be Rejected
+And if the the trial is "On Hold" if will be take "Off Hold" by setting the off hold date to the current date and time
 And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the trial milestone Submission Rejection Date will be created with the current date and time 
 And the "Submission Rejected Trial" e-mail will be sent to the trial submitter
@@ -270,8 +272,18 @@ And any of the mandatory fields have not be entered:
 |Official Title|
 |Phase|
 |Primary Purpose|
-|Lead Organization|
 Then a Error message will be displayed stating the missing fields are required
+
+Scenario: #16a Trial Validation required fields
+Given I have selected a trial for Trail Validation 
+And I am on the Submission Validation screen
+And the trial information source is
+|Imported|
+The the mandatory fields are:
+|Lead Organization identifier (General Trails Details Screen)|
+|Official Title (General Trails Details Screen)|
+|Phase (Submission Validation screen)|
+|Primary Purpose (Submission Validation screen)|
 
 Scenario: #17 Check Out - Abstractor
 Given I have selected a trial for Trail Validation

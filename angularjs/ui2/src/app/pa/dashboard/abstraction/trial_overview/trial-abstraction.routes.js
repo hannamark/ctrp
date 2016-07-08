@@ -65,9 +65,6 @@
                 resolve: {
                     TrialService: 'TrialService',
                     UserService: 'UserService',
-                    trialDetailObj: function($stateParams, TrialService) {
-                        return TrialService.getTrialById($stateParams.trialId);
-                    },
                     milestoneObj: function(TrialService) {
                         return TrialService.getMilestones();
                     },
@@ -87,9 +84,6 @@
                 controller: 'paOnholdCtrl as onholdView',
                 resolve: {
                     TrialService: 'TrialService',
-                    trialDetailObj: function ($stateParams, TrialService) {
-                        return TrialService.getTrialById($stateParams.trialId);
-                    },
                     onholdReasonObj: function (TrialService) {
                         return TrialService.getOnholdReasons();
                     }

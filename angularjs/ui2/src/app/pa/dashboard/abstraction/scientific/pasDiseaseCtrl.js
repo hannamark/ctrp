@@ -7,11 +7,13 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasDiseaseCtrl', pasDiseaseCtrl);
 
-    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'DiseaseService', '$window', 'trialDetailObj', 'TrialService', '$anchorScroll', '$location', '$timeout'];
+    pasDiseaseCtrl.$inject = ['$scope', '$state', 'toastr', 'DiseaseService', '$window', 'TrialService',
+        '$anchorScroll', '$location', '$timeout', 'PATrialService'];
 
-    function pasDiseaseCtrl($scope, $state, toastr, DiseaseService, $window, trialDetailObj, TrialService, $anchorScroll, $location, $timeout) {
+    function pasDiseaseCtrl($scope, $state, toastr, DiseaseService, $window, TrialService,
+                            $anchorScroll, $location, $timeout, PATrialService) {
         var vm = this;
-        vm.curTrial = trialDetailObj;
+        vm.curTrial = PATrialService.getCurrentTrialFromCache();
         vm.addMode = false;
         vm.searchParams = {};
         vm.searchParams.disease_name = '';
@@ -75,7 +77,11 @@
                 var status = response.server_response.status;
 
                 if (status >= 200 && status <= 210) {
-                    $state.go('main.pa.trialOverview.disease', {}, {reload: true});
+                    vm.curTrial = response;
+                    PATrialService.setCurrentTrial(vm.curTrial); // cache the updated trial
+                    $scope.$emit('updatedInChildScope', {}); // signal for updates
+                    vm.setAddMode(false);
+                    activate();
                     toastr.success('Record(s) deleted', 'Operation Successful!');
 
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -111,7 +117,11 @@
                 var status = response.server_response.status;
 
                 if (status >= 200 && status <= 210) {
-                    $state.go('main.pa.trialOverview.disease', {}, {reload: true});
+                    vm.curTrial = response;
+                    PATrialService.setCurrentTrial(vm.curTrial); // cache the updated trial
+                    $scope.$emit('updatedInChildScope', {}); // signal for updates
+                    vm.setAddMode(false);
+                    activate();
                     toastr.success('Diseases have been updated', 'Operation Successful!');
 
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -209,7 +219,11 @@
                 var status = response.server_response.status;
 
                 if (status >= 200 && status <= 210) {
-                    $state.go('main.pa.trialOverview.disease', {}, {reload: true});
+                    vm.curTrial = response;
+                    PATrialService.setCurrentTrial(vm.curTrial); // cache the updated trial
+                    $scope.$emit('updatedInChildScope', {}); // signal for updates
+                    vm.setAddMode(false);
+                    activate();
                     toastr.success('Diseases have been recorded', 'Operation Successful!');
 
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -244,6 +258,7 @@
 
         // Append associations for existing Trial
         function appendDiseases() {
+            vm.existingDiseases = [];
             for (var i = 0; i < vm.curTrial.diseases.length; i++) {
                 var disease = {};
                 disease.id = vm.curTrial.diseases[i].id;

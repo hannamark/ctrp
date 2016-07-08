@@ -8,17 +8,12 @@ class RegistrationsController < Devise::RegistrationsController
         begin
           mail_template = MailTemplate.find_by_code('USER_REGISTRATION')
           user = params[:local_user]
-          selected_functions = "<ul>"
-          user[:selected_functions].each do |function|
-            selected_functions += "<li>#{function}</li>"
-          end
-          selected_functions += "</ul>"
-
-          mail_template.body_html.sub!('${first_name}', user[:first_name])
-          mail_template.body_html.sub!('${last_name}', user[:last_name])
-          mail_template.body_html.sub!('${email}', user[:email])
-          mail_template.body_html.sub!('${organization}', user[:organization_name])
-          mail_template.body_html.sub!('${functions_list}', selected_functions)
+          mail_template.body_html.gsub!('${user_name}',      "#{user[:first_name]} #{user[:last_name]}")
+          mail_template.body_html.gsub!('${user_username}',  user[:username])
+          mail_template.body_html.gsub!('${user_email}',     user[:email])
+          mail_template.body_html.gsub!('${user_phone}',     "#{(user[:phone] ? user[:phone] : '')} #{(user[:phone_ext] ? ' ext ' + user[:phone_ext] : '')}" )
+          mail_template.body_html.gsub!('${user_org}',       (user[:organization_id] ? Organization.find(user[:organization_id]).name : '') )
+          mail_template.body_html.gsub!('${date}',           (Time.now).strftime('%v') )
 
           CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
         rescue  Exception => e

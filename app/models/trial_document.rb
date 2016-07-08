@@ -40,8 +40,8 @@ class TrialDocument < TrialBase
   before_create :save_submission_id
 
   ## Audit Trail Callbacks
-  #after_save :touch_trial
-  #after_destroy :touch_trial
+  after_save :touch_trial
+  after_destroy :touch_trial
 
 
   def touch_trial
@@ -59,7 +59,7 @@ class TrialDocument < TrialBase
     does_trial_modified_during_this_transaction = TrialVersion.where("item_type= ? and transaction_id= ?","Trial", last_version_transaction_id)
     does_trial_modified_during_this_transaction_size = does_trial_modified_during_this_transaction.size if does_trial_modified_during_this_transaction
     ##If trail has been modified during the same transaction , then there is no need to update Trail again to create another version.
-    if does_trial_modified_during_this_transaction_size == 0
+    if does_trial_modified_during_this_transaction_size == 0 && self.trial.present?
       self.trial.update(updated_by:updated_by, updated_at:Time.now)
     end
   end
