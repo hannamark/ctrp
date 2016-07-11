@@ -320,6 +320,7 @@ class TrialsController < ApplicationController
 
     elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
+      @trials = @trials.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
