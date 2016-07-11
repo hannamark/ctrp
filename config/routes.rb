@@ -203,6 +203,14 @@ Rails.application.routes.draw do
       resources :submission_methods
     end
 
+    scope '/model' do
+      resources :validation_rules do
+        collection do
+          get 'trial/:trial_id' => 'validation_rules#validate_trial'
+        end
+      end
+    end
+
     scope '/registry' do
       resources :submissions
       resources :study_sources

@@ -16,6 +16,18 @@ class TrialService
     TrialHistory.create(snapshot: trial_json, submission: @trial.current_submission)
   end
 
+  def _validate()
+    p "trial.id is: #{@trial.id}"
+    rules = ValidationRule.where(model: 'trial')
+    results = []
+    rules.each do |r|
+      if r.code == 'PASE001'
+        results << r
+      end
+    end
+    return results
+  end
+
   def rollback(submission_id)
     trial_history = TrialHistory.find_by_submission_id(submission_id)
     # Parameters for native fields and deleting existing children

@@ -61,6 +61,17 @@ class ValidationRulesController < ApplicationController
     end
   end
 
+  def validate_trial
+    trial_id = params[:trial_id]
+    @trial = Trial.find(trial_id)
+    trial_service = TrialService.new({trial: @trial})
+    @results = trial_service._validate()
+    respond_to do |format|
+      #@trial = Trial.find(1)
+      format.json { render :json => @results }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_validation_rule
