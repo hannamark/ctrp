@@ -71,12 +71,12 @@ class Submission < TrialBase
     end
   }
 
-  scope :matchesImpPro, -> (userId) {
+  scope :matchesImpPro, -> (userId, sources) {
     join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
     join_clause += "LEFT JOIN users ON submissions.user_id = users.id "
 
 
-    joins(join_clause).where(" submitted_trial.internal_source_id in (1,2)
+    joins(join_clause).where(" submitted_trial.internal_source_id in (#{sources.join(',')})
        and submissions.user_id = #{userId} AND submissions.trial_id is not null")
 
   }
