@@ -1125,6 +1125,12 @@ class Trial < TrialBase
     where(id: trial_ownerships.pluck(:trial_id))
   }
 
+  scope :filter_rejected, -> {
+    join_clause = "LEFT JOIN submissions ON trials.id = submissions.trial_id LEFT JOIN submission_types ON submissions.submission_type_id = submission_types.id"
+    where_clause = "submissions.status <> ? AND submission_types.code = ?"
+    joins(join_clause).where(where_clause, "Rejected", "ORI")
+  }
+
   scope :sort_by_col, -> (params) {
     column = params[:sort]
     order = params[:order]
