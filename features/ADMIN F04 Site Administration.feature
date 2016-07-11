@@ -158,14 +158,14 @@ And I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the status to inactive
 And the system will display a warning message that "The User will no longer be able to Access CTRP"
-And the system will determine if the user is an owner of any trials
+And the system will determine if the user is an owner of trials with an Active Submission 
 And display the message that "The trial(s) owned by this user will need to be reassigned to a new owner"
 And the system will display the following action buttons
 |Save without transferring ownership|
 |Transfer ownership|
 When I can Select Save without Transferring ownership
 Then the account will be inactivated
-And the trials owned by the user will have their ownership expired
+And the trials with an Active Submission owned by the user will have their ownership expired
 When I select Transfer Ownership
 Then the system will open the trial management screen to allow the site admin to reassign the trials (Feature Admin F06)
 And the trials displayed will be for selected user
@@ -179,7 +179,7 @@ Then I will see a list of all CTRP Users with the same Site Affiliation as I hav
 And I select a user that has site administrator privileges
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the organization affiliation for the CTRP User to a different organization by selecting organization look up
-And the system will determine if the user is an owner of any trials
+And the system will determine if the user is an owner of any trials with an Active Submission 
 And display the message that "The trial(s) owned by this user will need to be reassigned to a new owner"
 And the system will display the following action buttons
 |Save without transferring ownership|
@@ -190,6 +190,6 @@ And the user account status will be pending
 And the system will send the "CTRP Account Request" email to appsupport for an organization change to a different family (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin) 
 When I select Transfer Ownership
 Then the system will open the trial management screen to allow the admin to reassign the trials (Feature Admin F06)
-And the trials displayed will be for selected user
+And the trials with an active submission will be displayed for selected user
 And the new organization will be assigned to the user
 
