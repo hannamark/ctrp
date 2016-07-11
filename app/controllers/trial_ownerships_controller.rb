@@ -209,7 +209,7 @@ class TrialOwnershipsController < ApplicationController
         mail_template.subject.sub!('${nciTrialIdentifier}', trial.nci_id)
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', trial.lead_protocol_id.to_s)
 
-        CtrpMailer.general_email(mail_template.from, user.email, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+        #CtrpMailer.general_email(mail_template.from, user.email, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
 
         rescue  Exception => e
           logger.warn "#{template}: Email delivery error = #{e}"

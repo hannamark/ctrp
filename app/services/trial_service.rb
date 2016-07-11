@@ -492,7 +492,6 @@ class TrialService
           # Populate the trial data in the email body
           mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
-          mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
           mail_template.body_html.sub!('${trialTitle}', trial_title)
 
           table = '<table border="0">'
@@ -522,7 +521,6 @@ class TrialService
           mail_template.to = @trial.current_user.email if @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications
           mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
-          mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
           mail_template.body_html.sub!('${trialTitle}', trial_title)
           mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
@@ -556,7 +554,6 @@ class TrialService
 
         mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
-        mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
         mail_template.body_html.sub!('${trialTitle}', trial_title)
         mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
         mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
@@ -570,7 +567,6 @@ class TrialService
         mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
         mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
 
-
       elsif last_sub_type.code == 'AMD' && !@trial.edit_type.include?('submission')  # must not be submission_accepted/rejected
         mail_template = MailTemplate.find_by_code('TRIAL_AMEND')
         if mail_template.present?
@@ -580,7 +576,6 @@ class TrialService
           mail_template.subject.sub!('${trialAmendNumber}', last_amend_num)
           mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
-          mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
           mail_template.body_html.sub!('${trialTitle}', trial_title)
           mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.body_html.sub!('${lead_organization}', org_name)
@@ -607,7 +602,6 @@ class TrialService
         mail_template.from = 'ncictro@mail.nih.gov'
         mail_template.to = @trial.current_user.email if @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
-        mail_template.subject = "[#{Rails.env}] " + mail_template.subject if !Rails.env.production?
         mail_template.body_html.sub!('${trialTitle}', trial_title)
         mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
         mail_template.body_html.sub!('${lead_organization}', org_name)
@@ -619,22 +613,7 @@ class TrialService
 
     end
 
-    mail_sending_result = 'Mail server failed to send'
-    if mail_template.present?
-      begin
-        mail_sending_result = 'Success'
-        CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
-      rescue  Exception => e
-        logger.warn "email delivery error = #{e}"
-      end
-      ## save the mail sending to mail log
-      if mail_template.to.nil? || !mail_template.to.include?("@")
-        # recipient email not replaced with actual email address (user does not have email)
-        mail_sending_result = 'Failed, recipient email is unspecified or user refuses to receive email notification'
-      end
-      MailLog.create(from: mail_template.from, to: mail_template.to, cc: mail_template.cc, bcc: mail_template.bcc, subject: mail_template.subject, body: mail_template.body_html, email_template_name: mail_template.name, mail_template: mail_template, result: mail_sending_result, trial: @trial)
-
-    end
+    CtrpMailerWrapper.send_email(mail_template, @trial)
   end
 
 end

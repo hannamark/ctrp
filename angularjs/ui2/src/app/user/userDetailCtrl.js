@@ -31,10 +31,13 @@
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
-
+            console.log(vm.userDetails)
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                    if (vm.userDetailsOrig.username !== response.username) {
+                        $state.go('main.userDetail', response, {reload: true});
+                    }
                 }
                 if (vm.logUserOut === true){
                     vm.logUserOut = false;
@@ -69,12 +72,8 @@
         };
 
         vm.validateSave = function() {
-            //vm.showValidation = true;
             var newOrg = vm.selectedOrgsArray[0];
-            // If form is invalid, return and let AngularJS show validation errors.
-            //if (isFormValid) {
-             //  return;
-            //} else {
+            
             // if inactivating user or changing org of user, check to transfer trials if trials exist
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
@@ -105,7 +104,6 @@
                 vm.updateUser();
                 return;
             }
-            //}
         };
 
         vm.checkForOrgChange = function() {
@@ -182,13 +180,30 @@
         UserService.getUserStatuses().then(function (response) {
             vm.statusArr = response.data;
             if (vm.userRole == 'ROLE_SITE-SU') {
-                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INA', 'INR'], item.code);
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['INR'];
+                    if (vm.userDetails.status_date) {
+                        allowedStatus.push('ACT', 'INA');
+                    }
+                    return _.contains(allowedStatus, item.code);
                 });
-            }
-            if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
-                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
+            } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['ACT', 'INR'];
+                    if (!vm.userDetails.status_date) {
+                        allowedStatus.push('REJ');
+                    }
+                    return _.contains(allowedStatus, item.code);
+                });
+            } else {
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['ACT', 'INR'];
+                    if (!vm.userDetails.status_date) {
+                        allowedStatus.push('REJ');
+                    } else {
+                        allowedStatus.push('INA', 'DEL');
+                    }
+                    return _.contains(allowedStatus, item.code);
                 });
             }
         });

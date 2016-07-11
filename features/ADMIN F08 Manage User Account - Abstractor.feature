@@ -81,4 +81,9 @@ And I can view
 And I select the Save option
 Then the account information will be updated in CTRP
 
-
+Scenario: #4 I can view a users Trials (See Admin F05 Registered User Details)
+Given I am logged into CTRP
+And I select the User from the list
+Then And the Last Active Submission for all the trials the user is an owner of will be displayed (Protocol Trials)
+And the Last Active Submission for all the trials the trials the user submitted can be displayed (Protocol and Imported Trials)
+And the Last Active Submission for all the trials the user is a participating site on can be displayed (Protocol and Imported Trials)
