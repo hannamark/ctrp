@@ -498,7 +498,7 @@
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
-                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                    var isCTEPContext =row.entity.source_context && row.entity.source_context.indexOf('CTEP') > -1;
                     if ($scope.usedInModal) {
                         return true;
                     }

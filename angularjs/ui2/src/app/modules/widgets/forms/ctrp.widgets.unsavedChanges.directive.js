@@ -5,13 +5,13 @@
 (function() {
     'use strict';
     angular.module('ctrpApp.widgets')
-        //.controller('unSavedChangesModalCtrl', unSavedChangesModalCtrl)
+        .controller('unSavedChangesModalCtrl', unSavedChangesModalCtrl)
         .directive('unsavedChanges', unsavedChanges);
 
-        //unSavedChangesModalCtrl.$inject = ['$scope', '$uibModalInstance'];
-        unsavedChanges.$inject = ['$window', '$uibModal'];
+        unSavedChangesModalCtrl.$inject = ['$scope', '$uibModalInstance'];
+        unsavedChanges.$inject = ['$window', '$uibModal', '$parse'];
 
-        function unsavedChanges($window, $uibModal) {
+        function unsavedChanges($window, $uibModal, $parse) {
             var directiveObject = {
                 restrict: 'A',
                 link: linkerFn
@@ -21,11 +21,20 @@
 
             function linkerFn(scope, element, attrs) {
                 var formName;
-                var formArray = element.find('form'); // For the case there are multiple forms on a single page
+                var formArray = element.controller().formArray ? element.controller().formArray : null;
+                var currentTabIndex = element.controller().tabIndex;
+                var newTabIndex = 0;
+                var element = element;
 
-                if (!formArray.length) {
-                    formName = attrs.name ? attrs.name : element.parent().prop('name');
-                }
+                setFormVars();
+
+                attrs.$observe('unsavedTabIndex', function(newVal) {
+                    var newIndex = parseInt(newVal, 10);
+                    if (newIndex !== currentTabIndex) {
+                        newTabIndex = newIndex;
+                        evaluateTabForm();
+                    }
+                });
 
                 $window.onbeforeunload = function(event) {
                     if (!formArray.length) {
@@ -38,7 +47,7 @@
                         var formItem;
 
                         for (var i = 0; i < formArray.length; i++) {
-                            formItem = $(formArray[i]).prop('name');
+                            formItem = typeof formArray[i] === 'object' ? formArray[i].name : formArray[i];
                             if (scope[formItem].$dirty) {
                                 dirtyFlag = true;
                             }
@@ -63,7 +72,7 @@
                         var dirtyFlag = false;
 
                         for (var i = 0; i < formArray.length; i++) {
-                            formItem = $(formArray[i]).prop('name');
+                            formItem = typeof formArray[i] === 'object' ? formArray[i].name : formArray[i];
                             if (scope[formItem].$dirty && !scope[formItem].$submitted) {
                                 dirtyFlag = true;
                             }
@@ -76,6 +85,60 @@
                         }
                     }
                 });
+
+                function setFormVars() {
+                    if (formArray && formArray.length) {
+                        return;
+                    }
+
+                    formArray = element.find('form'); // For the case when there are multiple forms on a single page
+
+                    if (!formArray.length) {
+                        formName = attrs.name ? attrs.name : element.parent().prop('name');
+                    }
+                }
+
+                function evaluateTabForm() {
+                    var form = scope[formArray[currentTabIndex]];
+                    var currentTab = element.find('md-tab-item.active');
+
+                    if (form) {
+                        if (form.$dirty) {
+                            activateModal();
+                            element.controller().tabIndex = currentTabIndex;
+                        } else {
+                            currentTabIndex = newTabIndex;
+                            element.controller().tabIndex = newTabIndex;
+                        }
+                    }
+                }
+
+                function activateModal() {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'app/modules/widgets/forms/unsaved_changes_modal.html',
+                        controller: 'unSavedChangesModalCtrl as unChgs',
+                        size: 'md'
+                    });
+
+                    modalInstance.result.then(function() {
+                        currentTabIndex = newTabIndex;
+                        element.controller().tabIndex = newTabIndex;
+                    });
+                }
             }
+        }
+
+
+        function unSavedChangesModalCtrl($scope, $uibModalInstance) {
+            var vm = this;
+
+            vm.confirm = function() {
+                $uibModalInstance.close('confirmed');
+            };
+
+            vm.cancel = function() {
+                $uibModalInstance.dismiss('canceled');
+            };
         }
 })();

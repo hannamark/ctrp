@@ -1,0 +1,21 @@
+<div id="unsaved-tab-modal">
+    <div class="modal-header">
+        <strong class="modal-title">Unsaved Changes</strong>
+        <button type="button" class="close" data-dismiss="modal" ng-click="unChgs.cancel()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            You have unsaved changes in this form. Are you sure you want to leave the tab without saving changes?
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-12">
+            <div class="btn-toolbar">
+                <button class="btn btn-primary pull-right" ng-click="unChgs.confirm()">Ok</button>
+                <button class="btn btn-cancel pull-right" ng-click="unChgs.cancel()">
+                    <i class="glyphicon glyphicon-remove"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

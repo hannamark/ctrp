@@ -1,4 +1,4 @@
-<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes>
+<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes unsaved-tab-forms="{{psView.formArray}}" unsaved-tab-index="{{psView.tabIndex}}">
     <div class="panel panel-default" ng-show="psView.addEditMode">
         <div class="panel-heading">
             <div class="panel-title" ng-show="!psView.currentParticipatingSite.organization.name">Add Participating Site</div>
@@ -229,7 +229,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false, true)" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -363,7 +363,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false, true)" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -474,7 +474,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false)" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false, true)" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
