@@ -459,15 +459,15 @@ ActiveRecord::Schema.define(version: 20160708190334) do
   end
 
   create_table "interventions", force: :cascade do |t|
-    t.string   "name",                 limit: 255
-    t.string   "other_name",           limit: 255
+    t.string   "name",                 limit: 1000
+    t.string   "other_name",           limit: 1000
     t.text     "description"
     t.integer  "intervention_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.string   "uuid",                 limit: 255
-    t.integer  "lock_version",                     default: 0
+    t.integer  "lock_version",                      default: 0
     t.integer  "index"
     t.string   "c_code"
   end
