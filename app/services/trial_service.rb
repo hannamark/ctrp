@@ -52,7 +52,7 @@ class TrialService
     gt_rules.each do |rule|
       if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) || (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
          (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) || (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
-         (rule.code == 'PAA8' and keywords.nil? and keywords.length > 160)
+         (rule.code == 'PAA8' and keywords.present? and keywords.length > 160)
         validation_results << rule
       end
     end
