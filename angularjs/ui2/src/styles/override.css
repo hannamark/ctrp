@@ -1181,6 +1181,7 @@ body.anatomic-sites a.menu-anatomic-sites,
 body.bio-markers a.menu-bio-markers,
 body.arms-groups a.menu-arms-groups,
 body.submission-validation a.menu-submission-validation,
+body.abstraction-validation a.menu-abstraction-validation,
 body.trial-sub-groups a.menu-trial-sub-groups {
     background: #eee;
     color: #555;

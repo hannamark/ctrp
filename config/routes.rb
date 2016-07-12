@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  get 'validation_rule/index'
+
+  get 'validation_rule/show'
+
+  get 'validation_rule/validate'
+
   resources :marker_biomarker_purpose_associations
 
   resources :accrual_disease_terms
@@ -195,6 +201,14 @@ Rails.application.routes.draw do
       get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
       get 'trial_document_types' => 'util#get_trial_document_types'
       resources :submission_methods
+    end
+
+    scope '/model' do
+      resources :validation_rules do
+        collection do
+          get 'trial/:trial_id' => 'validation_rules#validate_trial'
+        end
+      end
     end
 
     scope '/registry' do

@@ -13,7 +13,6 @@
     function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
-        $scope.userDetail_form = {};
         vm.userDetails = userDetailObj;
         vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.userDetailsOrig = angular.copy(userDetailObj);
@@ -32,10 +31,13 @@
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
-
+            console.log(vm.userDetails)
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                    if (vm.userDetailsOrig.username !== response.username) {
+                        $state.go('main.userDetail', response, {reload: true});
+                    }
                 }
                 if (vm.logUserOut === true){
                     vm.logUserOut = false;
@@ -70,38 +72,37 @@
         };
 
         vm.validateSave = function() {
-            vm.showValidation = true;
             var newOrg = vm.selectedOrgsArray[0];
-            // If form is invalid, return and let AngularJS show validation errors.
-            if ($scope.userDetail_form.$invalid) {
-                return;
+            
+            // if inactivating user or changing org of user, check to transfer trials if trials exist
+            // otherwise if it is current user changing org, give warning popup up and safe after po up OK
+            if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
+                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                    vm.gridTrialsOwnedOptions.totalItems = data.total;
+                    if (vm.gridTrialsOwnedOptions.totalItems > 0
+                           && (vm.userRole === 'ROLE_ADMIN'
+                                || vm.userRole === 'ROLE_SUPER'
+                                    || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
+                                        || vm.userRole === 'ROLE_SITE-SU') ) {
+                            if ( vm.isCurrentUser && vm.checkForOrgChange() ) {
+                                vm.logUserOut = true;
+                            }
+                            vm.chooseTransferTrials = true;
+                            return;
+                    } else if (vm.isCurrentUser) {
+                        vm.updateAfterModalSave = true;
+                        vm.logUserOut = true;
+                        vm.confirmChangeFamilyPopUp = true;
+                        return;
+                    } else {
+                        vm.updateUser(vm.checkForOrgChange());
+                        return;
+                    }
+                });
             } else {
-                // if inactivating user or changing org of user, check to transfer trials if trials exist
-                // otherwise if it is current user changing org, give warning popup up and safe after po up OK
-                if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
-                    UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                        vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
-                        vm.gridTrialsOwnedOptions.totalItems = data.total;
-                        if (vm.gridTrialsOwnedOptions.totalItems > 0
-                               && (vm.userRole === 'ROLE_ADMIN'
-                                    || vm.userRole === 'ROLE_SUPER'
-                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER')) {
-                                vm.chooseTransferTrials = true;
-                                return;
-                        } else if (vm.isCurrentUser) {
-                            vm.updateAfterModalSave = true;
-                            vm.logUserOut = true;
-                            vm.confirmChangeFamilyPopUp = true;
-                            return;
-                        } else {
-                            vm.updateUser(vm.checkForOrgChange());
-                            return;
-                        }
-                    });
-                } else {
-                    vm.updateUser();
-                    return;
-                }
+                vm.updateUser();
+                return;
             }
         };
 
@@ -140,7 +141,7 @@
             vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
         };
-        
+
         AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
             vm.domainArr = response.data[0].settings.split('||');
         }).catch(function (err) {
@@ -179,13 +180,30 @@
         UserService.getUserStatuses().then(function (response) {
             vm.statusArr = response.data;
             if (vm.userRole == 'ROLE_SITE-SU') {
-                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INA', 'INR'], item.code);
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['INR'];
+                    if (vm.userDetails.status_date) {
+                        allowedStatus.push('ACT', 'INA');
+                    }
+                    return _.contains(allowedStatus, item.code);
                 });
-            }
-            if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
-                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
+            } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['ACT', 'INR'];
+                    if (!vm.userDetails.status_date) {
+                        allowedStatus.push('REJ');
+                    }
+                    return _.contains(allowedStatus, item.code);
+                });
+            } else {
+                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                    var allowedStatus = ['ACT', 'INR'];
+                    if (!vm.userDetails.status_date) {
+                        allowedStatus.push('REJ');
+                    } else {
+                        allowedStatus.push('INA', 'DEL');
+                    }
+                    return _.contains(allowedStatus, item.code);
                 });
             }
         });
@@ -523,7 +541,7 @@
                 //demote
                 vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
             }
-            
+
             //if you are admin offer to transfer
             if (vm.gridTrialsOwnedOptions.totalItems > 0 && vm.isCurrentUser && vm.userRole === 'ROLE_SITE-SU') {
                 vm.chooseTransferTrials = true;
@@ -558,7 +576,7 @@
                 });
             }
         }();
-        
+
         $scope.$on(vm.redirectToAllUsers, function () {
             vm.states = [];
         });

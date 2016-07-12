@@ -15,12 +15,13 @@
         </div>
         <div class="row top-offset-xs"></div>
         <div class="row">
-            <form class="form-horizontal" role="form" name="userDetail_form" novalidate  ng-class="{'show-form-errors': userDetailView.showValidation}">
+            <form class="form-horizontal" role="form" name="userDetail_form" novalidate ctrp-submit="userDetailView.validateSave()" ctrp-submit-delete>
                 <fieldset restriction-field>
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.username)}">
                         <label class="control-label col-xs-12 col-sm-3">User Name:</label>
                         <div class="col-xs-12 col-sm-7">
-                            <input type="text" class="form-control input-sm" name="username" required ng-model="userDetailView.userDetails.username" placeholder="Username" ng-disabled="true">
+                            <input type="text" class="form-control input-sm" name="username" required ng-model="userDetailView.userDetails.username" placeholder="Username"
+                                   ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_ACCOUNT-APPROVER'">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.username.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.username) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                             <span class="help-block" ng-show="userDetail_form.username.$error.required">Username is Required</span>
                         </div>
@@ -50,7 +51,7 @@
                             <select name="domain" id="domain"
                                     class="form-control input-sm"
                                     ng-model="userDetailView.userDetails.domain"
-                                    ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN'"
+                                    ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_ACCOUNT-APPROVER'"
                                     required>
                                 <option value="">Select a domain</option>
                                 <option ng-repeat="item in userDetailView.domainArr" value="{{item}}">{{item}}</option>
@@ -137,7 +138,7 @@
                     <div class="form-group has-feedback required" ng-class="{'has-error': !userDetailView.selectedOrgsArray.length}">
                         <label class="control-label col-xs-12 col-sm-3">Affiliated Organization:</label>
                         <div class="col-xs-12 col-sm-4">
-                            <input class="form-control input-sm" type="text" id="lead_org" name="lead_organization" ng-model="userDetailView.selectedOrgsArray[0].name" disabled class="form-control input-sm" placeholder="Affiliated Organization" ng-required="true">
+                            <input class="form-control input-sm" type="text" id="lead_org" name="lead_organization" ng-model="userDetailView.selectedOrgsArray[0].name" disabled placeholder="Affiliated Organization" ng-required="true">
                         </div>
                         <ctrp-org-adv-search-modal-button class="col-xs-12 col-sm-3"  max-row-selectable="1" use-built-in-template="false" allow-overwrite="true" selected-orgs-array="userDetailView.selectedOrgsArray"></ctrp-org-adv-search-modal-button>
                     </div>
@@ -149,9 +150,8 @@
                                ng-if="(userDetailView.userRole !== 'ROLE_SUPER' && userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_SITE-SU')
                                && userDetailView.isCurrentUser"
                                ng-click="userDetailView.userRequestAdmin({username : userDetailView.userDetails.username})">Request for Admin Access</a>
-                            <button type="button" class="btn btn-primary pull-right" id="save_btn"
-                                    ng-click="userDetailView.showValidation = true"
-                                    ctrp-confirm ctrp-click="userDetailView.validateSave()"
+                            <button type="submit" class="btn btn-primary pull-right" id="save_btn"
+                                    ctrp-confirm
                                     ng-attr-confirm-off="{{userDetailView.confirmSave()}}"
                                     confirm-msg="{{userDetailView.confirmMsg}}">
                                 <i class="glyphicon glyphicon-ok"></i>  Save
