@@ -91,4 +91,5 @@ When I select the option to update a user account
 And I change the status of the CTRP User to 
 |Inactive|
 And the CTRP User will no longer be able to access CTRP
-And I will be prompted to assign ownership of the trials that that user is currenty the owner of (see admin manage ownership feature)
+And I will be prompted to assign ownership of the trials with an active submission that that user is currenty the owner of (see admin manage ownership feature)
+

@@ -148,12 +148,15 @@
           vm.sponsor = {name: '', array: []};
           vm.otherIdDestroyAll = false;
          // vm.centralContact = [];
+
+         $scope.general_trial_details_form.$setPristine();
+
           $timeout(function() {
              getTrialDetailCopy();
              vm.centralContactType = _getCentralContactType(); // restore vm.centralContactType
           }, 0);
 
-          $scope.general_trial_details_form.$setPristine();
+
           // vm.generalTrialDetailsObj = angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
       }
 

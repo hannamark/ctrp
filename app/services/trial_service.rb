@@ -16,6 +16,115 @@ class TrialService
     TrialHistory.create(snapshot: trial_json, submission: @trial.current_submission)
   end
 
+  def validate()
+    p "trial is: #{@trial}"
+    # rules = ValidationRule.where(model: 'trial') #.uniq
+    results = []
+    # rules.each do |r|
+    #   if r.item == 'paa_general_trial_details'
+    #     results << r
+    #   end
+    # end
+    results = results | _validate_general_trial_details() # concatenate array but remove duplicates
+    results = results | _validate_paa_regulatory_info_fda()
+    results = results | _validate_paa_regulatory_human_sub_safety()
+
+    return results
+  end
+
+  def _validate_paa_regulatory_human_sub_safety()
+    human_safe_rules = ValidationRule.where(model: 'trial', item: 'paa_regulatory_info_human_subject_safety')
+    validation_results = []
+    board_approval_status = BoardApprovalStatus.find_by_code('SUBAPPROVED')
+    board_approval_status_id = board_approval_status.nil? ? nil : board_approval_status.id
+
+    board_sub_pending_status_id = BoardApprovalStatus.find_by_code('SUBPENDING').id
+    board_sub_exempt_status_id = BoardApprovalStatus.find_by_code('SUBEXEMPT').id
+    board_sub_denied_status_id = BoardApprovalStatus.find_by_code('SUBDENIED').id
+    cur_trial_status = @trial.trial_status_wrappers.last
+    cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
+    cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+
+    p "current trial status code: #{cur_trial_status_code} for trial #{@trial.id}"
+
+    human_safe_rules.each do |rule|
+      if rule.code == 'PAA92' and (board_approval_status_id.nil? || @trial.board_approval_status_id.nil? || @trial.board_approval_status_id != board_approval_status_id)
+        #error block
+        validation_results << rule # board approval status is missing
+      elsif (rule.code == 'PAA183' and cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id) ||
+            (rule.code == 'PAA184' and @trial.board_approval_status_id == board_sub_denied_status_id and cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA185' and @trial.board_approval_status_id == board_sub_denied_status_id and cur_trial_status_code == 'APP') ||
+            (rule.code == 'PAA186' and @trial.board_approval_status_id == board_sub_pending_status_id and cur_trial_status_code != 'INR') ||
+            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_denied_status_id and cur_trial_status_code == 'APP') #halted here
+        # warnings block
+        ## 1. Review Board Approval must be  SUBMITTED PENDING if Trial Status is   IN REVIEW
+        ## 2. Trial Status cannot be  ACTIVE when the  Review Board Approval is ‘Submitted; Denied’
+        ## 3. If Review Board is ‘Submitted; Denied’; Trial Status cannot be Approved
+        ## 4. If Board Approval Status is Submitted; Pending; Current Trial Status must be IN REVIEW
+        ## 5. Current study status cannot be Active when Board Approval Status is submitted'  ## halted
+        validation_results << rule
+      end
+    end
+
+    return validation_results
+  end
+
+  def _validate_paa_regulatory_info_fda()
+    pri_rules = ValidationRule.where(model: 'trial', item: 'paa_regulatory_info_fdaaa')
+    validation_results = []
+    is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
+    if !is_IND_protocol
+      return validation_results
+    end
+    is_US_contained = false
+    is_FDA_contained = false
+    @trial.oversight_authorities.each do |oa|
+      if oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.downcase!.include?('us'))
+        is_US_contained = true
+      elsif oa.organization.present? and (oa.organization.downcase! == 'food and drug administration' || oa.organization.downcase! == 'fda')
+        is_FDA_contained = true
+      end
+    end
+
+    pri_rules.each do |rule|
+      if (rule.code == 'PAA90' and !is_US_contained) || (rule.code == 'PAA91' and !is_FDA_contained)
+
+        validation_results << rule
+      end
+    end
+    return validation_results
+  end
+
+  def _validate_general_trial_details()
+    #get general trial details rules
+    gt_rules = ValidationRule.where(model: 'trial', item: 'paa_general_trial_details')
+    validation_results = []
+    # find these ids for validation check
+    nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
+    ctep_origin_id = ProtocolIdOrigin.find_by_code('CTEP').id
+    dcp_origin_id = ProtocolIdOrigin.find_by_code('DCP').id
+    nctIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == nct_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == nct_origin_id} : nil
+    nctIdentifier = nctIdentifierObj.present? ? nctIdentifierObj.protocol_id : nil
+    ctepIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
+    ctepIdentifier = ctepIdentifierObj.present? ? ctepIdentifierObj.protocol_id : nil
+    dcpIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
+    dcpIdentifier = dcpIdentifierObj.present? ? dcpIdentifier.protocol_id : nil
+
+    nci_id = @trial.nci_id
+    lead_org_protocol_id = @trial.lead_protocol_id
+    keywords = @trial.keywords
+
+    gt_rules.each do |rule|
+      if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) || (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
+         (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) || (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
+         (rule.code == 'PAA8' and keywords.present? and keywords.length > 160)
+        validation_results << rule
+      end
+    end
+
+    return validation_results
+  end
+
   def rollback(submission_id)
     trial_history = TrialHistory.find_by_submission_id(submission_id)
     # Parameters for native fields and deleting existing children

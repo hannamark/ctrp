@@ -1,4 +1,4 @@
-﻿@PA @global
+@PA @global
 Feature: PAA F08 Add and Edit Trial Participating Sites
 
 As any CTRP PA User, I can add a Trial Participating Sites
@@ -39,6 +39,19 @@ Examples:
 #|2222212|MD Anderson         |New York|NY           |USA          |10101       |123a                  |approved               |30-September-2015           |comments                        |123abc                    |25                   |john Smith                 |Principal Investigator          |No               |Clinical Trial Center|1-888-123-4567|4567|CTC@mda.com     |             |Participating Site Has been Updated|
 #|1212121|Wake Forest         |Trenton |NJ           |USA          |10101       |123b                  |approved               |30-September-2015           |<null>                          |<null>                    |null                 |John Doe                   |Sub  Investigator               |No               |Jane Doe             |212-123-4567  |1111|<null>          |             |Participating Site Has been Updated|
 
+  Scenario: #1'Participating site field's character limit
+    Given I can add a participating site to a trial
+     When I add a participating site field type <Field>
+     Then the field character limit should not exceed required field length <FieldLength> 
+       
+       |Field               |FieldLength|
+       |Organization Name   |254        |
+       |Contact First Name  |62         |
+       |Contact Last Name   |62         |
+       |Contact Middle Name |1          |
+       |Contact Phone Number|30         |
+       |Contact Extension   |14         |
+       |Contact Email       |254|
 
 Scenario Outline: #1a I can add one or more participating sites to a trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -46,7 +59,7 @@ And I am on the Participating Site Page
 And I can select an organization <Organization name> with the Organization look up 
 Then the participating site will be associated with the trial
 
-Scenario Outline: #1c Participating site required fields
+Scenario Outline: #1c Participating site required fields 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have added a Participating Site
 Then the following fields will be required
