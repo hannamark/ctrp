@@ -258,6 +258,11 @@
                         });
                     }
                     vm.selectedAllSites = false;
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       resetDirtyForms();
+                   }, 1);
                 }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerPS));
@@ -298,9 +303,7 @@
                 $anchorScroll();
             } else {
                 vm.addEditMode = true;
-                $scope.ps_sites_form.$setPristine();
-                $scope.ps_inv_form.$setPristine();
-                $scope.ps_contact_form.$setPristine();
+                resetDirtyForms();
                 vm.current_investigator.uiEdit = false;
             }
 
@@ -372,9 +375,7 @@
                 }
             });
 
-            $scope.ps_sites_form.$setPristine();
-            $scope.ps_inv_form.$setPristine();
-            $scope.ps_contact_form.$setPristine();
+            resetDirtyForms();
         }
 
         vm.initSiteRecruitmentGrid = function (){
@@ -1041,6 +1042,12 @@
             } else {
                 return false;
             }
+        }
+
+        function resetDirtyForms() {
+            $scope.ps_sites_form.$setPristine();
+            $scope.ps_inv_form.$setPristine();
+            $scope.ps_contact_form.$setPristine();
         }
 
     } //trialParticipatingSitesCtrl
