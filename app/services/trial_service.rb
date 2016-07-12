@@ -16,6 +16,22 @@ class TrialService
     TrialHistory.create(snapshot: trial_json, submission: @trial.current_submission)
   end
 
+  def validate()
+    p "trial.id is: #{@trial.id}"
+    rules = ValidationRule.where(model: 'trial').uniq
+    results = []
+    rules.each do |r|
+      if r.item == 'paa_general_trial_details'
+        results << r
+      end
+    end
+    return results
+  end
+
+  def _validate_general_trial_details()
+    # TODO
+  end
+
   def rollback(submission_id)
     trial_history = TrialHistory.find_by_submission_id(submission_id)
     # Parameters for native fields and deleting existing children
