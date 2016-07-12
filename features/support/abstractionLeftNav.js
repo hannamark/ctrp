@@ -35,6 +35,11 @@ var abstractionLeftNav = function(){
 
     var helper = new helperFunctions();
     var self = this;
+    /***********************************************
+     *  Top Menu
+     ***********************************************/
+    this.menuHome = element(by.css('a[href="#/main/welcome"]'));
+
     /************************************************************************
      *  Admin & Scientific Check Out and Check In and Back to Search Results
      ************************************************************************/
@@ -86,6 +91,14 @@ var abstractionLeftNav = function(){
      *  Panel Title
      ***********************************************/
     this.panelTitle = element.all(by.css('.panel-title'));
+
+    //***********************************
+    // Menu
+    //***********************************
+
+    this.clickHome = function(){
+        helper.clickButton(this.menuHome, "Home Button");
+    };
 
     //***********************************
     // Complete

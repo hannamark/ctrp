@@ -32,7 +32,7 @@ var abstractionNCISpecific = require('../support/abstractionNCISpecificInfo');
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 var util = require('util');
 
-var abstractionCommonMethods = function(){
+var abstractionCommonMethods = function() {
     /*******
      * Methods Description: Common methods to login as following user(s)
      * ctrpcurator
@@ -62,7 +62,7 @@ var abstractionCommonMethods = function(){
     /*****************************************
      * Verify Search Trials(PA) screen
      *****************************************/
-    this.verifySearchTrialsPAScreen = function(){
+    this.verifySearchTrialsPAScreen = function () {
         expect(paSearch.searchTrialProtocolID.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialOfficialTitle.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialIdentifiertype.isDisplayed()).to.eventually.equal(true);
@@ -87,30 +87,31 @@ var abstractionCommonMethods = function(){
     /*****************************************
      * Click first link from the result grid
      *****************************************/
-    this.clickGridFirstLink = function(row, col){
-       //var gridFirstCell = element.all(by.binding('grid.getCellValue(row, col)')).count();
-        element.all(by.binding('grid.getCellValue(row, col)')).getText().then(function(value){
+    this.clickGridFirstLink = function (row, col) {
+        //var gridFirstCell = element.all(by.binding('grid.getCellValue(row, col)')).count();
+        element.all(by.binding('grid.getCellValue(row, col)')).getText().then(function (value) {
             var rsltGrid = value;
-            console.log('rsltGrid['+rsltGrid+'');
-            function RetrsltCnt(){
+            console.log('rsltGrid[' + rsltGrid + '');
+            function RetrsltCnt() {
                 return rsltGrid;
             }
+
             rsltGridValRT = RetrsltCnt();
 
         });
     };
 
-    this.girdFirstValue = function(){
-        console.log('rsltGridValRT['+rsltGridValRT+'');
+    this.girdFirstValue = function () {
+        console.log('rsltGridValRT[' + rsltGridValRT + '');
         var splitGridColVal = rsltGridValRT.split(',');
         var rwClFstVal = splitGridColVal[0];
-        console.log('rwClFstVal['+rwClFstVal+'');
+        console.log('rwClFstVal[' + rwClFstVal + '');
     };
 
     /*****************************************
      * Multi Select Common Methods
      *****************************************/
-    this.selectMultiListItem = function(obj, selectList, index)  {
+    this.selectMultiListItem = function (obj, selectList, index) {
         if (selectList !== '') {
             helper.wait(obj.get(index), 'Multi-Select list');
             obj.get(index).click();
@@ -122,15 +123,15 @@ var abstractionCommonMethods = function(){
     /*****************************************
      * Click on the link Text
      *****************************************/
-    this.clickLinkText = function(lnkTxt){
-        element(by.linkText(''+ lnkTxt +'')).click();
+    this.clickLinkText = function (lnkTxt) {
+        element(by.linkText('' + lnkTxt + '')).click();
     };
 
 
     /*****************************************
      * Verify Text from a Index Object
      *****************************************/
-    this.verifyTxtByIndex = function(obj, verifyTxt, index, errorMessage)  {
+    this.verifyTxtByIndex = function (obj, verifyTxt, index, errorMessage) {
         if (verifyTxt !== '') {
             helper.wait(obj.get(index), 'Waiting for expected text to verify');
             expect(obj.get(index).getText()).to.eventually.equal(verifyTxt);
@@ -141,21 +142,22 @@ var abstractionCommonMethods = function(){
     /*****************************************
      * Verify Search Result Text
      *****************************************/
-    this.verifyPASearchResultCount = function(txtToVerify){
-        paSearch.trialSearchPageResultCount.getText().then(function(value){
-           var rsltCnt = value;
-            console.log('rsltCnt['+rsltCnt+'');
-            function RetrsltCnt(){
+    this.verifyPASearchResultCount = function (txtToVerify) {
+        paSearch.trialSearchPageResultCount.getText().then(function (value) {
+            var rsltCnt = value;
+            console.log('rsltCnt[' + rsltCnt + '');
+            function RetrsltCnt() {
                 return rsltCnt;
             }
+
             rsltCountValRT = RetrsltCnt();
             var spltValRsltCnt = rsltCountValRT.split(':');
             var rsltCntTxt = spltValRsltCnt[0];
-            console.log('rsltCntTxt['+rsltCntTxt+'');
+            console.log('rsltCntTxt[' + rsltCntTxt + '');
             var rsltCntInt = spltValRsltCnt[1];
-            console.log('rsltCntInt['+rsltCntInt+'');
-            var buildRsltCntStrng = ''+txtToVerify+':'+rsltCntInt+'';
-            console.log('buildRsltCntStrng['+buildRsltCntStrng+'');
+            console.log('rsltCntInt[' + rsltCntInt + '');
+            var buildRsltCntStrng = '' + txtToVerify + ':' + rsltCntInt + '';
+            console.log('buildRsltCntStrng[' + buildRsltCntStrng + '');
             expect(paSearch.trialSearchPageResultCount.getText()).to.eventually.equal(buildRsltCntStrng);
         });
     };
@@ -163,7 +165,7 @@ var abstractionCommonMethods = function(){
     /*****************************************
      * Check for the various File API support.
      *****************************************/
-    this.checkFileAPI = function() {
+    this.checkFileAPI = function () {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             reader = new FileReader();
             return true;
@@ -176,9 +178,9 @@ var abstractionCommonMethods = function(){
     /*****************************************
      * read text input
      *****************************************/
-    this.readText = function(filePath) {
+    this.readText = function (filePath) {
         var output = "";
-        if(filePath.files && filePath.files[0]) {
+        if (filePath.files && filePath.files[0]) {
             reader.onload = function (e) {
                 output = e.target.result;
                 returnContents(output);
@@ -186,7 +188,7 @@ var abstractionCommonMethods = function(){
             };
             reader.readAsText(filePath.files[0]);
         }
-        else if(ActiveXObject && filePath) {
+        else if (ActiveXObject && filePath) {
             try {
                 reader = new ActiveXObject("Scripting.FileSystemObject");
                 var file = reader.OpenTextFile(filePath, 1);
@@ -217,6 +219,104 @@ var abstractionCommonMethods = function(){
      * On Prepare Login Test Accept
      *****************************************/
     this.onPrepareLoginTest = function(usrID) {
+        var configurationFile;
+        console.log('file path'+testConfiguration);
+        configurationFile = ''+testConfiguration+'/testSettings.json';
+        var configuration = JSON.parse(
+            fs.readFileSync(configurationFile)
+        );
+        console.log(configuration.uiUrl);
+        console.log(configuration.abstractorUID);
+        console.log(configuration.abstractorPWD);
+        console.log(configuration.curatorUID);
+        console.log(configuration.curatorPWD);
+        console.log(configuration.trialSubmitterUID);
+        console.log(configuration.trialSubmitterPWD);
+        login.logoutButton.isDisplayed().then(function (result) {
+            if (result) {
+                element(by.binding('headerView.username')).getText().then(function (value) {
+                    if (value === usrID) {
+                        console.log(usrID + ' already logged in');
+                        element(by.css('a[href="#/main/welcome"]')).click();
+                        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+                    }else {
+                        element(by.css('a[ng-click="headerView.logOut()"]')).click();
+                        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+                        //ctrp abstractor user
+                        if (usrID === 'ctrpabstractor'){
+                            login.login(configuration.abstractorUID, configuration.abstractorPWD);
+                            login.accept();
+                            //helper.wait_for(5000);
+                            expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
+                            expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
+                        }
+                        //ctrp curator user
+                        else if (usrID === 'ctrpcurator'){
+                            login.login(configuration.curatorUID, configuration.curatorPWD);
+                            login.accept();
+                            //  helper.wait_for(5000);
+                            expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(true);
+                        }
+                        //ctrp trial submitter user
+                        else if (usrID === 'ctrptrialsubmitter'){
+                            login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
+                            login.accept();
+                            //helper.wait_for(5000);
+                            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
+                        }
+                        //ctrp trial submitter user
+                        else if (usrID === 'ctrptrialsubmitter2'){
+                            login.login(configuration.trialSubmitter2UID, configuration.trialSubmitter2PWD);
+                            login.accept();
+                            // helper.wait_for(5000);
+                            expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
+                        }
+                        else {
+                            assert.fail(0,1,'Given User Id ---- '+ usrID + ' ---- does not match any option. Please check that provided user exist in the function.');
+                        }
+                    }
+                });
+            } else {
+                //ctrp abstractor user
+                if (usrID === 'ctrpabstractor'){
+                    login.login(configuration.abstractorUID, configuration.abstractorPWD);
+                    login.accept();
+                    //helper.wait_for(5000);
+                    expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
+                    expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
+                }
+                //ctrp curator user
+                else if (usrID === 'ctrpcurator'){
+                    login.login(configuration.curatorUID, configuration.curatorPWD);
+                    login.accept();
+                    //  helper.wait_for(5000);
+                    expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(true);
+                }
+                //ctrp trial submitter user
+                else if (usrID === 'ctrptrialsubmitter'){
+                    login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
+                    login.accept();
+                    //helper.wait_for(5000);
+                    expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
+                }
+                //ctrp trial submitter user
+                else if (usrID === 'ctrptrialsubmitter2'){
+                    login.login(configuration.trialSubmitter2UID, configuration.trialSubmitter2PWD);
+                    login.accept();
+                    // helper.wait_for(5000);
+                    expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
+                }
+                else {
+                    assert.fail(0,1,'Given User Id ---- '+ usrID + ' ---- does not match any option. Please check that provided user exist in the function.');
+                }
+            }
+        });
+    }
+
+    /*****************************************
+     * On Prepare Login Test Accept
+     *****************************************/
+    this.onPrepareLoginTest_backup = function(usrID) {
        var configurationFile;
         console.log('file path'+testConfiguration);
         configurationFile = ''+testConfiguration+'/testSettings.json';
@@ -231,13 +331,19 @@ var abstractionCommonMethods = function(){
         console.log(configuration.trialSubmitterUID);
         console.log(configuration.trialSubmitterPWD);
         //App URL
-        browser.get(configuration.uiUrl);
-        helper.wait_for(300);
-        //Verify Homepage
-        var BrwsrVal = browser.getCurrentUrl();
         iteraCntLg = iteraCntLg + 1;
-        var getCrntCntLg = iteraCntLg + 1;
-        console.log('Sign in count:'+iteraCntLg++);
+        var getCrntCntLg = iteraCntLg++;
+        console.log('Sign in count:'+getCrntCntLg);
+        if (getCrntCntLg == '1'){
+            helper.alertMsgOK();
+            browser.get(configuration.uiUrl);
+
+            helper.wait_for(300);
+        } else{
+            console.log('UI url already exists');
+        }
+        //Verify Homepage
+        //var BrwsrVal = browser.getCurrentUrl();
         //if (getCrntCntLg == '010101'){
         //    login.loginPageVerification.getText().then (function(text){
         //        var passTxtA = ''+text+'';
