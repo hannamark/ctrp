@@ -8,7 +8,7 @@ Given I am in the CTRP application
 And I have selected a trial in CTRP 
 And I have selected the View TSR option
 And the Trial Summary Report (TSR) screen is display
-Then I can select View TSR and the TSR document will downloaded 
+Then I can select View TSR and the TSR document will downloaded with the data for the last active submission for the trial
 And the file name will be "TSR_""CTRP Trial ID""_""Current Date YYYY-MM-DD""-"Current Time HHMM(24hr)""_""Current Submission Type (O for original and A for amendment""_""Amendment Number (for amendments)"<examples>
 
 |Examples:|

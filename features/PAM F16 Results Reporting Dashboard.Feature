@@ -6,7 +6,7 @@ As a CTRP PA Abstractor, I can view and edit the CTRP Results Reporting Dashboar
 Scenario: #1 I can view the Results Reporting Dashboard
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Results Reporting Dashboard screen
-Then all trials that including the following will be displayed
+Then all trials with a last active submission will be displayed for the following criteria 
 |<Element>|<Value>|
 |Sponsor |"National Cancer Institute"|
 |Primary Completion Date |Greater Than 26-Dec-2007|
@@ -96,7 +96,13 @@ And the following columns can be filtered
 Scenario: #2 I can enter dates in the Results Reporting Dashboard
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Results Reporting Dashboard screen
-Then all trials that including the following will be displayed
+Then all trials with a last active submission will be displayed for the following criteria 
+|<Element>|<Value>|
+|Sponsor |"National Cancer Institute"|
+|Primary Completion Date |Greater Than 26-Dec-2007|
+|Clinical Research Category |Interventional|
+|Lead Organization |Not "NCI - Center for Cancer Research"|
+|Current Milestone |Not "Rejected", Not "Submission Terminated"|
 And I can enter enter a date in the following fields
 |PCD Sent to PIO|
 |PCD Confirmed|
@@ -114,7 +120,13 @@ And the date will be associated with the trial
 Scenario: #3 I can edit dates in the Results Reporting Dashboard
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Results Reporting Dashboard screen
-Then all trials that including the following will be displayed
+Then all trials with a last active submission will be displayed for the following criteria 
+|<Element>|<Value>|
+|Sponsor |"National Cancer Institute"|
+|Primary Completion Date |Greater Than 26-Dec-2007|
+|Clinical Research Category |Interventional|
+|Lead Organization |Not "NCI - Center for Cancer Research"|
+|Current Milestone |Not "Rejected", Not "Submission Terminated"|
 And I can edit a date in the following fields
 |PCD Sent to PIO|
 |PCD Confirmed|
@@ -132,7 +144,7 @@ And the date will be associated with the trial
 Scenario: #4 I can view trail details
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Results Reporting Dashboard screen
-And I select a trial NCTID
+And I select a trial NCT ID
 Then the trail validation sidebar menu will appear
 And the trial Results Details screen will be displayed (see PAM F25 Results Reporting Details) 
 
@@ -190,7 +202,13 @@ And the CCCT Trial Comparison Review will display the latest CCCT Trial Comparis
 Scenario: #8 I can Search for trials to be displayed in the Results Reporting Dashboard
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Results Reporting Dashboard screen
-And all trials that including the following will be displayed
+And all trials with a last active submission will be displayed for the following criteria 
+|<Element>|<Value>|
+|Sponsor |"National Cancer Institute"|
+|Primary Completion Date |Greater Than 26-Dec-2007|
+|Clinical Research Category |Interventional|
+|Lead Organization |Not "NCI - Center for Cancer Research"|
+|Current Milestone |Not "Rejected", Not "Submission Terminated"|
 And I can enter an NCI ID
 And I can select the Section 801 indicator
 |Any|
