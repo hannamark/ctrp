@@ -9,6 +9,7 @@ Feature: PO F4 Edit Organization Information
     And I have selected the function Edit Organization
     And I am on the edit organization information screen
     And I change the name of the organization I wish to edit
+    And the Organization name should not be more than 160 characters Long
     And I set the organization status to either Pending or Active
     And I submit my edit request
     Then the system should change the organization name in the organization record to the new name
