@@ -404,7 +404,7 @@ class Trial < TrialBase
   def current_submission
     upd = SubmissionType.find_by_code('UPD')
     if upd.present?
-      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ? AND submissions.status = ?', self.id, upd.id, 'Active').order('submission_num desc').first
     else
       return nil
     end
@@ -430,6 +430,17 @@ class Trial < TrialBase
     target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
     if target.present? && target.processing_status.present?
       return target.processing_status.code
+    else
+      return nil
+    end
+  end
+
+  def current_processing_status
+    if self.current_submission.present?
+      target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, self.current_submission.id).order('id').last
+      if target.present?
+        return target.processing_status
+      end
     else
       return nil
     end
