@@ -26,14 +26,49 @@ class TrialService
     #   end
     # end
     results = results | _validate_general_trial_details() # concatenate array but remove duplicates
+    results = results | _validate_paa_regulatory_info_fda()
+    results = results | _validate_paa_regulatory_human_sub_safety()
     return results
+  end
+
+  def _validate_paa_regulatory_human_sub_safety()
+    human_safe_rules = ValidationRule.where(model: 'trial', item: 'paa_regulatory_info_human_subject_safety')
+    p "human rules: #{human_safe_rules.size}"
+    validation_results = []
+
+    return validation_results
+  end
+
+  def _validate_paa_regulatory_info_fda()
+    pri_rules = ValidationRule.where(model: 'trial', item: 'paa_regulatory_info_fdaaa')
+    validation_results = []
+    is_IND_protocol = true ## TODO: find out if this trial is IND protocol
+    if !is_IND_protocol
+      return validation_results
+    end
+    is_US_contained = false
+    is_FDA_contained = false
+    @trial.oversight_authorities.each do |oa|
+      if oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.downcase!.include?('us'))
+        is_US_contained = true
+      elsif oa.organization.present? and (oa.organization.downcase! == 'food and drug administration' || oa.organization.downcase! == 'fda')
+        is_FDA_contained = true
+      end
+    end
+
+    pri_rules.each do |rule|
+      if (rule.code == 'PAA90' and !is_US_contained) || (rule.code == 'PAA91' and !is_FDA_contained)
+
+        validation_results << rule
+      end
+    end
+    return validation_results
   end
 
   def _validate_general_trial_details()
     #get general trial details rules
     gt_rules = ValidationRule.where(model: 'trial', item: 'paa_general_trial_details')
     validation_results = []
-
     # find these ids for validation check
     nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
     ctep_origin_id = ProtocolIdOrigin.find_by_code('CTEP').id
