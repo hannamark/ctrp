@@ -70,7 +70,9 @@
                 if (attrs.confirmOff && attrs.confirmOff !== 'false') {
                     // trigger the click action and broadcast delete confirmation in case it is a secondary task in ctrp-submit directive
                     scope.ngClick();
-                    $rootScope.$broadcast('deleteConfirmationComplete');
+                    $timeout(function() {
+                        $rootScope.$broadcast('deleteConfirmationComplete');
+                    }, 1000);
                 } else {
                     popover.event = event;
                     if (!popover.$isShown) {

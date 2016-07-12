@@ -50,6 +50,7 @@ var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 module.exports = function() {
 
     var login = new loginPage();
+    var helper = new helperMethods();
     var commonFunctions = new abstractionCommonMethods();
     var pageMenu = new abstractionPageMenu();
     var pageSearchTrail = new abstractionTrialSearchPage();
@@ -86,6 +87,7 @@ module.exports = function() {
      */
 
     this.Given(/^I have selected a trial$/, function (callback) {
+        commonFunctions.alertMsgOK();
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
@@ -137,7 +139,9 @@ module.exports = function() {
     });
 
     this.Then(/^the message Record Updated displays$/, function (callback) {
-        console.log('Out of scope: Toster message');
+        console.log('Out of scope: Toaster message');
+        //login.logout();
+        //commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -153,6 +157,8 @@ module.exports = function() {
      */
 
     this.Given(/^I have selected a trial with a Information Source is 'Protocol'$/, function (callback) {
+        console.log('test here')
+        helper.wait_for(6000);
         pageMenu.homeSearchTrials.click();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
@@ -175,8 +181,8 @@ module.exports = function() {
 
     this.Then(/^an error message will appear with the message “Brief Title is Required”$/, function (callback) {
         commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBT, '0', 'Verify Brief Title is Required');
-        login.logout();
-        commonFunctions.alertMsgOK();
+        //login.logout();
+        //commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -203,8 +209,8 @@ module.exports = function() {
 
     this.Then(/^an error message will appear with the message “Summary is Required”$/, function (callback) {
         commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBS, '0', 'Verify Brief Summary is Required');
-        login.logout();
-        commonFunctions.alertMsgOK();
+        //login.logout();
+        //commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -234,7 +240,9 @@ module.exports = function() {
     this.When(/^I have selected Reset$/, function (callback) {
         trialDesc.clickReset();
         commonFunctions.alertMsgOK();
-        browser.sleep(2500).then(callback);
+        leftNav.clickScientificTrialDesign();
+        leftNav.clickScientificTrialDescription();
+        browser.sleep(3500).then(callback);
     });
 
     this.Then(/^the screen will be refreshed with the data since the last save$/, function (callback) {
@@ -242,8 +250,8 @@ module.exports = function() {
         commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
         commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
         commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
-        login.logout();
-        commonFunctions.alertMsgOK();
+        //login.logout();
+        //commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -284,8 +292,8 @@ module.exports = function() {
 
     this.Then(/^no additional text can be entered$/, function (callback) {
         commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying Brief Title field Character left message');
-        login.logout();
-        commonFunctions.alertMsgOK();
+        //login.logout();
+        //commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
