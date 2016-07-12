@@ -16,6 +16,50 @@ class TrialService
     TrialHistory.create(snapshot: trial_json, submission: @trial.current_submission)
   end
 
+  def validate()
+    p "trial is: #{@trial}"
+    # rules = ValidationRule.where(model: 'trial') #.uniq
+    results = []
+    # rules.each do |r|
+    #   if r.item == 'paa_general_trial_details'
+    #     results << r
+    #   end
+    # end
+    results = results | _validate_general_trial_details() # concatenate array but remove duplicates
+    return results
+  end
+
+  def _validate_general_trial_details()
+    #get general trial details rules
+    gt_rules = ValidationRule.where(model: 'trial', item: 'paa_general_trial_details')
+    validation_results = []
+
+    # find these ids for validation check
+    nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
+    ctep_origin_id = ProtocolIdOrigin.find_by_code('CTEP').id
+    dcp_origin_id = ProtocolIdOrigin.find_by_code('DCP').id
+    nctIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == nct_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == nct_origin_id} : nil
+    nctIdentifier = nctIdentifierObj.present? ? nctIdentifierObj.protocol_id : nil
+    ctepIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
+    ctepIdentifier = ctepIdentifierObj.present? ? ctepIdentifierObj.protocol_id : nil
+    dcpIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
+    dcpIdentifier = dcpIdentifierObj.present? ? dcpIdentifier.protocol_id : nil
+
+    nci_id = @trial.nci_id
+    lead_org_protocol_id = @trial.lead_protocol_id
+    keywords = @trial.keywords
+
+    gt_rules.each do |rule|
+      if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) || (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
+         (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) || (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
+         (rule.code == 'PAA8' and keywords.present? and keywords.length > 160)
+        validation_results << rule
+      end
+    end
+
+    return validation_results
+  end
+
   def rollback(submission_id)
     trial_history = TrialHistory.find_by_submission_id(submission_id)
     # Parameters for native fields and deleting existing children

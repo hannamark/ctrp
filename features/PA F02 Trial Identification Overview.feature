@@ -6,14 +6,14 @@ Scenario: #1 I can view the Trail Overview and the Trial Identification for a Tr
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I have selected Trail Identification Overview
-Then the Trail Identification Overview and the Trial Identifications will be displayed
+Then the Trail Identification Overview and the Trial Identification sections will be displayed
 
 Scenario: #2 I can view the Trail Overview for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial 
 And I have selected Trail Identification Overview
-Then the Trail Identification Overview and the Trial Identifications will be displayed 
-And the Trail Overview for a Trial will include the following fields:
+Then the Trail Identification Overview and the Trial Identification sections will be displayed 
+And the Trail Overview for the last active submission for a Trial will include the following fields:
 |NCI ID|
 |Brief Title|
 |NCT ID|
@@ -30,7 +30,7 @@ And the Trail Overview for a Trial will include the following fields:
 |Last Updated Date � last date any data for a trial was updated|
 |Current Trial Status|
 |Current Trial Status Date|
-|Processing Status|
+|Processing Status (for the last active submission)|
 |Checked Out For Admin. Use By|
 |Checked Out For Scientific Use By|
 |Admin Check Out Button|
