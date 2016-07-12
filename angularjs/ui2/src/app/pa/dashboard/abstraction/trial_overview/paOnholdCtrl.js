@@ -7,11 +7,13 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('paOnholdCtrl', paOnholdCtrl);
 
-    paOnholdCtrl.$inject = ['$scope', '$state', 'toastr', 'trialDetailObj', 'onholdReasonObj', 'TrialService', 'DateService'];
+    paOnholdCtrl.$inject = ['$scope', '$state', 'toastr', 'onholdReasonObj', 'TrialService', 'DateService',
+        'PATrialService'];
 
-    function paOnholdCtrl($scope, $state, toastr, trialDetailObj, onholdReasonObj, TrialService, DateService) {
+    function paOnholdCtrl($scope, $state, toastr, onholdReasonObj, TrialService, DateService,
+                          PATrialService) {
         var vm = this;
-        vm.curTrial = trialDetailObj;
+        vm.curTrial = PATrialService.getCurrentTrialFromCache();
         vm.addMode = false;
         vm.showAddBtn = true;
         vm.onholdReasonArr = onholdReasonObj;
@@ -107,7 +109,10 @@
                 var status = response.server_response.status;
 
                 if (status >= 200 && status <= 210) {
-                    $state.go('main.pa.trialOverview.onhold', {}, {reload: true});
+                    vm.curTrial = response;
+                    PATrialService.setCurrentTrial(vm.curTrial); // cache the updated trial
+                    $scope.$emit('updatedInChildScope', {}); // signal for updates
+                    vm.setAddMode(false);
                     toastr.success('On hold has been recorded', 'Operation Successful!');
                 }
             }).catch(function (err) {

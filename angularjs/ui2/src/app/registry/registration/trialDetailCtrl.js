@@ -269,7 +269,7 @@
                 });
 
             }
-        }
+        };
 
 
         vm.collapseAccordion = function() {

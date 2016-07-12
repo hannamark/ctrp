@@ -87,7 +87,7 @@
         var optionStatusDate = {
             name: 'status_date',
             displayName: 'Status Date',
-            enableSorting: false,
+            enableSorting: true,
             width: '200',
             cellFilter: 'date:"medium"'};
 

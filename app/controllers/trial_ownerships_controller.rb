@@ -199,17 +199,17 @@ class TrialOwnershipsController < ApplicationController
         email_trials_str += '<li><b style="width: 350px;">CTRP-assigned Lead Organization ID:</b> ' + trial.lead_org_id.to_s + '</li>'
         email_trials_str += '</ul>'
         email_trials_str += '<hr>'
-        email_trials_str += '<p>Date: ' + (Time.now).strftime('%v') + '</p>'
 
         begin
 
         mail_template = MailTemplate.find_by_code(template)
         mail_template.body_html.sub!('${username}', user.first_name + ' ' + user.last_name)
         mail_template.body_html.sub!('${trialcontent}', email_trials_str)
+        mail_template.body_html.sub!('${date}', (Time.now).strftime('%v') )
         mail_template.subject.sub!('${nciTrialIdentifier}', trial.nci_id)
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', trial.lead_protocol_id.to_s)
 
-        CtrpMailer.general_email(mail_template.from, user.email, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
+        #CtrpMailer.general_email(mail_template.from, user.email, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
 
         rescue  Exception => e
           logger.warn "#{template}: Email delivery error = #{e}"

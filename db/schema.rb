@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629152531) do
+ActiveRecord::Schema.define(version: 20160711174700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -459,15 +459,15 @@ ActiveRecord::Schema.define(version: 20160629152531) do
   end
 
   create_table "interventions", force: :cascade do |t|
-    t.string   "name",                 limit: 255
-    t.string   "other_name",           limit: 255
+    t.string   "name",                 limit: 1000
+    t.string   "other_name",           limit: 1000
     t.text     "description"
     t.integer  "intervention_type_id"
     t.integer  "trial_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.string   "uuid",                 limit: 255
-    t.integer  "lock_version",                     default: 0
+    t.integer  "lock_version",                      default: 0
     t.integer  "index"
     t.string   "c_code"
   end
@@ -1147,6 +1147,7 @@ ActiveRecord::Schema.define(version: 20160629152531) do
     t.text     "acknowledge_comment"
     t.date     "acknowledge_date"
     t.string   "acknowledged_by",      limit: 255
+    t.string   "status"
   end
 
   add_index "submissions", ["amendment_reason_id"], name: "index_submissions_on_amendment_reason_id", using: :btree
@@ -1491,6 +1492,19 @@ ActiveRecord::Schema.define(version: 20160629152531) do
   add_index "users", ["user_status_id"], name: "index_users_on_user_status_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  create_table "validation_rules", force: :cascade do |t|
+    t.string   "code"
+    t.string   "section"
+    t.string   "item"
+    t.string   "rule"
+    t.text     "description"
+    t.text     "remark"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "model"
+    t.string   "category"
+  end
+
   create_table "version_associations", force: :cascade do |t|
     t.integer "version_id"
     t.string  "foreign_key_name", null: false
@@ -1751,6 +1765,7 @@ ActiveRecord::Schema.define(version: 20160629152531) do
   create_sequence "trials_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "user_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "users_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "validation_rules_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "version_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "versions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
 

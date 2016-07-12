@@ -26,6 +26,7 @@ And the system will list
   |Name|
   |Deletion|
 And the edited organizations will be displayed ordered ascending alphanumeric by Collaborator Name
+And the Collaborator name should not be more than 160 characters long
 
 Scenario: #3 I can Delete one or more Collaborators for a Trial
 Given I am logged into the CTRP Protocol Abstraction application

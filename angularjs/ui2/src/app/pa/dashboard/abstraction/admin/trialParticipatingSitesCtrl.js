@@ -52,12 +52,17 @@
         vm.invDeleteException = false;
         vm.srStatusDeleteException = false;
         vm.duplicateParticipatingSite = false;
+        vm.addEditMode = false;
+        vm.tabIndex = 0;
+        vm.formArray = ['ps_sites_form', 'ps_inv_form', 'ps_contact_form'];
+
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
                //console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
                vm.centralContactTypes.splice(i, 1);
            }
         }
+
         //console.log('vm.centralContactTypes=' + JSON.stringify(vm.centralContactTypes));
 
         //actions
@@ -76,7 +81,7 @@
         vm.resetParticipatingSite = resetParticipatingSite;
         vm.watchContactType = watchContactType;
         vm.checkUnsavedItems = checkUnsavedItems;
-        vm.tabIndex = 0;
+
         vm.disableBtn = false;
 
         activate();
@@ -285,7 +290,7 @@
         /**
          *  Set Add Mode. This causes the first tab to appear for a new Participating Site
          **/
-        function setAddMode(addEditModeValue) {
+        function setAddMode(addEditModeValue, resetTab) {
             //console.log("SETTING TO ADDMODE");
             if (!(typeof addEditModeValue === 'undefined' || addEditModeValue === null)) {
                 vm.addEditMode = addEditModeValue;
@@ -293,11 +298,14 @@
                 $anchorScroll();
             } else {
                 vm.addEditMode = true;
-                vm.tabIndex = 0;
                 $scope.ps_sites_form.$setPristine();
                 $scope.ps_inv_form.$setPristine();
                 $scope.ps_contact_form.$setPristine();
                 vm.current_investigator.uiEdit = false;
+            }
+
+            if (resetTab) {
+                vm.tabIndex = 0;
             }
 
             vm.current_investigator.edit = false;

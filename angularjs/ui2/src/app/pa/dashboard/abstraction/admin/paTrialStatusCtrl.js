@@ -125,7 +125,8 @@
                     clonedStatusObj.trial_status_name = selectedStatus.name;
                     clonedStatusObj.trial_status_code = selectedStatus.code;
                 }
-                vm.tempTrialStatuses.push(clonedStatusObj);
+                // vm.tempTrialStatuses.push(clonedStatusObj);
+                TrialService.addStatus(vm.tempTrialStatuses, clonedStatusObj);
 
                 // Validate statuses:
                 validateStatuses();

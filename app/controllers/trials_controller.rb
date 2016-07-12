@@ -45,6 +45,9 @@ class TrialsController < ApplicationController
         format.json { render json: @trial.errors, status: :unprocessable_entity }
       end
     end
+
+    trial_service = TrialService.new({trial: @trial})
+    trial_service.send_email(@trial.edit_type)
   end
 
   # PATCH/PUT /trials/1
@@ -55,8 +58,8 @@ class TrialsController < ApplicationController
 
     Rails.logger.info "params in update: #{params}"
 
+    trial_service = TrialService.new({trial: @trial})
     if params[:trial][:edit_type] == 'amend'
-      trial_service = TrialService.new({trial: @trial})
       trial_json = trial_service.get_json
     end
 
@@ -73,6 +76,8 @@ class TrialsController < ApplicationController
     if trial_json.present?
       trial_service.save_history(trial_json)
     end
+
+    trial_service.send_email(@trial.edit_type)
   end
 
   # DELETE /trials/1
@@ -315,6 +320,7 @@ class TrialsController < ApplicationController
 
     elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
+      @trials = @trials.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?

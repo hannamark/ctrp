@@ -15,7 +15,7 @@ json.trial_submissions do
     json.lead_org_name trial_submission.trial && trial_submission.trial.lead_org ? trial_submission.trial.lead_org.name : ''
     json.lead_org_id trial_submission.trial && trial_submission.trial.lead_org ? trial_submission.trial.lead_org.id : ''
     json.process_priority trial_submission.trial && trial_submission.trial.process_priority ? trial_submission.trial.process_priority : ''
-    json.ctep_id trial_submission.trial && trial_submission.trial.lead_org.ctep_id ? trial_submission.trial.lead_org.ctep_id : ''
+    json.ctep_id trial_submission.trial && trial_submission.trial.lead_org && trial_submission.trial.lead_org.ctep_id ? trial_submission.trial.lead_org.ctep_id : ''
 
   end
 end
