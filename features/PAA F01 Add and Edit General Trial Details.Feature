@@ -36,6 +36,7 @@ And I am on the General Trial Details screen
 When I edit the Official Title for the trial
 And the official Title should not be more than 600 characters in length
 And I can optionally enter or edit the Acronym for the trial
+And the Acronym should not be more than 14 characters long
 Then the title section will be complete
 
 Scenario: #3 I can enter the Keywords for a trial
