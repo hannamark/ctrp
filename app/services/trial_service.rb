@@ -29,8 +29,32 @@ class TrialService
     results = results | _validate_general_trial_details() # concatenate array but remove duplicates
     results = results | _validate_paa_regulatory_info_fda()
     results = results | _validate_paa_regulatory_human_sub_safety()
+    results = results | _validate_paa_participating_sites()
 
     return results
+  end
+
+  def _validate_paa_participating_sites()
+    paa_site_rules = ValidationRule.where(model: 'trial', item: 'paa_participating_sites')
+    # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
+    is_all_sites_unique = true
+    @trial.participating_sites.each do |site|
+      is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
+      break if is_all_sites_unique == false
+
+    end
+
+
+    validation_result = []
+
+
+    paa_site_rules.each do |rule|
+      if rule.code == 'PAA93' and !is_all_sites_unique
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_paa_regulatory_human_sub_safety()
