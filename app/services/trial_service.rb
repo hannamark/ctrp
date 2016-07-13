@@ -24,19 +24,38 @@ class TrialService
   end
 
   def validate()
-    p "trial is: #{@trial}"
-    # rules = ValidationRule.where(model: 'trial') #.uniq
+
     results = []
-    # rules.each do |r|
-    #   if r.item == 'paa_general_trial_details'
-    #     results << r
-    #   end
-    # end
     results = results | _validate_general_trial_details() # concatenate array but remove duplicates
     results = results | _validate_paa_regulatory_info_fda()
     results = results | _validate_paa_regulatory_human_sub_safety()
+    results = results | _validate_paa_participating_sites()
 
     return results
+  end
+
+  def _validate_paa_participating_sites()
+    paa_site_rules = ValidationRule.where(model: 'trial', item: 'paa_participating_sites')
+    # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
+    is_all_sites_unique = true
+    @trial.participating_sites.each do |site|
+      # TODO: optimize this query
+      is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
+      break if is_all_sites_unique == false
+
+    end
+
+
+    validation_result = []
+
+
+    paa_site_rules.each do |rule|
+      if rule.code == 'PAA93' and !is_all_sites_unique
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_paa_regulatory_human_sub_safety()
@@ -47,7 +66,7 @@ class TrialService
     board_sub_pending_status_id = BoardApprovalStatus.find_by_code('SUBPENDING').id
     board_sub_exempt_status_id = BoardApprovalStatus.find_by_code('SUBEXEMPT').id
     board_sub_denied_status_id = BoardApprovalStatus.find_by_code('SUBDENIED').id
-    board_sub_unrequired = BoardApprovalStatus.find_by_code('SUBUNREQUIRED').id
+    board_sub_unrequired_status_id = BoardApprovalStatus.find_by_code('SUBUNREQUIRED').id
 
     p "current trial status code: #{@@cur_trial_status_code} for trial #{@trial.id}"
 
@@ -59,13 +78,23 @@ class TrialService
             (rule.code == 'PAA184' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'ACT') ||
             (rule.code == 'PAA185' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'APP') ||
             (rule.code == 'PAA186' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code != 'INR') ||
-            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'APP') #halted here
-        # warnings block
+            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA191' and @@cur_trial_status_code == 'WIT' and @trial.board_approval_status_id != board_sub_denied_status_id) ||
+            (rule.code == 'PAA192' and @trial.board_approval_status_id.nil?) ||
+            (rule.code == 'PAA193' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id)
+
+          # warnings block
         ## 1. Review Board Approval must be  SUBMITTED PENDING if Trial Status is   IN REVIEW
         ## 2. Trial Status cannot be  ACTIVE when the  Review Board Approval is ‘Submitted; Denied’
         ## 3. If Review Board is ‘Submitted; Denied’; Trial Status cannot be Approved
         ## 4. If Board Approval Status is Submitted; Pending; Current Trial Status must be IN REVIEW
-        ## 5. Current study status cannot be Active when Board Approval Status is submitted'  ## halted
+        ## 5. Current study status cannot be Active when Board Approval Status is submitted, pending'
+        ## 6. Current study status cannot be Active when Board Approval Status is not required
+        ## 7. If current trial status is withdrawn; Board Approval status in Regulatory Information – HSS must be ‘submitted denied’
+        ## 8. Board status has been nullified. Board status is required.
+        ## 9. If the current trial status is In Review; the board approval status must be Submitted; Pending.
         validation_results << rule
       end
     end
