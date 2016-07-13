@@ -91,7 +91,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
     And the CTEP Context Status is changed from Pending to Active
     And The CTEP Organization Information Type is copied into the CTRP Context
-     And The CTRP Organization ID (PO ID) and CTEP Organization ID is sent to CTEP (What about the CTEP Org PK ID?)
+     And The CTRP Organization ID (PO ID) and CTEP Organization ID is sent to CTEP 
       
       
       
@@ -137,7 +137,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     When the viewed CTEP Organization exists in CTRP
     Then the curator associates the existing CTRP Organization with the Organization in the CTEP Context
     And the CTEP Context Status is changed from Pending to Active
-    And The CTRP Organization ID (PO ID) and CTEP Organization ID is sent to CTEP (What about the CTEP Org PK ID?)
+    And The CTRP Organization ID (PO ID) and CTEP Organization ID is sent to CTEP 
     
     
   
@@ -148,10 +148,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And The CTRP Curator will be able to identify CTEP Organization Context that were updated 
     And the CTRP Curator will determine the updates for the CTRP Context
     
-    When the CTEP Organization Status is Active (need to be deleted)
-    Then The CTRP Context is automatically updated (need to be deleted)
-    When the CTEP Organization Status is inactive(need to be deleted)
-    Then the CTRP Context won't be automatically updated(need to be deleted)
+   
  
    Scenario: #5 As a CTRP PO Curator I can approve or deny a request for a new organization in CTRP 
     Given I am logged into the CTRP  
@@ -229,12 +226,12 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     Then the CTRP Curator associates an existing CTRP Organization with the NLM Context
     And The NLM Context Status is changed from Pending to Active
 
-  Scenario:#8 Curator will be notified when two organizations are to be merged 
+  Scenario:#8 Curator can identify when two organizations are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Organizations are to be merged
      And CTEP identifies one Organization will be Active 
      And CTEP identifies a second Organization to be Inactive as the result of a merger
-     Then the pending CTRP Nullification event will be added to the curator work queue (New Functionality to dicuss)
+     Then the pending CTRP Nullification event can be identified by searching CTEP context and Merge with CTEP ID  (New Functionality to dicuss)
       
        Scenario: #9 I can Nullify the Inactive Organization 
     Given I am logged into the CTRP 
@@ -326,7 +323,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
       Scenario: #14 I can Nullify a Duplicate Person record in CTRP
      Given I am logged into the CTRP PO application
      And I am on the CTRP PO Curator Review screen
-     When I have been notified of a CTEP Duplicate Person Record (Curator work Queue)
+     When I have been notified of a CTEP Duplicate Person Record
      Then I will identify two Person Records in the CTRP Context that are duplicates
      And I select one of the Person Records to be retained per CTEP
      And I select the other Person Record to be nullified
