@@ -8,7 +8,7 @@ Feature: PO F3 Create an Organization
     Then I will see "United States" as the default for Country
     And I will see "Active" as the default for Source Status
 
-  Scenario: #2a As a Curator, I can request the creation of a new Organization in CTRP
+  Scenario: #2 As a Curator, I can request the creation of a new Organization in CTRP
     Given I am logged in to CTRP PO application
     And I have complete a Search for Organization
     And I know the information for the organization I wish to create
@@ -36,6 +36,18 @@ Feature: PO F3 Create an Organization
       |eMail|
       |Fax number|
     And the organization status should be Active
+    
+      Scenario:#2a Create Organization fields's character Limit 
+    Given I can request the creation of a new Organization in CTRP
+     When I provide the field name <FieldName>
+     Then the entered field name will respect the field character limit <FieldLength>
+     
+     |FieldName        |FieldLength|
+     |Organization Name|254        |
+     |Phone Number     |30         |
+     |Phone Extension  |30         |
+     |Email            |254        |
+
 
   Scenario: #2b As a Curator, I can request the creation of a new Organization in CTRP without a zipcode entry
     Given I am logged in to CTRP PO application

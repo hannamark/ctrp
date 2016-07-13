@@ -50,3 +50,18 @@ And I have selected a trial
 When I select the remove action for one or more users 
 Then trial ownership privileges for this trial will be removed from the CTRP Users selected
 
+
+Scenario: #4 I cannot assign a trial when it is rejected
+
+Given I am logged into the CTRP Protocol Abstraction application
+
+And I have selected a trial 
+
+And I have selected Assign Ownership
+
+And the trial is rejected (Late Rejection Date milestone or Submission Rejection Date milesonte with no active submssion)
+Then I can not assign trial ownership
+
+
+
+
