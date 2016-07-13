@@ -70,10 +70,10 @@
                           </td>
                           <td>
                             <div ng-show="generalTrialDetailView.otherIdentifierUpdate">
-                                <button class="btn btn-warning" restriction-field type="button" ng-click="generalTrialDetailView.escapeEditTrialIdentifier()" title="Cancel">
+                                <button class="btn btn-warning" id="cancel_edit_btn" restriction-field type="button" ng-click="generalTrialDetailView.escapeEditTrialIdentifier()" title="Cancel">
                                     <i class="glyphicon glyphicon-remove"></i>
                                 </button>
-                                <button class="btn btn-primary" restriction-field type="button" ng-click="generalTrialDetailView.updateTrialIdentifier()"
+                                <button class="btn btn-primary" id="confirm_edit_btn" restriction-field type="button" ng-click="generalTrialDetailView.updateTrialIdentifier()"
                                 ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id" title="Confirm">
                                     <i class="glyphicon glyphicon-ok"></i>
                                 </button>
