@@ -6,7 +6,7 @@ As a CTRP PA SuperUser, I can view and edit the CTRP Abstraction Dashboard Workl
 Scenario: #1 I can view Workload 
  Given I am logged into the CTRP Protocol Abstraction application
  And I am on the CTRP Abstraction Dashboard Workload screen
- Then all trials that have one of the following latest milestones will be displayed 
+ Then all trials that have one of the following latest milestones for the last active submission will be displayed 
 |Submission Received Date|
 |Validation Processing Start Date|
 |Validation Processing Completed Date|
@@ -71,7 +71,7 @@ And the following columns can be filtered
 Scenario: #2 I can search the Workload 
  Given I am logged into the CTRP Protocol Abstraction application
  And I am on the CTRP Abstraction Dashboard Workload screen
- And all trials will be displayed (scenario 1) 
+ And all trials for the last active submission will be displayed (scenario 1) 
  Then I can narrow the list of trials by entering a partical 
  |NCI Trial Identifier|
  And I can narrow the list of trials by selecting one or more Submission Types 
@@ -92,15 +92,18 @@ Scenario: #2 I can search the Workload
 Scenario: #3 I can edit Expected Abstraction Completion Date
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
-And I select a trial Expected Abstraction Completion Date
-Then I can edit the Expected Abstraction Completion Date
+And I select a trial "Expected Abstraction Completion Date"
+Then I can edit the "Expected Abstraction Completion Date"
 And the Expected Abstraction Completion Date will be associated with the trial
 
 Scenario: #4 I can view trail details - Validate
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
 And I select a trial ID
-And the latest trial milestone is "Submission Received Date"
+And the latest trial milestone for the last active submission is 
+|Submission Received Date|
+|Validation Processing Start Date| 
+|Validation Processing Completed Date|
 Then the trail validaiton sidebar menu will appear
 And the trial information screen will be displayed  
 
@@ -108,7 +111,10 @@ Scenario: #5 I can view trail details - Abstract
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
 And I select a trial ID
-And the latest trial milestone is not "Submission Received Date"
+And the latest trial milestone for the last active submission is not 
+|Submission Received Date|
+|Validation Processing Start Date| 
+|Validation Processing Completed Date|
 Then the trail abstraction sidebar menu will appear
 And the trial information screen will be displayed
 
@@ -240,8 +246,7 @@ And the On Hold Status will
 |<Logic>                                                              |<Value>   
 |when the trial has an "on hold date" and no "No Longer on hold" date"|On Hold since "on hold date" ; Reasons: "on hold reason" |
 
-Examples:
-
+|Examples:|
 |Checked out by me; Ready for Admin QC; Ready for Scientific Processing; On Hold since 3/3/2016; Reason:  Other|
 |Ready for Admin QC; Ready for Scientific Processing; On Hold since 1/1/2015; Reason: Pending CTRP Review|
 |Checked out by me; Ready for Scientific QC|

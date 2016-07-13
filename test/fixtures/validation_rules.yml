@@ -4,7 +4,6 @@ one:
   code: MyString
   section: MyString
   item: MyString
-  type: 
   rule: MyString
   description: MyText
   remark: MyText
@@ -13,7 +12,6 @@ two:
   code: MyString
   section: MyString
   item: MyString
-  type: 
   rule: MyString
   description: MyText
   remark: MyText

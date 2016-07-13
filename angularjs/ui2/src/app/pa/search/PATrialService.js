@@ -181,6 +181,7 @@
             annotateTrialStatusWithNameAndCode: annotateTrialStatusWithNameAndCode,
             getInternalSources: getInternalSources,
             getAmendReasons: getAmendReasons,
+            validateAbstractionOnTrial: validateAbstractionOnTrial,
         };
 
         return services;
@@ -500,6 +501,11 @@
 
         function getAmendReasons() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PA.AMENDMENT_REASONS);
+        }
+
+        function validateAbstractionOnTrial(trialId) {
+            var url = URL_CONFIGS.PA.VALIDATE_ABSTRACTION.replace(/\s*\{.*?\}\s*/g, trialId);
+            return PromiseTimeoutService.getData(url);
         }
 
         /**

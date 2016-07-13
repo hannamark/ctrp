@@ -19,7 +19,18 @@ Feature: PO F10 Create a Person Record
       |                   	|  |test_cuke@PR.com  	|
       |444-555-6666    	|  |                    |
 
-
+   Scenario:#1a Create Person fields's character Limit 
+    Given I can request the creation of a new Organization in CTRP
+     When I provide the field name <FieldName>
+     Then the entered field name will respect the field character limit <FieldLength>
+     
+     |FieldName        |FieldLength|
+     |First Name       |62         |
+     |Middle Name      |1          |
+     |Last Name        |62         |
+     |Phone Number     |30         |
+     |Phone Extension  |30         |
+     |Email            |254        |
 
   @PO
   Scenario:#2 As a curator, I will receive a warning message for missing fields

@@ -1,4 +1,4 @@
-﻿@PA @global
+@PA @global
 Feature: PAA F03 Add and Edit Regulatory Information
 
 As any CTRP PA User, I can add and edit Regulatory Information (FDAAA)
@@ -27,6 +27,7 @@ Given I have selected a trial to abstract the Regulatory Information FDAAA
 And I am on the Trial Regulatory Information screen
 When I enter the Title for the Investigator (Field will be prefilled with �Principal Investigator�)
 Then the selected value will be recorded as the Responsible Party Type with the Principal Investigator title
+And the investigator title should not exceed 254 characters 
 
 Scenario: #4 I can associate an organization as an Affiliation of the Investigator
 Given I have selected a trial to abstract the Regulatory Information FDAAA
@@ -36,6 +37,7 @@ And the Responsible Party Type is Principal Investigator
 And I have selected organization look-up at the Responsible Party section
 When list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed
 Then the selected organization will be the Affiliation of the Investigator for the trial
+And the investigator affiliation should not exceed 160 characters 
 
 Scenario: #5 I can add and edit Regulatory Information for a Regulated Trial
 Given I have selected a trial to abstract the Regulatory Information FDAAA
