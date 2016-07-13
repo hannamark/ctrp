@@ -2,7 +2,7 @@
 Feature: PAA F01 Add and Edit General Trial Details
 
 As any CTRP PA User, I can enter general trial details
-
+@runthis
 Scenario: #1 I can enter the different Protocol Identifiers for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen

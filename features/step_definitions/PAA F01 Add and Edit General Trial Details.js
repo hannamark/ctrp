@@ -101,9 +101,9 @@ module.exports = function() {
     var indIDENmbrB = 'IND108498';
     var indIDENmbrC = '102902';
     var optionA = 'Identifier Type';
-    var optionB = 'Value (Click for editing)';
-    var optionC = 'Deletion';
-    var optionD = '';
+    var optionB = 'Value';
+    var optionC = 'Edit';
+    var optionD = 'Delete';
     var optionE = '';
     var optionF = '';
     var optionG = '';
@@ -161,18 +161,21 @@ module.exports = function() {
      */
 
     this.Given(/^I have selected a trial to abstract$/, function (callback) {
+        commonFunctions.alertMsgOK();
         commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I am on the General Trial Details screen$/, function (callback) {
-        pageMenu.homeSearchTrials.click();
+        pageMenu.clickSearchTrialAbstractor();
         login.clickWriteMode('On');
+        pageMenu.clickTrials();
+        pageMenu.clickSearchTrialsPA();
+        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
         commonFunctions.verifySearchTrialsPAScreen();
         pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
         pageSearchTrail.clickSearchTrialSearchButton();
-        commonFunctions.verifyPASearchResultCount(searchResultCountText);
-        commonFunctions.clickGridFirstLink(1,1);
         commonFunctions.clickLinkText(leadProtocolIDD);
         commonFunctions.adminCheckOut();
         trialDetails.clickAdminDataGeneralTrial();
@@ -187,16 +190,17 @@ module.exports = function() {
         trialDetails.findTrailIdentifierAndClickEdit(identifierDCP, 'edit',identifierNmbrEdited, 'delete', '', '');
         trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'None', 'Central Contact - General');
         trialDetails.clickSave();
-        helper.wait_for(3000);
-        trialDetails.clickAdminDataNCISpecificInformation();
-        trialDetails.clickAdminDataGeneralTrial();
+        //helper.wait_for(3000);
+        //trialDetails.clickAdminDataNCISpecificInformation();
+        //trialDetails.clickAdminDataGeneralTrial();
         browser.sleep(3000).then(callback);
     });
 
     this.When(/^I can edit the lead organization trial identifier$/, function (callback) {
         helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColA, optionA, "Identifier Type");
-        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColB, optionB, "Value (Click for editing)");
-        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColC, optionC, "Deletion");
+        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColB, optionB, "Value");
+        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColC, optionC, "Edit");
+        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColD, optionD, "Delete");
         trialDetails.selectIdentifier(identifierCTEP);
         trialDetails.setIdentifierTextBox(identifierNmbr);
         trialDetails.clickIdentifierAddButton();

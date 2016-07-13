@@ -8,11 +8,13 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-
+var abstractionTrialDetails = require('../support/abstractionTrialDetails');
 var helperFunctions = require('../support/helper');
 
 
 var abstractionTrialDetails = function(){
+
+    var trialDetails = new abstractionTrialDetails();
 
     /*
      * Admin Data
@@ -58,12 +60,16 @@ var abstractionTrialDetails = function(){
     this.generalTrailIdentifierTableValue = element();
     this.generalTrailIdentifierTableDeletion = element();
 
+    this.cancelEditIdentifier = element();
+    this.confirmEditIdentifier = element();
+
     this.generalTrailTable = element(by.css('.table.table-bordered.table-striped.table-hover'));
     this.generalTrailTableAll = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
     this.generalTrailTableTHead = element(by.css('.table.table-bordered.table-striped.table-hover thead'));
     this.generalTrailTableTHeadColA = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(01)'));
     this.generalTrailTableTHeadColB = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(02)'));
     this.generalTrailTableTHeadColC = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(03)'));
+    this.generalTrailTableTHeadColD = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(04)'));
 
     this.generalTrailTableTBody = element(by.css('.table.table-bordered.table-striped.table-hover tbody'));
     this.generalTrailTableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
@@ -134,9 +140,6 @@ var abstractionTrialDetails = function(){
     this.generalTrailCentralContactNameReq = element.all(by.css('.form-group.has-feedback.required.has-error .help-block'));
     this.redSignWarning = element.all(by.css('.form-control-feedback.glyphicon.glyphicon-exclamation-sign.glyphicon-red'));
 
-
-
-
     //Save and Reset
     this.generalTrailSave = element(by.id('save_btn'));
     this.generalTrailReset = element(by.id('cancel_btn'));
@@ -190,14 +193,14 @@ var abstractionTrialDetails = function(){
     var identifierTypRwG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(01)'));
     var identifierTypRwH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(01)'));
 
-    var textBoxEditLinkA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(02) span .editable-click.ng-binding'));
-    var textBoxEditLinkB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(02) span .editable-click.ng-binding'));
-    var textBoxEditLinkC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(02) span .editable-click.ng-binding'));
-    var textBoxEditLinkD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(02) span .editable-click.ng-binding'));
-    var textBoxEditLinkE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(02) span .editable-click.ng-binding'));
-    var textBoxEditLinkF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(02) span .editable-click.ng-binding'));
-    var textBoxEditLinkG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(02) span .editable-click.ng-binding'));
-    var textBoxEditLinkH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(02) span .editable-click.ng-binding'));
+    var textBoxEditLinkA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(03) button'));
+    var textBoxEditLinkB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(03) button'));
+    var textBoxEditLinkC = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(3) td:nth-child(03) button'));
+    var textBoxEditLinkD = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(4) td:nth-child(03) button'));
+    var textBoxEditLinkE = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(5) td:nth-child(03) button'));
+    var textBoxEditLinkF = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(6) td:nth-child(03) button'));
+    var textBoxEditLinkG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(03) button'));
+    var textBoxEditLinkH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(03) button'));
 
     var textBoxInLineA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(02) input'));
     var textBoxInLineB = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(2) td:nth-child(02) input'));
@@ -208,13 +211,10 @@ var abstractionTrialDetails = function(){
     var textBoxInLineG = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(7) td:nth-child(02) input'));
     var textBoxInLineH = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(8) td:nth-child(02) input'));
 
-
-
     var helper = new helperFunctions();
 
 
-
-    this.findTrailIdentifierAndClickEdit = function(getIdentifierName, getEditFalg, getEditedValue, getSaveOrCancelOrDelete, getVerify, getVerificationVal){
+    this.findTrailIdentifierAndClickEdit = function(getIdentifierName, getEditFalg, identifierEdit, identifierNameEdit, getSaveOrCancelOrDelete, getVerify, getVerificationVal){
         this.waitForTrailDetailsElement(this.generalTrailTableTBodyRowAColA, "Trail Identifiers Table");
         this.generalTrailTableAll.then(function(rows){
             console.log('total Row Count:['+(rows.length)+']');
@@ -227,22 +227,24 @@ var abstractionTrialDetails = function(){
                         if (Test1 === getIdentifierName){
                             if(getEditFalg === 'edit'){
                                 textBoxEditLinkA.click();
-                                helper.clickButton(textBoxInLineA,"Inline Editing - Text Box");
-                                helper.setValue(textBoxInLineA, getEditedValue,"In Line Editing - Text Box field value entered:["+getEditedValue+"]");
-                                helper.wait_for(1000);
+                                //helper.clickButton(textBoxInLineB,"Inline Editing - Text Box");
+                                //helper.setValue(textBoxInLineB, getEditedValue,"In Line Editing - Text Box field value entered:["+getEditedValue+"]");
+                                trialDetails.selectIdentifier(identifierEdit);
+                                trialDetails.setIdentifierTextBox(identifierNameEdit);
                                 if (getSaveOrCancelOrDelete === 'save'){
                                     helper.clickButton(saveA, "Save Button");
                                 }else if(getSaveOrCancelOrDelete === 'cancel'){
                                     helper.clickButton(cancelA, "Cancel Button");
-                                }else if(getSaveOrCancelOrDelete === 'delete'){
-                                    helper.clickButton(deleteA, "Delete Button");
-                                };
-                            };
+                                }
+                            }
+                            if(getSaveOrCancelOrDelete === 'delete'){
+                                helper.clickButton(deleteA, "Delete Button");
+                            }
                             if (getVerify === 'verify'){
                                 expect(Test1.toString()).to.eql(getIdentifierName.toString());
                                 helper.verifyTableRowText(textBoxEditLinkA, getVerificationVal, "Verifying Row Text");
-                            };
-                        };
+                            }
+                        }
                     });
                 };
                 //Row 2
