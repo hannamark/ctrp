@@ -50,11 +50,11 @@ module.exports = function() {
         commonFunctions.alertMsgOK();
         commonFunctions.onPrepareLoginTest('ctrpabstractor');
         commonFunctions.alertMsgOK();
-        login.loginUser.getText().then(function(loggedInUserName) {
-            if(loggedInUserName === 'ctrpabstractor') {
-                pageMenu.clickSearchTrialAbstractor();
-            }
-        });
+        //login.loginUser.getText().then(function(loggedInUserName) {
+        //    if(loggedInUserName === 'ctrpabstractor') {
+        //        pageMenu.clickSearchTrialAbstractor();
+        //    }
+        //});
         //pageMenu.clickSearchTrialAbstractor();
         browser.sleep(25).then(callback);
     });

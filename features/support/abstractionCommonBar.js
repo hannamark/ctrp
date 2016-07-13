@@ -17,10 +17,10 @@ var abstractionCommonBar = function(){
     /*********************************************
      * Page Object: Abstraction Dashboards & Menu
      *********************************************/
-    this.homeSearchTrials = element(By.xpath('//a[contains(text(),"Search Trials")]'));
-    var homeAbstractorSearchTrials = element.all(by.css('a[href="#/main/pa_trials"]'));
-    this.homeAbstractionDashboards = element(By.xpath('//a[contains(text(),"Abstraction Dashboards")]'));
-    var homeAbstractionDashboards = element(by.css('a[href="#/main/pa_trials"]'));
+    this.homeSearchTrials = element(by.xpath('//a[contains(text(),"Search Trials")]'));
+    var homeAbstractorSearchTrials = element(by.id('dash_search_trial'));
+    var homeAbstractionDashboards = element(by.id('dash_abst_trial'));
+    //this.homeAbstractionDashboards = element(by.xpath('//a[contains(text(),"Abstraction Dashboards")]'));
     //Top Menus
     /*********************************************
      * Home
@@ -53,7 +53,7 @@ var abstractionCommonBar = function(){
      *********************************************/
     this.trialsMenu = element(by.linkText('Trials'));
     this.searchTrialsReg = element(by.linkText('Search Trials (Reg)'));
-    this.searchTrialsPA = element(by.linkText('Search Trials (PA)'));
+    this.searchTrialsPA = element(by.id('mnu_srch_trls_pa'));
     this.registerTrial = element(by.linkText('Register Trial'));
 
     this.clickTrials = function(){
@@ -65,7 +65,7 @@ var abstractionCommonBar = function(){
     };
 
     this.clickSearchTrialsPA = function(){
-        helper.clickLink(this.searchTrialsPA, "Search Trials PA - Menu");
+        helper.clickButton(this.searchTrialsPA, "Search Trials PA - Menu");
     };
 
     this.clickRegisterTrial = function(){
@@ -85,10 +85,10 @@ var abstractionCommonBar = function(){
 
 
     this.clickSearchTrialAbstractor = function(){
-        homeAbstractorSearchTrials.get(1).isPresent().then(function(retVal){
+        homeAbstractorSearchTrials.isPresent().then(function(retVal){
             console.log('value of ret val : ' + retVal);
             if (retVal === true) {
-                helper.clickLinkByIndex(homeAbstractorSearchTrials, '1', "Home Search Trial link");
+                helper.clickButton(homeAbstractorSearchTrials, "Dashboard: Search Trial button");
                 expect(pageHeaderText.getText()).to.eventually.equal(search_Trial_Header_Text);
             }
         });
