@@ -101,6 +101,13 @@ var helper = function() {
         expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
     };
 
+    this.clickLinkByIndex = function (link, index, errorMessage){
+        this.wait(link.get(index), errorMessage);
+        link.get(index).click();
+        console.log(errorMessage + " was clicked");
+        expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
+    };
+
     this.clickButton = function (button, errorMessage){
         this.wait(button, errorMessage);
         button.click();
