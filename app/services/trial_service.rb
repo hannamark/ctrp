@@ -39,6 +39,7 @@ class TrialService
     # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
     is_all_sites_unique = true
     @trial.participating_sites.each do |site|
+      # TODO: optimize this query
       is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
       break if is_all_sites_unique == false
 
