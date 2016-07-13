@@ -87,9 +87,10 @@ module.exports = function() {
      */
 
     this.Given(/^I have selected a trial$/, function (callback) {
-        commonFunctions.alertMsgOK();
-        pageMenu.homeSearchTrials.click();
+        //pageMenu.clickSearchTrialAbstractor();
         login.clickWriteMode('On');
+        pageMenu.clickTrials();
+        pageMenu.clickSearchTrialsPA();
         commonFunctions.verifySearchTrialsPAScreen();
         pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
         pageSearchTrail.clickSearchTrialSearchButton();
@@ -157,9 +158,9 @@ module.exports = function() {
      */
 
     this.Given(/^I have selected a trial with a Information Source is 'Protocol'$/, function (callback) {
-        console.log('test here')
-        helper.wait_for(6000);
-        pageMenu.homeSearchTrials.click();
+        //pageMenu.clickSearchTrialAbstractor();
+        pageMenu.clickTrials();
+        pageMenu.clickSearchTrialsPA();
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
         pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);

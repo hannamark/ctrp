@@ -1,7 +1,7 @@
 @PA @global
 Feature:  PAS F01 Add and Edit Trial descriptions 
 As a CTRP PA Abstractor, I can add and edit Trial Descriptions 
-
+@runthis
 Scenario: #1 I can add and edit Trial Description for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
@@ -13,7 +13,7 @@ And I have entered a value for Detailed Description
 When I select the Save button 
 Then the Trial Description for the trial will be associated with the trial
 And the message Record Updated displays
-
+@runthis
 Scenario: #2 Brief Title is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial with a Information Source is 'Protocol'
