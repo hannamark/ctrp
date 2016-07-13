@@ -28,16 +28,21 @@
                 var currentTabIndex = element.controller().tabIndex;
                 var newTabIndex = 0;
                 var element = element;
-                //var confirmationCallback = $parse(attrs.unSavedCallback);
 
                 setFormVars();
 
                 /* For pages with multiple tabs, checks when page is in Add/Edit mode */
                 attrs.$observe('unsavedTabIndex', function(newVal) {
                     var newIndex = parseInt(newVal, 10);
+
                     if (newIndex !== currentTabIndex) {
                         newTabIndex = newIndex;
-                        evaluateTabForm();
+
+                        if (newTabIndex === -1) {
+                            evaluateTabForm(true);
+                        } else {
+                            evaluateTabForm();
+                        }
                     }
                 });
 
@@ -106,22 +111,29 @@
                     }
                 }
 
-                /* Checks form on current tab, when user is attempting to move to another tab */
-                function evaluateTabForm() {
+                /* Checks form on current tab, when user is attempting leave the tab */
+                function evaluateTabForm(hasListFlag) {
                     var form = scope.$parent[formArray[currentTabIndex]];
+                    var listFlag = hasListFlag;
 
                     if (form) {
                         if (form.$dirty) {
-                            activateModal();
+                            activateModal(listFlag);
                             element.controller().tabIndex = currentTabIndex;
                         } else {
-                            currentTabIndex = newTabIndex;
-                            element.controller().tabIndex = newTabIndex;
+                            if (hasListFlag) {
+                                scope.ngConfirm({backToListView: true});
+                                currentTabIndex = 0;
+                                element.controller().tabIndex = 0;
+                            } else {
+                                currentTabIndex = newTabIndex;
+                                element.controller().tabIndex = newTabIndex;
+                            }
                         }
                     }
                 }
 
-                function activateModal() {
+                function activateModal(transitionToListView) {
                     var isSaveRequired = element.find('md-tab-item.md-active > span').hasClass('save-required');
 
                     var modalInstance = $uibModal.open({
@@ -131,14 +143,20 @@
                         size: 'md',
                         resolve: {
                             saveRequired: function () {
-                                return isSaveRequired;
+                                return isSaveRequired && !transitionToListView;
                             }
                         }
                     });
 
                     modalInstance.result.then(function(result) {
                         if (result === 'Confirm') {
-                            scope.ngConfirm();
+                            if (newTabIndex === -1) {
+                                scope.ngConfirm({backToListView: true});
+                                newTabIndex = 0;
+                            } else {
+                                scope.ngConfirm();
+                            }
+
                             currentTabIndex = newTabIndex;
                             element.controller().tabIndex = newTabIndex;
                         }
@@ -159,7 +177,7 @@
                 vm.message = 'You have unsaved changes in this form. The form requires items to be saved before moving to another tab. Please save the form before moving to another tab.';
                 vm.confirmButtonText = 'Ok';
             } else {
-                vm.message = 'You have unsaved changes in this form. Any unsaved changes will be lost if you leave the form without saving. Are you sure you want to move to another tab without saving changes?';
+                vm.message = 'You have unsaved changes in this form. Are you sure you want to leave without saving changes?';
                 vm.confirmButtonText = 'Confirm';
             }
 
