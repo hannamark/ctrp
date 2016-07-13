@@ -227,7 +227,8 @@ class Trial < TrialBase
   accepts_nested_attributes_for :trial_ownerships, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
-  validates :lead_protocol_id, uniqueness: { scope: :lead_org_id, message: "Combination of Lead Organization Trial ID and Lead Organization must be unique" }
+  #validates :lead_protocol_id, uniqueness: { scope: :lead_org_id, message: "Combination of Lead Organization Trial ID and Lead Organization must be unique" }
+  validate :lead_protocol_id_lead_org_id_uniqueness
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
@@ -245,6 +246,19 @@ class Trial < TrialBase
   validates :primary_comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
+
+  def lead_protocol_id_lead_org_id_uniqueness
+    if id.present?
+      dup_trial = Trial.joins(:lead_org).where('organizations.id = ? AND lead_protocol_id = ? AND trials.id <> ?', lead_org, lead_protocol_id, id)
+    else
+      dup_trial = Trial.joins(:lead_org).where('organizations.id = ? AND lead_protocol_id = ?', lead_org, lead_protocol_id)
+    end
+    dup_trial = dup_trial.filter_rejected
+    p '>>>>>'
+    if dup_trial.length > 0
+      errors.add(:lead_protocol_id, 'Combination of Lead Organization Trial ID and Lead Organization must be unique')
+    end
+  end
 
   before_create :save_history
   before_create :save_internal_source

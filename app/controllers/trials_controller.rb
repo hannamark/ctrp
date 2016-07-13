@@ -40,14 +40,14 @@ class TrialsController < ApplicationController
       if @trial.save
         format.html { redirect_to @trial, notice: 'Trial was successfully created.' }
         format.json { render :show, status: :created, location: @trial }
+
+        trial_service = TrialService.new({trial: @trial})
+        trial_service.send_email(@trial.edit_type)
       else
         format.html { render :new }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
       end
     end
-
-    trial_service = TrialService.new({trial: @trial})
-    trial_service.send_email(@trial.edit_type)
   end
 
   # PATCH/PUT /trials/1
@@ -67,17 +67,17 @@ class TrialsController < ApplicationController
       if @trial.update(trial_params)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
         format.json { render :show, status: :ok, location: @trial }
+
+        if trial_json.present?
+          trial_service.save_history(trial_json)
+        end
+
+        trial_service.send_email(@trial.edit_type)
       else
         format.html { render :edit }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
       end
     end
-
-    if trial_json.present?
-      trial_service.save_history(trial_json)
-    end
-
-    trial_service.send_email(@trial.edit_type)
   end
 
   # DELETE /trials/1
