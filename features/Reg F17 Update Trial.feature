@@ -4,12 +4,12 @@ Feature: Reg F17 Update Trial
 As a CTRP User, I can update information on a trial that does not require IRB approval or an amendment
 
 Scenario: #1 I search my trials and select the update option
-Given I am in the CTRP Registration applicatin
+Given I am in the CTRP Registration application
 And I have selected the option to search my trials in CTRP
 And I am the Trial Owner
 When the Update option is enabled on one of my trials
 And I have selected the Update option
-Then all trial information will be displayed as in Registration with only Update fields enabled Type
+Then all trial information for the lastest active submission will be displayed as in Registration with only Update fields enabled Type
       
       |Other Trial Identifier Field   |
       |NIH Grant Information Section  |
