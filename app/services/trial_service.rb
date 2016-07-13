@@ -56,9 +56,11 @@ class TrialService
             (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code == 'ACT') ||
             (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
             (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
-            (rule.code == 'PAA191' and @@cur_trial_status_code == 'WIT' and @trial.board_approval_status_id != board_sub_denied_status_id ) ||
-            (rule.code == 'PAA192' and @trial.board_approval_status_id.nil?)
-        # warnings block
+            (rule.code == 'PAA191' and @@cur_trial_status_code == 'WIT' and @trial.board_approval_status_id != board_sub_denied_status_id) ||
+            (rule.code == 'PAA192' and @trial.board_approval_status_id.nil?) ||
+            (rule.code == 'PAA193' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id)
+
+          # warnings block
         ## 1. Review Board Approval must be  SUBMITTED PENDING if Trial Status is   IN REVIEW
         ## 2. Trial Status cannot be  ACTIVE when the  Review Board Approval is ‘Submitted; Denied’
         ## 3. If Review Board is ‘Submitted; Denied’; Trial Status cannot be Approved
@@ -67,6 +69,7 @@ class TrialService
         ## 6. Current study status cannot be Active when Board Approval Status is not required
         ## 7. If current trial status is withdrawn; Board Approval status in Regulatory Information – HSS must be ‘submitted denied’
         ## 8. Board status has been nullified. Board status is required.
+        ## 9. If the current trial status is In Review; the board approval status must be Submitted; Pending.
         validation_results << rule
       end
     end
