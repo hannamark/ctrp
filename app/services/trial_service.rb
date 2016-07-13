@@ -1,7 +1,14 @@
 class TrialService
+  @@is_IND_protocol = true # default to true
+  @@cur_trial_status_code = nil
 
   def initialize(params)
     @trial = params[:trial]
+    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
+    cur_trial_status = @trial.trial_status_wrappers.last
+    cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
+    @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+
   end
 
   def get_json
@@ -37,25 +44,22 @@ class TrialService
     validation_results = []
     board_approval_status = BoardApprovalStatus.find_by_code('SUBAPPROVED')
     board_approval_status_id = board_approval_status.nil? ? nil : board_approval_status.id
-
     board_sub_pending_status_id = BoardApprovalStatus.find_by_code('SUBPENDING').id
     board_sub_exempt_status_id = BoardApprovalStatus.find_by_code('SUBEXEMPT').id
     board_sub_denied_status_id = BoardApprovalStatus.find_by_code('SUBDENIED').id
-    cur_trial_status = @trial.trial_status_wrappers.last
-    cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
-    cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+    board_sub_unrequired = BoardApprovalStatus.find_by_code('SUBUNREQUIRED').id
 
-    p "current trial status code: #{cur_trial_status_code} for trial #{@trial.id}"
+    p "current trial status code: #{@@cur_trial_status_code} for trial #{@trial.id}"
 
     human_safe_rules.each do |rule|
       if rule.code == 'PAA92' and (board_approval_status_id.nil? || @trial.board_approval_status_id.nil? || @trial.board_approval_status_id != board_approval_status_id)
         #error block
         validation_results << rule # board approval status is missing
-      elsif (rule.code == 'PAA183' and cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id) ||
-            (rule.code == 'PAA184' and @trial.board_approval_status_id == board_sub_denied_status_id and cur_trial_status_code == 'ACT') ||
-            (rule.code == 'PAA185' and @trial.board_approval_status_id == board_sub_denied_status_id and cur_trial_status_code == 'APP') ||
-            (rule.code == 'PAA186' and @trial.board_approval_status_id == board_sub_pending_status_id and cur_trial_status_code != 'INR') ||
-            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_denied_status_id and cur_trial_status_code == 'APP') #halted here
+      elsif (rule.code == 'PAA183' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id) ||
+            (rule.code == 'PAA184' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA185' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'APP') ||
+            (rule.code == 'PAA186' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code != 'INR') ||
+            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'APP') #halted here
         # warnings block
         ## 1. Review Board Approval must be  SUBMITTED PENDING if Trial Status is   IN REVIEW
         ## 2. Trial Status cannot be  ACTIVE when the  Review Board Approval is ‘Submitted; Denied’
@@ -72,8 +76,8 @@ class TrialService
   def _validate_paa_regulatory_info_fda()
     pri_rules = ValidationRule.where(model: 'trial', item: 'paa_regulatory_info_fdaaa')
     validation_results = []
-    is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
-    if !is_IND_protocol
+    # is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
+    if !@@is_IND_protocol
       return validation_results
     end
     is_US_contained = false
