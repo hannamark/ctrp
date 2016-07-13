@@ -24,14 +24,8 @@ class TrialService
   end
 
   def validate()
-    p "trial is: #{@trial}"
-    # rules = ValidationRule.where(model: 'trial') #.uniq
+
     results = []
-    # rules.each do |r|
-    #   if r.item == 'paa_general_trial_details'
-    #     results << r
-    #   end
-    # end
     results = results | _validate_general_trial_details() # concatenate array but remove duplicates
     results = results | _validate_paa_regulatory_info_fda()
     results = results | _validate_paa_regulatory_human_sub_safety()
@@ -47,7 +41,7 @@ class TrialService
     board_sub_pending_status_id = BoardApprovalStatus.find_by_code('SUBPENDING').id
     board_sub_exempt_status_id = BoardApprovalStatus.find_by_code('SUBEXEMPT').id
     board_sub_denied_status_id = BoardApprovalStatus.find_by_code('SUBDENIED').id
-    board_sub_unrequired = BoardApprovalStatus.find_by_code('SUBUNREQUIRED').id
+    board_sub_unrequired_status_id = BoardApprovalStatus.find_by_code('SUBUNREQUIRED').id
 
     p "current trial status code: #{@@cur_trial_status_code} for trial #{@trial.id}"
 
@@ -59,13 +53,16 @@ class TrialService
             (rule.code == 'PAA184' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'ACT') ||
             (rule.code == 'PAA185' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'APP') ||
             (rule.code == 'PAA186' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code != 'INR') ||
-            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'APP') #halted here
+            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT')
         # warnings block
         ## 1. Review Board Approval must be  SUBMITTED PENDING if Trial Status is   IN REVIEW
         ## 2. Trial Status cannot be  ACTIVE when the  Review Board Approval is ‘Submitted; Denied’
         ## 3. If Review Board is ‘Submitted; Denied’; Trial Status cannot be Approved
         ## 4. If Board Approval Status is Submitted; Pending; Current Trial Status must be IN REVIEW
-        ## 5. Current study status cannot be Active when Board Approval Status is submitted'  ## halted
+        ## 5. Current study status cannot be Active when Board Approval Status is submitted, pending'
+        ## 6. Current study status cannot be Active when Board Approval Status is not required
         validation_results << rule
       end
     end
