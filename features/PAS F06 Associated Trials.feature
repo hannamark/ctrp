@@ -52,6 +52,14 @@ And I have selected the Look Up Trial button
 When trial identifer is not found
 Then the message 'Trial is not found' displays 
 
+Scenario: #3a Associated Trial is not rejected
+Given I am on the Add Associated Trials screen
+And  I have selected Identifier Type of NCI
+And I have entered the Trial Identifier 
+And I have selected the Look Up Trial button
+And the trial does not have a last active submission  
+Then the message 'Trial is not found' displays 
+
 Scenario:  #4 Trial Identifier information not null   
 Given I am I am on the Add Associated Trial screen
 When I click on 'Look Up Trial' button 
