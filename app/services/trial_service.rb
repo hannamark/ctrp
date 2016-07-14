@@ -39,6 +39,17 @@ class TrialService
     return results
   end
 
+  def _validate_pas_trial_description()
+    pas_trial_description_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_description')
+
+    validation_results = []
+    pas_trial_description_rules.each do |rule|
+      # TODO
+    end
+
+    return validation_results
+  end
+
   def _validate_pas_trial_design()
 
     pas_trial_design_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_design')
@@ -56,12 +67,11 @@ class TrialService
     num_masking_roles += 1 if @trial.masking_role_investigator
     num_masking_roles += 1 if @trial.masking_role_outcome_assessor
     num_masking_roles += 1 if @trial.masking_role_subject
-
     is_primary_purpose_other = PrimaryPurpose.find_by_code('OTH').id == @trial.primary_purpose_id
+    is_study_model_other = StudyModel.find_by_code('OTH').id == @trial.study_model_id
+    is_time_perspec_other = TimePerspective.find_by_code('OTH').id == @trial.time_perspective_id
 
     validation_result = []
-    p "primary_purpose_id: #{@trial.primary_purpose_id}"
-
     pas_trial_design_rules.each do |rule|
       if (rule.code == 'PAS3' and is_interventional_cat and @trial.masking_id.nil?) ||
           (rule.code == 'PAS4' and is_expanded_cat and @trial.masking_id.nil?) ||
@@ -77,7 +87,15 @@ class TrialService
           (rule.code == 'PAS18' and !@trial.num_of_arms.present?) ||
           (rule.code == 'PAS19' and is_interventional_cat and !@trial.allocation_id.present?) ||
           (rule.code == 'PAS20' and is_expanded_cat and !@trial.allocation_id.present?)
-
+            ## errors block
+            validation_result << rule
+      elsif (rule.code == 'PAS43' and is_observational_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS44' and is_ancillary_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS45' and is_observational_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS46' and is_ancillary_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS47' and is_observational_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+          (rule.code == 'PAS48' and is_ancillary_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+            ## warnings block
             validation_result << rule
       end
 
