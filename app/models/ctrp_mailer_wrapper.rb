@@ -9,7 +9,7 @@ class CtrpMailerWrapper
         CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
         mail_sending_result = 'Success'
       rescue  Exception => e
-        logger.warn "Email delivery error: #{e}"
+        Rails.logger.warn "Email delivery error: #{e}"
       end
 
       ## save the mail sending to mail log

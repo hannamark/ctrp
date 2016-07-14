@@ -38,19 +38,22 @@ class TrialService
     paa_site_rules = ValidationRule.where(model: 'trial', item: 'paa_participating_sites')
     # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
     is_all_sites_unique = true
+    is_site_pi_unique = true  # check for duplicate site investigator on the same site
     @trial.participating_sites.each do |site|
       # TODO: optimize this query
-      is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
-      break if is_all_sites_unique == false
+      if is_all_sites_unique
+        is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
+      end
 
+      if is_site_pi_unique
+        count_hash = ParticipatingSiteInvestigator.group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
+        is_site_pi_unique = count_hash.size == 0  # if duplicate, count_hash.size >= 1
+      end
     end
 
-
     validation_result = []
-
-
     paa_site_rules.each do |rule|
-      if rule.code == 'PAA93' and !is_all_sites_unique
+      if (rule.code == 'PAA93' and !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
         validation_result << rule
       end
     end
