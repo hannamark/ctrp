@@ -4,8 +4,8 @@ class TrialService
 
   def initialize(params)
     @trial = params[:trial]
-    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
-    cur_trial_status = @trial.trial_status_wrappers.last
+    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
+    cur_trial_status = @trial.trial_status_wrappers.last if @trial.present?
     cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
     @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
 
@@ -24,8 +24,11 @@ class TrialService
   end
 
   def validate()
-
     results = []
+    if !@trial.present?
+      return results
+    end
+
     results = results | _validate_general_trial_details() # concatenate array but remove duplicates
     results = results | _validate_paa_regulatory_info_fda()
     results = results | _validate_paa_regulatory_human_sub_safety()
@@ -49,13 +52,10 @@ class TrialService
     is_double_blind_masking = Masking.find_by_code('DB').id == @trial.masking_id
 
     num_masking_roles = 0
-    num_masking_roles = 1 if @trial.masking_role_caregiver
+    num_masking_roles += 1 if @trial.masking_role_caregiver
     num_masking_roles += 1 if @trial.masking_role_investigator
     num_masking_roles += 1 if @trial.masking_role_outcome_assessor
     num_masking_roles += 1 if @trial.masking_role_subject
-
-    p "num_masking: #{num_masking_roles}"
-
 
     validation_result = []
 
