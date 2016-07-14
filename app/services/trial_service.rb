@@ -35,6 +35,7 @@ class TrialService
     results = results | _validate_paa_participating_sites()
     results = results | _validate_paa_documents()
     results = results | _validate_pas_trial_design()
+    results = results | _validate_pas_trial_description()
 
     return results
   end
@@ -42,9 +43,17 @@ class TrialService
   def _validate_pas_trial_description()
     pas_trial_description_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_description')
 
+    is_brief_title_unique = @trial.brief_title.nil? ? false : Trial.where(brief_title: @trial.brief_title).size == 1
+
     validation_results = []
     pas_trial_description_rules.each do |rule|
-      # TODO
+
+      if (rule.code == 'PAS21' and !@trial.brief_title.present?) ||
+          (rule.code == 'PAS22' and !is_brief_title_unique) ||
+          (rule.code == 'PAS23' and !@trial.brief_summary.present?)
+        validation_results << rule
+
+      end
     end
 
     return validation_results
