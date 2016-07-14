@@ -7,7 +7,7 @@ Description:  As any CTRP User, I can view the menus for my role
 Scenario: #1 Abstaction Sidebar Menu Tabs
 Given I am logged into the CTRP application
 And I have selected a trial to abstract
-And the current milestone is
+And the current milestone for the last active submission is
 |Administrative Processing Start Date|
 |Administrative Processing Completed Date|
 |Ready for Administrative QC Date|
@@ -98,7 +98,7 @@ Then that sidebar menu section will be expanded"
 Scenario: #5 Trial Validation Sidebar Menu Tab for Imported trails
 Given I am logged into the CTRP application
 And I have selected a trial to Validate
-And the current milestone is
+And the current milestone for the last active submission is
 |Submission Received Date|
 |Validation Processing Start Date|
 |Validation Processing Completed Date|
@@ -124,7 +124,7 @@ Then the sidebar menu will be displayed expanded:
 Scenario: #6 Trial Validation Sidebar Menu Tab for Protocol trials
 Given I am logged into the CTRP application
 And I have selected a trial to Validate
-And the current milestone is
+And the current milestone for the last active submission is
 |Submission Received Date|
 |Validation Processing Start Date|
 |Validation Processing Completed Date|
@@ -180,7 +180,7 @@ Then the milesone to be used for determining the sidebar menu will the be the la
 Scenario: #9 Trial Sidebar Menu for Submission Rejection Trials
 Given I am logged into the CTRP application
 And I have selected a trial
-And the current milestone is
+And the current milestone for the last active submission is
 |Submission Rejection Date|
 When the submission is an amendment
 Then the milesone to be used for determining the sidebar menu will the latest milestone in the prior active Submission  

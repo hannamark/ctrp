@@ -50,6 +50,12 @@ module.exports = function() {
         commonFunctions.alertMsgOK();
         commonFunctions.onPrepareLoginTest('ctrpabstractor');
         commonFunctions.alertMsgOK();
+        //login.loginUser.getText().then(function(loggedInUserName) {
+        //    if(loggedInUserName === 'ctrpabstractor') {
+        //        pageMenu.clickSearchTrialAbstractor();
+        //    }
+        //});
+        //pageMenu.clickSearchTrialAbstractor();
         browser.sleep(25).then(callback);
     });
 
@@ -57,8 +63,8 @@ module.exports = function() {
         /** Updated by Shilpi to test for both PA search screen and Registry Search screen **/
         login.loginUser.getText().then(function(loggedInUserName) {
             if(loggedInUserName === 'ctrpabstractor') {
-                pageMenu.homeSearchTrials.click();
-                commonFunctions.verifySearchTrialsPAScreen();
+                //pageMenu.clickSearchTrialAbstractor();
+                //commonFunctions.verifySearchTrialsPAScreen();
             }
             if(loggedInUserName === 'ctrptrialsubmitter') {
                 trialMenuItem.clickTrials();

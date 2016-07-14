@@ -17,6 +17,12 @@
                 templateUrl: 'app/pa/dashboard/abstraction/completion/abstraction_validation.html',
                 controller:   'abstractValidCtrl as abstractValidView',
                 section: 'pa',
+                resolve: {
+                    PATrialService: 'PATrialService',
+                    validationResults: function($stateParams, PATrialService) {
+                        return PATrialService.validateAbstractionOnTrial($stateParams.trialId);
+                    }
+                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Abstraction Validation'
