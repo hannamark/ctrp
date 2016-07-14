@@ -46,7 +46,7 @@ class TrialService
       end
 
       if is_site_pi_unique
-        count_hash = ParticipatingSiteInvestigator.group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
+        count_hash = ParticipatingSiteInvestigator.where(participating_site_id: site.id).group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
         is_site_pi_unique = count_hash.size == 0  # if duplicate, count_hash.size >= 1
       end
     end
