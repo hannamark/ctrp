@@ -31,8 +31,29 @@ class TrialService
     results = results | _validate_paa_regulatory_human_sub_safety()
     results = results | _validate_paa_participating_sites()
     results = results | _validate_paa_documents()
+    results = results | _validate_pas_trial_design()
 
     return results
+  end
+
+  def _validate_pas_trial_design()
+    pas_trial_design_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_design')
+    is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
+    is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
+    is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
+    is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
+
+    validation_result = []
+
+    pas_trial_design_rules.each do |rule|
+      if (rule.code == 'PAS3' and is_interventional_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS4' and is_expanded_cat and @trial.masking_id.nil?)
+        validation_result << rule
+      end
+
+    end
+
+    return validation_result
   end
 
   def _validate_paa_documents()
