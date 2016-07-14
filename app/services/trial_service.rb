@@ -37,17 +37,34 @@ class TrialService
   end
 
   def _validate_pas_trial_design()
+
     pas_trial_design_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_design')
     is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
     is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
     is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
     is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
 
+    is_open_masking = Masking.find_by_code('OP').id == @trial.masking_id
+    is_single_blind_masking = Masking.find_by_code('SB').id == @trial.masking_id
+    is_double_blind_masking = Masking.find_by_code('DB').id == @trial.masking_id
+
+    num_masking_roles = 0
+    num_masking_roles = 1 if @trial.masking_role_caregiver
+    num_masking_roles += 1 if @trial.masking_role_investigator
+    num_masking_roles += 1 if @trial.masking_role_outcome_assessor
+    num_masking_roles += 1 if @trial.masking_role_subject
+
+    p "num_masking: #{num_masking_roles}"
+
+
     validation_result = []
 
     pas_trial_design_rules.each do |rule|
       if (rule.code == 'PAS3' and is_interventional_cat and @trial.masking_id.nil?) ||
-          (rule.code == 'PAS4' and is_expanded_cat and @trial.masking_id.nil?)
+          (rule.code == 'PAS4' and is_expanded_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS5' and is_interventional_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS6' and is_expanded_cat and is_double_blind_masking and num_masking_roles < 2)
+
         validation_result << rule
       end
 
