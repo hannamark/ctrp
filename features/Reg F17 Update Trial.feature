@@ -40,6 +40,13 @@ And the Submission method is Registry
 And Submission type is Update
 
 
+  Scenario: #1a I can Update Paticipating Sites Recruitment Status and Date
+    Given I am on the Update Trial Screen
+     When the trial has been accepted
+     Then I can view participating site section on the Update Trial Screen
+     And I can Update Participating Sites Recruitment Status and Date
+
+
 Scenario: #2 I search my trials and select the update option
 Given I am in the CTRP Registration application
 And I have selected the option to search my trials in CTRP 
