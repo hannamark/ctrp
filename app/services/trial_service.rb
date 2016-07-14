@@ -57,8 +57,10 @@ class TrialService
     num_masking_roles += 1 if @trial.masking_role_outcome_assessor
     num_masking_roles += 1 if @trial.masking_role_subject
 
+    is_primary_purpose_other = PrimaryPurpose.find_by_code('OTH').id == @trial.primary_purpose_id
+
     validation_result = []
-    p "intervention_model_id: #{@trial.intervention_model_id}"
+    p "primary_purpose_id: #{@trial.primary_purpose_id}"
 
     pas_trial_design_rules.each do |rule|
       if (rule.code == 'PAS3' and is_interventional_cat and @trial.masking_id.nil?) ||
@@ -68,9 +70,15 @@ class TrialService
           (rule.code == 'PAS11' and is_interventional_cat and is_single_blind_masking and num_masking_roles != 1) ||
           (rule.code == 'PAS12' and is_expanded_cat and is_single_blind_masking and num_masking_roles != 1) ||
           (rule.code == 'PAS13' and is_interventional_cat and @trial.intervention_model_id.nil?) ||
-          (rule.code == 'PAS14' and is_expanded_cat and @trial.intervention_model_id.nil?)
+          (rule.code == 'PAS14' and is_expanded_cat and @trial.intervention_model_id.nil?) ||
+          (rule.code == 'PAS15' and !@trial.primary_purpose_id.present?) ||
+          (rule.code == 'PAS16' and is_primary_purpose_other and !@trial.primary_purpose_other.present?) ||
+          (rule.code == 'PAS17' and !@trial.phase_id.present?) ||
+          (rule.code == 'PAS18' and !@trial.num_of_arms.present?) ||
+          (rule.code == 'PAS19' and is_interventional_cat and !@trial.allocation_id.present?) ||
+          (rule.code == 'PAS20' and is_expanded_cat and !@trial.allocation_id.present?)
 
-        validation_result << rule
+            validation_result << rule
       end
 
     end
