@@ -5,7 +5,7 @@ class TrialService
   def initialize(params)
     @trial = params[:trial]
     @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
-    cur_trial_status = @trial.trial_status_wrappers.last if @trial.present?
+    cur_trial_status = @trial.trial_status_wrappers.last if @trial.present? && @trial.trial_status_wrappers.present?
     cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
     @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
 
@@ -58,12 +58,17 @@ class TrialService
     num_masking_roles += 1 if @trial.masking_role_subject
 
     validation_result = []
+    p "intervention_model_id: #{@trial.intervention_model_id}"
 
     pas_trial_design_rules.each do |rule|
       if (rule.code == 'PAS3' and is_interventional_cat and @trial.masking_id.nil?) ||
           (rule.code == 'PAS4' and is_expanded_cat and @trial.masking_id.nil?) ||
           (rule.code == 'PAS5' and is_interventional_cat and is_double_blind_masking and num_masking_roles < 2) ||
-          (rule.code == 'PAS6' and is_expanded_cat and is_double_blind_masking and num_masking_roles < 2)
+          (rule.code == 'PAS6' and is_expanded_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS11' and is_interventional_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS12' and is_expanded_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS13' and is_interventional_cat and @trial.intervention_model_id.nil?) ||
+          (rule.code == 'PAS14' and is_expanded_cat and @trial.intervention_model_id.nil?)
 
         validation_result << rule
       end
