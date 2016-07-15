@@ -25,7 +25,7 @@ Scenario: #1 I can view Workload
 |Ready for TSR Date|
 And will display the following fields
 |NCI Trial Identifier|
-|Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
+|Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
 |Submitted On (Date of current Submission Received Date milestone) |
 |Expected Abstraction Completion Date (Defaulted to date of current Submission Milestone Date Plus 10 Business Days and is editible) |
 |Accepted (Date of current Submission Acceptance Date milestone)|
@@ -40,7 +40,7 @@ And will display the following fields
 And the default sort order is by Submitted On Date ordered from oldest to Newest
 And the following columns can be sorted
 |NCI Trial Identifier|
-|Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
+|Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
 |Submitted On|
 |Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
 |Accepted|
@@ -54,7 +54,7 @@ And the following columns can be sorted
 |Business Days Since Submitted|
 And the following columns can be filtered
 |NCI Trial Identifier|
-|Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
+|Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
 |Submitted On|
 |Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
 |Accepted|
@@ -126,7 +126,7 @@ When I select the export to Excel option
 Then the trials in the Abstraction Dashboard WorkLoad will be exported to an Excel format spreadsheet 
 And will includ the following fields:
 |NCI Trial Identifier|
-|Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
+|Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
 |Submitted On|
 |Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
 |Accepted|
