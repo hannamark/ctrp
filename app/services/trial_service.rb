@@ -247,16 +247,17 @@ class TrialService
     is_US_contained = false
     is_FDA_contained = false
     @trial.oversight_authorities.each do |oa|
-      if oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.downcase!.include?('us'))
-        is_US_contained = true
-      elsif oa.organization.present? and (oa.organization.downcase! == 'food and drug administration' || oa.organization.downcase! == 'fda')
-        is_FDA_contained = true
+      if !is_US_contained
+        is_US_contained = oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.downcase!.include?('us'))
+      end
+
+      if !is_FDA_contained
+        is_FDA_contained = oa.organization.present? && oa.organization.downcase == 'food and drug administration'
       end
     end
 
     pri_rules.each do |rule|
       if (rule.code == 'PAA90' and !is_US_contained) || (rule.code == 'PAA91' and !is_FDA_contained)
-
         validation_results << rule
       end
     end
