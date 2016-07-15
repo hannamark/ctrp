@@ -9,7 +9,7 @@ And I am on the General Trial Details screen
 When I can edit the lead organization trial identifier
 And I can optionally enter or edit one or more Other Trial Identifiers
 Then the Protocol Identifier section will be complete
-
+@runthis
 Scenario: #1a Duplicate and format rules for Other Trial Identifiers
 Given I have selected a trial to abstract
 And I am on the General Trial Details screen

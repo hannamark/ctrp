@@ -230,23 +230,64 @@ module.exports = function() {
      Scenario: #1a Duplicate and format rules for Other Trial Identifiers
      Given I have selected a trial to abstract
      And I am on the General Trial Details screen
-     Then I should be allowed to enter only one "ClinicalTrials.gov Identifier"
-     And I should be allowed to enter more than one "Obsolete ClinicalTrials.gov Identifier" with unique IDs
+     Then I should be allowed to enter one "ClinicalTrials.gov Identifier"
+     And I should be allowed to enter more than one unique IDs with "Obsolete ClinicalTrials.gov Identifier"
      And the "Obsolete ClinicalTrials.gov Identifier" must not be the same as the "ClinicalTrials.gov Identifier"
-     And I should check for valid "ClinicalTrials.gov Identifier" format as NCT followed by 8 numeric characters <NCT00000000>
-     And I should check for valid "Obsolete ClinicalTrials.gov Identifier" format as NCT followed by 8 numeric characters <NCT00000000>
-     And I should be allowed to enter more than one "Duplicate NCI Identifier" with unique IDs
+     And I should verify for valid "ClinicalTrials.gov Identifier" format as NCT followed by 8 numeric characters <NCT00000000>
+     And I should verify for valid "Obsolete ClinicalTrials.gov Identifier" format as NCT followed by 8 numeric characters <NCT00000000>
+     And I should be allowed to enter more than one unique IDs with "Duplicate NCI Identifier"
      And the "Duplicate NCI Identifier" must not be the same as the "NCI Trial ID"
      And I should check for valid "Duplicate NCI Identifier" format as NCI-YYYY-nnnnn <NCI-2016-00123>
-     And I should be allowed to enter more than one "Other Identifier" with unique IDs
-     And I should be allowed to enter more than one "Duplicate NCI Identifier" with unique IDs
-     And I should be allowed to enter more than one "DCP Identifier" with unique IDs
-     And I should be allowed to enter more than one "CTEP Identifier" with unique IDs
-     And I should be allowed to enter more than one "CCR Identifier" with unique IDs
-     And I should be allowed to enter more than one "CDR Identifier" with unique IDs
+     And I should be allowed to enter more than one unique IDs with "Other Identifier"
+     And I should be allowed to enter more than one unique IDs with "Duplicate NCI Identifier"
+     And I should be allowed to enter one "DCP Identifier" with unique IDs
+     And I should be allowed to enter one "CTEP Identifier" with unique IDs
+     And I should be allowed to enter one "CCR Identifier" with unique IDs
+     And I should be allowed to enter one "CDR Identifier" with unique IDs
      And all Trial Identifiers should not be more than 30 characters in Length
      Then the Protocol Identifiers section will indicate zero errors
      */
+
+    this.Then(/^I should be allowed to enter one "([^"]*)"$/, function (arg1, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I should be allowed to enter more than one unique IDs with "([^"]*)"$/, function (arg1, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the "([^"]*)" must not be the same as the "([^"]*)"$/, function (arg1, arg2, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I should verify for valid "([^"]*)" format as NCT followed by (\d+) numeric characters (.*)$/, function (arg1, arg2, NCT00000000, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I should check for valid "([^"]*)" format as NCI\-YYYY\-nnnnn (.*)$/, function (arg1, NCI201600123, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I should be allowed to enter one "([^"]*)" with unique IDs$/, function (arg1, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^all Trial Identifiers should not be more than (\d+) characters in Length$/, function (arg1, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the Protocol Identifiers section will indicate zero errors$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
 
     /*
      Scenario: #2 I can enter the Acronym and Official Title for a trial
