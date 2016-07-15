@@ -1,6 +1,8 @@
 class TrialService
   @@is_IND_protocol = true # default to true
   @@cur_trial_status_code = nil
+  @@is_cur_trial_status_active = false
+  @@is_cur_trial_status_approved = false
 
   def initialize(params)
     @trial = params[:trial]
@@ -8,6 +10,8 @@ class TrialService
     cur_trial_status = @trial.trial_status_wrappers.last if @trial.present? && @trial.trial_status_wrappers.present?
     cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
     @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+    @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
+    @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
 
   end
 
@@ -51,6 +55,13 @@ class TrialService
       if (rule.code == 'PAS21' and !@trial.brief_title.present?) ||
           (rule.code == 'PAS22' and !is_brief_title_unique) ||
           (rule.code == 'PAS23' and !@trial.brief_summary.present?)
+        validation_results << rule
+
+      elsif (rule.code == 'PAS41' and @trial.detailed_description.present? and @trial.detailed_description.length > 32000) ||
+          (rule.code == 'PAS42' and @trial.brief_title.present? and @trial.brief_title.length <= 18) ||
+          (rule.code == 'PAS49' and @trial.brief_title.present? and @trial.brief_title.length >= 300)
+
+        ## warnings
         validation_results << rule
 
       end
@@ -133,8 +144,10 @@ class TrialService
     # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
     is_all_sites_unique = true
     is_site_pi_unique = true  # check for duplicate site investigator on the same site
+    is_any_site_status_active = false
+
     @trial.participating_sites.each do |site|
-      # TODO: optimize this query
+      # TODO: optimize this query if possible
       if is_all_sites_unique
         is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
       end
@@ -143,12 +156,24 @@ class TrialService
         count_hash = ParticipatingSiteInvestigator.where(participating_site_id: site.id).group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
         is_site_pi_unique = count_hash.size == 0  # if duplicate, count_hash.size >= 1
       end
+
+      if !is_any_site_status_active
+        site_status = site.site_rec_status_wrappers.last
+        site_status_id = site_status.nil? ? nil : site_status.site_recruitment_status_id
+        is_any_site_status_active = site_status_id == SiteRecruitmentStatus.find_by_code('ACT').id
+      end
+      p "is_any_site_status_active: #{is_any_site_status_active}"
     end
 
     validation_result = []
     paa_site_rules.each do |rule|
       if (rule.code == 'PAA93' and !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
         validation_result << rule
+
+      elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active)
+        validation_result << rule
+        # TODO: finish this warning block
+
       end
     end
 
