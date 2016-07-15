@@ -175,9 +175,8 @@ class TrialService
     validation_result = []
     paa_site_rules.each do |rule|
       if (rule.code == 'PAA93' and !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
+        ## errors block
         validation_result << rule
-
-
       elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
           (rule.code == 'PAA197' and @@is_cur_trial_status_approved and is_any_site_status_enroll_by_invitation) ||
           (rule.code == 'PAA198' and @@is_cur_trial_status_inreview and is_any_site_status_active) ||
@@ -185,8 +184,11 @@ class TrialService
           (rule.code = 'PAA200' and @@is_cur_trial_status_withdrawn and is_any_site_status_active) ||
           (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation) ||
           (rule.code = 'PAA202' and (!is_any_site_status_active && @trial.participating_sites.size == 0))
+
+        ## warnings block
         validation_result << rule
         # TODO: finish this warning block
+        # TODO: PAA203, PAA204, PAA205, and PAA206 (ask BA: what is primary xxx ?)
 
       end
     end
