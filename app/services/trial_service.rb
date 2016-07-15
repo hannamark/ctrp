@@ -44,8 +44,33 @@ class TrialService
     results = results | _validate_paa_documents()
     results = results | _validate_pas_trial_design()
     results = results | _validate_pas_trial_description()
+    results = results | _validate_paa_nci_specific_info()
+
 
     return results
+  end
+
+  def _validate_paa_nci_specific_info()
+    paa_nci_specific_info_rules = ValidationRule.where(model: 'trial', item: 'paa_nci_specific_info')
+    is_funding_sponsor_nullified = false
+
+    funding_sources = TrialFundingSource.where(trial_id: @trial.id)
+    funding_sources.each do |source|
+      if !is_funding_sponsor_nullified
+        organization = Organization.find(source.organization_id)
+        is_funding_sponsor_nullified = organization.source_status.code == 'NULLIFIED'
+      end
+    end
+
+    validation_result = []
+    paa_nci_specific_info_rules.each do |rule|
+      if rule.code == 'PAA208' and is_funding_sponsor_nullified
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+
   end
 
   def _validate_pas_trial_description()
