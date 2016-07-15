@@ -179,7 +179,7 @@
             vm.trialDetailObj.isInterventional = vm.trialDetailObj.researchCategoryName.indexOf('intervention') > -1;
             vm.trialDetailObj.isObservational = vm.trialDetailObj.researchCategoryName.indexOf('observation') > -1;
             vm.trialDetailObj.isAncillary = vm.trialDetailObj.researchCategoryName.indexOf('ancillary') > -1;
-            var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
+            var infoSourceName = !!internalSourceObj ? internalSourceObj.name.toLowerCase() : '';
             vm.trialDetailObj.isInfoSourceProtocol = infoSourceName.indexOf('proto') > -1;
             vm.trialDetailObj.isInfoSourceImport = !vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
 
@@ -273,7 +273,7 @@
          * @return {JSON object, updated values are all boolean}                [paMenuTypes to control visibility of certain menu items/screens]
          */
         function _checkMilestoneCode(trialDetailObj) {
-            var informationSourceCode = trialDetailObj.internal_source.code;
+            var informationSourceCode = !!trialDetailObj.internal_source ? trialDetailObj.internal_source.code : 'IMP'; // if code is missing, assumed to be IMP (imported)
             var milestones = _.map(trialDetailObj.milestone_wrappers, function(msObj) {
                 msObj.milestone.submission_id = msObj.submission.id; // move attribute one-level up
                 msObj.milestone.submission_num = parseInt(msObj.submission.submission_num); // move one-level up
