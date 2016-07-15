@@ -1,4 +1,4 @@
-<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes unsaved-tab-forms="{{psView.formArray}}" unsaved-tab-index="{{psView.tabIndex}}">
+<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes unsaved-tab-forms="{{psView.formArray}}" unsaved-tab-index="{{psView.tabIndex}}" unsaved-callback="psView.resetParticipatingSite(backToListView)">
     <div class="panel panel-default" ng-show="psView.addEditMode">
         <div class="panel-heading">
             <div class="panel-title" ng-show="!psView.currentParticipatingSite.organization.name">Add Participating Site</div>
@@ -7,7 +7,7 @@
         <div class="panel-body">
                 <md-tabs ng-show="psView.addEditMode" md-dynamic-height md-border-bottom md-selected="psView.tabIndex">
                     <md-tab>
-                        <md-tab-label><span id="participating_site">Participating Site</span></md-tab-label>
+                        <md-tab-label><span id="participating_site" ng-class="{'save-required': !psView.currentParticipatingSite.id}">Participating Site</span></md-tab-label>
                         <md-tab-body>
                             <form class="form form-horizontal" role="form" id="ps_sites_form" name="ps_sites_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                                 <!-- first row in the accordion body -->
@@ -229,7 +229,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false, true)" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -360,10 +360,10 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_investigators" restriction-field ng-disabled="psView.current_investigator.uiEdit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn || psView.current_investigator.new">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false, true)" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -474,7 +474,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.setAddMode(false, true)" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>

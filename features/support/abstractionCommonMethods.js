@@ -218,7 +218,7 @@ var abstractionCommonMethods = function() {
     /*****************************************
      * On Prepare Login Test Accept
      *****************************************/
-    this.onPrepareLoginTest = function(usrID) {
+    this.onPrepareLoginTest_backup = function(usrID) {
         var configurationFile;
         console.log('file path'+testConfiguration);
         configurationFile = ''+testConfiguration+'/testSettings.json';
@@ -311,12 +311,12 @@ var abstractionCommonMethods = function() {
                 }
             }
         });
-    }
+    };
 
     /*****************************************
      * On Prepare Login Test Accept
      *****************************************/
-    this.onPrepareLoginTest_backup = function(usrID) {
+    this.onPrepareLoginTest = function(usrID) {
        var configurationFile;
         console.log('file path'+testConfiguration);
         configurationFile = ''+testConfiguration+'/testSettings.json';
@@ -330,60 +330,29 @@ var abstractionCommonMethods = function() {
         console.log(configuration.curatorPWD);
         console.log(configuration.trialSubmitterUID);
         console.log(configuration.trialSubmitterPWD);
-        //App URL
-        iteraCntLg = iteraCntLg + 1;
-        var getCrntCntLg = iteraCntLg++;
-        console.log('Sign in count:'+getCrntCntLg);
-        if (getCrntCntLg == '1'){
-            helper.alertMsgOK();
-            browser.get(configuration.uiUrl);
-
-            helper.wait_for(300);
-        } else{
-            console.log('UI url already exists');
-        }
-        //Verify Homepage
-        //var BrwsrVal = browser.getCurrentUrl();
-        //if (getCrntCntLg == '010101'){
-        //    login.loginPageVerification.getText().then (function(text){
-        //        var passTxtA = ''+text+'';
-        //        crntTxtLoginPg =  ''+passTxtA+'';
-        //        if (crntTxtLoginPg === loginTxtVerif){
-        //            console.log('System identified Login Home Page Successfully:['+crntTxtLoginPg+']');
-        //            expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
-        //        } else {
-        //            console.log('System Unable to identified Login home page:['+crntTxtLoginPg+']');
-        //            expect(login.loginPageVerification.getText()).to.eventually.equal(loginTxtVerif);
-        //        };
-        //    });
-        //};
         //ctrp abstractor user
         if (usrID === 'ctrpabstractor'){
             login.login(configuration.abstractorUID, configuration.abstractorPWD);
             login.accept();
-            helper.wait_for(5000);
-            expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
-            expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
+            //expect(abstractPageMenu.homeSearchTrials.isDisplayed()).to.eventually.equal(true);
+            //expect(abstractPageMenu.homeAbstractionDashboards.isDisplayed()).to.eventually.equal(true);
         }
         //ctrp curator user
         else if (usrID === 'ctrpcurator'){
             login.login(configuration.curatorUID, configuration.curatorPWD);
             login.accept();
-          //  helper.wait_for(5000);
             expect(poHome.homeEnterOrganizations.isDisplayed()).to.eventually.equal(true);
         }
         //ctrp trial submitter user
         else if (usrID === 'ctrptrialsubmitter'){
             login.login(configuration.trialSubmitterUID, configuration.trialSubmitterPWD);
             login.accept();
-            //helper.wait_for(5000);
             expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
         }
         //ctrp trial submitter user
         else if (usrID === 'ctrptrialsubmitter2'){
             login.login(configuration.trialSubmitter2UID, configuration.trialSubmitter2PWD);
             login.accept();
-           // helper.wait_for(5000);
             expect(trialHome.homeRegisterTrial.isDisplayed()).to.eventually.equal(true);
         }
         else {
