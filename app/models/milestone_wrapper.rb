@@ -148,6 +148,13 @@ class MilestoneWrapper < TrialBase
         end
         self.trial.verification_date = self.created_at
         self.trial.save
+      elsif self.milestone.code == 'LRD'
+        if self.submission.present?
+          rej = ProcessingStatus.find_by_code('REJ')
+          if rej.present?
+            ProcessingStatusWrapper.create(status_date: Date.today, processing_status: rej, submission: self.submission, trial: self.trial)
+          end
+        end
       end
     end
   end
