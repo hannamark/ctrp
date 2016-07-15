@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F01 Add and Edit General Trial Details
 
 As any CTRP PA User, I can enter general trial details
@@ -23,10 +23,10 @@ And the "Duplicate NCI Identifier" must not be the same as the "NCI Trial ID"
 And I should check for valid "Duplicate NCI Identifier" format as NCI-YYYY-nnnnn <NCI-2016-00123>
 And I should be allowed to enter more than one "Other Identifier" with unique IDs
 And I should be allowed to enter more than one "Duplicate NCI Identifier" with unique IDs
-And I should be allowed to enter more than one "DCP Identifier" with unique IDs
-And I should be allowed to enter more than one "CTEP Identifier" with unique IDs
-And I should be allowed to enter more than one "CCR Identifier" with unique IDs
-And I should be allowed to enter more than one "CDR Identifier" with unique IDs
+And I should be allowed to enter one "DCP Identifier" with unique IDs
+And I should be allowed to enter one "CTEP Identifier" with unique IDs
+And I should be allowed to enter one "CCR Identifier" with unique IDs
+And I should be allowed to enter one "CDR Identifier" with unique IDs
 And all Trial Identifiers should not be more than 30 characters in Length 
 Then the Protocol Identifiers section will indicate zero errors
 
