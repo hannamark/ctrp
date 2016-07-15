@@ -55,6 +55,7 @@
         vm.addEditMode = false;
         vm.tabIndex = 0;
         vm.formArray = ['ps_sites_form', 'ps_inv_form', 'ps_contact_form'];
+        vm.isSaved = false;
 
         for (var i = 0; i < vm.centralContactTypes.length; i++) {
            if(vm.centralContactTypes[i].code  == "NONE") {
@@ -62,8 +63,6 @@
                vm.centralContactTypes.splice(i, 1);
            }
         }
-
-        //console.log('vm.centralContactTypes=' + JSON.stringify(vm.centralContactTypes));
 
         //actions
         vm.addSiteRecruitment = addSiteRecruitment;
@@ -80,11 +79,12 @@
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
         vm.resetParticipatingSite = resetParticipatingSite;
         vm.watchContactType = watchContactType;
-        vm.checkUnsavedItems = checkUnsavedItems;
+        vm.resetTabIndex = resetTabIndex;
 
         vm.disableBtn = false;
 
         activate();
+
 
         /****************** implementations below ***************/
         function activate() {
@@ -250,6 +250,13 @@
                                 if (cbString && cbString === 'editInv') {
                                     vm.editInvestigator(vm.investigatorGrid.length - 1);
                                 }
+
+                                // To make sure setPristine() is executed after all $watch functions are complete
+                                $timeout(function() {
+                                   resetDirtyForms();
+                               }, 1);
+
+                               vm.isSaved = true;
                             }
                         }).catch(function (err) {
                             console.log("2server_response="+JSON.stringify(response));
@@ -283,6 +290,8 @@
                     vm.country = newVal[0].country;
                     vm.postal_code = newVal[0].postal_code;
                     vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
+
+                    $scope.ps_sites_form.$setDirty();
                 }
             });
         }
@@ -290,7 +299,7 @@
         /**
          *  Set Add Mode. This causes the first tab to appear for a new Participating Site
          **/
-        function setAddMode(addEditModeValue, resetTab) {
+        function setAddMode(addEditModeValue) {
             //console.log("SETTING TO ADDMODE");
             if (!(typeof addEditModeValue === 'undefined' || addEditModeValue === null)) {
                 vm.addEditMode = addEditModeValue;
@@ -298,14 +307,8 @@
                 $anchorScroll();
             } else {
                 vm.addEditMode = true;
-                $scope.ps_sites_form.$setPristine();
-                $scope.ps_inv_form.$setPristine();
-                $scope.ps_contact_form.$setPristine();
+                resetDirtyForms();
                 vm.current_investigator.uiEdit = false;
-            }
-
-            if (resetTab) {
-                vm.tabIndex = 0;
             }
 
             vm.current_investigator.edit = false;
@@ -326,6 +329,8 @@
             vm.selOrganization = {name: '', array: []};
             vm.siteRecruitmentGrid = [];
             vm.investigatorGrid = [];
+
+            vm.isSaved = false;
         }
 
         /**
@@ -372,9 +377,9 @@
                 }
             });
 
-            $scope.ps_sites_form.$setPristine();
-            $scope.ps_inv_form.$setPristine();
-            $scope.ps_contact_form.$setPristine();
+            resetDirtyForms();
+
+            vm.isSaved = vm.persisted_organization.name && vm.currentParticipatingSite.site_rec_status_wrappers.length;
         }
 
         vm.initSiteRecruitmentGrid = function (){
@@ -571,6 +576,8 @@
                         vm.current_investigator.new = true;
                     }
                     vm.principalInvestigator = {name: '', array: []};
+
+                    $scope.ps_inv_form.$setDirty();
                 }
             });
         }
@@ -833,6 +840,8 @@
                     vm.currentParticipatingSite.contact_email = person.email;
                     vm.currentParticipatingSite.person =  person;
                     vm.currentParticipatingSite.person_id =  person.id;
+
+                    $scope.ps_contact_form.$setDirty();
                 }
             });
         }
@@ -969,7 +978,7 @@
         };
 
 
-        function resetParticipatingSite() {
+        function resetParticipatingSite(backToListView) {
             vm.selectedAllSites = false;
             vm.selectedDeleteParticipatingSitesList = [];
             if(vm.currentParticipatingSite.id > 0){
@@ -989,12 +998,11 @@
             vm.selectedPerson = {name: '', array: []};
             vm.watchContactType();
             vm.duplicateParticipatingSite = false;
+            vm.current_investigator = {};
 
-            /*
-            $timeout(function() {
-                getTrialDetailCopy();
-            }, 0);
-            */
+            if (backToListView) {
+                vm.setAddMode(false);
+            }
         }
 
         function validateDuplicateOrg(orgId) {
@@ -1006,21 +1014,6 @@
             });
 
             return isDuplicate;
-        }
-
-        function checkUnsavedItems(origArray, currentArray) {
-            if (origArray.length !== currentArray.length) {
-                console.log('Unsaved Items Exist!');
-                return;
-            }
-
-            var hasUnsavedItems = angular.equals(origArray, currentArray);
-
-            if (hasUnsavedItems) {
-                console.log('Unsaved Items Exist!');
-            } else {
-                console.log('Arrays are identical.');
-            }
         }
 
         function checkArrayForDeletion(arr) {
@@ -1041,6 +1034,20 @@
             } else {
                 return false;
             }
+        }
+
+        function resetDirtyForms() {
+            $scope.ps_sites_form.$setPristine();
+            $scope.ps_inv_form.$setPristine();
+            $scope.ps_contact_form.$setPristine();
+        }
+
+        function resetTabIndex() {
+            /*
+                -1 means Back to List button was clicked.
+                Need to differentiate between navigating to first tab and navigating from CRUD to List view
+            */
+            vm.tabIndex = -1;
         }
 
     } //trialParticipatingSitesCtrl

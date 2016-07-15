@@ -1,13 +1,21 @@
 class TrialService
   @@is_IND_protocol = true # default to true
   @@cur_trial_status_code = nil
+  @@is_cur_trial_status_active = false
+  @@is_cur_trial_status_approved = false
+  @@is_cur_trial_status_inreview = false
+  @@is_cur_trial_status_withdrawn = false
 
   def initialize(params)
     @trial = params[:trial]
-    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
-    cur_trial_status = @trial.trial_status_wrappers.last
+    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
+    cur_trial_status = @trial.trial_status_wrappers.last if @trial.present? && @trial.trial_status_wrappers.present?
     cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
     @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+    @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
+    @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
+    @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
+    @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
 
   end
 
@@ -24,34 +32,189 @@ class TrialService
   end
 
   def validate()
-
     results = []
+    if !@trial.present?
+      return results
+    end
+
     results = results | _validate_general_trial_details() # concatenate array but remove duplicates
     results = results | _validate_paa_regulatory_info_fda()
     results = results | _validate_paa_regulatory_human_sub_safety()
     results = results | _validate_paa_participating_sites()
+    results = results | _validate_paa_documents()
+    results = results | _validate_pas_trial_design()
+    results = results | _validate_pas_trial_description()
+    results = results | _validate_paa_nci_specific_info()
+
 
     return results
+  end
+
+  def _validate_paa_nci_specific_info()
+    paa_nci_specific_info_rules = ValidationRule.where(model: 'trial', item: 'paa_nci_specific_info')
+    is_funding_sponsor_nullified = false
+
+    funding_sources = TrialFundingSource.where(trial_id: @trial.id)
+    funding_sources.each do |source|
+      if !is_funding_sponsor_nullified
+        organization = Organization.find(source.organization_id)
+        is_funding_sponsor_nullified = organization.source_status.code == 'NULLIFIED'
+      end
+    end
+
+    validation_result = []
+    paa_nci_specific_info_rules.each do |rule|
+      if rule.code == 'PAA208' and is_funding_sponsor_nullified
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+
+  end
+
+  def _validate_pas_trial_description()
+    pas_trial_description_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_description')
+
+    is_brief_title_unique = @trial.brief_title.nil? ? false : Trial.where(brief_title: @trial.brief_title).size == 1
+
+    validation_results = []
+    pas_trial_description_rules.each do |rule|
+
+      if (rule.code == 'PAS21' and !@trial.brief_title.present?) ||
+          (rule.code == 'PAS22' and !is_brief_title_unique) ||
+          (rule.code == 'PAS23' and !@trial.brief_summary.present?)
+        validation_results << rule
+
+      elsif (rule.code == 'PAS41' and @trial.detailed_description.present? and @trial.detailed_description.length > 32000) ||
+          (rule.code == 'PAS42' and @trial.brief_title.present? and @trial.brief_title.length <= 18) ||
+          (rule.code == 'PAS49' and @trial.brief_title.present? and @trial.brief_title.length >= 300)
+
+        ## warnings
+        validation_results << rule
+
+      end
+    end
+
+    return validation_results
+  end
+
+  def _validate_pas_trial_design()
+
+    pas_trial_design_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_design')
+    is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
+    is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
+    is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
+    is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
+
+    is_open_masking = Masking.find_by_code('OP').id == @trial.masking_id
+    is_single_blind_masking = Masking.find_by_code('SB').id == @trial.masking_id
+    is_double_blind_masking = Masking.find_by_code('DB').id == @trial.masking_id
+
+    num_masking_roles = 0
+    num_masking_roles += 1 if @trial.masking_role_caregiver
+    num_masking_roles += 1 if @trial.masking_role_investigator
+    num_masking_roles += 1 if @trial.masking_role_outcome_assessor
+    num_masking_roles += 1 if @trial.masking_role_subject
+    is_primary_purpose_other = PrimaryPurpose.find_by_code('OTH').id == @trial.primary_purpose_id
+    is_study_model_other = StudyModel.find_by_code('OTH').id == @trial.study_model_id
+    is_time_perspec_other = TimePerspective.find_by_code('OTH').id == @trial.time_perspective_id
+
+    validation_result = []
+    pas_trial_design_rules.each do |rule|
+      if (rule.code == 'PAS3' and is_interventional_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS4' and is_expanded_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS5' and is_interventional_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS6' and is_expanded_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS11' and is_interventional_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS12' and is_expanded_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS13' and is_interventional_cat and @trial.intervention_model_id.nil?) ||
+          (rule.code == 'PAS14' and is_expanded_cat and @trial.intervention_model_id.nil?) ||
+          (rule.code == 'PAS15' and !@trial.primary_purpose_id.present?) ||
+          (rule.code == 'PAS16' and is_primary_purpose_other and !@trial.primary_purpose_other.present?) ||
+          (rule.code == 'PAS17' and !@trial.phase_id.present?) ||
+          (rule.code == 'PAS18' and !@trial.num_of_arms.present?) ||
+          (rule.code == 'PAS19' and is_interventional_cat and !@trial.allocation_id.present?) ||
+          (rule.code == 'PAS20' and is_expanded_cat and !@trial.allocation_id.present?)
+            ## errors block
+            validation_result << rule
+      elsif (rule.code == 'PAS43' and is_observational_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS44' and is_ancillary_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS45' and is_observational_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS46' and is_ancillary_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS47' and is_observational_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+          (rule.code == 'PAS48' and is_ancillary_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+            ## warnings block
+            validation_result << rule
+      end
+
+    end
+
+    return validation_result
+  end
+
+  def _validate_paa_documents()
+    paa_documents_rules = ValidationRule.where(model: 'trial', item: 'paa_documents')
+    is_protocol_doc_missing = TrialDocument.where(trial_id: @trial.id, document_type: 'Protocol Document', status: 'active').blank? # does it have to active?
+    is_irb_approval_doc_missing = TrialDocument.where(trial_id: @trial.id, document_type: 'IRB Approval', status: 'active').blank? # does it have to active?
+    validation_result = []
+
+    paa_documents_rules.each do |rule|
+      if (rule.code == 'PAA95' and is_protocol_doc_missing) || (rule.code == 'PAA96' and is_irb_approval_doc_missing)
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_paa_participating_sites()
     paa_site_rules = ValidationRule.where(model: 'trial', item: 'paa_participating_sites')
     # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
     is_all_sites_unique = true
-    @trial.participating_sites.each do |site|
-      # TODO: optimize this query
-      is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
-      break if is_all_sites_unique == false
+    is_site_pi_unique = true  # check for duplicate site investigator on the same site
+    is_any_site_status_active = false
+    is_any_site_status_enroll_by_invitation = false
 
+    @trial.participating_sites.each do |site|
+      # TODO: optimize this query if possible
+      if is_all_sites_unique
+        is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
+      end
+
+      if is_site_pi_unique
+        count_hash = ParticipatingSiteInvestigator.where(participating_site_id: site.id).group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
+        is_site_pi_unique = count_hash.size == 0  # if duplicate, count_hash.size >= 1
+      end
+
+      site_status = site.site_rec_status_wrappers.last
+      site_status_id = site_status.nil? ? nil : site_status.site_recruitment_status_id
+      if !is_any_site_status_active
+        is_any_site_status_active = site_status_id == SiteRecruitmentStatus.find_by_code('ACT').id
+      end
+      if !is_any_site_status_enroll_by_invitation
+        is_any_site_status_enroll_by_invitation = site_status_id == SiteRecruitmentStatus.find_by_code('EBI').id
+      end
     end
 
-
     validation_result = []
-
-
     paa_site_rules.each do |rule|
-      if rule.code == 'PAA93' and !is_all_sites_unique
+      if (rule.code == 'PAA93' and !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
+        ## errors block
         validation_result << rule
+      elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
+          (rule.code == 'PAA197' and @@is_cur_trial_status_approved and is_any_site_status_enroll_by_invitation) ||
+          (rule.code == 'PAA198' and @@is_cur_trial_status_inreview and is_any_site_status_active) ||
+          (rule.code == 'PAA199' and @@is_cur_trial_status_inreview and is_any_site_status_enroll_by_invitation) ||
+          (rule.code = 'PAA200' and @@is_cur_trial_status_withdrawn and is_any_site_status_active) ||
+          (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation) ||
+          (rule.code = 'PAA202' and (!is_any_site_status_active && @trial.participating_sites.size == 0))
+
+        ## warnings block
+        validation_result << rule
+        # TODO: finish this warning block
+        # TODO: PAA203, PAA204, PAA205, and PAA206 (ask BA: what is primary xxx ?)
+
       end
     end
 
@@ -82,7 +245,6 @@ class TrialService
             (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
             (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
             (rule.code == 'PAA191' and @@cur_trial_status_code == 'WIT' and @trial.board_approval_status_id != board_sub_denied_status_id) ||
-            (rule.code == 'PAA192' and @trial.board_approval_status_id.nil?) ||
             (rule.code == 'PAA193' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id)
 
           # warnings block
@@ -112,16 +274,17 @@ class TrialService
     is_US_contained = false
     is_FDA_contained = false
     @trial.oversight_authorities.each do |oa|
-      if oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.downcase!.include?('us'))
-        is_US_contained = true
-      elsif oa.organization.present? and (oa.organization.downcase! == 'food and drug administration' || oa.organization.downcase! == 'fda')
-        is_FDA_contained = true
+      if !is_US_contained
+        is_US_contained = oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.downcase!.include?('us'))
+      end
+
+      if !is_FDA_contained
+        is_FDA_contained = oa.organization.present? && oa.organization.downcase == 'food and drug administration'
       end
     end
 
     pri_rules.each do |rule|
       if (rule.code == 'PAA90' and !is_US_contained) || (rule.code == 'PAA91' and !is_FDA_contained)
-
         validation_results << rule
       end
     end

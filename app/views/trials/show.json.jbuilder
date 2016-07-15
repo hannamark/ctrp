@@ -384,3 +384,6 @@ json.current_submission_num @trial.current_submission.submission_num if @trial.c
 json.current_submission_id @trial.current_submission.id if @trial.current_submission.present?
 json.current_submission_type_code @trial.current_submission.submission_type.code if @trial.current_submission.present?
 
+json.most_recent_submission_num @trial.most_recent_submission.submission_num if @trial.most_recent_submission.present?
+json.most_recent_submission_id @trial.most_recent_submission.id if @trial.most_recent_submission.present?
+json.most_recent_submission_type_code @trial.most_recent_submission.submission_type.code if @trial.most_recent_submission.present?

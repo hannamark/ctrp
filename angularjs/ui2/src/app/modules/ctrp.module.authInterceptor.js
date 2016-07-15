@@ -53,7 +53,7 @@
               //if unauthenticated or unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
               $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue');
-            } else if (rejection.status > 226 && errorCount < 3) {
+            } else if (rejection.status > 226 && errorCount < 7) {
                 $injector.get('toastr').clear();
                 var errorMsg = '<u>Error Code</u>: ' + rejection.status;
                 errorMsg += '\nError Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);

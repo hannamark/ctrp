@@ -53,6 +53,22 @@ And I enter the Amendment Date
 And I select Save
 Then the Trial History will be associated with the trial
 
+Scenario: #4a I cannot edit the Trial History when a trial is rejected
+
+Given I am logged into the CTRP Protocol Abstraction application
+
+And I have selected a trial 
+
+And I am on the Trial History Information for Submissions Screen
+And I select Edit Trial History
+And the trial is rejected (Late Rejection Date milestone or Submission Rejection Date milesonte with no active submssion)
+Then I can not Edit Trial History
+
+
+
+
+
+
 Scenario: #5 I can view Trial History Information Documents 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
