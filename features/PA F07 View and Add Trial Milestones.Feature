@@ -156,10 +156,7 @@ Scenario Outline: #6 Trials Milestones validation rules
     Then the milestone <Milestone> is valid and can be recorded
 	
  Examples: 
-    
-      
-      
-      
+     
       |<Milestone>                                 |<MilestoneRule>                                                                                                                                                                |
       |Submission Received Date                    |Trial Submitted via the Trial registration portal                                                                                                                              |
       |Validation Processing Start Date            |Submission Received Date milestone exists                                                                                                                                    |
