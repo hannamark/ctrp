@@ -92,6 +92,7 @@
 #  internal_source_id            :integer
 #  nci_specific_comment          :string(4000)
 #  send_trial_flag               :string
+#  is_rejected                   :boolean
 #
 # Indexes
 #
@@ -265,6 +266,9 @@ class Trial < TrialBase
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
+
+  # The set_defaults will only work if the object is new
+  after_initialize :set_defaults, unless: :persisted?
 
   # Array of actions can be taken on this Trial
   def actions
@@ -893,6 +897,10 @@ class Trial < TrialBase
     #else
       TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
     #end
+  end
+
+  def set_defaults
+    self.is_rejected = false if self.is_rejected.nil?
   end
 
   #scopes for search API
