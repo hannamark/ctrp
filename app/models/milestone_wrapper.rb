@@ -100,7 +100,10 @@ class MilestoneWrapper < TrialBase
           self.submission.status = 'Rejected'
           self.submission.save
 
-          if self.submission.submission_type.code == 'AMD'
+          if self.submission.submission_type.code == 'ORI'
+            self.trial.is_rejected = true
+            self.trial.save
+          elsif self.submission.submission_type.code == 'AMD'
             # Rollback
             trial_service = TrialService.new({trial: self.trial})
             trial_service.rollback(self.submission.id)
@@ -154,6 +157,9 @@ class MilestoneWrapper < TrialBase
           if rej.present?
             ProcessingStatusWrapper.create(status_date: Date.today, processing_status: rej, submission: self.submission, trial: self.trial)
           end
+
+          self.trial.is_rejected = true
+          self.trial.save
         end
       end
     end
