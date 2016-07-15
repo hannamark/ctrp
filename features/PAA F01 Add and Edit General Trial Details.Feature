@@ -2,7 +2,7 @@
 Feature: PAA F01 Add and Edit General Trial Details
 
 As any CTRP PA User, I can enter general trial details
-@runthis
+
 Scenario: #1 I can enter the different Protocol Identifiers for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
@@ -11,7 +11,7 @@ And I can optionally enter or edit one or more Other Trial Identifiers
 Then the Protocol Identifier section will be complete
 
 Scenario: #1a Duplicate and format rules for Other Trial Identifiers
-Given I have selected a trial to abstract 
+Given I have selected a trial to abstract
 And I am on the General Trial Details screen
 Then I should be allowed to enter only one "ClinicalTrials.gov Identifier"
 And I should be allowed to enter more than one "Obsolete ClinicalTrials.gov Identifier" with unique IDs
@@ -27,7 +27,7 @@ And I should be allowed to enter more than one "DCP Identifier" with unique IDs
 And I should be allowed to enter more than one "CTEP Identifier" with unique IDs
 And I should be allowed to enter more than one "CCR Identifier" with unique IDs
 And I should be allowed to enter more than one "CDR Identifier" with unique IDs
-And all Trial Identifiers should not be more than 30 characters in Length 
+And all Trial Identifiers should not be more than 30 characters in Length
 Then the Protocol Identifiers section will indicate zero errors
 
 Scenario: #2 I can enter the Acronym and Official Title for a trial
@@ -143,10 +143,10 @@ And I am on the General Trial Details screen
 And the Sponsor is Null
 When I select save
 Then a warning message will appear �Sponsor is Required�
-
+@runthis
 Scenario: # 17 e-mail address format
-Given I know which e-mail address I want to edit
-And I am logged in to CTRP application
+Given I have selected a trial to abstract
+And I am on the General Trial Details screen
 And I have selected e-mail address field 
 And I change the e-mail address in the format "text"@"text"."text" 
 When I change the e-mail address and the format is not "text"@"text"."text"
