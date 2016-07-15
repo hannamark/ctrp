@@ -3,6 +3,8 @@ class TrialService
   @@cur_trial_status_code = nil
   @@is_cur_trial_status_active = false
   @@is_cur_trial_status_approved = false
+  @@is_cur_trial_status_inreview = false
+  @@is_cur_trial_status_withdrawn = false
 
   def initialize(params)
     @trial = params[:trial]
@@ -12,6 +14,8 @@ class TrialService
     @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
     @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
     @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
+    @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
+    @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
 
   end
 
@@ -145,6 +149,7 @@ class TrialService
     is_all_sites_unique = true
     is_site_pi_unique = true  # check for duplicate site investigator on the same site
     is_any_site_status_active = false
+    is_any_site_status_enroll_by_invitation = false
 
     @trial.participating_sites.each do |site|
       # TODO: optimize this query if possible
@@ -157,12 +162,14 @@ class TrialService
         is_site_pi_unique = count_hash.size == 0  # if duplicate, count_hash.size >= 1
       end
 
+      site_status = site.site_rec_status_wrappers.last
+      site_status_id = site_status.nil? ? nil : site_status.site_recruitment_status_id
       if !is_any_site_status_active
-        site_status = site.site_rec_status_wrappers.last
-        site_status_id = site_status.nil? ? nil : site_status.site_recruitment_status_id
         is_any_site_status_active = site_status_id == SiteRecruitmentStatus.find_by_code('ACT').id
       end
-      p "is_any_site_status_active: #{is_any_site_status_active}"
+      if !is_any_site_status_enroll_by_invitation
+        is_any_site_status_enroll_by_invitation = site_status_id == SiteRecruitmentStatus.find_by_code('EBI').id
+      end
     end
 
     validation_result = []
@@ -170,7 +177,14 @@ class TrialService
       if (rule.code == 'PAA93' and !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
         validation_result << rule
 
-      elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active)
+
+      elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
+          (rule.code == 'PAA197' and @@is_cur_trial_status_approved and is_any_site_status_enroll_by_invitation) ||
+          (rule.code == 'PAA198' and @@is_cur_trial_status_inreview and is_any_site_status_active) ||
+          (rule.code == 'PAA199' and @@is_cur_trial_status_inreview and is_any_site_status_enroll_by_invitation) ||
+          (rule.code = 'PAA200' and @@is_cur_trial_status_withdrawn and is_any_site_status_active) ||
+          (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation) ||
+          (rule.code = 'PAA202' and (!is_any_site_status_active && @trial.participating_sites.size == 0))
         validation_result << rule
         # TODO: finish this warning block
 
