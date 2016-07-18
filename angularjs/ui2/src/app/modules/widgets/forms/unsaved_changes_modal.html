@@ -5,14 +5,16 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            You have unsaved changes in this form. Are you sure you want to leave the tab without saving changes?
+            {{unChgs.message}}
         </div>
     </div>
     <div class="modal-footer">
         <div class="col-xs-12">
             <div class="btn-toolbar">
-                <button class="btn btn-primary pull-right" ng-click="unChgs.confirm()">Ok</button>
-                <button class="btn btn-cancel pull-right" ng-click="unChgs.cancel()">
+                <button class="btn pull-right" ng-click="unChgs.confirm()" ng-class="unChgs.isSaveRequired ? 'btn-primary' : 'btn-danger'">
+                    <i class="glyphicon glyphicon-ok"></i> {{unChgs.confirmButtonText}}
+                </button>
+                <button class="btn btn-warning pull-right" ng-click="unChgs.cancel()" ng-show="!unChgs.isSaveRequired">
                     <i class="glyphicon glyphicon-remove"></i> Cancel
                 </button>
             </div>

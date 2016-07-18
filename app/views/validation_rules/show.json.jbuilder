@@ -1,1 +1,1 @@
-json.extract! @validation_rule, :id, :created_at, :updated_at
+json.extract! @validation_rule, :id, :code, :section, :item, :rule, :description, :remark, :model, :category

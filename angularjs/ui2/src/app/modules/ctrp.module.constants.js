@@ -141,6 +141,7 @@
                 'CHECKOUT_HISTORY': '/ctrp/registry/trials/get_trial_checkout_history.json?trial_id={:trial_id}',
                 'INTERNAL_SOURCES': '/ctrp/registry/internal_sources.json',
                 'AMENDMENT_REASONS': '/ctrp/registry/trials/amendment_reasons.json',
+                'VALIDATE_ABSTRACTION': '/ctrp/model/validation_rules/trial/{:trial_id}.json',
             }
         })
         .constant('MESSAGES', {

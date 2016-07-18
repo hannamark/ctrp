@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160711174700) do
+ActiveRecord::Schema.define(version: 20160715204235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1408,6 +1408,7 @@ ActiveRecord::Schema.define(version: 20160711174700) do
     t.integer  "internal_source_id"
     t.string   "nci_specific_comment",          limit: 4000
     t.string   "send_trial_flag"
+    t.boolean  "is_rejected"
   end
 
   add_index "trials", ["accrual_disease_term_id"], name: "index_trials_on_accrual_disease_term_id", using: :btree

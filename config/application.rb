@@ -54,5 +54,7 @@ module Ctrp
 
     config.paths["log"] = "../../logs/#{Rails.env}.log"
 
+    #config.active_job.queue_adapter = :inline
+
   end
 end

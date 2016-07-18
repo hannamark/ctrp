@@ -271,4 +271,10 @@ And I will be able to open and save the spreadsheet
       Then the audit trail will be displayed the trial 
       And the list will be paganiated  
 
+Scenario: #3a Displaying Deleted values
+Given I am logged into the CTRP Protocol Abstraction application 
+And I have selected a Trial
+And I am on the Trial History Information Audit Trail Screen 
+When a value is deleted 
+Then the value will be displayed with the (D) suffix
 
