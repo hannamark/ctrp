@@ -353,6 +353,14 @@ Scenario Outline:#4 Trial Design Interventional Mandatory Fields rules for IMPOR
      When I have reach the 200 characters limit
      Then no additional text can be entered
   
+  
+  Scenario: #17'Bio-specimen Description character count
+Given I am on the Trial Design screen
+When I am typing into the Bio-specimen Description  Field
+Then information text appears below the Bio-specimen Description Field to display the number of characters available to enter into the field 
+|1000 characters left|
+When 1000 characters have been entered
+Then no additional text can be entered
 
   
   
