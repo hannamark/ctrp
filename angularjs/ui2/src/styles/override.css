@@ -1545,8 +1545,19 @@ div[disabled] {
     border-color: #CCC;
 }
 
+/* Center modal vertically as much as possible */
+.modal-center .modal-dialog {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 45%;
+    bottom: 50%;
+    margin: auto;
+}
 
 /* Set modal to mimic default browser look/feel */
+
+
 .modal-default .modal-header {
     padding: 10px;
     background-color: #D5D5D5;
