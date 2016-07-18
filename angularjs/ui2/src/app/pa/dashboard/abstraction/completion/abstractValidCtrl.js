@@ -16,6 +16,7 @@
             errors: {admin: [], scientific: []},
             warnings: []
         };
+        /*
         var errors = _.filter(validationResults, function(result) {
             return result.category === 'error';
         });
@@ -24,9 +25,22 @@
         });
         vm.issues.errors.scientific = _.filter(errors, function(error) {
             return error.section === 'PAS';
-        })
+        });
         vm.issues.warnings = _.filter(validationResults, function(result) {
             return result.category === 'warning';
+        });
+        */
+
+        _.each(validationResults, function(result) {
+            if (result.category === 'warning') {
+                vm.issues.warnings.push(result);
+            } else if (result.category === 'error') {
+                if (result.section === 'PAA') {
+                    vm.issues.errors.admin.push(result);
+                } else if (result.section === 'PAS') {
+                    vm.issues.errors.scientific.push(result);
+                }
+            }
         });
 
     } // abstractValidCtrl

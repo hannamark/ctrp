@@ -37,15 +37,15 @@ class TrialService
       return results
     end
 
-    results = results | _validate_general_trial_details() # concatenate array but remove duplicates
-    results = results | _validate_paa_regulatory_info_fda()
-    results = results | _validate_paa_regulatory_human_sub_safety()
-    results = results | _validate_paa_participating_sites()
-    results = results | _validate_paa_documents()
-    results = results | _validate_pas_trial_design()
-    results = results | _validate_pas_trial_description()
-    results = results | _validate_paa_nci_specific_info()
-    results = results | _validate_pas_arms_groups()
+    results |= _validate_general_trial_details() # concatenate array but remove duplicates
+    results |= _validate_paa_regulatory_info_fda()
+    results |= _validate_paa_regulatory_human_sub_safety()
+    results |= _validate_paa_participating_sites()
+    results |= _validate_paa_documents()
+    results |= _validate_pas_trial_design()
+    results |= _validate_pas_trial_description()
+    results |= _validate_paa_nci_specific_info()
+    results |= _validate_pas_arms_groups()
 
 
     return results
@@ -65,17 +65,23 @@ class TrialService
       break if all_arm_has_intervention == false
     end
 
+    arms_interventions_ids = []  # intervention ids associated with this trial's arms/groups
     all_arms_groups.each do |arm|
       if !is_arm_label_too_long
         is_arm_label_too_long = arm.label.present? && arm.label.length > 62 # cannot be longer than 62 chars
       end
+      cur_intervention_ids = arm.arms_groups_interventions_associations.pluck(:intervention_id)
+      arms_interventions_ids |= cur_intervention_ids  # concatenate without duplicate id
     end
+
+    all_interventions_ids_this_trial = Intervention.where(trial_id: @trial.id).pluck(:id)
+    is_all_interventions_associated = all_interventions_ids_this_trial.sort() == arms_interventions_ids.sort() # check if every interventions in this trial have been associated with arms/groups
 
     pas_arms_groups_rules.each do |rule|
       if (rule.code == 'PAS26' and !all_arm_has_intervention) ||
+         (rule.code == 'PAS27' and !is_all_interventions_associated) ||
          (rule.code == 'PAS50' and (@trial.arms_groups.nil? || @trial.arms_groups.size == 0)) ||
          (rule.code == 'PAS51' and is_arm_label_too_long)
-        # TODO:
         validation_result << rule
       end
     end
