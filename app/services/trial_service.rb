@@ -6,6 +6,8 @@ class TrialService
   @@is_cur_trial_status_inreview = false
   @@is_cur_trial_status_withdrawn = false
 
+  @@arm_label_max_length = 62  # max number of characters
+
   def initialize(params)
     @trial = params[:trial]
     @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
@@ -46,9 +48,28 @@ class TrialService
     results |= _validate_pas_trial_description()
     results |= _validate_paa_nci_specific_info()
     results |= _validate_pas_arms_groups()
-
+    results |= _validate_pas_eligibility()
 
     return results
+  end
+
+  def _validate_pas_eligibility
+    pas_eligibility_rules = ValidationRule.where(model: 'trial', item: 'pas_eligibility')
+    validation_result = []
+
+    pas_eligibility_rules.each do |rule|
+      if (rule.code == 'PAS28' and (!@trial.other_criteria.present? || @trial.other_criteria.size == 0)) ||
+         (rule.code == 'PAS29' and !@trial.accept_vol.present?) ||
+         (rule.code == 'PAS30' and !@trial.gender_id.present?) ||
+         (rule.code == 'PAS31' and (!@trial.min_age.present? || !@trial.min_age_unit.present?)) ||
+         (rule.code == 'PAS32' and (!@trial.max_age.present? || !@trial.max_age_unit.present?)) ||
+         (rule.code == 'PAS33' and @trial.other_criteria.size == 0)
+
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_pas_arms_groups
@@ -68,7 +89,7 @@ class TrialService
     arms_interventions_ids = []  # intervention ids associated with this trial's arms/groups
     all_arms_groups.each do |arm|
       if !is_arm_label_too_long
-        is_arm_label_too_long = arm.label.present? && arm.label.length > 62 # cannot be longer than 62 chars
+        is_arm_label_too_long = arm.label.present? && arm.label.length > @@arm_label_max_length # cannot be longer than 62 chars
       end
       cur_intervention_ids = arm.arms_groups_interventions_associations.pluck(:intervention_id)
       arms_interventions_ids |= cur_intervention_ids  # concatenate without duplicate id
