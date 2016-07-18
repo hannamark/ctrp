@@ -35,6 +35,7 @@
     "protractor-html-screenshot-reporter": "0.0.21",
     "q": "^1.4.1",
     "underscore": "^1.8.3",
-    "xml2js": "^0.4.16"
+    "xml2js": "^0.4.16",
+    "gulp-plumber": "*"
   }
 }

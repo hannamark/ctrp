@@ -92,6 +92,7 @@
 #  internal_source_id            :integer
 #  nci_specific_comment          :string(4000)
 #  send_trial_flag               :string
+#  is_rejected                   :boolean
 #
 # Indexes
 #
@@ -266,6 +267,9 @@ class Trial < TrialBase
   before_save :check_indicator
   after_create :create_ownership
 
+  # The set_defaults will only work if the object is new
+  after_initialize :set_defaults, unless: :persisted?
+
   # Array of actions can be taken on this Trial
   def actions
     actions = []
@@ -414,11 +418,21 @@ class Trial < TrialBase
     self.submissions.pluck('submission_num').uniq
   end
 
-  # Most recent non-update submission
+  # Most recent active non-update submission
   def current_submission
     upd = SubmissionType.find_by_code('UPD')
     if upd.present?
       return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ? AND submissions.status = ?', self.id, upd.id, 'Active').order('submission_num desc').first
+    else
+      return nil
+    end
+  end
+
+  # Most recent non-update submission
+  def most_recent_submission
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
     else
       return nil
     end
@@ -895,6 +909,10 @@ class Trial < TrialBase
     #end
   end
 
+  def set_defaults
+    self.is_rejected = false if self.is_rejected.nil?
+  end
+
   #scopes for search API
   #scope :matches_grant, -> (column, value) {Tempgrant.where}
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
@@ -1151,9 +1169,7 @@ class Trial < TrialBase
   }
 
   scope :filter_rejected, -> {
-    join_clause = "LEFT JOIN submissions ON trials.id = submissions.trial_id LEFT JOIN submission_types ON submissions.submission_type_id = submission_types.id"
-    where_clause = "submissions.status <> ? AND submission_types.code = ?"
-    joins(join_clause).where(where_clause, "Rejected", "ORI")
+    where("is_rejected = ? OR is_rejected IS NULL", FALSE)
   }
 
   scope :sort_by_col, -> (params) {
