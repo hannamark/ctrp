@@ -138,6 +138,15 @@ And Study Population Description is Null
 When I select Save 
 Then an error message will appear “Study Population is Required”
 
+Scenario: #9'  Study Population Description character count
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Eligibility Criteria Screen
+When I am typing into the Study Polulation Description Field
+Then information text appears below the Study Polulation Description Field to display the number of characters available to enter into the field 
+|1000 characters left|
+When 1000 characters have been entered
+Then no additional text can be entered
+
 Scenario: #10  Add Inclusion Criteria
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Eligibility Criteria screen

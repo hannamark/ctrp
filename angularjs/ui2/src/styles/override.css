@@ -1544,3 +1544,36 @@ div[disabled] {
 .has-error .form-control.no-validate {
     border-color: #CCC;
 }
+
+/* Center modal vertically as much as possible */
+.modal-center .modal-dialog {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 45%;
+    bottom: 50%;
+    margin: auto;
+}
+
+/* Set modal to mimic default browser look/feel */
+
+
+.modal-default .modal-header {
+    padding: 10px;
+    background-color: #D5D5D5;
+    border-bottom: 1px solid #BEBEBE;
+}
+
+.modal-default .modal-body, .modal-default .modal-footer {
+    background-color: #ECECEC;
+    color: #000;
+    border: none;
+    margin: 0;
+}
+
+.modal-default .btn {
+    border: 1px solid #CBCBCB;
+    color: #000;
+    background-color: #FEFEFE;
+    font-weight: normal;
+}

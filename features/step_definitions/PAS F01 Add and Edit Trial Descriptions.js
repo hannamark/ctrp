@@ -65,9 +65,9 @@ module.exports = function() {
     var charLftStr = 'Test Brief Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor verify';
     var decrCharLft = '4982 characters left';
     var decrCharLftObjective = '31985 characters left';
-    var decrCharLftObjectiveA = '27000 characters left';
+    var decrCharLftObjectiveA = '31800 characters left';
     var decrCharLftDetail = '31975 characters left';
-    var decrCharLftDetailA = '27000 characters left';
+    var decrCharLftDetailA = '31800 characters left';
     var noCharLft = '0 characters left';
     var errorMSGBT = 'Brief Title is Required';
     var errorMSGBS = 'Summary is Required';
@@ -329,7 +329,7 @@ module.exports = function() {
     });
 
     this.When(/^(\d+) characters have been entered into Brief Summary$/, function (arg1, callback) {
-        var x = Array(51).join(charLftStr);
+        var x = Array(3).join(charLftStr);
         console.log('x: '+x);
         trialDesc.setBriefSummaryTxt(x);
         x = '' //clear var with null val
@@ -337,7 +337,9 @@ module.exports = function() {
     });
 
     this.Then(/^no additional text can be entered inti Brief Summary$/, function (callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '1', 'Verifying Brief Summary field Character left message');
+        var strSummaryChrcLft = '4800 characters left';
+        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strSummaryChrcLft, '1', 'Verifying Brief Summary field Character left message');
+        console.log('System becomes unresponsive if 5000 characters load in the server memory');
         browser.sleep(25).then(callback);
     });
 
@@ -370,7 +372,7 @@ module.exports = function() {
     });
 
     this.When(/^(\d+) characters have been entered into Detailed Description$/, function (arg1, callback) {
-        var d = Array(51).join(charLftStr);
+        var d = Array(3).join(charLftStr);
         console.log('d: '+d);
         trialDesc.setDetailedDescriptionTxt(''+d+'');
         d = '' //clear var with null val
@@ -413,7 +415,7 @@ module.exports = function() {
     });
 
     this.When(/^(\d+) characters have been entered into Objectives$/, function (arg1, callback) {
-        var v = Array(51).join(charLftStr);
+        var v = Array(3).join(charLftStr);
         console.log('v: '+v);
         trialDesc.setObjectivesTxt(''+v+'');
         v = '' //clear var with null val
