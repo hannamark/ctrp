@@ -56,9 +56,8 @@ class TrialService
     validation_result = []
 
     if_all_has_intervention = true # except 'No intervention' arms_group_type
-    arms_groups = ArmsGroup.where(trial_id: @trial.id).where("arms_groups_type != ?", "No intervention")  #.where.not("arms_groups_type": 'No intervention')
+    arms_groups = ArmsGroup.where(trial_id: @trial.id).where("arms_groups_type != ? OR arms_groups_type IS NULL", "No intervention")  #.where.not("arms_groups_type": 'No intervention')
 
-    # TODO: arms_groups does not return nil arms_groups_type
     arms_groups.each do |id|
       if_all_has_intervention = id.arms_groups_interventions_associations.size > 0  # if 0, no interventions
       break if_all_has_intervention == false
