@@ -45,9 +45,33 @@ class TrialService
     results = results | _validate_pas_trial_design()
     results = results | _validate_pas_trial_description()
     results = results | _validate_paa_nci_specific_info()
+    results = results | _validate_pas_arms_groups()
 
 
     return results
+  end
+
+  def _validate_pas_arms_groups
+    pas_arms_groups_rules = ValidationRule.where(model: 'trial', item: 'pas_arms/groups')
+    validation_result = []
+
+    if_all_has_intervention = true # except 'No intervention' arms_group_type
+    arms_groups = ArmsGroup.where(trial_id: @trial.id).where("arms_groups_type != ?", "No intervention")  #.where.not("arms_groups_type": 'No intervention')
+
+    # TODO: arms_groups does not return nil arms_groups_type
+    arms_groups.each do |id|
+      if_all_has_intervention = id.arms_groups_interventions_associations.size > 0  # if 0, no interventions
+      break if_all_has_intervention == false
+    end
+
+    pas_arms_groups_rules.each do |rule|
+      if rule.code == 'PAS26' and !if_all_has_intervention
+        # TODO:
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_paa_nci_specific_info()
