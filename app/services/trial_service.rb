@@ -55,16 +55,26 @@ class TrialService
     pas_arms_groups_rules = ValidationRule.where(model: 'trial', item: 'pas_arms/groups')
     validation_result = []
 
-    if_all_has_intervention = true # except 'No intervention' arms_group_type
-    arms_groups = ArmsGroup.where(trial_id: @trial.id).where("arms_groups_type != ? OR arms_groups_type IS NULL", "No intervention")  #.where.not("arms_groups_type": 'No intervention')
+    is_arm_label_too_long = false
+    all_arm_has_intervention = true # except 'No intervention' arms_group_type
+    all_arms_groups = ArmsGroup.where(trial_id: @trial.id)
+    inter_arms_groups = ArmsGroup.where(trial_id: @trial.id).where("arms_groups_type != ? OR arms_groups_type IS NULL", "No intervention")  #.where.not("arms_groups_type": 'No intervention')
 
-    arms_groups.each do |id|
-      if_all_has_intervention = id.arms_groups_interventions_associations.size > 0  # if 0, no interventions
-      break if_all_has_intervention == false
+    inter_arms_groups.each do |arm|
+      all_arm_has_intervention = arm.arms_groups_interventions_associations.size > 0  # if 0, no interventions
+      break if all_arm_has_intervention == false
+    end
+
+    all_arms_groups.each do |arm|
+      if !is_arm_label_too_long
+        is_arm_label_too_long = arm.label.present? && arm.label.length > 62 # cannot be longer than 62 chars
+      end
     end
 
     pas_arms_groups_rules.each do |rule|
-      if rule.code == 'PAS26' and !if_all_has_intervention
+      if (rule.code == 'PAS26' and !all_arm_has_intervention) ||
+         (rule.code == 'PAS50' and (@trial.arms_groups.nil? || @trial.arms_groups.size == 0)) ||
+         (rule.code == 'PAS51' and is_arm_label_too_long)
         # TODO:
         validation_result << rule
       end
