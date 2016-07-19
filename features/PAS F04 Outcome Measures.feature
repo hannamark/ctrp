@@ -20,8 +20,8 @@ And I have selected a value for Safety Issue
 |No|
 When select Save
 Then the Outcome Measure for the trial will be associated with the trial
-And <Created Message> displays
-|Created Message|
+And created message displays
+|CreatedMessage|
 |Record created|
 And the Outcome Measures table will display Outcomes Measures values
 |Outcome Measure Type  |

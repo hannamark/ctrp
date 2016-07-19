@@ -148,18 +148,18 @@ module.exports = function() {
 
     this.Given(/^I am on the Outcome Measures screen$/, function (callback) {
         leftNav.clickScientificOutcome();
-        //leftNav.checkPanelTitle(pageTtitle, '6');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'list');
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have Selected Add Button$/, function (callback) {
-        //outcome.clickAddOutcomeMeasure();
+        outcome.clickAddOutcomeMeasure();
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^Add\/Edit Outcome Measure screen displays$/, function (callback) {
-        //leftNav.waitForElement(outcome.titleTxt, 'Waiting for Title element');
-        //leftNav.checkPanelTitle(pageTtitleA, '6');
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
         browser.sleep(25).then(callback);
     });
 
@@ -209,7 +209,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^(.*) displays$/, function (CreatedMessage, table, callback) {
+    this.Then(/^created message displays$/, function (table, callback) {
         // Write code here that turns the phrase above into concrete actions
         browser.sleep(25).then(callback);
     });

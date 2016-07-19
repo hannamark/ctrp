@@ -80,6 +80,9 @@ var scientificOutcomeMeasures = function(){
     this.resetOutBtn = element();
     this.backToOutcomeMeasuresListBtn = element(by.id('oc_site_list'));
 
+    this.outcomePageTitleList = element(by.id('pg_title'));
+    this.outcomePageTitleDetails = element(by.id('outcome_measure_details'));
+
     this.clickAddOutcomeMeasure = function(){
         helper.clickButton(this.addOutcomeMeasureBtn, "Add Outcome Measure - Button");
     };
@@ -115,6 +118,24 @@ var scientificOutcomeMeasures = function(){
 
     this.selectSafetyIssue = function(options)  {
         helper.selectValueFromList(this.safetyIssueLst, options, "Safety Issue - List field");
+    };
+
+    this.checkOutcomePageTitle = function (titleTXT, listOrDetails){
+        if (listOrDetails === 'list'){
+            this.waitForElement(self.outcomePageTitleList, 'Waiting For Page title');
+            self.outcomePageTitleList.isDisplayed().then(function(result) {
+                if (result) {
+                    expect(self.outcomePageTitleList.getText()).to.eventually.equal(titleTXT);
+                }
+            });
+        } else if (listOrDetails === 'details'){
+            this.waitForElement(self.outcomePageTitleDetails, 'Waiting For Page title');
+            self.outcomePageTitleDetails.isDisplayed().then(function(result) {
+                if (result) {
+                    expect(self.outcomePageTitleDetails.getText()).to.eventually.equal(titleTXT);
+                }
+            });
+        }
     };
 
     this.tableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
@@ -239,6 +260,21 @@ var scientificOutcomeMeasures = function(){
                 expect(self.characterLeftLbl.get(index).getText()).to.eventually.equal(charLeft);
             }
         });
+    };
+
+    this.waitForElement = function (element, label) {
+        browser.wait(function () {
+            return element.isPresent().then(function (state) {
+                if (state === true) {
+                    return element.isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, label + " did not appear");
+        browser.sleep(250);
     };
 
     //Save and Reset
