@@ -9,7 +9,7 @@ And I have selected the option to search my trials in CTRP
 And I am the Trial Owner
 When the Update option is enabled on one of my trials
 And I have selected the Update option
-Then all trial information for the lastest active submission will be displayed as in Registration with only Update fields enabled Type
+Then all trial information for the latest submission will be displayed as in Registration with only Update fields enabled Type
       
       |Other Trial Identifier Field   |
       |NIH Grant Information Section  |
