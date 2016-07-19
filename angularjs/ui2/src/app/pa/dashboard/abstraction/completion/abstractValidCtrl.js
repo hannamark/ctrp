@@ -11,7 +11,6 @@
 
     function abstractValidCtrl($scope, $timeout, _, validationResults) {
         var vm = this;
-        console.info('validationResults: ', validationResults);
         vm.issues = {
             errors: {admin: [], scientific: []},
             warnings: []
