@@ -54,6 +54,7 @@
             'trialValidProtocol': false,
             'trialValidImport': false,
             'rejection': false,
+            'hideFlagForRejection': false
         };
         // milestone codes that trigger validation menus
         var MILESTONE_CODES_FOR_VALIDATION = ['SRD', 'VPS', 'VPC']; // "Submission Received Date" , "Validation Processing Start Date" or "Validation Processing Completed Date"
@@ -61,6 +62,8 @@
         var MILESTONE_CODES_FOR_REJECTION = ['LRD', 'STR'];
         // mile stone codes that DO not trigger abstraction menus
         var MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT = MILESTONE_CODES_FOR_REJECTION.concat(MILESTONE_CODES_FOR_VALIDATION); // Late Rejection Date and VALIDATION codes
+
+        var ROLE_LIST_TO_HIDE_FROM = ['ROLE_ABSTRACTOR', 'ROLE_SUPER', 'ROLE_ADMIN'];
 
         vm.disableBtn = false;
 
@@ -179,11 +182,12 @@
             vm.trialDetailObj.isInterventional = vm.trialDetailObj.researchCategoryName.indexOf('intervention') > -1;
             vm.trialDetailObj.isObservational = vm.trialDetailObj.researchCategoryName.indexOf('observation') > -1;
             vm.trialDetailObj.isAncillary = vm.trialDetailObj.researchCategoryName.indexOf('ancillary') > -1;
-            var infoSourceName = vm.trialDetailObj.internal_source.name.toLowerCase();
+            var infoSourceName = !!internalSourceObj ? internalSourceObj.name.toLowerCase() : '';
             vm.trialDetailObj.isInfoSourceProtocol = infoSourceName.indexOf('proto') > -1;
             vm.trialDetailObj.isInfoSourceImport = !vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
 
             vm.curPAMenuTypes = _checkMilestoneCode(vm.trialDetailObj); // TODO: use this in subscreen to control their visbility
+            vm.curPAMenuTypes.hideFlagForRejection = _checkRejectionAndRole(vm.trialDetailObj);
             vm.trialDetailObj.menuTypes = vm.curPAMenuTypes; // update the menuTypes so that PAMenu controller can use it
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
@@ -273,7 +277,7 @@
          * @return {JSON object, updated values are all boolean}                [paMenuTypes to control visibility of certain menu items/screens]
          */
         function _checkMilestoneCode(trialDetailObj) {
-            var informationSourceCode = trialDetailObj.internal_source.code;
+            var informationSourceCode = !!trialDetailObj.internal_source ? trialDetailObj.internal_source.code : 'IMP'; // if code is missing, assumed to be IMP (imported)
             var milestones = _.map(trialDetailObj.milestone_wrappers, function(msObj) {
                 msObj.milestone.submission_id = msObj.submission.id; // move attribute one-level up
                 msObj.milestone.submission_num = parseInt(msObj.submission.submission_num); // move one-level up
@@ -321,6 +325,14 @@
             }
 
             return updatedPAMenuTypes;
+        }
+
+        function _checkRejectionAndRole(trialDetailObj) {
+            if (trialDetailObj.is_rejected && ROLE_LIST_TO_HIDE_FROM.indexOf(curUserRole) > -1) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];
