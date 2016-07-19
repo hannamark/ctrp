@@ -125,6 +125,34 @@ var projectMethodsRegistry = function () {
     };
 
     /*****************************************************************
+     * Method: Add Trial Other Identifiers value if it does not exist
+     * @param anyItemInTable
+     *****************************************************************/
+    this.addOtherTrialIdentifier = function (anyItemInTable) {
+        return addTrial.addTrialVerifyOtherTrialIdentifierTable.filter(function (name) {
+            return name.getText().then(function (text) {
+                console.log('text is' + text + 'Item to be verified' + anyItemInTable);
+                return text === anyItemInTable;
+            });
+        }).then(function (filteredElements) {
+            console.log('filtered elements' + filteredElements);
+            // Only the elements that passed the filter will be here. This is an array.
+            if (filteredElements.length > 0) {
+               // element.all(by.css('.glyphicon.glyphicon-remove-circle')).get(0).click();
+                addTrial.addTrialRemoveOtherTrialIdentifier.click();
+                addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Other Identifier')).click();
+                addTrial.setAddTrialProtocolID('OTHupd' + projectFunctions.getRandomInt(100000, 990000));
+                addTrial.clickAddTrialAddProtocolButton();
+            }
+            else {
+                addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Other Identifier')).click();
+                addTrial.setAddTrialProtocolID('OTHupd' + projectFunctions.getRandomInt(100000, 990000));
+                addTrial.clickAddTrialAddProtocolButton();
+            }
+        });
+    };
+
+    /*****************************************************************
      * Method: Verify Trial Oversight Authority Country Organization
      * @param country
      * @param organization
@@ -823,14 +851,15 @@ var projectMethodsRegistry = function () {
                                 /**** NIH Grant Information (for NIH funded Trials) ****/
                                 if (grantOption !== '') {
                                     addTrial.selectAddTrialFundedByNCIOption(grantOption);
-                                }
-                                if (grantOption.toUpperCase() !== 'NO' && grantOption !== '1') {
-                                    addTrial.selectAddTrialFundingMechanism(grantFundingMechanism);
-                                    addTrial.selectAddTrialInstituteCode(grantInstituteCode);
-                                    addTrial.setAddTrialSerialNumber(grantSerialNumber);
-                                    addTrial.addTrialSerialNumberSelect.click();
-                                    addTrial.selectAddTrialNCIDivisionProgramCode(grantNCIDivisionCode);
-                                    addTrial.clickAddTrialAddGrantInfoButton();
+
+                                    if (grantOption.toUpperCase() !== 'NO' && grantOption !== '1') {
+                                        addTrial.selectAddTrialFundingMechanism(grantFundingMechanism);
+                                        addTrial.selectAddTrialInstituteCode(grantInstituteCode);
+                                        addTrial.setAddTrialSerialNumber(grantSerialNumber);
+                                        addTrial.addTrialSerialNumberSelect.click();
+                                        addTrial.selectAddTrialNCIDivisionProgramCode(grantNCIDivisionCode);
+                                        addTrial.clickAddTrialAddGrantInfoButton();
+                                    }
                                 }
 
                                 /**** Trial Status ****/
@@ -1543,6 +1572,18 @@ var projectMethodsRegistry = function () {
                 return participatingSiteInTrial = emptyPromise;
             }
         });
+        addTrial.viewTrialVerifyviewedDocsExist.isPresent().then(function (state) {
+            if (state) {
+                documents = addTrial.viewTrialVerifyviewedDocs.getText().then(function (trialDocuments) {
+                    console.log('Trial Document array is ----> ' + trialDocuments);
+                    return trialDocuments;
+                });
+            }
+            else {
+                console.log('Trial Documents does not exist in Page.');
+                return documents = emptyPromise;
+            }
+        });
 
     };
 
@@ -2067,7 +2108,7 @@ var projectMethodsRegistry = function () {
     this.createTrialForTrialUpdate = function () {
         //Parameters for Submit Trial
         var trialTypeNational = 'National';
-        var leadOrgIdentifierNational = 'SS Lead NT Upd22';
+        var leadOrgIdentifierNational = 'SS Lead NT Upd';
         var otherClinicalTrialIDNT = 'NCT95' + projectFunctions.getRandomInt(100000, 990000);
         var officialTitleNT = 'Trial created by Cuke test SS to test Update' + trialTypeNational;
         var phaseNT = 'I/II';

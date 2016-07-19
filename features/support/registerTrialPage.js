@@ -22,6 +22,7 @@ var registerTrial = function(){
     this.addTrialVerifyOtherTrialIdentifier = element.all(by.css('tr[ng-repeat="otherId in trialDetailView.addedOtherIds track by $index"]'));
     this.addTrialVerifyOtherTrialIdentifierTable =  element.all(by.binding('otherId.protocol_id'));
     this.addTrialLeadProtocolIdValidationMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) || (trial_form.lead_protocol_id.$error.required && trialDetailView.showLpiError)"]'));
+    this.addTrialRemoveOtherTrialIdentifier = element(by.css('table[ng-show="trialDetailView.addedOtherIds.length > 0"]')).all(by.css('.glyphicon.glyphicon-remove-circle'));
 
     /** Trial Details **/
     this.addTrialDetailsSection = element(by.linkText('Trial Details'));
@@ -63,6 +64,8 @@ var registerTrial = function(){
     this.addTrialNCIDivisionProgramCode = element(by.model('trialDetailView.nci'));
     this.addTrialAddGrantInfoButton = element(by.css('button[ng-click="trialDetailView.addGrant()"]'));
     this.addTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in trialDetailView.addedGrants track by $index"]'));
+    this.addTrialVerifyGrantTableExist = element(by.css('tr[ng-repeat="grant in trialDetailView.addedGrants track by $index"]'));
+    this.addTrialRemoveGrantValues = element(by.css('table[ng-show="trialDetailView.addedGrants.length > 0"]')).all(by.css('.glyphicon.glyphicon-remove-circle'));
 
     /** Trial Status **/
     this.addTrialStatusDate = element(by.model('trialDetailView.status_date'));
@@ -78,6 +81,7 @@ var registerTrial = function(){
     this.addTriaCommentTable = element.all(by.binding('status.comment'));
     this.addTrialWhyStudyStoppedTable = element.all(by.binding('status.why_stopped'));
     this.addTrialErrorWarningTable = element.all(by.css('.col-md-4.status-error'));
+    this.addTrialRemoveTrialStatus = element(by.css('table[ng-show="trialDetailView.addedStatuses.length > 0"]')).all(by.css('.glyphicon.glyphicon-remove-circle'));
 
 
     /** Trial Dates **/
@@ -251,6 +255,7 @@ var registerTrial = function(){
     this.viewTrialDuplicateCountryOrganizationMessage = element(by.binding('trialDetailView.addAuthorityError'));
 
     /** Trial Related Documents **/
+    this.viewTrialVerifyviewedDocsExist = element(by.binding('document.file_name'));
     this.viewTrialVerifyviewedDocs = element.all(by.binding('document.file_name'));
     this.viewTrialVerifyviewedOtherDocsDescription = element.all(by.binding('document.document_subtype'));
     this.viewTrialAcceptedFileExtensionMsg = element.all(by.binding('trialDetailView.acceptedFileExtensions'));
@@ -306,9 +311,17 @@ var registerTrial = function(){
     };
 
     this.selectAddTrialPhase = function(trialPhase)  {
-        if (trialPhase !== ''){
-        helper.selectValueFromList(this.addTrialPhase,trialPhase,"Add Trial by Phase ID field");
+        var  selectTrialPhase =  element(by.xpath('//*[@id="phase"]/option[.="' + trialPhase + '"]'));
+        var  selectTrialPhaseDefault =  element(by.xpath('//*[@id="phase"]/option[.="-Select a Phase-"]'));
+        if(trialPhase === '') {
+            helper.selectValue(selectTrialPhaseDefault,'-Select a Phase-',"Add Trial by Phase field");
+        } else{
+            helper.selectValue(selectTrialPhase,trialPhase,"Add Trial by Phase field");
         }
+        //Commenting below to select the Exact value
+        // if (trialPhase !== ''){
+        // helper.selectValueFromList(this.addTrialPhase,trialPhase,"Add Trial by Phase ID field");
+        // }
     };
 
     this.selectAddTrialPilotOption = function(trialPilotOption)  {
