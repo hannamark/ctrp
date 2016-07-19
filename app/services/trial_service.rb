@@ -63,7 +63,7 @@ class TrialService
          (rule.code == 'PAS30' and !@trial.gender_id.present?) ||
          (rule.code == 'PAS31' and (!@trial.min_age.present? || !@trial.min_age_unit.present?)) ||
          (rule.code == 'PAS32' and (!@trial.max_age.present? || !@trial.max_age_unit.present?)) ||
-         (rule.code == 'PAS33' and @trial.other_criteria.size == 0)
+         (rule.code == 'PAS33' and (!@trial.other_criteria.present? || @trial.other_criteria.size == 0))
 
         validation_result << rule
       end
