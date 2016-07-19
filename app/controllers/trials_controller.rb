@@ -65,6 +65,7 @@ class TrialsController < ApplicationController
 
     respond_to do |format|
       if @trial.update(trial_params)
+        @trial = Trial.find(@trial.id)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
         format.json { render :show, status: :ok, location: @trial }
 
