@@ -66,7 +66,14 @@ var PoCommonBar = function(){
         self.homeEnterOrganizations.isPresent().then(function(retVal){
             console.log('value of ret val : ' + retVal);
             if (retVal === true) {
-                helper.clickLink(self.homeEnterOrganizations, "Home link");
+                self.homeEnterOrganizations.isDisplayed().then(function(state){
+                    if(state) {
+                        helper.clickLink(self.homeEnterOrganizations, "Home link");
+                    }
+                    else{
+                        console.log('Home link not displayed');
+                    }
+                });
             }
         });
     };

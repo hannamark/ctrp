@@ -26,10 +26,38 @@ var scientificOutcomeMeasures = function(){
     var self = this;
 
     /***********************************
-     * Outcome Measure object(s)
+     * List of Outcome Measure object(s)
      ***********************************/
 
     this.addOutcomeMeasureBtn = element(by.id('add_outcome_measure'));
+    this.deleteSelectedOutcome = element(by.id('delete'));
+    this.deleteConfirmOutcome = element(by.id('confirmed_btn'));
+    this.deleteCancelOutcome = element(by.id('cancel_confirm_btn'));
+
+    this.tableOutcomeAll = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
+    this.tableTHeadOutcome = element(by.css('.table.table-bordered.table-striped.table-hover thead'));
+    this.tableTHeadColA = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(01)'));
+    this.tableTHeadColB = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(02)'));
+    this.tableTHeadColC = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(03)'));
+    this.tableTHeadColD = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(04)'));
+    this.tableTHeadColE = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(05)'));
+    this.tableTHeadColF = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(06)'));
+    this.tableTHeadColG = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(07)'));
+    this.tableTHeadColH = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(08)'));
+
+    this.tableSelectAll = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(09) input'));
+
+    this.verifyOutcomeMeasureTHead = function (){
+        var thd = new Array("Index", "Outcome Measure Type", "Title", "Time Frame", "Description", 'Safety Issue', 'Edit', 'Copy');
+        helper.verifyTableRowText(self.tableTHeadColA, thd[0], 'Index');
+        helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Outcome Measure Type');
+        helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Title');
+        helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Time Frame');
+        helper.verifyTableRowText(self.tableTHeadColE, thd[4], 'Description');
+        helper.verifyTableRowText(self.tableTHeadColF, thd[5], "Safety Issue");
+        helper.verifyTableRowText(self.tableTHeadColG, thd[6], "Edit");
+        helper.verifyTableRowText(self.tableTHeadColH, thd[7], "Copy");
+    };
 
     /***********************************
      * Outcome Measure Details object(s)
@@ -51,6 +79,23 @@ var scientificOutcomeMeasures = function(){
     this.saveOutBtn = element(by.id('submit_processing'));
     this.resetOutBtn = element();
     this.backToOutcomeMeasuresListBtn = element(by.id('oc_site_list'));
+
+    this.outcomePageTitleList = element(by.id('pg_title'));
+    this.outcomePageTitleDetails = element(by.id('outcome_measure_details'));
+
+    this.clickAddOutcomeMeasure = function(){
+        helper.clickButton(this.addOutcomeMeasureBtn, "Add Outcome Measure - Button");
+    };
+
+    this.clickDeleteSelectedOutcome = function(yesCancel){
+        helper.clickButton(this.deleteSelectedOutcome, "Delete Selected List of Outcome Measures - Button");
+        this.waitForTrailDetailsElement(self.deleteConfirmOutcome, "Waiting for Delete Yes button to be present");
+        if (yesCancel === 'yes'){
+            helper.clickButton(this.deleteConfirmOutcome, "Delete Confirm - Button");
+        } else if (yesCancel === 'cancel'){
+            helper.clickButton(this.deleteCancelOutcome, "Delete Cancel - Button");
+        }
+    };
 
     this.selectOutcomeMeasureType = function(type)  {
         helper.selectValueFromList(this.outcomeMeasureTypeLst, type, "Outcome Measure Type - List field");
@@ -75,6 +120,130 @@ var scientificOutcomeMeasures = function(){
         helper.selectValueFromList(this.safetyIssueLst, options, "Safety Issue - List field");
     };
 
+    this.checkOutcomePageTitle = function (titleTXT, listOrDetails){
+        if (listOrDetails === 'list'){
+            this.waitForElement(self.outcomePageTitleList, 'Waiting For Page title');
+            self.outcomePageTitleList.isDisplayed().then(function(result) {
+                if (result) {
+                    expect(self.outcomePageTitleList.getText()).to.eventually.equal(titleTXT);
+                }
+            });
+        } else if (listOrDetails === 'details'){
+            this.waitForElement(self.outcomePageTitleDetails, 'Waiting For Page title');
+            self.outcomePageTitleDetails.isDisplayed().then(function(result) {
+                if (result) {
+                    expect(self.outcomePageTitleDetails.getText()).to.eventually.equal(titleTXT);
+                }
+            });
+        }
+    };
+
+    this.tableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
+
+    this.findOutcomeToVerifyEditCopyDelete = function(expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf){
+        this.waitForTrailDetailsElement(self.tableTBodyRowAColA, "Outcome Measures Table");
+        this.tableOutcomeAll.then(function(rows){
+            console.log('Indetifier Type Total Row Count:['+(rows.length)+']');
+            for (var i=1; i<(rows.length+1); i++){
+                if (i === 1){
+                    console.log('i:['+i+']');
+                    fNm('1', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                } else if (i === 2){
+                    console.log('i:['+i+']');
+                    fNm('2', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                } else if (i === 3){
+                    console.log('i:['+i+']');
+                    fNm('3', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                } else if (i === 4){
+                    console.log('i:['+i+']');
+                    fNm('4', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                } else if (i === 5){
+                    console.log('i:['+i+']');
+                    fNm('5', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                } else if (i === 6){
+                    console.log('i:['+i+']');
+                    fNm('6', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                } else if (i === 7){
+                    console.log('i:['+i+']');
+                    fNm('7', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                } else if (i === 8){
+                    console.log('i:['+i+']');
+                    fNm('8', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                }
+            }
+        });
+        function fNm(iVal, expectedOutcomeType, whatToDo, titleVf, timeVf, descVf, safetyVf){
+            var tableOutcomeMeasureType = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
+            getCurrentOutcomeType = tableOutcomeMeasureType.getText('value');
+            getCurrentOutcomeType.then(function(typeVal){
+                console.log("Outcome Measures Type:["+typeVal+"]");
+                if(expectedOutcomeType === typeVal){
+                    if (whatToDo === 'verify'){
+                        expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
+                        if (titleVf !== ''){
+                            var titleVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(03)'));
+                            titleValVf = titleVal.getText('value');
+                            titleValVf.then(function(titleValCr){
+                                expect(titleVf.toString()).to.eql(titleValCr.toString());
+                            });
+                        }
+                        if (timeVf !== ''){
+                            var timeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(04)'));
+                            timeValVf = timeVal.getText('value');
+                            timeValVf.then(function(timeValCr){
+                                expect(timeVf.toString()).to.eql(timeValCr.toString());
+                            });
+                        }
+                        if (descVf !== ''){
+                            var descVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05)'));
+                            descValVf = descVal.getText('value');
+                            descValVf.then(function(descValCr){
+                                expect(descVf.toString()).to.eql(descValCr.toString());
+                            });
+                        }
+                        if (safetyVf !== ''){
+                            var safetyVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(06)'));
+                            safetyValVf = safetyVal.getText('value');
+                            safetyValVf.then(function(safetyValCr){
+                                expect(safetyVf.toString()).to.eql(safetyValCr.toString());
+                            });
+                        }
+                    } else if(whatToDo === 'edit'){
+                        var editDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(07) button'));
+                        helper.clickButton(editDataRw, "Edit - Button");
+                    } else if(whatToDo === 'copy'){
+                        var editDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(08) button'));
+                        helper.clickButton(editDataRw, "Edit - Button");
+                    } else if(whatToDo === 'delete'){
+                        var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(09) input'));
+                        helper.clickButton(deleteDataRw, "Delete - Button");
+                    }
+                }
+                if (expectedOutcomeType != typeVal && iVal === '8'){
+                    if (whatToDo === 'verify'){
+                        expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
+                    }
+                }
+            });
+        }
+    };
+
+    //Wait For Element : Wait
+    this.waitForTrailDetailsElement = function (element, label) {
+        browser.wait(function () {
+            return element.isPresent().then(function (state) {
+                if (state === true) {
+                    return element.isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, label + " did not appear");
+        browser.sleep(250);
+    };
+
     this.verifyOutcomeMeasureLables = function (){
         var lbl = new Array("Outcome Measure Type:", "Title:", "Time Frame:", "Description:", "Safety Issue:");
         helper.getVerifyLabel(this.outcomeMeasureTypeLbl, lbl[0], "Outcome Measure Type");
@@ -93,14 +262,29 @@ var scientificOutcomeMeasures = function(){
         });
     };
 
+    this.waitForElement = function (element, label) {
+        browser.wait(function () {
+            return element.isPresent().then(function (state) {
+                if (state === true) {
+                    return element.isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, label + " did not appear");
+        browser.sleep(250);
+    };
+
     //Save and Reset
 
-    this.clickSave = function(){
+    this.clickSaveOutcome = function(){
         helper.clickButton(this.saveOutBtn, "Save - Button");
         helper.wait_for(300);
     };
 
-    this.clickReset = function(){
+    this.clickResetOutcome = function(){
         helper.clickButton(self.resetOutBtn, "Reset - Button");
     };
 

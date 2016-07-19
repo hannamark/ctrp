@@ -6,6 +6,8 @@ class TrialService
   @@is_cur_trial_status_inreview = false
   @@is_cur_trial_status_withdrawn = false
 
+  @@arm_label_max_length = 62  # max number of characters
+
   def initialize(params)
     @trial = params[:trial]
     @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
@@ -37,17 +39,95 @@ class TrialService
       return results
     end
 
-    results = results | _validate_general_trial_details() # concatenate array but remove duplicates
-    results = results | _validate_paa_regulatory_info_fda()
-    results = results | _validate_paa_regulatory_human_sub_safety()
-    results = results | _validate_paa_participating_sites()
-    results = results | _validate_paa_documents()
-    results = results | _validate_pas_trial_design()
-    results = results | _validate_pas_trial_description()
-    results = results | _validate_paa_nci_specific_info()
-
+    results |= _validate_general_trial_details() # concatenate array but remove duplicates
+    results |= _validate_paa_regulatory_info_fda()
+    results |= _validate_paa_regulatory_human_sub_safety()
+    results |= _validate_paa_participating_sites()
+    results |= _validate_paa_documents()
+    results |= _validate_pas_trial_design()
+    results |= _validate_pas_trial_description()
+    results |= _validate_paa_nci_specific_info()
+    results |= _validate_pas_arms_groups()
+    results |= _validate_pas_eligibility()
+    results |= _validate_pas_disease()
 
     return results
+  end
+
+  def _validate_pas_disease
+    pas_disease_rules = ValidationRule.where(model: 'trial', item: 'pas_disease')
+    validation_result = []
+    ## note: 'thesaurus_id' (C-Code) in 'disease' table corresponds to the 'nt_term_id' column in ncit_disease_codes table
+
+    pas_disease_rules.each do |rule|
+      if (rule.code == 'PAS38' and (!@trial.diseases.present? || @trial.diseases.size == 0))
+        validation_result << rule
+
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_pas_eligibility
+    pas_eligibility_rules = ValidationRule.where(model: 'trial', item: 'pas_eligibility')
+    validation_result = []
+
+    pas_eligibility_rules.each do |rule|
+      if (rule.code == 'PAS28' and (!@trial.other_criteria.present? || @trial.other_criteria.size == 0)) ||
+         (rule.code == 'PAS29' and !@trial.accept_vol.present?) ||
+         (rule.code == 'PAS30' and !@trial.gender_id.present?) ||
+         (rule.code == 'PAS31' and (!@trial.min_age.present? || !@trial.min_age_unit.present?)) ||
+         (rule.code == 'PAS32' and (!@trial.max_age.present? || !@trial.max_age_unit.present?)) ||
+         (rule.code == 'PAS33' and (!@trial.other_criteria.present? || @trial.other_criteria.size == 0)) ||
+          (rule.code == 'PAS34' and is_observational_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS35' and is_ancillary_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS36' and is_observational_cat and !@trial.study_pop_desc.present?) ||
+          (rule.code == 'PAS37' and is_ancillary_cat and !@trial.study_pop_desc.present?)
+
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_pas_arms_groups
+    pas_arms_groups_rules = ValidationRule.where(model: 'trial', item: 'pas_arms/groups')
+    validation_result = []
+
+    is_arm_label_too_long = false
+    all_arm_has_intervention = true # except 'No intervention' arms_group_type
+    all_arms_groups = ArmsGroup.where(trial_id: @trial.id)
+    inter_arms_groups = ArmsGroup.where(trial_id: @trial.id).where("arms_groups_type != ? OR arms_groups_type IS NULL", "No intervention")  #.where.not("arms_groups_type": 'No intervention')
+
+    inter_arms_groups.each do |arm|
+      all_arm_has_intervention = arm.arms_groups_interventions_associations.size > 0  # if 0, no interventions
+      break if all_arm_has_intervention == false
+    end
+
+    arms_interventions_ids = []  # intervention ids associated with this trial's arms/groups
+    all_arms_groups.each do |arm|
+      if !is_arm_label_too_long
+        is_arm_label_too_long = arm.label.present? && arm.label.length > @@arm_label_max_length # cannot be longer than 62 chars
+      end
+      cur_intervention_ids = arm.arms_groups_interventions_associations.pluck(:intervention_id)
+      arms_interventions_ids |= cur_intervention_ids  # concatenate without duplicate id
+    end
+
+    all_interventions_ids_this_trial = Intervention.where(trial_id: @trial.id).pluck(:id)
+    is_all_interventions_associated = all_interventions_ids_this_trial.sort() == arms_interventions_ids.sort() # check if every interventions in this trial have been associated with arms/groups
+
+    pas_arms_groups_rules.each do |rule|
+      if (rule.code == 'PAS26' and !all_arm_has_intervention) ||
+         (rule.code == 'PAS27' and !is_all_interventions_associated) ||
+         (rule.code == 'PAS50' and (@trial.arms_groups.nil? || @trial.arms_groups.size == 0)) ||
+         (rule.code == 'PAS51' and is_arm_label_too_long)
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_paa_nci_specific_info()

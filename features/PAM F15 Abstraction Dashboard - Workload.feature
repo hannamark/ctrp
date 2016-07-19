@@ -26,23 +26,23 @@ Scenario: #1 I can view Workload
 And will display the following fields
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
-|Submitted On (Date of current Submission Received Date milestone) |
-|Expected Abstraction Completion Date (Defaulted to date of current Submission Milestone Date Plus 10 Business Days and is editible) |
-|Accepted (Date of current Submission Acceptance Date milestone)|
-|Current On-Hold Date (Date of current on hold date with no off hold date)|
-|Admin Abstraction Completed (Date of current Administrative Processing Completed Date milestone)|
-|Admin QC Completed (Date of current Administrative QC Completion Date milestone)|
-|Scientific Abstraction Completed (Date of current Scientific Processing Completed Date milestone)|
-|Scientific QC Completed (Date of current Scientific QC Completion Date milestone)|
+|Submitted On (Date of current "Submission Received Date" milestone) |
+|Expected Abstraction Completion Date (Defaulted to date of current "Submission Received Date" milestone date Plus 10 Business Days and is editible) |
+|Accepted (Date of current "Submission Acceptance Date" milestone)|
+|Current On-Hold Date (Date of current "On Hold" date with no "Off Hold" date)|
+|Admin Abstraction Completed (Date of current "Administrative Processing Completed Date" milestone)|
+|Admin QC Completed (Date of current "Administrative QC Completion Date" milestone)|
+|Scientific Abstraction Completed (Date of current "Scientific Processing Completed Date" milestone)|
+|Scientific QC Completed (Date of current "Scientific QC Completion Date" milestone)|
 |Checked Out By (Userid and check out i.e. smithj AD/SC or smithj AD, doej SC)|
-|Ready for TSR (Date of current Ready for TSR Date Date milestone)|
-|Business Days Since Submitted (Days since date of current Submission Received Date milestone|
+|Ready for TSR (Date of current "Ready for TSR Date Date" milestone)|
+|Business Days Since Submitted (Days since date of current "Submission Received Date" milestone date|
 And the default sort order is by Submitted On Date ordered from oldest to Newest
 And the following columns can be sorted
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
 |Submitted On|
-|Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
+|Expected Abstraction Completion Date (Defaulted to "Submission Received Date" Plus 10 Business Days and is editible) |
 |Accepted|
 |Current On-Hold Date|
 |Admin Abstraction Completed|
@@ -56,7 +56,7 @@ And the following columns can be filtered
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
 |Submitted On|
-|Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
+|Expected Abstraction Completion Date (Defaulted to "Submission Received Date" Plus 10 Business Days and is editible) |
 |Accepted|
 |Current On-Hold Date|
 |Admin Abstraction Completed|
@@ -128,7 +128,7 @@ And will includ the following fields:
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 1) , Amendment (Information Source = Protocol and Submission number > 1), Imported (Information Source = Imported)|  
 |Submitted On|
-|Expected Abstraction Completion Date (Defaulted to Submission Date Plus 10 Business Days and is editible) |
+|Expected Abstraction Completion Date (Defaulted to "Submission Received Date" Plus 10 Business Days and is editible) |
 |Accepted|
 |Current On-Hold Date|
 |Admin Abstraction Completed|
@@ -228,11 +228,11 @@ And the This Trial is field will be a concetionation of the following
 |On Hold Date|
 |On Hold Reason|
 
-And the Check Out Status will be 
+And the "Check Out Status" will be 
 |<Logic>                                 |<Value>          |
 |When the trial is check out by my userid|Checked out by me|
 
-And the milestones will be 
+And the "Milestones" will be 
 |<Logic>                                                                                          |<Value>|
 |Last Milestone = Submission Received Date                                                        |Submitted -- Not Accepted|
 |Last Milestone = Submission Acceptance Date and no Administrative Processing Start Date milestone|Ready for Admin Processing|
@@ -242,7 +242,7 @@ And the milestones will be
 |Last Milestone = Scientific QC Start Date                                                        |Ready for Scientific QC|
 |Last Milestone = Ready for TSR Date                                                              |Ready for TSR Submission|
 
-And the On Hold Status will 
+And the "On Hold Date" and "On Hold Reason" will be 
 |<Logic>                                                              |<Value>   
 |when the trial has an "on hold date" and no "No Longer on hold" date"|On Hold since "on hold date" ; Reasons: "on hold reason" |
 
