@@ -58,9 +58,14 @@ class TrialService
     pas_disease_rules = ValidationRule.where(model: 'trial', item: 'pas_disease')
     validation_result = []
     ## note: 'thesaurus_id' (C-Code) in 'disease' table corresponds to the 'nt_term_id' column in ncit_disease_codes table
+    ncit_inactive_status_id = NcitStatus.find_by_code('INA').id
+    disease_c_codes = @trial.diseases.pluck(:thesaurus_id) # C code of diseases in the current trial
+    cur_disease_status_ids = NcitDiseaseCode.where(nt_term_id: disease_c_codes).pluck(:ncit_status_id)
+    is_any_disease_name_inactive = cur_disease_status_ids.include?(ncit_inactive_status_id)
 
     pas_disease_rules.each do |rule|
-      if (rule.code == 'PAS38' and (!@trial.diseases.present? || @trial.diseases.size == 0))
+      if (rule.code == 'PAS38' and (!@trial.diseases.present? || @trial.diseases.size == 0)) ||
+         (rule.code == 'PAS39' and @@is_cur_trial_status_active and is_any_disease_name_inactive)
         validation_result << rule
 
       end
