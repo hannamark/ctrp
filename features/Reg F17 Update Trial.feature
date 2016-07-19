@@ -48,7 +48,7 @@ Then I can view participating site section with Participating Name, Participatin
 And I can Update Participating Sites Recruitment Status and Date
 
 Scenario: #2 I search my trials and select the update option
-Given I am in the CTRP Registration application
+Given I am logged into the CTRP Registration application
 And I have selected the option to search my trials in CTRP 
 And I am the Trial owner
 And I have selected the Update option
@@ -63,7 +63,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
 
 
   Scenario: #3 Documents Displayed during Update after an Original Submission
-    Given I am in the CTRP Registration Application 
+    Given I am logged into the CTRP Registration application
      When I have selected the option to search My Trials in CTRP
      And I am the Trial Owner
      When I have selected the Update option before when Submission Accepted milestone is entered
@@ -88,7 +88,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
 
 
     Scenario:#4 Documents Displayed during Updated after an Amendment
-    Given I am in the CTRP Registration Application 
+    Given I am logged into the CTRP Registration application
      When I have selected the option to search My Trials in CTRP
      And I am the Trial Owner
      When I have selected the Update option when Amendment Submission Accepted is entered
@@ -110,7 +110,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |Other-D  |
 
          Scenario:#5 Delete option should not be included for existing documents 
-    Given I am in the CTRP Registration Application 
+    Given I am logged into the CTRP Registration application
      When I update a trial 
      Then I can see the most current documents
      And the delete option should not be included for existing documents
