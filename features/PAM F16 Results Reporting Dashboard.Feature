@@ -191,6 +191,10 @@ And will include the following fields:
 |PRS Release Date|
 |QA Comments Released Date|
 |Trial Results Published Date|
+|Results Comments|
+|Trial Specific Comments|
+|NCI Specific Information Comments|
+
 
 Scenario: #7 Latest CTRO Trial Comparison Review
 Given I am logged into the CTRP Protocol Abstraction application
