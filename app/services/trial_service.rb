@@ -50,8 +50,22 @@ class TrialService
     results |= _validate_pas_arms_groups()
     results |= _validate_pas_eligibility()
     results |= _validate_pas_disease()
+    results |= _validate_pas_outcome()
 
     return results
+  end
+
+  def _validate_pas_outcome
+    pas_outcome_rules = ValidationRule.where(model: 'trial', item: 'pas_outcome')
+    validation_result = []
+
+    pas_outcome_rules.each do |rule|
+      if rule.code == 'PAS40' and (!@trial.outcome_measures.present? || @trial.outcome_measures.size == 0)
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_pas_disease
