@@ -49,8 +49,23 @@ class TrialService
     results |= _validate_paa_nci_specific_info()
     results |= _validate_pas_arms_groups()
     results |= _validate_pas_eligibility()
+    results |= _validate_pas_disease()
 
     return results
+  end
+
+  def _validate_pas_disease
+    pas_disease_rules = ValidationRule.where(model: 'trial', item: 'pas_disease')
+    validation_result = []
+
+    pas_disease_rules.each do |rule|
+      if (rule.code == 'PAS38' and (!@trial.diseases.present? || @trial.diseases.size == 0))
+        validation_result << rule
+
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_pas_eligibility
