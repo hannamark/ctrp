@@ -46,7 +46,7 @@ var dbConnection = function () {
                     console.error('error running the UPDATE query', err);
                     assert.fail(0, 1, 'error running Query.');
                 }
-                client.query("SELECT * FROM other_ids where trial_id = " + trialDBID, function (err, result) {
+                client.query("SELECT * FROM other_ids where trial_id = " + trialDBID  + ' and protocol_id_origin_id = 1', function (err, result) {
                     if (err) {
                         console.error('error running the SELECT query', err);
                         assert.fail(0, 1, 'error running Query.');
