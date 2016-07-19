@@ -195,7 +195,11 @@ class TrialService
           (rule.code == 'PAS17' and !@trial.phase_id.present?) ||
           (rule.code == 'PAS18' and !@trial.num_of_arms.present?) ||
           (rule.code == 'PAS19' and is_interventional_cat and !@trial.allocation_id.present?) ||
-          (rule.code == 'PAS20' and is_expanded_cat and !@trial.allocation_id.present?)
+          (rule.code == 'PAS20' and is_expanded_cat and !@trial.allocation_id.present?) ||
+          (rule.code == 'PAS34' and is_observational_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS35' and is_ancillary_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS36' and is_observational_cat and !@trial.study_pop_desc.present?) ||
+          (rule.code == 'PAS37' and is_ancillary_cat and !@trial.study_pop_desc.present?)
             ## errors block
             validation_result << rule
       elsif (rule.code == 'PAS43' and is_observational_cat and !@trial.study_model_id.present?) ||
