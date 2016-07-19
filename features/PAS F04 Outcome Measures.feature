@@ -1,7 +1,7 @@
 @PA @global
 Feature:  PAS F04 Outcome Measures
 As a CTRP PA Abstractor, I can add, edit, copy and delete Outcome Measures 
-
+@runthis
 Scenario: #1 I can add Outcome Measures for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
@@ -9,7 +9,6 @@ And I am on the Outcome Measures screen
 And I have Selected Add Button
 And Add/Edit Outcome Measure screen displays
 And I have selected a value for Outcome Measure Type
-|Outcome Measure Type|
 |Primary|
 |Secondary|
 |Other Pre-specified|
@@ -17,23 +16,22 @@ And I have entered a value for Title
 And I have entered a value for Time Frame
 And I have entered a value for Description
 And I have selected a value for Safety Issue
-|Safety Issue|
 |Yes|
 |No|
-When I select Save
+When select Save
 Then the Outcome Measure for the trial will be associated with the trial
 And <Created Message> displays
 |Created Message|
 |Record created|
 And the Outcome Measures table will display Outcomes Measures values
-      |Outcome Measure Type  |
-      |Title  |
-      |Time Frame  |
-      |Description  |
-      |Safety Issue  |
-      |Edit  |
-      |Copy  |
-      |Delete  |
+|Outcome Measure Type  |
+|Title  |
+|Time Frame  |
+|Description  |
+|Safety Issue  |
+|Edit  |
+|Copy  |
+|Delete  |
 And I can add another Outcome Measure
 
 
