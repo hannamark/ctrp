@@ -408,11 +408,25 @@ class TrialService
     nci_id = @trial.nci_id
     lead_org_protocol_id = @trial.lead_protocol_id
     keywords = @trial.keywords
+    is_centralcontact_missing_email_or_phone = false
+    @trial.central_contacts.each do |contact|
+      is_centralcontact_missing_email_or_phone = !contact.email.present? && !contact.phone.present?
+      break if is_centralcontact_missing_email_or_phone
+    end
 
     gt_rules.each do |rule|
       if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) || (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
          (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) || (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
          (rule.code == 'PAA8' and keywords.present? and keywords.length > 160)
+        ## errors block
+        validation_results << rule
+
+      elsif(rule.code == 'PAA97' and !@trial.official_title.present?) ||
+           (rule.code == 'PAA98' and (!@trial.lead_org_id.present? || !@trial.lead_protocol_id.present?)) ||
+           (rule.code == 'PAA100' and !@trial.pi_id.present?) ||
+           (rule.code == 'PAA101' and !@trial.sponsor_id) ||
+           (rule.code == 'PAA102' and is_centralcontact_missing_email_or_phone)
+        ## warnings block
         validation_results << rule
       end
     end
