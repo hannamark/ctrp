@@ -64,6 +64,8 @@
             vm.rejection_reason = null;
             vm.comment = null;
             $scope.milestone_form.$setPristine();
+            vm.showValidationMsg = false;
+            vm.validationErrors = [];
         };
 
         vm.saveMilestone = function (evt) {

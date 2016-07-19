@@ -11,7 +11,6 @@
 
     function abstractValidCtrl($scope, $timeout, _, validationResults) {
         var vm = this;
-        console.info('validationResults: ', validationResults);
         vm.issues = {
             errors: {admin: [], scientific: []},
             warnings: []
@@ -31,18 +30,11 @@
         });
         */
 
-        _.each(validationResults, function(result) {
-            if (result.category === 'warning') {
-                vm.issues.warnings.push(result);
-            } else if (result.category === 'error') {
-                if (result.section === 'PAA') {
-                    vm.issues.errors.admin.push(result);
-                } else if (result.section === 'PAS') {
-                    vm.issues.errors.scientific.push(result);
-                }
-            }
-        });
-
+        var results = _.groupBy(validationResults, 'category');
+        vm.issues.warnings = results.warning || [];
+        var errors = _.groupBy(results.error || [], 'section');
+        vm.issues.errors.admin = errors.PAA;
+        vm.issues.errors.scientific = errors.PAS;
     } // abstractValidCtrl
 
 })();

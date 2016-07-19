@@ -92,6 +92,7 @@ var abstractionLeftNav = function(){
      ***********************************************/
     this.panelTitle = element.all(by.css('.panel-title'));
 
+
     //***********************************
     // Menu
     //***********************************

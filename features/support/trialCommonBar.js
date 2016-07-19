@@ -33,8 +33,15 @@ var trialCommonBar = function(){
         homeSearchTrial.isPresent().then(function(retVal){
             console.log('value of ret val : ' + retVal);
             if (retVal === true) {
-                helper.clickLink(homeSearchTrial, "Home Search Trial link");
-                expect(pageHeaderText.getText()).to.eventually.equal(search_Trial_Header_Text);
+                homeSearchTrial.isDisplayed().then(function(state){
+                    if(state) {
+                        helper.clickLink(homeSearchTrial, "Home Search Trial link");
+                        expect(pageHeaderText.getText()).to.eventually.equal(search_Trial_Header_Text);
+                    }
+                    else {
+                        console.log('Home link not Displayed');
+                    }
+                });
             }
         });
     };
