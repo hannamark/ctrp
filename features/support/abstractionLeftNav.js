@@ -92,6 +92,7 @@ var abstractionLeftNav = function(){
      ***********************************************/
     this.panelTitle = element.all(by.css('.panel-title'));
 
+
     //***********************************
     // Menu
     //***********************************
@@ -254,7 +255,7 @@ var abstractionLeftNav = function(){
     };
 
     this.clickScintificCheckOutButton = function(){
-        helper.clickButton(self.scientificCheckOutBtn,"Admin Check Out - button");
+        helper.clickButton(self.scientificCheckOutBtn,"Scientific Check Out - button");
     };
 
     this.clickBackToSearchResults = function(){

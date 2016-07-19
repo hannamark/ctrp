@@ -14,7 +14,7 @@ Then all trial information for the lastest active submission will be displayed a
       |Other Trial Identifier Field   |
       |NIH Grant Information Section  |
       |Trial Status Section           |
-      |Trial Dates                    |
+      |Trial Dates                    | 
       |Trial Related Documents        |
 
 

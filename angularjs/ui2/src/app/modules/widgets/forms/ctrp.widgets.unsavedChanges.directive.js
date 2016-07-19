@@ -145,7 +145,8 @@
                             saveRequired: function () {
                                 return isSaveRequired && !transitionToListView;
                             }
-                        }
+                        },
+                        windowClass: 'modal-center'
                     });
 
                     modalInstance.result.then(function(result) {

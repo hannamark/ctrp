@@ -8,6 +8,7 @@ Scenario: #1 Abstaction Sidebar Menu Tabs
 Given I am logged into the CTRP application
 And I have selected a trial to abstract
 And the current milestone for the last active submission is
+|Submission Acceptance Date|
 |Administrative Processing Start Date|
 |Administrative Processing Completed Date|
 |Ready for Administrative QC Date|

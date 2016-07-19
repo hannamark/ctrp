@@ -67,12 +67,6 @@ Then I can view the trail milestone information for the current (most recent) su
 |Creator (Last Name, First Name)|
 |Creation Date (Date and Time)|
 
-Scenario: #3a Displaying Deleted values
-Given I am logged into the CTRP Protocol Abstraction application 
-And I have selected a Trial
-And I am on the Trial History Information Audit Trail Screen 
-When a value is deleted 
-Then the value will be displayed with the (D) suffix
 
 Scenario: #4 I view any submission trial milestones
 Given I am logged into the CTRP Protocol Abstraction application
@@ -130,8 +124,8 @@ Scenario Outline:#5 Trial Milestones Recording Rules
 |Ready for TSR Date                            |Triggers setting the Processing Status to "Abstracted"                                                                                                                                 |                                                                                                                                       |
 |Trial Summary Report Date                     |N/A                                                                                                                                                                                    | Recorded when completing Administrative and Scientific QC and Validation successful and TSR and XML sent to submitter              |
 |Trial Summary Report Date                     |Triggers adding the "Verification Pending" processing status                                                                                                                           |                                                                                                                                       |
-|Trial Summary Report Date                     |Triggers sending e-mail using template "Submission Trial Summary Report"  with TSR as an attachment to the submitter when recorded for original Submission for protocol trials         |                                                                                                                                       |                                                                  |
-|Trial Summary Report Date                     |Triggers sending e-mail using template "Amendment Trial Summary Report"  with TSR as an attachment to the submitter when recorded for all amendments to a trial for protocol trials    |                                                                                                                                       |                                                                   |
+|Trial Summary Report Date                     |Triggers sending e-mail using template "Submission Trial Summary Report"  with TSR as an attachment to the submitter when recorded for original Submission for protocol trials         |                                                                                                                                       |                                                                  
+|Trial Summary Report Date                     |Triggers sending e-mail using template "Amendment Trial Summary Report"  with TSR as an attachment to the submitter when recorded for all amendments to a trial for protocol trials    |                                                                                                                                       |                                                                   
 |Trial Summary Report Date                     |Triggers creating a Trial Summary Report (TSR) for Protocol Trials and saving it the trial related documents (see PA F09 View trial summary Report for file name)                      |                                                                                                                                       |
 |Submitter Trial Summary Report Feedback Date  |N/A                                                                                                                                                                                    | Recorded if feedback is received                                                                                                   |
 |Initial Abstraction Verified Date             |N/A                                                                                                                                                                                    |Recorded if feedback is received within 5 business days and the information source is "Protocol"                                   |
@@ -156,10 +150,7 @@ Scenario Outline: #6 Trials Milestones validation rules
     Then the milestone <Milestone> is valid and can be recorded
 	
  Examples: 
-    
-      
-      
-      
+     
       |<Milestone>                                 |<MilestoneRule>                                                                                                                                                                |
       |Submission Received Date                    |Trial Submitted via the Trial registration portal                                                                                                                              |
       |Validation Processing Start Date            |Submission Received Date milestone exists                                                                                                                                    |
