@@ -1,7 +1,7 @@
 <div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.trialValidImport || paTrialOverview.trialDetailObj.menuTypes.rejection">
     <div class="panel panel-default ctrp-ui" ng-show="omView.editMode || omView.addMode || omView.copyMode" id="outcomeMeasure">
         <div class="panel-heading">
-            <div class="panel-title">Outcome Measure Details</div>
+            <div class="panel-title" id="outcome_measure_details">Outcome Measure Details</div>
         </div>
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()" unsaved-changes>
