@@ -16,7 +16,7 @@
         vm.curTrial = PATrialService.getCurrentTrialFromCache();
         vm.curUser = userDetailObj;
         vm.addMode = false;
-        vm.submission_num = vm.curTrial.current_submission_num;
+        vm.submission_num = vm.curTrial.most_recent_submission_num;
         vm.milestoneArr = milestoneObj;
         vm.showRejectionReason = false;
         vm.validationErrors = [];
@@ -46,9 +46,9 @@
 
             var srjOption = vm.milestoneArr.filter(findSrjOption);
             if (srjOption[0].id === vm.milestone_id) {
-                if (vm.curTrial.current_submission_type_code === 'ORI') {
+                if (vm.curTrial.most_recent_submission_type_code === 'ORI') {
                     vm.confirmMsg = 'Adding the Submission Rejection Date will reject this Trial';
-                } else if (vm.curTrial.current_submission_type_code === 'AMD') {
+                } else if (vm.curTrial.most_recent_submission_type_code === 'AMD') {
                     vm.confirmMsg = 'Adding the Submission Rejection Date will reject this submission and roll back the trial to the prior submission';
                 } else {
                     vm.confirmMsg = '';
@@ -64,6 +64,8 @@
             vm.rejection_reason = null;
             vm.comment = null;
             $scope.milestone_form.$setPristine();
+            vm.showValidationMsg = false;
+            vm.validationErrors = [];
         };
 
         vm.saveMilestone = function (evt) {
@@ -72,7 +74,7 @@
                 return;
             }
 
-            TrialService.validateMilestone({"id": vm.curTrial.id, "milestone_id": vm.milestone_id, "submission_id": vm.curTrial.current_submission_id}).then(function(response) {
+            TrialService.validateMilestone({"id": vm.curTrial.id, "milestone_id": vm.milestone_id, "submission_id": vm.curTrial.most_recent_submission_id}).then(function(response) {
                 if (response.validation_msgs.errors.length > 0) {
                     vm.validationErrors = response.validation_msgs.errors;
                     vm.disableBtn = false;
@@ -108,7 +110,7 @@
 
             vm.curTrial.milestone_wrappers_attributes = [];
             var milestoneWrapperObj = {};
-            milestoneWrapperObj.submission_id = vm.curTrial.current_submission_id;
+            milestoneWrapperObj.submission_id = vm.curTrial.most_recent_submission_id;
             milestoneWrapperObj.milestone_id = vm.milestone_id;
             milestoneWrapperObj.comment = vm.comment;
             if (vm.showRejectionReason) {

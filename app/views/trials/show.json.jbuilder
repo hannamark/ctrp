@@ -12,7 +12,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :brief_title, :brief_summary, :objective, :detailed_description, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
-              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :submission_nums, :uuid
+              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :submission_nums, :uuid, :is_rejected
 
 json.other_ids do
   json.array!(@trial.other_ids) do |id|
@@ -384,3 +384,6 @@ json.current_submission_num @trial.current_submission.submission_num if @trial.c
 json.current_submission_id @trial.current_submission.id if @trial.current_submission.present?
 json.current_submission_type_code @trial.current_submission.submission_type.code if @trial.current_submission.present?
 
+json.most_recent_submission_num @trial.most_recent_submission.submission_num if @trial.most_recent_submission.present?
+json.most_recent_submission_id @trial.most_recent_submission.id if @trial.most_recent_submission.present?
+json.most_recent_submission_type_code @trial.most_recent_submission.submission_type.code if @trial.most_recent_submission.present?

@@ -61,14 +61,6 @@ var LoginPage = function(){
                     else {
                         element(by.css('a[ng-click="headerView.logOut()"]')).click();
                         login.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-                        //var alertDialog = browser.switchTo().alert();
-                        //alertDialog.then(function(alert) {
-                        //
-                        //        alertDialog.getText().then(function (value) {
-                        //            console.log('Alert Message: ' + value);
-                        //        });
-                        //        alert.accept();},
-                        //    function (err) { });
                         element(by.model('userView.userObj.user.username')).sendKeys(userName);
                         element(by.model('userView.userObj.user.password')).sendKeys(password);
                         element(by.css('button[ng-click="userView.authenticate()"]')).click();

@@ -1266,9 +1266,11 @@ module.exports = function() {
     });
 
     this.When(/^I select one or more Study Source type$/, function (table, callback) {
+        trialMenuItem.clickTrials();
+        trialMenuItem.clickListSearchTrialLink();
         var searchTrialStudySrcList = table.raw();
         console.log('value of table' + searchTrialStudySrcList);
-        helper.wait(searchTrial.searchTrialStudySource, 'Search Trial by Phase field');
+        helper.wait(searchTrial.searchTrialStudySource, 'Search Trial by Study Source field');
         browser.actions().mouseDown(searchTrial.searchTrialStudySource).mouseUp().perform();
         searchTrial.searchTrialStudySource.getText().then(function(value) {
             expect(value.toString().split("\n")).to.eql(searchTrialStudySrcList.toString().split(","));

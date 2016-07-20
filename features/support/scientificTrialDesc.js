@@ -43,7 +43,7 @@ var scientificTrialDesc = function(){
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
 
     this.saveDesc = element(by.id('submit_processing'));
-    this.resetDesc = element(by.css('button[ng-click="descView.reload()"]'));
+    this.resetDesc = element(by.id('reset_desc'));
 
     this.setBriefTitleTxt = function(getBriefTitleTxt){
         helper.setValue(this.briefTitleTxt, getBriefTitleTxt, 'Brief Title');
@@ -90,7 +90,7 @@ var scientificTrialDesc = function(){
     };
 
     this.clickReset = function(){
-        helper.clickButton(this.resetDesc, "Trial Status Reset - Button");
+        helper.clickButton(self.resetDesc, "Trial Status Reset - Button");
     };
 
     this.clickBackToSearchResults = function(){

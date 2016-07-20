@@ -1,7 +1,7 @@
 <div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.trialValidImport || paTrialOverview.trialDetailObj.menuTypes.rejection">
     <div class="panel panel-default ctrp-ui" ng-show="omView.editMode || omView.addMode || omView.copyMode" id="outcomeMeasure">
         <div class="panel-heading">
-            <div class="panel-title">Outcome Measure Details</div>
+            <div class="panel-title" id="outcome_measure_details">Outcome Measure Details</div>
         </div>
         <div class="panel-body">
             <form class="form form-horizontal" role="form" name="om_form" novalidate ctrp-submit="omView.saveOutcomeMeasure()" unsaved-changes>
@@ -127,7 +127,7 @@
                         <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-disabled="omView.disableBtn">
                             <i class="glyphicon glyphicon-ok"></i> Save
                         </button>
-                        <button type="button" class="btn btn-warning pull-right" ng-click="omView.resetOutcomeMeasure()" ng-disabled="omView.disableBtn">
+                        <button type="button" class="btn btn-warning pull-right" id="out_cm_reset" ng-click="omView.resetOutcomeMeasure()" ng-disabled="omView.disableBtn">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                         <button type="button" class="btn btn-warning pull-right" id="oc_site_list" restriction-field ng-click="omView.setToDefaultMode()" ng-disabled="omView.disableBtn">
@@ -142,7 +142,7 @@
     <!-- Grid the shows all the Outcome Measures -->
     <div class="panel panel-default ctrp-ui" ng-hide="omView.addMode || omView.editMode || omView.copyMode">
         <div class="panel-heading">
-            <div class="panel-title">List of Outcome Measures</div>
+            <div class="panel-title" id="pg_title">List of Outcome Measures</div>
         </div>
         <div class="panel-body">
             <fieldset ng-disabled="omView.disableBtn">

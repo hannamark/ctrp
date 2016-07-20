@@ -92,6 +92,7 @@
 #  internal_source_id            :integer
 #  nci_specific_comment          :string(4000)
 #  send_trial_flag               :string
+#  is_rejected                   :boolean
 #
 # Indexes
 #
@@ -227,7 +228,8 @@ class Trial < TrialBase
   accepts_nested_attributes_for :trial_ownerships, allow_destroy: true
 
   validates :lead_protocol_id, presence: true
-  validates :lead_protocol_id, uniqueness: { scope: :lead_org_id, message: "Combination of Lead Organization Trial ID and Lead Organization must be unique" }
+  #validates :lead_protocol_id, uniqueness: { scope: :lead_org_id, message: "Combination of Lead Organization Trial ID and Lead Organization must be unique" }
+  validate :lead_protocol_id_lead_org_id_uniqueness
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :phase, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :pilot, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
@@ -246,11 +248,27 @@ class Trial < TrialBase
   validates :comp_date, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :comp_date_qual, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
 
+  def lead_protocol_id_lead_org_id_uniqueness
+    if id.present?
+      dup_trial = Trial.joins(:lead_org).where('organizations.id = ? AND lead_protocol_id = ? AND trials.id <> ?', lead_org, lead_protocol_id, id)
+    else
+      dup_trial = Trial.joins(:lead_org).where('organizations.id = ? AND lead_protocol_id = ?', lead_org, lead_protocol_id)
+    end
+    dup_trial = dup_trial.filter_rejected
+
+    if dup_trial.length > 0
+      errors.add(:lead_protocol_id, 'Combination of Lead Organization Trial ID and Lead Organization must be unique')
+    end
+  end
+
   before_create :save_history
   before_create :save_internal_source
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
+
+  # The set_defaults will only work if the object is new
+  after_initialize :set_defaults, unless: :persisted?
 
   # Array of actions can be taken on this Trial
   def actions
@@ -400,8 +418,18 @@ class Trial < TrialBase
     self.submissions.pluck('submission_num').uniq
   end
 
-  # Most recent non-update submission
+  # Most recent active non-update submission
   def current_submission
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ? AND submissions.status = ?', self.id, upd.id, 'Active').order('submission_num desc').first
+    else
+      return nil
+    end
+  end
+
+  # Most recent non-update submission
+  def most_recent_submission
     upd = SubmissionType.find_by_code('UPD')
     if upd.present?
       return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
@@ -430,6 +458,17 @@ class Trial < TrialBase
     target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, submission_id).order('id').last
     if target.present? && target.processing_status.present?
       return target.processing_status.code
+    else
+      return nil
+    end
+  end
+
+  def current_processing_status
+    if self.current_submission.present?
+      target = ProcessingStatusWrapper.where('trial_id = ? AND submission_id = ?', self.id, self.current_submission.id).order('id').last
+      if target.present?
+        return target.processing_status
+      end
     else
       return nil
     end
@@ -600,7 +639,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
       end
     elsif milestone_to_add.code == 'IAV'
-      if !is_last_milestone?(submission_id, 'RTS')
+      rts = Milestone.find_by_code('RTS')
+      if rts.present? && !contains_milestone?(submission_id, rts.id)
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
       if active_onhold_exists?
@@ -870,6 +910,10 @@ class Trial < TrialBase
     #end
   end
 
+  def set_defaults
+    self.is_rejected = false if self.is_rejected.nil?
+  end
+
   #scopes for search API
   #scope :matches_grant, -> (column, value) {Tempgrant.where}
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
@@ -1123,6 +1167,10 @@ class Trial < TrialBase
     trial_ownerships = TrialOwnership.matches('user_id', user_id)
     trial_ownerships = trial_ownerships.matches('internal_source_id', InternalSource.find_by_code('PRO').id)
     where(id: trial_ownerships.pluck(:trial_id))
+  }
+
+  scope :filter_rejected, -> {
+    where("is_rejected = ? OR is_rejected IS NULL", FALSE)
   }
 
   scope :sort_by_col, -> (params) {

@@ -13,7 +13,7 @@ And the current processing status type is displayed
 When I select Action from the Available Actions
 Then the View TSR option will available
 When I click on the view TSR option
-Then the TSR document will be downloaded 
+Then the TSR document will be downloaded with data for the last active submission for the trial
 And I can view TSR document
 
   Scenario: #1 TSR Heading Section Display Rules

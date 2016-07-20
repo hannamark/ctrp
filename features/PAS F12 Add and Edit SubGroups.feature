@@ -45,8 +45,8 @@ And I have selected a trial
 And I am on the Add/Edit Subgroup Information screen
 And I am entering into Label
 Then information text appears below the Label field to display the number of characters available to enter into the field.  
-|200 characters left|
-When 200 characters have been entered
+|62 characters left|
+When 62 characters have been entered
 Then no additional text can be entered
 
 Scenario: #6 Description field character count
@@ -55,8 +55,8 @@ And I have selected a trial
 And I am on the Add/Edit Subgroup Information screen
 And I am entering into Description
 Then information text appears below the Description field to display the number of characters available to enter into the field.  
-|200 characters left|
-When 200 characters have been entered
+|1000 characters left|
+When 1000 characters have been entered
 Then no additional text can be entered
 
 Scenario:  #7  Reorder Subgroups Information

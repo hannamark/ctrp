@@ -49,6 +49,7 @@ module.exports = function() {
     this.Given(/^I am logged into the CTRP Protocol Abstraction application$/, function (callback) {
         commonFunctions.alertMsgOK();
         commonFunctions.onPrepareLoginTest('ctrpabstractor');
+        commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 
@@ -56,8 +57,8 @@ module.exports = function() {
         /** Updated by Shilpi to test for both PA search screen and Registry Search screen **/
         login.loginUser.getText().then(function(loggedInUserName) {
             if(loggedInUserName === 'ctrpabstractor') {
-                pageMenu.homeSearchTrials.click();
-                commonFunctions.verifySearchTrialsPAScreen();
+                //pageMenu.clickSearchTrialAbstractor();
+                //commonFunctions.verifySearchTrialsPAScreen();
             }
             if(loggedInUserName === 'ctrptrialsubmitter') {
                 trialMenuItem.clickTrials();

@@ -3,8 +3,8 @@
 # Table name: interventions
 #
 #  id                   :integer          not null, primary key
-#  name                 :string(255)
-#  other_name           :string(255)
+#  name                 :string(1000)
+#  other_name           :string(1000)
 #  description          :text
 #  intervention_type_id :integer
 #  trial_id             :integer

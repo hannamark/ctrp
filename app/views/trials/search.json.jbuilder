@@ -9,7 +9,7 @@ json.trials do
     json.study_source trial.study_source.present? ? trial.study_source.name : nil
     json.current_trial_status trial.trial_status_wrappers.present? ? trial.trial_status_wrappers.last.trial_status.name : nil
     json.actions trial.actions
-    json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
+    json.current_processing_status trial.current_processing_status.present? ? trial.current_processing_status.name : nil
     json.accrual_disease_term trial.accrual_disease_term.present? ? trial.accrual_disease_term.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil
     json.responsible_party trial.responsible_party.present? ? trial.responsible_party.name : nil

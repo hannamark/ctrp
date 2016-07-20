@@ -7,24 +7,34 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('abstractValidCtrl', abstractValidCtrl);
 
-    abstractValidCtrl.$inject = ['$scope', '$timeout', '_'];
+    abstractValidCtrl.$inject = ['$scope', '$timeout', '_', 'validationResults'];
 
-    function abstractValidCtrl($scope, $timeout, _) {
+    function abstractValidCtrl($scope, $timeout, _, validationResults) {
         var vm = this;
         vm.issues = {
             errors: {admin: [], scientific: []},
             warnings: []
         };
+        /*
+        var errors = _.filter(validationResults, function(result) {
+            return result.category === 'error';
+        });
+        vm.issues.errors.admin = _.filter(errors, function(error) {
+            return error.section === 'PAA';
+        });
+        vm.issues.errors.scientific = _.filter(errors, function(error) {
+            return error.section === 'PAS';
+        });
+        vm.issues.warnings = _.filter(validationResults, function(result) {
+            return result.category === 'warning';
+        });
+        */
 
-        vm.issues.errors.admin.push({id: 2, error_code: 'PAE001', section: 'PAA', item: 'trial_status',
-            type: 'error', description: 'Official title is required', remark: 'follow the menus'});
-        vm.issues.errors.scientific.push({id: 3, error_code: 'PAE002', section: 'PAS', item: 'intervention',
-                type: 'error', description: 'intervention is required', remark: 'follow the menus'});
-
-        vm.issues.warnings.push({id: 4, error_code: 'PAW001', section: 'PAS', item: 'trial_design',
-                    type: 'warning', description: 'trial design has warnings', remark: 'follow the menus'});
-
-
+        var results = _.groupBy(validationResults, 'category');
+        vm.issues.warnings = results.warning || [];
+        var errors = _.groupBy(results.error || [], 'section');
+        vm.issues.errors.admin = errors.PAA;
+        vm.issues.errors.scientific = errors.PAS;
     } // abstractValidCtrl
 
 })();

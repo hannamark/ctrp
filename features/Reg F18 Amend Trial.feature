@@ -4,12 +4,12 @@ Feature: Reg F18 Amend Trial
 As a CTRP User, I can Amend information on a trial which requires IRB approval or substantively alter the treatment and/or study design
 
 Scenario: #1 I search my trials, select the Amend Trial option, and enter trial amendment information
-Given I am in the CTRP Registration applicatin
+Given I am in the CTRP Registration application
 And I have selected the option to search my trials in CTRP (trials where I am listed as owner)
 And I am the Trial Owner
 When the Amend Trial option is enabled on one of my trials
 And I have selected the Amend Trial option
-Then all trial information will be displayed
+Then all trial information will be displayed for the last active submission
 And I will enter the required Amendment Number and Amendment Date
 And I will be able to update the Lead Organization Trial Identifier 
 And I will be able to update the ClinicalTrials.gov Identifier listed for the trial
@@ -32,15 +32,15 @@ And I will be able to review or cancel my amended information
 Scenario: #2 I will be be able to submit an amended trial after reviewing the trial with no errors
 Given I am in the CTRP Registration application
 And I am on the Amendment Trial screen
-aAnd the Submission source is a Cancer Center
+And the Submission source is a Cancer Center
 And the Submission Method is Registry
 And the Submission Type is Amendment 
-And I have enter the required trial amendment information
+And I have entered the required trial amendment information
 When I select the review option
 Then CTRP will check the amended information 
 And if there are no errors, I can submit the trial amendment
 And the information updates will be submitted as an amendment with the Amendment Number in CTRP
-Ans an email entitled " Amendment Submission" will be sent to the the trial owner (Emails list found on the shared drive under Functional/registration: CTRP System Generated Emails)
+And an email entitled " Amendment Submission" will be sent to the the trial owner (Emails list found on the shared drive under Functional/registration: CTRP System Generated Emails)
 And the CTRO will be able to abstract the amended trial information
 And the Submission source is a Cancer Center
 And the Submission Method is Registry
@@ -49,7 +49,7 @@ And the Submission Type is Amendment
 Scenario: #3 I will be be able to edit an amended trial after reviewing the trial with no errors
 Given I am in the CTRP Registration application
 And I am on the Amendment Trial screen
-And I have enter the required trial amendment information
+And I have entered the required trial amendment information
 When I select the review option
 Then CTRP will check the amended information 
 And if there are no errors, I can select the option to Edit the trial information before submitting

@@ -13,7 +13,7 @@ And I have entered a value for Detailed Description
 When I select the Save button 
 Then the Trial Description for the trial will be associated with the trial
 And the message Record Updated displays
-@runthis
+
 Scenario: #2 Brief Title is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial with a Information Source is 'Protocol'
@@ -22,7 +22,7 @@ And information text appears above the Brief Title field as 'Mandatory at Abstra
 When Brief Title is null 
 And I select the Save button
 Then an error message will appear with the message “Brief Title is Required”
-@runthis
+
 Scenario: #3 Brief Summary is not null 
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial with a Information Source is 'Protocol'

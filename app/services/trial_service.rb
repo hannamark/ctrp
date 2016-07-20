@@ -1,7 +1,34 @@
 class TrialService
+  @@is_IND_protocol = true # default to true
+  @@cur_trial_status_code = nil
+  @@is_cur_trial_status_active = false
+  @@is_cur_trial_status_approved = false
+  @@is_cur_trial_status_inreview = false
+  @@is_cur_trial_status_withdrawn = false
+
+  @@is_interventional_cat = false
+  @@is_observational_cat = false
+  @@is_expanded_cat = false
+  @@is_ancillary_cat = false
+
+  @@arm_label_max_length = 62  # max number of characters
 
   def initialize(params)
     @trial = params[:trial]
+    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
+    cur_trial_status = @trial.trial_status_wrappers.last if @trial.present? && @trial.trial_status_wrappers.present?
+    cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
+    @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+    @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
+    @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
+    @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
+    @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
+
+    @@is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
+    @@is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
+    @@is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
+    @@is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
+
   end
 
   def get_json
@@ -14,6 +41,421 @@ class TrialService
 
   def save_history(trial_json)
     TrialHistory.create(snapshot: trial_json, submission: @trial.current_submission)
+  end
+
+  def validate()
+    results = []
+    if !@trial.present?
+      return results
+    end
+
+    results |= _validate_general_trial_details() # concatenate array but remove duplicates
+    results |= _validate_paa_regulatory_info_fda()
+    results |= _validate_paa_regulatory_human_sub_safety()
+    results |= _validate_paa_participating_sites()
+    results |= _validate_paa_documents()
+    results |= _validate_pas_trial_design()
+    results |= _validate_pas_trial_description()
+    results |= _validate_paa_nci_specific_info()
+    results |= _validate_pas_arms_groups()
+    results |= _validate_pas_eligibility()
+    results |= _validate_pas_disease()
+    results |= _validate_pas_outcome()
+    results |= _validate_paa_collaborators()
+
+    return results
+  end
+
+  def _validate_paa_collaborators
+    paa_collaborators_rules = ValidationRule.where(model: 'trial', item: 'paa_collaborators')
+    validation_result = []
+
+    collaborator_ids = @trial.collaborators.pluck(:organization_id)
+    uniq_collaborator_ids = collaborator_ids.uniq
+    is_collaborator_duplicate = collaborator_ids.size > uniq_collaborator_ids.size
+
+    paa_collaborators_rules.each do |rule|
+      if rule.code == 'PAA103' and is_collaborator_duplicate
+         validation_result << rule
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_pas_outcome
+    pas_outcome_rules = ValidationRule.where(model: 'trial', item: 'pas_outcome')
+    validation_result = []
+
+    pas_outcome_rules.each do |rule|
+      if rule.code == 'PAS40' and (!@trial.outcome_measures.present? || @trial.outcome_measures.size == 0)
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_pas_disease
+    pas_disease_rules = ValidationRule.where(model: 'trial', item: 'pas_disease')
+    validation_result = []
+    ## note: 'thesaurus_id' (C-Code) in 'disease' table corresponds to the 'nt_term_id' column in ncit_disease_codes table
+    ncit_inactive_status_id = NcitStatus.find_by_code('INA').id
+    disease_c_codes = @trial.diseases.pluck(:thesaurus_id) # C code of diseases in the current trial
+    cur_disease_status_ids = NcitDiseaseCode.where(nt_term_id: disease_c_codes).pluck(:ncit_status_id)
+    is_any_disease_name_inactive = cur_disease_status_ids.include?(ncit_inactive_status_id)
+
+    pas_disease_rules.each do |rule|
+      if (rule.code == 'PAS38' and (!@trial.diseases.present? || @trial.diseases.size == 0)) ||
+         (rule.code == 'PAS39' and @@is_cur_trial_status_active and is_any_disease_name_inactive)
+        validation_result << rule
+
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_pas_eligibility
+    pas_eligibility_rules = ValidationRule.where(model: 'trial', item: 'pas_eligibility')
+    validation_result = []
+
+    pas_eligibility_rules.each do |rule|
+      if (rule.code == 'PAS28' and (!@trial.other_criteria.present? || @trial.other_criteria.size == 0)) ||
+         (rule.code == 'PAS29' and !@trial.accept_vol.present?) ||
+         (rule.code == 'PAS30' and !@trial.gender_id.present?) ||
+         (rule.code == 'PAS31' and (!@trial.min_age.present? || !@trial.min_age_unit.present?)) ||
+         (rule.code == 'PAS32' and (!@trial.max_age.present? || !@trial.max_age_unit.present?)) ||
+         (rule.code == 'PAS33' and (!@trial.other_criteria.present? || @trial.other_criteria.size == 0)) ||
+          (rule.code == 'PAS34' and @@is_observational_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS35' and @@is_ancillary_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS36' and @@is_observational_cat and !@trial.study_pop_desc.present?) ||
+          (rule.code == 'PAS37' and @@is_ancillary_cat and !@trial.study_pop_desc.present?)
+
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_pas_arms_groups
+    pas_arms_groups_rules = ValidationRule.where(model: 'trial', item: 'pas_arms/groups')
+    validation_result = []
+
+    is_arm_label_too_long = false
+    all_arm_has_intervention = true # except 'No intervention' arms_group_type
+    all_arms_groups = ArmsGroup.where(trial_id: @trial.id)
+    inter_arms_groups = ArmsGroup.where(trial_id: @trial.id).where("arms_groups_type != ? OR arms_groups_type IS NULL", "No intervention")  #.where.not("arms_groups_type": 'No intervention')
+
+    inter_arms_groups.each do |arm|
+      all_arm_has_intervention = arm.arms_groups_interventions_associations.size > 0  # if 0, no interventions
+      break if all_arm_has_intervention == false
+    end
+
+    arms_interventions_ids = []  # intervention ids associated with this trial's arms/groups
+    all_arms_groups.each do |arm|
+      if !is_arm_label_too_long
+        is_arm_label_too_long = arm.label.present? && arm.label.length > @@arm_label_max_length # cannot be longer than 62 chars
+      end
+      cur_intervention_ids = arm.arms_groups_interventions_associations.pluck(:intervention_id)
+      arms_interventions_ids |= cur_intervention_ids  # concatenate without duplicate id
+    end
+
+    all_interventions_ids_this_trial = Intervention.where(trial_id: @trial.id).pluck(:id)
+    is_all_interventions_associated = all_interventions_ids_this_trial.sort() == arms_interventions_ids.sort() # check if every interventions in this trial have been associated with arms/groups
+
+    pas_arms_groups_rules.each do |rule|
+      if (rule.code == 'PAS26' and !all_arm_has_intervention) ||
+         (rule.code == 'PAS27' and !is_all_interventions_associated) ||
+         (rule.code == 'PAS50' and (@trial.arms_groups.nil? || @trial.arms_groups.size == 0)) ||
+         (rule.code == 'PAS51' and is_arm_label_too_long)
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_paa_nci_specific_info()
+    paa_nci_specific_info_rules = ValidationRule.where(model: 'trial', item: 'paa_nci_specific_info')
+    is_funding_sponsor_nullified = false
+
+    funding_sources = TrialFundingSource.where(trial_id: @trial.id)
+    funding_sources.each do |source|
+      if !is_funding_sponsor_nullified
+        organization = Organization.find(source.organization_id)
+        is_funding_sponsor_nullified = organization.source_status.code == 'NULLIFIED'
+      end
+    end
+
+    validation_result = []
+    paa_nci_specific_info_rules.each do |rule|
+      if rule.code == 'PAA208' and is_funding_sponsor_nullified
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+
+  end
+
+  def _validate_pas_trial_description()
+    pas_trial_description_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_description')
+
+    is_brief_title_unique = @trial.brief_title.nil? ? false : Trial.where(brief_title: @trial.brief_title).size == 1
+
+    validation_results = []
+    pas_trial_description_rules.each do |rule|
+
+      if (rule.code == 'PAS21' and !@trial.brief_title.present?) ||
+          (rule.code == 'PAS22' and !is_brief_title_unique) ||
+          (rule.code == 'PAS23' and !@trial.brief_summary.present?)
+        validation_results << rule
+
+      elsif (rule.code == 'PAS41' and @trial.detailed_description.present? and @trial.detailed_description.length > 32000) ||
+          (rule.code == 'PAS42' and @trial.brief_title.present? and @trial.brief_title.length <= 18) ||
+          (rule.code == 'PAS49' and @trial.brief_title.present? and @trial.brief_title.length >= 300)
+
+        ## warnings
+        validation_results << rule
+
+      end
+    end
+
+    return validation_results
+  end
+
+  def _validate_pas_trial_design()
+
+    pas_trial_design_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_design')
+
+    is_open_masking = Masking.find_by_code('OP').id == @trial.masking_id
+    is_single_blind_masking = Masking.find_by_code('SB').id == @trial.masking_id
+    is_double_blind_masking = Masking.find_by_code('DB').id == @trial.masking_id
+
+    num_masking_roles = 0
+    num_masking_roles += 1 if @trial.masking_role_caregiver
+    num_masking_roles += 1 if @trial.masking_role_investigator
+    num_masking_roles += 1 if @trial.masking_role_outcome_assessor
+    num_masking_roles += 1 if @trial.masking_role_subject
+    is_primary_purpose_other = PrimaryPurpose.find_by_code('OTH').id == @trial.primary_purpose_id
+    is_study_model_other = StudyModel.find_by_code('OTH').id == @trial.study_model_id
+    is_time_perspec_other = TimePerspective.find_by_code('OTH').id == @trial.time_perspective_id
+
+    validation_result = []
+    pas_trial_design_rules.each do |rule|
+      if (rule.code == 'PAS3' and @@is_interventional_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS4' and @@is_expanded_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS5' and @@is_interventional_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS6' and @@is_expanded_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS11' and @@is_interventional_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS12' and @@is_expanded_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS13' and @@is_interventional_cat and @trial.intervention_model_id.nil?) ||
+          (rule.code == 'PAS14' and @@is_expanded_cat and @trial.intervention_model_id.nil?) ||
+          (rule.code == 'PAS15' and !@trial.primary_purpose_id.present?) ||
+          (rule.code == 'PAS16' and is_primary_purpose_other and !@trial.primary_purpose_other.present?) ||
+          (rule.code == 'PAS17' and !@trial.phase_id.present?) ||
+          (rule.code == 'PAS18' and !@trial.num_of_arms.present?) ||
+          (rule.code == 'PAS19' and @@is_interventional_cat and !@trial.allocation_id.present?) ||
+          (rule.code == 'PAS20' and @@is_expanded_cat and !@trial.allocation_id.present?)
+            ## errors block
+            validation_result << rule
+      elsif (rule.code == 'PAS43' and @@is_observational_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS44' and @@is_ancillary_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS45' and @@is_observational_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS46' and @@is_ancillary_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS47' and @@is_observational_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+          (rule.code == 'PAS48' and @@is_ancillary_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+            ## warnings block
+            validation_result << rule
+      end
+
+    end
+
+    return validation_result
+  end
+
+  def _validate_paa_documents()
+    paa_documents_rules = ValidationRule.where(model: 'trial', item: 'paa_documents')
+    is_protocol_doc_missing = TrialDocument.where(trial_id: @trial.id, document_type: 'Protocol Document', status: 'active').blank? # does it have to active?
+    is_irb_approval_doc_missing = TrialDocument.where(trial_id: @trial.id, document_type: 'IRB Approval', status: 'active').blank? # does it have to active?
+    validation_result = []
+
+    paa_documents_rules.each do |rule|
+      if (rule.code == 'PAA95' and is_protocol_doc_missing) || (rule.code == 'PAA96' and is_irb_approval_doc_missing)
+        validation_result << rule
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_paa_participating_sites()
+    paa_site_rules = ValidationRule.where(model: 'trial', item: 'paa_participating_sites')
+    # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
+    is_all_sites_unique = true
+    is_site_pi_unique = true  # check for duplicate site investigator on the same site
+    is_any_site_status_active = false
+    is_any_site_status_enroll_by_invitation = false
+
+    @trial.participating_sites.each do |site|
+      # TODO: optimize this query if possible
+      if is_all_sites_unique
+        is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
+      end
+
+      if is_site_pi_unique
+        count_hash = ParticipatingSiteInvestigator.where(participating_site_id: site.id).group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
+        is_site_pi_unique = count_hash.size == 0  # if duplicate, count_hash.size >= 1
+      end
+
+      site_status = site.site_rec_status_wrappers.last
+      site_status_id = site_status.nil? ? nil : site_status.site_recruitment_status_id
+      if !is_any_site_status_active
+        is_any_site_status_active = site_status_id == SiteRecruitmentStatus.find_by_code('ACT').id
+      end
+      if !is_any_site_status_enroll_by_invitation
+        is_any_site_status_enroll_by_invitation = site_status_id == SiteRecruitmentStatus.find_by_code('EBI').id
+      end
+    end
+
+    validation_result = []
+    paa_site_rules.each do |rule|
+      if (rule.code == 'PAA93' and !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
+        ## errors block
+        validation_result << rule
+      elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
+          (rule.code == 'PAA197' and @@is_cur_trial_status_approved and is_any_site_status_enroll_by_invitation) ||
+          (rule.code == 'PAA198' and @@is_cur_trial_status_inreview and is_any_site_status_active) ||
+          (rule.code == 'PAA199' and @@is_cur_trial_status_inreview and is_any_site_status_enroll_by_invitation) ||
+          (rule.code = 'PAA200' and @@is_cur_trial_status_withdrawn and is_any_site_status_active) ||
+          (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation) ||
+          (rule.code = 'PAA202' and (!is_any_site_status_active && @trial.participating_sites.size == 0))
+
+        ## warnings block
+        validation_result << rule
+        # TODO: finish this warning block
+        # TODO: PAA203, PAA204, PAA205, and PAA206 (ask BA: what is primary xxx ?)
+
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_paa_regulatory_human_sub_safety()
+    human_safe_rules = ValidationRule.where(model: 'trial', item: 'paa_regulatory_info_human_subject_safety')
+    validation_results = []
+    board_approval_status = BoardApprovalStatus.find_by_code('SUBAPPROVED')
+    board_approval_status_id = board_approval_status.nil? ? nil : board_approval_status.id
+    board_sub_pending_status_id = BoardApprovalStatus.find_by_code('SUBPENDING').id
+    board_sub_exempt_status_id = BoardApprovalStatus.find_by_code('SUBEXEMPT').id
+    board_sub_denied_status_id = BoardApprovalStatus.find_by_code('SUBDENIED').id
+    board_sub_unrequired_status_id = BoardApprovalStatus.find_by_code('SUBUNREQUIRED').id
+
+    p "current trial status code: #{@@cur_trial_status_code} for trial #{@trial.id}"
+
+    human_safe_rules.each do |rule|
+      if rule.code == 'PAA92' and (board_approval_status_id.nil? || @trial.board_approval_status_id.nil? || @trial.board_approval_status_id != board_approval_status_id)
+        #error block
+        validation_results << rule # board approval status is missing
+      elsif (rule.code == 'PAA183' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id) ||
+            (rule.code == 'PAA184' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA185' and @trial.board_approval_status_id == board_sub_denied_status_id and @@cur_trial_status_code == 'APP') ||
+            (rule.code == 'PAA186' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code != 'INR') ||
+            (rule.code == 'PAA187' and @trial.board_approval_status_id == board_sub_pending_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
+            (rule.code == 'PAA191' and @@cur_trial_status_code == 'WIT' and @trial.board_approval_status_id != board_sub_denied_status_id) ||
+            (rule.code == 'PAA193' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id)
+
+          # warnings block
+        ## 1. Review Board Approval must be  SUBMITTED PENDING if Trial Status is   IN REVIEW
+        ## 2. Trial Status cannot be  ACTIVE when the  Review Board Approval is ‘Submitted; Denied’
+        ## 3. If Review Board is ‘Submitted; Denied’; Trial Status cannot be Approved
+        ## 4. If Board Approval Status is Submitted; Pending; Current Trial Status must be IN REVIEW
+        ## 5. Current study status cannot be Active when Board Approval Status is submitted, pending'
+        ## 6. Current study status cannot be Active when Board Approval Status is not required
+        ## 7. If current trial status is withdrawn; Board Approval status in Regulatory Information – HSS must be ‘submitted denied’
+        ## 8. Board status has been nullified. Board status is required.
+        ## 9. If the current trial status is In Review; the board approval status must be Submitted; Pending.
+        validation_results << rule
+      end
+    end
+
+    return validation_results
+  end
+
+  def _validate_paa_regulatory_info_fda()
+    pri_rules = ValidationRule.where(model: 'trial', item: 'paa_regulatory_info_fdaaa')
+    validation_results = []
+    # is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
+    if !@@is_IND_protocol
+      return validation_results
+    end
+    is_US_contained = false
+    is_FDA_contained = false
+    @trial.oversight_authorities.each do |oa|
+      if !is_US_contained
+        is_US_contained = oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.downcase!.include?('us'))
+      end
+
+      if !is_FDA_contained
+        is_FDA_contained = oa.organization.present? && oa.organization.downcase == 'food and drug administration'
+      end
+    end
+
+    pri_rules.each do |rule|
+      if (rule.code == 'PAA90' and !is_US_contained) || (rule.code == 'PAA91' and !is_FDA_contained)
+        validation_results << rule
+      end
+    end
+    return validation_results
+  end
+
+  def _validate_general_trial_details()
+    #get general trial details rules
+    gt_rules = ValidationRule.where(model: 'trial', item: 'paa_general_trial_details')
+    validation_results = []
+    # find these ids for validation check
+    nct_origin_id = ProtocolIdOrigin.find_by_code('NCT').id
+    ctep_origin_id = ProtocolIdOrigin.find_by_code('CTEP').id
+    dcp_origin_id = ProtocolIdOrigin.find_by_code('DCP').id
+    nctIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == nct_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == nct_origin_id} : nil
+    nctIdentifier = nctIdentifierObj.present? ? nctIdentifierObj.protocol_id : nil
+    ctepIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
+    ctepIdentifier = ctepIdentifierObj.present? ? ctepIdentifierObj.protocol_id : nil
+    dcpIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
+    dcpIdentifier = dcpIdentifierObj.present? ? dcpIdentifier.protocol_id : nil
+
+    nci_id = @trial.nci_id
+    lead_org_protocol_id = @trial.lead_protocol_id
+    keywords = @trial.keywords
+    is_centralcontact_missing_email_or_phone = false
+    @trial.central_contacts.each do |contact|
+      is_centralcontact_missing_email_or_phone = !contact.email.present? && !contact.phone.present?
+      break if is_centralcontact_missing_email_or_phone
+    end
+
+    gt_rules.each do |rule|
+      if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) || (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
+         (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) || (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
+         (rule.code == 'PAA8' and keywords.present? and keywords.length > 160)
+        ## errors block
+        validation_results << rule
+
+      elsif(rule.code == 'PAA97' and !@trial.official_title.present?) ||
+           (rule.code == 'PAA98' and (!@trial.lead_org_id.present? || !@trial.lead_protocol_id.present?)) ||
+           (rule.code == 'PAA100' and !@trial.pi_id.present?) ||
+           (rule.code == 'PAA101' and !@trial.sponsor_id) ||
+           (rule.code == 'PAA102' and is_centralcontact_missing_email_or_phone)
+        ## warnings block
+        validation_results << rule
+      end
+    end
+
+    return validation_results
   end
 
   def rollback(submission_id)
@@ -614,6 +1056,379 @@ class TrialService
     end
 
     CtrpMailerWrapper.send_email(mail_template, @trial)
+  end
+
+  def import_params (xml, current_user)
+    import_params = {}
+
+    import_params[:edit_type] = 'import'
+    import_params[:is_draft] = false
+    import_params[:study_source_id] = StudySource.find_by_code('IND').id
+    import_params[:lead_protocol_id] = xml.xpath('//org_study_id').text
+
+    import_params[:other_ids_attributes] = []
+    xml.xpath('//secondary_id').each do |other_id|
+      import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('OTH').id, protocol_id: other_id.text})
+    end
+    import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('NCT').id, protocol_id: xml.xpath('//nct_id').text})
+
+    import_params[:brief_title] = xml.xpath('//brief_title').text
+    import_params[:official_title] = xml.xpath('//official_title').text
+
+    org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
+    orgs = Organization.all
+    orgs = orgs.matches_name_wc(org_name, true)
+    orgs = orgs.with_source_status("Active")
+    orgs = orgs.with_source_context("CTRP")
+    if orgs.length > 0
+      import_params[:lead_org_id] = orgs[0].id
+      import_params[:sponsor_id] = orgs[0].id
+      import_params[:trial_funding_sources_attributes] = [{organization_id: orgs[0].id}]
+    end
+
+    import_params[:collaborators_attributes] = []
+    xml.xpath('//collaborator/agency').each do |collaborator|
+      import_params[:collaborators_attributes].push({org_name: collaborator.text})
+    end
+
+    import_params[:oversight_authorities_attributes] = []
+    xml.xpath('//oversight_info/authority').each do |authority|
+      splits = authority.text.split(':')
+      import_params[:oversight_authorities_attributes].push({country: splits[0].strip, organization: splits[1].strip})
+    end
+
+    import_params[:data_monitor_indicator] = xml.xpath('//oversight_info/has_dmc').text if xml.xpath('//oversight_info/has_dmc').present?
+    import_params[:brief_summary] = xml.xpath('//brief_summary').text
+    import_params[:detailed_description] = xml.xpath('//detailed_description').text
+
+    import_params[:trial_status_wrappers_attributes] = []
+    ctrp_status_code = map_status(xml.xpath('//overall_status').text)
+    ctrp_status = TrialStatus.find_by_code(ctrp_status_code)
+    import_params[:trial_status_wrappers_attributes].push({trial_status_id: ctrp_status.id}) if ctrp_status.present?
+
+    import_params[:start_date] = convert_date(xml.xpath('//start_date').text) if xml.xpath('//start_date').present?
+    import_params[:start_date_qual] = 'Actual' if xml.xpath('//start_date').present?
+    import_params[:comp_date] = convert_date(xml.xpath('//completion_date').text) if xml.xpath('//completion_date').present?
+    import_params[:comp_date_qual] = xml.xpath('//completion_date').attr('type') if xml.xpath('//completion_date').present?
+    import_params[:primary_comp_date] = convert_date(xml.xpath('//primary_completion_date').text) if xml.xpath('//primary_completion_date').present?
+    import_params[:primary_comp_date_qual] = xml.xpath('//primary_completion_date').attr('type') if xml.xpath('//primary_completion_date').present?
+
+    ctrp_phase_code = map_phase(xml.xpath('//phase').text)
+    ctrp_phase = Phase.find_by_code(ctrp_phase_code)
+    import_params[:phase_id] = ctrp_phase.id if ctrp_phase.present?
+
+    ctrp_research_category = ResearchCategory.find_by_name(xml.xpath('//study_type').text)
+    import_params[:research_category_id] = ctrp_research_category.id if ctrp_research_category.present?
+
+    xml.xpath('//study_design').text.split(',').each do |study_design|
+      splits = study_design.split(':')
+      case splits[0].strip
+        when 'Allocation'
+          ctrp_allocation_code = map_allocation(splits[1].strip)
+          ctrp_allocation = Allocation.find_by_code(ctrp_allocation_code)
+          import_params[:allocation_id] = ctrp_allocation.id if ctrp_allocation.present?
+        when 'Endpoint Classification'
+          ctrp_study_classification_code = map_study_classification(splits[1].strip)
+          ctrp_study_classification = StudyClassification.find_by_code(ctrp_study_classification_code)
+          import_params[:study_classification_id] = ctrp_study_classification.id if ctrp_study_classification.present?
+        when 'Intervention Model'
+          ctrp_intervention_model_code = map_intervention_model(splits[1].strip)
+          ctrp_intervention_model = InterventionModel.find_by_code(ctrp_intervention_model_code)
+          import_params[:intervention_model_id] = ctrp_intervention_model.id if ctrp_intervention_model.present?
+        when 'Masking'
+          ctrp_masking_code = map_masking(splits[1].strip)
+          ctrp_masking = Masking.find_by_code(ctrp_masking_code)
+          import_params[:masking_id] = ctrp_masking.id if ctrp_masking.present?
+        when 'Primary Purpose'
+          ctrp_primary_purpose_code = map_primary_purpose(splits[1].strip)
+          ctrp_primary_purpose = PrimaryPurpose.find_by_code(ctrp_primary_purpose_code)
+          import_params[:primary_purpose_id] = ctrp_primary_purpose.id if ctrp_primary_purpose.present?
+      end
+    end
+
+    import_params[:outcome_measures_attributes] = []
+    xml.xpath('//primary_outcome').each do |p_outcome|
+      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
+    end
+    xml.xpath('//secondary_outcome').each do |s_outcome|
+      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
+    end
+
+    import_params[:num_of_arms] = xml.xpath('//number_of_arms').text if xml.xpath('//number_of_arms').present?
+    import_params[:target_enrollment] = xml.xpath('//enrollment').text if xml.xpath('//enrollment').present?
+
+    if xml.xpath('//eligibility/criteria').present?
+      import_params[:other_criteria_attributes] = []
+      criteria_text = xml.xpath('//eligibility/criteria').text
+      criteria_text = criteria_text.sub('Inclusion Criteria', 'INCLUSION CRITERIA')
+      criteria_text = criteria_text.sub('Exclusion Criteria', 'EXCLUSION CRITERIA')
+      if criteria_text.include? 'INCLUSION CRITERIA:'
+        inclusion_partition = criteria_text.partition('INCLUSION CRITERIA:')
+        if inclusion_partition[0].include? 'EXCLUSION CRITERIA:'
+          import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: inclusion_partition[2]})
+          sub_inclusion_partition = inclusion_partition[0].partition('EXCLUSION CRITERIA:')
+          import_params[:other_criteria_attributes].push({criteria_type: 'Exclusion', criteria_desc: sub_inclusion_partition[2]})
+        elsif inclusion_partition[2].include? 'EXCLUSION CRITERIA:'
+          sub_inclusion_partition = inclusion_partition[2].partition('EXCLUSION CRITERIA:')
+          import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: sub_inclusion_partition[0]})
+          import_params[:other_criteria_attributes].push({criteria_type: 'Exclusion', criteria_desc: sub_inclusion_partition[2]})
+        else
+          import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: inclusion_partition[2]})
+        end
+      elsif criteria_text.include? 'EXCLUSION CRITERIA:'
+        exclution_partition = criteria_text.partition('EXCLUSION CRITERIA:')
+        import_params[:other_criteria_attributes].push({criteria_type: 'Exclusion', criteria_desc: exclution_partition[2]})
+      else
+        import_params[:other_criteria_attributes].push({criteria_type: 'Inclusion', criteria_desc: criteria_text})
+      end
+    end
+
+    ctrp_gender = Gender.find_by_name(xml.xpath('//eligibility/gender').text)
+    import_params[:gender_id] = ctrp_gender.id if ctrp_gender.present?
+
+    if xml.xpath('//eligibility/minimum_age').present?
+      min_age_text = xml.xpath('//eligibility/minimum_age').text
+      if !(min_age_text.include? 'N/A')
+        splits = min_age_text.split(' ')
+        import_params[:min_age] = splits[0]
+        ctrp_min_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
+        import_params[:min_age_unit_id] = ctrp_min_age_unit.id if ctrp_min_age_unit.present?
+      end
+    end
+
+    if xml.xpath('//eligibility/maximum_age').present?
+      max_age_text = xml.xpath('//eligibility/maximum_age').text
+      if !(max_age_text.include? 'N/A')
+        splits = max_age_text.split(' ')
+        import_params[:max_age] = splits[0]
+        ctrp_max_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
+        import_params[:max_age_unit_id] = ctrp_max_age_unit.id if ctrp_max_age_unit.present?
+      end
+    end
+
+    import_params[:accept_vol] = xml.xpath('//healthy_volunteers').text if xml.xpath('//healthy_volunteers').present?
+    import_params[:verification_date] = convert_date(xml.xpath('//verification_date').text) if xml.xpath('//verification_date').present?
+
+    submission_params = {}
+    submission_params[:updated_at] = xml.xpath('//lastchanged_date').text
+    submission_params[:created_at] = xml.xpath('//firstreceived_date').text
+    submission_params[:submission_num] = 1
+    submission_params[:submission_date] = Date.today
+    ori = SubmissionType.find_by_code('ORI')
+    submission_params[:submission_type_id] = ori.id if ori.present?
+    cct = SubmissionSource.find_by_code('CCT')
+    submission_params[:submission_source_id] = cct.id if cct.present?
+    cti = SubmissionMethod.find_by_code('CTI')
+    submission_params[:submission_method_id] = cti.id if cti.present?
+    submission_params[:user_id] = current_user.id if current_user.present?
+    import_params[:submissions_attributes] = [submission_params]
+
+    ctrp_responsible_party = ResponsibleParty.find_by_name(xml.xpath('//responsible_party/responsible_party_type').text)
+    import_params[:responsible_party_id] = ctrp_responsible_party.id if ctrp_responsible_party.present?
+
+    ctrp_keywords = ''
+    xml.xpath('//keyword').each_with_index do |keyword, i|
+      ctrp_keywords += ', ' if i > 0
+      ctrp_keywords += keyword
+    end
+    import_params[:keywords] = ctrp_keywords if ctrp_keywords.length > 0
+
+    import_params[:intervention_indicator] = xml.xpath('//is_fda_regulated').text if xml.xpath('//is_fda_regulated').present?
+    import_params[:sec801_indicator] = xml.xpath('//is_section_801').text if xml.xpath('//is_section_801').present?
+
+    return import_params
+  end
+
+  # Maps the ClinicalTrials.gov status to CTRP status code
+  def map_status (ct_status)
+    case ct_status
+      when 'Not yet recruiting'
+        ctrp_status_code = 'INR'
+      when 'Withdrawn'
+        ctrp_status_code = 'WIT'
+      when 'Recruiting'
+        ctrp_status_code = 'ACT'
+      when 'Enrolling by Invitation'
+        ctrp_status_code = 'EBI'
+      when 'Suspended'
+        ctrp_status_code = 'TCL'
+      when 'Active, not recruiting'
+        ctrp_status_code = 'CAC'
+      when 'Terminated'
+        ctrp_status_code = 'ACO'
+      when 'Completed'
+        ctrp_status_code = 'COM'
+      when 'Available'
+        ctrp_status_code = 'AVA'
+      when 'No longer available'
+        ctrp_status_code = 'NLA'
+      when 'Temporarily not available'
+        ctrp_status_code = 'TNA'
+      when 'Approved for marketing'
+        ctrp_status_code = 'AFM'
+      else
+        ctrp_status_code = ''
+    end
+
+    return ctrp_status_code
+  end
+
+  def convert_date (ct_date)
+    splits = ct_date.split(' ')
+
+    case splits[0]
+      when 'January'
+        month = 'Jan'
+      when 'February'
+        month = 'Feb'
+      when 'March'
+        month = 'Mar'
+      when 'April'
+        month = 'Apr'
+      when 'May'
+        month = 'May'
+      when 'June'
+        month = 'Jun'
+      when 'July'
+        month = 'Jul'
+      when 'August'
+        month = 'Aug'
+      when 'September'
+        month = 'Sep'
+      when 'October'
+        month = 'Oct'
+      when 'November'
+        month = 'Nov'
+      when 'December'
+        month = 'Dec'
+      else
+        month = ''
+    end
+
+    return '01-' + month + '-' + splits[1]
+  end
+
+  def map_phase (ct_phase)
+    case ct_phase
+      when 'N/A'
+        ctrp_phase_code = 'N/A'
+      when 'Phase 0'
+        ctrp_phase_code = '0'
+      when 'Phase 1'
+        ctrp_phase_code = 'I'
+      when 'Phase 1/Phase 2'
+        ctrp_phase_code = 'I/II'
+      when 'Phase 2'
+        ctrp_phase_code = 'II'
+      when 'Phase 2/Phase 3'
+        ctrp_phase_code = 'II/III'
+      when 'Phase 3'
+        ctrp_phase_code = 'III'
+      when 'Phase 4'
+        ctrp_phase_code = 'IV'
+      else
+        ctrp_phase_code = ''
+    end
+
+    return ctrp_phase_code
+  end
+
+  def map_allocation (ct_allocation)
+    case ct_allocation
+      when 'N/A'
+        ctrp_allocation_code = 'NA'
+      when 'Randomized'
+        ctrp_allocation_code = 'RCT'
+      when 'Nonrandomized'
+        ctrp_allocation_code = 'NRT'
+      else
+        ctrp_allocation_code = ''
+    end
+
+    return ctrp_allocation_code
+  end
+
+  def map_study_classification (ct_study_classification)
+    case ct_study_classification
+      when 'N/A'
+        ctrp_study_classification_code = 'NA'
+      when 'Safety Study'
+        ctrp_study_classification_code = 'SF'
+      when 'Efficacy Study'
+        ctrp_study_classification_code = 'EFF'
+      when 'Safety/Efficacy Study'
+        ctrp_study_classification_code = 'SFEFF'
+      when 'Bio-equivalence Study'
+        ctrp_study_classification_code = 'BEQ'
+      when 'Bio-availability Study'
+        ctrp_study_classification_code = 'BAV'
+      when 'Pharmacokinetics Study'
+        ctrp_study_classification_code = 'PD'
+      when 'Pharmacodynamics Study'
+        ctrp_study_classification_code = 'PK'
+      when 'Pharmacokinetics/dynamics Study'
+        ctrp_study_classification_code = 'PKPD'
+      else
+        ctrp_study_classification_code = ''
+    end
+
+    return ctrp_study_classification_code
+  end
+
+  def map_intervention_model (ct_intervention_model)
+    case ct_intervention_model
+      when 'Single Group Assignment'
+        ctrp_intervention_model_code = 'SG'
+      when 'Parallel Assignment'
+        ctrp_intervention_model_code = 'PL'
+      when 'Cross-over Assignment'
+        ctrp_intervention_model_code = 'CO'
+      when 'Factorial Assignment'
+        ctrp_intervention_model_code = 'FT'
+      else
+        ctrp_intervention_model_code = ''
+    end
+
+    return ctrp_intervention_model_code
+  end
+
+  def map_masking (ct_masking)
+    if ct_masking.include? 'Open'
+      ctrp_masking_code = 'OP'
+    elsif ct_masking.include? 'Single Blind'
+      ctrp_masking_code = 'SB'
+    elsif ct_masking.include? 'Double Blind'
+      ctrp_masking_code = 'DB'
+    else
+      ctrp_masking_code = ''
+    end
+
+    return ctrp_masking_code
+  end
+
+  def map_primary_purpose (ct_primary_purpose)
+    case ct_primary_purpose
+      when 'Treatment'
+        ctrp_primary_purpose_code = 'TRM'
+      when 'Prevention'
+        ctrp_primary_purpose_code = 'PRV'
+      when 'Diagnostic'
+        ctrp_primary_purpose_code = 'DIA'
+      when 'Supportive Care'
+        ctrp_primary_purpose_code = 'SUP'
+      when 'Screening'
+        ctrp_primary_purpose_code = 'SCR'
+      when 'Health Services Research '
+        ctrp_primary_purpose_code = 'HSR'
+      when 'Basic Science'
+        ctrp_primary_purpose_code = 'BSC'
+      when 'Other'
+        ctrp_primary_purpose_code = 'OTH'
+      else
+        ctrp_primary_purpose_code = ''
+    end
+
+    return ctrp_primary_purpose_code
   end
 
 end
