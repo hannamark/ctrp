@@ -6,10 +6,10 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasAssociatedTrialCtrl', pasAssociatedTrialCtrl);
 
-    pasAssociatedTrialCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
+    pasAssociatedTrialCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', '$state', 'toastr',
         'MESSAGES', '_', '$timeout', 'identifierTypes', '$location', '$anchorScroll'];
 
-    function pasAssociatedTrialCtrl($scope, TrialService, PATrialService, toastr,
+    function pasAssociatedTrialCtrl($scope, TrialService, PATrialService, $state, toastr,
         MESSAGES, _, $timeout, identifierTypes, $location, $anchorScroll) {
             var vm = this;
             vm.identifierTypes = identifierTypes;
@@ -28,6 +28,8 @@
             vm.deleteTrialAssociations = deleteTrialAssociations;
             // vm.resetAssociations = _getTrialDetailCopy;
             vm.deleteAllAssociations = deleteAllAssociations;
+            vm.reload = reload;
+            
             vm.disableBtn = false;
 
             activate();
@@ -78,6 +80,10 @@
                 $scope.associated_trials_form.$setPristine();
                 // TODO: reset form to $pristine, etc.
             }
+
+            function reload() {
+                $state.go($state.$current, null, { reload: true });
+            };
 
             function _initFoundTrialObj() {
                 return {

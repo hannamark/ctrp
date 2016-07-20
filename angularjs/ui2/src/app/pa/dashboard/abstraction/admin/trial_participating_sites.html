@@ -1,4 +1,4 @@
-<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes unsaved-tab-forms="{{psView.formArray}}" unsaved-tab-index="{{psView.tabIndex}}" unsaved-callback="psView.resetParticipatingSite(backToListView)">
+<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes unsaved-tab-forms="{{psView.formArray}}" unsaved-form-context="{{psView.tabIndex}}" unsaved-callback="psView.resetParticipatingSite(backToListView)">
     <div class="panel panel-default" ng-show="psView.addEditMode">
         <div class="panel-heading">
             <div class="panel-title" ng-show="!psView.currentParticipatingSite.organization.name">Add Participating Site</div>
@@ -226,10 +226,10 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_pacticipating" restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.reload()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -363,7 +363,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn || psView.current_investigator.new">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.reload()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -474,7 +474,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.reload()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>

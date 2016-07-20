@@ -195,6 +195,10 @@
 
         }; //saveTrial
 
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
         function setAddMode(isAddMode) {
             vm.currentArmsGroup = {};
             vm.currentArmsGroup.label = null;
