@@ -50,6 +50,7 @@ json.trial_versions do
         json.milestone milestone
     end
 
+    json.is_rejected submission.trial.is_rejected
 
   end
 
