@@ -639,7 +639,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
       end
     elsif milestone_to_add.code == 'IAV'
-      if !is_last_milestone?(submission_id, 'RTS')
+      rts = Milestone.find_by_code('RTS')
+      if rts.present? && !contains_milestone?(submission_id, rts.id)
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
       if active_onhold_exists?

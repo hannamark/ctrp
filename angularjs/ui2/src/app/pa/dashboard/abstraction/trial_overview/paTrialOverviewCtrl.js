@@ -54,6 +54,7 @@
             'trialValidProtocol': false,
             'trialValidImport': false,
             'rejection': false,
+            'hideFlagForRejection': false
         };
         // milestone codes that trigger validation menus
         var MILESTONE_CODES_FOR_VALIDATION = ['SRD', 'VPS', 'VPC']; // "Submission Received Date" , "Validation Processing Start Date" or "Validation Processing Completed Date"
@@ -61,6 +62,8 @@
         var MILESTONE_CODES_FOR_REJECTION = ['LRD', 'STR'];
         // mile stone codes that DO not trigger abstraction menus
         var MILESTONE_CODES_FOR_ABSTRACTION_EXCEPT = MILESTONE_CODES_FOR_REJECTION.concat(MILESTONE_CODES_FOR_VALIDATION); // Late Rejection Date and VALIDATION codes
+
+        var ROLE_LIST_TO_HIDE_FROM = ['ROLE_ABSTRACTOR', 'ROLE_SUPER', 'ROLE_ADMIN'];
 
         vm.disableBtn = false;
 
@@ -184,6 +187,7 @@
             vm.trialDetailObj.isInfoSourceImport = !vm.isInfoSourceProtocol && infoSourceName.indexOf('reg') === -1; // not from registry AND not protocol
 
             vm.curPAMenuTypes = _checkMilestoneCode(vm.trialDetailObj); // TODO: use this in subscreen to control their visbility
+            vm.curPAMenuTypes.hideFlagForRejection = _checkRejectionAndRole(vm.trialDetailObj);
             vm.trialDetailObj.menuTypes = vm.curPAMenuTypes; // update the menuTypes so that PAMenu controller can use it
             // console.log('vm.submitterPopOver: ', vm.submitterPopOver);
             vm.trialDetailObj.lock_version = data.lock_version;
@@ -321,6 +325,14 @@
             }
 
             return updatedPAMenuTypes;
+        }
+
+        function _checkRejectionAndRole(trialDetailObj) {
+            if (trialDetailObj.is_rejected && ROLE_LIST_TO_HIDE_FROM.indexOf(curUserRole) > -1) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         var overridingUserRoles = ['ROLE_SUPER', 'ROLE_ADMIN'];

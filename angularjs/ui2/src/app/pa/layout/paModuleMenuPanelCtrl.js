@@ -30,6 +30,7 @@
             'trialValidProtocol': false,
             'trialValidImport': false,
             'rejection': false,
+            'hideFlagForRejection': false
         };
 
         activate();
