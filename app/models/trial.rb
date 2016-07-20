@@ -152,7 +152,7 @@ class Trial < TrialBase
   has_many :trial_co_pis
   has_many :co_pis, through: :trial_co_pis, source: :person
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
-  has_many :trial_documents, -> { order 'trial_documents.id' }
+  has_many :trial_documents, -> { order ('trial_documents.id desc') }
   has_many :mail_logs, -> { order 'mail_logs.id'}
 
   # PA fields

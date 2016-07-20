@@ -875,6 +875,13 @@ class TrialService
     ActiveRecord::Base.transaction do
       @trial.update(rollback_params)
       @trial.update(rollback_params2)
+
+      # Mark documents uploaded in this submission as 'deleted'
+      docs = TrialDocument.where('trial_id = ? AND submission_id = ?', @trial.id, submission_id)
+      docs.each do |doc|
+        doc.status = 'deleted'
+        doc.save
+      end
     end
   end
 
