@@ -1,7 +1,7 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
   ##CONSTANTS FOR REQUEST VALIDATIONS
   ##
-  XSD_PATH            =   Rails.root.to_s + "/ws5x.xsd"
+  XSD_PATH            =   Rails.root.to_s + "/ws.xsd"
   REGISTER_ACTION     =   "create"
   UPDATE_ACTION       =   "update"
   AMEND_ACTION        =   "amend"
@@ -19,26 +19,30 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   before_action :validate_rest_request
 
   before_filter only: [:create] do
- p "############"
- p @current_user
+    Rails.logger.info("Restfulservices=> current user #@current_user");
     val_errors = Array.new()
 
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
 
     ## Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
      ##
-    lead_protocol_id = @xmlMapperObject.lead_protocol_id
-    lead_org_id = @xmlMapperObject.leadOrganization.existingOrganization.id
-    lead_org_id_pk= Organization.find_by_ctrp_id(lead_org_id).id if Organization.find_by_ctrp_id(lead_org_id)
 
-    @trial = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id_pk)
+    #if !@xmlMapperObject.leadOrganization.newOrganization.nil?
+     # val_errors.push("Accepting newOrganization element to create Person/Organization on the fly has been deprecated, please refer 5.x wiki for more details");
+    #else
+      lead_protocol_id = @xmlMapperObject.lead_protocol_id
+      lead_org_id = @xmlMapperObject.leadOrganization.existingOrganization.id
+      lead_org_id_pk= Organization.find_by_ctrp_id(lead_org_id).id if Organization.find_by_ctrp_id(lead_org_id)
+
+      @trial = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id_pk)
 
 
-    if @trial.present?
-      val_errors.push("A trial has already been existed with given Lead Org Trial ID and Lead organization ID");
-    else
-      val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
-    end
+      if @trial.present?
+        val_errors.push("A trial has already been existed with given Lead Org Trial ID and Lead organization ID");
+      else
+        val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
+      end
+    #end
 
     render xml:val_errors.to_xml, status: '404'  if val_errors.any?
   end
@@ -165,12 +169,29 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         #p error.inspect()
         #p error.level()
         #p error.line()
+        p "hello this is inside error"
         xsd_errors.push(error.message.gsub('{gov.nih.nci.pa.webservices.types}',''))
       end
       xsd_errors.push("Refer 5.x WS XSD on wiki for above erros") if xsd_errors.any?
     else
       xsd_errors.push("Refer 5.x WS XSD on wiki for correct request body ")
     end
+
+    ##
+    ####This is compatibility maintainence with 4.x, if they submitted we will accept it but throw an error
+    if !xsd_errors.any?
+      a = doc.xpath("//tns:leadOrganization/tns:newOrganization")
+      b = doc.xpath("//tns:sponsor/tns:newOrganization")
+      c = doc.xpath("//tns:pi/tns:newPerson")
+      d = doc.xpath("//tns:summary4FundingSponsor/tns:newOrganization")
+
+        xsd_errors.push("leadOrganization: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if a.length >= 1
+        xsd_errors.push("sponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if b.length >= 1
+        xsd_errors.push("pi: Creating new Person feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if c.length >= 1
+        xsd_errors.push("summary4FundingSponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if d.length >= 1
+
+    end
+
 
     render xml:xsd_errors.to_xml, status: '404'  if xsd_errors.any?
 
