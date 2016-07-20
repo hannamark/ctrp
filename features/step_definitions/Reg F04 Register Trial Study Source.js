@@ -22,20 +22,29 @@ module.exports = function() {
     var commonFunctions = new abstractionCommonMethods();
 
     this.Given(/^I am logged into the CTRP Registration application$/, function (callback) {
-        browser.get('ui/#/main/sign_in');
-        commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
-        trialMenuItem.clickHomeSearchTrial();
-        login.clickWriteMode('On');
+    //    browser.get('ui/#/main/sign_in');
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 40).then(function () {
+            commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
+            trialMenuItem.clickHomeSearchTrial();
+            login.clickWriteMode('On');
+        });
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I have selected the option to register a trial (.*)$/, function (trialType, callback) {
         typeOfTrial = trialType;
-        browser.get('ui/#/main/sign_in');
-        commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
-        trialMenuItem.clickHomeSearchTrial();
-        login.clickWriteMode('On');
-        projectFunctionsRegistry.selectTrials(trialType);
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 40).then(function () {
+            commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
+            trialMenuItem.clickHomeSearchTrial();
+            login.clickWriteMode('On');
+            projectFunctionsRegistry.selectTrials(trialType);
+        });
         browser.sleep(25).then(callback);
     });
 
