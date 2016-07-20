@@ -43,7 +43,7 @@ class TrialService
     TrialHistory.create(snapshot: trial_json, submission: @trial.current_submission)
   end
 
-  def validate()
+  def validate_abstraction()
     results = []
     if !@trial.present?
       return results
