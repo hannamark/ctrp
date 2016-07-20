@@ -316,8 +316,7 @@ json.current_trial_status_date @trial.trial_status_wrappers.present? ?
 json.current_trial_why_stopped @trial.trial_status_wrappers.present? ?
     @trial.trial_status_wrappers.last.why_stopped : nil
 
-json.processing_status @trial.processing_status_wrappers.present? ?
-    @trial.processing_status_wrappers.last.processing_status.name : nil
+json.processing_status @trial.current_processing_status.nil? ? nil : @trial.current_processing_status.name
 
 if SubmissionType.find_by_code('AMD')
   last_amd = @trial.submissions.where('submission_type_id = ?', SubmissionType.find_by_code('AMD').id).last
@@ -327,12 +326,12 @@ end
 json.last_amendment_num last_amd.amendment_num if last_amd.present?
 json.last_amendment_date last_amd.amendment_date if last_amd.present?
 
-json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
+json.submission_method @trial.current_submission.nil? ? '' : (@trial.current_submission.submission_method.nil? ? '' : @trial.current_submission.submission_method.name)
 
 json.last_submission_type_code @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_type.nil? ? '' : @trial.submissions.last.submission_type.code)
 
 ## get trial's last submitter
-submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)
+submitter = @trial.current_submission.nil? ? nil : (@trial.current_submission.user_id.nil? ? nil : @trial.current_submission.user)
 
 ## submitter's username
 #json.submitter submitter.nil? ? '' : submitter.username
