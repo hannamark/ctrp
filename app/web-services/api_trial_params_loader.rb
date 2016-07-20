@@ -159,7 +159,7 @@ class ApiTrialParamsLoader
   end
 
   def valid_org(type,id)
-    trialService=TrialService.new
+    trialService=TrialRestService.new
     count = 0
     begin
       count=trialService.active_ctrp_org_count(id)
@@ -178,7 +178,7 @@ class ApiTrialParamsLoader
 
   def valid_person(type,id)
     count=0
-    trialService=TrialService.new
+    trialService=TrialRestService.new
     begin
       count=trialService.active_ctrp_person_count(id)
     rescue Exception=>e
