@@ -1,4 +1,4 @@
-<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes unsaved-tab-forms="{{psView.formArray}}" unsaved-tab-index="{{psView.tabIndex}}" unsaved-callback="psView.resetParticipatingSite(backToListView)">
+<div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.rejection" unsaved-changes unsaved-tab-forms="{{psView.formArray}}" unsaved-form-context="{{psView.tabIndex}}" unsaved-callback="psView.resetParticipatingSite(backToListView)">
     <div class="panel panel-default" ng-show="psView.addEditMode">
         <div class="panel-heading">
             <div class="panel-title" ng-show="!psView.currentParticipatingSite.organization.name">Add Participating Site</div>
@@ -226,10 +226,10 @@
                                     <button type="submit" class="btn btn-primary pull-right" id="submit_pacticipating" restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-ok"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()"  restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_site_recruitment.edit || psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.reload()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -363,7 +363,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.current_investigator.edit || psView.disableBtn || psView.current_investigator.new">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.reload()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
@@ -438,7 +438,7 @@
                                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.phone)}">
                                         <label for="email" class="control-label col-xs-12 col-sm-3">Email Address:</label>
                                         <div class="col-xs-12 col-sm-5">
-                                            <input type="email" id="email" name="email" ng-model="psView.currentParticipatingSite.contact_email" class="form-control input-sm" placeholder="Email" ng-required="!psView.currentParticipatingSite.contact_phone.length">
+                                            <input type="email" id="email" name="email" maxlength="254" ng-model="psView.currentParticipatingSite.contact_email" class="form-control input-sm" placeholder="Email" ng-required="!psView.currentParticipatingSite.contact_phone.length">
                                             <span class="form-control-feedback" ng-show="ps_contact_form.email.$viewValue.length" ng-class="ps_contact_form.email.$error && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                         </div>
                                     </div>
@@ -447,11 +447,11 @@
                                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.phone) && ps_contact_form.phone.$error && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) && ps_contact_form.email.$error}">
                                         <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
                                         <div class="col-xs-12 col-sm-3">
-                                            <input type="text" id="phone" name="phone" ng-model="psView.currentParticipatingSite.contact_phone" class="form-control input-sm" placeholder="Phone" ng-required="!psView.currentParticipatingSite.contact_email.length">
+                                            <input type="text" id="phone" name="phone" maxlength="30" ng-model="psView.currentParticipatingSite.contact_phone" class="form-control input-sm" placeholder="Phone" ng-required="!psView.currentParticipatingSite.contact_email.length">
                                             <span ng-show="ps_contact_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!psView.currentParticipatingSite.contact_phone.length && ctrpbtn.ps_contact_form.needsAttention(ps_contact_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" class="form-control input-sm no-validate" id="phone_extension" ng-model="psView.currentParticipatingSite.extension" placeholder="Extension">
+                                            <input type="text" class="form-control input-sm no-validate" id="phone_extension" maxlength="14" ng-model="psView.currentParticipatingSite.extension" placeholder="Extension">
                                         </div>
                                     </div>
 
@@ -474,7 +474,7 @@
                                     <button type="button" class="btn btn-warning pull-right" ng-click="psView.resetParticipatingSite()" restriction-field ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.resetTabIndex()" ng-disabled="psView.disableBtn">
+                                    <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psView.reload()" ng-disabled="psView.disableBtn">
                                         <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                                     </button>
                                 </div>
