@@ -94,6 +94,7 @@ module.exports = function() {
     var optionA = '';
     var optionB = '';
     var optionC = '';
+    var optionD = '';
     var pageTtitle = 'List of Outcome Measures';
     var pageTtitleA = 'Outcome Measure Details';
     var outTitle = 'Test Outcome Measure Title';
@@ -148,7 +149,13 @@ module.exports = function() {
 
     this.Given(/^I am on the Outcome Measures screen$/, function (callback) {
         leftNav.clickScientificOutcome();
-        outcome.checkOutcomePageTitle(pageTtitleA, 'list');
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.tableOutcomeAll.isDisplayed().then(function(result) {
+            if (result) {
+                outcome.selectAllOutcomeMeasure();
+                outcome.clickDeleteSelectedOutcome('yes');
+            }
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -164,12 +171,13 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected a value for Outcome Measure Type$/, function (table, callback) {
-        //var outcomeType = table.raw();
-        //optionType = outcomeType.toString().replace(/,/g, "\n", -1);
-        //console.log('Value(s) in the data table:[' + optionType +']');
-        //var optionTypeSplt = optionType.toString().split("\n");
-        //optionA = optionTypeSpltA = optionTypeSplt[1];
-        //outcome.selectOutcomeMeasureType(optionTypeSpltA);
+        var outcomeType = table.raw();
+        optionType = outcomeType.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + optionType +']');
+        var optionTypeSplt = optionType.toString().split("\n");
+        optionA = optionTypeSplt[1];
+        optionC = optionTypeSplt[0];
+        outcome.selectOutcomeMeasureType(optionA);
         browser.sleep(25).then(callback);
     });
 
@@ -193,8 +201,9 @@ module.exports = function() {
         optionSafety = outcomeSafety.toString().replace(/,/g, "\n", -1);
         console.log('Value(s) in the data table:[' + optionSafety +']');
         var optionSafetySplt = optionSafety.toString().split("\n");
-        optionB = optionSafetySpltB = optionSafetySplt[1];
-        outcome.selectSafetyIssue(optionSafetySpltA);
+        optionB = optionSafetySplt[1];
+        optionD = optionSafetySplt[0];
+        outcome.selectSafetyIssue(optionB);
         browser.sleep(25).then(callback);
     });
 
@@ -204,24 +213,34 @@ module.exports = function() {
     });
 
     this.Then(/^the Outcome Measure for the trial will be associated with the trial$/, function (callback) {
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
         outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'verify', outTitle, timeFrame, description, optionB);
-        //exIdentiType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^created message displays$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
+        console.log('Toster Message Validation Out of Scope in Protractor');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Outcome Measures table will display Outcomes Measures values$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        outcome.verifyOutcomeMeasureTHead();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^I can add another Outcome Measure$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Add Another Test');
+        outcome.setTimeFrameTxt(timeFrame +' Add Another Test');
+        outcome.setDescriptionTxt(description +' Add Another Test');
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Add Another Test', timeFrame+' Add Another Test', description+' Add Another Test', optionD);
+        browser.sleep(25).then(callback);
     });
 
 

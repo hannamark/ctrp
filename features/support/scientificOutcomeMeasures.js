@@ -47,17 +47,7 @@ var scientificOutcomeMeasures = function(){
 
     this.tableSelectAll = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(09) input'));
 
-    this.verifyOutcomeMeasureTHead = function (){
-        var thd = new Array("Index", "Outcome Measure Type", "Title", "Time Frame", "Description", 'Safety Issue', 'Edit', 'Copy');
-        helper.verifyTableRowText(self.tableTHeadColA, thd[0], 'Index');
-        helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Outcome Measure Type');
-        helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Title');
-        helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Time Frame');
-        helper.verifyTableRowText(self.tableTHeadColE, thd[4], 'Description');
-        helper.verifyTableRowText(self.tableTHeadColF, thd[5], "Safety Issue");
-        helper.verifyTableRowText(self.tableTHeadColG, thd[6], "Edit");
-        helper.verifyTableRowText(self.tableTHeadColH, thd[7], "Copy");
-    };
+
 
     /***********************************
      * Outcome Measure Details object(s)
@@ -85,6 +75,10 @@ var scientificOutcomeMeasures = function(){
 
     this.clickAddOutcomeMeasure = function(){
         helper.clickButton(this.addOutcomeMeasureBtn, "Add Outcome Measure - Button");
+    };
+
+    this.selectAllOutcomeMeasure = function (){
+        helper.clickButton(this.tableSelectAll, "Selecte All - Button");
     };
 
     this.clickDeleteSelectedOutcome = function(yesCancel){
@@ -275,6 +269,18 @@ var scientificOutcomeMeasures = function(){
             });
         }, 10000, label + " did not appear");
         browser.sleep(250);
+    };
+
+    this.verifyOutcomeMeasureTHead = function (){
+        var thd = new Array("Index", "Outcome Measure Type", "Title", "Time Frame", "Description", 'Safety Issue', 'Edit', 'Copy');
+        helper.verifyTableRowText(self.tableTHeadColA, thd[0], 'Index');
+        helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Outcome Measure Type');
+        helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Title');
+        helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Time Frame');
+        helper.verifyTableRowText(self.tableTHeadColE, thd[4], 'Description');
+        helper.verifyTableRowText(self.tableTHeadColF, thd[5], "Safety Issue");
+        helper.verifyTableRowText(self.tableTHeadColG, thd[6], "Edit");
+        helper.verifyTableRowText(self.tableTHeadColH, thd[7], "Copy");
     };
 
     //Save and Reset

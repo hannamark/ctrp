@@ -24,14 +24,14 @@ And created message displays
 |CreatedMessage|
 |Record created|
 And the Outcome Measures table will display Outcomes Measures values
-|Outcome Measure Type  |
-|Title  |
-|Time Frame  |
-|Description  |
-|Safety Issue  |
-|Edit  |
-|Copy  |
-|Delete  |
+|Outcome Measure Type|
+|Title|
+|Time Frame|
+|Description|
+|Safety Issue|
+|Edit|
+|Copy|
+|Delete|
 And I can add another Outcome Measure
 
 
@@ -55,18 +55,18 @@ And I have selected another value for Safety Issue
 When I have selected Save Then the Outcome Measure for the trial will be associated with the trial 
 And the message Record Updated displays
 
-  Scenario: #3 Add/Edit Outcome Measure rules
-    Given I am on the Add/Edit Outcome Measure
-    And I have not entered an <AddEditOutcomeMeasureFieldType>
-     When I haved clicked on the save Button
-     Then The <FieldError> will be displayed
-     
-     
-      |<AddEditMeasureFieldType>   |<FieldError>  |
-      |Outcome Measure Type        |Outcome Measure Type is Required  |
-      |Title                       |Title is Required  |
-      |Time Frame                  |Time Frame is Required |
-      |Safety Issue                |Safety Issue is Required  |
+Scenario: #3 Add/Edit Outcome Measure rules
+Given I am on the Add/Edit Outcome Measure
+And I have not entered an <AddEditOutcomeMeasureFieldType>
+When I haved clicked on the save Button
+Then The <FieldError> will be displayed
+
+
+|<AddEditMeasureFieldType>   |<FieldError>  |
+|Outcome Measure Type        |Outcome Measure Type is Required  |
+|Title                       |Title is Required  |
+|Time Frame                  |Time Frame is Required |
+|Safety Issue                |Safety Issue is Required  |
 
 
 Scenario:  #4  Reorder Outcome Measures
