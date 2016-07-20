@@ -1,7 +1,7 @@
 @PA @global
 Feature:  PAS F04 Outcome Measures
 As a CTRP PA Abstractor, I can add, edit, copy and delete Outcome Measures 
-@runthis
+
 Scenario: #1 I can add Outcome Measures for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
@@ -34,7 +34,6 @@ And the Outcome Measures table will display Outcomes Measures values
 |Delete|
 And I can add another Outcome Measure
 
-
 Scenario: #2 I can edit Outcome Measures for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
@@ -54,20 +53,21 @@ And I have selected another value for Safety Issue
 |No|
 When I have selected Save Then the Outcome Measure for the trial will be associated with the trial 
 And the message Record Updated displays
-
-Scenario: #3 Add/Edit Outcome Measure rules
-Given I am on the Add/Edit Outcome Measure
-And I have not entered an <AddEditOutcomeMeasureFieldType>
+@runthis
+Scenario Outline: #3 Add/Edit Outcome Measure rules
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial
+And I am on the Outcome Measures screen
+And I have not entered an <AddEditMeasureFieldType>
 When I haved clicked on the save Button
 Then The <FieldError> will be displayed
 
-
-|<AddEditMeasureFieldType>   |<FieldError>  |
-|Outcome Measure Type        |Outcome Measure Type is Required  |
-|Title                       |Title is Required  |
-|Time Frame                  |Time Frame is Required |
-|Safety Issue                |Safety Issue is Required  |
-
+Examples:
+|AddEditMeasureFieldType   |FieldError  |
+|Outcome Measure Type      |Outcome Measure Type is Required|
+#|Title                     |Title is Required|
+#|Time Frame                |Time Frame is Required|
+#|Safety Issue              |Safety Issue is Required|
 
 Scenario:  #4  Reorder Outcome Measures
 Given I am logged into the CTRP Protocol Abstraction application

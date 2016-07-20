@@ -91,6 +91,15 @@ var scientificOutcomeMeasures = function(){
         }
     };
 
+    this.deleteAllOutcomeList = function(yesOrCancel){
+        self.tableTHeadOutcome.isDisplayed().then(function(result) {
+            if (result === true) {
+                self.selectAllOutcomeMeasure();
+                self.clickDeleteSelectedOutcome(yesOrCancel);
+            }
+        });
+    };
+
     this.selectOutcomeMeasureType = function(type)  {
         helper.selectValueFromList(this.outcomeMeasureTypeLst, type, "Outcome Measure Type - List field");
     };
