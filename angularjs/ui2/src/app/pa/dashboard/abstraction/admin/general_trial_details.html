@@ -11,7 +11,7 @@
             <div class="form-group">
               <label for="acronym" class="control-label col-xs-12 col-sm-3">Acronym:</label>
               <div class="col-xs-12 col-sm-9">
-                <input type="text" id="acronym" name="trial_acronym" class="form-control input-sm" ng-model="generalTrialDetailView.generalTrialDetailsObj.acronym" placeholder="Acronym">
+                <input type="text" id="acronym" name="trial_acronym" class="form-control input-sm" maxlength="14" ng-model="generalTrialDetailView.generalTrialDetailsObj.acronym" placeholder="Acronym">
               </div>
             </div>
 
@@ -69,7 +69,7 @@
                             </div>
                           </td>
                           <td>
-                            <input type="text" id="identifier_name" class="form-control input-sm" ng-model="generalTrialDetailView.otherIdentifier.protocol_id">
+                            <input type="text" id="identifier_name" class="form-control input-sm" maxlength="30" ng-model="generalTrialDetailView.otherIdentifier.protocol_id">
                           </td>
                           <td>
                             <div ng-show="generalTrialDetailView.otherIdentifierUpdate">
