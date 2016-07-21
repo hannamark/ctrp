@@ -126,7 +126,7 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'scientific_qc_completion_date',
+                    name: 'scientific_qc_completed_date',
                     displayName: 'Scientific QC Completed',
                     enableSorting: true,
                     cellFilter: 'date:\'yyyy/MM/dd\'',
