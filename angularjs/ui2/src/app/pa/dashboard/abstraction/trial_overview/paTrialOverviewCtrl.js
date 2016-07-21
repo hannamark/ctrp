@@ -14,7 +14,7 @@
         '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService', '$uibModal'];
 
     checkinModalCtrl.$inject = ['$scope', '$uibModalInstance', 'curTrialObj', 'trialStatusDict',
-        'PATrialService', 'TrialService']; // checkin modal controller
+        'PATrialService', 'TrialService', 'validationResults', '_']; // checkin modal controller
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES, researchCategories,
             $scope, TrialService, UserService, curTrial, _, PersonService, $uibModal) {
@@ -116,6 +116,7 @@
                 resolve: {
                     curTrialObj: vm.trialDetailObj,
                     trialStatusDict: TrialService.getTrialStatuses(),
+                    validationResults: PATrialService.validateAbstractionOnTrial(vm.trialDetailObj.id),
                 }
             });
             var modalOpened = true;
@@ -362,13 +363,13 @@
      * Checkin modal controller
      */
     function checkinModalCtrl($scope, $uibModalInstance, curTrialObj, trialStatusDict,
-            PATrialService, TrialService) {
+            PATrialService, TrialService, validationResults, _) {
         var viewModel = this;
         viewModel.curTrialObj = curTrialObj;
         viewModel.checkinComment = null;
         viewModel.isValidatingStatus = true;
         viewModel.isTrialStatusValid = true;
-        viewModel.isAbstractionValid = true; // TODO:
+        viewModel.isAbstractionValid = validationResults.length === 0;
         var annotatedTrialStatuses = PATrialService.annotateTrialStatusWithNameAndCode(curTrialObj.trial_status_wrappers, trialStatusDict);
 
         activate();
