@@ -35,6 +35,7 @@ class ApiTrialParamsLoader
     end
 
 
+
     ###Trial Identifiers
 
     $rest_params[:other_ids_attributes]=[]
@@ -110,6 +111,8 @@ class ApiTrialParamsLoader
     trial_status_wrappers_hash[:why_stopped]     = $mapperObject.why_stopped          if !$mapperObject.why_stopped.nil?
     trial_status_wrappers_hash[:trial_status_id] = $mapperObject.trial_status_id      if !$mapperObject.trial_status_id.nil?
     $rest_params[:trial_status_wrappers_attributes].push(trial_status_wrappers_hash)
+
+    validate_dates_conditions
 
     ###IND,IDE
     $rest_params[:ind_ides_attributes] = []
@@ -321,6 +324,72 @@ end
     $rest_params[:trial_documents_attributes].push(trial_document_params)
 
   end
+
+    def validate_dates_conditions
+      current_trial_status_id = $mapperObject.trial_status_id
+      current_trial_status_date = $mapperObject.status_date
+      current_trial_status_name = TrialStatus.find_by_id($mapperObject.trial_status_id).name
+      today_date = Date.today
+
+
+      ##If Current Trial Status is ‘Active’, Trial Start Date must be the same or before the Current Trial Status Date and have ‘actual’ type.
+      #Actual
+      #Anticipated
+      if current_trial_status_name == 'Active'
+       if !(Date.parse($rest_params[:start_date]) <= Date.parse(current_trial_status_date) &&  $rest_params[:start_date_qual] == "Actual")
+         $errors.store("trialStartDate" ,"If Current Trial Status is Active, Trial Start Date must be the same or before the Current Trial Status Date and have Actual type.")
+       end
+      end
+      ##If Current Trial Status is ‘In Review’ or ‘Approved’, Trial Start Date must have ‘anticipated’ type.
+      # Trial Start Date must have ‘actual’ type for any other Current Trial Status value besides ‘In Review’ and ‘Approved’.
+      if current_trial_status_name == 'In Review' || current_trial_status_name == 'Approved'
+        if $rest_params[:start_date_qual] != "Anticipated"
+          $errors.store("trialStartDate" ,"If Current Trial Status is ‘In Review’ or ‘Approved’, Trial Start Date must have ‘Anticipated’ type")
+        end
+      else
+        if $rest_params[:start_date_qual] != "Actual"
+          $errors.store("trialStartDate" ,"Trial Start Date must have ‘actual’ type for any other Current Trial Status value besides ‘In Review’ and ‘Approved’")
+        end
+      end
+
+      ##Primary Completion Date must be the same or bigger that the date of the current trial status preceded Completed or Administratively Completed status.
+      ##Not yet implemented
+
+      ##If Current Trial Status is ‘Complete’ or ‘Administratively Complete’, Primary Completion Date must have ‘actual’ type.
+      # Primary Completion Date must have ‘anticipated’ type for any other Current Trial Status value besides ‘Complete’ and ‘Administratively Compete’.
+      if current_trial_status_name == 'Complete' || current_trial_status_name == 'Administratively Complete'
+        if $rest_params[:primary_comp_date_qual] != "Actual"
+          $errors.store("primaryCompletionDate" ,"If Current Trial Status is ‘Complete’ or ‘Administratively Complete’, Primary Completion Date must have Actual type")
+        end
+      else
+        if $rest_params[:primary_comp_date_qual] != "Anticipated"
+          $errors.store("primaryCompletionDate" ,"Primary Completion Date must have ‘anticipated’ type for any other Current Trial Status value besides ‘Complete’ and ‘Administratively Compete’")
+        end
+      end
+
+      #Trial Start Date must be same/smaller than Primary Completion Date.
+      if !(Date.parse($rest_params[:start_date]) <= Date.parse($rest_params[:primary_comp_date]))
+        $errors.store("primaryCompletionDate" ,"Primary Completion Date must be the same or before the Trial Start Date")
+      end
+
+      # Primary Completion Date must be current/past if ‘actual’ primary completion date type is provided and must be future if ‘anticipated’ trial primary completion date type is provided.
+      if $rest_params[:primary_comp_date_qual] == "Actual"
+        if !(Date.parse($rest_params[:primary_comp_date]) <= today_date)
+          $errors.store("primaryCompletionDate" ,"If primary completion date type is Actual, Primary Completion Date must be current/past")
+        end
+      end
+
+      if $rest_params[:primary_comp_date_qual] == "Anticipated"
+        if !(Date.parse($rest_params[:primary_comp_date]) > today_date)
+          $errors.store("primaryCompletionDate" ,"If primary completion date type is Anticipated, Primary Completion Date must be in the future")
+        end
+      end
+
+
+
+
+    end
+
 
 
 end
