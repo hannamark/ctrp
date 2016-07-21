@@ -110,7 +110,7 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'administrative_qc_completion_date',
+                    name: 'administrative_qc_completed_date',
                     displayName: 'Admin QC Completed',
                     enableSorting: true,
                     cellFilter: 'date:\'yyyy/MM/dd\'',
