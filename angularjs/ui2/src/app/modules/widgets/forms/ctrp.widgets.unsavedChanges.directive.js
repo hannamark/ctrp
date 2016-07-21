@@ -31,18 +31,13 @@
 
                 setFormVars();
 
-                /* For pages with multiple tabs, checks when page is in Add/Edit mode */
-                attrs.$observe('unsavedTabIndex', function(newVal) {
-                    var newIndex = parseInt(newVal, 10);
+                /* For pages with seperate list/CRUD views */
+                attrs.$observe('unsavedFormContext', function(newVal) {
+                    var newContext = parseInt(newVal, 10);
 
-                    if (newIndex !== currentTabIndex) {
-                        newTabIndex = newIndex;
-
-                        if (newTabIndex === -1) {
-                            evaluateTabForm(true);
-                        } else {
-                            evaluateTabForm();
-                        }
+                    if (newContext !== currentTabIndex) {
+                        newTabIndex = newContext;
+                        evaluateForms();
                     }
                 });
 
@@ -112,28 +107,22 @@
                 }
 
                 /* Checks form on current tab, when user is attempting leave the tab */
-                function evaluateTabForm(hasListFlag) {
+                function evaluateForms() {
                     var form = scope.$parent[formArray[currentTabIndex]];
-                    var listFlag = hasListFlag;
 
                     if (form) {
                         if (form.$dirty) {
-                            activateModal(listFlag);
+                            activateModal();
                             element.controller().tabIndex = currentTabIndex;
                         } else {
-                            if (hasListFlag) {
-                                scope.ngConfirm({backToListView: true});
-                                currentTabIndex = 0;
-                                element.controller().tabIndex = 0;
-                            } else {
-                                currentTabIndex = newTabIndex;
-                                element.controller().tabIndex = newTabIndex;
-                            }
+                            currentTabIndex = newTabIndex;
+                            element.controller().tabIndex = newTabIndex;
+
                         }
                     }
                 }
 
-                function activateModal(transitionToListView) {
+                function activateModal() {
                     var isSaveRequired = element.find('md-tab-item.md-active > span').hasClass('save-required');
 
                     var modalInstance = $uibModal.open({
@@ -143,7 +132,7 @@
                         size: 'md',
                         resolve: {
                             saveRequired: function () {
-                                return isSaveRequired && !transitionToListView;
+                                return isSaveRequired;
                             }
                         },
                         windowClass: 'modal-center'
@@ -151,13 +140,7 @@
 
                     modalInstance.result.then(function(result) {
                         if (result === 'Confirm') {
-                            if (newTabIndex === -1) {
-                                scope.ngConfirm({backToListView: true});
-                                newTabIndex = 0;
-                            } else {
-                                scope.ngConfirm();
-                            }
-
+                            scope.ngConfirm();
                             currentTabIndex = newTabIndex;
                             element.controller().tabIndex = newTabIndex;
                         }

@@ -3,10 +3,10 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasTrialSubGroupsCtrl', pasTrialSubGroupsCtrl);
 
-    pasTrialSubGroupsCtrl.$inject = ['$scope', 'TrialService','UserService', 'PATrialService','OutcomeMeasureService', 'toastr',
+    pasTrialSubGroupsCtrl.$inject = ['$scope', 'TrialService','UserService', 'PATrialService','OutcomeMeasureService', '$state', 'toastr',
         'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj','assayTypes', '$location', '$anchorScroll'];
 
-    function pasTrialSubGroupsCtrl($scope, TrialService,UserService, PATrialService,OutcomeMeasureService, toastr,
+    function pasTrialSubGroupsCtrl($scope, TrialService,UserService, PATrialService,OutcomeMeasureService, $state, toastr,
                                          MESSAGES, _, $timeout, uiGridConstants,trialDetailObj,assayTypes, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
@@ -16,6 +16,7 @@
         vm.deleteListHandler = deleteListHandler;
         vm.deleteSelected = deleteSelected;
         vm.resetSubGroup = resetSubGroup;
+        vm.reload = reload;
         vm.isCurationEnabled = UserService.isCurationModeEnabled() || false;
 
         vm.trialDetailObj = {};
@@ -100,6 +101,10 @@
                 vm.disableBtn = false;
             });
         };//saveSubGroup
+
+        function reload() {
+            $state.go($state.$current, null, { reload: true });
+        };
 
         function deleteListHandler(subGroupsSelectedInCheckboxes){
             var deleteList = [];

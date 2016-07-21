@@ -3,10 +3,10 @@
     angular.module('ctrp.app.pa.dashboard')
         .controller('pasTrialOutcomeMeasuresCtrl', pasTrialOutcomeMeasuresCtrl);
 
-    pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', '$filter', 'TrialService','UserService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', 'toastr',
+    pasTrialOutcomeMeasuresCtrl.$inject = ['$scope', '$filter', 'TrialService','UserService', 'PATrialService','OutcomeMeasureService','outcomeTypesObj', '$state', 'toastr',
         'MESSAGES', '_', '$timeout','uiGridConstants','trialDetailObj', '$location','$anchorScroll'];
 
-    function pasTrialOutcomeMeasuresCtrl($scope, $filter, TrialService,UserService, PATrialService,OutcomeMeasureService,outcomeTypesObj, toastr,
+    function pasTrialOutcomeMeasuresCtrl($scope, $filter, TrialService,UserService, PATrialService,OutcomeMeasureService,outcomeTypesObj, $state, toastr,
                                          MESSAGES, _, $timeout, uiGridConstants,trialDetailObj, $location, $anchorScroll) {
         var vm = this;
         vm.curTrial = trialDetailObj;
@@ -164,6 +164,10 @@
             });
         };//saveOutcomeMeasure
 
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
         function deleteListHandler(outcomeMeasuresSelectedInCheckboxes){
             var deleteList = [];
             angular.forEach(outcomeMeasuresSelectedInCheckboxes, function(item) {
@@ -262,7 +266,6 @@
         function getTrialDetailCopy() {
             $timeout(function() {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                //console.log("vm.curTrial =" + JSON.stringify(vm.curTrial ));
             }, 1);
         } //getTrialDetailCopy
 

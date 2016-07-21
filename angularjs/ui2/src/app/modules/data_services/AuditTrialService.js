@@ -116,7 +116,7 @@
                 {
                     name: 'Action ',
                     cellTemplate: '<div class="text-center ui-grid-cell-contents">' +
-                    '<button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\')" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button>' +
+                    '<button type="button" class="btn btn-primary" restriction-field ng-show="(row.entity.submission_type == \'Amendment\' && !row.entity.is_rejected)" ng-click="grid.appScope.editRow(grid,row,\'submissions\')" ><i class="glyphicon glyphicon-edit"> </button>' +
                     '</div>',
                     minWidth:'10',width: '95'
 

@@ -27,6 +27,10 @@
         vm.disableBtn = false;
         vm.searching = false;
 
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
         vm.setAddMode = function(mode) {
             vm.addMode = mode;
             $scope.search_disease_form.$setPristine();
