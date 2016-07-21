@@ -1157,10 +1157,13 @@ class TrialService
 
     import_params[:outcome_measures_attributes] = []
     xml.xpath('//primary_outcome').each do |p_outcome|
-      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
+      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, description: p_outcome.xpath('description').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
     end
     xml.xpath('//secondary_outcome').each do |s_outcome|
-      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
+      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, description: s_outcome.xpath('description').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
+    end
+    xml.xpath('//other_outcome').each do |o_outcome|
+      import_params[:outcome_measures_attributes].push({title: o_outcome.xpath('measure').text, time_frame: o_outcome.xpath('time_frame').text, safety_issue: o_outcome.xpath('safety_issue').text, description: o_outcome.xpath('description').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('OTH').id})
     end
 
     import_params[:num_of_arms] = xml.xpath('//number_of_arms').text if xml.xpath('//number_of_arms').present?
