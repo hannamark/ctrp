@@ -106,7 +106,6 @@ class Submission < TrialBase
                               order by trial_id desc, id desc
                         )
                         select DISTINCT ON (trial_id)
-                            id,
                             submission_id,
                             current_milestone_name,
                             submission_received_date,
