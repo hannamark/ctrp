@@ -31,7 +31,7 @@
                 rows: 50,
                 start: 1
             }
-        }; 
+        };
 
 
         vm.chooseTransferTrials = false;
@@ -73,7 +73,7 @@
                     name: 'submission_received_date',
                     displayName: 'Submitted On',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '150'
                 },
@@ -81,15 +81,30 @@
                     name: 'expected_abstraction_completion_date',
                     displayName: 'Expected Abstraction Completion Date',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
-                    width: '*',
-                    minWidth: '200'
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    minWidth: '200',
+                    enableCellEdit: true,
+                    enableCellEditOnFocus: true,
+                    enableHiding: false,
+                    cellTemplate: '<i class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i><input  readonly="true"  show-button-bar="true" ' +
+                    'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" ' +
+                    'ng-change="grid.appScope.addModifyFlag(row.entity)" ng-click="opened = true;" uib-datepicker-popup="MM/dd/yyyy" is-open="opened" ' +
+                    'datepicker-options="grid.appScope.dateOptions" datepicker-append-to-body="true" type="text" /></div>',
+                    cellFilter: 'date',
+                    cellClass: function () {
+                        return 'text-left';
+                    },
+                    filter: {
+                        placeholder: 'date',
+                        condition: uiGridConstants.filter.CONTAINS
+                    },
+                    sortable : false
                 },
                 {
                     name: 'submission_acceptance_date',
                     displayName: 'Accepted',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -97,7 +112,7 @@
                     name: 'onhold_date',
                     displayName: 'Current On-Hold Date',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -105,7 +120,7 @@
                     name: 'administrative_processing_completed_date',
                     displayName: 'Admin Abstraction Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -113,7 +128,7 @@
                     name: 'administrative_qc_completed_date',
                     displayName: 'Admin QC Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -121,7 +136,7 @@
                     name: 'scientific_processing_completed_date',
                     displayName: 'Scientific Abstraction Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -129,7 +144,7 @@
                     name: 'scientific_qc_completed_date',
                     displayName: 'Scientific QC Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -137,7 +152,7 @@
                     name: 'admin_checkout',
                     displayName: 'Checked Out By',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -145,7 +160,7 @@
                     name: 'trial_summary_report_ready_date',
                     displayName: 'Ready for TSR',
                     enableSorting: true,
-                    cellFilter: 'date:\'yyyy/MM/dd\'',
+                    cellFilter: 'date:\'MM/dd/yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -177,6 +192,12 @@
             exporterMenuPdf: false,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700
+        };
+        vm.gridTrialsSubmittedOptions.appScopeProvider = vm;
+
+        vm.addModifyFlag = function (row) {
+          console.log(row.expected_abstraction_completion_date)
+            console.log(row.id)
         };
 
         vm.gridTrialsSubmittedOptions.onRegisterApi = function (gridApi) {
