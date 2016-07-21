@@ -1,0 +1,20 @@
+
+<div class="row">
+    <div class="col-xs-12 drop-shadow">
+        <div class="row">
+            <p>
+            <h4>Abstraction</h4>
+            </p>
+        </div>
+        <div ng-if="pamTrialsView.gridTrialsSubmittedOptions.data.length > 0">
+            <div class="col-xs-12">
+                <div class="row animated-item">
+                    <div ui-grid="pamTrialsView.gridTrialsSubmittedOptions"  class="user-detail-grid"
+                         ui-grid-pagination="" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="pamTrialsView.gridTrialsSubmittedOptions.data.length === 0">No trials submitted at this time.</div>
+        <div class="row top-offset-xs"></div>
+    </div>
+</div>
