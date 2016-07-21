@@ -56,7 +56,7 @@ var helper = function() {
         }
         else {
             console.log(errorMessage + ' ' + fieldValue + " Value entered");
-            expect(fieldName.getAttribute('value')).to.eventually.equal((fieldValue));
+            expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue, errorMessage);
         }
     };
 
@@ -77,7 +77,7 @@ var helper = function() {
         console.log(errorMessage + ' ' + fieldValue + " Value selected");
         fieldName.$('option:checked').getText().then(function (value){
             console.log('Value of item selected in list : ' + value.trim());
-            expect(value.trim()).to.equal(fieldValue);
+            expect(value.trim()).to.equal(fieldValue, errorMessage);
         });
     };
 
@@ -91,7 +91,7 @@ var helper = function() {
         this.wait(fieldName, errorMessage);
         fieldName.click();
         console.log(errorMessage + ' ' + fieldValue + " Value selected");
-        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue, errorMessage);
     };
 
     this.clickLink = function (link, errorMessage){
@@ -142,17 +142,17 @@ var helper = function() {
         if (value === '0') {
             button.get(0).click();
             console.log(errorMessage + " was clicked");
-            expect(button.get(0).isSelected()).to.eventually.equal(true);
+            expect(button.get(0).isSelected()).to.eventually.equal(true, errorMessage);
         }
         else if (value === '1') {
             button.get(1).click();
             console.log(errorMessage + " was clicked");
-            expect(button.get(1).isSelected()).to.eventually.equal(true);
+            expect(button.get(1).isSelected()).to.eventually.equal(true, errorMessage);
         }
         else if (value === '2') {
             button.get(2).click();
             console.log(errorMessage + " was clicked");
-            expect(button.get(2).isSelected()).to.eventually.equal(true);
+            expect(button.get(2).isSelected()).to.eventually.equal(true, errorMessage);
         }
         else {
             assert.fail(value, '0 OR 1 OR 2 OR Yes OR No OR Actual OR Anticipated', 'Value -- ' + value + ' --' + ' not found as Radio option button');
@@ -195,38 +195,46 @@ var helper = function() {
 
     this.getVerifyValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
-        expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue);
+        expect(fieldName.getAttribute('value')).to.eventually.equal(fieldValue, errorMessage);
         console.log(errorMessage + " - Got value");
     };
 
     this.getVerifyListValue = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
-        expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue);
+        expect(fieldName.$('option:checked').getText()).to.eventually.equal(fieldValue, errorMessage);
         console.log(errorMessage + " - Got value");
     };
 
     this.getVerifyRadioSelection = function(button, fieldValue, errorMessage){
         this.wait(button, errorMessage);
-        expect(button.get(fieldValue).isSelected()).to.eventually.equal(true);
+        expect(button.get(fieldValue).isSelected()).to.eventually.equal(true, errorMessage);
         console.log(errorMessage + " - Got value");
     }
 
     this.getVerifyheader = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
-        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue, errorMessage);
         console.log(errorMessage + " - header value");
     };
 
     this.getVerifyRequired = function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
-        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue, errorMessage);
         console.log(errorMessage + " - Required field value");
     };
 
     this.getVerifyLabel= function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
-        expect(fieldName.getText()).to.eventually.equal(fieldValue);
+        expect(fieldName.getText()).to.eventually.equal(fieldValue,errorMessage );
         console.log(errorMessage + " - field value");
+    };
+
+    this.getVerifyLabelUP= function (fieldName, fieldValue, errorMessage) {
+        this.wait(fieldName, errorMessage);
+        fieldName.getText().then(function(value){
+        expect(value.toUpperCase()).to.equal(fieldValue.toUpperCase(), errorMessage);
+        console.log(errorMessage + " - field value");
+        });
     };
 
     this.verifyElementPresents =function (fieldName, fieldValueTrueOrFalse) {

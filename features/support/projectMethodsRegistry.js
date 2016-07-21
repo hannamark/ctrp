@@ -103,6 +103,29 @@ var projectMethodsRegistry = function () {
     };
 
     /*****************************************************************
+     * Method: Verify Trial Other Identifiers value in View Page
+     * @param protocolIDOrigin
+     * @param protocolID
+     *****************************************************************/
+    this.verifyAddTrialOtherTrialIdentifierViewPg = function (protocolIDOrigin, protocolID) {
+        return addTrial.viewTrialOtherIdentifierAllValuesTbl.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(0).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name' + rowName);
+                return rowName === protocolIDOrigin;
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.css('.col-md-6.protocol-id')).getText()).to.eventually.equal(protocolID);
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+    /*****************************************************************
      * Method: Verify Trial Other Identifiers value
      * @param anyItemInTable
      *****************************************************************/
@@ -2242,7 +2265,7 @@ var projectMethodsRegistry = function () {
     ) {
         var saveDraft = 'SAVEDRAFT';
         var submitTrial = 'SUBMITTRIAL';
-        storeLeadProtocolId = leadOrgIdentifier + trialType + ' ' + moment().format('MMMDoYY');
+        storeLeadProtocolId = leadOrgIdentifier + trialType.substring(0, 3) + ' ' + moment().format('MMMDoYY');
         //login.loginUser.getText().then(function (loggedInUserName) {
         //    if (loggedInUserName === userWhoWillCreateTrial) {
         //        console.log('Given user already logged in');
@@ -2512,13 +2535,13 @@ var projectMethodsRegistry = function () {
                                     addTrial.clickAddTrialAddOversightAuthorityButton();
                                 }
                                 if (FDARegulatedIndicator !== '') {
-                                    addTrial.selectAddTrialFDARegulatedInterventionIndicator('0');
+                                    addTrial.selectAddTrialFDARegulatedInterventionIndicator(FDARegulatedIndicator);
                                 }
                                 if (section801Indicator !== '') {
-                                    addTrial.selectAddTrialSection801Indicator('0');
+                                    addTrial.selectAddTrialSection801Indicator(section801Indicator);
                                 }
                                 if (dataMonitoringIndicator !== '') {
-                                    addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator('0');
+                                    addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator(dataMonitoringIndicator);
                                 }
 
                                 /**** Trial Related Documents ****/
