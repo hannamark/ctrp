@@ -1202,6 +1202,10 @@ class TrialService
         import_params[:min_age] = splits[0]
         ctrp_min_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
         import_params[:min_age_unit_id] = ctrp_min_age_unit.id if ctrp_min_age_unit.present?
+      else
+        import_params[:min_age] = 0
+        ctrp_min_age_unit = AgeUnit.find_by_code('YRS')
+        import_params[:min_age_unit_id] = ctrp_min_age_unit.id if ctrp_min_age_unit.present?
       end
     end
 
@@ -1211,6 +1215,10 @@ class TrialService
         splits = max_age_text.split(' ')
         import_params[:max_age] = splits[0]
         ctrp_max_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
+        import_params[:max_age_unit_id] = ctrp_max_age_unit.id if ctrp_max_age_unit.present?
+      else
+        import_params[:max_age] = 999
+        ctrp_max_age_unit = AgeUnit.find_by_code('YRS')
         import_params[:max_age_unit_id] = ctrp_max_age_unit.id if ctrp_max_age_unit.present?
       end
     end
