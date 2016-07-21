@@ -6,9 +6,9 @@
     angular.module('ctrp.app.pa')
         .controller('pamTrialCtrl', pamTrialCtrl);
 
-    pamTrialCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$rootScope', '$state', '$timeout', '$scope', 'AppSettingsService', 'URL_CONFIGS'];
+    pamTrialCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', 'URL_CONFIGS'];
 
-    function pamTrialCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
+    function pamTrialCtrl(UserService, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, URL_CONFIGS) {
         var vm = this;
 
         vm.userDetails = userDetailObj;
@@ -22,8 +22,8 @@
         $rootScope.$broadcast('isWriteModeSupported', vm.userDetailsOrig.write_access);
 
 
-        /**** USER TRIALS *****/
-        // Initial User Search Parameters
+        /**** TRIALS *****/
+        // Initial Search Parameters
         var TrialSearchParams = function (){
             return {
                 sort: 'nci_id',
@@ -31,7 +31,7 @@
                 rows: 50,
                 start: 1
             }
-        }; //initial User Search Parameters
+        }; 
 
 
         vm.chooseTransferTrials = false;
