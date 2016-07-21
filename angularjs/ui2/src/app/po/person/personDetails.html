@@ -51,7 +51,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Middle Name:</label>
                             <div class="col-xs-12 col-sm-6" ng-if="personDetailView.curPersonEditable">
-                                <input type="text" restriction-field name="mname" class="form-control input-sm" maxlength="1" ng-model="personDetailView.curPerson.mname">
+                                <input type="text" restriction-field name="mname" class="form-control input-sm" ng-model="personDetailView.curPerson.mname">
                             </div>
                             <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.mname}}</div>
                         </div>

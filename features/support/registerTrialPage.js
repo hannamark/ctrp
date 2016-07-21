@@ -175,6 +175,7 @@ var registerTrial = function(){
     this.viewTrialOtherIdentifierNameValue =  element.all(by.binding('otherId.protocol_id'));
     this.viewTrialOtherIdentifierValuePresent =  element(by.css('td.col-md-6.protocol-id'));
     this.viewTrialOtherIdentifierAllValues =  element.all(by.css('td.col-md-6.protocol-id'));
+    this.viewTrialOtherIdentifierAllValuesTbl =  element.all(by.css('tr[ng-repeat="otherId in viewTrialView.curTrial.other_ids track by $index"]'));
 
     /** Trial Details **/
     this.viewTrialOfficialTitle = element(by.binding('viewTrialView.curTrial.official_title'));
@@ -196,7 +197,7 @@ var registerTrial = function(){
 
     /** Data Table 4 Information **/
     this.viewTrialDataTable4FundingSourceValues = element(by.binding('funding_source.name'));
-    this.viewTrialDataTable4ProgramCode = element(by.model('trialDetailView.curTrial.program_code'));
+    this.viewTrialDataTable4ProgramCode = element(by.binding('viewTrialView.curTrial.program_code'));
 
     /** NIH Grant Information **/
     this.viewTrialFundedByNCIOption = element.all(by.model('trialDetailView.curTrial.grant_question'));
@@ -208,7 +209,8 @@ var registerTrial = function(){
     this.viewTrialSerialNumberVerify = element(by.css('.select2-choice.ui-select-match'));
     this.viewTrialNCIDivisionProgramCode = element(by.model('trialDetailView.nci'));
     this.viewTrialviewGrantInfoButton = element(by.css('button[ng-click="trialDetailView.addGrant()"]'));
-    this.viewTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in trialDetailView.viewedGrants track by $index"]'));
+   // this.viewTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in trialDetailView.viewedGrants track by $index"]'));
+    this.viewTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in viewTrialView.curTrial.grants track by $index"]'));
 
     /** Trial Status **/
     this.viewTrialStatusDate = element(by.binding('viewTrialView.curTrial.current_trial_status_date'));
@@ -236,11 +238,13 @@ var registerTrial = function(){
     this.viewTrialFDAProgramCode = element(by.model('trialDetailView.nih_nci'));
     this.viewTrialFDAProgramCodeList = element.all(by.binding('nihNci.code'));
     this.viewTrialAddIND_IDEButton = element(by.css('button[ng-click="trialDetailView.addIndIde()"]'));
-    this.viewTrialVerifyIND_IDETable = element.all(by.css('tr[ng-repeat="indIde in trialDetailView.addedIndIdes track by $index"]'));
+   // this.viewTrialVerifyIND_IDETable = element.all(by.css('tr[ng-repeat="indIde in trialDetailView.addedIndIdes track by $index"]'));
+    this.viewTrialVerifyIND_IDETable = element.all(by.css('tr[ng-repeat="indIde in viewTrialView.curTrial.ind_ides track by $index"]'));
+
 
     /** Regulatory Information **/
     this.viewTrialRegulatoryInformationText = element(by.css('.control-label.col-xs-12.col-sm-7'));
-    this.viewTrialResponsibleParty = element(by.model('trialDetailView.curTrial.responsible_party_id'));
+    this.viewTrialResponsibleParty = element(by.binding('viewTrialView.curTrial.responsible_party.name'));
     this.viewTrialResponsiblePartyList = element(by.model('trialDetailView.curTrial.responsible_party_id')).all(by.css('option[label]'));
     this.viewTrialInvestigator = element(by.css('input[name="investigator_name1"]'));
     this.viewTrialInvestigatorTitle = element(by.model('trialDetailView.curTrial.investigator_title'));
@@ -248,7 +252,8 @@ var registerTrial = function(){
     this.viewTrialOversightAuthorityCountry = element(by.model('trialDetailView.authority_country'));
     this.viewTrialOversightAuthorityOrganization = element(by.model('trialDetailView.authority_org'));
     this.viewTrialAddOversightAuthorityButton = element(by.css('button[ng-click="trialDetailView.addAuthority()"]'));
-    this.viewTrialVerifyOversightCountryOrganization = element.all(by.css('tr[ng-repeat="authority in trialDetailView.viewedAuthorities track by $index"]'));
+   // this.viewTrialVerifyOversightCountryOrganization = element.all(by.css('tr[ng-repeat="authority in trialDetailView.viewedAuthorities track by $index"]'));
+    this.viewTrialVerifyOversightCountryOrganization = element.all(by.css('tr[ng-repeat="authority in viewTrialView.curTrial.oversight_authorities track by $index"]'));
     this.viewTrialFDARegulatedInterventionIndicator = element(by.binding('viewTrialView.curTrial.intervention_indicator'));
     this.viewTrialSection801Indicator = element(by.binding('viewTrialView.curTrial.sec801_indicator'));
     this.viewTrialDataMonitoringCommitteeAppointedIndicator = element(by.binding('viewTrialView.curTrial.data_monitor_indicator'));
@@ -705,7 +710,7 @@ var registerTrial = function(){
         if(trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'NO'){
             helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,'0',"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
         } else if(trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'YES'){
-            helper.trialDataMonitoringCommitteeAppointedIndicator(this.addTrialDataMonitoringCommitteeAppointedIndicator,'1',"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+            helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,'1',"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
         } else if (trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'N/A' ||  trialDataMonitoringCommitteeAppointedIndicator.toUpperCase() === 'NA') {
             helper.clickRadioButton(this.addTrialDataMonitoringCommitteeAppointedIndicator,'2',"Add Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
         } else {
@@ -791,7 +796,7 @@ var registerTrial = function(){
     };
 
     this.getViewTrialPilotOption = function(trialPilotOption)  {
-        helper.getVerifyLabel(this.viewTrialPilotOption,trialPilotOption,"View Trial by Pilot Option field");
+        helper.getVerifyLabelUP(this.viewTrialPilotOption,trialPilotOption,"View Trial by Pilot Option field");
     };
 
     this.getViewTrialResearchCategory = function(trialResearchCategory)  {
@@ -843,6 +848,16 @@ var registerTrial = function(){
         helper.getVerifyLabel(this.viewTrialDataTable4FundingSourceValues,trialFundingSource,"View Trial by Funding Source field");
     };
 
+    this.getViewTrialProgramCode = function(trialProgramCode){
+        helper.getVerifyLabel(this.viewTrialDataTable4ProgramCode,trialProgramCode,"View Trial by Program Code field");
+    };
+
+
+    /********** Verify Grant **********/
+
+    this.getViewTrialGrantTable = function(trialGrant){
+        expect(this.viewTrialVerifyGrantTable.getText()).to.eventually.eql(trialGrant, 'Verify Trial Grant table');
+    };
 
     /********** Verify Trial Status **********/
 
@@ -862,7 +877,7 @@ var registerTrial = function(){
     };
 
     this.getViewTrialStartDateOption = function(trialStartDateOption)  {
-        helper.getVerifyLabel(this.viewTrialStartDateOption,trialStartDateOption,"View Trial by Start Date option field");
+        helper.getVerifyLabelUP(this.viewTrialStartDateOption,trialStartDateOption,"View Trial by Start Date option field");
     };
 
     this.getViewTrialPrimaryCompletionDate= function(trialPrimaryCompletionDate)  {
@@ -870,7 +885,7 @@ var registerTrial = function(){
     };
 
     this.getViewTrialPrimaryCompletionDateOption = function(trialPrimaryCompletionDateOption)  {
-        helper.getVerifyLabel(this.viewTrialPrimaryCompletionDateOption,trialPrimaryCompletionDateOption,"View Trial by Primary Completion Date option field");
+        helper.getVerifyLabelUP(this.viewTrialPrimaryCompletionDateOption,trialPrimaryCompletionDateOption,"View Trial by Primary Completion Date option field");
     };
 
     this.getViewTrialCompletionDate = function(trialCompletionDate)  {
@@ -878,22 +893,38 @@ var registerTrial = function(){
     };
 
     this.getViewTrialCompletionDateOption = function(trialCompletionDateOption)  {
-        helper.getVerifyLabel(this.viewTrialCompletionDateOption,trialCompletionDateOption,"View Trial by Completion Date Option field");
+        helper.getVerifyLabelUP(this.viewTrialCompletionDateOption,trialCompletionDateOption,"View Trial by Completion Date Option field");
     };
 
+
+    /********** Verify IND IDE **********/
+
+    this.getViewTrialINDIDETable = function(trialINDIDE){
+        expect(this.viewTrialVerifyIND_IDETable.getText()).to.eventually.eql(trialINDIDE, 'Verify Trial IND IDE table');
+    };
 
     /********** Verify Regulatory Information **********/
 
+
+
+    this.getViewTrialResponsibleParty = function(trialResponsibleParty)  {
+        helper.getVerifyLabel(this.viewTrialResponsibleParty,trialResponsibleParty,"View Trial by Trial Responsible Party field");
+    };
+
+    this.getViewTrialOversightAuthority = function(trialOversightAuthority){
+        expect(this.viewTrialVerifyOversightCountryOrganization.getText()).to.eventually.eql(trialOversightAuthority, 'Verify Trial Oversight Authority table');
+    };
+
     this.getViewTrialFDARegulatedInterventionIndicator = function(trialFDARegulatedInterventionIndicator)  {
-        helper.getVerifyLabel(this.viewTrialFDARegulatedInterventionIndicator,trialFDARegulatedInterventionIndicator,"View Trial by Trial FDA Regulated Intervention Indicator Option field");
+        helper.getVerifyLabelUP(this.viewTrialFDARegulatedInterventionIndicator,trialFDARegulatedInterventionIndicator,"View Trial by Trial FDA Regulated Intervention Indicator Option field");
     };
 
     this.getViewTrialSection801Indicator = function(trialSection801Indicator)  {
-        helper.getVerifyLabel(this.viewTrialSection801Indicator,trialSection801Indicator,"View Trial by Trial Section 801 Indicator Option field");
+        helper.getVerifyLabelUP(this.viewTrialSection801Indicator,trialSection801Indicator,"View Trial by Trial Section 801 Indicator Option field");
     };
 
     this.getViewTrialDataMonitoringCommitteeAppointedIndicator= function(trialDataMonitoringCommitteeAppointedIndicator)  {
-        helper.getVerifyLabel(this.viewTrialDataMonitoringCommitteeAppointedIndicator,trialDataMonitoringCommitteeAppointedIndicator,"View Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
+        helper.getVerifyLabelUP(this.viewTrialDataMonitoringCommitteeAppointedIndicator,trialDataMonitoringCommitteeAppointedIndicator,"View Trial by Trial Data Monitoring Committee Appointed Indicator Option field");
     };
 
 

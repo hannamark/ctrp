@@ -5,6 +5,7 @@ source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
 gem 'rails', '4.2.0'
 
 #gem 'thin'
+gem 'business_time', '~> 0.7.6'
 
 # Use pg as the database for Active Record
 gem 'pg'

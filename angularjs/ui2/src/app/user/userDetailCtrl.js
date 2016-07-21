@@ -349,49 +349,49 @@
         function addRemainingFields() {
             vm.gridTrialsOwnedOptions.columnDefs.splice(7, 0,
                 {
-                    name: 'current_milestone_xxx',
+                    name: 'current_milestone_name',
                     displayName: 'Current Milestone, Milestone Date',
                     enableSorting: true,
                     width: '*',
                     minWidth: '300'
                 },
                 {
-                    name: 'current_admin_milestone_xxx',
+                    name: 'current_admin_milestone',
                     displayName: 'Current Admin Milestone, Milestone Date',
                     enableSorting: true,
                     width: '*',
                     minWidth: '350'
                 },
                 {
-                    name: 'current_scientific_milestone_xxx',
+                    name: 'current_scientific_milestone',
                     displayName: 'Current Scientific Milestone, Milestone Date',
                     enableSorting: true,
                     width: '*',
                     minWidth: '350'
                 },
                 {
-                    name: 'current_processing_status_xxx',
+                    name: 'current_processing_status',
                     displayName: 'Current Processing Status',
                     enableSorting: true,
                     width: '*',
                     minWidth: '250'
                 },
                 {
-                    name: 'current_processing_status_date_xxx',
+                    name: 'current_processing_status_date',
                     displayName: 'Current Processing Status Date',
                     enableSorting: true,
                     width: '*',
                     minWidth: '250'
                 },
                 {
-                    name: 'submission_type_xxx',
-                    displayName: 'Trial Sub-type',
+                    name: 'submission_type_label',
+                    displayName: 'Submission Type',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'record_verification_date_xxx',
+                    name: 'record_verification_date',
                     displayName: 'Record Verification Date',
                     enableSorting: true,
                     width: '*',
@@ -412,7 +412,7 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'current_submi_xxx',
+                    name: 'current_submi',
                     displayName: 'Current Submission Type (O for Original, A for Amendment, U for Updated)',
                     enableSorting: true,
                     width: '*',
@@ -426,14 +426,14 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'admin_check_out_by_xxx',
+                    name: 'admin_checkout',
                     displayName: 'Checked Out for Admin. Use by',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'admin_check_out_by_xxx',
+                    name: 'scientific_checkout',
                     displayName: 'Checked Out for Scientific Use by',
                     enableSorting: true,
                     width: '*',
