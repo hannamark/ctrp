@@ -65,7 +65,7 @@ class ValidationRulesController < ApplicationController
     trial_id = params[:trial_id]
     @trial = Trial.find(trial_id)
     trial_service = TrialService.new({trial: @trial})
-    @results = trial_service.validate()
+    @results = trial_service.validate_abstraction()
     respond_to do |format|
       #@trial = Trial.find(1)
       format.json { render :json => @results }

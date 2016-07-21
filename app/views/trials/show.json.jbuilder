@@ -12,7 +12,7 @@ json.extract! @trial, :id, :nci_id, :lead_protocol_id, :official_title, :pilot, 
               :brief_title, :brief_summary, :objective, :detailed_description, :intervention_model_id, :num_of_arms,
               :actions, :is_owner, :research_category, :admin_checkout, :scientific_checkout, :process_priority, :process_comment, :nci_specific_comment,
               :nih_nci_div, :nih_nci_prog, :alternate_titles, :acronym, :keywords, :central_contacts, :board_name, :board_affiliation_id,
-              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :submission_nums, :uuid
+              :board_approval_num, :board_approval_status_id, :available_family_orgs, :verification_date, :submission_nums, :uuid, :is_rejected
 
 json.other_ids do
   json.array!(@trial.other_ids) do |id|
@@ -316,8 +316,7 @@ json.current_trial_status_date @trial.trial_status_wrappers.present? ?
 json.current_trial_why_stopped @trial.trial_status_wrappers.present? ?
     @trial.trial_status_wrappers.last.why_stopped : nil
 
-json.processing_status @trial.processing_status_wrappers.present? ?
-    @trial.processing_status_wrappers.last.processing_status.name : nil
+json.processing_status @trial.current_processing_status.nil? ? nil : @trial.current_processing_status.name
 
 if SubmissionType.find_by_code('AMD')
   last_amd = @trial.submissions.where('submission_type_id = ?', SubmissionType.find_by_code('AMD').id).last
@@ -327,12 +326,12 @@ end
 json.last_amendment_num last_amd.amendment_num if last_amd.present?
 json.last_amendment_date last_amd.amendment_date if last_amd.present?
 
-json.submission_method @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_method.nil? ? '' : @trial.submissions.last.submission_method.name)
+json.submission_method @trial.current_submission.nil? ? '' : (@trial.current_submission.submission_method.nil? ? '' : @trial.current_submission.submission_method.name)
 
 json.last_submission_type_code @trial.submissions.empty? ? '' : (@trial.submissions.last.submission_type.nil? ? '' : @trial.submissions.last.submission_type.code)
 
 ## get trial's last submitter
-submitter = @trial.submissions.empty? ? nil : (@trial.submissions.last.user_id.nil? ? nil : @trial.submissions.last.user)
+submitter = @trial.current_submission.nil? ? nil : (@trial.current_submission.user_id.nil? ? nil : @trial.current_submission.user)
 
 ## submitter's username
 #json.submitter submitter.nil? ? '' : submitter.username

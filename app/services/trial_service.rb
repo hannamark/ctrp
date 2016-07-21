@@ -6,6 +6,11 @@ class TrialService
   @@is_cur_trial_status_inreview = false
   @@is_cur_trial_status_withdrawn = false
 
+  @@is_interventional_cat = false
+  @@is_observational_cat = false
+  @@is_expanded_cat = false
+  @@is_ancillary_cat = false
+
   @@arm_label_max_length = 62  # max number of characters
 
   def initialize(params)
@@ -18,6 +23,11 @@ class TrialService
     @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
     @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
     @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
+
+    @@is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
+    @@is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
+    @@is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
+    @@is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
 
   end
 
@@ -33,7 +43,7 @@ class TrialService
     TrialHistory.create(snapshot: trial_json, submission: @trial.current_submission)
   end
 
-  def validate()
+  def validate_abstraction()
     results = []
     if !@trial.present?
       return results
@@ -50,17 +60,54 @@ class TrialService
     results |= _validate_pas_arms_groups()
     results |= _validate_pas_eligibility()
     results |= _validate_pas_disease()
+    results |= _validate_pas_outcome()
+    results |= _validate_paa_collaborators()
 
     return results
+  end
+
+  def _validate_paa_collaborators
+    paa_collaborators_rules = ValidationRule.where(model: 'trial', item: 'paa_collaborators')
+    validation_result = []
+
+    collaborator_ids = @trial.collaborators.pluck(:organization_id)
+    uniq_collaborator_ids = collaborator_ids.uniq
+    is_collaborator_duplicate = collaborator_ids.size > uniq_collaborator_ids.size
+
+    paa_collaborators_rules.each do |rule|
+      if rule.code == 'PAA103' and is_collaborator_duplicate
+         validation_result << rule
+      end
+    end
+
+    return validation_result
+  end
+
+  def _validate_pas_outcome
+    pas_outcome_rules = ValidationRule.where(model: 'trial', item: 'pas_outcome')
+    validation_result = []
+
+    pas_outcome_rules.each do |rule|
+      if rule.code == 'PAS40' and (!@trial.outcome_measures.present? || @trial.outcome_measures.size == 0)
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_pas_disease
     pas_disease_rules = ValidationRule.where(model: 'trial', item: 'pas_disease')
     validation_result = []
     ## note: 'thesaurus_id' (C-Code) in 'disease' table corresponds to the 'nt_term_id' column in ncit_disease_codes table
+    ncit_inactive_status_id = NcitStatus.find_by_code('INA').id
+    disease_c_codes = @trial.diseases.pluck(:thesaurus_id) # C code of diseases in the current trial
+    cur_disease_status_ids = NcitDiseaseCode.where(nt_term_id: disease_c_codes).pluck(:ncit_status_id)
+    is_any_disease_name_inactive = cur_disease_status_ids.include?(ncit_inactive_status_id)
 
     pas_disease_rules.each do |rule|
-      if (rule.code == 'PAS38' and (!@trial.diseases.present? || @trial.diseases.size == 0))
+      if (rule.code == 'PAS38' and (!@trial.diseases.present? || @trial.diseases.size == 0)) ||
+         (rule.code == 'PAS39' and @@is_cur_trial_status_active and is_any_disease_name_inactive)
         validation_result << rule
 
       end
@@ -80,10 +127,10 @@ class TrialService
          (rule.code == 'PAS31' and (!@trial.min_age.present? || !@trial.min_age_unit.present?)) ||
          (rule.code == 'PAS32' and (!@trial.max_age.present? || !@trial.max_age_unit.present?)) ||
          (rule.code == 'PAS33' and (!@trial.other_criteria.present? || @trial.other_criteria.size == 0)) ||
-          (rule.code == 'PAS34' and is_observational_cat and !@trial.sampling_method.present?) ||
-          (rule.code == 'PAS35' and is_ancillary_cat and !@trial.sampling_method.present?) ||
-          (rule.code == 'PAS36' and is_observational_cat and !@trial.study_pop_desc.present?) ||
-          (rule.code == 'PAS37' and is_ancillary_cat and !@trial.study_pop_desc.present?)
+          (rule.code == 'PAS34' and @@is_observational_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS35' and @@is_ancillary_cat and !@trial.sampling_method.present?) ||
+          (rule.code == 'PAS36' and @@is_observational_cat and !@trial.study_pop_desc.present?) ||
+          (rule.code == 'PAS37' and @@is_ancillary_cat and !@trial.study_pop_desc.present?)
 
         validation_result << rule
       end
@@ -182,10 +229,6 @@ class TrialService
   def _validate_pas_trial_design()
 
     pas_trial_design_rules = ValidationRule.where(model: 'trial', item: 'pas_trial_design')
-    is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
-    is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
-    is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
-    is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
 
     is_open_masking = Masking.find_by_code('OP').id == @trial.masking_id
     is_single_blind_masking = Masking.find_by_code('SB').id == @trial.masking_id
@@ -202,28 +245,28 @@ class TrialService
 
     validation_result = []
     pas_trial_design_rules.each do |rule|
-      if (rule.code == 'PAS3' and is_interventional_cat and @trial.masking_id.nil?) ||
-          (rule.code == 'PAS4' and is_expanded_cat and @trial.masking_id.nil?) ||
-          (rule.code == 'PAS5' and is_interventional_cat and is_double_blind_masking and num_masking_roles < 2) ||
-          (rule.code == 'PAS6' and is_expanded_cat and is_double_blind_masking and num_masking_roles < 2) ||
-          (rule.code == 'PAS11' and is_interventional_cat and is_single_blind_masking and num_masking_roles != 1) ||
-          (rule.code == 'PAS12' and is_expanded_cat and is_single_blind_masking and num_masking_roles != 1) ||
-          (rule.code == 'PAS13' and is_interventional_cat and @trial.intervention_model_id.nil?) ||
-          (rule.code == 'PAS14' and is_expanded_cat and @trial.intervention_model_id.nil?) ||
+      if (rule.code == 'PAS3' and @@is_interventional_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS4' and @@is_expanded_cat and @trial.masking_id.nil?) ||
+          (rule.code == 'PAS5' and @@is_interventional_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS6' and @@is_expanded_cat and is_double_blind_masking and num_masking_roles < 2) ||
+          (rule.code == 'PAS11' and @@is_interventional_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS12' and @@is_expanded_cat and is_single_blind_masking and num_masking_roles != 1) ||
+          (rule.code == 'PAS13' and @@is_interventional_cat and @trial.intervention_model_id.nil?) ||
+          (rule.code == 'PAS14' and @@is_expanded_cat and @trial.intervention_model_id.nil?) ||
           (rule.code == 'PAS15' and !@trial.primary_purpose_id.present?) ||
           (rule.code == 'PAS16' and is_primary_purpose_other and !@trial.primary_purpose_other.present?) ||
           (rule.code == 'PAS17' and !@trial.phase_id.present?) ||
           (rule.code == 'PAS18' and !@trial.num_of_arms.present?) ||
-          (rule.code == 'PAS19' and is_interventional_cat and !@trial.allocation_id.present?) ||
-          (rule.code == 'PAS20' and is_expanded_cat and !@trial.allocation_id.present?)
+          (rule.code == 'PAS19' and @@is_interventional_cat and !@trial.allocation_id.present?) ||
+          (rule.code == 'PAS20' and @@is_expanded_cat and !@trial.allocation_id.present?)
             ## errors block
             validation_result << rule
-      elsif (rule.code == 'PAS43' and is_observational_cat and !@trial.study_model_id.present?) ||
-          (rule.code == 'PAS44' and is_ancillary_cat and !@trial.study_model_id.present?) ||
-          (rule.code == 'PAS45' and is_observational_cat and is_study_model_other and !@trial.study_model_other.present?) ||
-          (rule.code == 'PAS46' and is_ancillary_cat and is_study_model_other and !@trial.study_model_other.present?) ||
-          (rule.code == 'PAS47' and is_observational_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
-          (rule.code == 'PAS48' and is_ancillary_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+      elsif (rule.code == 'PAS43' and @@is_observational_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS44' and @@is_ancillary_cat and !@trial.study_model_id.present?) ||
+          (rule.code == 'PAS45' and @@is_observational_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS46' and @@is_ancillary_cat and is_study_model_other and !@trial.study_model_other.present?) ||
+          (rule.code == 'PAS47' and @@is_observational_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+          (rule.code == 'PAS48' and @@is_ancillary_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
             ## warnings block
             validation_result << rule
       end
@@ -389,11 +432,25 @@ class TrialService
     nci_id = @trial.nci_id
     lead_org_protocol_id = @trial.lead_protocol_id
     keywords = @trial.keywords
+    is_centralcontact_missing_email_or_phone = false
+    @trial.central_contacts.each do |contact|
+      is_centralcontact_missing_email_or_phone = !contact.email.present? && !contact.phone.present?
+      break if is_centralcontact_missing_email_or_phone
+    end
 
     gt_rules.each do |rule|
       if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) || (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
          (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) || (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
          (rule.code == 'PAA8' and keywords.present? and keywords.length > 160)
+        ## errors block
+        validation_results << rule
+
+      elsif(rule.code == 'PAA97' and !@trial.official_title.present?) ||
+           (rule.code == 'PAA98' and (!@trial.lead_org_id.present? || !@trial.lead_protocol_id.present?)) ||
+           (rule.code == 'PAA100' and !@trial.pi_id.present?) ||
+           (rule.code == 'PAA101' and !@trial.sponsor_id) ||
+           (rule.code == 'PAA102' and is_centralcontact_missing_email_or_phone)
+        ## warnings block
         validation_results << rule
       end
     end
@@ -818,6 +875,13 @@ class TrialService
     ActiveRecord::Base.transaction do
       @trial.update(rollback_params)
       @trial.update(rollback_params2)
+
+      # Mark documents uploaded in this submission as 'deleted'
+      docs = TrialDocument.where('trial_id = ? AND submission_id = ?', @trial.id, submission_id)
+      docs.each do |doc|
+        doc.status = 'deleted'
+        doc.save
+      end
     end
   end
 

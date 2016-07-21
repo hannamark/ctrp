@@ -65,6 +65,7 @@ class TrialsController < ApplicationController
 
     respond_to do |format|
       if @trial.update(trial_params)
+        @trial = Trial.find(@trial.id)
         format.html { redirect_to @trial, notice: 'Trial was successfully updated.' }
         format.json { render :show, status: :ok, location: @trial }
 
@@ -132,7 +133,8 @@ class TrialsController < ApplicationController
   def search_trial_with_nci_id
 
     if params.has_key?(:nci_id)
-      @search_result = Trial.with_nci_id(params[:nci_id].upcase).first
+      @search_result = Trial.with_nci_id(params[:nci_id].upcase)
+      @search_result = @search_result.filter_rejected.first
       @search_result = @search_result.nil? ? {error_msg: 'Trial is not found'} : @search_result
     else
       # missing nci_id

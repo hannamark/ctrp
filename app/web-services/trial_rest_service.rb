@@ -1,4 +1,4 @@
-class TrialService
+class TrialRestService
 
 
   def active_ctrp_org_count(org_id)

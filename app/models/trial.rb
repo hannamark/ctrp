@@ -152,7 +152,7 @@ class Trial < TrialBase
   has_many :trial_co_pis
   has_many :co_pis, through: :trial_co_pis, source: :person
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
-  has_many :trial_documents, -> { order 'trial_documents.id' }
+  has_many :trial_documents, -> { order ('trial_documents.id desc') }
   has_many :mail_logs, -> { order 'mail_logs.id'}
 
   # PA fields
@@ -419,7 +419,7 @@ class Trial < TrialBase
   end
 
   # Most recent active non-update submission
-  def current_submission
+  def most_recent_active_submission
     upd = SubmissionType.find_by_code('UPD')
     if upd.present?
       return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ? AND submissions.status = ?', self.id, upd.id, 'Active').order('submission_num desc').first
@@ -435,6 +435,15 @@ class Trial < TrialBase
       return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
     else
       return nil
+    end
+  end
+
+  # Current submission based on rejection status
+  def current_submission
+    if self.is_rejected
+      return most_recent_submission
+    else
+      return most_recent_active_submission
     end
   end
 
@@ -639,7 +648,8 @@ class Trial < TrialBase
         validation_msgs[:errors].push('Trial Summary Report Date milestone must exist')
       end
     elsif milestone_to_add.code == 'IAV'
-      if !is_last_milestone?(submission_id, 'RTS')
+      rts = Milestone.find_by_code('RTS')
+      if rts.present? && !contains_milestone?(submission_id, rts.id)
         validation_msgs[:errors].push('Ready for Trial Summary Report Date milestone must exist')
       end
       if active_onhold_exists?

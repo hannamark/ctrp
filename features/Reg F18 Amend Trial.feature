@@ -35,12 +35,12 @@ And I am on the Amendment Trial screen
 And the Submission source is a Cancer Center
 And the Submission Method is Registry
 And the Submission Type is Amendment 
-And I have enter the required trial amendment information
+And I have entered the required trial amendment information
 When I select the review option
 Then CTRP will check the amended information 
 And if there are no errors, I can submit the trial amendment
 And the information updates will be submitted as an amendment with the Amendment Number in CTRP
-Ans an email entitled " Amendment Submission" will be sent to the the trial owner (Emails list found on the shared drive under Functional/registration: CTRP System Generated Emails)
+And an email entitled " Amendment Submission" will be sent to the the trial owner (Emails list found on the shared drive under Functional/registration: CTRP System Generated Emails)
 And the CTRO will be able to abstract the amended trial information
 And the Submission source is a Cancer Center
 And the Submission Method is Registry
