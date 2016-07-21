@@ -56,6 +56,9 @@ GEM
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.3.0)
     builder (3.2.2)
+    business_time (0.7.6)
+      activesupport (>= 3.1.0)
+      tzinfo
     byebug (5.0.0)
       columnize (= 0.9.0)
     cancancan (1.11.0)
@@ -292,6 +295,7 @@ DEPENDENCIES
   activerecord-session_store
   annotate
   bootstrap-sass (~> 3.3.5)
+  business_time (~> 0.7.6)
   byebug
   cancancan
   carrierwave
@@ -331,3 +335,6 @@ DEPENDENCIES
   web-console (~> 2.0)
   wicked
   xml-mapping
+
+BUNDLED WITH
+   1.11.2
