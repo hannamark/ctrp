@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720185058) do
+ActiveRecord::Schema.define(version: 20160715204235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1136,19 +1136,18 @@ ActiveRecord::Schema.define(version: 20160720185058) do
     t.integer  "trial_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uuid",                                 limit: 255
-    t.integer  "lock_version",                                     default: 0
-    t.string   "amendment_num",                        limit: 255
+    t.string   "uuid",                 limit: 255
+    t.integer  "lock_version",                     default: 0
+    t.string   "amendment_num",        limit: 255
     t.integer  "submission_type_id"
     t.integer  "submission_source_id"
     t.integer  "submission_method_id"
     t.integer  "user_id"
-    t.string   "acknowledge",                          limit: 255
+    t.string   "acknowledge",          limit: 255
     t.text     "acknowledge_comment"
     t.date     "acknowledge_date"
-    t.string   "acknowledged_by",                      limit: 255
+    t.string   "acknowledged_by",      limit: 255
     t.string   "status"
-    t.date     "expected_abstraction_completion_date"
   end
 
   add_index "submissions", ["amendment_reason_id"], name: "index_submissions_on_amendment_reason_id", using: :btree
