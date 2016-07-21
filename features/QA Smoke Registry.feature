@@ -7,7 +7,7 @@ Feature: QA Smoke Registry
     Given I am logged in to CTRP Registry application with User "ctrptrialsubmitter"
 
   @smoke
-  Scenario Outline: As a Curator Create an Organization then search that Organization
+  Scenario Outline: As a Trial submitter, create a Trial then search that Trial
     Given I want to create a Trial with Study Source <trialType>
     And Lead Organization Trial Identifier: <leadOrgIdentifier>, Other Clinical Trial ID:  <otherClinicalTrialID>, Other Obsolete Clinical Trial ID: <otherObsoleteClinicalTrialID>, Other Identifier: <otherIdentifier>
     And Official Title: <officialTitle>, Phase: <phase>, Pilot: <pilotOption>, Research Category: <researchCategory>, Primary Purpose: <primaryPurpose>, Secondary Purpose <secondaryPurpose>, Accrual Disease Terminology: <accrualDisease>
