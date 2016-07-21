@@ -15,20 +15,22 @@ class TrialService
 
   def initialize(params)
     @trial = params[:trial]
-    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
-    cur_trial_status = @trial.trial_status_wrappers.last if @trial.present? && @trial.trial_status_wrappers.present?
-    cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
-    @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
-    @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
-    @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
-    @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
-    @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
 
-    @@is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
-    @@is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
-    @@is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
-    @@is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
+    if @trial.present?
+      @@is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
+      cur_trial_status = @trial.trial_status_wrappers.last if @trial.trial_status_wrappers.present?
+      cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
+      @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+      @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
+      @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
+      @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
+      @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
 
+      @@is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
+      @@is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
+      @@is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
+      @@is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
+    end
   end
 
   def get_json
@@ -1318,7 +1320,7 @@ class TrialService
   def map_phase (ct_phase)
     case ct_phase
       when 'N/A'
-        ctrp_phase_code = 'N/A'
+        ctrp_phase_code = 'NA'
       when 'Phase 0'
         ctrp_phase_code = '0'
       when 'Phase 1'
@@ -1334,7 +1336,7 @@ class TrialService
       when 'Phase 4'
         ctrp_phase_code = 'IV'
       else
-        ctrp_phase_code = ''
+        ctrp_phase_code = 'NA'
     end
 
     return ctrp_phase_code
