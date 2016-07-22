@@ -90,7 +90,7 @@
                     'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="false" ' +
                     'ng-change="grid.appScope.dateModifyFlag(row.entity)" ng-disabled="grid.appScope.isCurationEnabled?false:true" ng-click="opened = true;" uib-datepicker-popup="MM/dd/yyyy" is-open="opened" ' +
                     'datepicker-options="grid.appScope.dateOptions" datepicker-append-to-body="true" type="text" /></div>',
-                    cellFilter: 'date',
+                    // cellFilter: 'date',
                     cellClass: function () {
                         return 'text-left';
                     },
@@ -206,7 +206,7 @@
             }).catch(function (err) {
                 console.log('Expected Abstraction Completion Date Update failed: ' + err);
             });
-            
+
         };
 
         vm.gridTrialsSubmittedOptions.onRegisterApi = function (gridApi) {
