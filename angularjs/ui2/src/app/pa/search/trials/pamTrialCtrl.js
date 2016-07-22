@@ -86,7 +86,7 @@
                     enableCellEdit: true,
                     enableCellEditOnFocus: true,
                     enableHiding: false,
-                    cellTemplate: '<i class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i><input  readonly="true"  show-button-bar="true" ' +
+                    cellTemplate: '<div class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i><input  readonly="true"  show-button-bar="true" ' +
                     'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="false" ' +
                     'ng-change="grid.appScope.dateModifyFlag(row.entity)" ng-disabled="grid.appScope.isCurationEnabled?false:true" ng-click="opened = true;" uib-datepicker-popup="MM/dd/yyyy" is-open="opened" ' +
                     'datepicker-options="grid.appScope.dateOptions" datepicker-append-to-body="true" type="text" /></div>',

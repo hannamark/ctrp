@@ -870,6 +870,18 @@ div.ui-grid-cell .ui-grid-datepicker input:hover {
     cursor: pointer;
 }
 
+.no_edit div.ui-grid-cell .ui-grid-datepicker input {
+    border-bottom: none;
+}
+
+.no_edit div.ui-grid-cell .ui-grid-datepicker .glyphicon-edit {
+    display: none;
+}
+.no_edit div.ui-grid-cell .ui-grid-datepicker input:hover {
+    cursor: default;
+}
+
+
 .grid-medium-cell .ui-grid-cell {
     line-height: 1em;
     height: 35px !important;
