@@ -100,6 +100,20 @@ var scientificOutcomeMeasures = function(){
         });
     };
 
+    this.verifyDeleteAllOutcomeList = function(){
+        self.tableTHeadOutcome.isDisplayed().then(function(result) {
+            if (result === false) {
+                var notExistsTableA = 'Table Status : '+result+'';
+                var notExistsTableB = 'Table Status : '+result+'';
+                expect(notExistsTableA.toString()).to.eql(notExistsTableB.toString());
+            } else if (result === true){
+                var notExistsTableC = 'Table Status : '+result+'';
+                var notExistsTableD = 'Table Status : '+result+' but Status should be false';
+                expect(notExistsTableC.toString()).to.eql(notExistsTableD.toString());
+            }
+        });
+    };
+
     this.selectOutcomeMeasureType = function(type)  {
         helper.selectValueFromList(this.outcomeMeasureTypeLst, type, "Outcome Measure Type - List field");
     };
@@ -183,6 +197,8 @@ var scientificOutcomeMeasures = function(){
                 console.log("Outcome Measures Type:["+typeVal+"]");
                 if(expectedOutcomeType === typeVal){
                     if (whatToDo === 'verify'){
+                        console.log("Verifying Outcome Measures Expected Type:["+expectedOutcomeType+"]");
+                        console.log("Verifying Outcome Measures Actual Type:["+typeVal+"]");
                         expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
                         if (titleVf !== ''){
                             var titleVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(03)'));
@@ -227,8 +243,10 @@ var scientificOutcomeMeasures = function(){
                         helper.clickButton(deleteDataRw, "Delete - Button");
                     }
                 }
-                if (expectedOutcomeType != typeVal && iVal === rowsLengthVal){
+                if (expectedOutcomeType != typeVal && iVal === '8'){
                     if (whatToDo === 'verify'){
+                        console.log("Verifying Outcome Measures Expected Type:["+expectedOutcomeType+"]");
+                        console.log("Verifying Outcome Measures Actual Type:["+typeVal+"]");
                         expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
                     } else if(whatToDo === 'notexists'){
                         var notExistsRecordA = 'Value : '+expectedOutcomeType+' does not exists';

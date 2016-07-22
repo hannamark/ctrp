@@ -67,12 +67,19 @@ class Submission < TrialBase
   end
 
   def business_days_since_submitted
-    business_days = 0
+    business_days = nil
     date = DateTime.now.to_date
-    date2 = self.created_at.to_date
-    while date > date2
-      business_days = business_days + 1 unless !date.workday?
-      date = date - 1.day
+    createDate = self.submission_date
+    if !createDate
+      createDate = self.amendment_date
+    end
+    if createDate
+      business_days = 0
+      date2 = createDate.to_date
+      while date > date2
+        business_days = business_days + 1 unless !date.workday?
+        date = date - 1.day
+      end
     end
     business_days
   end
