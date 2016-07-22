@@ -139,6 +139,10 @@
                         <span>{{paTrialOverview.trialDetailObj.internal_source.name}}</span>
                     </p>
                     <p>
+                        <strong>Data Table 4 Funding Source: </strong>
+                        <span ng-hide="paTrialOverview.trialDetailObj.trial_funding_sources.length === 0">{{paTrialOverview.trialDetailObj.trial_funding_sources}}</span>
+                    </p>
+                    <p>
                         <strong>Current Trial Status:</strong>
                         <span>{{paTrialOverview.trialDetailObj.current_trial_status}}</span>
                     </p>
