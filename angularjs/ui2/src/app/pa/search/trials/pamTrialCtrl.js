@@ -88,7 +88,7 @@
                     enableHiding: false,
                     cellTemplate: '<i class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i><input  readonly="true"  show-button-bar="true" ' +
                     'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="false" ' +
-                    'ng-change="grid.appScope.addModifyFlag(row.entity)" ng-click="opened = true;" uib-datepicker-popup="MM/dd/yyyy" is-open="opened" ' +
+                    'ng-change="grid.appScope.dateModifyFlag(row.entity)" ng-disabled="grid.appScope.isCurationEnabled?false:true" ng-click="opened = true;" uib-datepicker-popup="MM/dd/yyyy" is-open="opened" ' +
                     'datepicker-options="grid.appScope.dateOptions" datepicker-append-to-body="true" type="text" /></div>',
                     cellFilter: 'date',
                     cellClass: function () {
@@ -195,7 +195,7 @@
         };
         vm.gridTrialsSubmittedOptions.appScopeProvider = vm;
 
-        vm.addModifyFlag = function (row) {
+        vm.dateModifyFlag = function (row) {
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SUBMISSION_EXPECT_COMPLETE, {
                 id:                                     row.id,
                 expected_abstraction_completion_date:   $filter('date')(row.expected_abstraction_completion_date,'MMM dd, yyyy')
@@ -302,7 +302,7 @@
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-
+            vm.isCurationEnabled = UserService.isCurationModeEnabled();
         });
     }
 })();

@@ -40,7 +40,6 @@ class SubmissionsController < ApplicationController
   # PATCH/PUT /submissions/1
   # PATCH/PUT /submissions/1.json
   def update
-    p submission_params
     respond_to do |format|
       if @submission.update(submission_params)
         format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
