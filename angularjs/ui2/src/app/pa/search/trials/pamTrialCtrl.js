@@ -6,9 +6,9 @@
     angular.module('ctrp.app.pa')
         .controller('pamTrialCtrl', pamTrialCtrl);
 
-    pamTrialCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', 'URL_CONFIGS'];
+    pamTrialCtrl.$inject = ['UserService', 'toastr', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', '$filter', 'URL_CONFIGS'];
 
-    function pamTrialCtrl(UserService, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, URL_CONFIGS) {
+    function pamTrialCtrl(UserService, toastr, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, $filter, URL_CONFIGS) {
         var vm = this;
 
         vm.userDetails = userDetailObj;
@@ -196,8 +196,17 @@
         vm.gridTrialsSubmittedOptions.appScopeProvider = vm;
 
         vm.addModifyFlag = function (row) {
-          console.log(row.expected_abstraction_completion_date)
-            console.log(row.id)
+            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SUBMISSION_EXPECT_COMPLETE, {
+                id:                                     row.id,
+                expected_abstraction_completion_date:   $filter('date')(row.expected_abstraction_completion_date,'MMM dd, yyyy')
+            }).then(function (data) {
+                if(data.id) {
+                    toastr.success('Expected Abstraction Completion Date has been updated', 'Operation Successful!');
+                }
+            }).catch(function (err) {
+                console.log('Expected Abstraction Completion Date Update failed: ' + err));
+            });
+            
         };
 
         vm.gridTrialsSubmittedOptions.onRegisterApi = function (gridApi) {
