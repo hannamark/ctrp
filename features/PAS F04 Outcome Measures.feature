@@ -91,7 +91,7 @@ When I click Save
 Then the new Outcome Measure for the trial will be associated with the trial
 And the new outcome Measure is displayed on the outcome measure list
 And no changes have been made on the original outcome measure
-@runthis
+
 Scenario:  #6 I can reset Outcome Measures for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
@@ -109,37 +109,39 @@ And I have selected a trial
 And I am on the Outcome Measures screen
 When I have selected the delete check box for an outcome measure
 Then the information entered or edited on the Outcome Measures screen will not be saved to the trial record
-And the screen will be refreshed with the data since the last save
+And the screen will be refreshed with the data since the last save the list of outcome measures screen
 When I have selected Select All
 Then the delete checkbox for all Outcome Measure is checked
 When I select Delete
 Then the information for the Outcome Measures will be deleted
 And the Outcome Measures will not be saved to the trial record
 
-
 Scenario: #8  Title field character count
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Outcome Measure Screen
+And I have selected a trial
+And I am on the Outcome Measures screen
 When I am entering into Title
-Then information text appears below the Brief Title field to display the number of characters available to enter into the field.  
-|254 characters left|
-When 254 characters have been entered
-Then no additional text can be entered
+Then information text appears below the title field to display the number of characters available to enter into the field.
+|255 characters left|
+When 255 characters have been entered at the title field
+Then no additional text can be entered at the title field
 
 Scenario: #9  Time Frame field character count
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Outcome Measure Screen
+And I have selected a trial
+And I am on the Outcome Measures screen
 When I am entering into Time Frame field 
 Then information text appears below the Time Frame field to display the number of characters available to enter into the field.  
-|254 characters left|
-When 254 characters have been entered
-Then no additional text can be entered 
+|255 characters left|
+When 255 characters have been entered at the time frame field
+Then no additional text can be entered at the time frame field
 
 Scenario:  #10 Description field character count
 Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Outcome Measure Screen
+And I have selected a trial
+And I am on the Outcome Measures screen
 When I am entering into Description
 Then information text appears below the Detailed Description field to display the number of characters available to enter into the field.  
-|999 characters left|
-When 999 characters have been entered
-Then no additional text can be entered 
+|1000 characters left|
+When 1000 characters have been entered at the description field
+Then no additional text can be entered at the description field
