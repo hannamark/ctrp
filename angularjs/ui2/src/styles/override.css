@@ -844,6 +844,44 @@ h5 {
     height: 22px !important;
 }
 
+div.ui-grid-cell .ui-grid-datepicker [ng-click="select(null)"] {
+    display: none;
+}
+
+div.ui-grid-cell .ui-grid-datepicker ul.dropdown-menu table {
+    outline: none;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+div.ui-grid-cell .ui-grid-datepicker {
+   padding-left: 10px;
+}
+
+div.ui-grid-cell .ui-grid-datepicker input {
+    background: none;
+    border: none;
+    margin: 1px 0 0 5px;
+    border-bottom: 1px dashed #2b542c;
+    width: 75px;
+}
+
+div.ui-grid-cell .ui-grid-datepicker input:hover {
+    cursor: pointer;
+}
+
+.no_edit div.ui-grid-cell .ui-grid-datepicker input {
+    border-bottom: none;
+}
+
+.no_edit div.ui-grid-cell .ui-grid-datepicker .glyphicon-edit {
+    display: none;
+}
+.no_edit div.ui-grid-cell .ui-grid-datepicker input:hover {
+    cursor: default;
+}
+
+
 .grid-medium-cell .ui-grid-cell {
     line-height: 1em;
     height: 35px !important;
