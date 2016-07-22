@@ -1143,7 +1143,10 @@ class Trial < TrialBase
   }
 
   scope :with_owner, -> (value) {
-    joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
+    #joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
+    join_clause = "LEFT JOIN trial_ownerships ON trial_ownerships.trial_id = trials.id LEFT JOIN users ON users.id = trial_ownerships.user_id"
+    where_clause = "trial_ownerships.ended_at IS ? AND users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)"
+    joins(join_clause).where(where_clause, nil, value, false, nil)
   }
 
   scope :is_not_draft, -> {
