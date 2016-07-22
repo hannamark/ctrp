@@ -20,6 +20,13 @@ json.other_ids do
   end
 end
 
+json.trial_funding_sources do
+  json.array!(@trial.trial_funding_sources) do |source|
+    json.extract! source, :organization_id
+    json.set! :source_name, Organization.find(source.organization_id).name
+  end
+end
+
 json.trial_status_wrappers do
   json.array!(@trial.trial_status_wrappers) do |status|
     json.extract! status, :trial_id, :id, :status_date, :why_stopped, :trial_status_id, :trial_status, :comment, :created_at, :updated_at
