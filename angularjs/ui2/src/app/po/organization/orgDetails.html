@@ -51,7 +51,7 @@
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name) || orgDetailView.showUniqueWarning}">
                                 <label class="control-label col-xs-12 col-sm-3">Name:</label>
                                 <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
-                                    <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" ng-model="orgDetailView.curOrg.name" auto-focus required ng-blur="orgDetailView.checkUniqueOrganization()">
+                                    <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" maxlength="160" ng-model="orgDetailView.curOrg.name" auto-focus required ng-blur="orgDetailView.checkUniqueOrganization()">
                                     <span class="form-control-feedback" ng-show="orgDetailView.curOrg.name.length"></span>
                                     <span class="help-block" ng-show="organization_form.name.$error.required">Name is Required</span>
                                     <div class="has-error" ng-show="orgDetailView.showUniqueWarning && orgDetailView.curOrg.name.length > 0 && organization_form.name.$dirty">
@@ -203,13 +203,13 @@
                                     <div class="row">
                                         <label class="control-label col-xs-12 col-sm-3">Email:</label>
                                         <div class="col-xs-12 col-sm-3" ng-if="orgDetailView.curOrgEditable">
-                                            <input type="email" restriction-field class="form-control input-sm" id="email" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                            <input type="email" restriction-field class="form-control input-sm" id="email" maxlength="254" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
                                             <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-3 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.email}}</div>
                                         <label class="control-label col-xs-12 col-sm-1">Phone:</label>
                                         <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
-                                            <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
+                                            <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" maxlength="30" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
                                             <span ng-show="orgDetailView.curOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                                             <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
                                                 <span class="help-block">

@@ -8,12 +8,12 @@
         .controller('pasInterventionCtrl', pasInterventionCtrl)
         .controller('pasInterventionLookupModalCtrl',pasInterventionLookupModalCtrl);
 
-    pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
+    pasInterventionCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', '$state', 'toastr',
         'MESSAGES', '_', '$timeout', 'Common', '$uibModal', 'interventionTypes', 'UserService','$location', '$anchorScroll'];
 
     pasInterventionLookupModalCtrl.$inject = ['$scope', '$uibModalInstance', 'PATrialService'];
 
-    function pasInterventionCtrl($scope, TrialService, PATrialService, toastr,
+    function pasInterventionCtrl($scope, TrialService, PATrialService, $state, toastr,
         MESSAGES, _, $timeout, Common, $uibModal, interventionTypes, UserService, $location, $anchorScroll) {
 
             var vm = this;
@@ -42,6 +42,7 @@
             vm.flagAllInterventionsForDeletion = flagAllInterventionsForDeletion;
             vm.deleteInterventions = deleteInterventions;
             vm.openLookupModal = openLookupModal;
+            vm.reload = reload;
 
             activate();
             function activate() {
@@ -223,6 +224,11 @@
                     modalOpened = false;
                 });
             } // openLookupModal
+
+            function reload() {
+                $state.go($state.$current, null, { reload: true });
+            };
+
     } // pasInterventionCtrl
 
 

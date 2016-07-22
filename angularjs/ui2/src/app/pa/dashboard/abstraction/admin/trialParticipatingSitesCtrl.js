@@ -10,7 +10,7 @@
 
     trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $stateParams, $route, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $state, $stateParams, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
 
         var vm = this;
 
@@ -79,7 +79,6 @@
         vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
         vm.resetParticipatingSite = resetParticipatingSite;
         vm.watchContactType = watchContactType;
-        vm.resetTabIndex = resetTabIndex;
 
         vm.disableBtn = false;
 
@@ -1042,13 +1041,7 @@
             $scope.ps_contact_form.$setPristine();
         }
 
-        function resetTabIndex() {
-            /*
-                -1 means Back to List button was clicked.
-                Need to differentiate between navigating to first tab and navigating from CRUD to List view
-            */
-            vm.tabIndex = -1;
-        }
+
 
     } //trialParticipatingSitesCtrl
 

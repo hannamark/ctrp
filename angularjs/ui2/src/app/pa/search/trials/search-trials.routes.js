@@ -61,6 +61,22 @@
                     parent: 'main.defaultContent',
                     label: 'Search Trials (PA)'
                 }
+            })
+            .state('main.pamTrialSearch', {
+                url: '/pam_trials',
+                templateUrl: 'app/pa/search/trials/pam_trial_list.html',
+                controller: 'pamTrialCtrl as pamTrialsView',
+                section: 'pam',
+                resolve: {
+                    UserService: 'UserService',
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.defaultContent',
+                    label: 'Search Trials (Abstraction)'
+                }
             });
     } //paRoutes
 })();

@@ -113,6 +113,7 @@
                     PATrialService.setCurrentTrial(vm.curTrial); // cache the updated trial
                     $scope.$emit('updatedInChildScope', {}); // signal for updates
                     vm.setAddMode(false);
+                    showHideAddBtn();
                     toastr.success('On hold has been recorded', 'Operation Successful!');
                 }
             }).catch(function (err) {
@@ -131,6 +132,11 @@
         }
 
         function showHideAddBtn() {
+            if (vm.curTrial.is_rejected) {
+                vm.showAddBtn = false;
+                return;
+            }
+
             for (var i = 0; i < vm.curTrial.onholds.length; i++) {
                 if (!vm.curTrial.onholds[i].offhold_date) {
                     vm.showAddBtn = false;

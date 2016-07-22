@@ -47,17 +47,7 @@ var scientificOutcomeMeasures = function(){
 
     this.tableSelectAll = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(09) input'));
 
-    this.verifyOutcomeMeasureTHead = function (){
-        var thd = new Array("Index", "Outcome Measure Type", "Title", "Time Frame", "Description", 'Safety Issue', 'Edit', 'Copy');
-        helper.verifyTableRowText(self.tableTHeadColA, thd[0], 'Index');
-        helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Outcome Measure Type');
-        helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Title');
-        helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Time Frame');
-        helper.verifyTableRowText(self.tableTHeadColE, thd[4], 'Description');
-        helper.verifyTableRowText(self.tableTHeadColF, thd[5], "Safety Issue");
-        helper.verifyTableRowText(self.tableTHeadColG, thd[6], "Edit");
-        helper.verifyTableRowText(self.tableTHeadColH, thd[7], "Copy");
-    };
+
 
     /***********************************
      * Outcome Measure Details object(s)
@@ -77,7 +67,7 @@ var scientificOutcomeMeasures = function(){
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
 
     this.saveOutBtn = element(by.id('submit_processing'));
-    this.resetOutBtn = element();
+    this.resetOutBtn = element(by.id('out_cm_reset'));
     this.backToOutcomeMeasuresListBtn = element(by.id('oc_site_list'));
 
     this.outcomePageTitleList = element(by.id('pg_title'));
@@ -85,6 +75,10 @@ var scientificOutcomeMeasures = function(){
 
     this.clickAddOutcomeMeasure = function(){
         helper.clickButton(this.addOutcomeMeasureBtn, "Add Outcome Measure - Button");
+    };
+
+    this.selectAllOutcomeMeasure = function (){
+        helper.clickButton(this.tableSelectAll, "Selecte All - Button");
     };
 
     this.clickDeleteSelectedOutcome = function(yesCancel){
@@ -95,6 +89,15 @@ var scientificOutcomeMeasures = function(){
         } else if (yesCancel === 'cancel'){
             helper.clickButton(this.deleteCancelOutcome, "Delete Cancel - Button");
         }
+    };
+
+    this.deleteAllOutcomeList = function(yesOrCancel){
+        self.tableTHeadOutcome.isDisplayed().then(function(result) {
+            if (result === true) {
+                self.selectAllOutcomeMeasure();
+                self.clickDeleteSelectedOutcome(yesOrCancel);
+            }
+        });
     };
 
     this.selectOutcomeMeasureType = function(type)  {
@@ -139,11 +142,12 @@ var scientificOutcomeMeasures = function(){
     };
 
     this.tableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
-
+    var rowsLengthVal = '';
     this.findOutcomeToVerifyEditCopyDelete = function(expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf){
         this.waitForTrailDetailsElement(self.tableTBodyRowAColA, "Outcome Measures Table");
         this.tableOutcomeAll.then(function(rows){
             console.log('Indetifier Type Total Row Count:['+(rows.length)+']');
+            rowsLengthVal = ''+(rows.length)+'';
             for (var i=1; i<(rows.length+1); i++){
                 if (i === 1){
                     console.log('i:['+i+']');
@@ -208,24 +212,73 @@ var scientificOutcomeMeasures = function(){
                                 expect(safetyVf.toString()).to.eql(safetyValCr.toString());
                             });
                         }
+                    }  else if(whatToDo === 'notexists'){
+                        var foundRecord = 'Value : '+expectedOutcomeType+' should not be exists';
+                        var notExistsRecord = 'Value : '+expectedOutcomeType+' exists';
+                        expect(foundRecord.toString()).to.eql(notExistsRecord.toString());
                     } else if(whatToDo === 'edit'){
                         var editDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(07) button'));
                         helper.clickButton(editDataRw, "Edit - Button");
                     } else if(whatToDo === 'copy'){
-                        var editDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(08) button'));
-                        helper.clickButton(editDataRw, "Edit - Button");
+                        var cpyDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(08) button'));
+                        helper.clickButton(cpyDataRw, "Edit - Button");
                     } else if(whatToDo === 'delete'){
                         var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(09) input'));
                         helper.clickButton(deleteDataRw, "Delete - Button");
                     }
                 }
-                if (expectedOutcomeType != typeVal && iVal === '8'){
+                if (expectedOutcomeType != typeVal && iVal === rowsLengthVal){
                     if (whatToDo === 'verify'){
                         expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
+                    } else if(whatToDo === 'notexists'){
+                        var notExistsRecordA = 'Value : '+expectedOutcomeType+' does not exists';
+                        var notExistsRecordB = 'Value : '+expectedOutcomeType+' does not exists';
+                        expect(notExistsRecordA.toString()).to.eql(notExistsRecordB.toString());
                     }
                 }
             });
         }
+    };
+
+    this.reorderRowByDragAndDrop = function(){
+        browser.actions()
+            .mouseDown(element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(02) td:nth-child(02)')))
+            .mouseMove(element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(01) td:nth-child(02)')))
+            .mouseUp()
+            .perform();
+    };
+
+    this.verifyDragAndDrop = function(iVal, expectedOutcomeType, titleVf, timeVf, descVf, safetyVf) {
+        var outcomeMeasureType = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
+        getCurrentOutcomeType = outcomeMeasureType.getText('value');
+        getCurrentOutcomeType.then(function (typeVal) {
+            console.log("Outcome Measures Type:[" + typeVal + "]");
+            expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
+        });
+        var titleVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(03)'));
+        titleValVf = titleVal.getText('value');
+        titleValVf.then(function (titleValCr) {
+            console.log("Title:[" + titleValCr + "]");
+            expect(titleVf.toString()).to.eql(titleValCr.toString());
+        });
+        var timeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(04)'));
+        timeValVf = timeVal.getText('value');
+        timeValVf.then(function (timeValCr) {
+            console.log("Time Frame:[" + timeValCr + "]");
+            expect(timeVf.toString()).to.eql(timeValCr.toString());
+        });
+        var descVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05)'));
+        descValVf = descVal.getText('value');
+        descValVf.then(function (descValCr) {
+            console.log("Description:[" + descValCr + "]");
+            expect(descVf.toString()).to.eql(descValCr.toString());
+        });
+        var safetyVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(06)'));
+        safetyValVf = safetyVal.getText('value');
+        safetyValVf.then(function (safetyValCr) {
+            console.log("Safety Issue:[" + safetyValCr + "]");
+            expect(safetyVf.toString()).to.eql(safetyValCr.toString());
+        });
     };
 
     //Wait For Element : Wait
@@ -275,6 +328,18 @@ var scientificOutcomeMeasures = function(){
             });
         }, 10000, label + " did not appear");
         browser.sleep(250);
+    };
+
+    this.verifyOutcomeMeasureTHead = function (){
+        var thd = new Array("Index", "Outcome Measure Type", "Title", "Time Frame", "Description", 'Safety Issue', 'Edit', 'Copy');
+        helper.verifyTableRowText(self.tableTHeadColA, thd[0], 'Index');
+        helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Outcome Measure Type');
+        helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Title');
+        helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Time Frame');
+        helper.verifyTableRowText(self.tableTHeadColE, thd[4], 'Description');
+        helper.verifyTableRowText(self.tableTHeadColF, thd[5], "Safety Issue");
+        helper.verifyTableRowText(self.tableTHeadColG, thd[6], "Edit");
+        helper.verifyTableRowText(self.tableTHeadColH, thd[7], "Copy");
     };
 
     //Save and Reset
