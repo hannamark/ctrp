@@ -142,8 +142,6 @@ module.exports = function() {
 
     this.Then(/^the message Record Updated displays$/, function (callback) {
         console.log('Out of scope: Toaster message');
-        //login.logout();
-        //commonFunctions.alertMsgOK();
         browser.sleep(25).then(callback);
     });
 

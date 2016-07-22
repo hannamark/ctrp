@@ -94,6 +94,7 @@ module.exports = function() {
     var optionA = '';
     var optionB = '';
     var optionC = '';
+    var optionD = '';
     var pageTtitle = 'List of Outcome Measures';
     var pageTtitleA = 'Outcome Measure Details';
     var outTitle = 'Test Outcome Measure Title';
@@ -148,7 +149,8 @@ module.exports = function() {
 
     this.Given(/^I am on the Outcome Measures screen$/, function (callback) {
         leftNav.clickScientificOutcome();
-        outcome.checkOutcomePageTitle(pageTtitleA, 'list');
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.deleteAllOutcomeList('yes');
         browser.sleep(25).then(callback);
     });
 
@@ -164,12 +166,13 @@ module.exports = function() {
     });
 
     this.Given(/^I have selected a value for Outcome Measure Type$/, function (table, callback) {
-        //var outcomeType = table.raw();
-        //optionType = outcomeType.toString().replace(/,/g, "\n", -1);
-        //console.log('Value(s) in the data table:[' + optionType +']');
-        //var optionTypeSplt = optionType.toString().split("\n");
-        //optionA = optionTypeSpltA = optionTypeSplt[1];
-        //outcome.selectOutcomeMeasureType(optionTypeSpltA);
+        var outcomeType = table.raw();
+        optionType = outcomeType.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + optionType +']');
+        var optionTypeSplt = optionType.toString().split("\n");
+        optionA = optionTypeSplt[1];
+        optionC = optionTypeSplt[0];
+        outcome.selectOutcomeMeasureType(optionA);
         browser.sleep(25).then(callback);
     });
 
@@ -193,8 +196,9 @@ module.exports = function() {
         optionSafety = outcomeSafety.toString().replace(/,/g, "\n", -1);
         console.log('Value(s) in the data table:[' + optionSafety +']');
         var optionSafetySplt = optionSafety.toString().split("\n");
-        optionB = optionSafetySpltB = optionSafetySplt[1];
-        outcome.selectSafetyIssue(optionSafetySpltA);
+        optionB = optionSafetySplt[1];
+        optionD = optionSafetySplt[0];
+        outcome.selectSafetyIssue(optionB);
         browser.sleep(25).then(callback);
     });
 
@@ -204,26 +208,389 @@ module.exports = function() {
     });
 
     this.Then(/^the Outcome Measure for the trial will be associated with the trial$/, function (callback) {
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
         outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'verify', outTitle, timeFrame, description, optionB);
-        //exIdentiType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^created message displays$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
+        console.log('Toster Message Validation Out of Scope in Protractor');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Outcome Measures table will display Outcomes Measures values$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        outcome.verifyOutcomeMeasureTHead();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^I can add another Outcome Measure$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Add Another Test');
+        outcome.setTimeFrameTxt(timeFrame +' Add Another Test');
+        outcome.setDescriptionTxt(description +' Add Another Test');
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Add Another Test', timeFrame+' Add Another Test', description+' Add Another Test', optionD);
+        browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario: #2 I can edit Outcome Measures for a trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     And I have Selected Edit on an existing Outcome Measure
+     And I have entered or edited a value for Outcome Measure Type
+     |Outcome Measure Type|
+     |Primary|
+     |Secondary|
+     |Other Pre-specified|
+     And I have edited a value for Title
+     And I have edited a value for Time Frame
+     And I have entered or edited a value for Description
+     And I have selected another value for Safety Issue
+     |Safety Issue|
+     |Yes|
+     |No|
+     When I have selected Save Then the Outcome Measure for the trial will be associated with the trial
+     And the message Record Updated displays
+     */
+
+    this.Given(/^I have Selected Edit on an existing Outcome Measure$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionC = 'Secondary';
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Add Another Test');
+        outcome.setTimeFrameTxt(timeFrame +' Add Another Test');
+        outcome.setDescriptionTxt(description +' Add Another Test');
+        optionD = 'Yes';
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Add Another Test', timeFrame+' Add Another Test', description+' Add Another Test', optionD);
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'edit', outTitle+' Add Another Test', timeFrame+' Add Another Test', description+' Add Another Test', optionD);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered or edited a value for Outcome Measure Type$/, function (table, callback) {
+        var outcomeType = table.raw();
+        optionType = outcomeType.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + optionType +']');
+        var optionTypeSplt = optionType.toString().split("\n");
+        optionA = optionTypeSplt[1];
+        optionC = optionTypeSplt[0];
+        outcome.selectOutcomeMeasureType(optionA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have edited a value for Title$/, function (callback) {
+        outcome.setTitleTxt(outTitle+' Edit Test');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have edited a value for Time Frame$/, function (callback) {
+        outcome.setTimeFrameTxt(timeFrame+' Edit Test');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered or edited a value for Description$/, function (callback) {
+        outcome.setDescriptionTxt(description+' Edit Test');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected another value for Safety Issue$/, function (table, callback) {
+        var outcomeSafety = table.raw();
+        optionSafety = outcomeSafety.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + optionSafety +']');
+        var optionSafetySplt = optionSafety.toString().split("\n");
+        optionB = optionSafetySplt[1];
+        optionD = optionSafetySplt[2];
+        outcome.selectSafetyIssue(optionD);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have selected Save Then the Outcome Measure for the trial will be associated with the trial$/, function (callback) {
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'verify', outTitle+' Edit Test', timeFrame+' Edit Test', description+' Edit Test', optionD);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario Outline: #3 Add/Edit Outcome Measure rules
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     And I have not entered an <AddEditMeasureFieldType>
+     When I haved clicked on the save Button
+     Then The <FieldError> will be displayed
+
+     Examples:
+     |AddEditMeasureFieldType   |FieldError  |
+     |Outcome Measure Type      |Outcome Measure Type is Required|
+     |Title                     |Title is Required|
+     |Time Frame                |Time Frame is Required|
+     |Safety Issue              |Safety Issue is Required|
+     */
+
+    this.Given(/^I have not entered an (.*)$/, function (AddEditMeasureFieldType, callback) {
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionC = 'Secondary';
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Required Test');
+        outcome.setTimeFrameTxt(timeFrame +' Required Test');
+        outcome.setDescriptionTxt(description +' Not Required Test');
+        optionD = 'Yes';
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Required Test', timeFrame+' Required Test', description+' Not Required Test', optionD);
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'edit', outTitle+' Required Test', timeFrame+' Required Test', description+' Not Required Test', optionD);
+        if (AddEditMeasureFieldType === 'Outcome Measure Type'){
+            optionC = '- Please select a outcome-measure type...';
+            outcome.selectOutcomeMeasureType(optionC);
+        } else if(AddEditMeasureFieldType === 'Title'){
+            outcome.setTitleTxt(' ');
+        } else if(AddEditMeasureFieldType === 'Time Frame'){
+            outcome.setTimeFrameTxt(' ');
+        } else if(AddEditMeasureFieldType === 'Safety Issue'){
+            optionD = '- Please select a safety issue type...';
+            outcome.selectSafetyIssue(optionD);
+        }
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I haved clicked on the save Button$/, function (callback) {
+        outcome.clickSaveOutcome();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^The (.*) will be displayed$/, function (FieldError, callback) {
+        if (FieldError === 'Outcome Measure Type is Required'){
+            commonFunctions.verifyTxtByIndex(outcome.requiredMsg, FieldError, '0', 'Verifying Outcome Measure Type is Required');
+        } else if(FieldError === 'Title is Required'){
+            commonFunctions.verifyTxtByIndex(outcome.requiredMsg, FieldError, '0', 'Verifying Title is Required');
+        } else if(FieldError === 'Time Frame is Required'){
+            commonFunctions.verifyTxtByIndex(outcome.requiredMsg, FieldError, '0', 'Verifying Time Frame is Required');
+        } else if(FieldError === 'Safety Issue is Required'){
+            commonFunctions.verifyTxtByIndex(outcome.requiredMsg, FieldError, '0', 'Verifying Safety Issue is Required');
+        }
+        commonFunctions.alertMsgOK();
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario:  #4  Reorder Outcome Measures
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     And I am viewing the Outcome Measures table
+     When I click on a record
+     And drag it to a new sequence location in the table
+     Then the order of the outcome measures changes
+     */
+
+    this.Given(/^I am viewing the Outcome Measures list$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionC = 'Secondary';
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Reorder Test A');
+        outcome.setTimeFrameTxt(timeFrame +' Reorder Test A');
+        outcome.setDescriptionTxt(description +' Reorder Test A');
+        optionD = 'Yes';
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Reorder Test A', timeFrame+' Reorder Test A', description+' Reorder Test A', optionD);
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionA = 'Primary';
+        outcome.selectOutcomeMeasureType(optionA);
+        outcome.setTitleTxt(outTitle +' Reorder Test B');
+        outcome.setTimeFrameTxt(timeFrame +' Reorder Test B');
+        outcome.setDescriptionTxt(description +' Reorder Test B');
+        optionB = 'No';
+        outcome.selectSafetyIssue(optionB);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'verify', outTitle+' Reorder Test B', timeFrame+' Reorder Test B', description+' Reorder Test B', optionB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I click on a record to reorder the list$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^drag it to a new sequence location in the list$/, function (callback) {
+        outcome.reorderRowByDragAndDrop();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the order of the outcome measures list changes$/, function (callback) {
+        vfoptionC = 'Secondary';
+        vfoptionD = 'Yes';
+        vfoptionA = 'Primary';
+        vfoptionB = 'No';
+        outcome.verifyDragAndDrop('1', vfoptionA, outTitle+' Reorder Test B', timeFrame+' Reorder Test B', description+' Reorder Test B', vfoptionB);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario:  #5  Copy Outcome Measures
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     And I am viewing the Outcome Measures list
+     When I click on a record
+     And click on copy
+     Then the Add/Edit Outcome Measure screen displays
+     And I can edit all fields
+     When I click Save
+     Then the new Outcome Measure for the trial will be associated with the trial
+     And the new outcome Measure is displayed on the outcome measure list
+     And no changes have been made on the original outcome measure
+     */
+
+    this.Given(/^I am viewing the Outcome Measures list to copy outcome measures$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionC = 'Secondary';
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Copy Test A');
+        outcome.setTimeFrameTxt(timeFrame +' Copy Test A');
+        outcome.setDescriptionTxt(description +' Copy Test A');
+        optionD = 'Yes';
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Copy Test A', timeFrame+' Copy Test A', description+' Copy Test A', optionD);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I click on a record$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^click on copy$/, function (callback) {
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'copy', outTitle+' Copy Test A', timeFrame+' Copy Test A', description+' Copy Test A', optionD);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Add\/Edit Outcome Measure screen displays$/, function (callback) {
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I can edit all fields$/, function (callback) {
+        optionA = 'Primary';
+        outcome.selectOutcomeMeasureType(optionA);
+        outcome.setTitleTxt(outTitle +' Copy Test B');
+        outcome.setTimeFrameTxt(timeFrame +' Copy Test B');
+        outcome.setDescriptionTxt(description +' Copy Test B');
+        optionB = 'No';
+        outcome.selectSafetyIssue(optionB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I click Save$/, function (callback) {
+        outcome.clickSaveOutcome();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the new Outcome Measure for the trial will be associated with the trial$/, function (callback) {
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the new outcome Measure is displayed on the outcome measure list$/, function (callback) {
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'verify', outTitle+' Copy Test B', timeFrame+' Copy Test B', description+' Copy Test B', optionB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^no changes have been made on the original outcome measure$/, function (callback) {
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Copy Test A', timeFrame+' Copy Test A', description+' Copy Test A', optionD);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario:  #6 I can reset Outcome Measures for a Trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     When I select Add
+     And I am on the Add/Edit Outcome Measures screen
+     And I have entered values
+     When I have selected Reset at the Outcome Measures screen
+     Then the information entered on the Outcome Measures screen will not be saved to the trial record
+     And the screen will be refreshed with the data since the last save at the Outcome Measures screen
+     */
+
+    this.When(/^I select Add$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionC = 'Secondary';
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Reset Test A');
+        outcome.setTimeFrameTxt(timeFrame +' Reset Test A');
+        outcome.setDescriptionTxt(description +' Reset Test A');
+        optionD = 'Yes';
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Reset Test A', timeFrame+' Reset Test A', description+' Reset Test A', optionD);
+        outcome.clickAddOutcomeMeasure();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I am on the Add\/Edit Outcome Measures screen$/, function (callback) {
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have entered values$/, function (callback) {
+        optionA = 'Primary';
+        outcome.selectOutcomeMeasureType(optionA);
+        outcome.setTitleTxt(outTitle +' Reset Test B');
+        outcome.setTimeFrameTxt(timeFrame +' Reset Test B');
+        outcome.setDescriptionTxt(description +' Reset Test B');
+        optionB = 'No';
+        outcome.selectSafetyIssue(optionB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have selected Reset at the Outcome Measures screen$/, function (callback) {
+        outcome.clickResetOutcome();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the information entered on the Outcome Measures screen will not be saved to the trial record$/, function (callback) {
+        outcome.clickBackToOutcomeMeasuresList();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Reset Test A', timeFrame+' Reset Test A', description+' Reset Test A', optionD);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the screen will be refreshed with the data since the last save at the Outcome Measures screen$/, function (callback) {
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'notexists', outTitle+' Reset Test B', timeFrame+' Reset Test B', description+' Reset Test B', optionB);
+        browser.sleep(25).then(callback);
+    });
 
 
 };

@@ -37,7 +37,7 @@ Then the <AssociatedTrialFields> on the Associated Trials screen of the Associat
       | Clinical Research Category |
       |Official Title  |
       
-      Example:
+      Examples:
       
       |CTRPstudyID|Title | ClinRschCat|AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory  | AssociatedTrial_Official Title| 
       |NCI111  |Root study  |Interventional  |NCI555 |  Ancillary Correlative|Assoc study  |
