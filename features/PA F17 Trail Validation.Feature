@@ -230,7 +230,6 @@ And any of the mandatory fields have not be entered:
 |Lead Organization|
 |Principal Investigator|
 |Sponsor Organization|
-|Responsible Party|
 And any of the conditional fields have not be entered when the "responsible party is not "Sponsor"
 |Investigator |
 |Investigator Title|
@@ -254,7 +253,6 @@ And any of the mandatory fields have not be entered:
 |Principal Investigator|
 |Sponsor Organization|
 |Amendment Reason Code|
-|Responsible Party|
 And any of the conditional fields have not be entered when the "responsible party is not "Sponsor"
 |Investigator|
 |Investigator Title|
