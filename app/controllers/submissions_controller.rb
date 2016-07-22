@@ -73,8 +73,8 @@ class SubmissionsController < ApplicationController
     @trial_submissions = Submission.matchesImpPro(
         params[:user_id],
         true,
-        InternalSource.find_by_code('PRO').id,
-        InternalSource.find_by_code('IMP').id
+        InternalSource.find_by_code('IMP').id,
+        InternalSource.find_by_code('PRO').id
     )
 
     @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
