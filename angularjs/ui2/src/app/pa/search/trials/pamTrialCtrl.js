@@ -87,7 +87,7 @@
                     enableCellEditOnFocus: true,
                     enableHiding: false,
                     cellTemplate: '<i class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i><input  readonly="true"  show-button-bar="true" ' +
-                    'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" ' +
+                    'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="false" ' +
                     'ng-change="grid.appScope.addModifyFlag(row.entity)" ng-click="opened = true;" uib-datepicker-popup="MM/dd/yyyy" is-open="opened" ' +
                     'datepicker-options="grid.appScope.dateOptions" datepicker-append-to-body="true" type="text" /></div>',
                     cellFilter: 'date',
@@ -204,7 +204,7 @@
                     toastr.success('Expected Abstraction Completion Date has been updated', 'Operation Successful!');
                 }
             }).catch(function (err) {
-                console.log('Expected Abstraction Completion Date Update failed: ' + err));
+                console.log('Expected Abstraction Completion Date Update failed: ' + err);
             });
             
         };
