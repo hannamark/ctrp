@@ -851,6 +851,7 @@ div.ui-grid-cell .ui-grid-datepicker [ng-click="select(null)"] {
 div.ui-grid-cell .ui-grid-datepicker ul.dropdown-menu table {
     outline: none;
     margin-right: 5px;
+    margin-left: 5px;
 }
 
 div.ui-grid-cell .ui-grid-datepicker {
