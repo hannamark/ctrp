@@ -51,11 +51,11 @@
             columnDefs: [
                 {name: 'nci_id', displayName: 'NCI ID', enableSorting: true, minWidth: '150', width: '3%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a ui-sref="main.pa.trialOverview.trialIdentification({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'lead_protocol_id', displayName: 'Lead Protocol ID', enableSorting: true, minWidth: '170', width: '3%', sort: { direction: 'asc', priority: 1},
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.pa.trialOverview({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+                    '<a ui-sref="main.pa.trialOverview.trialIdentification({trialId : row.entity.id })"> {{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                 },
                 {name: 'official_title', enableSorting: true, minWidth: '150', width: '8%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
