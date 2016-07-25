@@ -1082,7 +1082,11 @@ class TrialService
     import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('NCT').id, protocol_id: xml.xpath('//nct_id').text})
 
     import_params[:brief_title] = xml.xpath('//brief_title').text
-    import_params[:official_title] = xml.xpath('//official_title').text
+    if xml.xpath('//official_title').present?
+      import_params[:official_title] = xml.xpath('//official_title').text
+    elsif xml.xpath('//brief_title').present?
+      import_params[:official_title] = xml.xpath('//brief_title').text
+    end
 
     org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
     orgs = Organization.all
