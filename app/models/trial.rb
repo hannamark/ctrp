@@ -152,7 +152,7 @@ class Trial < TrialBase
   has_many :trial_co_pis
   has_many :co_pis, through: :trial_co_pis, source: :person
   has_many :oversight_authorities, -> { order 'oversight_authorities.id' }
-  has_many :trial_documents, -> { order 'trial_documents.id' }
+  has_many :trial_documents, -> { order ('trial_documents.id desc') }
   has_many :mail_logs, -> { order 'mail_logs.id'}
 
   # PA fields
@@ -419,7 +419,7 @@ class Trial < TrialBase
   end
 
   # Most recent active non-update submission
-  def current_submission
+  def most_recent_active_submission
     upd = SubmissionType.find_by_code('UPD')
     if upd.present?
       return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ? AND submissions.status = ?', self.id, upd.id, 'Active').order('submission_num desc').first
@@ -435,6 +435,15 @@ class Trial < TrialBase
       return Submission.joins(:submission_type).where('trial_id = ? AND submission_types.id <> ?', self.id, upd.id).order('submission_num desc').first
     else
       return nil
+    end
+  end
+
+  # Current submission based on rejection status
+  def current_submission
+    if self.is_rejected
+      return most_recent_submission
+    else
+      return most_recent_active_submission
     end
   end
 
@@ -902,12 +911,9 @@ class Trial < TrialBase
   end
 
   def create_ownership
-    # New Trial Ownership
-    #if self.coming_from == 'rest'
-     # TrialOwnership.create(trial: self, user: User.find_by_username("ctrptrialsubmitter"))
-    #else
+    if self.internal_source.present? && self.internal_source.code != 'IMP'
       TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
-    #end
+    end
   end
 
   def set_defaults
@@ -1134,7 +1140,10 @@ class Trial < TrialBase
   }
 
   scope :with_owner, -> (value) {
-    joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
+    #joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
+    join_clause = "LEFT JOIN trial_ownerships ON trial_ownerships.trial_id = trials.id LEFT JOIN users ON users.id = trial_ownerships.user_id"
+    where_clause = "trial_ownerships.ended_at IS ? AND users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)"
+    joins(join_clause).where(where_clause, nil, value, false, nil)
   }
 
   scope :is_not_draft, -> {
