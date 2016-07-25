@@ -911,7 +911,7 @@ class Trial < TrialBase
   end
 
   def create_ownership
-    if self.internal_source.code != 'IMP'
+    if self.internal_source.present? && self.internal_source.code != 'IMP'
       TrialOwnership.create(trial: self, user: self.current_user) if self.current_user.present?
     end
   end
