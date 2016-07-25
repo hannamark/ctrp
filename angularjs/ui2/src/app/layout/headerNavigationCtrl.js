@@ -31,17 +31,17 @@
         };
 
         vm.logOut = function() {
-            //vm.signedIn = false;
-            //vm.username = '';
-            //vm.userRole = '';
-            //vm.isCurationEnabled = false;
-            //vm.isCurationModeSupported = false;
-
             UserService.setUserConfig(vm);
-            UserService.isSigningOut = true;
+
+            if (!UserService.getUnsavedFormFlag()) {
+                UserService.logout();
+                return;
+            }
+
+            UserService.setSignoutFlagValue(true);
             console.log('isSigningOut has been set to true');
 
-            $state.go('main.sign_in');
+            $state.go('main.sign_in', {}, {reload: true});
         }; //logOut
 
         activate();

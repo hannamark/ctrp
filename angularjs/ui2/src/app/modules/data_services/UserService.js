@@ -8,18 +8,23 @@
         .service('UserService', UserService);
 
     UserService.$inject = ['LocalCacheService', 'TrialService', 'PromiseTimeoutService', '$log', '$uibModal',
-        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS', 'AppSettingsService'];
+        '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS', 'AppSettingsService', '$rootScope'];
 
     function UserService(LocalCacheService, TrialService, PromiseTimeoutService, $log, $uibModal,
-                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS, AppSettingsService) {
+                         $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS, AppSettingsService, $rootScope) {
 
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
         var userCtrl = null;
+        var pageHasDirtyFormChecking = false;
+        var isSigningOut = false;
 
-        this.isSigningOut = false;
-        this.currentForm = null;
+
+        this.initVars = function() {
+            pageHasDirtyFormChecking = false;
+            isSigningOut = false;
+        }
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -99,14 +104,34 @@
                     $log.error('error in logging out: ' + JSON.stringify(err));
                 });
 
-            this.isSigningOut = false;
+            isSigningOut = false;
         }
 
         /**
-         * Log out user from backend as well as removing local cache
+         * Sets user config parent controller as property of service
          */
         this.setUserConfig = function(controller) {
             userCtrl = controller;
+        }
+
+        /**
+         * Getter/Setter for setting a flag if a page has the unsaved-changes directive (dirty form checker)
+        */
+        this.getUnsavedFormFlag = function() {
+            return pageHasDirtyFormChecking;
+        }
+        this.setUnsavedFormFlag = function(flagVal) {
+            pageHasDirtyFormChecking = flagVal;
+        }
+
+        /**
+         * Getter/Setter for setting a signout flag for dirty form checking purposes
+        */
+        this.getSignoutFlagValue = function() {
+            return isSigningOut;
+        }
+        this.setSignoutFlagValue = function(flagValue) {
+            isSigningOut = flagValue;
         }
 
         /**
@@ -454,6 +479,11 @@
         };
 
         /******* helper functions *********/
+        $rootScope.$on('$stateChangeSuccess', function(event) {
+            service.initVars();
+            console.log('lets c when it gets here');
+        });
+
         function _setAppVersion(version) {
             if (!version) {
                 //if null or empty value

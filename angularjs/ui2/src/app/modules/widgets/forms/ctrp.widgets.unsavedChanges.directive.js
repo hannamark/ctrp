@@ -31,6 +31,10 @@
                 var element = element;
                 var stateEventOccurred = false;
 
+                /* Set UserService flag for (self) unsaved-changes directive */
+                UserService.setUnsavedFormFlag(true);
+                console.log('or will this happen first');
+
                 setFormVars();
 
                 /* For pages with seperate list/CRUD views */
@@ -93,7 +97,7 @@
                             }
                         }
 
-                        if (UserService.isSigningOut) {
+                        if (UserService.getSignoutFlagValue()) {
                             UserService.logout();
                         }
                     }
@@ -158,9 +162,9 @@
                 function checkSignOut(e) {
                     if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
                         e.preventDefault();
-                        UserService.isSigningOut = false;
+                        UserService.setSignoutFlagValue(false);
                         stateEventOccurred = false;
-                    } else if (UserService.isSigningOut) {
+                    } else if (UserService.getSignoutFlagValue()) {
                         UserService.logout();
                     }
                 }
