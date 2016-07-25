@@ -30,6 +30,14 @@ And I will be able to review existing Trial Related Documents type
       |Other (If Available)      |
     
 
+And I will be able to add all Trial Related Documents type 
+
+      |Original Protocol         |
+      |Original IRB Approval     |
+      |Original Informed Consent |
+      |Other                     |
+      
+And the added documents should be added to the existing documents
 And I will be able to add Trial Related Document type Other 
 And I will be able to review or cancel my update
 When I click on the Review Button to Review my trial

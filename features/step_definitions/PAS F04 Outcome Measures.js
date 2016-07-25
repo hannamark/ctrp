@@ -38,18 +38,10 @@ var searchPeoplePage = require('../support/ListOfPeoplePage');
 var abstractionRegulatoryINDIDE = require('../support/abstractionRegulatoryIND');
 //Regulatory Information - Human Subject Safety
 var abstractionRegulatoryHuman = require('../support/abstractionRegulatoryHuman');
-//Collaborators
-var abstractionCollaborators = require('../support/abstractionTrialCollaborators');
 //General Trial Details
 var abstractionTrialDetails = require('../support/abstractionTrialDetails');
-//Regulatory Information - FDAAA
-var abstractionRegulatoryInfoFDAA = require('../support/abstractionRegulatoryInfo');
 //Trial Related Document
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
-//Participating Site
-var abstractionParticipatingSite = require('../support/abstractionParticipating');
-//Trial Status
-var abstractionTrialStatus = require('../support/abstractionTrailStatuses');
 //Left Navigation
 var abstractionLeftNavigationMenus = require('../support/abstractionLeftNav');
 //Scientific trial description
@@ -64,31 +56,9 @@ var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 
 module.exports = function() {
 
-    var login = new loginPage();
-    var helper = new helperMethods();
-    var projectFunctions = new projectFunctionMethods();
     var commonFunctions = new abstractionCommonMethods();
-    var pageMenu = new abstractionPageMenu();
-    var pageSearchTrail = new abstractionTrialSearchPage();
-    var nciSpecific = new abstractionNCISpecific();
-    var indIDE = new abstractionRegulatoryINDIDE();
-    var humanSafety = new abstractionRegulatoryHuman();
-    var trialCollaborators = new abstractionCollaborators();
-    var trialDetails = new abstractionTrialDetails();
-    var fdaaa = new abstractionRegulatoryInfoFDAA();
-    var trialDoc = new abstractionTrialRelatedDocument();
-    var participatingSite = new abstractionParticipatingSite();
-    var trialStatus = new abstractionTrialStatus();
     var leftNav = new abstractionLeftNavigationMenus();
-    var trialDesc = new scientificTrialDesc();
     var outcome = new scientificOutcome();
-    var searchOrg = new OrgPage();
-    var organizationSearch = new orgSearch();
-    var addTrial = new addTrialPage();
-    var projectFunctionsRegistry = new projectFunctionRegistryPage();
-    var searchPeople = new searchPeoplePage();
-    var searchTableHeader = '';
-    var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1789';
     var leadProtocolIDA = 'CTRP_01_1777';
     var optionA = '';
@@ -100,16 +70,6 @@ module.exports = function() {
     var outTitle = 'Test Outcome Measure Title';
     var timeFrame ='Test Time Frame';
     var description = 'Test Description Outcome Measure Details';
-    var lngTitle = 'Test Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor Bearing Microparticles in Metastatic Breast Cancer title';
-    var charLftStr = 'Test Brief Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor verify';
-    var decrCharLft = '4982 characters left';
-    var decrCharLftObjective = '31985 characters left';
-    var decrCharLftObjectiveA = '27000 characters left';
-    var decrCharLftDetail = '31975 characters left';
-    var decrCharLftDetailA = '27000 characters left';
-    var noCharLft = '0 characters left';
-    var errorMSGBT = 'Brief Title is Required';
-    var errorMSGBS = 'Summary is Required';
 
     /*
      Scenario: #1 I can add Outcome Measures for a trial
@@ -592,5 +552,218 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
+    /*
+     Scenario:  #7 I can delete Outcome Measure for a Trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     When I have selected the delete check box for an outcome measure
+     Then the information entered or edited on the Outcome Measures screen will not be saved to the trial record
+     And the screen will be refreshed with the data since the last save the list of outcome measures screen
+     When I have selected Select All
+     Then the delete checkbox for all Outcome Measure is checked
+     When I select Delete
+     Then the information for the Outcome Measures will be deleted
+     And the Outcome Measures will not be saved to the trial record
+     */
+
+    this.When(/^I have selected the delete check box for an outcome measure$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionC = 'Secondary';
+        outcome.selectOutcomeMeasureType(optionC);
+        outcome.setTitleTxt(outTitle +' Delete Test A');
+        outcome.setTimeFrameTxt(timeFrame +' Delete Test A');
+        outcome.setDescriptionTxt(description +' Delete Test A');
+        optionD = 'Yes';
+        outcome.selectSafetyIssue(optionD);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionC, 'verify', outTitle+' Delete Test A', timeFrame+' Delete Test A', description+' Delete Test A', optionD);
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionA = 'Primary';
+        outcome.selectOutcomeMeasureType(optionA);
+        outcome.setTitleTxt(outTitle +' Delete Test B');
+        outcome.setTimeFrameTxt(timeFrame +' Delete Test B');
+        outcome.setDescriptionTxt(description +' Delete Test B');
+        optionB = 'No';
+        outcome.selectSafetyIssue(optionB);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'verify', outTitle+' Delete Test B', timeFrame+' Delete Test B', description+' Delete Test B', optionB);
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'delete', outTitle+' Delete Test B', timeFrame+' Delete Test B', description+' Delete Test B', optionB);
+        outcome.clickDeleteSelectedOutcome('yes');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the information entered or edited on the Outcome Measures screen will not be saved to the trial record$/, function (callback) {
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'notexists', outTitle+' Delete Test B', timeFrame+' Delete Test B', description+' Delete Test B', optionB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the screen will be refreshed with the data since the last save the list of outcome measures screen$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        leftNav.waitForElement(outcome.outcomePageTitleDetails, 'Waiting for page title element');
+        outcome.checkOutcomePageTitle(pageTtitleA, 'details');
+        optionA = 'Primary';
+        outcome.selectOutcomeMeasureType(optionA);
+        outcome.setTitleTxt(outTitle +' Delete Test C');
+        outcome.setTimeFrameTxt(timeFrame +' Delete Test C');
+        outcome.setDescriptionTxt(description +' Delete Test C');
+        optionB = 'No';
+        outcome.selectSafetyIssue(optionB);
+        outcome.clickSaveOutcome();
+        outcome.checkOutcomePageTitle(pageTtitle, 'list');
+        outcome.findOutcomeToVerifyEditCopyDelete(optionA, 'verify', outTitle+' Delete Test C', timeFrame+' Delete Test C', description+' Delete Test C', optionB);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have selected Select All$/, function (callback) {
+        //utilized following method to select all
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the delete checkbox for all Outcome Measure is checked$/, function (callback) {
+        //utilized following method to select all and checked
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I select Delete$/, function (callback) {
+        outcome.deleteAllOutcomeList('yes');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the information for the Outcome Measures will be deleted$/, function (callback) {
+        outcome.verifyDeleteAllOutcomeList();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Outcome Measures will not be saved to the trial record$/, function (callback) {
+        //verified the list of table does not exits on the previous steps
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #8  Title field character count
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     When I am entering into Title
+     Then information text appears below the title field to display the number of characters available to enter into the field.
+     |255 characters left|
+     When 255 characters have been entered at the title field
+     Then no additional text can be entered at the title field
+     */
+
+    this.When(/^I am entering into Title$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        //Test Outcome Measure Title Characters left Test
+        outcome.setTitleTxt(outTitle +' Characters left Test');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^information text appears below the title field to display the number of characters available to enter into the field\.$/, function (table, callback) {
+        titleCharLftA = '208 characters left';
+        commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, titleCharLftA, '0', 'Verifying Title field Character left message');
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^(\d+) characters have been entered at the title field$/, function (arg1, callback) {
+        var v = Array(parseInt(arg1)).join('N');
+        console.log('v: '+v);
+        outTitle = v + 'N';
+        outcome.setTitleTxt(outTitle);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^no additional text can be entered at the title field$/, function (callback) {
+        titleCharLftA = '0 characters left';
+        commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, titleCharLftA, '0', 'Verifying Title field Character left message');
+        commonFunctions.alertMsgOK();
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #9  Time Frame field character count
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     When I am entering into Time Frame field
+     Then information text appears below the Time Frame field to display the number of characters available to enter into the field.
+     |254 characters left|
+     When 254 characters have been entered at the time frame field
+     Then no additional text can be entered at the time frame field
+     */
+
+    this.When(/^I am entering into Time Frame field$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        //Test Time Frame Characters left Test
+        outcome.setTimeFrameTxt(timeFrame +' Characters left Test');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^information text appears below the Time Frame field to display the number of characters available to enter into the field\.$/, function (table, callback) {
+        titleCharLftB = '219 characters left';
+        commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, titleCharLftB, '1', 'Verifying Time Frame field Character left message');
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^(\d+) characters have been entered at the time frame field$/, function (arg1, callback) {
+        var t = Array(parseInt(arg1)).join('N');
+        console.log('t: '+t);
+        timeFrame = t + 'N';
+        outcome.setTimeFrameTxt(timeFrame);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^no additional text can be entered at the time frame field$/, function (callback) {
+        timeCharLftA = '0 characters left';
+        commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, timeCharLftA, '1', 'Verifying Time Frame field Character left message');
+        commonFunctions.alertMsgOK();
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario:  #10 Description field character count
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Outcome Measures screen
+     When I am entering into Description
+     Then information text appears below the Detailed Description field to display the number of characters available to enter into the field.
+     |1000 characters left|
+     When 1000 characters have been entered at the description field
+     Then no additional text can be entered at the description field
+     */
+
+    this.When(/^I am entering into Description$/, function (callback) {
+        outcome.clickAddOutcomeMeasure();
+        //Test Description Outcome Measure Details Characters left Test
+        outcome.setDescriptionTxt(description+' Characters left Test');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^information text appears below the Detailed Description field to display the number of characters available to enter into the field\.$/, function (table, callback) {
+        descCharLftB = '939 characters left';
+        commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, descCharLftB, '2', 'Verifying Description field Character left message');
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^(\d+) characters have been entered at the description field$/, function (arg1, callback) {
+        var d = Array(parseInt(arg1)).join('N');
+        console.log('d: '+d);
+        description = d + 'N';
+        outcome.setDescriptionTxt(description);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^no additional text can be entered at the description field$/, function (callback) {
+        descCharLftA = '0 characters left';
+        commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, descCharLftA, '2', 'Verifying Description field Character left message');
+        commonFunctions.alertMsgOK();
+        browser.sleep(25).then(callback);
+    });
 
 };
