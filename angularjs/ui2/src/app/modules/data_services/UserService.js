@@ -16,6 +16,10 @@
         var service = this;
         var appVersion = '';
         var appRelMilestone = '';
+        var userCtrl = null;
+
+        this.isSigningOut = false;
+        this.currentForm = null;
 
         /**
          * Check if the the user/viewer is logged in by checking the
@@ -72,8 +76,12 @@
         /**
          * Log out user from backend as well as removing local cache
          */
-        this.logout = function () {
-            var self = this;
+        this.logout = function() {
+            userCtrl.signedIn = false;
+            userCtrl.username = '';
+            userCtrl.userRole = '';
+            userCtrl.isCurationEnabled = false;
+            userCtrl.isCurationModeSupported = false;
 
             var username = LocalCacheService.getCacheWithKey('username');
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: 'Angular'})
@@ -90,8 +98,16 @@
                 }).catch(function (err) {
                     $log.error('error in logging out: ' + JSON.stringify(err));
                 });
-        }; //logout
 
+            this.isSigningOut = false;
+        }
+
+        /**
+         * Log out user from backend as well as removing local cache
+         */
+        this.setUserConfig = function(controller) {
+            userCtrl = controller;
+        }
 
         /**
          *
@@ -239,11 +255,11 @@
         this.endUserTrialsOwnership = function (searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_END, searchParams);
         }; //endUsersTrialsOwnership
-        
+
         this.transferUserTrialsOwnership = function (searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_TRANSFER, searchParams);
         }; //endUsersTrialsOwnership
-        
+
         /**
          * Check if the curation mode is supported for the user role
          *
@@ -382,7 +398,7 @@
             });
 
         };
-        
+
         this.TransferTrialsGridMenuItems = function (scope, controller) {
             var menuArr =
                 [
@@ -436,7 +452,7 @@
                                     || curUserRole === 'ROLE_ACCOUNT-APPROVER'
                                         || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
-        
+
         /******* helper functions *********/
         function _setAppVersion(version) {
             if (!version) {
@@ -485,10 +501,6 @@
                     //console.log('modal closed, TODO redirect');
                 });
             })();
-
-
         }
     }
-
-
 })();
