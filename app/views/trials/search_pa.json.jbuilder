@@ -14,7 +14,7 @@ json.trials do
     else
       json.current_precessing_status nil
     end
-    current_milestone = trial.milestone_wrappers.present? ? trial.milestone_wrappers.last.milestone.name : nil
+    current_milestone = current_submission.milestone_wrappers.present? ? current_submission.milestone_wrappers.last.milestone.name : nil
     json.current_milestone current_milestone
     json.scientific_milestone  ""
     if  trial.milestone_wrappers.present?
