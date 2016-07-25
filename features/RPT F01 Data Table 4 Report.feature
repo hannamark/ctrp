@@ -11,4 +11,4 @@ As a NCI staff member, I can generate Data Table 4 Reports for each NCI-designat
       And I enter a Fiscal Year
       And I request a Data Table 4 report
      Then a Data Table 4 report for the Cancer Center Family and the Reporting Period selected will be displayed
-      And I will be able to export the report to Excel or PDF
+      And I will be able to export the report to Excel or PDF 
