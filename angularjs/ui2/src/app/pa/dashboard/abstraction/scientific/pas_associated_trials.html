@@ -42,7 +42,7 @@
                            </span>
                         </div>
                         <div class="col-xs-12 col-sm-2">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" id="lookup_trial" class="btn btn-primary">
                                 <i class="glyphicon glyphicon-search"></i> Look Up Trial
                             </button>
                         </div>
@@ -68,13 +68,13 @@
 
                     <div class="form-group no-bottom-margin">
                         <div class="btn-toolbar">
-                            <button type="button" class="btn btn-primary pull-right" ng-disabled="assoTrialsView.foundTrialObj.official_title.length==0" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">
+                            <button type="button" id="associated_save" class="btn btn-primary pull-right" ng-disabled="assoTrialsView.foundTrialObj.official_title.length==0" ng-click="assoTrialsView.associateTrial(assoTrialsView.foundTrialObj)">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">
+                            <button type="button" id="associated_reset" class="btn btn-warning pull-right" ng-click="assoTrialsView.resetTrialLookupForm(associated_trials_form)">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" id="oc_site_list" restriction-field ng-click="assoTrialsView.reload()">
+                            <button type="button" class="btn btn-warning pull-right" id="associated_back" restriction-field ng-click="assoTrialsView.reload()">
                                 <i class="glyphicon glyphicon-arrow-left"></i> Back to Associated Trials List
                             </button>
                         </div>
@@ -132,10 +132,10 @@
                         <!-- <button type="button" class="btn btn-primary pull-right" id="save_btn" restriction-field ng-click="assoTrialsView.updateTrialAssociations()">
                         <i class="glyphicon glyphicon-ok"></i>  Save
                         </button> -->
-                        <button type="button" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
+                        <button type="button" id="add_associated" restriction-field  ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable" class="btn btn-primary pull-right" ng-click="assoTrialsView.showTrialLookupForm(associated_trials_form)">
                             <i class="glyphicon glyphicon-plus"></i> Add Associated Trial
                         </button>
-                        <button type="button" class="btn btn-danger pull-right" id="cancel_btn"
+                        <button type="button" class="btn btn-danger pull-right" id="delete_btn"
                             restriction-field
                             ctrp-confirm
                             confirm-msg="Click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort."
