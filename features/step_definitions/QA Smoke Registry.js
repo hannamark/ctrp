@@ -28,6 +28,9 @@ var addPeoplePage = require('../support/AddPersonPage');
 var searchFamilyPage = require('../support/ListOfFamiliesPage');
 var addFamilyPage = require('../support/AddFamilyPage');
 var selectValuePage = require('../support/CommonSelectList');
+var userProfilePage = require('../support/userProfilePage');
+var mailVerificationPage = require('../support/mailVerification');
+
 
 
 module.exports = function () {
@@ -50,11 +53,58 @@ module.exports = function () {
     var searchFamily = new searchFamilyPage();
     var addFamily = new addFamilyPage();
     var selectValue = new selectValuePage();
+    var userProfile = new userProfilePage();
+    var emailVerify = new mailVerificationPage();
 
     var getDBConnection = '';
 
     var protocolDoc = 'testSampleDocFile.docx';
     var IRBDoc = 'testSampleXlsFile.xls';
+
+    /**** Email Verification ****/
+    var gmaillink = 'https://mail.google.com/mail/#inbox';
+    var gmailID = 'ctrptrialsubmitter@gmail.com';
+ //   var firstLastName = 'rita tam';
+
+
+    this.Given(/^I am logged in to CTRP Registry application with User "([^"]*)" and email id "([^"]*)"$/, function (arg1, arg2, callback) {
+        loggedInUser = arg1;
+        emailIDOfUser = arg2;
+        commonFunctions.onPrepareLoginTest(arg1);
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 40).then(function () {
+            trialMenuItem.clickHomeSearchTrial();
+            login.clickWriteMode('On');
+
+        element(by.linkText(arg1)).click();
+
+            userProfile.userProfileEmailNotifications.get(0).isSelected().then(function(emailOption){
+        userProfile.userProfileEmail.getAttribute('value').then(function(userCurrentEmail){
+            console.log('Current email' + userCurrentEmail);
+            console.log('Provided email' + emailIDOfUser );
+
+           if(userCurrentEmail !== emailIDOfUser || !emailOption){
+               console.log('should not come here');
+               userProfile.setAddUserEmail(emailIDOfUser);
+
+
+        userProfile.userProfilePhone.getAttribute('value').then(function(userCurrentPhone){
+            console.log('user phone' + userCurrentPhone);
+            if(userCurrentPhone === ''){
+                console.log('should not come here');
+                userProfile.setAddUserPhone('212-444-5656');
+            }
+        });
+        userProfile.selectAddUserEmailNotifications('yes');
+                userProfile.clickAddUserProfileSaveButton();}
+            browser.sleep(5000);
+            });
+        });
+        });
+        browser.sleep(25).then(callback);
+    });
 
 
     this.Given(/^I am logged in to CTRP Registry application with User "([^"]*)"$/, function (arg1, callback) {
@@ -173,10 +223,18 @@ module.exports = function () {
         browser.sleep(25).then(callback);
     });
 
-
     this.When(/^I go to Search Trial page$/, function (callback) {
-        trialMenuItem.clickTrials();
-        trialMenuItem.clickListSearchTrialLink();
+        //browser.get('ui/#/main/sign_in');
+        //commonFunctions.onPrepareLoginTest(loggedInUser);
+        //browser.driver.wait(function () {
+        //    console.log('wait here');
+        //    return true;
+        //}, 40).then(function () {
+        //    trialMenuItem.clickHomeSearchTrial();
+        //    login.clickWriteMode('On');
+            trialMenuItem.clickTrials();
+            trialMenuItem.clickListSearchTrialLink();
+      //  });
         browser.sleep(25).then(callback);
     });
 
@@ -314,6 +372,87 @@ module.exports = function () {
         }
         browser.sleep(25).then(callback);
     });
+    //
+    //beforeEach(function () {
+    //    browser.get("/#login");
+    //    browser.waitForAngular();
+    //});
 
+    this.Given(/^verify all the emails generated above$/, function (callback) {
+        // make sure you include in options:
+        //   fetchUnreadOnStart: true,
+        var count = 0;
+
+        mailListener1.on("mail", function(mail, seqno, attributes) {
+            var mailuid = attributes.uid,
+                toMailbox = '[Gmail]/All Mail',
+                i = ++count;
+
+            if (i > 20) {
+                mailListener1.stop(); // start listening
+                return;
+            }
+
+            console.log('email parsed', {
+                i: i,
+                subject: mail.subject,
+                seqno: seqno,
+                uid: attributes.uid,
+                attributes: attributes
+            });
+
+            console.log('attempting to mark msg read/seen');
+            mailListener1.imap.addFlags(mailuid, '\\Seen', function (err) {
+                if (err) {
+                    console.log('error marking message read/SEEN');
+                    return;
+                }
+
+                console.log('moving ' + (seqno || '?') + ' to ' + toMailbox);
+                mailListener1.imap.move(mailuid, toMailbox, function (err) {
+                    if (err) {
+                        console.log('error moving message');
+                        return;
+                    }
+                    console.log('moved ' + (seqno || '?'), mail.subject);
+                });
+            });
+        });
+
+
+
+ //   mailListener1.start(); // start listening
+
+// When testing this script with GMail in US it took about
+// 8 seconds to get unread email list, another 40 seconds
+// to archive those 20 messages (move to All Mail).
+//    setTimeout(function () {
+//        mailListener1.stop(); // start listening
+//    }, 60*1000);
+        //browser.controlFlow().await(emailVerify.getLastEmail1()).then(function (email) {
+        //    expect(email.subject).toEqual("New Registration Code");
+        //    expect(email.headers.to).toEqual("myemail@email.com");
+        //
+        //    // extract registration code from the email message
+        //    //var pattern = /Registration code is: (\w+)/g;
+        //    //var regCode = pattern.exec(email.text)[1];
+        //
+        //    console.log(email.subject);
+        //});
+
+            //if(emailIDOfUser === 'ctrptrialsubmitter@gmail.com'){
+        //    nciID.then(function(nciIDValue){
+        //        leadProtocolID.then(function(leadProtocolIDValue){
+        //            emailVerify.gmailMailVerification(gmaillink, gmailID, 'NCI CTRP: Trial RECORD CREATED for ' + nciIDValue + ',' + leadProtocolIDValue, '', callback);
+        //        });
+        //    });
+        //
+        //}
+        //else {
+        //    console.log('Different Email Id is provided so Verify the email manually');
+        //}
+        browser.sleep(25).then(callback);
+    });//();
+    //}//);
 
 };

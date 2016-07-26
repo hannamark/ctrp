@@ -62,7 +62,7 @@ class TrialsControllerTest < ActionController::TestCase
     search_result = JSON.parse(test_response.body)
     assert_equal phase.name, search_result['trials'][0]['phase']
   end
-
+=begin
   test "should search trial by Milestone" do
     @trial = trials(:three)
     milestone = milestones(:one)
@@ -102,7 +102,7 @@ class TrialsControllerTest < ActionController::TestCase
     #puts "search_result = #{search_result.inspect}"
     assert_equal protocol_id_origin.code + " " + trial.other_ids.by_value(protocol_id_origin.code).first.protocol_id, search_result['trials'][0]['other_ids']
   end
-
+=end
   test "should search trial by Purpose" do
     purpose = primary_purposes(:one)
     test_response = post :search, purposes: [purpose], format: 'json'

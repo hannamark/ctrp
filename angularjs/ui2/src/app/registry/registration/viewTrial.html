@@ -145,7 +145,14 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.funding_sources.length > 0 || viewTrialView.curTrial.program_code" class="border-bottom">Data Table 4 Information:</h5>
+                <h5 ng-if="viewTrialView.curTrial.study_source || viewTrialView.curTrial.funding_sources.length > 0 || viewTrialView.curTrial.program_code" class="border-bottom">Data Table 4 Information:</h5>
+
+                <div ng-if="viewTrialView.curTrial.study_source" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Study Source:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.study_source.name}}
+                    </div>
+                </div>
 
                 <div ng-repeat="funding_source in viewTrialView.curTrial.funding_sources track by $index" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"><span ng-if="$index == 0">Data Table 4 Funding Source:</span></label>
@@ -392,9 +399,9 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.participating_sites.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">Participating Sites:</h5>
+                <h5 ng-if="viewTrialView.curTrial.participating_sites.length > 0 || viewTrialView.curTrial.internal_source.code === 'IMP'" class="border-bottom">Participating Sites:</h5>
 
-                <div ng-if="viewTrialView.curTrial.participating_sites.length > 0 && viewTrialView.curTrial.is_owner" class="form-group">
+                <div ng-if="viewTrialView.curTrial.participating_sites.length > 0" class="form-group">
                     <div class=" col-xs-12 col-sm-12">
                         <table class="table table-bordered table-striped table-condensed">
                             <thead>
@@ -414,6 +421,15 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div ng-if="viewTrialView.curTrial.internal_source.code === 'IMP'" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3"></label>
+                    <div class="col-xs-12 col-sm-9 form-text">
+                        <button ng-if="viewTrialView.curTrial.actions.includes('add-my-site')" type="button" restriction-field class="btn btn-primary pull-right" id="add_site_btn" ng-click="viewTrialView.addMySite()">
+                            Add My Site
+                        </button>
                     </div>
                 </div>
             </form>

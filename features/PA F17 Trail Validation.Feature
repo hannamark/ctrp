@@ -10,7 +10,7 @@ And the trial is a Protocol Trial
 Then the sidebar menu will be displayed expanded:
 |Trial Validation - <Current Trial ID>|
 |Trial Overview (Section)|
-|Trial Information|
+|Trial Identification|
 |Trial History|
 |Trial Milestones|
 |On Hold Info|
@@ -35,7 +35,7 @@ And the trial is a Imported Trial
 Then the sidebar menu will be displayed expanded:
 |Trial Validation - <Current Trial ID>|
 |Trial Overview (Section)|
-|Trial Information|
+|Trial Identification|
 |Trial History|
 |Trial Milestones|
 |On Hold Info|

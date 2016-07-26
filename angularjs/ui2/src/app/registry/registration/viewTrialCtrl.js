@@ -15,6 +15,10 @@
         vm.curTrial = trialDetailObj;
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
 
+        vm.addMySite = function () {
+            $state.go('main.addParticipatingSite', {trialId: vm.curTrial.id});
+        };
+
         activate();
 
         /****************************** implementations **************************/
