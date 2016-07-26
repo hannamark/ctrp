@@ -205,9 +205,12 @@
             vm.change_memo = '';
             vm.protocol_highlighted = '';
 
-            appendDocuments();
+            activate();
 
-            $scope.trial_form.$setPristine();
+            /* Needed because some of the rests above trigger $watches, causing form to be dirty again */
+            $timeout(function() {
+               $scope.trial_form.$setPristine();
+            }, 1);
         };
 
         vm.updateTrial = function(updateType) {
@@ -252,12 +255,14 @@
                 });
             }
 
+            console.log('addedFses length is: ', vm.addedFses.length);
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
                     vm.curTrial.trial_funding_sources_attributes.push(fs);
                 });
             }
+            console.log('addedFses length is: ', vm.addedFses.length);
 
             if (vm.addedGrants.length > 0) {
                 vm.curTrial.grants_attributes = [];
@@ -335,15 +340,16 @@
                             toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                         }
                     }, 100);
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
+
+                    $timeout(function() {
+                       $scope.trial_form.$setPristine();
+                    }, 1);
                 }
             }).catch(function(err) {
                 vm.disableBtn = true; // re-enable button to allow more attempts without having to refresh page
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             }).finally(function() {
-                // do something here if necessary
+                vm.disableBtn = false;
             });
         }; // updateTrial
 
@@ -974,6 +980,7 @@
         };
 
         activate();
+        console.log('addedFses length at init is: ', vm.addedFses.length);
 
         /*
             Moving these variable definitions after activate() has been invoked.
