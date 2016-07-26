@@ -1256,7 +1256,7 @@
                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn" ng-disabled="trialDetailView.disableBtn">
                             {{trial_form.$invalid ? 'Review' : 'Submit'}}
                         </button>
-                        <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ng-disabled="trialDetailView.disableBtn">
+                        <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reset()" ng-disabled="trialDetailView.disableBtn">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                     </div>
