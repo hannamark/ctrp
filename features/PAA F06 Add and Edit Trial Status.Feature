@@ -546,7 +546,7 @@ Then the Trial Date type could be actual
 And the Trial date Type could be anticipated
 When the Trial date is in the future
 Then the Trial date type must always be anticipated
-@runthis
+
 Scenario: #22 general rules for Study Date values are as follows
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Status Screen

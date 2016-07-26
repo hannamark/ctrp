@@ -145,7 +145,14 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.funding_sources.length > 0 || viewTrialView.curTrial.program_code" class="border-bottom">Data Table 4 Information:</h5>
+                <h5 ng-if="viewTrialView.curTrial.study_source || viewTrialView.curTrial.funding_sources.length > 0 || viewTrialView.curTrial.program_code" class="border-bottom">Data Table 4 Information:</h5>
+
+                <div ng-if="viewTrialView.curTrial.study_source" class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3">Study Source:</label>
+                    <div class="col-xs-12 col-sm-6 form-text">
+                        {{viewTrialView.curTrial.study_source.name}}
+                    </div>
+                </div>
 
                 <div ng-repeat="funding_source in viewTrialView.curTrial.funding_sources track by $index" class="form-group">
                     <label class="control-label col-xs-12 col-sm-3"><span ng-if="$index == 0">Data Table 4 Funding Source:</span></label>
