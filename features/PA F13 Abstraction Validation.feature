@@ -190,7 +190,7 @@ And the Description and Comment will be grouped by Section
   |	PAS Outcome	         |Primary Outcome is null	                                                                                                        |At least one primary outcome is required	                                                                                            |	[Select Outcome Measures] from Scientific Data menu.	   |
  
 
-
+Trial status warnings scenario
  Scenario: #5 Validation Display for Warnings
     Given I have selected a Trial
     And I am on the Abstraction Validation screen
