@@ -1,24 +1,23 @@
 @PA @global
-Feature: As a CTRP Scientific  Abstractor, I can add and edit Associated Trial 
-
-Scenario: # I can add an Associated Trial for a trial
+Feature:  PAS F06 Associated Trials
+As a CTRP Scientific  Abstractor, I can add and edit Associated Trial
+@runthis
+Scenario: #1 I can add an Associated Trial for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
 And I am on the Associated Trials screen
 When  I have selected the Add button
 Then I am on the Add Associated Trial screen
-And I must select <Identifier Type>
-|Identifier Type|
-|NCI |
-|NCT|
+And I must select <IdentifierType>
+|IdentifierType  |
+|NCI              |
+|NCT              |
 And I must enter the Trial Identifier
 When I click the Look Up Trial button
 Then the Requested Trial is retrieved
-
-      |Identifier type  |Retrieved from  |
-      |NCI  |CTRP  |
-      |NCT  |ClinicalTrials.gov  |
-      
+|Identifier type  |Retrieved from         |
+|NCI              |CTRP                   |
+|NCT              |ClinicalTrials.gov     |
 And the Clinical Research Category populates
 And the Official Title populates
 When I have clicked the Save button
@@ -31,18 +30,16 @@ Given the added Associated Trial is a CTRP study
 When the Associated Trial is displayed on the Associated Trials screen
 Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are added
 
-      |AssociatedTrialFields| 
-      |Identifier Type  |
-      |Trial Identifier  |
-      | Clinical Research Category |
-      |Official Title  |
-      
-      Examples:
-      
-      |CTRPstudyID|Title | ClinRschCat|AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory  | AssociatedTrial_Official Title| 
-      |NCI111  |Root study  |Interventional  |NCI555 |  Ancillary Correlative|Assoc study  |
-      |NCI555  |Assoc Study | Ancillary Correlative  |NCI111  |Inteventional  | Root Study|
+|AssociatedTrialFields        |
+|Identifier Type              |
+|Trial Identifier             |
+|Clinical Research Category   |
+|Official Title               |
 
+Examples:
+|CTRPstudyID|Title       |ClinRschCat            |AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory|AssociatedTrial_Official Title|
+|NCI111     |Root study  |Interventional         |NCI555                            |Ancillary Correlative                   |Assoc study                   |
+|NCI555     |Assoc Study |Ancillary Correlative  |NCI111                            |Inteventional                           |Root Study                    |
 
 Scenario: #3 Associated Trial is not found
 Given I am on the Add Associated Trials screen

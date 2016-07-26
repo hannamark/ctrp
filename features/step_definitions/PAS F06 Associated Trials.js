@@ -111,6 +111,95 @@ module.exports = function() {
     var errorMSGBT = 'Brief Title is Required';
     var errorMSGBS = 'Summary is Required';
 
+    /*
+     Scenario: #1 I can add an Associated Trial for a trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Associated Trials screen
+     When  I have selected the Add button
+     Then I am on the Add Associated Trial screen
+     And I must select <IdentifierType>
+     |IdentifierType  |
+     |NCI              |
+     |NCT              |
+     And I must enter the Trial Identifier
+     When I click the Look Up Trial button
+     Then the Requested Trial is retrieved
+     |Identifier type  |Retrieved from         |
+     |NCI              |CTRP                   |
+     |NCT              |ClinicalTrials.gov     |
+     And the Clinical Research Category populates
+     And the Official Title populates
+     When I have clicked the Save button
+     Then the associated study displays on the Associated Trials screen
+     And the Message Record Created displays
+     And the Associated Trial will be associated with the trial
+     */
+
+    this.Given(/^I am on the Associated Trials screen$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I have selected the Add button$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I am on the Add Associated Trial screen$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I must select (.*)$/, function (IdentifierType, table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I must enter the Trial Identifier$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I click the Look Up Trial button$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the Requested Trial is retrieved$/, function (table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the Clinical Research Category populates$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the Official Title populates$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.When(/^I have clicked the Save button$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the associated study displays on the Associated Trials screen$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the Message Record Created displays$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^the Associated Trial will be associated with the trial$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
 
 };
