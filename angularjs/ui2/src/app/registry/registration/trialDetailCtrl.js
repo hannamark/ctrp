@@ -196,17 +196,16 @@
             vm.nih_nci = null;
             vm.authority_country = null;
             vm.authority_org = null;
-/*
-            vm.protocol_document
-            vm.irb_approval
-            vm.participating_sites
-            vm.informed_consent
-            vm.other_documents
-            vm.change_memo
-            vm.protocol_highlighted
-*/
 
-            //activate();
+            vm.protocol_document = '';
+            vm.irb_approval = '';
+            vm.participating_sites = '';
+            vm.informed_consent = '';
+            vm.other_documents = '';
+            vm.change_memo = '';
+            vm.protocol_highlighted = '';
+
+            appendDocuments();
 
             $scope.trial_form.$setPristine();
         };
