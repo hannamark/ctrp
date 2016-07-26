@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720185058) do
+ActiveRecord::Schema.define(version: 20160726153944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -860,6 +860,7 @@ ActiveRecord::Schema.define(version: 20160720185058) do
     t.string   "extension",              limit: 255
     t.string   "contact_type",           limit: 255
     t.string   "local_trial_identifier"
+    t.integer  "legacy_ps_id"
   end
 
   add_index "participating_sites", ["organization_id"], name: "index_participating_sites_on_organization_id", using: :btree
