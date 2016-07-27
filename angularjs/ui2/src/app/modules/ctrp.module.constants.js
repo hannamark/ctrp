@@ -65,7 +65,9 @@
             'ANATOMIC_SITES': '/ctrp/registry/anatomic_sites.json',
             'ACCEPTED_FILE_TYPES_REG': '/ctrp/registry/accepted_file_types_for_registry.json',
             'ACCEPTED_FILE_TYPES': '/ctrp/registry/accepted_file_types.json',
-            'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json',
+            'VALIDATE_TRIAL_STATUS': '/ctrp/registry/trials/validate_status.json', // registry
+            'PAA_VALIDATE_TRIAL_STATUS': '/ctrp/pa/paa_validate_trial_status.json', // PA
+            'ABSTRACTION_VALIDATE_TRIAL_STATUS': '/ctrp/pa/abstraction_validate_trial_status.json', // PA
             'VALIDATE_MILESTONE': '/ctrp/registry/trials/validate_milestone.json',
             'VALIDATE_SR_STATUS': '/ctrp/registry/participating_sites/validate_status.json',
             'SEARCH_CLINICAL_TRIALS_GOV': '/ctrp/registry/trials/search_clinical_trials_gov.json',
