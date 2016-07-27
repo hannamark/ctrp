@@ -71,7 +71,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
-    @paramsLoader.load_params(@xmlMapperObject,"update","")
+    @paramsLoader.load_params(@xmlMapperObject,"update",@trial)
 
     if !@paramsLoader.errors.empty?
       render xml: @paramsLoader.errors, status:'404'
@@ -189,6 +189,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         xsd_errors.push("sponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if b.length >= 1
         xsd_errors.push("pi: Creating new Person feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if c.length >= 1
         xsd_errors.push("summary4FundingSponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if d.length >= 1
+
+      #e = doc.xpath("//")
 
     end
 
