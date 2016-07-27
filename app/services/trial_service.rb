@@ -15,20 +15,22 @@ class TrialService
 
   def initialize(params)
     @trial = params[:trial]
-    @@is_IND_protocol = @trial.ind_ide_question == 'Yes' if @trial.present? ## find out if this trial is IND protocol
-    cur_trial_status = @trial.trial_status_wrappers.last if @trial.present? && @trial.trial_status_wrappers.present?
-    cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
-    @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
-    @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
-    @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
-    @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
-    @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
 
-    @@is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
-    @@is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
-    @@is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
-    @@is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
+    if @trial.present?
+      @@is_IND_protocol = @trial.ind_ide_question == 'Yes' ## find out if this trial is IND protocol
+      cur_trial_status = @trial.trial_status_wrappers.last if @trial.trial_status_wrappers.present?
+      cur_trial_status_id = cur_trial_status.nil? ? nil : cur_trial_status.trial_status_id
+      @@cur_trial_status_code = cur_trial_status_id.nil? ? nil : TrialStatus.find(cur_trial_status_id).code
+      @@is_cur_trial_status_active = @@cur_trial_status_code == 'ACT'
+      @@is_cur_trial_status_approved = @@cur_trial_status_code == 'APP'
+      @@is_cur_trial_status_inreview = @@cur_trial_status_code == 'INR'
+      @@is_cur_trial_status_withdrawn = @@cur_trial_status_code == 'WIT'
 
+      @@is_interventional_cat = ResearchCategory.find_by_code('INT') == @trial.research_category
+      @@is_observational_cat = ResearchCategory.find_by_code('OBS') == @trial.research_category
+      @@is_expanded_cat = ResearchCategory.find_by_code('EXP') == @trial.research_category
+      @@is_ancillary_cat = ResearchCategory.find_by_code('ANC') == @trial.research_category
+    end
   end
 
   def get_json
@@ -1080,7 +1082,11 @@ class TrialService
     import_params[:other_ids_attributes].push({protocol_id_origin_id: ProtocolIdOrigin.find_by_code('NCT').id, protocol_id: xml.xpath('//nct_id').text})
 
     import_params[:brief_title] = xml.xpath('//brief_title').text
-    import_params[:official_title] = xml.xpath('//official_title').text
+    if xml.xpath('//official_title').present?
+      import_params[:official_title] = xml.xpath('//official_title').text
+    elsif xml.xpath('//brief_title').present?
+      import_params[:official_title] = xml.xpath('//brief_title').text
+    end
 
     org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
     orgs = Organization.all
@@ -1155,10 +1161,13 @@ class TrialService
 
     import_params[:outcome_measures_attributes] = []
     xml.xpath('//primary_outcome').each do |p_outcome|
-      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
+      import_params[:outcome_measures_attributes].push({title: p_outcome.xpath('measure').text, time_frame: p_outcome.xpath('time_frame').text, safety_issue: p_outcome.xpath('safety_issue').text, description: p_outcome.xpath('description').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('PRI').id})
     end
     xml.xpath('//secondary_outcome').each do |s_outcome|
-      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
+      import_params[:outcome_measures_attributes].push({title: s_outcome.xpath('measure').text, time_frame: s_outcome.xpath('time_frame').text, safety_issue: s_outcome.xpath('safety_issue').text, description: s_outcome.xpath('description').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('SEC').id})
+    end
+    xml.xpath('//other_outcome').each do |o_outcome|
+      import_params[:outcome_measures_attributes].push({title: o_outcome.xpath('measure').text, time_frame: o_outcome.xpath('time_frame').text, safety_issue: o_outcome.xpath('safety_issue').text, description: o_outcome.xpath('description').text, outcome_measure_type_id: OutcomeMeasureType.find_by_code('OTH').id})
     end
 
     import_params[:num_of_arms] = xml.xpath('//number_of_arms').text if xml.xpath('//number_of_arms').present?
@@ -1200,6 +1209,10 @@ class TrialService
         import_params[:min_age] = splits[0]
         ctrp_min_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
         import_params[:min_age_unit_id] = ctrp_min_age_unit.id if ctrp_min_age_unit.present?
+      else
+        import_params[:min_age] = 0
+        ctrp_min_age_unit = AgeUnit.find_by_code('YRS')
+        import_params[:min_age_unit_id] = ctrp_min_age_unit.id if ctrp_min_age_unit.present?
       end
     end
 
@@ -1209,6 +1222,10 @@ class TrialService
         splits = max_age_text.split(' ')
         import_params[:max_age] = splits[0]
         ctrp_max_age_unit = AgeUnit.find_by_name(splits[1]) if splits[1].present?
+        import_params[:max_age_unit_id] = ctrp_max_age_unit.id if ctrp_max_age_unit.present?
+      else
+        import_params[:max_age] = 999
+        ctrp_max_age_unit = AgeUnit.find_by_code('YRS')
         import_params[:max_age_unit_id] = ctrp_max_age_unit.id if ctrp_max_age_unit.present?
       end
     end
@@ -1318,7 +1335,7 @@ class TrialService
   def map_phase (ct_phase)
     case ct_phase
       when 'N/A'
-        ctrp_phase_code = 'N/A'
+        ctrp_phase_code = 'NA'
       when 'Phase 0'
         ctrp_phase_code = '0'
       when 'Phase 1'
@@ -1334,7 +1351,7 @@ class TrialService
       when 'Phase 4'
         ctrp_phase_code = 'IV'
       else
-        ctrp_phase_code = ''
+        ctrp_phase_code = 'NA'
     end
 
     return ctrp_phase_code

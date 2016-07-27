@@ -28,6 +28,9 @@ var addPeoplePage = require('../support/AddPersonPage');
 var searchFamilyPage = require('../support/ListOfFamiliesPage');
 var addFamilyPage = require('../support/AddFamilyPage');
 var selectValuePage = require('../support/CommonSelectList');
+var userProfilePage = require('../support/userProfilePage');
+var mailVerificationPage = require('../support/mailVerification');
+
 
 
 module.exports = function () {
@@ -50,13 +53,58 @@ module.exports = function () {
     var searchFamily = new searchFamilyPage();
     var addFamily = new addFamilyPage();
     var selectValue = new selectValuePage();
+    var userProfile = new userProfilePage();
+    var emailVerify = new mailVerificationPage();
 
     var getDBConnection = '';
 
     var protocolDoc = 'testSampleDocFile.docx';
     var IRBDoc = 'testSampleXlsFile.xls';
 
-   
+    /**** Email Verification ****/
+    var gmaillink = 'https://mail.google.com/mail/#inbox';
+    var gmailID = 'ctrptrialsubmitter@gmail.com';
+ //   var firstLastName = 'rita tam';
+
+
+    this.Given(/^I am logged in to CTRP Registry application with User "([^"]*)" and email id "([^"]*)"$/, function (arg1, arg2, callback) {
+        loggedInUser = arg1;
+        emailIDOfUser = arg2;
+        commonFunctions.onPrepareLoginTest(arg1);
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 40).then(function () {
+            trialMenuItem.clickHomeSearchTrial();
+            login.clickWriteMode('On');
+
+        element(by.linkText(arg1)).click();
+
+            userProfile.userProfileEmailNotifications.get(0).isSelected().then(function(emailOption){
+        userProfile.userProfileEmail.getAttribute('value').then(function(userCurrentEmail){
+            console.log('Current email' + userCurrentEmail);
+            console.log('Provided email' + emailIDOfUser );
+
+           if(userCurrentEmail !== emailIDOfUser || !emailOption){
+               console.log('should not come here');
+               userProfile.setAddUserEmail(emailIDOfUser);
+
+
+        userProfile.userProfilePhone.getAttribute('value').then(function(userCurrentPhone){
+            console.log('user phone' + userCurrentPhone);
+            if(userCurrentPhone === ''){
+                console.log('should not come here');
+                userProfile.setAddUserPhone('212-444-5656');
+            }
+        });
+        userProfile.selectAddUserEmailNotifications('yes');
+                userProfile.clickAddUserProfileSaveButton();}
+            browser.sleep(5000);
+            });
+        });
+        });
+        browser.sleep(25).then(callback);
+    });
 
 
     this.Given(/^I am logged in to CTRP Registry application with User "([^"]*)"$/, function (arg1, callback) {
@@ -79,7 +127,7 @@ module.exports = function () {
     });
 
     this.Given(/^Lead Organization Trial Identifier: (.*), Other Clinical Trial ID:  (.*), Other Obsolete Clinical Trial ID: (.*), Other Identifier: (.*)$/, function (leadOrgIdentifier, otherClinicalTrialID, otherObsoleteClinicalTrialID, otherIdentifier, callback) {
-        leadOrgIdentifier1 = leadOrgIdentifier + moment().format('hmmss');
+        leadOrgIdentifier1 = leadOrgIdentifier + moment().format('hmm');
         otherClinicalTrialID1 = otherClinicalTrialID;
         otherObsoleteClinicalTrialID1 = otherObsoleteClinicalTrialID;
         otherIdentifier1 = otherIdentifier;
@@ -102,14 +150,14 @@ module.exports = function () {
         console.log('LEad org: ' + leadOrg1);
         console.log('LEad org: ' + leadOrg);
         principalInv1 = principalInv;
-        console.log('Principal Investigator: '+principalInv1);
-        console.log('Principal Investigator: '+principalInv);
+        console.log('Principal Investigator: ' + principalInv1);
+        console.log('Principal Investigator: ' + principalInv);
         sponsorOrg1 = sponsorOrg;
-        console.log('sponsor Org : '+ sponsorOrg1);
-        console.log('sponsor Org : '+ sponsorOrg);
+        console.log('sponsor Org : ' + sponsorOrg1);
+        console.log('sponsor Org : ' + sponsorOrg);
         dataTableOrg1 = dataTableOrg;
-        console.log('Data Table Org : '+ dataTableOrg1);
-        console.log('Data Table Org : '+ dataTableOrg);
+        console.log('Data Table Org : ' + dataTableOrg1);
+        console.log('Data Table Org : ' + dataTableOrg);
         programCode1 = programCode;
         browser.sleep(25).then(callback);
     });
@@ -125,8 +173,8 @@ module.exports = function () {
 
     this.Given(/^Trial status: (.*), Comment: (.*), Why Study Stopped: (.*)$/, function (trialStatus, trialComment, trialWhyStudyStopped, callback) {
         trialStatus1 = trialStatus;
-             trialComment1 = trialComment;
-             trialWhyStudyStopped1 = trialWhyStudyStopped;
+        trialComment1 = trialComment;
+        trialWhyStudyStopped1 = trialWhyStudyStopped;
         browser.sleep(25).then(callback);
     });
 
@@ -148,11 +196,15 @@ module.exports = function () {
         console.log('trialOversightCountry');
         console.log(trialOversightCountry);
         trialOversightOrg1 = trialOversightOrg;
-        console.log('trialOversightOrg');
-        console.log(trialOversightOrg);
         FDARegulatedIndicator1 = FDARegulatedIndicator;
+        console.log('FDARegulatedIndicator');
+        console.log(FDARegulatedIndicator);
         section801Indicator1 = section801Indicator;
+        console.log('section801Indicator');
+        console.log(section801Indicator);
         dataMonitoringIndicator1 = dataMonitoringIndicator;
+        console.log('dataMonitoringIndicator');
+        console.log(dataMonitoringIndicator);
         browser.sleep(25).then(callback);
     });
 
@@ -167,30 +219,240 @@ module.exports = function () {
 
     this.Then(/^I should be either able to Submit Trial OR Save as Draft (.*)$/, function (saveDraftOrSubmitTrial, callback) {
         saveDraftOrSubmitTrial1 = saveDraftOrSubmitTrial;
-        projectFunctionsRegistry.createNewTrial(loggedInUser, trialType1, leadOrgIdentifier1, otherClinicalTrialID1, otherObsoleteClinicalTrialID1, otherIdentifier1, officialTitle1, phase1, pilotOption1, researchCategory1, primaryPurpose1, secondaryPurpose1, accrualDisease1, leadOrg1, principalInv1, sponsorOrg1, dataTableOrg1, programCode1, grantOption1, grantFundingMechanism1, grantInstituteCode1, grantSerialNumber1, grantNCIDivisionCode1, trialStatus1, trialComment1, trialWhyStudyStopped1, INDIDEOption1, INDIDEType1, INDIDENumber1, INDIDEGrantor1, INDIDEHolder1, INDIDEInstitution1, responsibleParty1, trialOversightCountry1, trialOversightOrg1, FDARegulatedIndicator1, section801Indicator1, dataMonitoringIndicator1, protocolDoc1, IRBDoc1, participatingSiteDoc1, informedConsentDoc1, otherDoc1, saveDraftOrSubmitTrial1 );
+        projectFunctionsRegistry.createNewTrial(loggedInUser, trialType1, leadOrgIdentifier1, otherClinicalTrialID1, otherObsoleteClinicalTrialID1, otherIdentifier1, officialTitle1, phase1, pilotOption1, researchCategory1, primaryPurpose1, secondaryPurpose1, accrualDisease1, leadOrg1, principalInv1, sponsorOrg1, dataTableOrg1, programCode1, grantOption1, grantFundingMechanism1, grantInstituteCode1, grantSerialNumber1, grantNCIDivisionCode1, trialStatus1, trialComment1, trialWhyStudyStopped1, INDIDEOption1, INDIDEType1, INDIDENumber1, INDIDEGrantor1, INDIDEHolder1, INDIDEInstitution1, responsibleParty1, trialOversightCountry1, trialOversightOrg1, FDARegulatedIndicator1, section801Indicator1, dataMonitoringIndicator1, protocolDoc1, IRBDoc1, participatingSiteDoc1, informedConsentDoc1, otherDoc1, saveDraftOrSubmitTrial1);
         browser.sleep(25).then(callback);
     });
 
-
-
     this.When(/^I go to Search Trial page$/, function (callback) {
+        //browser.get('ui/#/main/sign_in');
+        //commonFunctions.onPrepareLoginTest(loggedInUser);
+        //browser.driver.wait(function () {
+        //    console.log('wait here');
+        //    return true;
+        //}, 40).then(function () {
+        //    trialMenuItem.clickHomeSearchTrial();
+        //    login.clickWriteMode('On');
+            trialMenuItem.clickTrials();
+            trialMenuItem.clickListSearchTrialLink();
+      //  });
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I should be able to search with the created Trial Lead Org Identifier$/, function (callback) {
+        searchTrial.setSearchTrialProtocolID(storeLeadProtocolId);
+        searchTrial.clickSearchTrialSearchButton();
+        if (saveDraftOrSubmitTrial1.toUpperCase() === 'SAVEDRAFT') {
+            searchTrial.clickSearchTrialSavedDrafts();
+        }
+        if (saveDraftOrSubmitTrial1.toUpperCase() === 'SUBMITTRIAL') {
+            searchTrial.clickSearchTrialAllTrials();
+        }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^I click on the Trial from Search page$/, function (callback) {
+        element(by.linkText(storeLeadProtocolId)).click();
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^It should display Trial with above Trial parameters$/, function (callback) {
+        if (leadOrgIdentifier1 !== '') {
+            addTrial.getViewTrialLeadProtocolIdentifier(storeLeadProtocolId);
+        }
+        if (otherClinicalTrialID1 !== '') {
+            projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierViewPg('ClinicalTrials.gov',otherClinicalTrialID1);
+        }
+        if (otherObsoleteClinicalTrialID1 !== '') {
+            projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierViewPg('Obsolete ClinicalTrials.gov',otherObsoleteClinicalTrialID1 );
+        }
+        if (otherIdentifier1 !== '') {
+            projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierViewPg('Other',otherIdentifier1 );
+        }
+        if (officialTitle1 !== '') {
+            addTrial.getViewTrialOfficialTitle(officialTitle1 + ' ' + moment().format('MMMDoYY'));
+        }
+        if (phase1 !== '') {
+            addTrial.getViewTrialPhase(phase1);
+        }
+        if (pilotOption1 !== '') {
+            addTrial.getViewTrialPilotOption(pilotOption1);
+        }
+        if (researchCategory1 !== '') {
+            addTrial.getViewTrialResearchCategory(researchCategory1);
+
+        }
+        if (primaryPurpose1 !== '') {
+            addTrial.getViewTrialPrimaryPurpose(primaryPurpose1);
+        }
+        if (secondaryPurpose1 !== '') {
+            addTrial.getViewAddTrialSecondaryPurpose(secondaryPurpose1);
+        }
+        if (accrualDisease1 !== '') {
+            addTrial.getViewTrialAccrualDiseaseTerminology(accrualDisease1);
+
+        }
+        if (leadOrg1 !== '') {
+            storeLeadOrg.then(function(value){
+            addTrial.getViewTrialLeadOrganization(value);
+            });
+        }
+        if (principalInv1 !== '') {
+            storePI.then(function(value){
+            addTrial.getViewTrialPrincipalInvestigator('lName, ' + value);
+            });
+        }
+        if (sponsorOrg1 !== '') {
+            storeSponsorOrg.then(function(value){
+            addTrial.getViewTrialSponsor(value);
+            });
+        }
+        if (dataTableOrg1 !== '') {
+            storeFundingSrcOrg.then(function(value){
+            addTrial.getViewTrialFundingSource(value);
+            });
+        }
+        if (programCode1 !== '') {
+            addTrial.getViewTrialProgramCode(programCode1);
+        }
+        if (grantOption1 !== '') {
+
+        }
+        if (grantFundingMechanism1 !== '') {
+            var grantFundingTble = grantFundingMechanism1 + ' ' + grantInstituteCode1 + ' ' +  grantSerialNumber1 + ' ' +  grantNCIDivisionCode1 ;
+            addTrial.getViewTrialGrantTable(grantFundingTble.split());
+        }
+        if (trialStatus1 !== '') {
+            addTrial.getViewTrialStatusDate(moment().format('DD-MMM-YYYY'));
+            addTrial.getViewTrialStatus(trialStatus1);
+        }
+        addTrial.getViewTrialStartDate(moment().date('10').subtract(1,'months').format('DD-MMM-YYYY') + 'Actual');
+        addTrial.getViewTrialPrimaryCompletionDate(moment().format('DD-MMM-YYYY') + 'Actual');
+        addTrial.getViewTrialCompletionDate(moment().date('10').add(1,'months').format('DD-MMM-YYYY') + 'Anticipated');
+        if (INDIDEType1 !== '') {
+            if(INDIDEInstitution1 === '') {
+                var IND_IDETble = INDIDEType1 + ' ' + INDIDENumber1 + ' ' + INDIDEGrantor1 + ' ' + INDIDEHolder1;
+                addTrial.getViewTrialINDIDETable(IND_IDETble.split());
+            }
+            else{
+                 IND_IDETble = INDIDEType1 + ' ' +  INDIDENumber1 + ' ' +  INDIDEGrantor1 + ' ' +  INDIDEHolder1 + ' ' +  INDIDEInstitution1;
+                addTrial.getViewTrialINDIDETable(IND_IDETble.split());
+            }
+        }
+        if (responsibleParty1 !== '') {
+        addTrial.getViewTrialResponsibleParty(responsibleParty1);
+        }
+        if (trialOversightCountry1 !== '') {
+            var trialOversightCountryTbl = trialOversightCountry1 + ' ' + trialOversightOrg1;
+            addTrial.getViewTrialOversightAuthority(trialOversightCountryTbl.split());
+        }
+        if (FDARegulatedIndicator1 !== '') {
+            addTrial.getViewTrialFDARegulatedInterventionIndicator(FDARegulatedIndicator1);
+        }
+        if (section801Indicator1 !== '') {
+            addTrial.getViewTrialSection801Indicator(section801Indicator1);
+        }
+        if (dataMonitoringIndicator1 !== '') {
+            addTrial.getViewTrialDataMonitoringCommitteeAppointedIndicator(dataMonitoringIndicator1);
+        }
+        if (protocolDoc1 !== '') {
+            expect(addTrial.viewTrialVerifyviewedDocs.getText()).to.eventually.include(protocolDoc1);
+
+        }
+        if (IRBDoc1 !== '') {
+            expect(addTrial.viewTrialVerifyviewedDocs.getText()).to.eventually.include(IRBDoc1);
+        }
+        if (participatingSiteDoc1 !== '') {
+            expect(addTrial.viewTrialVerifyviewedDocs.getText()).to.eventually.include(participatingSiteDoc1);
+        }
+        if (informedConsentDoc1 !== '') {
+            expect(addTrial.viewTrialVerifyviewedDocs.getText()).to.eventually.include(informedConsentDoc1);
+        }
+        if (otherDoc1 !== '') {
+            expect(addTrial.viewTrialVerifyviewedDocs.getText()).to.eventually.include(otherDoc1);
+        }
         browser.sleep(25).then(callback);
     });
+    //
+    //beforeEach(function () {
+    //    browser.get("/#login");
+    //    browser.waitForAngular();
+    //});
+
+    this.Given(/^verify all the emails generated above$/, function (callback) {
+        // make sure you include in options:
+        //   fetchUnreadOnStart: true,
+        var count = 0;
+
+        mailListener1.on("mail", function(mail, seqno, attributes) {
+            var mailuid = attributes.uid,
+                toMailbox = '[Gmail]/All Mail',
+                i = ++count;
+
+            if (i > 20) {
+                mailListener1.stop(); // start listening
+                return;
+            }
+
+            console.log('email parsed', {
+                i: i,
+                subject: mail.subject,
+                seqno: seqno,
+                uid: attributes.uid,
+                attributes: attributes
+            });
+
+            console.log('attempting to mark msg read/seen');
+            mailListener1.imap.addFlags(mailuid, '\\Seen', function (err) {
+                if (err) {
+                    console.log('error marking message read/SEEN');
+                    return;
+                }
+
+                console.log('moving ' + (seqno || '?') + ' to ' + toMailbox);
+                mailListener1.imap.move(mailuid, toMailbox, function (err) {
+                    if (err) {
+                        console.log('error moving message');
+                        return;
+                    }
+                    console.log('moved ' + (seqno || '?'), mail.subject);
+                });
+            });
+        });
 
 
 
+ //   mailListener1.start(); // start listening
 
+// When testing this script with GMail in US it took about
+// 8 seconds to get unread email list, another 40 seconds
+// to archive those 20 messages (move to All Mail).
+//    setTimeout(function () {
+//        mailListener1.stop(); // start listening
+//    }, 60*1000);
+        //browser.controlFlow().await(emailVerify.getLastEmail1()).then(function (email) {
+        //    expect(email.subject).toEqual("New Registration Code");
+        //    expect(email.headers.to).toEqual("myemail@email.com");
+        //
+        //    // extract registration code from the email message
+        //    //var pattern = /Registration code is: (\w+)/g;
+        //    //var regCode = pattern.exec(email.text)[1];
+        //
+        //    console.log(email.subject);
+        //});
+
+            //if(emailIDOfUser === 'ctrptrialsubmitter@gmail.com'){
+        //    nciID.then(function(nciIDValue){
+        //        leadProtocolID.then(function(leadProtocolIDValue){
+        //            emailVerify.gmailMailVerification(gmaillink, gmailID, 'NCI CTRP: Trial RECORD CREATED for ' + nciIDValue + ',' + leadProtocolIDValue, '', callback);
+        //        });
+        //    });
+        //
+        //}
+        //else {
+        //    console.log('Different Email Id is provided so Verify the email manually');
+        //}
+        browser.sleep(25).then(callback);
+    });//();
+    //}//);
 
 };

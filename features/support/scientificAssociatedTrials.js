@@ -18,7 +18,7 @@ var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var testFileUpload = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testSamples';
 
-var scientificOutcomeMeasures = function(){
+var scientificAssociatedTrials = function(){
 
     var commonFunctions = new abstractionCommonMethods();
     var dateFunctions = new addTrialPage();
@@ -29,79 +29,68 @@ var scientificOutcomeMeasures = function(){
      * List of Outcome Measure object(s)
      ***********************************/
 
-    this.addOutcomeMeasureBtn = element(by.id('add_outcome_measure'));
-    this.deleteSelectedOutcome = element(by.id('delete'));
-    this.deleteConfirmOutcome = element(by.id('confirmed_btn'));
-    this.deleteCancelOutcome = element(by.id('cancel_confirm_btn'));
+    this.addAssociatedTrialBtn = element(by.id('add_associated'));
+    this.deleteSelectedAssociated = element(by.id('delete'));
+    this.deleteConfirmAssociated = element(by.id('confirmed_btn'));
+    this.deleteCancelAssociated = element(by.id('cancel_confirm_btn'));
 
-    this.tableOutcomeAll = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
-    this.tableTHeadOutcome = element(by.css('.table.table-bordered.table-striped.table-hover thead'));
+    this.tableAssociatedAll = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
+    this.tableTHeadAssociated = element(by.css('.table.table-bordered.table-striped.table-hover thead'));
     this.tableTHeadColA = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(01)'));
     this.tableTHeadColB = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(02)'));
     this.tableTHeadColC = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(03)'));
     this.tableTHeadColD = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(04)'));
-    this.tableTHeadColE = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(05)'));
-    this.tableTHeadColF = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(06)'));
-    this.tableTHeadColG = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(07)'));
-    this.tableTHeadColH = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(08)'));
 
-    this.tableSelectAll = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(09) input'));
+    this.tableSelectAll = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(05) input'));
 
-
+    this.tableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
+    var rowsLengthVal = '';
 
     /***********************************
      * Outcome Measure Details object(s)
      ***********************************/
-    this.outcomeMeasureTypeLst = element(by.id('om_type'));
-    this.outcomeMeasureTypeLbl = element(by.css('label[for="om_type"]'));
-    this.titleTxt = element(by.id('title'));
-    this.titleLbl = element.all(by.css('label[for="title"]'));
-    this.timeFrameTxt = element(by.id('time_frame'));
-    this.timeFrameLbl = element.all(by.css('label[for="title"]'));
-    this.descriptionTxt = element(by.id('description'));
-    this.descriptionLbl = element(by.css('label[for="description"]'));
-    this.safetyIssueLst = element(by.id('safety_issue'));
-    this.safetyIssueLbl = element(by.css('label[for="safety_issue"]'));
+    this.identifierTypeLst = element(by.id('identifier_type'));
+    this.trialIdentifierTxt = element(by.id('trial_identifier'));
+    this.lookupTrialBtn = element();
 
-    this.characterLeftLbl = element.all(by.css('.help-block.ng-binding'));
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
 
-    this.saveOutBtn = element(by.id('submit_processing'));
-    this.resetOutBtn = element(by.id('out_cm_reset'));
-    this.backToOutcomeMeasuresListBtn = element(by.id('oc_site_list'));
+    this.saveAssociatedBtn = element(by.id('submit_processing'));
+    this.resetAssociatedBtn = element(by.id('out_cm_reset'));
+    this.backToAssociatedTrialsListBtn = element(by.id('oc_site_list'));
 
-    this.outcomePageTitleList = element(by.id('pg_title'));
-    this.outcomePageTitleDetails = element(by.id('outcome_measure_details'));
+    this.associatedPageTitleList = element(by.id('pg_title'));
+    this.associatedPageTitleDetails = element(by.id('outcome_measure_details'));
 
-    this.clickAddOutcomeMeasure = function(){
-        helper.clickButton(this.addOutcomeMeasureBtn, "Add Outcome Measure - Button");
+    this.clickAddAssociatedTrial = function(){
+        helper.clickButton(this.addAssociatedTrialBtn, "Add Associated Trial - Button");
     };
 
-    this.selectAllOutcomeMeasure = function (){
+    this.selectAllAssociatedTrial = function (){
         helper.clickButton(this.tableSelectAll, "Selecte All - Button");
     };
 
-    this.clickDeleteSelectedOutcome = function(yesCancel){
-        helper.clickButton(this.deleteSelectedOutcome, "Delete Selected List of Outcome Measures - Button");
-        this.waitForTrailDetailsElement(self.deleteConfirmOutcome, "Waiting for Delete Yes button to be present");
+    this.clickDeleteSelectedAssocaited = function(yesCancel){
+        helper.clickButton(this.deleteSelectedAssociated, "Delete Selected List of Associated Trial - Button");
+        this.waitForAssociatedTrailDetailsElement(self.deleteConfirmAssociated, "Waiting for Delete Yes button to be present");
         if (yesCancel === 'yes'){
-            helper.clickButton(this.deleteConfirmOutcome, "Delete Confirm - Button");
+            helper.clickButton(this.deleteConfirmAssociated, "Delete Confirm - Button");
         } else if (yesCancel === 'cancel'){
-            helper.clickButton(this.deleteCancelOutcome, "Delete Cancel - Button");
+            helper.clickButton(this.deleteCancelAssociated, "Delete Cancel - Button");
         }
     };
 
     this.deleteAllOutcomeList = function(yesOrCancel){
-        self.tableTHeadOutcome.isDisplayed().then(function(result) {
+        self.tableTHeadAssociated.isDisplayed().then(function(result) {
             if (result === true) {
-                self.selectAllOutcomeMeasure();
-                self.clickDeleteSelectedOutcome(yesOrCancel);
+                self.selectAllAssociatedTrial();
+                self.clickDeleteSelectedAssocaited(yesOrCancel);
             }
         });
     };
 
-    this.verifyDeleteAllOutcomeList = function(){
-        self.tableTHeadOutcome.isDisplayed().then(function(result) {
+    this.verifyDeleteAllAssociatedTrialList = function(){
+        self.tableTHeadAssociated.isDisplayed().then(function(result) {
             if (result === false) {
                 var notExistsTableA = 'Table Status : '+result+'';
                 var notExistsTableB = 'Table Status : '+result+'';
@@ -114,8 +103,8 @@ var scientificOutcomeMeasures = function(){
         });
     };
 
-    this.selectOutcomeMeasureType = function(type)  {
-        helper.selectValueFromList(this.outcomeMeasureTypeLst, type, "Outcome Measure Type - List field");
+    this.selectIdentifierType = function(type)  {
+        helper.selectValueFromList(this.identifierTypeLst, type, "Identifier Type - List field");
     };
 
     this.setTitleTxt = function(getTitleTxt){
@@ -133,33 +122,27 @@ var scientificOutcomeMeasures = function(){
         helper.wait_for(100);
     };
 
-    this.selectSafetyIssue = function(options)  {
-        helper.selectValueFromList(this.safetyIssueLst, options, "Safety Issue - List field");
-    };
-
     this.checkOutcomePageTitle = function (titleTXT, listOrDetails){
         if (listOrDetails === 'list'){
-            this.waitForElement(self.outcomePageTitleList, 'Waiting For Page title');
-            self.outcomePageTitleList.isDisplayed().then(function(result) {
+            this.waitForElement(self.associatedPageTitleList, 'Waiting For Page title');
+            self.associatedPageTitleList.isDisplayed().then(function(result) {
                 if (result) {
-                    expect(self.outcomePageTitleList.getText()).to.eventually.equal(titleTXT);
+                    expect(self.associatedPageTitleList.getText()).to.eventually.equal(titleTXT);
                 }
             });
         } else if (listOrDetails === 'details'){
-            this.waitForElement(self.outcomePageTitleDetails, 'Waiting For Page title');
-            self.outcomePageTitleDetails.isDisplayed().then(function(result) {
+            this.waitForElement(self.associatedPageTitleDetails, 'Waiting For Page title');
+            self.associatedPageTitleDetails.isDisplayed().then(function(result) {
                 if (result) {
-                    expect(self.outcomePageTitleDetails.getText()).to.eventually.equal(titleTXT);
+                    expect(self.associatedPageTitleDetails.getText()).to.eventually.equal(titleTXT);
                 }
             });
         }
     };
 
-    this.tableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
-    var rowsLengthVal = '';
     this.findOutcomeToVerifyEditCopyDelete = function(expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf){
-        this.waitForTrailDetailsElement(self.tableTBodyRowAColA, "Outcome Measures Table");
-        this.tableOutcomeAll.then(function(rows){
+        this.waitForAssociatedTrailDetailsElement(self.tableTBodyRowAColA, "Outcome Measures Table");
+        this.tableAssociatedAll.then(function(rows){
             console.log('Indetifier Type Total Row Count:['+(rows.length)+']');
             rowsLengthVal = ''+(rows.length)+'';
             for (var i=1; i<(rows.length+1); i++){
@@ -300,7 +283,7 @@ var scientificOutcomeMeasures = function(){
     };
 
     //Wait For Element : Wait
-    this.waitForTrailDetailsElement = function (element, label) {
+    this.waitForAssociatedTrailDetailsElement = function (element, label) {
         browser.wait(function () {
             return element.isPresent().then(function (state) {
                 if (state === true) {
@@ -316,12 +299,11 @@ var scientificOutcomeMeasures = function(){
     };
 
     this.verifyOutcomeMeasureLables = function (){
-        var lbl = new Array("Outcome Measure Type:", "Title:", "Time Frame:", "Description:", "Safety Issue:");
-        helper.getVerifyLabel(this.outcomeMeasureTypeLbl, lbl[0], "Outcome Measure Type");
-        commonFunctions.verifyTxtByIndex(self.titleLbl, lbl[1], '0', 'Title');
-        commonFunctions.verifyTxtByIndex(self.timeFrameLbl, lbl[2], '1', 'Time Frame');
-        helper.getVerifyLabel(this.descriptionLbl, lbl[3], "Description");
-        helper.getVerifyLabel(this.safetyIssueLbl, lbl[4], "Safety Issue");
+        var lbl = new Array("Identifier Type:", "Trial Identifier:", "Research Category:", "Official Title:");
+        helper.getVerifyLabel(this.outcomeMeasureTypeLbl, lbl[0], "Identifier Type");
+        commonFunctions.verifyTxtByIndex(self.titleLbl, lbl[1], '0', 'Trial Identifier');
+        commonFunctions.verifyTxtByIndex(self.timeFrameLbl, lbl[2], '1', 'Research Category');
+        helper.getVerifyLabel(this.descriptionLbl, lbl[3], "Official Title");
     };
 
     this.verifyCharLeft = function(charLeft, index){
@@ -376,4 +358,4 @@ var scientificOutcomeMeasures = function(){
     };
 };
 
-module.exports = scientificOutcomeMeasures;
+module.exports = scientificAssociatedTrials;

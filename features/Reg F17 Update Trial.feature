@@ -22,15 +22,9 @@ And I will be able to Update Other Protocol Identifiers to allow both additional
 And I will be able to Update Grant Information to allow both additional Grants as well as removing existing
 And I can delete existing and add new Trial Status and Trial Status Dates
 And I will be able to update trial start date, primary completion date, and completion date with actual or anticipated dates
-And I will be able to review existing Trial Related Documents type
-
-      |Original Protocol         |
-      |Original IRB Approval     |
-      |Original Informed Consent |
-      |Other (If Available)      |
-    
-
-And I will be able to add Trial Related Document type Other 
+And I will be able to review all existing Trial Related Documents type
+And I will be able to add all Trial Related Documents 
+And the added documents should be added to the existing documents
 And I will be able to review or cancel my update
 When I click on the Review Button to Review my trial
 And the click on the submit button

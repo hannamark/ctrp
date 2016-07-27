@@ -72,13 +72,16 @@ class SubmissionsController < ApplicationController
 
     @trial_submissions = Submission.matchesImpPro(
         params[:user_id],
-        [ InternalSource.find_by_code('PRO').id, InternalSource.find_by_code('IMP').id ]
-    ).order("#{params[:sort]} #{params[:order]}")
+        true,
+        InternalSource.find_by_code('IMP').id,
+        InternalSource.find_by_code('PRO').id
+    )
+
+    @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
 
     unless params[:rows].nil?
       @trial_submissions = @trial_submissions.page(params[:start]).per(params[:rows])
     end
-    @trial_submissions
   end
 
   private
@@ -89,6 +92,7 @@ class SubmissionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def submission_params
-    params[:submission].permit(:id,:amendment_num,:amendment_date,:amendment_reason_id,:acknowledge,:acknowledge_comment,:acknowledge_date,:acknowledged_by)
+    params[:submission].permit(:id,:amendment_num,:amendment_date,:amendment_reason_id,:acknowledge,:acknowledge_comment,
+    :expected_abstraction_completion_date,:acknowledge_date,:acknowledged_by,:business_days_since_submitted )
   end
 end

@@ -234,7 +234,7 @@ class  User < ActiveRecord::Base
                           [{po_write_mode: false},
                            {registry_write_mode: true},
                            {user_write_mode: true},
-                           {pa_write_mode: true}]
+                           {pa_write_mode: false}]
                         when  "ROLE_ACCRUAL-SUBMITTER"
                           [{po_write_mode: false},
                            {registry_write_mode: false},

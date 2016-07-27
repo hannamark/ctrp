@@ -96,27 +96,21 @@ And I select a trial "Expected Abstraction Completion Date"
 Then I can edit the "Expected Abstraction Completion Date"
 And the Expected Abstraction Completion Date will be associated with the trial
 
-Scenario: #4 I can view trail details - Validate
+Scenario: #4 I can enter an Expected Abstraction Completion Date Comment
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
-And I select a trial ID
-And the latest trial milestone for the last active submission is 
-|Submission Received Date|
-|Validation Processing Start Date| 
-|Validation Processing Completed Date|
-Then the trail validaiton sidebar menu will appear
-And the trial information screen will be displayed  
+And I select a trial "Expected Abstraction Completion Date"
+Then I can edit the "Expected Abstraction Completion Date"
+And I can enter an Expected Abstraction Completion Date "Comment"
+And the Expected Abstraction Completion Date Comment will be associated with the trial  
 
-Scenario: #5 I can view trail details - Abstract
+Scenario: #5 I can edit an Expected Abstraction Completion Date Comment
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Abstraction Workload screen
-And I select a trial ID
-And the latest trial milestone for the last active submission is not 
-|Submission Received Date|
-|Validation Processing Start Date| 
-|Validation Processing Completed Date|
-Then the trail abstraction sidebar menu will appear
-And the trial information screen will be displayed
+And I select a trial "Expected Abstraction Completion Date"
+Then I can edit the "Expected Abstraction Completion Date"
+And I can edit the Expected Abstraction Completion Date "Comment"
+And the Expected Abstraction Completion Date Comment will be associated with the trial
 
 
 Scenario: #6 I can export Abstraction Dashboard WorkLoad into an Excel spreadsheet

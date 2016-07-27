@@ -9,9 +9,10 @@
         .directive('unsavedChanges', unsavedChanges);
 
         unSavedChangesModalCtrl.$inject = ['$scope', '$uibModalInstance', 'saveRequired'];
-        unsavedChanges.$inject = ['$window', '$uibModal', '$parse'];
+        unsavedChanges.$inject = ['$window', '$uibModal', '$parse', 'UserService', '$state'];
 
-        function unsavedChanges($window, $uibModal, $parse) {
+        function unsavedChanges($window, $uibModal, $parse, UserService, $state) {
+
             var directiveObject = {
                 restrict: 'A',
                 link: linkerFn,
@@ -28,6 +29,11 @@
                 var currentTabIndex = element.controller().tabIndex;
                 var newTabIndex = 0;
                 var element = element;
+                var stateEventOccurred = false;
+
+                /* Set UserService flag for (self) unsaved-changes directive */
+                UserService.setUnsavedFormFlag(true);
+                console.log('or will this happen first');
 
                 setFormVars();
 
@@ -65,28 +71,34 @@
                 };
 
                 scope.$on('$stateChangeStart', function(event) {
-                    if (!formArray.length) {
-                        if (scope.$parent[formName].$dirty && !scope.$parent[formName].$submitted) {
-                            if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
-                                event.preventDefault();
+                    if (!stateEventOccurred) {
+                        stateEventOccurred = true;
+
+                        if (!formArray.length) {
+                            if (scope.$parent[formName].$dirty && !scope.$parent[formName].$submitted) {
+                                checkSignOut(event);
+                                return;
+                            }
+                        } else {
+                            // For multiple forms
+                            var formItem;
+                            var dirtyFlag = false;
+
+                            for (var i = 0; i < formArray.length; i++) {
+                                formItem = typeof formArray[i] === 'object' ? formArray[i].name : formArray[i];
+                                if (scope.$parent[formItem].$dirty && !scope.$parent[formItem].$submitted) {
+                                    dirtyFlag = true;
+                                }
+                            }
+
+                            if (dirtyFlag) {
+                                checkSignOut(event);
+                                return;
                             }
                         }
-                    } else {
-                        // For multiple forms
-                        var formItem;
-                        var dirtyFlag = false;
 
-                        for (var i = 0; i < formArray.length; i++) {
-                            formItem = typeof formArray[i] === 'object' ? formArray[i].name : formArray[i];
-                            if (scope.$parent[formItem].$dirty && !scope.$parent[formItem].$submitted) {
-                                dirtyFlag = true;
-                            }
-                        }
-
-                        if (dirtyFlag) {
-                            if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
-                                event.preventDefault();
-                            }
+                        if (UserService.getSignoutFlagValue()) {
+                            UserService.logout();
                         }
                     }
                 });
@@ -146,9 +158,18 @@
                         }
                     });
                 }
+
+                function checkSignOut(e) {
+                    if (!confirm('Are you sure you want to leave this page? You may have unsaved changes.')) {
+                        e.preventDefault();
+                        UserService.setSignoutFlagValue(false);
+                        stateEventOccurred = false;
+                    } else if (UserService.getSignoutFlagValue()) {
+                        UserService.logout();
+                    }
+                }
             }
         }
-
 
         function unSavedChangesModalCtrl($scope, $uibModalInstance, isSaveRequired) {
             var vm = this;

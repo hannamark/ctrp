@@ -91,6 +91,7 @@ exports.config = {
         /************* PAS Features ************/
         'features/PAS\ F01\ Add\ and\ Edit\ Trial\ Descriptions.Feature',
         'features/PAS\ F04\ Outcome\ Measures.Feature',
+        'features/PAS\ F06\ Associated\ Trials.Feature',
 
         /************* PO F2-F15 ************/
         'features/PO\ F2\ Search\ for\ Organizations.feature',

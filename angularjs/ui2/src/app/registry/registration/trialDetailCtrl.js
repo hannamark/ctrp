@@ -91,6 +91,128 @@
         vm.currentStatusCode = null;
         vm.currentStatusName = null;
 
+        vm.masterTrialCopy = {
+            trial: angular.copy(vm.curTrial),
+            studySourceCode: angular.copy(studySourceCode.toUpperCase()),
+            studySourceArr: angular.copy(studySourceObj),
+            protocolIdOriginArr: angular.copy(protocolIdOriginObj),
+            phaseArr: angular.copy(phaseObj),
+            researchCategoryArr: angular.copy(researchCategoryObj),
+            primaryPurposeArr: angular.copy(primaryPurposeObj),
+            secondaryPurposeArr: angular.copy(secondaryPurposeObj),
+            accrualDiseaseTermArr: angular.copy(accrualDiseaseTermObj),
+            responsiblePartyArr: angular.copy(responsiblePartyObj),
+            fundingMechanismArr: angular.copy(fundingMechanismObj),
+            instituteCodeArr: angular.copy(instituteCodeObj),
+            nciArr: angular.copy(nciObj),
+            trialStatusArr: angular.copy(trialStatusObj),
+            holderTypeArr: angular.copy(holderTypeObj),
+            countryArr: angular.copy(countryList)
+        };
+
+        vm.reset = function() {
+            /* Reset original data set */
+            vm.curTrial = angular.copy(vm.masterTrialCopy.trial);
+            vm.studySourceCode = angular.copy(vm.masterTrialCopy.studySourceCode);
+            vm.studySourceArr = angular.copy(vm.masterTrialCopy.studySourceArr);
+            vm.protocolIdOriginArr = angular.copy(vm.masterTrialCopy.protocolIdOriginArr);
+            vm.phaseArr = angular.copy(vm.masterTrialCopy.phaseArr);
+            vm.researchCategoryArr = angular.copy(vm.masterTrialCopy.researchCategoryArr);
+            vm.primaryPurposeArr = angular.copy(vm.masterTrialCopy.primaryPurposeArr);
+            vm.secondaryPurposeArr = angular.copy(vm.masterTrialCopy.secondaryPurposeArr);
+            vm.accrualDiseaseTermArr = angular.copy(vm.masterTrialCopy.accrualDiseaseTermArr);
+            vm.responsiblePartyArr = angular.copy(vm.masterTrialCopy.responsiblePartyArr);
+            vm.fundingMechanismArr = angular.copy(vm.masterTrialCopy.fundingMechanismArr);
+            vm.instituteCodeArr = angular.copy(vm.masterTrialCopy.instituteCodeArr);
+            vm.trialStatusArr = angular.copy(vm.masterTrialCopy.trialStatusArr);
+            vm.holderTypeArr = angular.copy(vm.masterTrialCopy.holderTypeArr);
+            vm.countryArr = angular.copy(vm.masterTrialCopy.countryArr);
+
+            /* Reset UI bindings */
+            vm.collapsed = false;
+            vm.isExp = false;
+            vm.grantorArr = [];
+            vm.nihNciArr = [];
+            vm.authorityOrgArr = [];
+            vm.status_date_opened = false;
+            vm.start_date_opened = false;
+            vm.primary_comp_date_opened = false;
+            vm.comp_date_opened = false;
+            vm.amendment_date_opened = false;
+            vm.addedOtherIds = [];
+            vm.addedFses = [];
+            vm.addedGrants = [];
+            vm.addedStatuses = [];
+            vm.addedIndIdes = [];
+            vm.addedAuthorities = [];
+            vm.addedDocuments = [];
+            vm.selectedLoArray = [];
+            vm.selectedPiArray = [];
+            vm.selectedSponsorArray = [];
+            vm.selectedInvArray = [];
+            vm.selectedIaArray = [];
+            vm.selectedFsArray = [];
+            vm.showPrimaryPurposeOther = false;
+            vm.showSecondaryPurposeOther = false;
+            vm.showInvestigator = false;
+            vm.showInvSearchBtn = true;
+            vm.why_stopped_disabled = true;
+            vm.showAddOtherIdError = false;
+            vm.addOtherIdError = '';
+            vm.showAddGrantError = false;
+            vm.showAddStatusError = false;
+            vm.showAddStatusDateError = false;
+            vm.showAddIndIdeError = false;
+            vm.showAddAnthorityError = false;
+            vm.addAuthorityError = '';
+            vm.otherDocNum = 1;
+            vm.fsNum = 0;
+            vm.grantNum = 0;
+            vm.tsNum = 0;
+            vm.indIdeNum = 0;
+            vm.toaNum = 0;
+            vm.protocolDocNum = 0;
+            vm.irbApprovalNum = 0;
+            vm.informedConsentNum = 0;
+            vm.changeMemoNum = 0;
+            vm.protocolHighlightedNum = 0;
+            vm.showLpiError = false;
+            vm.docUploadedCount = 0;
+            vm.disableBtn = false;
+            vm.grantsInputs = {grantResults: [], disabled: true};
+            vm.currentStatusCode = null;
+            vm.currentStatusName = null;
+
+            vm.protocol_id_origin_id = null;
+            vm.protocol_id = null;
+            vm.status_date = null;
+            vm.trial_status_id = null;
+            vm.status_comment = '';
+            vm.why_stopped = '';
+            vm.ind_ide_type = null;
+            vm.ind_ide_number = '';
+            vm.grantor = null;
+            vm.holder_type_id = null;
+            vm.nih_nci = null;
+            vm.authority_country = null;
+            vm.authority_org = null;
+
+            vm.protocol_document = '';
+            vm.irb_approval = '';
+            vm.participating_sites = '';
+            vm.informed_consent = '';
+            vm.other_documents = '';
+            vm.change_memo = '';
+            vm.protocol_highlighted = '';
+
+            activate();
+
+            /* Needed because some of the rests above trigger $watches, causing form to be dirty again */
+            $timeout(function() {
+               $scope.trial_form.$setPristine();
+            }, 1);
+        };
+
         vm.updateTrial = function(updateType) {
             // Prevent multiple submissions
             vm.disableBtn = true;
@@ -133,12 +255,14 @@
                 });
             }
 
+            console.log('addedFses length is: ', vm.addedFses.length);
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
                     vm.curTrial.trial_funding_sources_attributes.push(fs);
                 });
             }
+            console.log('addedFses length is: ', vm.addedFses.length);
 
             if (vm.addedGrants.length > 0) {
                 vm.curTrial.grants_attributes = [];
@@ -216,15 +340,16 @@
                             toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
                         }
                     }, 100);
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
+
+                    $timeout(function() {
+                       $scope.trial_form.$setPristine();
+                    }, 1);
                 }
             }).catch(function(err) {
                 vm.disableBtn = true; // re-enable button to allow more attempts without having to refresh page
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             }).finally(function() {
-                // do something here if necessary
+                vm.disableBtn = false;
             });
         }; // updateTrial
 
@@ -280,10 +405,6 @@
         vm.expandAccordion = function() {
             vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
             vm.collapsed = false;
-        };
-
-        vm.reload = function() {
-            $state.go($state.$current, null, { reload: true });
         };
 
         // Delete the associations
@@ -859,6 +980,7 @@
         };
 
         activate();
+        console.log('addedFses length at init is: ', vm.addedFses.length);
 
         /*
             Moving these variable definitions after activate() has been invoked.

@@ -1,13 +1,13 @@
 Feature: QA Smoke Registry
   This will smoke test:
   Create Trial, Search Trial
-  Import Trial, Search Imported Trial, Add Participating Site
+  Create Draft Trial, Search draft Trial
 
   Background:
-    Given I am logged in to CTRP Registry application with User "ctrptrialsubmitter"
+    Given I am logged in to CTRP Registry application with User "ctrptrialsubmitter" and email id "ctrptrialsubmitter@gmail.com"
 
   @smoke
-  Scenario Outline: As a Curator Create an Organization then search that Organization
+  Scenario Outline: As a Trial submitter, create a Trial then search that Trial
     Given I want to create a Trial with Study Source <trialType>
     And Lead Organization Trial Identifier: <leadOrgIdentifier>, Other Clinical Trial ID:  <otherClinicalTrialID>, Other Obsolete Clinical Trial ID: <otherObsoleteClinicalTrialID>, Other Identifier: <otherIdentifier>
     And Official Title: <officialTitle>, Phase: <phase>, Pilot: <pilotOption>, Research Category: <researchCategory>, Primary Purpose: <primaryPurpose>, Secondary Purpose <secondaryPurpose>, Accrual Disease Terminology: <accrualDisease>
@@ -17,6 +17,7 @@ Feature: QA Smoke Registry
     And IND IDE info: <INDIDEOption>,IND IDE Type: <INDIDEType>,IND IDE Number: <INDIDENumber>, IND IDE Grantor: <INDIDEGrantor>, IND IDE Holder: <INDIDEHolder>, IND IDE Institution: <INDIDEInstitution>
     And Responsible party: <responsibleParty>, Trial Oversight Country: <trialOversightCountry>, Trial Oversight Organization: <trialOversightOrg>, FDA Regulated Indicator: <FDARegulatedIndicator>, section Indicator: <section801Indicator>, data Monitoring Indicator: <dataMonitoringIndicator>
     And Protocol Document: <protocolDoc>, IRB Approval: <IRBDoc>, List of Participating Sites: <participatingSiteDoc>, Informed Consent Document: <informedConsentDoc>, Other: <otherDoc>
+  #  Step to create Trial
     Then I should be either able to Submit Trial OR Save as Draft <saveDraftOrSubmitTrial>
     When I go to Search Trial page
     Then I should be able to search with the created Trial Lead Org Identifier

@@ -161,7 +161,7 @@
                             <div class=" col-xs-12 col-sm-6">
                                 <textarea restriction-field class="form-control input-sm" id="official_title" name="official_title" maxlength="600" ng-model="trialDetailView.curTrial.official_title"
                                           ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required ></textarea>
-                              <span ng-show="trial_form.official_title.$dirty">
+                              <span class="help-block" ng-show="trial_form.official_title.$dirty">
                                   {{600 - trial_form.official_title.$viewValue.length}} characters left
                               </span>
                                 <span class="form-control-feedback" ng-show="trialDetailView.curTrial.official_title.length" ng-class="!ctrpbtn.trial_form.needsAttention(trial_form.official_title) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
@@ -1256,7 +1256,7 @@
                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn" ng-disabled="trialDetailView.disableBtn">
                             {{trial_form.$invalid ? 'Review' : 'Submit'}}
                         </button>
-                        <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reload()" ng-disabled="trialDetailView.disableBtn">
+                        <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="trialDetailView.reset()" ng-disabled="trialDetailView.disableBtn">
                             <i class="glyphicon glyphicon-remove"></i> Reset
                         </button>
                     </div>

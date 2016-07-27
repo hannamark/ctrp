@@ -1,7 +1,7 @@
 @Global @Reg
 Feature: Reg F16 Import Trial
 
-As a CTRP User, I can identify a trial by NCT ID for import from ClinicalTrials.gov
+As a CTRP User,  I can identify a trial by NCT ID for import from ClinicalTrials.gov
 
 Scenario: #1 I can search for an Industrial or Other trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to Import an Industrial or Other Trial
