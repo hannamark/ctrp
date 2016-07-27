@@ -1,4 +1,4 @@
-@PA @global
+@PA  @global
 Feature: PA F07 View and Add Trial Milestones
 
 As any CTRP PA User, I can View and Add Milestones
