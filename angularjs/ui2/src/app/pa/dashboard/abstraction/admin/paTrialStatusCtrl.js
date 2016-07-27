@@ -111,11 +111,6 @@
         function addTrialStatus() {
             vm.statusErrorMsg = '';
             if (vm.statusObj.status_date && vm.statusObj.trial_status_id) {
-                var statusExists = _.findIndex(vm.tempTrialStatuses, {trial_status_id: vm.statusObj.trial_status_id}) > -1;
-                if (statusExists) {
-                    vm.statusErrorMsg = 'Status already exists';
-                    return;
-                }
                 var clonedStatusObj = angular.copy(vm.statusObj);
                 // clonedStatusObj.status_date = clonedStatusObj.status_date.toISOString(); // ISOString for POST to backend
                 clonedStatusObj.status_date = DateService.convertISODateToLocaleDateStr(clonedStatusObj.status_date); // for display in table
