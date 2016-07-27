@@ -714,7 +714,7 @@ class TrialsController < ApplicationController
         format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
         format.json { render :show, status: :created, location: @trial }
 
-        TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: open(url), file_name: 'import.xml')
+        #TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: open(url), file_name: 'import.xml')
       else
         format.html { render :new }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
