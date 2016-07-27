@@ -27,7 +27,7 @@ var assert = require('assert');
 var participatingSitePage = require('../support/registerAddParticipatingSite');
 var searchOrgPage = require('../support/ListOfOrganizationsPage');
 var searchPeoplePage = require('../support/ListOfPeoplePage');
-var registryMessagePage = require('../support/registryMessage');
+var registryMessagePage = require('../support/RegistryMessage');
 
 
 
