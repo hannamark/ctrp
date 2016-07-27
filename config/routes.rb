@@ -201,6 +201,8 @@ Rails.application.routes.draw do
       get 'nih_nci_div_pa' => 'util#get_nih_nci_div_pa'
       get 'nih_nci_prog_pa' => 'util#get_nih_nci_prog_pa'
       get 'trial_document_types' => 'util#get_trial_document_types'
+      post 'paa_validate_trial_status' => 'trials#paa_validate_trial_status'
+      post 'abstraction_validate_trial_status' => 'trials#abstraction_validate_trial_status'
       resources :submission_methods
     end
 

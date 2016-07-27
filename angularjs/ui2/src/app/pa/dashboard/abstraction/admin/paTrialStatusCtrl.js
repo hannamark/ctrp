@@ -151,8 +151,7 @@
             if (statusArr.length === 0) return;
 
             vm.disableBtn = true;
-
-            TrialService.validateStatus({"statuses": statusArr}).then(function(res) {
+            PATrialService.validatePAATrialStatus({"statuses": statusArr}).then(function(res) {
                 var status = res.server_response.status;
 
                 if (status >= 200 && status <= 210) {

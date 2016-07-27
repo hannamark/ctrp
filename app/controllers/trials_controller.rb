@@ -616,6 +616,62 @@ class TrialsController < ApplicationController
     end
   end
 
+  def paa_validate_trial_status
+    @validation_msgs = []
+    transition_matrix = JSON.parse(AppSetting.find_by_code('PA_TRIAL_STATUS_TRANSITION').big_value)
+    p "transition_matrix: #{transition_matrix}"
+    statuses = params['statuses']
+
+    if statuses.present? && statuses.size > 0
+      statuses.each_with_index do |e, i|
+        if i == 0
+          from_status_code = 'STATUSZERO'
+        else
+          from_status_code = statuses[i - 1]['trial_status_code']
+        end
+        to_status_code = statuses[i]['trial_status_code']
+
+        # Flag that indicates if the two status dates are the same
+        if from_status_code == 'STATUSZERO'
+          same_date = false
+        else
+          same_date = statuses[i - 1]['status_date'] == statuses[i]['status_date']
+        end
+
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code, same_date)
+        @validation_msgs.append(validation_msg)
+      end
+    end
+  end
+
+  ## part of the abstraction validation
+  def abstraction_validate_trial_status
+    @validation_msgs = []
+    transition_matrix = JSON.parse(AppSetting.find_by_code('PA_VALIDATION_TRIAL_STATUS_TRANSITION').big_value)
+    statuses = params['statuses']
+
+    if statuses.present? && statuses.size > 0
+      statuses.each_with_index do |e, i|
+        if i == 0
+          from_status_code = 'STATUSZERO'
+        else
+          from_status_code = statuses[i - 1]['trial_status_code']
+        end
+        to_status_code = statuses[i]['trial_status_code']
+
+        # Flag that indicates if the two status dates are the same
+        if from_status_code == 'STATUSZERO'
+          same_date = false
+        else
+          same_date = statuses[i - 1]['status_date'] == statuses[i]['status_date']
+        end
+
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code, same_date)
+        @validation_msgs.append(validation_msg)
+      end
+    end
+  end
+
   def validate_milestone
     @validation_msgs = @trial.validate_milestone(params[:submission_id], params[:milestone_id])
   end
