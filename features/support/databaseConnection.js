@@ -20,15 +20,37 @@ var configuration = JSON.parse(
     fs.readFileSync(configurationFile)
 );
 
-var conString = configuration.conString;
-var client = new pg.Client(conString);
+var conStringQA = configuration.conStringQADB;
+var conStringShilpiLocal = configuration.conStringShilpiLocalDB;
+var conStringCI = configuration.conStringCIDB;
 var self = this;
+
+var clientQA = new pg.Client(conStringQA);
+var clientCI = new pg.Client(conStringCI);
+var clientLocal = new pg.Client(conStringShilpiLocal);
 
 var dbConnection = function () {
 
     var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
 
+    if(browser.baseUrl === configuration.baseMainUrlQA){
+        console.log('browser.baseUrl.current qa');
+        console.log(browser.baseUrl);
+        var client = clientQA;
+    }
+
+    if(browser.baseUrl === configuration.baseMainUrl){
+        console.log('browser.baseUrl.current. ci');
+        console.log(browser.baseUrl);
+         client = clientCI;
+    }
+
+    if(browser.baseUrl === configuration.baseMainUrlLocalHost){
+        console.log('browser.baseUrl.current local');
+        console.log(browser.baseUrl);
+         client = clientLocal;
+    }
 
 
     this.dbConnectionImportTrial = function (NCTID, err) {
@@ -217,8 +239,9 @@ var dbConnection = function () {
 
     this.buildDBConnection = function () {
         client.connect(function (value) {
+            console.log('------------ value of db connect ---------------' + value);
             return value;
-        })
+        });
     };
 
     this.closeDBConnection = function () {

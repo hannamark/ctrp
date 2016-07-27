@@ -26,7 +26,6 @@ Feature: PO F10 Create a Person Record
      
      |FieldName        |FieldLength|
      |First Name       |62         |
-     |Middle Name      |1          |
      |Last Name        |62         |
      |Phone Number     |30         |
      |Phone Extension  |30         |

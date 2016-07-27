@@ -1396,7 +1396,7 @@ module.exports = function() {
         callback();
     });
 
-    this.Then(/^the search results will display the trials that match all the search criteria selected$/, function (callback) {
+    this.Then(/^the search results will display the trials with a last active submission that match all the search criteria selected$/, function (callback) {
         trialMenuItem.clickTrials();
         trialMenuItem.clickListSearchTrialLink();
         nciIDNT.then(function(trialNciIDNT) {
@@ -1478,7 +1478,7 @@ module.exports = function() {
                                 searchTrial.selectSearchTrialStudySource(trialNAT);
                                 searchTrial.selectSearchTrialStudySource(trialIND);
                                 searchTrial.clickMyTrials();
-                                expect(projectFunctions.inSearchResults(trialnciIDIMP)).to.eventually.equal('true', assertionErrorMessageTrialID +  ' Trial ID - ' + trialnciIDIMP + ' ' + assertionErrorMessageMyTrialOption + assertionErrorMessageImportTrial);
+                                expect(projectFunctions.inSearchResults(trialnciIDIMP)).to.eventually.equal('false', assertionErrorMessageTrialID +  ' Trial ID - ' + trialnciIDIMP + ' ' + assertionErrorMessageMyTrialOption + assertionErrorMessageImportTrial);
                                 searchTrial.clickAllTrials();
                                 expect(projectFunctions.inSearchResults(trialnciIDIMP)).to.eventually.equal('true', assertionErrorMessageTrialID +  ' Trial ID - ' + trialnciIDIMP + ' ' + assertionErrorMessageAllTrialOption + assertionErrorMessageImportTrial);
                                 searchTrial.clickSavedDrafts();
