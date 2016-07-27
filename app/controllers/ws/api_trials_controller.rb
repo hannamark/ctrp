@@ -88,7 +88,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     render xml:val_errors.to_xml, status: '404'  if val_errors.any?
 
     @paramsLoader = ApiTrialParamsLoader.new()
-    @paramsLoader.load_params(@xmlMapperObject,"amend","")
+    @paramsLoader.load_params(@xmlMapperObject,"amend",@trial)
 
     if !@paramsLoader.errors.empty?
       render xml: @paramsLoader.errors, status: '404'
