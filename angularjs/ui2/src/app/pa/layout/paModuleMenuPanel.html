@@ -1,7 +1,7 @@
 <div class="sidebar drop-shadow" ng-controller="paModuleMenuPanel as paMenuPanel">
     <!-- <span flex class="animated-item" ng-hide="paMenuPanel.nciTrialId==''"><strong>NCI Trial ID: {{paMenuPanel.nciTrialId}}</strong></span> -->
   <uib-accordion close-others="false">
-      <uib-accordion-group ng-hide="paMenuPanel.nciTrialId==''" is-open="paMenuPanel.trialGlobalOpen">
+      <div uib-accordion-group ng-hide="paMenuPanel.nciTrialId==''" is-open="paMenuPanel.trialGlobalOpen">
           <uib-accordion-heading>
               <strong>
                   <!-- <div ng-show="paMenuPanel.menuTypes.abstraction">Trial Abstraction:</div>
@@ -9,8 +9,8 @@
                   NCI Trial ID: {{paMenuPanel.nciTrialId}}<i class="pull-right glyphicon" ng-click="paMenuPanel.toggleGlobal()" ng-class="{'glyphicon-chevron-down': paMenuPanel.trialGlobalOpen, 'glyphicon-chevron-right': !paMenuPanel.trialGlobalOpen}"></i>
               </strong>
           </uib-accordion-heading>
-      </uib-accordion-group>
-      <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialOverviewOpen">
+      </div>
+      <div uib-accordion-group is-open="paMenuPanel.menuAccordions.trialOverviewOpen">
           <uib-accordion-heading>
               <strong>Trial Overview</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialOverviewOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialOverviewOpen}"></i>
           </uib-accordion-heading>
@@ -24,9 +24,9 @@
               <li><a ui-sref="main.pa.trialOverview.checkoutHistory" ui-sref-opts="{reload: true}" class="menu-check-out-history">Check Out History</a></li>
               <li><a ui-sref="main.pa.trialOverview.emailLogs" ui-sref-opts="{reload: true}" class="menu-email-logs">Email Logs</a></li>
           </ul>
-      </uib-accordion-group>
+      </div>
       <div ng-hide="paMenuPanel.menuTypes.rejection || paMenuPanel.menuTypes.hideFlagForRejection">
-          <uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
+          <div uib-accordion-group is-open="paMenuPanel.menuAccordions.adminDataOpen">
               <uib-accordion-heading>
                   <strong>Administrative Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.adminDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.adminDataOpen}"></i>
               </uib-accordion-heading>
@@ -42,10 +42,10 @@
                   <li ng-hide="paMenuPanel.menuTypes.trialValidImport"><a ui-sref="main.pa.trialOverview.paTrialRelatedDocs" ui-sref-opts="{reload: true}" class="menu-trial-related-documents">Trial Related Documents</a></li>
                   <li><a ui-sref="main.pa.trialOverview.nciInfo" ui-sref-opts="{reload: true}" class="menu-nci-info">NCI Specific Information</a></li>
               </ul>
-          </uib-accordion-group>
+          </div>
       </div>
       <div ng-hide="paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport || paMenuPanel.menuTypes.rejection || paMenuPanel.menuTypes.hideFlagForRejection">
-          <uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
+          <div uib-accordion-group is-open="paMenuPanel.menuAccordions.scientificDataOpen">
               <uib-accordion-heading>
                   <strong>Scientific Data</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.scientificDataOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.scientificDataOpen}"></i>
               </uib-accordion-heading>
@@ -62,11 +62,11 @@
                   <li><a ui-sref="main.pa.trialOverview.trialSubGroups" ui-sref-opts="{reload: true}" class="menu-trial-sub-groups">Sub-Groups Stratification</a></li>
                   <li><a ui-sref="main.pa.trialOverview.bioMarkers" ui-sref-opts="{reload: true}" class="menu-bio-markers">Biomarkers</a></li>
               </ul>
-          </uib-accordion-group>
+          </div>
       </div>
       <div ng-show="paMenuPanel.menuTypes.abstraction && !paMenuPanel.menuTypes.hideFlagForRejection">
           <!-- only show this menu in abstraction mode -->
-          <uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
+          <div uib-accordion-group is-open="paMenuPanel.menuAccordions.completeOpen">
               <uib-accordion-heading>
                   <strong>Completion</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.completeOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.completeOpen}"></i>
               </uib-accordion-heading>
@@ -74,17 +74,17 @@
                   <li><a ui-sref="main.pa.trialOverview.abstractValidation" class="menu-abstraction-validation">Abstraction Validation</a></li>
                   <li><a href="" class="menu-results-info">Results Information</a></li>
               </ul>
-          </uib-accordion-group>
+          </div>
       </div>
       <div ng-show="(paMenuPanel.menuTypes.trialValidProtocol || paMenuPanel.menuTypes.trialValidImport) && !paMenuPanel.menuTypes.hideFlagForRejection">
-          <uib-accordion-group is-open="paMenuPanel.menuAccordions.trialValidOpen">
+          <div uib-accordion-group is-open="paMenuPanel.menuAccordions.trialValidOpen">
               <uib-accordion-heading>
                   <strong>Trial Validation</strong>  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': paMenuPanel.menuAccordions.trialValidOpen, 'glyphicon-chevron-right': !paMenuPanel.menuAccordions.trialValidOpen}"></i>
               </uib-accordion-heading>
               <ul class="nav nav-pills nav-stacked">
                   <li><a ui-sref="main.pa.trialOverview.submissionValidation" class="menu-submission-validation">Submission Validation</a></li>
               </ul>
-          </uib-accordion-group>
+          </div>
       </div>
   </uib-accordion>
 </div>
