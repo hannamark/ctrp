@@ -7,10 +7,11 @@ As a CTRP Accrual Submitter, I can download Accrual Count Reports in the CTRP Ac
     Given I am on the CTRP Accrual Application
      When I click on the Accrual Counts on the toolbar
      Then the Accrual Count page displays trials to which I have access with "Accrual Count type"
-     And Trials are sorted by NCI Id with newest Trials first
+    
      
      
       |NCI Trial Identifier  |
+      |Information Source|
       |Lead Org Trial Identifier  |
       |ClinicaTrials.gov ID  |
       |Lead Organization  |
@@ -19,6 +20,7 @@ As a CTRP Accrual Submitter, I can download Accrual Count Reports in the CTRP Ac
       |Trial Accrual Count  |
       |Last Accrual Update Submitted  |
       
+      And Trials are sorted by NCI Id with newest Trials first
      And the accrual report trial list will be paganiated  
      And I can filter Accrual Count types by using the filter capabilities on the right end of the column headings
      And I can sort column data by clicking on the arrow displayed on every cloumn heading
