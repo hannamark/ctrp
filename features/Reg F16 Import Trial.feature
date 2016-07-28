@@ -104,7 +104,8 @@ Then the trial information will be displayed including
 |Data Table 4 Information (Title)|
 |Study Source|
 |Data Table 4 Funding Sponsor/Source|
-
+And The file name will be "import_””NCT ID””_””Current Date YYY-MM-DD””_””Current Time HHMM(24HR)””.xml" "Example: import_NCT09809876_2016-05-03-1230.xml"
+And the file will be displayed in PA "Trial Related Documents" screen 
 And I can select the "Add My Site" function to add my site as a participating site
 
 Scenario: #6 I can enter my site information as a participating site after a trial is imported from ClinicalTrials.gov
