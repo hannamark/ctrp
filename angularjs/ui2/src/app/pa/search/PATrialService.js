@@ -391,7 +391,6 @@
             delete trialDetailObj.history;
             curTrial = trialDetailObj;
 
-            console.log('summary when setting trial is: ', curTrial.brief_summary);
             // trialDetailObj comes from controllers other than trial overview controller,
             // the flag is undefined, the checkout record should be retained from trial overview controller
             if (checkoutinFlag === undefined) {
@@ -416,7 +415,6 @@
 
             delete curTrial.admin_checkout;
             delete curTrial.scientific_checkout;
-            console.log('summary when getting trial is: ', curTrial.brief_summary);
             return angular.copy(curTrial);
         }
 
