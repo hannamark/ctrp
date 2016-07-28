@@ -11,7 +11,6 @@ As a CTRP Accrual Submitter, I can download Accrual Count Reports in the CTRP Ac
      
      
       |NCI Trial Identifier  |
-      |Information Source|
       |Lead Org Trial Identifier  |
       |ClinicaTrials.gov ID  |
       |Lead Organization  |
@@ -19,6 +18,7 @@ As a CTRP Accrual Submitter, I can download Accrual Count Reports in the CTRP Ac
       |Participating Site Accrual Count|
       |Trial Accrual Count  |
       |Last Accrual Update Submitted  |
+      |Information Source|
       
       And Trials are sorted by NCI Id with newest Trials first
      And the accrual report trial list will be paganiated  
