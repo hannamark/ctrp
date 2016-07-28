@@ -26,7 +26,6 @@
         var errors = _.groupBy(results.error || [], 'section');
         vm.issues.errors.admin = errors.PAA;
         vm.issues.errors.scientific = errors.PAS;
-        console.info('vm.issues: ', vm.issues);
 
         activate();
         function activate() {
