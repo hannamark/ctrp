@@ -23,7 +23,7 @@
         <div class="row">
             <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()" unsaved-changes>
                 <uib-accordion close-others="false">
-                    <div uib-accordion-group ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
+                    <div uib-accordion-group class="panel-default"  ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
                         <uib-accordion-heading>
                             Amendment Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
                         </uib-accordion-heading>
@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[1]">
+                    <div uib-accordion-group class="panel-default"  class="panel-default" is-open="trialDetailView.accordions[1]">
                         <uib-accordion-heading>
                             Trial Identifiers <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[1], 'glyphicon-chevron-right': !trialDetailView.accordions[1]}"></i>
                         </uib-accordion-heading>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[2]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[2]">
                         <uib-accordion-heading>
                             Trial Details  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[2], 'glyphicon-chevron-right': !trialDetailView.accordions[2]}"></i>
                         </uib-accordion-heading>
@@ -278,7 +278,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[3]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[3]">
                         <uib-accordion-heading>
                             Lead Organization/Principal Investigator  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[3], 'glyphicon-chevron-right': !trialDetailView.accordions[3]}"></i>
                         </uib-accordion-heading>
@@ -313,7 +313,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[4]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[4]">
                         <uib-accordion-heading>
                             Sponsor  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[4], 'glyphicon-chevron-right': !trialDetailView.accordions[4]}"></i>
                         </uib-accordion-heading>
@@ -334,7 +334,7 @@
 
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[5]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[5]">
                         <uib-accordion-heading>
                             Data Table 4 Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[5], 'glyphicon-chevron-right': !trialDetailView.accordions[5]}"></i>
                         </uib-accordion-heading>
@@ -369,7 +369,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[6]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[6]">
                         <uib-accordion-heading>
                             NIH Grant Information (for NIH funded Trials) <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[6], 'glyphicon-chevron-right': !trialDetailView.accordions[6]}"></i>
                         </uib-accordion-heading>
@@ -502,7 +502,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[7]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[7]">
                         <uib-accordion-heading>
                             Trial Status <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[7], 'glyphicon-chevron-right': !trialDetailView.accordions[7]}"></i>
                         </uib-accordion-heading>
@@ -625,7 +625,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[8]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[8]">
                         <uib-accordion-heading>
                             Trial Dates <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[8], 'glyphicon-chevron-right': !trialDetailView.accordions[8]}"></i>
                         </uib-accordion-heading>
@@ -755,7 +755,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[9]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[9]">
                         <uib-accordion-heading>
                             FDA IND/IDE Information for applicable trials <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[9], 'glyphicon-chevron-right': !trialDetailView.accordions[9]}"></i>
                         </uib-accordion-heading>
@@ -876,7 +876,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[10]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[10]">
                         <uib-accordion-heading>
                             Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[10], 'glyphicon-chevron-right': !trialDetailView.accordions[10]}"></i>
                         </uib-accordion-heading>
@@ -1056,7 +1056,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group is-open="trialDetailView.accordions[11]">
+                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[11]">
                         <uib-accordion-heading>
                             Trial Related Documents <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[11], 'glyphicon-chevron-right': !trialDetailView.accordions[11]}"></i>
                         </uib-accordion-heading>
