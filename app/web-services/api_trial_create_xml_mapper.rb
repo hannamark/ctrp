@@ -123,5 +123,9 @@ class ApiTrialCreateXmlMapper
 
     hash_node :otherDocs, "otherDocument", "@filename" ,:optional=>true, :class => String,:default_value=>[]
 
-  end
+    text_node :amendment_number, "amendmentNumber" ,:default_value=>nil,:optional=>true
+    text_node :amendment_date, "amendmentDate" ,:default_value=>nil,:optional=>true
+
+
+end
 
