@@ -96,8 +96,9 @@ Then the trial information will be displayed including
 |Trial Status (Title)|
 |Current Trial Status|
 |Trial Dates (Title)|
-|Trial Start Date|
-|Primary Completion Date|
+|Trial Start Date: Date Type (Actual or Anticipated)|
+|Primary Completion Date : Date Type (Actual or Anticipated)|
+|Completion Date: Date Tye (Actual or Anticipated)|
 |Lead Organization (Title)|
 |Lead Organization|
 |Data Table 4 Information (Title)|
