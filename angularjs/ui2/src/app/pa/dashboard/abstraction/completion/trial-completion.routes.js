@@ -21,6 +21,10 @@
                     PATrialService: 'PATrialService',
                     validationResults: function($stateParams, PATrialService) {
                         return PATrialService.validateAbstractionOnTrial($stateParams.trialId);
+                    },
+                    TrialService: 'TrialService',
+                    trialStatuses: function(TrialService) {
+                        return TrialService.getTrialStatuses();
                     }
                 },
                 ncyBreadcrumb: {

@@ -183,7 +183,7 @@
             getAmendReasons: getAmendReasons,
             validateAbstractionOnTrial: validateAbstractionOnTrial,
             validatePAATrialStatus: validatePAATrialStatus,
-            abstractionValidateTrialStatus: abstractionValidateTrialStatus,            
+            abstractionValidateTrialStatus: abstractionValidateTrialStatus,
         };
 
         return services;
