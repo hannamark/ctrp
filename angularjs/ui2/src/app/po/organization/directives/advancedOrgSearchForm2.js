@@ -498,7 +498,7 @@
             function prepareGidOptions() {
                 $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
-                    var isCTEPContext =row.entity.source_context && row.entity.source_context.indexOf('CTEP') > -1;
+                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
                     if ($scope.usedInModal) {
                         return true;
                     }
@@ -515,8 +515,9 @@
                     var allSearchParams = angular.copy($scope.searchParams);
                     var origGridColumnDefs = angular.copy($scope.gridOptions.columnDefs);
 
+
                     allSearchParams.start = null;
-                    allSearchParams.rows = null;
+                    allSearchParams.rows = 10000000; // To get back all results, for now
 
                     return OrgService.searchOrgs(allSearchParams).then(
                         function (data) {
