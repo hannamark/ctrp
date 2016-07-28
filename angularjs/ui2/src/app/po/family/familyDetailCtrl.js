@@ -27,8 +27,8 @@
             vm.curFamily.family_memberships_attributes = prepareFamilyMembershipsArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curFamily.family_memberships_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String
-                aff['effective_date'] = aff.effective_date ? DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                aff['effective_date'] = aff.effective_date ? moment(aff['effective_date']).format('DD-MMM-YYYY') : ''; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                aff['expiration_date'] = aff.expiration_date ? moment(aff['expiration_date']).format('DD-MMM-YYYY') : ''; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
                 vm.curFamily.family_memberships_attributes[idx] = aff; //update the family memberships with the correct data format
             });
 

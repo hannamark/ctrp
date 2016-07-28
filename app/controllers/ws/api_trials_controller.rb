@@ -16,7 +16,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   $requestString
   $rootElement
 
-  before_action :validate_rest_request
+  before_action only: [:create, :update, :amend] do
+    validate_rest_request
+  end
+
 
   before_filter only: [:create] do
     Rails.logger.info("Restfulservices=> current user #@current_user");
@@ -71,7 +74,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
-    @paramsLoader.load_params(@xmlMapperObject,"update","")
+    @paramsLoader.load_params(@xmlMapperObject,"update",@trial)
 
     if !@paramsLoader.errors.empty?
       render xml: @paramsLoader.errors, status:'404'
@@ -88,7 +91,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     render xml:val_errors.to_xml, status: '404'  if val_errors.any?
 
     @paramsLoader = ApiTrialParamsLoader.new()
-    @paramsLoader.load_params(@xmlMapperObject,"amend","")
+    @paramsLoader.load_params(@xmlMapperObject,"amend",@trial)
 
     if !@paramsLoader.errors.empty?
       render xml: @paramsLoader.errors, status: '404'
@@ -136,6 +139,29 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
   end
 
+  def import_trial
+    @import_trial_service = ImportTrialService.new()
+    @import_trial_service.validate_clinical_trials_gov(params[:id])
+    p @import_trial_service
+
+    if !@import_trial_service.errors.empty?
+      render xml: @import_trial_service.errors, status: '404'
+    else
+      url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+      url = url.sub('NCT********', params[:id])
+      xml = Nokogiri::XML(open(url))
+
+      trial_service = TrialService.new({trial: nil})
+      @trial = Trial.new(trial_service.import_params(xml, @current_user))
+      @trial.current_user = @current_user
+
+        if @trial.save
+          render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+        else
+          render xml: @trial.errors, status: :bad_request
+        end
+    end
+  end
 
 
   private
@@ -189,6 +215,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         xsd_errors.push("sponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if b.length >= 1
         xsd_errors.push("pi: Creating new Person feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if c.length >= 1
         xsd_errors.push("summary4FundingSponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if d.length >= 1
+
+      #e = doc.xpath("//")
 
     end
 
