@@ -715,7 +715,7 @@ class TrialsController < ApplicationController
   def search_clinical_trials_gov
     @search_result = {}
 
-    existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id)
+    existing_nct_ids = OtherId.joins(:trial).where('protocol_id = ? AND protocol_id_origin_id = ? AND trials.is_rejected = ? OR trials.is_rejected IS NULL', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id, FALSE)
     if existing_nct_ids.length > 0
       @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
       return
@@ -770,7 +770,7 @@ class TrialsController < ApplicationController
         format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
         format.json { render :show, status: :created, location: @trial }
 
-        TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: open(url), file_name: 'import.xml')
+        #TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: open(url), file_name: 'import.xml')
       else
         format.html { render :new }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
