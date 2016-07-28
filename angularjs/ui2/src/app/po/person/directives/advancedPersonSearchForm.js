@@ -445,7 +445,7 @@
                     var origGridColumnDefs = angular.copy($scope.gridOptions.columnDefs);
 
                     allSearchParams.start = null;
-                    allSearchParams.rows = null;
+                    allSearchParams.rows = 10000000; // To get back all results, for now
 
                     return PersonService.searchPeople(allSearchParams).then(
                         function (data) {
