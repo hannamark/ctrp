@@ -140,8 +140,27 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   end
 
   def import_trial
-    @trial = Trial.find_by_id(1)
-    render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+    @import_trial_service = ImportTrialService.new()
+    @import_trial_service.validate_clinical_trials_gov(params[:id])
+    p @import_trial_service
+
+    if !@import_trial_service.errors.empty?
+      render xml: @import_trial_service.errors, status: '404'
+    else
+      url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+      url = url.sub('NCT********', params[:id])
+      xml = Nokogiri::XML(open(url))
+
+      trial_service = TrialService.new({trial: nil})
+      @trial = Trial.new(trial_service.import_params(xml, @current_user))
+      @trial.current_user = @current_user
+
+        if @trial.save
+          render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+        else
+          render xml: @trial.errors, status: :bad_request
+        end
+    end
   end
 
 
