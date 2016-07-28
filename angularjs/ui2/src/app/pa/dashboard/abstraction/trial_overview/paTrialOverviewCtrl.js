@@ -14,7 +14,7 @@
         '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService', '$uibModal'];
 
     checkinModalCtrl.$inject = ['$scope', '$uibModalInstance', 'curTrialObj', 'trialStatusDict',
-        'PATrialService', 'TrialService', 'validationResults', '_']; // checkin modal controller
+        'PATrialService', 'TrialService', 'validationResults', '_', '$state']; // checkin modal controller
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES, researchCategories,
             $scope, TrialService, UserService, curTrial, _, PersonService, $uibModal) {
@@ -375,7 +375,7 @@
      * Checkin modal controller
      */
     function checkinModalCtrl($scope, $uibModalInstance, curTrialObj, trialStatusDict,
-            PATrialService, TrialService, validationResults, _) {
+            PATrialService, TrialService, validationResults, _, $state) {
         var viewModel = this;
         viewModel.curTrialObj = curTrialObj;
         viewModel.checkinComment = null;
@@ -395,7 +395,8 @@
             $uibModalInstance.dismiss('cancel');
         };
         viewModel.viewAbstractionValidation = function() {
-            // TODO: redirect to viewAbstractionValidation page
+            $state.go('main.pa.trialOverview.abstractValidation', {reload: true});
+            viewModel.cancel();
         };
 
         function validateTrialStatuses(annotatedStatusArr) {
