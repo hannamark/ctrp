@@ -16,7 +16,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   $requestString
   $rootElement
 
-  before_action :validate_rest_request
+  before_action only: [:create, :update, :amend] do
+    validate_rest_request
+  end
+
 
   before_filter only: [:create] do
     Rails.logger.info("Restfulservices=> current user #@current_user");
@@ -136,6 +139,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
   end
 
+  def import_trial
+    @trial = Trial.find_by_id(1)
+    render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+  end
 
 
   private
