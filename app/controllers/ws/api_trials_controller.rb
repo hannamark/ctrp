@@ -49,6 +49,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     render xml:val_errors.to_xml, status: '404'  if val_errors.any?
   end
+
+
   before_filter only: [:create] do
 
     @paramsLoader = ApiTrialParamsLoader.new()
@@ -58,6 +60,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       render xml: @paramsLoader.errors, status: '404'
     end
   end # end of before_create
+
+
 
   before_filter only:[:update,:amend] do
 
@@ -80,6 +84,36 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
 
   end #end of before_update
+
+  before_filter only: [:amend] do
+    Rails.logger.info("Restfulservices=> current user #@current_user");
+    val_errors = Array.new()
+
+    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+
+    ## Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
+    ##
+
+    #if !@xmlMapperObject.leadOrganization.newOrganization.nil?
+    # val_errors.push("Accepting newOrganization element to create Person/Organization on the fly has been deprecated, please refer 5.x wiki for more details");
+    #else
+    lead_protocol_id = @xmlMapperObject.lead_protocol_id
+    lead_org_id = @xmlMapperObject.leadOrganization.existingOrganization.id
+    lead_org_id_pk= Organization.find_by_ctrp_id(lead_org_id).id if Organization.find_by_ctrp_id(lead_org_id)
+
+    @trial1 = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id_pk)
+
+
+    if @trial1.present? && @trial.id != @trial1.id
+      val_errors.push("A trial has already been existed with given Lead Org Trial ID and Lead organization ID");
+    else
+      val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
+    end
+    #end
+
+    render xml:val_errors.to_xml, status: '404'  if val_errors.any?
+  end
+
 
   before_filter only: [:amend] do
 
