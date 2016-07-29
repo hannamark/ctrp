@@ -359,7 +359,7 @@ class TrialService
     p "current trial status code: #{@@cur_trial_status_code} for trial #{@trial.id}"
 
     human_safe_rules.each do |rule|
-      if rule.code == 'PAA92' and (board_approval_status_id.nil? || @trial.board_approval_status_id.nil? || @trial.board_approval_status_id != board_approval_status_id)
+      if rule.code == 'PAA92' and !board_approval_status_id.present?
         #error block
         validation_results << rule # board approval status is missing
       elsif (rule.code == 'PAA183' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id) ||
