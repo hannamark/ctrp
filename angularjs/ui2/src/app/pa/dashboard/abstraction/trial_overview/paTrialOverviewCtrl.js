@@ -265,8 +265,9 @@
 
         function watchUpdatesInChildrenScope() {
             $scope.$on('updatedInChildScope', function() {
-                // console.info('updatedInChildScope, getting current trial now!');
+                console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                console.info('milestone wrappers: ', vm.trialDetailObj.milestone_wrappers);
                 _checkEditableStatus();
                 updateTrialDetailObj(vm.trialDetailObj);
             });
@@ -308,9 +309,9 @@
                 } else if (trialDetailObj.last_submission_type_code === 'ORI') {
                     altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'SRJ'});
                     console.info('SRJ, last_submission_type_code is ORI, altCurMilestoneIndex: ', altCurMilestoneIndex);
-                    curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
+                    // curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
+                    curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex].code : '';
                 }
-                console.info('curMilestoneCode: ', curMilestoneCode);
             }
 
             if (MILESTONE_CODES_FOR_VALIDATION.indexOf(curMilestoneCode) > -1) {
