@@ -22,7 +22,7 @@ end
 
 json.trial_funding_sources do
   json.array!(@trial.trial_funding_sources) do |source|
-    json.extract! source, :organization_id
+    json.extract! source, :trial_id, :id, :organization_id
     json.set! :source_name, Organization.find(source.organization_id).name
   end
 end
