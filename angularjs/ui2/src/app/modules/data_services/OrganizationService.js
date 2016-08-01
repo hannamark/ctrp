@@ -60,7 +60,7 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
-            enableFiltering: true,
+            enableFiltering: false,
             exporterCsvFilename: 'organizations.csv',
             exporterMenuAllData: true,
             exporterMenuPdf: false,
