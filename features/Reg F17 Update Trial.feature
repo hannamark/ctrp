@@ -25,7 +25,7 @@ And I will be able to update trial start date, primary completion date, and comp
 And I will be able to review all existing Trial Related Documents type
 And I will be able to add all Trial Related Documents 
 And the added documents should be added to the existing documents
-And I will be able to review or cancel my update
+And I will be able to review or reset my update
 When I click on the Review Button to Review my trial
 And the click on the submit button
 Then my trial will be updated in the CTRP application
