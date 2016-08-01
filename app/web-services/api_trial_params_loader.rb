@@ -21,6 +21,8 @@ class ApiTrialParamsLoader
         $rest_params[:edit_type] ="update"
       when "amend"
         $rest_params[:edit_type] ="amend"
+        $rest_params[:submissions_attributes]=[]
+        $rest_params[:submissions_attributes].push({amendment_num:$mapperObject.amendment_number,amendment_date:$mapperObject.amendment_date})
     end
 
     ##In model to add some custome code use following identifier ; so that active model know from which this request is coming;

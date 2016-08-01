@@ -20,7 +20,8 @@ When the imported Clinical Trial does not have an Official Title
 Then the Clinical Trial Brief Title should be displayed in the search results
 Then I can import the trial information from ClinicalTrials.gov into CTRP
 And the trial Study Souce will be listed as Industrial
-And the XML from ClinicalTrials.gov will be added to the trial related document
+And the XML from ClinicalTrials.gov will be attached to the trial document
+And The file name will be "import_””NCT ID””_””Current Date YYYY-MM-DD””_””Current Time HHMM(24HR)””.xml" "Example: import_NCT09809876_2016-05-03-1230.xml"
 And the trial milestone "Submission Received Date" will be added with the date of the import
 |Import Mappings are in CTRP AUM\Functional\Registration\ClinicalTrials Import Data Element Mapping v6.docx|
 
@@ -52,20 +53,20 @@ And the trial status will match the trial status in ClinicalTrials.gov as:
 Scenario: #4c I will not be able to Import a trial previously registered in CTRP
 Given I have selected the option to Import an Industrial or Other Trial
 And I have entered a NCT Number
-When the NCT Number is associated with a Trial which has NOT been Rejected OR Submission Terminated
+When the NCT Number is associated with a Trial which has NOT been Rejected 
 Then the Trial with the entered NCT number should NOT be allowed to be imported
 Then the error message will be displayed "A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page."
 
 Scenario: #4c.1 I will be able to import a trial previously registered in CTRP
 Given I have selected the option to Import an Industrial or Other Trial
 And I have entered a NCT Number
-When the NCT Number is associated with a Trial which has been Rejected OR Submission Terminated
+When the NCT Number is associated with a Trial which has been Rejected 
 Then the Trial with the entered NCT number should be allowed to be imported
 
 Scenario: #4d I will not be able to Import a trial for the same lead organization and lead organization ID
 Given I have selected the option to Import an Industrial or Other Trial
 And I have entered a NCT Number
-When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has NOT been Rejected OR Submission Terminated
+When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has NOT been Rejected 
 Then The Trial with the associated lead organization and lead organization ID should not be allowed to be imported
 And the error message will be displayed "A trial exists in the system with the same Lead Organization Trial Identifier for the selected Lead Organization" 
 
@@ -104,6 +105,7 @@ Then the trial information will be displayed including
 |Data Table 4 Information (Title)|
 |Study Source|
 |Data Table 4 Funding Sponsor/Source|
+
 
 And I can select the "Add My Site" function to add my site as a participating site
 

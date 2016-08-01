@@ -14,7 +14,7 @@
         '$scope', 'TrialService', 'UserService', 'curTrial', '_', 'PersonService', '$uibModal'];
 
     checkinModalCtrl.$inject = ['$scope', '$uibModalInstance', 'curTrialObj', 'trialStatusDict',
-        'PATrialService', 'TrialService', 'validationResults', '_']; // checkin modal controller
+        'PATrialService', 'TrialService', 'validationResults', '_', '$state']; // checkin modal controller
     function paTrialOverviewCtrl($state, $stateParams, PATrialService,
             $mdToast, $document, $timeout, Common, MESSAGES, researchCategories,
             $scope, TrialService, UserService, curTrial, _, PersonService, $uibModal) {
@@ -265,8 +265,9 @@
 
         function watchUpdatesInChildrenScope() {
             $scope.$on('updatedInChildScope', function() {
-                // console.info('updatedInChildScope, getting current trial now!');
+                console.info('updatedInChildScope, getting current trial now!');
                 vm.trialDetailObj = PATrialService.getCurrentTrialFromCache();
+                console.info('milestone wrappers: ', vm.trialDetailObj.milestone_wrappers);
                 _checkEditableStatus();
                 updateTrialDetailObj(vm.trialDetailObj);
             });
@@ -308,9 +309,9 @@
                 } else if (trialDetailObj.last_submission_type_code === 'ORI') {
                     altCurMilestoneIndex = _.findLastIndex(milestones, {code: 'SRJ'});
                     console.info('SRJ, last_submission_type_code is ORI, altCurMilestoneIndex: ', altCurMilestoneIndex);
-                    curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
+                    // curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex-1].code : '';
+                    curMilestoneCode = altCurMilestoneIndex > 0 ? milestones[altCurMilestoneIndex].code : '';
                 }
-                console.info('curMilestoneCode: ', curMilestoneCode);
             }
 
             if (MILESTONE_CODES_FOR_VALIDATION.indexOf(curMilestoneCode) > -1) {
@@ -375,7 +376,7 @@
      * Checkin modal controller
      */
     function checkinModalCtrl($scope, $uibModalInstance, curTrialObj, trialStatusDict,
-            PATrialService, TrialService, validationResults, _) {
+            PATrialService, TrialService, validationResults, _, $state) {
         var viewModel = this;
         viewModel.curTrialObj = curTrialObj;
         viewModel.checkinComment = null;
@@ -395,7 +396,8 @@
             $uibModalInstance.dismiss('cancel');
         };
         viewModel.viewAbstractionValidation = function() {
-            // TODO: redirect to viewAbstractionValidation page
+            $state.go('main.pa.trialOverview.abstractValidation', {reload: true});
+            viewModel.cancel();
         };
 
         function validateTrialStatuses(annotatedStatusArr) {

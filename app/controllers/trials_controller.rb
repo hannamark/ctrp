@@ -770,8 +770,9 @@ class TrialsController < ApplicationController
         format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
         format.json { render :show, status: :created, location: @trial }
 
+        FileUtils.mkdir_p('../../storage/tmp')
         file_name = "import_#{params[:nct_id]}_#{Date.today.strftime('%d-%b-%Y')}"
-        open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
+        File.open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
           file << open(url).read
         end
         TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: File.open("../../storage/tmp/#{file_name}.xml"))
