@@ -25,10 +25,12 @@ And I will be able to update trial start date, primary completion date, and comp
 And I will be able to review all existing Trial Related Documents type
 And I will be able to add all Trial Related Documents 
 And the added documents should be added to the existing documents
-And I will be able to review or reset my update
-When I click on the Review Button to Review my trial
-And the click on the submit button
-Then my trial will be updated in the CTRP application
+When the trial has errors 
+Then the Review Button will be displayed to Review the errors
+When the trial has no errors
+Then the Submit button will be displayed
+And I can click on the submit button
+And  my trial will be updated in the CTRP application
 And the Submission source is a Cancer Center 
 And the Submission method is Registry
 And Submission type is Update
@@ -40,6 +42,15 @@ And I search for a Trial which has been accepted and has a Participating site ad
 And I have selected the Update option
 Then I can view participating site section with Participating Name, Participating Sites Recruitment Status and Date
 And I can Update Participating Sites Recruitment Status and Date
+
+Scenario: #1b I can reset entered updates
+Given I am logged into the CTRP Registration application
+And I am on the Trial Update screen
+When I update fields on the Trial Update screen
+And I click on the reset button
+Then all fields updated will be cancelled 
+And the new changes will not be saved
+
 
 Scenario: #2 I search my trials and select the update option
 Given I am logged into the CTRP Registration application

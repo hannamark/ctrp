@@ -58,7 +58,7 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
-            enableFiltering: true,
+            enableFiltering: false,
             enableHorizontalScrollbar: 2,
             enableVerticalScrollbar: 2,
             exporterCsvFilename: 'persons.csv',
