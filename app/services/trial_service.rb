@@ -296,14 +296,14 @@ class TrialService
   def _validate_paa_participating_sites()
     paa_site_rules = ValidationRule.where(model: 'trial', item: 'paa_participating_sites')
     # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
-    is_all_sites_unique = true
+    is_all_sites_unique = nil
     is_site_pi_unique = true  # check for duplicate site investigator on the same site
     is_any_site_status_active = false
     is_any_site_status_enroll_by_invitation = false
 
     @trial.participating_sites.each do |site|
       # TODO: optimize this query if possible
-      if is_all_sites_unique
+      if is_all_sites_unique.nil?
         is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
       end
 
@@ -324,7 +324,7 @@ class TrialService
 
     validation_result = []
     paa_site_rules.each do |rule|
-      if (rule.code == 'PAA93' and !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
+      if (rule.code == 'PAA93' and !is_all_sites_unique.nil? && !is_all_sites_unique) || (rule.code == 'PAA94' and !is_site_pi_unique)
         ## errors block
         validation_result << rule
       elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
