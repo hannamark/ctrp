@@ -9,7 +9,7 @@ And I am on the Associated Trials screen
 When  I have selected the Add button
 Then I am on the Add Associated Trial screen
 And I must select <IdentifierType>
-|IdentifierType  |
+|IdentifierType   |
 |NCI              |
 |NCT              |
 And I must enter the Trial Identifier

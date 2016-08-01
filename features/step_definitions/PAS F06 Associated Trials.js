@@ -94,6 +94,10 @@ module.exports = function() {
     var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1789';
     var leadProtocolIDA = 'CTRP_01_1777';
+    var nctIDA = 'NCT00334282';
+    var nctIDB = 'NCT02348710';
+    var nciIDA = '';
+    var nciIDB = '';
     var optionA = '';
     var optionB = '';
     var optionC = '';
@@ -148,63 +152,68 @@ module.exports = function() {
 
     this.When(/^I have selected the Add button$/, function (callback) {
         associated.clickAddAssociatedTrial();
-        associated.checkAssociatedTrialPageTitle(pageTtitleA, 'details');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I am on the Add Associated Trial screen$/, function (callback) {
-
+        associated.checkAssociatedTrialPageTitle(pageTtitleA, 'details');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I must select (.*)$/, function (IdentifierType, table, callback) {
-        // Write code here that turns the phrase above into concrete actions
+        var idenType = table.raw();
+        optionType = idenType.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + idenType +']');
+        var optionTypeSplt = optionType.toString().split("\n");
+        optionA = optionTypeSplt[1];
+        optionB = optionTypeSplt[0];
+        associated.selectIdentifierType(optionA);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I must enter the Trial Identifier$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.setTrialIdentifierTxt(nctIDA);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I click the Look Up Trial button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.clickLookupTrial();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Requested Trial is retrieved$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Clinical Research Category populates$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Official Title populates$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have clicked the Save button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the associated study displays on the Associated Trials screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Message Record Created displays$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Associated Trial will be associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
 

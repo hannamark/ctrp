@@ -59,8 +59,8 @@ var scientificAssociatedTrials = function(){
     this.resetAssociatedBtn = element(by.id('associated_reset'));
     this.backToAssociatedTrialsListBtn = element(by.id('associated_back'));
 
-    this.associatedPageTitleList = element(by.id('pg_title'));
-    this.associatedPageTitleDetails = element(by.id('outcome_measure_details'));
+    this.associatedPageTitleList = element(by.id('pg_title_list'));
+    this.associatedPageTitleDetails = element(by.id('pg_title_details'));
 
     this.clickAddAssociatedTrial = function(){
         helper.clickButton(self.addAssociatedTrialBtn, "Add Associated Trial - Button");
@@ -112,7 +112,7 @@ var scientificAssociatedTrials = function(){
         helper.wait_for(100);
     };
 
-    this.clickLookupTrialTrial = function(){
+    this.clickLookupTrial = function(){
         helper.clickButton(this.lookupTrialBtn, "Add Look Up Trial - Button");
     };
 
