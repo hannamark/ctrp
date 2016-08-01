@@ -52,7 +52,7 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
-            enableFiltering: true,
+            enableFiltering: false,
             columnDefs: [],
             exporterCsvFilename: 'trials.csv',
             exporterMenuAllData: true,
