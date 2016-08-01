@@ -24,6 +24,7 @@ class OtherId < TrialBase
 
   validates :protocol_id, presence: true
   validates :protocol_id_origin, presence: true
+  validates :protocol_id, length: {maximum: 30} #, if: self.protocol_id_origin_id == ProtocolIdOrigin.find_by_code('NCT').id
 
   scope :by_value, ->  (value) {
     joins(:protocol_id_origin).where("other_ids.protocol_id_origin_id = protocol_id_origins.id and protocol_id_origins.code = ?","#{value.to_s}")
@@ -58,6 +59,5 @@ class OtherId < TrialBase
       self.trial.update(updated_by:updated_by, updated_at:Time.now)
     end
   end
-
 
 end

@@ -36,6 +36,10 @@ class ParticipatingSite < ActiveRecord::Base
   has_many :participating_site_investigators, -> { order 'participating_site_investigators.id' }
   has_many :people, through: :participating_site_investigators
 
+  # validates :contact_name, length: {maximum: 124}
+  validates :contact_phone, length: {maximum: 44}
+  validates :contact_email, length: {maximum: 254}
+
   accepts_nested_attributes_for :site_rec_status_wrappers, allow_destroy: true
   accepts_nested_attributes_for :participating_site_investigators, allow_destroy: true
 
