@@ -8,7 +8,7 @@ class ApiTrialParamsLoader
     $rest_params = {}
   end
 
-  def load_params(xmlMapperObject,type,trial_id)
+  def load_params(xmlMapperObject,type,trial)
 
     $rest_params = {}
     $mapperObject =xmlMapperObject
@@ -21,6 +21,8 @@ class ApiTrialParamsLoader
         $rest_params[:edit_type] ="update"
       when "amend"
         $rest_params[:edit_type] ="amend"
+        $rest_params[:submissions_attributes]=[]
+        $rest_params[:submissions_attributes].push({amendment_num:$mapperObject.amendment_number,amendment_date:$mapperObject.amendment_date})
     end
 
     ##In model to add some custome code use following identifier ; so that active model know from which this request is coming;
@@ -34,21 +36,47 @@ class ApiTrialParamsLoader
        end
     end
 
+    if $rest_params[:edit_type] == "update"
+      ##A change to the trial's disease terminology will be ignored if the trial has accrued study subjects with disease codes under the existing terminology.
+      $rest_params[:accrual_disease_term_id] = $mapperObject.accrual_disease_term_id if trial.accrual_disease_term_id.nil?
+    else
+      $rest_params[:accrual_disease_term_id] = $mapperObject.accrual_disease_term_id
+    end
 
-
-    ###Trial Identifiers
+      ###Trial Identifiers
 
     $rest_params[:other_ids_attributes]=[]
     otherProtocolId    = ProtocolIdOrigin.find_by_name("Other Identifier").id
     clinicalProtocolId = ProtocolIdOrigin.find_by_name("ClinicalTrials.gov Identifier").id
 
+    $mapperObject.otherIDs = $mapperObject.otherIDs.uniq
     $mapperObject.otherIDs.each do |oid|
-      $rest_params[:other_ids_attributes].push({protocol_id:oid,protocol_id_origin_id:otherProtocolId})
+      if ($rest_params[:edit_type] == "update" || $rest_params[:edit_type] == "amend") && !OtherId.find_by_protocol_id_and_protocol_id_origin_id_and_trial_id(oid, otherProtocolId,trial.id)
+        $rest_params[:other_ids_attributes].push({protocol_id:oid,protocol_id_origin_id:otherProtocolId})
+      elsif $rest_params[:edit_type] == "create"
+        $rest_params[:other_ids_attributes].push({protocol_id:oid,protocol_id_origin_id:otherProtocolId})
+      end
     end
 
+
+    ##
+    #$rest_params[:other_ids_attributes] = $rest_params[:other_ids_attributes].uniq
+
     $mapperObject.clinicalIDs.each do |cid|
-      $rest_params[:other_ids_attributes].push({protocol_id:cid,protocol_id_origin_id:clinicalProtocolId})
+      if $rest_params[:edit_type] == "update"
+        #If the trial does not currently specify a ClinicalTrials.Gov ID (a.k.a NCT ID), you can provide one during the update.
+        #If the trial does have a ClinicalTrials.Gov ID already, your update will not be allowed to change it; an attempt to do so will be ignored by CTRP.
+        other_ids = trial.other_ids.pluck(:protocol_id_origin_id)
+        if !other_ids.include?(clinicalProtocolId)
+          $rest_params[:other_ids_attributes].push({protocol_id:cid,protocol_id_origin_id:clinicalProtocolId})
+        end
+      else
+        $rest_params[:other_ids_attributes].push({protocol_id:cid,protocol_id_origin_id:clinicalProtocolId})
+      end
+
     end
+
+   ###
 
 
     ###Trial Details
@@ -87,7 +115,8 @@ class ApiTrialParamsLoader
 
     ###Funding Sources
     $rest_params[:trial_funding_sources_attributes] = []
-    $mapperObject.fundingSources.each do |fs|
+    $mapperObject.fundingSources = $mapperObject.fundingSources.uniq
+      $mapperObject.fundingSources.each do |fs|
       organization_id=fs.existingOrganization.id
       $rest_params[:trial_funding_sources_attributes].push({organization_id:organization_id}) if organization_id && valid_org("summary4FundingSponsor",organization_id)
     end
@@ -96,9 +125,14 @@ class ApiTrialParamsLoader
     ###Grants
     ###
     $rest_params[:grants_attributes] = []
+    $mapperObject.grants = $mapperObject.grants.uniq
     $mapperObject.grants.each do |grant|
       if validate_grants(grant.funding_mechanism,grant.institute_code,grant.serial_number,grant.nci)
-        $rest_params[:grants_attributes].push({funding_mechanism: grant.funding_mechanism, institute_code: grant.institute_code, serial_number: grant.serial_number, nci: grant.nci})
+        if ($rest_params[:edit_type] == "update" || $rest_params[:edit_type] == "amend") && !Grant.find_by_funding_mechanism_and_institute_code_and_serial_number_and_nci_and_trial_id(grant.funding_mechanism, grant.institute_code,grant.serial_number, grant.nci,trial.id)
+          $rest_params[:grants_attributes].push({funding_mechanism: grant.funding_mechanism, institute_code: grant.institute_code, serial_number: grant.serial_number, nci: grant.nci})
+        elsif $rest_params[:edit_type] == "create"
+          $rest_params[:grants_attributes].push({funding_mechanism: grant.funding_mechanism, institute_code: grant.institute_code, serial_number: grant.serial_number, nci: grant.nci})
+        end
       else
         $errors.store("grant" ,"Given grant info is not valid")
       end
@@ -114,14 +148,27 @@ class ApiTrialParamsLoader
 
     validate_dates_conditions
 
+
     ###IND,IDE
     $rest_params[:ind_ides_attributes] = []
-
+    $mapperObject.inds = $mapperObject.inds.uniq
     $mapperObject.inds.each do |ind|
-      add_ind_ide("ind",ind)
+      holder_type_id = HolderType.find_by_code(ind.holderType).id
+      if ($rest_params[:edit_type] == "update" || $rest_params[:edit_type] == "amend") && !IndIde.find_by_ind_ide_type_and_ind_ide_number_and_grantor_and_holder_type_id_and_trial_id("ind", ind.ind_ide_number,ind.grantor, holder_type_id,trial.id)
+        add_ind_ide("ind",ind,holder_type_id)
+      elsif $rest_params[:edit_type] == "create"
+        add_ind_ide("ind",ind,holder_type_id)
+      end
     end
+
+    $mapperObject.ides = $mapperObject.ides.uniq
     $mapperObject.ides.each do |ide|
-      add_ind_ide("ide",ide)
+      holder_type_id = HolderType.find_by_code(ide.holderType).id
+      if ($rest_params[:edit_type] == "update" || $rest_params[:edit_type] == "amend") && !IndIde.find_by_ind_ide_type_and_ind_ide_number_and_grantor_and_holder_type_id_and_trial_id("ide", ide.ind_ide_number,ide.grantor, holder_type_id,trial.id)
+        add_ind_ide("ide",ide,holder_type_id)
+      elsif $rest_params[:edit_type] == "create"
+        add_ind_ide("ide",ide,holder_type_id)
+      end
     end
 
     ###Regulatory Information
@@ -150,6 +197,8 @@ class ApiTrialParamsLoader
       i+=1;
       add_file(other_file_name,other_file_content,"Other Document","tmp_OD_"+i.to_s)
     end
+
+
 
   end
 
@@ -197,18 +246,17 @@ class ApiTrialParamsLoader
 
 
   def validate_grants(fundingMechanism,nihInstitutionCode,serialNumber,nciDivisionProgramCode)
-    isNciPCValid  =  AppSetting.find_by_code("NCI").big_value.split(',').include?(nciDivisionProgramCode)
+    isNciPCValid  =    AppSetting.find_by_code("NCI").big_value.split(',').include?(nciDivisionProgramCode)
     isSerialNumValid = Tempgrants.find_by_funding_mechanism_and_institute_code_and_serial_number(fundingMechanism,nihInstitutionCode,serialNumber) ? true : false
 
     return isSerialNumValid && isNciPCValid ? true:false
   end
 
-  def add_ind_ide(type,ind_ide)
+  def add_ind_ide(type,ind_ide,holder_type_id)
     ind_ide_hash ={}
     ind_ide_hash[:ind_ide_type]=type
     ind_ide_hash[:ind_ide_number]=ind_ide.ind_ide_number
     ind_ide_hash[:grantor]=ind_ide.grantor
-    holder_type_id = HolderType.find_by_code(ind_ide.holderType).id
     ind_ide_hash[:holder_type_id]= holder_type_id
 
 

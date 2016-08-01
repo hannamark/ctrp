@@ -333,7 +333,7 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">Trial Related Documents:</h5>
+                <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && (viewTrialView.curTrial.is_owner || viewTrialView.curTrial.internal_source.code === 'IMP')" class="border-bottom">Trial Related Documents:</h5>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
                      ng-if="document.document_type == 'Protocol Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
@@ -390,7 +390,7 @@
                 </div>
 
                 <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Other Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
+                     ng-if="document.document_type == 'Other Document' && document.status === 'active' && (viewTrialView.curTrial.is_owner || document.document_subtype === 'Import XML')"
                      class="form-group">
                     <label class="control-label col-xs-12 col-sm-3">Other:</label>
                     <div class="col-xs-12 col-sm-9 form-text">

@@ -182,6 +182,8 @@
             getInternalSources: getInternalSources,
             getAmendReasons: getAmendReasons,
             validateAbstractionOnTrial: validateAbstractionOnTrial,
+            validatePAATrialStatus: validatePAATrialStatus,
+            abstractionValidateTrialStatus: abstractionValidateTrialStatus,
         };
 
         return services;
@@ -582,6 +584,28 @@
 
         function lookupNcitInterventions(searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PA.NCIT_INTERVENTIONS_LOOKUP, searchParams);
+        }
+
+        /**
+         * Get validation warnings/errors for trial statuses in PAA
+         *
+         * @param statuses
+         */
+        function validatePAATrialStatus(statuses) {
+            if (!!statuses) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.PAA_VALIDATE_TRIAL_STATUS, statuses);
+            }
+        }
+
+        /**
+         * Get validation warnings/errors for trial statuses in Abstraction Validation
+         *
+         * @param statuses
+         */
+        function abstractionValidateTrialStatus(statuses) {
+            if (!!statuses) {
+                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ABSTRACTION_VALIDATE_TRIAL_STATUS, statuses);
+            }
         }
 
         /**

@@ -11,14 +11,12 @@ As any CTRP User, I can select available Actions
       |Submitted  |
       |Amendment Submitted  |
       |Accepted  |
-      |Rejected  |
       |Abstracted  |
       |Verification Pending  |
       |Abstraction Verified Response  |
       |Abstraction Verified No Response  |
       |On-Hold  |
-      |Submission Terminated  |
-      |Submission Reactivated  |
+      
 
      Then The available Actions
      
@@ -53,14 +51,12 @@ As any CTRP User, I can select available Actions
       |Submitted  |
       |Amendment Submitted  |
       |Accepted  |
-      |Rejected  |
       |Abstracted  |
       |Verification Pending  |
       |Abstraction Verified Response  |
       |Abstraction Verified No Response  |
       |On-Hold  |
-      |Submission Terminated  |
-      |Submission Reactivated  |
+      
     
     Then No actions will be available 
 
@@ -75,14 +71,12 @@ As any CTRP User, I can select available Actions
       |Submitted  |
       |Amendment Submitted  |
       |Accepted  |
-      |Rejected  |
       |Abstracted  |
       |Verification Pending  |
       |Abstraction Verified Response  |
       |Abstraction Verified No Response  |
       |On-Hold  |
-      |Submission Terminated  |
-      |Submission Reactivated  |
+      
     
      When my participating Site is added to the trial
      Then the only available action is to update my participating site in the trial
@@ -98,14 +92,12 @@ As any CTRP User, I can select available Actions
       |Submitted  |
       |Amendment Submitted  |
       |Accepted  |
-      |Rejected  |
       |Abstracted  |
       |Verification Pending  |
       |Abstraction Verified Response  |
       |Abstraction Verified No Response  |
       |On-Hold  |
-      |Submission Terminated  |
-      |Submission Reactivated  |
+      
     
      When participating Sites from my Family are added to the trial
      Then the Available Action Update will allow update of any of the participating site from my Family registered on the Trial

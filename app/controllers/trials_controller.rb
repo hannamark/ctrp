@@ -616,6 +616,62 @@ class TrialsController < ApplicationController
     end
   end
 
+  def paa_validate_trial_status
+    @validation_msgs = []
+    transition_matrix = JSON.parse(AppSetting.find_by_code('PA_TRIAL_STATUS_TRANSITION').big_value)
+    p "transition_matrix: #{transition_matrix}"
+    statuses = params['statuses']
+
+    if statuses.present? && statuses.size > 0
+      statuses.each_with_index do |e, i|
+        if i == 0
+          from_status_code = 'STATUSZERO'
+        else
+          from_status_code = statuses[i - 1]['trial_status_code']
+        end
+        to_status_code = statuses[i]['trial_status_code']
+
+        # Flag that indicates if the two status dates are the same
+        if from_status_code == 'STATUSZERO'
+          same_date = false
+        else
+          same_date = statuses[i - 1]['status_date'] == statuses[i]['status_date']
+        end
+
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code, same_date)
+        @validation_msgs.append(validation_msg)
+      end
+    end
+  end
+
+  ## part of the abstraction validation
+  def abstraction_validate_trial_status
+    @validation_msgs = []
+    transition_matrix = JSON.parse(AppSetting.find_by_code('PA_VALIDATION_TRIAL_STATUS_TRANSITION').big_value)
+    statuses = params['statuses']
+
+    if statuses.present? && statuses.size > 0
+      statuses.each_with_index do |e, i|
+        if i == 0
+          from_status_code = 'STATUSZERO'
+        else
+          from_status_code = statuses[i - 1]['trial_status_code']
+        end
+        to_status_code = statuses[i]['trial_status_code']
+
+        # Flag that indicates if the two status dates are the same
+        if from_status_code == 'STATUSZERO'
+          same_date = false
+        else
+          same_date = statuses[i - 1]['status_date'] == statuses[i]['status_date']
+        end
+
+        validation_msg = convert_validation_msg(transition_matrix[from_status_code][to_status_code], from_status_code, to_status_code, same_date)
+        @validation_msgs.append(validation_msg)
+      end
+    end
+  end
+
   def validate_milestone
     @validation_msgs = @trial.validate_milestone(params[:submission_id], params[:milestone_id])
   end
@@ -659,7 +715,7 @@ class TrialsController < ApplicationController
   def search_clinical_trials_gov
     @search_result = {}
 
-    existing_nct_ids = OtherId.where('protocol_id = ? AND protocol_id_origin_id = ?', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id)
+    existing_nct_ids = OtherId.joins(:trial).where('protocol_id = ? AND protocol_id_origin_id = ? AND (trials.is_rejected = ? OR trials.is_rejected IS NULL)', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id, FALSE)
     if existing_nct_ids.length > 0
       @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
       return
@@ -713,6 +769,13 @@ class TrialsController < ApplicationController
       if @trial.save
         format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
         format.json { render :show, status: :created, location: @trial }
+
+        FileUtils.mkdir_p('../../storage/tmp')
+        file_name = "import_#{params[:nct_id]}_#{Date.today.strftime('%d-%b-%Y')}"
+        File.open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
+          file << open(url).read
+        end
+        TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: File.open("../../storage/tmp/#{file_name}.xml"))
       else
         format.html { render :new }
         format.json { render json: @trial.errors, status: :unprocessable_entity }

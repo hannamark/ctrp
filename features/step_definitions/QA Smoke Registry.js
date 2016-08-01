@@ -16,18 +16,11 @@ var moment = require('moment');
 var searchTrialPage = require('../support/searchTrialPage');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 var loginPage = require('../support/LoginPage');
-var importTrialPage = require('../support/registerImportTrialPage');
 var menuItemList = require('../support/PoCommonBar');
 var databaseConnection = require('../support/databaseConnection');
 var Q = require('q');
 var assert = require('assert');
-var participatingSitePage = require('../support/registerAddParticipatingSite');
-var searchOrgPage = require('../support/ListOfOrganizationsPage');
 var searchPeoplePage = require('../support/ListOfPeoplePage');
-var addPeoplePage = require('../support/AddPersonPage');
-var searchFamilyPage = require('../support/ListOfFamiliesPage');
-var addFamilyPage = require('../support/AddFamilyPage');
-var selectValuePage = require('../support/CommonSelectList');
 var userProfilePage = require('../support/userProfilePage');
 var mailVerificationPage = require('../support/mailVerification');
 
@@ -36,35 +29,15 @@ var mailVerificationPage = require('../support/mailVerification');
 module.exports = function () {
     var trialMenuItem = new trialMenuItemList();
     var addTrial = new addTrialPage();
-    var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
-    var trialDoc = new abstractionTrialRelatedDocument();
-    var helper = new helperFunctions();
     var searchTrial = new searchTrialPage();
     var commonFunctions = new abstractionCommonMethods();
     var login = new loginPage();
-    var importTrial = new importTrialPage();
-    var menuItem = new menuItemList();
-    var dbConnect = new databaseConnection();
-    var participatingSite = new participatingSitePage();
-    var searchOrg = new searchOrgPage();
-    var searchPeople = new searchPeoplePage();
-    var addPeople = new addPeoplePage();
-    var searchFamily = new searchFamilyPage();
-    var addFamily = new addFamilyPage();
-    var selectValue = new selectValuePage();
     var userProfile = new userProfilePage();
     var emailVerify = new mailVerificationPage();
 
     var getDBConnection = '';
 
-    var protocolDoc = 'testSampleDocFile.docx';
-    var IRBDoc = 'testSampleXlsFile.xls';
-
-    /**** Email Verification ****/
-    var gmaillink = 'https://mail.google.com/mail/#inbox';
-    var gmailID = 'ctrptrialsubmitter@gmail.com';
- //   var firstLastName = 'rita tam';
 
 
     this.Given(/^I am logged in to CTRP Registry application with User "([^"]*)" and email id "([^"]*)"$/, function (arg1, arg2, callback) {
