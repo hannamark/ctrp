@@ -330,7 +330,7 @@
           if (angular.isArray(newVal) && newVal.length > 0) {
               vm.principalInvestigator.name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
               vm.generalTrialDetailsObj.pi = vm.principalInvestigator.array[0];
-              vm.generalTrialDetailsObj.pi_id = vm.principalInvestigator.array[0].id; // update PI
+              vm.generalTrialDetailsObj.pi_id = !!vm.generalTrialDetailsObj.pi ? vm.generalTrialDetailsObj.pi.id : ''; // vm.principalInvestigator.array[0].id; // update PI
 
               if (vm.centralContactType === 'PI') {
                   _usePIAsCentralContact();
