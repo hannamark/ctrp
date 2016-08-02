@@ -28,6 +28,9 @@ Rails.application.routes.draw do
                                                       }
               #put  '/:id/status' =>  'api_trials#change_status'
             end
+            scope '/import' do
+              post '/:id' => 'api_trials#import_trial'
+            end
           end
         end
       end

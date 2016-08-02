@@ -255,14 +255,12 @@
                 });
             }
 
-            console.log('addedFses length is: ', vm.addedFses.length);
             if (vm.addedFses.length > 0) {
                 vm.curTrial.trial_funding_sources_attributes = [];
                 _.each(vm.addedFses, function (fs) {
                     vm.curTrial.trial_funding_sources_attributes.push(fs);
                 });
             }
-            console.log('addedFses length is: ', vm.addedFses.length);
 
             if (vm.addedGrants.length > 0) {
                 vm.curTrial.grants_attributes = [];
@@ -980,7 +978,6 @@
         };
 
         activate();
-        console.log('addedFses length at init is: ', vm.addedFses.length);
 
         /*
             Moving these variable definitions after activate() has been invoked.

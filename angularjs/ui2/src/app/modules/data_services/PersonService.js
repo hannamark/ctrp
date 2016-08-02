@@ -58,7 +58,7 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
-            enableFiltering: true,
+            enableFiltering: false,
             enableHorizontalScrollbar: 2,
             enableVerticalScrollbar: 2,
             exporterCsvFilename: 'persons.csv',
@@ -66,7 +66,7 @@
             exporterMenuPdf: false,
             exporterMenuCsv: false,
             gridMenuCustomItems: [{
-                title: 'Export All Data As Excel',
+                title: 'Export All Data As CSV',
                 order: 100,
                 action: function ($event){
                     this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
@@ -107,12 +107,13 @@
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'affiliated_orgs_first5', displayName:'Affiliated Orgs',
+                {name: 'affiliated_orgs', displayName:'Affiliated Orgs',
                     minWidth: '150', width: '*',
-                    cellTemplate:'<div ng-if="row.entity.affiliated_orgs_first5.length > 0">' +
-                    ' <master-directive button-label="Click to see" mod="row.entity.affiliated_orgs_first5">' +
-                    '</master-directive></div>' +
-                    '<div class="text-center" ng-show="row.entity.affiliated_orgs_first5.length == 0">--</div>'},
+                    cellTemplate:'<div ng-if="row.entity.affiliated_orgs.length > 0">' +
+                    '<div class="text-center" ng-show="row.entity.affiliated_orgs.length > 0">{{COL_FIELD}}</div>' +
+                    //' <master-directive button-label="Click to see" mod="row.entity.affiliated_orgs">' +
+                    //'</master-directive></div>' +
+                    '<div class="text-center" ng-show="row.entity.affiliated_orgs.length == 0">--</div>'},
                 {name: 'updated_at', displayName: 'Last Updated Date',
                     type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
                     enableSorting: true, minWidth: '150', width: '*'},

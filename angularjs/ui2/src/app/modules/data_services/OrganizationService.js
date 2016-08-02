@@ -60,13 +60,13 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
-            enableFiltering: true,
+            enableFiltering: false,
             exporterCsvFilename: 'organizations.csv',
             exporterMenuAllData: true,
             exporterMenuPdf: false,
             exporterMenuCsv: false,
             gridMenuCustomItems: [{
-                title: 'Export All Data As Excel',
+                title: 'Export All Data As CSV',
                 order: 100,
                 action: function ($event){
                     this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
@@ -106,8 +106,8 @@
 
                 {name: 'aff_families_names', displayName: 'Families',
                     enableSorting: true, minWidth: '100', width: '*',height: '50%',
-                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names"' +
-                    ' title="{{fam.Name}}">{{fam.Name}}</div>'
+                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names track by $index"' +
+                    ' title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
                 },
                 {name: 'phone', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'email', enableSorting: true, minWidth: '150', width: '*',

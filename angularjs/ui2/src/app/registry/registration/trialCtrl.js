@@ -52,14 +52,14 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
-            enableFiltering: true,
+            enableFiltering: false,
             columnDefs: [],
             exporterCsvFilename: 'trials.csv',
             exporterMenuAllData: true,
             exporterMenuPdf: false,
             exporterMenuCsv: false,
             gridMenuCustomItems: [{
-                title: 'Export All Data As Excel',
+                title: 'Export All Data As CSV',
                 order: 100,
                 action: function ($event){
                     this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
@@ -241,7 +241,7 @@
             var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
 
             allSearchParams.start = null;
-            allSearchParams.rows = null;
+            allSearchParams.rows = 10000000; // To get back all results, for now
 
             return TrialService.searchTrials(allSearchParams).then(
                 function (data) {

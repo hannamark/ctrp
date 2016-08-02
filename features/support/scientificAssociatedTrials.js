@@ -30,7 +30,7 @@ var scientificAssociatedTrials = function(){
      ***********************************/
 
     this.addAssociatedTrialBtn = element(by.id('add_associated'));
-    this.deleteSelectedAssociated = element(by.id('delete'));
+    this.deleteSelectedAssociated = element(by.id('delete_btn'));
     this.deleteConfirmAssociated = element(by.id('confirmed_btn'));
     this.deleteCancelAssociated = element(by.id('cancel_confirm_btn'));
 
@@ -51,19 +51,19 @@ var scientificAssociatedTrials = function(){
      ***********************************/
     this.identifierTypeLst = element(by.id('identifier_type'));
     this.trialIdentifierTxt = element(by.id('trial_identifier'));
-    this.lookupTrialBtn = element();
+    this.lookupTrialBtn = element(by.id('lookup_trial'));
 
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
 
-    this.saveAssociatedBtn = element(by.id('submit_processing'));
-    this.resetAssociatedBtn = element(by.id('out_cm_reset'));
-    this.backToAssociatedTrialsListBtn = element(by.id('oc_site_list'));
+    this.saveAssociatedBtn = element(by.id('associated_save'));
+    this.resetAssociatedBtn = element(by.id('associated_reset'));
+    this.backToAssociatedTrialsListBtn = element(by.id('associated_back'));
 
     this.associatedPageTitleList = element(by.id('pg_title'));
     this.associatedPageTitleDetails = element(by.id('outcome_measure_details'));
 
     this.clickAddAssociatedTrial = function(){
-        helper.clickButton(this.addAssociatedTrialBtn, "Add Associated Trial - Button");
+        helper.clickButton(self.addAssociatedTrialBtn, "Add Associated Trial - Button");
     };
 
     this.selectAllAssociatedTrial = function (){
@@ -80,7 +80,7 @@ var scientificAssociatedTrials = function(){
         }
     };
 
-    this.deleteAllOutcomeList = function(yesOrCancel){
+    this.deleteAllAssociatedTrialList = function(yesOrCancel){
         self.tableTHeadAssociated.isDisplayed().then(function(result) {
             if (result === true) {
                 self.selectAllAssociatedTrial();
@@ -107,22 +107,16 @@ var scientificAssociatedTrials = function(){
         helper.selectValueFromList(this.identifierTypeLst, type, "Identifier Type - List field");
     };
 
-    this.setTitleTxt = function(getTitleTxt){
-        helper.setValue(this.titleTxt, getTitleTxt, 'Title');
+    this.setTrialIdentifierTxt = function(trialIdentifier){
+        helper.setValue(this.trialIdentifierTxt, trialIdentifier, 'Trial Identifier');
         helper.wait_for(100);
     };
 
-    this.setTimeFrameTxt = function(getTiemFrameTxt){
-        helper.setValue(this.timeFrameTxt, getTiemFrameTxt, 'Time Frame');
-        helper.wait_for(100);
+    this.clickLookupTrialTrial = function(){
+        helper.clickButton(this.lookupTrialBtn, "Add Look Up Trial - Button");
     };
 
-    this.setDescriptionTxt = function(getDescTxt){
-        helper.setValue(this.descriptionTxt, getDescTxt, 'Description');
-        helper.wait_for(100);
-    };
-
-    this.checkOutcomePageTitle = function (titleTXT, listOrDetails){
+    this.checkAssociatedTrialPageTitle = function (titleTXT, listOrDetails){
         if (listOrDetails === 'list'){
             this.waitForElement(self.associatedPageTitleList, 'Waiting For Page title');
             self.associatedPageTitleList.isDisplayed().then(function(result) {
@@ -140,100 +134,87 @@ var scientificAssociatedTrials = function(){
         }
     };
 
-    this.findOutcomeToVerifyEditCopyDelete = function(expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf){
-        this.waitForAssociatedTrailDetailsElement(self.tableTBodyRowAColA, "Outcome Measures Table");
+    this.findAssociatedTrialToVerifyEditCopyDelete = function(expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf){
+        this.waitForAssociatedTrailDetailsElement(self.tableTBodyRowAColA, "List of Associated Trials Table");
         this.tableAssociatedAll.then(function(rows){
-            console.log('Indetifier Type Total Row Count:['+(rows.length)+']');
+            console.log('List of Associated Trials Table Total Row Count:['+(rows.length)+']');
             rowsLengthVal = ''+(rows.length)+'';
             for (var i=1; i<(rows.length+1); i++){
                 if (i === 1){
                     console.log('i:['+i+']');
-                    fNm('1', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('1', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 } else if (i === 2){
                     console.log('i:['+i+']');
-                    fNm('2', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('2', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 } else if (i === 3){
                     console.log('i:['+i+']');
-                    fNm('3', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('3', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 } else if (i === 4){
                     console.log('i:['+i+']');
-                    fNm('4', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('4', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 } else if (i === 5){
                     console.log('i:['+i+']');
-                    fNm('5', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('5', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 } else if (i === 6){
                     console.log('i:['+i+']');
-                    fNm('6', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('6', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 } else if (i === 7){
                     console.log('i:['+i+']');
-                    fNm('7', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('7', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 } else if (i === 8){
                     console.log('i:['+i+']');
-                    fNm('8', expOutcomeType, what, exTitleVf, exTimeVf, exDescVf, exSafetyVf);
+                    fNm('8', expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf);
                 }
             }
         });
-        function fNm(iVal, expectedOutcomeType, whatToDo, titleVf, timeVf, descVf, safetyVf){
-            var tableOutcomeMeasureType = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
-            getCurrentOutcomeType = tableOutcomeMeasureType.getText('value');
-            getCurrentOutcomeType.then(function(typeVal){
-                console.log("Outcome Measures Type:["+typeVal+"]");
-                if(expectedOutcomeType === typeVal){
+        function fNm(iVal, exppectedTrialIdentifier, whatToDo, identifierTypVf, trialTypVf, officialTtleVf){
+            var tableTrialIdentifier = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(01)'));
+            getCurrentTrialIdentifier = tableTrialIdentifier.getText('value');
+            getCurrentTrialIdentifier.then(function(typeVal){
+                console.log("Trial Identifier Type:["+typeVal+"]");
+                if(exppectedTrialIdentifier === typeVal){
                     if (whatToDo === 'verify'){
-                        console.log("Verifying Outcome Measures Expected Type:["+expectedOutcomeType+"]");
+                        console.log("Verifying Outcome Measures Expected Type:["+exppectedTrialIdentifier+"]");
                         console.log("Verifying Outcome Measures Actual Type:["+typeVal+"]");
-                        expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
-                        if (titleVf !== ''){
-                            var titleVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(03)'));
-                            titleValVf = titleVal.getText('value');
-                            titleValVf.then(function(titleValCr){
-                                expect(titleVf.toString()).to.eql(titleValCr.toString());
+                        expect(exppectedTrialIdentifier.toString()).to.eql(typeVal.toString());
+                        if (identifierTypVf !== ''){
+                            var identifierTypeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
+                            identifierTypValVf = identifierTypeVal.getText('value');
+                            identifierTypValVf.then(function(idenTypValCr){
+                                expect(identifierTypVf.toString()).to.eql(idenTypValCr.toString());
                             });
                         }
-                        if (timeVf !== ''){
-                            var timeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(04)'));
-                            timeValVf = timeVal.getText('value');
-                            timeValVf.then(function(timeValCr){
-                                expect(timeVf.toString()).to.eql(timeValCr.toString());
+                        if (trialTypVf !== ''){
+                            var trialTypeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(03)'));
+                            trialTypValVf = trialTypeVal.getText('value');
+                            trialTypValVf.then(function(trialTypeValCr){
+                                expect(trialTypVf.toString()).to.eql(trialTypeValCr.toString());
                             });
                         }
-                        if (descVf !== ''){
-                            var descVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05)'));
-                            descValVf = descVal.getText('value');
-                            descValVf.then(function(descValCr){
-                                expect(descVf.toString()).to.eql(descValCr.toString());
+                        if (officialTtleVf !== ''){
+                            var officialVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(04)'));
+                            officialValVf = officialVal.getText('value');
+                            officialValVf.then(function(officialValCr){
+                                expect(officialTtleVf.toString()).to.eql(officialValCr.toString());
                             });
                         }
-                        if (safetyVf !== ''){
-                            var safetyVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(06)'));
-                            safetyValVf = safetyVal.getText('value');
-                            safetyValVf.then(function(safetyValCr){
-                                expect(safetyVf.toString()).to.eql(safetyValCr.toString());
-                            });
-                        }
-                    }  else if(whatToDo === 'notexists'){
-                        var foundRecord = 'Value : '+expectedOutcomeType+' should not be exists';
-                        var notExistsRecord = 'Value : '+expectedOutcomeType+' exists';
+                    } else if(whatToDo === 'notexists'){
+                        var foundRecord = 'Value : '+exppectedTrialIdentifier+' should not be exists';
+                        var notExistsRecord = 'Value : '+exppectedTrialIdentifier+' exists';
                         expect(foundRecord.toString()).to.eql(notExistsRecord.toString());
-                    } else if(whatToDo === 'edit'){
-                        var editDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(07) button'));
-                        helper.clickButton(editDataRw, "Edit - Button");
-                    } else if(whatToDo === 'copy'){
-                        var cpyDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(08) button'));
-                        helper.clickButton(cpyDataRw, "Edit - Button");
                     } else if(whatToDo === 'delete'){
-                        var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(09) input'));
+                        var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05) input'));
                         helper.clickButton(deleteDataRw, "Delete - Button");
                     }
                 }
-                if (expectedOutcomeType != typeVal && iVal === '8'){
+                if (exppectedTrialIdentifier != typeVal && iVal === '8'){
                     if (whatToDo === 'verify'){
-                        console.log("Verifying Outcome Measures Expected Type:["+expectedOutcomeType+"]");
-                        console.log("Verifying Outcome Measures Actual Type:["+typeVal+"]");
-                        expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
+                        console.log("Verifying Trial Identifier Expected value:["+exppectedTrialIdentifier+"]");
+                        console.log("Verifying Trial Identifier Actual value:["+typeVal+"]");
+                        expect(exppectedTrialIdentifier.toString()).to.eql(typeVal.toString());
                     } else if(whatToDo === 'notexists'){
-                        var notExistsRecordA = 'Value : '+expectedOutcomeType+' does not exists';
-                        var notExistsRecordB = 'Value : '+expectedOutcomeType+' does not exists';
+                        var notExistsRecordA = 'Value : '+exppectedTrialIdentifier+' does not exists';
+                        var notExistsRecordB = 'Value : '+exppectedTrialIdentifier+' does not exists';
                         expect(notExistsRecordA.toString()).to.eql(notExistsRecordB.toString());
                     }
                 }
@@ -247,39 +228,6 @@ var scientificAssociatedTrials = function(){
             .mouseMove(element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(01) td:nth-child(02)')))
             .mouseUp()
             .perform();
-    };
-
-    this.verifyDragAndDrop = function(iVal, expectedOutcomeType, titleVf, timeVf, descVf, safetyVf) {
-        var outcomeMeasureType = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
-        getCurrentOutcomeType = outcomeMeasureType.getText('value');
-        getCurrentOutcomeType.then(function (typeVal) {
-            console.log("Outcome Measures Type:[" + typeVal + "]");
-            expect(expectedOutcomeType.toString()).to.eql(typeVal.toString());
-        });
-        var titleVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(03)'));
-        titleValVf = titleVal.getText('value');
-        titleValVf.then(function (titleValCr) {
-            console.log("Title:[" + titleValCr + "]");
-            expect(titleVf.toString()).to.eql(titleValCr.toString());
-        });
-        var timeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(04)'));
-        timeValVf = timeVal.getText('value');
-        timeValVf.then(function (timeValCr) {
-            console.log("Time Frame:[" + timeValCr + "]");
-            expect(timeVf.toString()).to.eql(timeValCr.toString());
-        });
-        var descVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05)'));
-        descValVf = descVal.getText('value');
-        descValVf.then(function (descValCr) {
-            console.log("Description:[" + descValCr + "]");
-            expect(descVf.toString()).to.eql(descValCr.toString());
-        });
-        var safetyVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(06)'));
-        safetyValVf = safetyVal.getText('value');
-        safetyValVf.then(function (safetyValCr) {
-            console.log("Safety Issue:[" + safetyValCr + "]");
-            expect(safetyVf.toString()).to.eql(safetyValCr.toString());
-        });
     };
 
     //Wait For Element : Wait
@@ -298,7 +246,7 @@ var scientificAssociatedTrials = function(){
         browser.sleep(250);
     };
 
-    this.verifyOutcomeMeasureLables = function (){
+    this.verifyAssociatedTrialDetailsLables = function (){
         var lbl = new Array("Identifier Type:", "Trial Identifier:", "Research Category:", "Official Title:");
         helper.getVerifyLabel(this.outcomeMeasureTypeLbl, lbl[0], "Identifier Type");
         commonFunctions.verifyTxtByIndex(self.titleLbl, lbl[1], '0', 'Trial Identifier');
@@ -330,31 +278,27 @@ var scientificAssociatedTrials = function(){
         browser.sleep(250);
     };
 
-    this.verifyOutcomeMeasureTHead = function (){
-        var thd = new Array("Index", "Outcome Measure Type", "Title", "Time Frame", "Description", 'Safety Issue', 'Edit', 'Copy');
-        helper.verifyTableRowText(self.tableTHeadColA, thd[0], 'Index');
-        helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Outcome Measure Type');
-        helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Title');
-        helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Time Frame');
-        helper.verifyTableRowText(self.tableTHeadColE, thd[4], 'Description');
-        helper.verifyTableRowText(self.tableTHeadColF, thd[5], "Safety Issue");
-        helper.verifyTableRowText(self.tableTHeadColG, thd[6], "Edit");
-        helper.verifyTableRowText(self.tableTHeadColH, thd[7], "Copy");
+    this.verifyAssociatedListTableTHead = function (){
+        var thd = new Array("Trial Identifier", "Identifier Type", "Trial Type", "Official Title");
+        helper.verifyTableRowText(self.tableTHeadColA, thd[0], 'Trial Identifier');
+        helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Identifier Type');
+        helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Trial Type');
+        helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Official Title');
     };
 
     //Save and Reset
 
-    this.clickSaveOutcome = function(){
-        helper.clickButton(this.saveOutBtn, "Save - Button");
+    this.clickSaveAssociated = function(){
+        helper.clickButton(this.saveAssociatedBtn, "Save - Button");
         helper.wait_for(300);
     };
 
-    this.clickResetOutcome = function(){
-        helper.clickButton(self.resetOutBtn, "Reset - Button");
+    this.clickResetAssociated = function(){
+        helper.clickButton(self.resetAssociatedBtn, "Reset - Button");
     };
 
-    this.clickBackToOutcomeMeasuresList = function(){
-        helper.clickButton(this.backToOutcomeMeasuresListBtn, "Back to Outcome Measures List page");
+    this.clickBackToAssociatedTrialList = function(){
+        helper.clickButton(this.backToAssociatedTrialsListBtn, "Back to Associated Trial List page");
     };
 };
 

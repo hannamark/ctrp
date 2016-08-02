@@ -39,7 +39,6 @@
             }
 
             UserService.setSignoutFlagValue(true);
-            console.log('isSigningOut has been set to true');
 
             $state.go('main.sign_in', {}, {reload: true});
         }; //logOut

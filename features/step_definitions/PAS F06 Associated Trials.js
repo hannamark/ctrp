@@ -1,7 +1,7 @@
 /**
  * Author: Shamim Ahmed
- * Date: 07/22/2016
- * Feature: PAS F04 Outcome Measures.Feature
+ * Date: 07/25/2016
+ * Feature: PAS F04 Associated Trial.Feature
  *
  * Note: In the PAA search screen it has dependency on the seeded data
  */
@@ -56,6 +56,8 @@ var abstractionLeftNavigationMenus = require('../support/abstractionLeftNav');
 var scientificTrialDesc = require('../support/scientificTrialDesc');
 //Scientific Outcome Measures
 var scientificOutcome = require('../support/scientificOutcomeMeasures');
+//Scientific Associated Trial
+var scientificAssociatedTrial = require('../support/scientificAssociatedTrials');
 //
 var projectFunctionsPage= require('../support/projectMethods');
 var addTrialPage = require('../support/registerTrialPage');
@@ -82,6 +84,7 @@ module.exports = function() {
     var leftNav = new abstractionLeftNavigationMenus();
     var trialDesc = new scientificTrialDesc();
     var outcome = new scientificOutcome();
+    var associated = new scientificAssociatedTrial();
     var searchOrg = new OrgPage();
     var organizationSearch = new orgSearch();
     var addTrial = new addTrialPage();
@@ -95,8 +98,8 @@ module.exports = function() {
     var optionB = '';
     var optionC = '';
     var optionD = '';
-    var pageTtitle = 'List of Outcome Measures';
-    var pageTtitleA = 'Outcome Measure Details';
+    var pageTtitle = 'List of Associated Trials';
+    var pageTtitleA = 'Associated Trial Details';
     var outTitle = 'Test Outcome Measure Title';
     var timeFrame ='Test Time Frame';
     var description = 'Test Description Outcome Measure Details';
@@ -137,23 +140,26 @@ module.exports = function() {
      */
 
     this.Given(/^I am on the Associated Trials screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        leftNav.clickScientificAssociatedTrials();
+        associated.checkAssociatedTrialPageTitle(pageTtitle, 'list');
+        associated.deleteAllAssociatedTrialList('yes');
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the Add button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.clickAddAssociatedTrial();
+        associated.checkAssociatedTrialPageTitle(pageTtitleA, 'details');
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^I am on the Add Associated Trial screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^I must select (.*)$/, function (IdentifierType, table, callback) {
         // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^I must enter the Trial Identifier$/, function (callback) {

@@ -122,6 +122,8 @@ class DataImport
         trial.sponsor = Organization.all[rand(0..total_organizations-1)]
         # Internal Source
         trial.internal_source = InternalSource.all[rand(0..(InternalSource.all.size-1))]
+        # Is Rejected trial? No
+        trial.is_rejected = false
         #Responsible party
         #resp_party = trial_spreadsheet.cell(row,'CJ')
         #responsible_party = ResponsibleParty.find_by_code(resp_party)
@@ -193,7 +195,7 @@ class DataImport
         trial.arms_groups << arm2
 
         # Submissions
-        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'))
+        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'),status: 'Active')
         trial.submissions << sub
 
         # Processing status

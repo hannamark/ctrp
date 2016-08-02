@@ -34,7 +34,7 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableGridMenu: true,
-            enableFiltering: true,
+            enableFiltering: false,
             enableVerticalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar: uiGridConstants.scrollbars.WHEN_NEEDED,
             exporterCsvFilename: 'trials.csv',
@@ -42,7 +42,7 @@
             exporterMenuPdf: false,
             exporterMenuCsv: false,
             gridMenuCustomItems: [{
-                title: 'Export All Data As Excel',
+                title: 'Export All Data As CSV',
                 order: 100,
                 action: function ($event){
                     this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
@@ -183,7 +183,7 @@
             getAmendReasons: getAmendReasons,
             validateAbstractionOnTrial: validateAbstractionOnTrial,
             validatePAATrialStatus: validatePAATrialStatus,
-            abstractionValidateTrialStatus: abstractionValidateTrialStatus,            
+            abstractionValidateTrialStatus: abstractionValidateTrialStatus,
         };
 
         return services;

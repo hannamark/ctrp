@@ -46,7 +46,11 @@ class Person < ActiveRecord::Base
   accepts_nested_attributes_for :po_affiliations, allow_destroy: true
 
   validates :fname, presence: true
+  validates :fname, length: {maximum: 62}
   validates :lname, presence: true
+  validates :lname, length: {maximum: 62}
+  validates :phone, length: {maximum: 60}
+  validates :email, length: {maximum: 254}
 
   before_validation :check_phone_or_email
   before_destroy :check_for_organization

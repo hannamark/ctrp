@@ -41,7 +41,7 @@
                     vm.curTrial = response;
                     vm.curTrial.lock_version = response.lock_version || '';
 
-                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    PATrialService.setCurrentTrial(angular.copy(vm.curTrial)); // update to cache
                     toastr.clear();
                     toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
                         extendedTimeOut: 1000,

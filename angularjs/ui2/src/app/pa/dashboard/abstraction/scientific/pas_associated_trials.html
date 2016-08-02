@@ -1,7 +1,7 @@
 <div class="row" id="section_top" ng-disabled="paTrialOverview.trialDetailObj.menuTypes.trialValidProtocol || paTrialOverview.trialDetailObj.menuTypes.trialValidImport || paTrialOverview.trialDetailObj.menuTypes.rejection">
     <div class="panel panel-default" ng-show="assoTrialsView.showLookupForm">
         <div class="panel-heading">
-            <div class="panel-title">Associated Trial Details</div>
+            <div class="panel-title" id="pg_title_details">Associated Trial Details</div>
         </div>
         <div class="panel-body">
             <form name="associated_trials_form" role="form" class="form form-horizontal" novalidate ctrp-submit="assoTrialsView.lookupTrial()" unsaved-changes>
@@ -51,12 +51,12 @@
                     <!-- show this div only if the trial is found not null -->
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-3">Research Category:</label>
-                        <div class="col-xs-12 col-sm-5 form-text">{{assoTrialsView.foundTrialObj.researchCategory}}</div>
+                        <div class="col-xs-12 col-sm-5 form-text" id="research_category_view">{{assoTrialsView.foundTrialObj.researchCategory}}</div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-3">Official Title:</label>
-                        <div class="col-xs-12 col-sm-9 form-text">{{assoTrialsView.foundTrialObj.official_title}}</div>
+                        <div class="col-xs-12 col-sm-9 form-text" id="official_title_view">{{assoTrialsView.foundTrialObj.official_title}}</div>
                     </div>
 
                     <div class="form-group has-feedback has-error">
@@ -86,7 +86,7 @@
 
     <div class="panel panel-default" ng-show="!assoTrialsView.showLookupForm">
         <div class="panel-heading">
-            <div class="panel-title">List of Associated Trials</div>
+            <div class="panel-title" id="pg_title_list">List of Associated Trials</div>
         </div>
         <div class="panel-body">
             <fieldset restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || assoTrialsView.disableBtn" ng-show="!assoTrialsView.showLookupForm">
