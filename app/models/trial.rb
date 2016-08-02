@@ -291,13 +291,13 @@ class Trial < TrialBase
     end
 
     if self.internal_source && self.internal_source.code == 'IMP'
-      if self.current_user.role == 'ROLE_SITE-SU'
+      if self.current_user && self.current_user.role == 'ROLE_SITE-SU'
         actions.append('manage-sites')
       else
-        if self.ps_orgs.include?(self.current_user.organization)
+        if self.current_user && self.ps_orgs.include?(self.current_user.organization)
           # Associated org has been added as participating site
           actions.append('update-my-site')
-        elsif self.current_user.organization.present?
+        elsif self.current_user && self.current_user.organization.present?
           # Associated org hasn't been added as participating site
           actions.append('add-my-site')
         end
