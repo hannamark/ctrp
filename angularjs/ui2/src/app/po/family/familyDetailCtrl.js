@@ -11,8 +11,16 @@
     function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
                               OrgService, DateService, toastr, $scope, $state, Common, $uibModal, $timeout) {
         var vm = this;
+        var memberships = familyDetailObj.data.family_memberships.map(function(member) {
+            console.info("member.effective_date: ", member.effective_date);
+            member.effective_date = new Date(member.effective_date);
+            // member.effective_date = moment(member.effective_date).toDate(); //.format("DD-MMM-YYYY");
+
+            return member;
+        });
+        familyDetailObj.data.family_memberships = memberships;
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
-        console.log('familyDetailObj: ' + JSON.stringify(familyDetailObj));
+        console.log('familyDetailObj: ', familyDetailObj);
         vm.curFamily = vm.curFamily.data || vm.curFamily;
         vm.masterCopy= angular.copy(vm.curFamily);
         vm.familyStatusArr = familyStatusObj.data;
