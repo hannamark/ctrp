@@ -62,6 +62,7 @@
                 $timeout(function() {
                     vm.curTrialDetailObj = PATrialService.getCurrentTrialFromCache();
                     _filterActiveDocs();
+                    vm.curTrialDetailObj.trial_documents = _sortDocsLatestFirst(vm.curTrialDetailObj.trial_documents);
                 }, 0);
             } //getTrialDetailCopy
 
@@ -166,12 +167,10 @@
                     return;
                 }
                 if (index !== null && !vm.curDoc.file.size) {
-                    console.info('update without uploading');
                     // update without uploading
                     vm.curDoc.file = prevFile !== '' ? prevFile : vm.curDoc.file;
                     vm.curTrialDetailObj.trial_documents[index] = angular.copy(vm.curDoc);
                 } else if (!!vm.curDoc.file.size) {
-                    console.info('file to be uploaded: ', vm.curDoc.file);
                     // file to be uploaded
                     // replacing document id
                     vm.curDoc.replacedDocId = vm.curDoc.id || null; // what if vm.curDoc.document_type.indexOf('Other') > -1 ?????
@@ -189,7 +188,7 @@
                         vm.curDoc.created_at = new Date();
                         vm.curDoc.added_by = {username: UserService.getLoggedInUsername()};
                         vm.curDoc.added_by_id = UserService.getCurrentUserId();
-                        vm.curTrialDetailObj.trial_documents.push(vm.curDoc);
+                        vm.curTrialDetailObj.trial_documents.unshift(vm.curDoc);
                     }
                 }
                 // re-initialize the vm.curDoc
@@ -302,6 +301,14 @@
                     filteredDoc.deletion_date = filteredDoc.deletion_date || null;
                     return filteredDoc;
                 });
+            }
+
+            function _sortDocsLatestFirst(trialDocs){
+                var sortedDocs = [];
+                if (!!trialDocs && angular.isArray(trialDocs)) {
+                    sortedDocs = trialDocs.sort(function(a, b) { return a.updated_at > b.updated_at ? -1 : 1; });
+                }
+                return sortedDocs;
             }
 
             function cancelEdit() {
