@@ -126,7 +126,7 @@ Then the information entered or edited for the trail will be saved to the trial 
 And the trial processing status will be Accepted 
 And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the "Submission Accepted Trial" e-mail will be sent to the trial submitter
-Then the trial milestone "Submission Accepted Date" will be created with the current date and time 
+And the trial milestone "Submission Accepted Date" will be created with the current date and time 
 
 Scenario: #10a Accept Trial Validation - Amendment
 Given I have selected a trial for Trail Validation 
@@ -139,7 +139,7 @@ Then the information entered or edited for the trail will be saved to the trial 
 And the trial processing status will be Accepted 
 And the trial milestone Validation Processing Completion Date will be created with the current date and time if it does not exist
 And the "Amendment Submission Accepted" e-mail will be sent to the trial submitter
-Then the trial milestone "Submission Accepted Date" will be created with the current date and time
+And the trial milestone "Submission Accepted Date" will be created with the current date and time
 
 Scenario: #10b Accept Trial Validation - Validation Processing Start Date milestone check
 Given I have selected a trial for Trail Validation 
