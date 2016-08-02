@@ -5,9 +5,7 @@ json.orgs do
     json.source_status organization.source_status.present? ? organization.source_status.name : nil
     json.url organization_url(organization, format: :json)
     json.aff_families_count organization.families.count()
-    json.aff_families_names organization.families.first(2) do |family|
-       json.Name family.name
-    end
+    json.aff_families_names organization.families.map{ |family| family.name}.join(", ")
   end
 end
 json.start params[:start]
@@ -16,4 +14,3 @@ json.total @organizations.respond_to?(:total_count) ? @organizations.total_count
 json.sort params[:sort]
 json.order params[:order]
 json.alias params[:alias]
-
