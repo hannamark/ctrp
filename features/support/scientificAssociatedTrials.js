@@ -52,6 +52,8 @@ var scientificAssociatedTrials = function(){
     this.identifierTypeLst = element(by.id('identifier_type'));
     this.trialIdentifierTxt = element(by.id('trial_identifier'));
     this.lookupTrialBtn = element(by.id('lookup_trial'));
+    this.researchCategoryVw = element(by.id('research_category_view'));
+    this.officialTitleVw = element(by.id('official_title_view'));
 
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
 
@@ -284,6 +286,43 @@ var scientificAssociatedTrials = function(){
         helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Identifier Type');
         helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Trial Type');
         helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Official Title');
+    };
+
+    this.verifyResearchCategoryLookup = function(expResearchCat){
+        this.waitForElement(self.researchCategoryVw, 'Waiting For Page title');
+        self.researchCategoryVw.getText().then(function(result) {
+            console.log('Current Research Category value: '+result+'');
+            if (result !== '') {
+                var expResearchCatVal = 'System Identified the research category value: '+result+'';
+                var actResearchCatVal = 'System Identified the research category value: '+result+'';
+                expect(expResearchCatVal.toString()).to.eql(actResearchCatVal.toString());
+                if (expResearchCat != ''){
+                    expect(self.researchCategoryVw.getText()).to.eventually.equal(expResearchCat);
+                }
+            } else {
+                var expResCatVal = 'Unable to display Expected Research Category: '+result+'';
+                var actResCatVal = 'Unable to display Actual Research Category: '+result+'';
+                expect(expResCatVal.toString()).to.eql(actResCatVal.toString());
+            }
+        });
+    };
+
+    this.verifyOfficialTitleLookup = function(expOfficialTitle){
+        this.waitForElement(self.officialTitleVw, 'Waiting For Page title');
+        self.officialTitleVw.getText().then(function(result) {
+            if (result != '') {
+                var expResearchCatVal = 'System Identified the Official Title value: '+result+'';
+                var actResearchCatVal = 'System Identified the Officical Title value: '+result+'';
+                expect(expResearchCatVal.toString()).to.eql(actResearchCatVal.toString());
+                if (expOfficialTitle != ''){
+                    expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle);
+                }
+            } else {
+                var expResCatVal = 'Unable to display Expected Official Title';
+                var actResCatVal = 'Unable to display Actual Official Title';
+                expect(expResCatVal.toString()).to.eql(actResCatVal.toString());
+            }
+        });
     };
 
     //Save and Reset

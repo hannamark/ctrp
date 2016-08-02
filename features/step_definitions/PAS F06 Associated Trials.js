@@ -104,19 +104,15 @@ module.exports = function() {
     var optionD = '';
     var pageTtitle = 'List of Associated Trials';
     var pageTtitleA = 'Associated Trial Details';
-    var outTitle = 'Test Outcome Measure Title';
-    var timeFrame ='Test Time Frame';
-    var description = 'Test Description Outcome Measure Details';
-    var lngTitle = 'Test Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor Bearing Microparticles in Metastatic Breast Cancer title';
-    var charLftStr = 'Test Brief Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor verify';
-    var decrCharLft = '4982 characters left';
-    var decrCharLftObjective = '31985 characters left';
-    var decrCharLftObjectiveA = '27000 characters left';
-    var decrCharLftDetail = '31975 characters left';
-    var decrCharLftDetailA = '27000 characters left';
-    var noCharLft = '0 characters left';
-    var errorMSGBT = 'Brief Title is Required';
-    var errorMSGBS = 'Summary is Required';
+    var identifierTypeA = 'NCI';
+    var identifierTypeB = 'NCT';
+    var trialTypeA = '';
+    var trialTypeB = 'Interventional';
+    var officialTitleA = '';
+    var officialTitleB = 'A Randomised, Double-blind, Placebo Controlled, Multi-center Phase III Study to Evaluate the Efficacy and Safety of Pazopanib (GW786034) Compared to Placebo in Patients With Locally Advanced and/or Metastatic Renal Cell Carcinoma';
+    var errorMSGITypeRequired = 'Identifier Type is Required';
+    var errorMSGTIdentifierRequired = 'Trial Identifier is Required';
+    var errorMSGAlreadyExists = 'Error: Trial association already exists';
 
     /*
      Scenario: #1 I can add an Associated Trial for a trial
@@ -166,8 +162,8 @@ module.exports = function() {
         console.log('Value(s) in the data table:[' + idenType +']');
         var optionTypeSplt = optionType.toString().split("\n");
         optionA = optionTypeSplt[1];
-        optionB = optionTypeSplt[0];
-        associated.selectIdentifierType(optionA);
+        optionB = optionTypeSplt[2];
+        associated.selectIdentifierType(optionB);
         browser.sleep(25).then(callback);
     });
 
@@ -178,36 +174,36 @@ module.exports = function() {
 
     this.When(/^I click the Look Up Trial button$/, function (callback) {
         associated.clickLookupTrial();
-        browser.sleep(25).then(callback);
+        browser.sleep(2500).then(callback);
     });
 
     this.Then(/^the Requested Trial is retrieved$/, function (table, callback) {
-
+        console.log('******************* Need clarification for this step **********************');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Clinical Research Category populates$/, function (callback) {
-
+        associated.verifyResearchCategoryLookup(trialTypeB);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Official Title populates$/, function (callback) {
-
+        associated.verifyOfficialTitleLookup(officialTitleB);
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I have clicked the Save button$/, function (callback) {
-
+        associated.clickSaveAssociated();
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the associated study displays on the Associated Trials screen$/, function (callback) {
-
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nctIDA, 'verify', optionB, trialTypeB, officialTitleB);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Message Record Created displays$/, function (callback) {
-
+        console.log('Popup successful message verification is out of scope');
         browser.sleep(25).then(callback);
     });
 
