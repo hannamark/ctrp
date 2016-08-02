@@ -42,7 +42,7 @@
             exporterMenuPdf: false,
             exporterMenuCsv: false,
             gridMenuCustomItems: [{
-                title: 'Export All Data As Excel',
+                title: 'Export All Data As CSV',
                 order: 100,
                 action: function ($event){
                     this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
