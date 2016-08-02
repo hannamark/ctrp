@@ -14,4 +14,4 @@ And the file name will be "TSR_""CTRP Trial ID""_""Current Date YYYY-MM-DD""-"Cu
 |Examples:|
 |TSR_NCI-2014-00171_2016-05-03-1230_O.rtf| 
 |TSR_NCI-2014-00171_2015-05-11-1812_A12.rtf| 
-|TSR_NCI-2016-01111_2016-05-02-0230_Aamendment#4b.rtf| 
+|TSR_NCI-2016-01111_2016-05-02-0230_Amendment#4b.rtf| 
