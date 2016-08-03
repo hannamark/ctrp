@@ -371,7 +371,7 @@ class TrialService
             (rule.code == 'PAA189' and @trial.board_approval_status_id == board_sub_unrequired_status_id and @@cur_trial_status_code == 'ACT') ||
             (rule.code == 'PAA191' and @@cur_trial_status_code == 'WIT' and @trial.board_approval_status_id != board_sub_denied_status_id) ||
             (rule.code == 'PAA193' and @@cur_trial_status_code == 'INR' and @trial.board_approval_status_id != board_sub_pending_status_id)
-
+        # TODO: PAA 194, and PAA 195
           # warnings block
         ## 1. Review Board Approval must be  SUBMITTED PENDING if Trial Status is   IN REVIEW
         ## 2. Trial Status cannot be  ACTIVE when the  Review Board Approval is ‘Submitted; Denied’
