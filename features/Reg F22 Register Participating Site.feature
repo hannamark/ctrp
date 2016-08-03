@@ -24,18 +24,19 @@ Then the following information will be displayed:
 | Organization Name of the selected participating site |
 And I will be able to enter a Local Trial Identifier <Local Trial Identifier >
 And I will be able to select a Site Principal Investigator <Site Principal Investigator>
+And I will be aboe to enter a Site Target Accrual Number <Target Accrual>
 And I will be able to enter a Site Specific Program Code <Site Specific Program Code>
 And I will be able to enter one or more Site Recruitment Status <Site Recruitment Status> and Status Dates <Site Recruitment Status Date>
 And I will be able to save the participating site information with response <Message>
 
 Example:
-|Local Trial Identifier || Site Principal Investigator 	|| Site Specific Program Code 	|| Site Recruitment Status 	|| Site Recruitment Status Date 	||Message                              	|
-|Case123                || Galvez, Jose                	|| B2                         	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial	|
-|			|| Galvez, Jose			|| B2				|| Active			|| 09/11/2015			||Local Trial Identifier is required	|				       
-|Case123		|| 				|| B2				|| Active			|| 09/11/2015			||Please choose a Site Principal Investigator using the lookup	|
-|Case123		|| Galvez, Jose			|| B2				|| Active			|| 				||A valid Recruitment Status Date is required	|
-|Case123		|| Galvez, Jose			|| B2				|| 				|| 09/11/2015			||Please enter a value for Recruitment Status	|
-|Case123                || Galvez, Jose                	||                          	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial |
+|Local Trial Identifier || Site Principal Investigator 	||Target Accrual|| Site Specific Program Code 	|| Site Recruitment Status 	|| Site Recruitment Status Date 	||Message                              	|
+|Case123                || Galvez, Jose                	||10            || B2                         	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial	|
+|			|| Galvez, Jose			||              || B2				|| Active			|| 09/11/2015			||Local Trial Identifier is required	|				       
+|Case123		|| 				||              || B2				|| Active			|| 09/11/2015			||Please choose a Site Principal Investigator using the lookup	|
+|Case123		|| Galvez, Jose			||              || B2				|| Active			|| 				||A valid Recruitment Status Date is required	|
+|Case123		|| Galvez, Jose			||              || B2				|| 				|| 09/11/2015			||Please enter a value for Recruitment Status	|
+|Case123                || Galvez, Jose                	||100           ||                          	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial |
 
 
 Scenario: #3 As a CTRP User without Administrative Privileges, I can select my affiliated organization as a participating site on an Industrial, Other, or Expanded Access Trial
@@ -59,18 +60,19 @@ Then the following information will be displayed:
 | Organization Name of the selected participating site |
 And I will be able to enter a Local Trial Identifier <Local Trial Identifier >
 And I will be able to select a Site Principal Investigator <Site Principal Investigator>
+And I will be able to enter a Site Target Accrual Number <Target Accrual>
 And I will be able to enter a Site Specific Program Code <Site Specific Program Code>
 And I will be able to enter one or more Site Recruitment Status <Site Recruitment Status> and Status Dates <Site Recruitment Status Date>
 And I will be able to save the participating site information with response <Message>
 
 Example:
-|Local Trial Identifier || Site Principal Investigator 	|| Site Specific Program Code 	|| Site Recruitment Status 	|| Site Recruitment Status Date 	||Message                              	|
-|Case123                || Galvez, Jose                	|| B2                         	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial	|
-|			|| Galvez, Jose			|| B2				|| Active			|| 09/11/2015			||Local Trial Identifier is required	|				       
-|Case123		|| 				|| B2				|| Active			|| 09/11/2015			||Please choose a Site Principal Investigator using the lookup	|
-|Case123		|| Galvez, Jose			|| B2				|| Active			|| 				||A valid Recruitment Status Date is required	|
-|Case123		|| Galvez, Jose			|| B2				|| 				|| 09/11/2015			||Please enter a value for Recruitment Status	|
-|Case123                || Galvez, Jose                	||                          	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial |
+|Local Trial Identifier || Site Principal Investigator 	||Target Accrual|| Site Specific Program Code 	|| Site Recruitment Status 	|| Site Recruitment Status Date 	||Message                              	|
+|Case123                || Galvez, Jose                	||10            || B2                         	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial	|
+|			|| Galvez, Jose			||10            || B2				|| Active			|| 09/11/2015			||Local Trial Identifier is required	|				       
+|Case123		|| 				||              || B2				|| Active			|| 09/11/2015			||Please choose a Site Principal Investigator using the lookup	|
+|Case123		|| Galvez, Jose			||              || B2				|| Active			|| 				||A valid Recruitment Status Date is required	|
+|Case123		|| Galvez, Jose			||              || B2				|| 				|| 09/11/2015			||Please enter a value for Recruitment Status	|
+|Case123                || Galvez, Jose                	||100           ||                          	|| Active                	|| 09/11/2015                   	||Your site has been added to the trial |
 
 Scenario: #5 As a CTRP User, after entering my participating site information, CTRP will display a summary of trial and participating site information
 Given I have saved by participating site information
@@ -91,6 +93,7 @@ And I can select any one of the participating sites
 And I can update any of these data elements:
 |Local Trial Identifier|
 |Site Principal Investigator|
+|Site Target Accrual Number |
 |Site Specific Program Code|
 |Site Recruitment Status|
 |Site Recruitment Status Date|
@@ -105,6 +108,7 @@ And I can select one of the participating sites
 And I can update any of these data elements:
 |Local Trial Identifier|
 |Site Principal Investigator|
+|Site Target Accrual Number |
 |Site Specific Program Code|
 |Site Recruitment Status|
 |Site Recruitment Status Date|

@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature:  PAS F06 Associated Trials
 As a CTRP Scientific  Abstractor, I can add and edit Associated Trial
 @runthis
@@ -14,16 +14,24 @@ And I must select <IdentifierType>
 |NCT              |
 And I must enter the Trial Identifier
 When I click the Look Up Trial button
-Then the Requested Trial is retrieved
-|Identifier type  |Retrieved from         |
-|NCI              |CTRP                   |
-|NCT              |ClinicalTrials.gov     |
+Then the Requested Trial is retrieved from the respective system (CTRP for NCI and ClinicalTrials.gov for NCT)
 And the Clinical Research Category populates
 And the Official Title populates
 When I have clicked the Save button
 Then the associated study displays on the Associated Trials screen
 And the Message Record Created displays
 And the Associated Trial will be associated with the trial
+And I can select the <Identifier Identifier> and the trial is <Retrievedfrom> displayed
+    |Identifier Identifier |Retrievedfrom          |
+    |NCI-yyyy-nnnnn        |CTRP                   |
+    |NCTnnnnnnnn           |ClinicalTrials.gov     | 
+
+
+
+When I select the NCI Trial Identifier
+Then the CTRP View Trial page is displayed 
+When I select the NCT Trial Identifier
+Then the trial will be displayed in ClinicalTrials.gov
 
 Scenario Outline: #2   corresponding Associated Trial records will be created for both associated trials  
 Given the added Associated Trial is a CTRP study
