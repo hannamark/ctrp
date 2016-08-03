@@ -1,4 +1,4 @@
-@PA @global
+@PA  @global
 Feature: PAM F15 Abstraction Dashboard - Workload
 
 As a CTRP PA SuperUser, I can view and edit the CTRP Abstraction Dashboard Workload
