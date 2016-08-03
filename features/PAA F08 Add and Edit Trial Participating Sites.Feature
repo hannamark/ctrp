@@ -490,3 +490,10 @@ Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I select the Particiating Site 
 Then the details for the Particiating Site will be displayed (from PO Organization)
+
+Scenario: #16 Warning when removing a Site Investigator that is used as a site contact
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Participating Site Investigator Page
+And a Site Investigator is also a Contact
+And I delete the Site Investigator that is also a Contact
+Then the system will display a warning message "The Site Investigator is also the contact for the Participating Site."
