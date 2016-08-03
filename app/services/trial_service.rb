@@ -64,8 +64,21 @@ class TrialService
     results |= _validate_pas_disease()
     results |= _validate_pas_outcome()
     results |= _validate_paa_collaborators()
+    results |= _validate_pas_biomarkers()
 
     return results
+  end
+
+  def _validate_pas_biomarkers
+    pas_biomarkers_rules = ValidationRule.where(model: 'trial', item: 'pas_biomarkers')
+    validation_result = []
+    pas_biomarkers_rules.each do |rule|
+      if rule.code == 'PAS52' && @trial.markers.size == 0
+        validation_result << rule
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_paa_collaborators
