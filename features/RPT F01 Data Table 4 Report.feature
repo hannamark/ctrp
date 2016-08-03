@@ -20,13 +20,6 @@ As a NCI staff member, I can generate Data Table 4 Reports for each NCI-designat
       |Date Range: [Report Start Date] to [Report End Date]  |
       |Report Date: Date report was created  |
       
-     
-      Scenario: #24 Paging
-      Given I am logged into the CTRP Protocol Abstraction application
-      And I am on the Search Clinical Trials Screen
-      And select search
-      Then the search results will display a list of the trials 
-      And the trial list will be paganiated  
       When the Trial condition types are met
     
     
@@ -69,3 +62,10 @@ As a NCI staff member, I can generate Data Table 4 Reports for each NCI-designat
       
       And a water mark "Draft, NCI Confidential" will be displayed on the page
       And I will be able to export the report to Excel or PDF 
+      
+      
+       Scenario: # Data Table 4 Report pagination 
+      Given I have access to the CTRP Reporting Utility
+     When Data Table 4 report for the Cancer Center Family and the Reporting Period selected will be displayed
+     Then the search results will display a list of the trials where the selected Cancer Center is accruing subjects during the selected reporting periods
+     And the Trial list will be paganiated  
