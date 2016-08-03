@@ -65,8 +65,32 @@ class TrialService
     results |= _validate_pas_outcome()
     results |= _validate_paa_collaborators()
     results |= _validate_pas_biomarkers()
+    results |= _validate_paa_trial_funding()
 
     return results
+  end
+
+
+  def _validate_paa_trial_funding
+    paa_trial_funding_rules = ValidationRule.where(model: 'trial', item: 'paa_trial_funding')
+    validation_result = []
+    is_grant_duplicate = false
+    @trial.grants.each do |grant|
+      break if is_grant_duplicate
+      if !is_grant_duplicate
+        is_grant_duplicate = Grant.where(funding_mechanism: grant.funding_mechanism, institute_code: grant.institute_code).size > 1
+      end
+    end
+
+    paa_trial_funding_rules.each do |rule|
+      if (rule.code == 'PAA194' and (@trial.grant_question.present? && @trial.grant_question.downcase == 'yes') and @trial.funding_sources.size == 0) ||
+         (rule.code == 'PAA195' and is_grant_duplicate)
+        validation_result << rule
+
+      end
+    end
+
+    return validation_result
   end
 
   def _validate_pas_biomarkers
