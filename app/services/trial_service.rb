@@ -78,7 +78,7 @@ class TrialService
     @trial.grants.each do |grant|
       break if is_grant_duplicate
       if !is_grant_duplicate
-        is_grant_duplicate = Grant.where(funding_mechanism: grant.funding_mechanism, institute_code: grant.institute_code).size > 1
+        is_grant_duplicate = Grant.where(funding_mechanism: grant.funding_mechanism, institute_code: grant.institute_code, trial_id: @trial.id).size > 1
       end
     end
 
