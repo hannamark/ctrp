@@ -15,6 +15,7 @@ var registerTrial = function(){
     this.addTrialIdentifiersSection = element(by.linkText('Trial Identifiers'));
     this.addTrialStudySource = element(by.model('trialDetailView.curTrial.study_source_id'));
     this.addTrialLeadProtocolIdentifier = element(by.model('trialDetailView.curTrial.lead_protocol_id'));
+    this.trialNCIID = element.all(by.binding('trialDetailView.curTrial.nci_id'));
     this.addTrialProtocolIDOrigin = element(by.model('trialDetailView.protocol_id_origin_id'));
     this.addTrialProtocolIDOriginList = element.all(by.binding('origin.name'));
     this.addTrialProtocolID = element(by.model('trialDetailView.protocol_id'));
@@ -136,6 +137,7 @@ var registerTrial = function(){
 
     /** Trial Related Documents **/
     this.addTrialVerifyAddedDocs = element.all(by.binding('document.file_name'));
+    this.addTrialVerifyAddedOtherDocsDescriptionOnly = element(by.binding('document.document_subtype'));
     this.addTrialVerifyAddedOtherDocsDescription = element.all(by.binding('document.document_subtype'));
     this.addTrialAcceptedFileExtensionMsg = element.all(by.binding('trialDetailView.acceptedFileExtensions'));
     this.addTrialAddMoreDocsButton = element(by.css('button[ng-click="trialDetailView.addOtherDoc()"]'));
@@ -159,11 +161,12 @@ var registerTrial = function(){
 
     /**Date fields**/
     this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
-    this.addTrialDateClickToday = element(by.buttonText('Today'));
-    this.addTrialDateClickClear = element(by.buttonText('Clear'));
-    this.addTrialDateClickPreviousMonth = element(by.css('.glyphicon.glyphicon-chevron-left'));
-    this.addTrialDateClickNextMonth = element(by.css('.glyphicon.glyphicon-chevron-right'));
-    this.addTrialDateClickYearMonthDate = element(by.css('button[role="heading"]'));
+    this.addTrialDateClickToday = element(by.model('date')).element(by.buttonText('Today'));
+    this.addTrialDateClickClear = element(by.model('date')).element(by.buttonText('Clear'));
+    this.addTrialDateClickPreviousMonth = element(by.model('date')).$('.glyphicon.glyphicon-chevron-left');//element(by.css('.glyphicon.glyphicon-chevron-left'));
+    this.addTrialDateClickNextMonth = element(by.model('date')).$('.glyphicon.glyphicon-chevron-right');//element(by.css('.glyphicon.glyphicon-chevron-right'));
+    this.addTrialDateClickYearMonthDate = element(by.model('date')).$('button[role="heading"]');//element(by.css('button[role="heading"]'));
+
 
     /******************
      * View Trial *
@@ -272,8 +275,13 @@ var registerTrial = function(){
     this.viewParticipatingSiteName = element.all(by.binding('ps.organization.name'));
     this.viewTrialPsticipatingSites = element.all(by.css('tr[ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index"]'));
 
+    /** Trial Expand - Collapse **/
+    this.trialCollapseAll = element(by.css('button[ng-show="!trialDetailView.collapsed"]'));
+    this.trialExpandAll = element(by.css('button[ng-show="trialDetailView.collapsed"]'));
+
 
     var helper = new helperFunctions();
+    var self = this;
 
     /********** Trial Identifiers **********/
 
@@ -1003,6 +1011,32 @@ var registerTrial = function(){
     this.clickAddTrialDateFieldNextMonth = function(dateofNextMonth){
         helper.clickButtonNoHeader(this.addTrialDateClickNextMonth, "Next Month button on Add Date field");
         element(by.buttonText(dateofNextMonth)).click();
+    };
+
+    this.clickExpandAll = function() {
+        this.trialExpandAll.isPresent().then(function (statePresent) {
+            if (statePresent) {
+                self.trialExpandAll.isDisplayed().then(function (stateDisplayed) {
+                    if (!stateDisplayed) {
+                        self.trialCollapseAll.click();
+                    }
+                    self.trialExpandAll.click();
+                });
+            }
+        });
+    };
+
+    this.clickCollapseAll = function() {
+        this.trialCollapseAll.isPresent().then(function (statePresent) {
+            if (statePresent) {
+                self.trialCollapseAll.isDisplayed().then(function (stateDisplayed) {
+                    if (!stateDisplayed) {
+                        self.trialExpandAll.click();
+                    }
+                    self.trialCollapseAll.click();
+                });
+            }
+        });
     };
 };
 
