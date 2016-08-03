@@ -60,4 +60,5 @@ As a NCI staff member, I can generate Data Table 4 Reports for each NCI-designat
       |Other To Date|
       |Comments| 
       
+      And a water mark "Draft, NCI Confidential" will be displayed on the page
       And I will be able to export the report to Excel or PDF 
