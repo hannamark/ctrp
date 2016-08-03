@@ -106,7 +106,7 @@
 
                 {name: 'aff_families_names', displayName: 'Families',
                     enableSorting: true, minWidth: '100', width: '*',height: '50%',
-                    cellTemplate: '<div class="ngCellText" ng-repeat="fam in row.entity.aff_families_names track by $index"' +
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" ng-repeat="fam in row.entity.aff_families_names track by $index"' +
                     ' title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
                 },
                 {name: 'phone', enableSorting: true, minWidth: '100', width: '*'},

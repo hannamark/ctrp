@@ -6,9 +6,9 @@
     angular.module('ctrp.app.pa')
         .controller('pamTrialCtrl', pamTrialCtrl);
 
-    pamTrialCtrl.$inject = ['UserService', 'toastr', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', '$filter', 'URL_CONFIGS'];
+    pamTrialCtrl.$inject = ['UserService', 'toastr', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', '$filter', 'URL_CONFIGS', 'uiGridExporterConstants', 'uiGridExporterService'];
 
-    function pamTrialCtrl(UserService, toastr, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, $filter, URL_CONFIGS) {
+    function pamTrialCtrl(UserService, toastr, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, $filter, URL_CONFIGS, uiGridExporterConstants, uiGridExporterService) {
         var vm = this;
 
         vm.userDetails = userDetailObj;
@@ -176,6 +176,17 @@
             enableGridMenu: true,
             enableSelectAll: true,
             exporterCsvFilename: vm.userDetails.username + '-Submitted-trials.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As CSV',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }],
+            /*
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
             exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
@@ -188,10 +199,12 @@
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
+
             exporterMenuAllData: true,
             exporterMenuPdf: false,
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700
+            */
         };
         vm.gridTrialsSubmittedOptions.appScopeProvider = vm;
 

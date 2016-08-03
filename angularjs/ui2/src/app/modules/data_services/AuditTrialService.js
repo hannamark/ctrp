@@ -9,11 +9,11 @@
         .factory('AuditService', AuditService);
 
     AuditService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants','HOST'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants','HOST', 'uiGridExporterConstants', 'uiGridExporterService'];
 
     function AuditService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService,UserService,uiGridConstants,HOST) {
+                        PromiseTimeoutService,UserService,uiGridConstants,HOST, uiGridExporterConstants, uiGridExporterService) {
 
         var initUpdateSearchParams = {
             //for pagination and sorting
@@ -61,7 +61,17 @@
             expandableRowTemplate:'innerTable.html',
             expandableRowHeight: 150,
             enableExpandableRowHeader:false,
-
+            exporterCsvFilename: 'audit_trail_updates.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As CSV',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }],
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*',
@@ -101,11 +111,22 @@
             enableFiltering: true,
             enableVerticalScrollbar: 1,// uiGridConstants.scrollbars.WHEN_NEEDED,
             enableHorizontalScrollbar:1,// uiGridConstants.scrollbars.WHEN_NEEDED,
+            exporterCsvFilename: 'audit_trail_submissions.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As CSV',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }],
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '10', width: '*'},
                 {name: 'submission_date',displayName:'Date', minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
-                {field: 'submission_type_list', displayName: 'Type',minWidth: '150', width: '*',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents"><div ng-repeat="item in row.entity[col.field]">{{item}}</div></div>'},
+                {field: 'submission_type_list', displayName: 'Type',minWidth: '150', width: '*',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'},
                 {field: 'first_four_docs',displayName:'Documents', enableSorting: true, minWidth: '380', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents">' +
                     '<ul ng-repeat="doc in row.entity[col.field]"><li><a href="{{grid.appScope.downloadBaseUrl}}/{{doc.id}}">{{doc.file_name}}</a>  {{doc.source_document}} </li></ul>' +
