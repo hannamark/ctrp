@@ -19,8 +19,15 @@ As a NCI staff member, I can generate Data Table 4 Reports for each NCI-designat
       |Cancer Center: Name of Cancer Center selected for the report  |
       |Date Range: [Report Start Date] to [Report End Date]  |
       |Report Date: Date report was created  |
-    
-     When the Trial condition types are met
+      
+     
+      Scenario: #24 Paging
+      Given I am logged into the CTRP Protocol Abstraction application
+      And I am on the Search Clinical Trials Screen
+      And select search
+      Then the search results will display a list of the trials 
+      And the trial list will be paganiated  
+      When the Trial condition types are met
     
     
       |The Trial Status is approved, Active, Temporarily Closed to Accrual, Temporarily Closed to Accrual and Intervention, or Enrolling by Invitation during the reporting period  |
