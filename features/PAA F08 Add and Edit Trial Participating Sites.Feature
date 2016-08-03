@@ -497,3 +497,11 @@ And I am on the Participating Site Investigator Page
 And a Site Investigator is also a Contact
 And I delete the Site Investigator that is also a Contact
 Then the system will display a warning message "The Site Investigator is also the contact for the Participating Site."
+
+Scenario: #17 I can view the Participation Site organization for a Trial
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial 
+And I am on the Participating Site Page
+And the list of Participating sites are displayed 
+And I select a Participating Site
+Then the details for the Participating Site will be displayed (from PO Organization)
