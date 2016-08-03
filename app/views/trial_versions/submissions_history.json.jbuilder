@@ -18,7 +18,7 @@ json.trial_versions do
     p submission_type_list
 
     json.submission_type submission_type
-    json.submission_type_list submission_type_list
+    json.submission_type_list submission_type_list.join("; ")
     json.amendment_reason_id submission.amendment_reason_id
     json.amendment_num submission.amendment_num
 
