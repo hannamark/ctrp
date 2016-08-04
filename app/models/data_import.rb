@@ -266,7 +266,6 @@ class DataImport
           current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
           current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
           current_submission.user = User.all[rand(0..total_users-1)]
-          current_submission.status = 'Rejected'
           trial.submissions << current_submission
           trial.edit_type = 'seed'
           trial.save!
