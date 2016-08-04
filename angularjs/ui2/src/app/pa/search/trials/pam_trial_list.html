@@ -10,7 +10,6 @@
                 </p>
             </div>
             <div class="row">
-                <!-- Site Admin-->
                 <div class="form-group">
                     <div class="date-radio-label">&nbsp;</div>
                     <div class="date-radio-group">
@@ -20,6 +19,17 @@
                     </div>
                 </div>
              </div>
+            <div class="row">
+                <!-- Submitted On-->
+                <div class="form-group">
+                    <label for="find_submission_received" class="date-radio-label">Submitted On:</label>
+                    <div class="date-radio-group" id="find_accepted">
+                        <div class="control-label date-radio"><input type="radio" id="find_submission_received_1" name="find_submission_received" ng-model="pamTrialsView.searchParams.find_submission_received" ng-value="undefined" ng-click="pamTrialsView.getUserSubmittedTrials()" /></div>
+                        <div class="control-label date-radio"><input type="radio" id="find_submission_received_2" name="find_submission_received"  ng-model="pamTrialsView.searchParams.find_submission_received" ng-value="true" ng-click="pamTrialsView.getUserSubmittedTrials()" /></div>
+                        <div class="control-label date-radio"><input type="radio" id="find_submission_receivedd_3" name="find_submission_received" ng-model="pamTrialsView.searchParams.find_submission_received" ng-value="false" ng-click="pamTrialsView.getUserSubmittedTrials()" /></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <!-- Accepted-->
                 <div class="form-group">

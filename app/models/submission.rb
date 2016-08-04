@@ -277,6 +277,9 @@ class Submission < TrialBase
     end
 
     filter_clause = []
+    if !params[:find_submission_received].nil?
+      filter_clause.push("submission_received_date " + ( if params[:find_submission_received] === true then "IS NOT null" else "IS null" end))
+    end
     if !params[:find_accepted].nil?
       filter_clause.push("submission_acceptance_date " + ( if params[:find_accepted] === true then "IS NOT null" else "IS null" end))
     end
