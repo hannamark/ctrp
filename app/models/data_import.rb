@@ -122,8 +122,18 @@ class DataImport
         trial.sponsor = Organization.all[rand(0..total_organizations-1)]
         # Internal Source
         trial.internal_source = InternalSource.all[rand(0..(InternalSource.all.size-1))]
+
         # Is Rejected trial? No
-        trial.is_rejected = false
+        #trial.is_rejected = false
+        trial_rejected = trial_spreadsheet.cell(row,'DT')
+        trial.is_rejected = trial_rejected
+        puts "trial is_rejected: #{trial.is_rejected}"
+#        puts "trial is_rejected: #{trial.is_rejected.to_s}"
+
+        #if trial_spreadsheet.cell(row,'DT').present? && (trial_spreadsheet.cell(row,'DT').to_s == 'true' || trial_spreadsheet.cell(row,'DT') == true || trial_spreadsheet.cell(row,'DT').to_s == 't')
+        sub_status = trial.is_rejected ? 'Rejected' : 'Active'
+        puts "sub_status: #{sub_status}"
+
         #Responsible party
         #resp_party = trial_spreadsheet.cell(row,'CJ')
         #responsible_party = ResponsibleParty.find_by_code(resp_party)
@@ -195,7 +205,10 @@ class DataImport
         trial.arms_groups << arm2
 
         # Submissions
-        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'),status: 'Active')
+
+        puts "sub_status prior is: #{sub_status}"
+#        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'),status: trial.is_rejected ? 'Rejected' : 'Active')
+        sub = Submission.new(submission_num: 1, status: sub_status, acknowledge_comment: 'test', submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'))
         trial.submissions << sub
 
         # Processing status
@@ -209,7 +222,9 @@ class DataImport
         #end
         #save Trial
         trial.edit_type = 'seed'
+        puts "#{trial.submissions}"
         trial.save!
+        puts "#{trial.submissions}"
       end
     rescue Exception => e
       puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
@@ -251,6 +266,7 @@ class DataImport
           current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
           current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
           current_submission.user = User.all[rand(0..total_users-1)]
+          current_submission.status = 'Rejected'
           trial.submissions << current_submission
           trial.edit_type = 'seed'
           trial.save!
