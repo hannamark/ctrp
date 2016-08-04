@@ -29,7 +29,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     
     And CTEP Org PK ID will be sent to CTEP  
 
-Scenario: #1a CTEP Context Mandatory Fields--- updated with last three fields---
+Scenario: #1a CTEP Context Mandatory Fields
     Given I am logged into the CTRP 
      When A CTEP Context is created in CTRP
      Then the fields type are mandatory
@@ -149,7 +149,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     When the viewed CTEP Organization exists in CTRP
     Then the curator associates the existing CTRP Organization with the Organization in the CTEP Context
     And the CTEP Processing Status will be changed from "Pending" to "Active"
-    And every CTRP Organization can be associated with only one Organization in the CTEP Context--- Must be 1 to 1----
+    And every CTRP Organization can be associated with only one Organization in the CTEP Context
     And a list of all organization associations will be displayed with source status type
     
       |Active  |
