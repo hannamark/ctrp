@@ -134,7 +134,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @rest_params[:created_by]   = @current_user.username unless @current_user.nil?
     @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
 
+    ##Make rest service user as default trial owner.
+    ##$rest_params[:trial_ownerships_attributes].push({user_id:@current_user.id})
+
+
     @trial =Trial.new(@rest_params)
+    @trial.current_user = @current_user
     if @trial.save!
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
     else
@@ -147,7 +152,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @rest_params = @paramsLoader.get_rest_params
     @rest_params[:current_user] = @current_user
     @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
-
+    @trial.current_user = @current_user
     if @trial.update(@rest_params)
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
     else
@@ -160,7 +165,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @rest_params = @paramsLoader.get_rest_params
     @rest_params[:current_user] = @current_user
     @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
-
+    @trial.current_user = @current_user
     if @trial.update(@rest_params)
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
     else
@@ -184,7 +189,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       @trial = Trial.new(trial_service.import_params(xml, @current_user))
       @trial.current_user = @current_user
 
-        if @trial.save
+
+      if @trial.save
           render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
         else
           render xml: @trial.errors, status: :bad_request

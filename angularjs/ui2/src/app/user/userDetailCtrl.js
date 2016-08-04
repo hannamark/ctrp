@@ -426,7 +426,7 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'admin_checkout',
+                    name: 'checkout',
                     displayName: 'Checked Out for Admin. Use by',
                     enableSorting: true,
                     width: '*',

@@ -59,7 +59,7 @@ class Submission < TrialBase
   end
 
   def set_submission_status
-    self.status = 'Active'
+    self.status = 'Active' if self.status.nil?
   end
 
   def set_expected_abstraction_completion_date
@@ -95,7 +95,7 @@ class Submission < TrialBase
     end
   }
 
-  scope :matchesImpPro, -> (userId, getAll, protocol_source_id_imp, protocol_source_id_pro) {
+  scope :matchesImpPro, -> (params, protocol_source_id_imp, protocol_source_id_pro) {
     join_clause  = "INNER JOIN trials ON submissions.trial_id = trials.id "
     join_clause += "INNER JOIN users ON submissions.user_id = users.id "
     join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
@@ -115,29 +115,29 @@ class Submission < TrialBase
                         select DISTINCT ON (trial_id)
                             submission_id,
                             current_milestone_name,
-                            submission_received_date,
-                            validation_processing_start_date,
-                            validation_processing_completed_date,
-                            submission_acceptance_date,
-                            submission_terminated_date,
-                            submission_reactivated_date,
-                            submission_rejected_date,
-                            administrative_processing_start_date,
-                            administrative_processing_completed_date,
-                            administrative_qc_ready_date,
-                            administrative_qc_start_date,
-                            administrative_qc_completed_date,
-                            scientific_processing_start_date,
-                            scientific_processing_completed_date,
-                            scientific_qc_ready_date,
-                            scientific_qc_start_date,
-                            scientific_qc_completed_date,
-                            trial_summary_report_ready_date,
-                            trial_summary_report_date,
-                            submitter_trial_summary_report_feedback_date,
-                            initial_abstraction_verified_date,
-                            ongoing_abstraction_verified_date,
-                            late_rejection_date
+                            to_char(submission_received_date, 'DD-Mon-yyyy') as submission_received_date,
+                            to_char(validation_processing_start_date, 'DD-Mon-yyyy') as validation_processing_start_date,
+                            to_char(validation_processing_completed_date, 'DD-Mon-yyyy') as validation_processing_completed_date,
+                            to_char(submission_acceptance_date, 'DD-Mon-yyyy') as submission_acceptance_date,
+                            to_char(submission_terminated_date, 'DD-Mon-yyyy') as submission_terminated_date,
+                            to_char(submission_reactivated_date, 'DD-Mon-yyyy') as submission_reactivated_date,
+                            to_char(submission_rejected_date, 'DD-Mon-yyyy') as submission_rejected_date,
+                            to_char(administrative_processing_start_date, 'DD-Mon-yyyy') as administrative_processing_start_date,
+                            to_char(administrative_processing_completed_date, 'DD-Mon-yyyy') as administrative_processing_completed_date,
+                            to_char(administrative_qc_ready_date, 'DD-Mon-yyyy') as administrative_qc_ready_date,
+                            to_char(administrative_qc_start_date, 'DD-Mon-yyyy') as administrative_qc_start_date,
+                            to_char(administrative_qc_completed_date, 'DD-Mon-yyyy') as administrative_qc_completed_date,
+                            to_char(scientific_processing_start_date, 'DD-Mon-yyyy') as scientific_processing_start_date,
+                            to_char(scientific_processing_completed_date, 'DD-Mon-yyyy') as scientific_processing_completed_date,
+                            to_char(scientific_qc_ready_date, 'DD-Mon-yyyy') as scientific_qc_ready_date,
+                            to_char(scientific_qc_start_date, 'DD-Mon-yyyy') as scientific_qc_start_date,
+                            to_char(scientific_qc_completed_date, 'DD-Mon-yyyy') as scientific_qc_completed_date,
+                            to_char(trial_summary_report_ready_date, 'DD-Mon-yyyy') as trial_summary_report_ready_date,
+                            to_char(trial_summary_report_date, 'DD-Mon-yyyy') as trial_summary_report_date,
+                            to_char(submitter_trial_summary_report_feedback_date, 'DD-Mon-yyyy') as submitter_trial_summary_report_feedback_date,
+                            to_char(initial_abstraction_verified_date, 'DD-Mon-yyyy') as initial_abstraction_verified_date,
+                            to_char(ongoing_abstraction_verified_date, 'DD-Mon-yyyy') as ongoing_abstraction_verified_date,
+                            to_char(late_rejection_date, 'DD-Mon-yyyy') as late_rejection_date
 
                         from (
                         temp
@@ -256,7 +256,6 @@ class Submission < TrialBase
                          order by submission_id, id desc) as late_rejection_milestone
                         on late_rejection_milestone.id23 = temp.submission_id
 
-
                         left join
                         (select DISTINCT ON (submission_id) submission_id as id24, name as current_milestone_name, id as mileston_wrapper_id from temp
                          order by submission_id, mileston_wrapper_id desc) as current_milestone
@@ -273,31 +272,33 @@ class Submission < TrialBase
                       (#{protocol_source_id_imp}, #{protocol_source_id_pro})
                     AND submissions.trial_id is not null AND submissions.status = 'Active'
                     AND trials.is_rejected IS NOT true "
-    if userId
-      where_clause += " AND submissions.user_id = #{userId} "
+    if params[:user_id]
+      where_clause += " AND submissions.user_id = #{params[:user_id]} "
     end
 
-    if getAll
-      where_clause += " AND (
-        submission_received_date IS NOT null
-        OR validation_processing_start_date IS NOT null
-        OR validation_processing_completed_date IS NOT null
-        OR submission_acceptance_date IS NOT null
-        OR submission_reactivated_date IS NOT null
-        OR administrative_processing_start_date IS NOT null
-        OR administrative_processing_completed_date IS NOT null
-        OR administrative_qc_ready_date IS NOT null
-        OR administrative_qc_start_date IS NOT null
-        OR administrative_qc_completed_date IS NOT null
-        OR scientific_processing_start_date IS NOT null
-        OR scientific_processing_completed_date IS NOT null
-        OR scientific_qc_ready_date IS NOT null
-        OR scientific_qc_start_date IS NOT null
-        OR scientific_qc_completed_date IS NOT null
-        OR trial_summary_report_ready_date IS NOT null
-        )"
+    filter_clause = []
+    if !params[:find_accepted].nil?
+      filter_clause.push("submission_acceptance_date " + ( if params[:find_accepted] === true then "IS NOT null" else "IS null" end))
+    end
+    if !params[:find_onhold].nil?
+      filter_clause.push("onhold_date " + ( (params[:find_onhold] == true)? "IS NOT null" : "IS null"))
+    end
+    if !params[:find_admin_abstraction_completed].nil?
+      filter_clause.push("administrative_processing_completed_date " + ( (params[:find_admin_abstraction_completed] == true)? "IS NOT null" : "IS null"))
+    end
+    if !params[:find_admin_qc_completed].nil?
+      filter_clause.push("administrative_qc_completed_date " + ( (params[:find_admin_qc_completed] == true)? "IS NOT null" : "IS null"))
+    end
+    if !params[:find_scientific_abstraction_completed].nil?
+      filter_clause.push("scientific_processing_completed_date " + ( (params[:find_scientific_abstraction_completed] == true)? "IS NOT null" : "IS null"))
+    end
+    if !params[:find_scientific_qc_completed].nil?
+      filter_clause.push("scientific_qc_start_date " + ( (params[:find_scientific_qc_completed] == true)? "IS NOT null" : "IS null"))
     end
 
+    if filter_clause.length > 0
+      where_clause += " AND (" + filter_clause.join(" AND ") + ")"
+    end
     joins(join_clause).where(where_clause).select("
        submissions.*,
 
@@ -307,8 +308,12 @@ class Submission < TrialBase
        trials.start_date,
        trials.primary_comp_date,
        trials.comp_date,
-       trials.admin_checkout,
-       trials.scientific_checkout,
+	     trim(trailing ', ' from
+          concat(
+		          substring(trials.admin_checkout, 'by\":\"(.*?)\",\"date') || ' AD, ',
+		          substring(trials.scientific_checkout, 'by\":\"(.*?)\",\"date') || ' SC'
+		      )
+        ) as checkout,
         onhold_date,
 
         latest_milestones.*,
