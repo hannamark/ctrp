@@ -222,9 +222,7 @@ class DataImport
         #end
         #save Trial
         trial.edit_type = 'seed'
-        puts "#{trial.submissions}"
         trial.save!
-        puts "#{trial.submissions}"
       end
     rescue Exception => e
       puts "Exception thrown while reading Trial spreadsheet #{e.inspect}"
