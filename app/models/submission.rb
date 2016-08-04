@@ -59,7 +59,7 @@ class Submission < TrialBase
   end
 
   def set_submission_status
-    self.status = 'Active'
+    self.status = 'Active' if self.status.nil?
   end
 
   def set_expected_abstraction_completion_date
