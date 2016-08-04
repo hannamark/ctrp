@@ -27,9 +27,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    p "zzzzzzzzzzzzzzzzzzzzzzzzzz"
-    p params[:user]
-    p "shshshsshsshhs"
     current_user = current_site_user
     @user = User.find(params[:user][:id])
     if current_user.role != 'ROLE_ACCOUNT-APPROVER' && current_user.role != 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
