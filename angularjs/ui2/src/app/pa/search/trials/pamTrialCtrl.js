@@ -6,9 +6,9 @@
     angular.module('ctrp.app.pa')
         .controller('pamTrialCtrl', pamTrialCtrl);
 
-    pamTrialCtrl.$inject = ['UserService', 'toastr', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', '$filter', 'URL_CONFIGS'];
+    pamTrialCtrl.$inject = ['UserService', 'toastr', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', '$filter', 'URL_CONFIGS', 'uiGridExporterConstants', 'uiGridExporterService'];
 
-    function pamTrialCtrl(UserService, toastr, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, $filter, URL_CONFIGS) {
+    function pamTrialCtrl(UserService, toastr, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, $filter, URL_CONFIGS, uiGridExporterConstants, uiGridExporterService) {
         var vm = this;
 
         vm.userDetails = userDetailObj;
@@ -19,20 +19,48 @@
         vm.states = [];
         vm.userRole = UserService.getUserRole();
         vm.isCurrentUser = UserService.getCurrentUserId() === vm.userDetailsOrig.id;
-        $rootScope.$broadcast('isWriteModeSupported', vm.userDetailsOrig.write_access);
 
 
         /**** TRIALS *****/
         // Initial Search Parameters
         var TrialSearchParams = function (){
             return {
-                sort: 'nci_id',
-                order: 'desc',
+                find_accepted: undefined,
+                find_admin_abstraction_completed: undefined,
+                find_admin_qc_completed: undefined,
+                find_scientific_abstraction_completed: undefined,
+                find_scientific_qc_completed: undefined,
+                sort: 'submission_received_date',
+                order: 'asc',
                 rows: 50,
                 start: 1
             }
         };
 
+        var completionDatePickerTemplate = '<div class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i>' +
+            '<input class="completion-date-click" ng-disabled="!grid.appScope.isCurationEnabled" class="completion-date-change" ng-focus="grid.appScope.closeToolTips()" readonly="true" ' +
+            'uib-popover-template="\'complete-date-popover.html\'" popover-append-to-body="true" data-style="primary" popover-title="Set {{row.entity.nci_id}} Completion Date" ' +
+            'value="{{row.entity.expected_abstraction_completion_date}}" /></div>' +
+            '<script type="text/ng-template" id="complete-date-popover.html">' +
+            '<div class="change-date"><div class="input-group date datepicker ui-grid-datepicker">' +
+            '<input id="date-{{row.entity.id}}" min-date="row.entity.submission_received_date" class="form-control" readonly="true"  show-button-bar="true" ' +
+            'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="true" ' +
+            'ng-disabled="grid.appScope.isCurationEnabled?false:true" ng-click="opened = true;" uib-datepicker-popup="dd-MMM-yyyy" is-open="opened" ' +
+            'datepicker-options="grid.appScope.dateOptions" type="text" />' +
+
+            '<span class="input-group-btn">' +
+            '<label for="date-{{row.entity.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-calendar"></i></label>' +
+            '</span></div>' +
+            '<textarea placeholder="Put your comments here" class="completion-date-comments" ng-model="row.entity.expected_abstraction_completion_date_comments"></textarea></div>' +
+
+            '<div class="row tooltip-footer">' +
+            '<button type="button" class="btn btn-primary pull-right" ng-click="grid.appScope.dateModifyFlag(row.entity)" ' +
+            'id="save_btn"> <i class="glyphicon glyphicon-ok"></i>  Save</button>' +
+
+             '<button type="button" class="btn btn-warning pull-right" ng-click="grid.appScope.closeToolTips()" >' +
+             '<i class="glyphicon glyphicon-remove"></i> Cancel</button>' +
+            '</div>' +
+        '</script>';
 
         vm.chooseTransferTrials = false;
         vm.showTransferTrialsModal = false;
@@ -73,7 +101,7 @@
                     name: 'submission_received_date',
                     displayName: 'Submitted On',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '150'
                 },
@@ -81,30 +109,16 @@
                     name: 'expected_abstraction_completion_date',
                     displayName: 'Expected Abstraction Completion Date',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     minWidth: '200',
-                    enableCellEdit: true,
-                    enableCellEditOnFocus: true,
-                    enableHiding: false,
-                    cellTemplate: '<div class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i><input  readonly="true"  show-button-bar="true" ' +
-                    'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="false" ' +
-                    'ng-change="grid.appScope.dateModifyFlag(row.entity)" ng-disabled="grid.appScope.isCurationEnabled?false:true" ng-click="opened = true;" uib-datepicker-popup="MM/dd/yyyy" is-open="opened" ' +
-                    'datepicker-options="grid.appScope.dateOptions" datepicker-append-to-body="true" type="text" /></div>',
-                    // cellFilter: 'date',
-                    cellClass: function () {
-                        return 'text-left';
-                    },
-                    filter: {
-                        placeholder: 'date',
-                        condition: uiGridConstants.filter.CONTAINS
-                    },
+                    cellTemplate: completionDatePickerTemplate,
                     sortable : false
                 },
                 {
                     name: 'submission_acceptance_date',
                     displayName: 'Accepted',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -112,7 +126,7 @@
                     name: 'onhold_date',
                     displayName: 'Current On-Hold Date',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -120,7 +134,7 @@
                     name: 'administrative_processing_completed_date',
                     displayName: 'Admin Abstraction Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -128,7 +142,7 @@
                     name: 'administrative_qc_completed_date',
                     displayName: 'Admin QC Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -136,7 +150,7 @@
                     name: 'scientific_processing_completed_date',
                     displayName: 'Scientific Abstraction Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -144,15 +158,16 @@
                     name: 'scientific_qc_completed_date',
                     displayName: 'Scientific QC Completed',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'admin_checkout',
+                    name: 'checkout',
                     displayName: 'Checked Out By',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
+                    cellTemplate: "<div class=\"ui-grid-cell-contents tooltip-uigrid\" >{{grid.appScope.getCheckOut(row.entity.checkout)}}</div>",
                     width: '*',
                     minWidth: '200'
                 },
@@ -160,7 +175,7 @@
                     name: 'trial_summary_report_ready_date',
                     displayName: 'Ready for TSR',
                     enableSorting: true,
-                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
@@ -175,38 +190,58 @@
             enableRowHeaderSelection : true,
             enableGridMenu: true,
             enableSelectAll: true,
-            exporterCsvFilename: vm.userDetails.username + '-Submitted-trials.csv',
-            exporterPdfDefaultStyle: {fontSize: 9},
-            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
-            exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
-            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'PAM Trials :', style: 'headerStyle' },
-            exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - from a total of ' + vm.gridTrialsSubmittedOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
-            },
-            exporterPdfCustomFormatter: function ( docDefinition ) {
-                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
-                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
-                return docDefinition;
-            },
+            exporterCsvFilename: 'ctrp-abstraction-trials.csv',
             exporterMenuAllData: true,
             exporterMenuPdf: false,
-            exporterPdfOrientation: 'landscape',
-            exporterPdfMaxGridWidth: 700
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As CSV',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }]
         };
+
+        vm.getCheckOut = function ( checkOut ) {
+            var checkOutStr = '';
+            if (checkOut.split(',').length > 1) {
+                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
+                    checkOutStr = checkOut.split(',')[0]+ '/SC';
+                } else {
+                    checkOutStr = checkOut;
+                }
+            } else {
+                checkOutStr = checkOut;
+            }
+            return checkOutStr;
+        };
+
         vm.gridTrialsSubmittedOptions.appScopeProvider = vm;
 
         vm.dateModifyFlag = function (row) {
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SUBMISSION_EXPECT_COMPLETE, {
-                id:                                     row.id,
-                expected_abstraction_completion_date:   $filter('date')(row.expected_abstraction_completion_date,'MMM dd, yyyy')
+                id: row.id,
+                expected_abstraction_completion_date: row.expected_abstraction_completion_date,
+                expected_abstraction_completion_date_comments: row.expected_abstraction_completion_date_comments
             }).then(function (data) {
-                if(data.id) {
+                if (data.id) {
                     toastr.success('Expected Abstraction Completion Date has been updated', 'Operation Successful!');
                 }
+                vm.getUserSubmittedTrials();
             }).catch(function (err) {
                 console.log('Expected Abstraction Completion Date Update failed: ' + err);
             });
+        };
 
+        vm.closeToolTips = function() {
+            var popovers = document.querySelectorAll('.popover');
+            angular.forEach(popovers, function (popover) {
+                var parentPopOver = angular.element(popover);
+                if (parentPopOver.hasClass('in')) {
+                   parentPopOver.remove();
+                }
+            });
         };
 
         vm.gridTrialsSubmittedOptions.onRegisterApi = function (gridApi) {
@@ -231,12 +266,21 @@
             );
         };
         vm.getUserSubmittedTrials = function () {
-            //user_id is undefined if no user was found to begin with
+            vm.closeToolTips();
             vm.gridTrialsSubmittedOptions.useExternalPagination = true;
             vm.gridTrialsSubmittedOptions.useExternalSorting = true;
             UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
                 vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                _.forEach(vm.gridTrialsSubmittedOptions.data, function (val) {
+                    val.expected_abstraction_completion_date = moment(val.expected_abstraction_completion_date).format('DD-MMM-YYYY');
+                });
+
+                vm.read_access  = data.userReadAccess;
+                vm.write_access = data.userWriteAccess;
                 vm.gridTrialsSubmittedOptions.totalItems = data.total;
+
+                $rootScope.$broadcast('isWriteModeSupported', vm.write_access);
+
             }).catch(function (err) {
                 console.log('Get User Submitted Trials failed');
             });
@@ -258,30 +302,8 @@
         function sortSubmittedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                vm.searchParams.sort = 'nci_id';
-                vm.searchParams.order = 'desc';
-            } else {
-                vm.searchParams.sort = sortColumns[0].name; //sort the column
-                switch (sortColumns[0].sort.direction) {
-                    case uiGridConstants.ASC:
-                        vm.searchParams.order = 'ASC';
-                        break;
-                    case uiGridConstants.DESC:
-                        vm.searchParams.order = 'DESC';
-                        break;
-                    case undefined:
-                        break;
-                }
-            }
-
-            //do the search with the updated sorting
-            vm.getUserTrials();
-        } //sortChangedCallBack
-        function sortSubmittedChangedCallBack(grid, sortColumns) {
-
-            if (sortColumns.length === 0) {
-                vm.searchParams.sort = 'nci_id';
-                vm.searchParams.order = 'desc';
+                vm.searchParams.sort = 'submission_received_date';
+                vm.searchParams.order = 'asc';
             } else {
                 vm.searchParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {

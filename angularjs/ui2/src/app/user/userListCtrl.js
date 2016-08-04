@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService'];
 
-    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService) {
+    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService) {
 
         var vm = this;
         vm.curUser = userDetailObj;
@@ -161,6 +161,17 @@
             enableGridMenu: true,
             enableSelectAll: false,
             exporterCsvFilename: 'users.csv',
+            exporterMenuAllData: true,
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As CSV',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }],
+            /*
             exporterPdfDefaultStyle: {fontSize: 9},
             exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
             exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
@@ -178,6 +189,7 @@
             exporterPdfOrientation: 'landscape',
             exporterPdfMaxGridWidth: 700,
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
+            */
         };
 
          UserService.getUserStatuses().then(function (response) {
@@ -226,7 +238,7 @@
             var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
 
             //add extra fields here
-            vm.gridOptions.columnDefs.push(middleName);
+            //vm.gridOptions.columnDefs.push(middleName);
 
             allSearchParams.start = null;
             allSearchParams.rows = null;

@@ -318,7 +318,7 @@ class TrialService
   def _validate_paa_documents()
     paa_documents_rules = ValidationRule.where(model: 'trial', item: 'paa_documents')
     is_protocol_doc_missing = TrialDocument.where(trial_id: @trial.id, document_type: 'Protocol Document', status: 'active').blank? # does it have to active?
-    is_irb_approval_doc_missing = TrialDocument.where(trial_id: @trial.id, document_type: 'IRB Approval', status: 'active').blank? # does it have to active?
+    is_irb_approval_doc_missing = TrialDocument.where(trial_id: @trial.id, document_type: 'IRB Approval Document', status: 'active').blank? # does it have to active?
     validation_result = []
 
     paa_documents_rules.each do |rule|
