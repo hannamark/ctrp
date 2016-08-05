@@ -472,7 +472,7 @@ AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG').update(name: 'Acce
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES').update(name: 'Accepted File Types for PA', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
 
-AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES').update(name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval Document,TSR,Informed Consent Document,Change Memo,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES').update(name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent Document,Change Memo,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA').update(name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCCPS,DCP,NHLBI')
 
