@@ -25,11 +25,6 @@
         // Initial Search Parameters
         var TrialSearchParams = function (){
             return {
-                find_accepted: undefined,
-                find_admin_abstraction_completed: undefined,
-                find_admin_qc_completed: undefined,
-                find_scientific_abstraction_completed: undefined,
-                find_scientific_qc_completed: undefined,
                 sort: 'submission_received_date',
                 order: 'asc',
                 rows: 50,
