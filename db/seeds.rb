@@ -472,7 +472,7 @@ AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG').update(name: 'Acce
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES').update(name: 'Accepted File Types for PA', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
 
-AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES').update(name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval Document,TSR,Informed Consent Document,Change Memo,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES').update(name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent Document,Change Memo,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA').update(name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCCPS,DCP,NHLBI')
 
@@ -2106,7 +2106,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS49', item: 'pas_trial_description', rule: 'Brief Title must be less than 300 characters', description: 'Brief Title cannot be more than  300 characters', remark: '[Select Trial Description ] from Scientific Data menu.')
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS50', item: 'pas_arms/groups', rule: 'At least one Arm is required', description: 'Arm is required', remark: '[Select Arms/Groups] from Scientific Data menu.')
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS51', item: 'pas_arms/groups', rule: 'Arm label cannot be more than 62 characters', description: 'Arm Label cannot be more than 62 characters', remark: '[Select Arms/Groups] from Scientific Data menu.')
-ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS52', item: 'pas_biomarkers', rule: 'At least one pending biomarker must exist on the trial.', description: 'At least one pending biomarker exists on the trial.', remark: '[Select Biomarkers] from Scientific Data menu.')
+ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS52', item: 'pas_biomarkers', rule: 'At least one pending biomarker must exist on the trial.', description: 'At least one pending biomarker must exist on the trial.', remark: '[Select Biomarkers] from Scientific Data menu.')
 
 
   test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
