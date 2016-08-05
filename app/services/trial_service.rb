@@ -354,9 +354,11 @@ class TrialService
 
       site_status = site.site_rec_status_wrappers.last
       site_status_id = site_status.nil? ? nil : site_status.site_recruitment_status_id
+
       if !is_any_site_status_active
         is_any_site_status_active = site_status_id == SiteRecruitmentStatus.find_by_code('ACT').id
       end
+
       if !is_any_site_status_enroll_by_invitation
         is_any_site_status_enroll_by_invitation = site_status_id == SiteRecruitmentStatus.find_by_code('EBI').id
       end
@@ -374,7 +376,8 @@ class TrialService
           (rule.code == 'PAA199' and @@is_cur_trial_status_inreview and is_any_site_status_enroll_by_invitation) ||
           (rule.code = 'PAA200' and @@is_cur_trial_status_withdrawn and is_any_site_status_active) ||
           (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation) ||
-          (rule.code = 'PAA202' and (!is_any_site_status_active or @trial.participating_sites.size == 0))
+          # (rule.code = 'PAA202' and is_any_site_status_active == false) ||
+          (rule.code = 'PAA202' and @trial.participating_sites.size == 0)
 
         ## warnings block
         validation_result << rule
