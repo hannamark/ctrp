@@ -132,7 +132,7 @@ class DataImport
 
         #if trial_spreadsheet.cell(row,'DT').present? && (trial_spreadsheet.cell(row,'DT').to_s == 'true' || trial_spreadsheet.cell(row,'DT') == true || trial_spreadsheet.cell(row,'DT').to_s == 't')
         sub_status = trial.is_rejected ? 'Rejected' : 'Active'
-        puts "sub_status: #{sub_status}"
+    #    puts "sub_status: #{sub_status}"
 
         #Responsible party
         #resp_party = trial_spreadsheet.cell(row,'CJ')
@@ -206,7 +206,6 @@ class DataImport
 
         # Submissions
 
-        puts "sub_status prior is: #{sub_status}"
 #        sub = Submission.new(submission_num: 1, submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'),status: trial.is_rejected ? 'Rejected' : 'Active')
         sub = Submission.new(submission_num: 1, status: sub_status, acknowledge_comment: 'test', submission_date: Date.today, user: trial.users[0], submission_type: SubmissionType.find_by_code('ORI'), submission_source: SubmissionSource.find_by_code('CCT'), submission_method: SubmissionMethod.find_by_code('REG'))
         trial.submissions << sub
