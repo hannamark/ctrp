@@ -104,11 +104,11 @@
                         <tbody>
                             <tr ng-repeat="t in assoTrialsView.trialDetailObj.associated_trials track by $index" >
                                 <td>
-                                    <span ng-show="t.trial_identifier.indexOf('NCI') > -1">
+                                    <span ng-show="t.trial_identifier.indexOf('NCI') > -1" id="associated_nci">
                                         <!--<a ui-sref="main.viewTrial({trialId: t.associated_trial_id})">{{t.trial_identifier}}</a> -->
                                         <a href="" ctrp-trial-peek-view trial-id="t.associated_trial_id">{{t.trial_identifier}}</a>
                                     </span>
-                                    <span ng-show="t.trial_identifier.indexOf('NCI') === -1">
+                                    <span ng-show="t.trial_identifier.indexOf('NCI') === -1" id="associated_ctdotgov">
                                         <a href="https://clinicaltrials.gov/ct2/show/{{t.trial_identifier}}" target="_blank">{{t.trial_identifier}}</a>
                                     </span>
                                 </td>
