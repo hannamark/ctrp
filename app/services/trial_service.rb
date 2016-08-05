@@ -83,8 +83,9 @@ class TrialService
     end
 
     paa_trial_funding_rules.each do |rule|
-      if (rule.code == 'PAA194' and (@trial.grant_question.present? && @trial.grant_question.downcase == 'yes') and @trial.funding_sources.size == 0) ||
+      if (rule.code == 'PAA194' and (@trial.grant_question.present? and @trial.grant_question.downcase == 'yes') and @trial.funding_sources.size == 0) ||
          (rule.code == 'PAA195' and is_grant_duplicate)
+
         validation_result << rule
 
       end
@@ -172,6 +173,7 @@ class TrialService
           (rule.code == 'PAS37' and @@is_ancillary_cat and !@trial.study_pop_desc.present?)
 
         validation_result << rule
+
       end
     end
 
@@ -300,11 +302,12 @@ class TrialService
           (rule.code == 'PAS20' and @@is_expanded_cat and !@trial.allocation_id.present?)
             ## errors block
             validation_result << rule
+
       elsif (rule.code == 'PAS43' and @@is_observational_cat and !@trial.study_model_id.present?) ||
           (rule.code == 'PAS44' and @@is_ancillary_cat and !@trial.study_model_id.present?) ||
           (rule.code == 'PAS45' and @@is_observational_cat and is_study_model_other and !@trial.study_model_other.present?) ||
           (rule.code == 'PAS46' and @@is_ancillary_cat and is_study_model_other and !@trial.study_model_other.present?) ||
-          (rule.code == 'PAS47' and @@is_observational_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
+          (rule.code == 'PAS47' and @@is_observational_cat and is_time_perspec_other and !@trial.time_perspective_other.present?) ||
           (rule.code == 'PAS48' and @@is_ancillary_cat and is_time_perspec_other and !@trial.time_perspective_other.present?)
             ## warnings block
             validation_result << rule
@@ -332,22 +335,22 @@ class TrialService
 
   def _validate_paa_participating_sites()
     paa_site_rules = ValidationRule.where(model: 'trial', item: 'paa_participating_sites')
-    # is_all_sites_unique = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
-    is_all_sites_unique = nil
-    is_site_pi_unique = nil  # check for duplicate site investigator on the same site
+    # is_all_sites_uniq = sites.detect {|e| sites.rindex(e) != sites.index(e)}.nil? # boolean, true: unique, false: not unique
+    #is_all_sites_uniq = @trial.participating_sites.size == 0
+
     is_any_site_status_active = false
     is_any_site_status_enroll_by_invitation = false
 
-    @trial.participating_sites.each do |site|
-      # TODO: optimize this query if possible
-      if is_all_sites_unique.nil?
-        is_all_sites_unique = ParticipatingSite.where(trial_id: site.trial_id, organization_id: site.organization_id).size == 1
-      end
+    site_counts_hash = ParticipatingSite.where(trial_id: @trial.id).group([:organization_id]).having("count(id) > 1").count
+    is_all_sites_uniq = site_counts_hash.size == 0 # if duplicate, site_counts_hash.size >= 1
+    p "is_all_sites_uniq: #{is_all_sites_uniq}"
+    is_all_sites_pi_uniq = []
 
-      if is_site_pi_unique.nil?
-        count_hash = ParticipatingSiteInvestigator.where(participating_site_id: site.id).group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
-        is_site_pi_unique = count_hash.size == 0  # if duplicate, count_hash.size >= 1
-      end
+    @trial.participating_sites.each do |site|
+
+      pi_count_hash = ParticipatingSiteInvestigator.where(participating_site_id: site.id).group([:participating_site_id, :person_id]).having("count(participating_site_id) > 1").count
+      is_site_pi_uniq = pi_count_hash.size == 0  # if duplicate, count_hash.size >= 1
+      is_all_sites_pi_uniq << is_site_pi_uniq # true or false
 
       site_status = site.site_rec_status_wrappers.last
       site_status_id = site_status.nil? ? nil : site_status.site_recruitment_status_id
@@ -361,19 +364,21 @@ class TrialService
 
     validation_result = []
     paa_site_rules.each do |rule|
-      if (rule.code == 'PAA93' and !is_all_sites_unique.nil? and is_all_sites_unique == false) || (rule.code == 'PAA94' and !is_site_pi_unique.nil? and is_site_pi_unique == false)
+      if (rule.code == 'PAA93' and !is_all_sites_uniq) || (rule.code == 'PAA94' and is_all_sites_pi_uniq.include?(false))
         ## errors block
         validation_result << rule
+
       elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
           (rule.code == 'PAA197' and @@is_cur_trial_status_approved and is_any_site_status_enroll_by_invitation) ||
           (rule.code == 'PAA198' and @@is_cur_trial_status_inreview and is_any_site_status_active) ||
           (rule.code == 'PAA199' and @@is_cur_trial_status_inreview and is_any_site_status_enroll_by_invitation) ||
           (rule.code = 'PAA200' and @@is_cur_trial_status_withdrawn and is_any_site_status_active) ||
           (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation) ||
-          (rule.code = 'PAA202' and (!is_any_site_status_active && @trial.participating_sites.size == 0))
+          (rule.code = 'PAA202' and (!is_any_site_status_active or @trial.participating_sites.size == 0))
 
         ## warnings block
         validation_result << rule
+        p "is here #{rule.code}"
         # TODO: finish this warning block
         # TODO: PAA203, PAA204, PAA205, and PAA206 (ask BA: what is primary xxx ?)
 
@@ -478,14 +483,16 @@ class TrialService
     end
 
     gt_rules.each do |rule|
-      if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) || (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
-         (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) || (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
+      if (rule.code == 'PAA2' and nctIdentifier.present? and nctIdentifier.length > 30) ||
+          (rule.code == 'PAA3' and ctepIdentifier.present? and ctepIdentifier.length > 30) ||
+         (rule.code == 'PAA6' and dcpIdentifier.present? and dcpIdentifier.length > 30) ||
+          (rule.code == 'PAA7' and lead_org_protocol_id.present? and lead_org_protocol_id.length > 30) ||
          (rule.code == 'PAA8' and keywords.present? and keywords.length > 160)
         ## errors block
         validation_results << rule
 
       elsif(rule.code == 'PAA97' and !@trial.official_title.present?) ||
-           (rule.code == 'PAA98' and (!@trial.lead_org_id.present? || !@trial.lead_protocol_id.present?)) ||
+           (rule.code == 'PAA98' and (!@trial.lead_org_id.present? or !@trial.lead_protocol_id.present?)) ||
            (rule.code == 'PAA100' and !@trial.pi_id.present?) ||
            (rule.code == 'PAA101' and !@trial.sponsor_id) ||
            (rule.code == 'PAA102' and is_centralcontact_missing_email_or_phone)
