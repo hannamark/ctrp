@@ -2106,7 +2106,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS49', item: 'pas_trial_description', rule: 'Brief Title must be less than 300 characters', description: 'Brief Title cannot be more than  300 characters', remark: '[Select Trial Description ] from Scientific Data menu.')
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS50', item: 'pas_arms/groups', rule: 'At least one Arm is required', description: 'Arm is required', remark: '[Select Arms/Groups] from Scientific Data menu.')
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS51', item: 'pas_arms/groups', rule: 'Arm label cannot be more than 62 characters', description: 'Arm Label cannot be more than 62 characters', remark: '[Select Arms/Groups] from Scientific Data menu.')
-ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS52', item: 'pas_biomarkers', rule: 'At least one pending biomarker must exist on the trial.', description: 'At least one pending biomarker exists on the trial.', remark: '[Select Biomarkers] from Scientific Data menu.')
+ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS52', item: 'pas_biomarkers', rule: 'At least one pending biomarker must exist on the trial.', description: 'At least one pending biomarker must exist on the trial.', remark: '[Select Biomarkers] from Scientific Data menu.')
 
 
   test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
