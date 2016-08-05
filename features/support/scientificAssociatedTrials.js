@@ -176,8 +176,8 @@ var scientificAssociatedTrials = function(){
                 console.log("Trial Identifier Type:["+typeVal+"]");
                 if(exppectedTrialIdentifier === typeVal){
                     if (whatToDo === 'verify'){
-                        console.log("Verifying Outcome Measures Expected Type:["+exppectedTrialIdentifier+"]");
-                        console.log("Verifying Outcome Measures Actual Type:["+typeVal+"]");
+                        console.log("Verifying Trial Identifier Expected Value:["+exppectedTrialIdentifier+"]");
+                        console.log("Verifying Trial Identifier Actual Value:["+typeVal+"]");
                         expect(exppectedTrialIdentifier.toString()).to.eql(typeVal.toString());
                         if (identifierTypVf !== ''){
                             var identifierTypeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
@@ -204,6 +204,9 @@ var scientificAssociatedTrials = function(){
                         var foundRecord = 'Value : '+exppectedTrialIdentifier+' should not be exists';
                         var notExistsRecord = 'Value : '+exppectedTrialIdentifier+' exists';
                         expect(foundRecord.toString()).to.eql(notExistsRecord.toString());
+                    } else if(whatToDo === 'link') {
+                        var linkDataRw = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(01) a'));
+                        helper.clickButton(linkDataRw.get(1), "Click - Link");
                     } else if(whatToDo === 'delete'){
                         var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05) input'));
                         helper.clickButton(deleteDataRw, "Delete - Button");
@@ -312,7 +315,7 @@ var scientificAssociatedTrials = function(){
         self.officialTitleVw.getText().then(function(result) {
             if (result != '') {
                 var expResearchCatVal = 'System Identified the Official Title value: '+result+'';
-                var actResearchCatVal = 'System Identified the Officical Title value: '+result+'';
+                var actResearchCatVal = 'System Identified the Official Title value: '+result+'';
                 expect(expResearchCatVal.toString()).to.eql(actResearchCatVal.toString());
                 if (expOfficialTitle != ''){
                     expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle);

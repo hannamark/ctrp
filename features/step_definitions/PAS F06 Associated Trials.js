@@ -102,8 +102,8 @@ module.exports = function() {
     var optionB = '';
     var optionC = '';
     var optionD = '';
-    var pageTtitle = 'List of Associated Trials';
-    var pageTtitleA = 'Associated Trial Details';
+    var pageTitle = 'List of Associated Trials';
+    var pageTitleA = 'Associated Trial Details';
     var identifierTypeA = 'NCI';
     var identifierTypeB = 'NCT';
     var trialTypeA = '';
@@ -141,7 +141,7 @@ module.exports = function() {
 
     this.Given(/^I am on the Associated Trials screen$/, function (callback) {
         leftNav.clickScientificAssociatedTrials();
-        associated.checkAssociatedTrialPageTitle(pageTtitle, 'list');
+        associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
         associated.deleteAllAssociatedTrialList('yes');
         browser.sleep(25).then(callback);
     });
@@ -152,7 +152,7 @@ module.exports = function() {
     });
 
     this.Then(/^I am on the Add Associated Trial screen$/, function (callback) {
-        associated.checkAssociatedTrialPageTitle(pageTtitleA, 'details');
+        associated.checkAssociatedTrialPageTitle(pageTitleA, 'details');
         browser.sleep(25).then(callback);
     });
 
@@ -177,8 +177,8 @@ module.exports = function() {
         browser.sleep(2500).then(callback);
     });
 
-    this.Then(/^the Requested Trial is retrieved$/, function (table, callback) {
-        console.log('******************* Need clarification for this step **********************');
+    this.Then(/^the Requested Trial is retrieved from the respective system \(CTRP for NCI and ClinicalTrials\.gov for NCT\)$/, function (callback) {
+
         browser.sleep(25).then(callback);
     });
 
@@ -211,6 +211,12 @@ module.exports = function() {
 
         browser.sleep(25).then(callback);
     });
+
+    this.Then(/^I can select the (.*) and the trial is (.*) displayed$/, function (IdentifierIdentifier, Retrievedfrom, table, callback) {
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nctIDA, 'link', optionB, trialTypeB, officialTitleB);
+        browser.sleep(5000).then(callback);
+    });
+
 
 
 };
