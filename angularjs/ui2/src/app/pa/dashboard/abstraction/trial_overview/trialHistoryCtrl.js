@@ -66,6 +66,7 @@
                     loadTrialSubmissions();
                 });
             }; //gridOptions
+            vm.submissionsGridOptions.exporterAllDataFn = loadTrialSubmissions;
 
             loadTrialSubmissions();
 
@@ -234,6 +235,7 @@
 
             AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
+                console.log('submision data please', data);
 
                 if (status >= 200 && status <= 210) {
                     console.log('received search results: ' + JSON.stringify(data.trial_versions));

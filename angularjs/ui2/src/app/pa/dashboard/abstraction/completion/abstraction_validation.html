@@ -4,6 +4,11 @@
             <div class="panel-title">Abstraction Validation</div>
         </div>
         <div class="panel-body">
+            <div class="row" ng-show="abstractValidView.isValidationPassed">
+                <div class="alert alert-success">
+                    <strong>Congratulations! Abstraction Validation Passed.</strong>
+                </div>
+            </div>
             <div class="row" ng-show="abstractValidView.issues.errors.admin.length > 0">
                 <div class="alert alert-danger">
                     <strong>Abstraction Validation Failed: </strong> Errors in Administrative Data: {{abstractValidView.issues.errors.admin.length}}

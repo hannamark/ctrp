@@ -1,4 +1,4 @@
-@PA @global
+@PA  @global
 Feature: PA F02 Trail Identification Overview
 Description:  As any CTRP PA User, I can view the Trail Identification Overview and check out a trial for abstraction with the appropriate role
 

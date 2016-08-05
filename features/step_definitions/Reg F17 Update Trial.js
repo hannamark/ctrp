@@ -23,6 +23,7 @@ var assert = require('assert');
 var participatingSitePage = require('../support/registerAddParticipatingSite');
 var searchOrgPage = require('../support/ListOfOrganizationsPage');
 var searchPeoplePage = require('../support/ListOfPeoplePage');
+var registryMessagePage = require('../support/RegistryMessage');
 
 
 module.exports = function() {
@@ -41,11 +42,19 @@ module.exports = function() {
     var participatingSite = new participatingSitePage();
     var searchOrg = new searchOrgPage();
     var searchPeople = new searchPeoplePage();
+    var registryMessage = new registryMessagePage();
 
     var getDBConnection = '';
 
     var protocolDoc = 'testSampleDocFile.docx';
     var IRBDoc = 'testSampleXlsFile.xls';
+    var protocolDocDocmFileUpd = 'testSampleDocmFile.docm';
+    var IRBEXCELFileUpd = 'testSampleEXCELFile.xlsx';
+    var PSPDFFileUpd = 'testSamplePDFFile.pdf';
+    var InformedConsentXlsmFileUpd = 'testSampleXlsmFile.xlsm';
+    var OtherXlsbFileUpd = 'testSampleXlsbFile.xlsb';
+  //  var testSamplePDFFile = 'testSamplePDFFile.pdf';
+    var DescriptionFirstDoc = 'Description for first doc Update';
 
     this.Given(/^I have selected the option to search my trials in CTRP$/, function (callback) {
         projectFunctionsRegistry.createTrialForTrialUpdate();
@@ -78,7 +87,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^all trial information will be displayed as in Registration with only Update fields enabled Type$/, function (table, callback) {
+    this.Then(/^all trial information for the latest submission will be displayed as in Registration with only Update fields enabled Type$/, function (table, callback) {
 
         //Other Trial ID//
         expect(addTrial.addTrialProtocolIDOrigin.isEnabled()).to.eventually.equal(true, 'Validating Other Trial Identifier Protocol ID Type field is Enabled');
@@ -132,31 +141,28 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^I will be able to add Other Protocol Identifiers$/, function (callback) {
-       // projectFunctionsRegistry.addOtherTrialIdentifier('Other Identifier');
-        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Other Identifier')).click();
-        addTrial.setAddTrialProtocolID('OTHupd' + projectFunctions.getRandomInt(100000, 990000));
-        addTrial.clickAddTrialAddProtocolButton();
+    this.Then(/^I will be able to Update Other Protocol Identifiers to allow both additional Other Protocol Identifiers as well as removing existing$/, function (callback) {
+        projectFunctionsRegistry.addOtherTrialIdentifier('Other Identifier');
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^I will be able to add Grant Information$/, function (callback) {
-        addTrial.addTrialFundedByNCIOption.get(0).isSelected().then(function(state){
-            if(state){
-            // addTrial.addTrialVerifyGrantTableExist.isPresent().then(function(present){
-            //     if(present){
-            //   //  addTrial.addTrialRemoveGrantValues.click();
-            //     }
-                addTrial.selectAddTrialFundedByNCIOption('no');
-             //   });
-            }
-            else{
-        addTrial.addTrialFundedByNCIOption.get(1).isSelected().then(function(state){
-            if(state){
-                // addTrial.addTrialVerifyGrantTableExist.isPresent().then(function(present){
-                //     if(present){
-                //         addTrial.addTrialRemoveGrantValues.click();
-                //     }
+    this.Then(/^I will be able to Update Grant Information to allow both additional Grants as well as removing existing$/, function (callback) {
+        //addTrial.addTrialFundedByNCIOption.get(0).isSelected().then(function(state){
+        //    if(state){
+        //     addTrial.addTrialVerifyGrantTableExist.isPresent().then(function(present){
+        //         if(present){
+        //         addTrial.addTrialRemoveGrantValues.click();
+        //         }
+        //        addTrial.selectAddTrialFundedByNCIOption('no');
+        //        });
+        //    }
+        //    else{
+        //addTrial.addTrialFundedByNCIOption.get(1).isSelected().then(function(state){
+        //    if(state){
+                 addTrial.addTrialVerifyGrantTableExist.isPresent().then(function(present){
+                     if(present){
+                         addTrial.addTrialRemoveGrantValues.click();
+                     }
                     addTrial.selectAddTrialFundedByNCIOption('yes');
                     addTrial.selectAddTrialFundingMechanism('R01');
                     addTrial.selectAddTrialInstituteCode('CA');
@@ -164,18 +170,18 @@ module.exports = function() {
                     addTrial.addTrialSerialNumberSelect.click();
                     addTrial.selectAddTrialNCIDivisionProgramCode('CCR');
                     addTrial.clickAddTrialAddGrantInfoButton();
-              //  });
-            }
-        });
-            }
-        });
+                });
+           // }
+        //});
+        //    }
+        //});
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^I will be able to update trial status and trial status dates$/, function (callback) {
+    this.Then(/^I can delete existing and add new Trial Status and Trial Status Dates$/, function (callback) {
         addTrial.addTrialRemoveTrialStatus.click();
         addTrial.clickAddTrialDateField(0);
-        addTrial.clickAddTrialDateFieldPreviousMonth(14);
+        addTrial.clickAddTrialDateFieldPreviousMonth('14');
         addTrial.selectAddTrialStatus('In Review');
         addTrial.setAddTrialStatusComment('Comment added testing Update Trial');
         addTrial.clickAddTrialAddStatusButton();
@@ -191,38 +197,119 @@ module.exports = function() {
         addTrial.selectAddTrialPrimaryCompletionDateOption('1');
         addTrial.clickAddTrialDateField(3);
         addTrial.clickAddTrialDateFieldNextMonth('19');
+        addTrial.selectAddTrialCompletionDateOption('0');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I will be able to review all existing Trial Related Documents type$/, function (callback) {
+        existingDocs = addTrial.addTrialVerifyAddedDocs.getText().then(function(Docs){
+            return Docs;
+        });
+        existingDocsOtherDesc = addTrial.addTrialVerifyAddedOtherDocsDescriptionOnly.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (trialDocsOtherDesc) {
+                    console.log('Trial Other documents with Decription ----> ' + trialDocsOtherDesc);
+                    return trialDocsOtherDesc;
+                });
+            }
+            else {
+                console.log('Trial Other Documents does not exist in Page.');
+                return Q.when([]);
+            }
+        });
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I will be able to add all Trial Related Documents$/, function (callback) {
+        trialDoc.trialRelatedFileUpload('reg', '1', protocolDocDocmFileUpd);
+        expect(trialDoc.trailFileUploadProtocol.getAttribute('value')).to.eventually.equal(protocolDocDocmFileUpd);
+        trialDoc.trialRelatedFileUpload('reg', '2', IRBEXCELFileUpd);
+        expect(trialDoc.trailFileUploadIRB.getAttribute('value')).to.eventually.equal(IRBEXCELFileUpd);
+        trialDoc.trialRelatedFileUpload('reg', '3', PSPDFFileUpd);
+        expect(trialDoc.trailFileUploadParticipating.getAttribute('value')).to.eventually.equal(PSPDFFileUpd);
+        trialDoc.trialRelatedFileUpload('reg', '4', InformedConsentXlsmFileUpd);
+        expect(trialDoc.trailFileUploadInformed.getAttribute('value')).to.eventually.equal(InformedConsentXlsmFileUpd);
+        trialDoc.trialRelatedFileUpload('reg', '5', OtherXlsbFileUpd);
+        addTrial.setAddTrialOtherDocsDescription(0, DescriptionFirstDoc);
+        expect(trialDoc.trailFileUploadOther.getAttribute('value')).to.eventually.equal(OtherXlsbFileUpd);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the added documents should be added to the existing documents$/, function (callback) {
+        existingDocs.then(function(value){
+            console.log('existing Docs value');
+            console.log(value);
+            expect(addTrial.addTrialVerifyAddedDocs.getText()).to.eventually.eql(value);
+        });
+        browser.sleep(25).then(callback);
+    });
+
+
+    this.When(/^the trial has errors$/, function (callback) {
+        expect(addTrial.addTrialReviewButton.isPresent()).to.eventually.equal(true);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Review Button will be displayed to Review the errors$/, function (callback) {
+        addTrial.clickAddTrialReviewButton();
+    //    expect(addTrial.addTrialCompletionDateErrorMessageActualAnticipated.getText()).to.eventually.equal(registryMessage.trialDatesCompletionActualMessage);
+        expect(addTrial.addTrialCompletionDateErrorMessageForTrialStatus.getText()).to.eventually.equal(registryMessage.trialDatesCompletionStatusMessage('In Review'));
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^the trial has no errors$/, function (callback) {
         addTrial.selectAddTrialCompletionDateOption('1');
+        expect(addTrial.addTrialSubmitButton.isPresent()).to.eventually.equal(true);
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^I will be able to update participating site status$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.Then(/^I will be able to review existing Trial Related Documents type$/, function (table, callback) {
-        expect(addTrial.addTrialVerifyAddedDocs.getText()).to.eventually.eql([ protocolDoc, IRBDoc ]);
+    this.Then(/^the Submit button will be displayed$/, function (callback) {
+        expect(addTrial.addTrialSubmitButton.isPresent()).to.eventually.equal(true);
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^I will be able to add Trial Related Document type Other$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
 
-    this.Then(/^I will be able to review or cancel my update$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.When(/^I click on the Review Button to Review my trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
-
-    this.When(/^the click on the submit button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.When(/^I can click on the submit button$/, function (callback) {
+        addTrial.clickAddTrialReviewButton();
+        browser.wait(function () {
+            return element(by.linkText(protocolDoc)).isPresent().then(function (state) {
+                if (state === true) {
+                    return element(by.linkText(protocolDoc)).isDisplayed().then(function (state2) {
+                        return state2 === true;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }, 10000, "Save draft page with Uploaded documents did not appear");
+            existingDocs.then(function (value) {
+                var arr1 = value;
+                var newAddedDocuments = protocolDocDocmFileUpd + IRBEXCELFileUpd + PSPDFFileUpd + InformedConsentXlsmFileUpd + OtherXlsbFileUpd;
+                arr1.push(protocolDocDocmFileUpd, IRBEXCELFileUpd, PSPDFFileUpd, InformedConsentXlsmFileUpd, OtherXlsbFileUpd);
+                var newAddedDocumentArrSort = arr1.sort();
+                console.log('New array documents after sort:');
+                console.log(newAddedDocumentArrSort);
+                addTrial.addTrialVerifyAddedDocs.getText().then(function (newDocSet) {
+                    console.log('New array documents in Screen :');
+                    console.log(newDocSet.sort());
+                    expect(newDocSet.sort()).to.eql(newAddedDocumentArrSort);
+                });
+            });
+        existingDocsOtherDesc.then(function(existingOtherDocs){
+            var existingDocsArr1 = existingOtherDocs;
+            console.log(existingDocsArr1);
+            var newOtherDocsStrings = OtherXlsbFileUpd + '\n' + DescriptionFirstDoc;
+            var newOtherDocsArr2 = newOtherDocsStrings.split();
+            var newCombineArr = existingDocsArr1.concat(newOtherDocsArr2);
+            console.log('new Combine array');
+            console.log(newCombineArr.sort());
+            addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (newOtherDocSet) {
+                console.log('New array Other documents in Screen :');
+                console.log(newOtherDocSet.sort());
+                expect(newOtherDocSet.sort()).to.eql(newCombineArr.sort());
+            });
+        });
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^my trial will be updated in the CTRP application$/, function (callback) {

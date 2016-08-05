@@ -59,14 +59,12 @@ module.exports = function () {
             console.log('Provided email' + emailIDOfUser );
 
            if(userCurrentEmail !== emailIDOfUser || !emailOption){
-               console.log('should not come here');
                userProfile.setAddUserEmail(emailIDOfUser);
 
 
         userProfile.userProfilePhone.getAttribute('value').then(function(userCurrentPhone){
             console.log('user phone' + userCurrentPhone);
             if(userCurrentPhone === ''){
-                console.log('should not come here');
                 userProfile.setAddUserPhone('212-444-5656');
             }
         });

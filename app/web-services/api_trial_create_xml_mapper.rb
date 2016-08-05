@@ -101,6 +101,10 @@ class ApiTrialCreateXmlMapper
     object_node :responsible_party, "responsibleParty", :class =>ResponsiblePartyXml,:optional=>true,:default_value=>nil
     object_node :regulatoryInformation, "regulatoryInformation", :class =>RegulatoryInformationXml,:optional=>true,:default_value=>nil
 
+    ###Trial Owner
+    ###
+    array_node  :trialOwners, "trialOwner",:optional=>true, :class => String,:default_value=>[]
+
     ###Trial Docs
     ###
     text_node :protocol_document_name, "protocolDocument/@filename" ,:default_value=>nil,:optional=>true

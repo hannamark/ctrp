@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="row animated-item" ng-if="trialHistoryView.submissionsGridOptions.data.length > 0">
                                     <div class="col-xs-12">
-                                        <div ui-grid="trialHistoryView.submissionsGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-large-cell"></div>
+                                        <div ui-grid="trialHistoryView.submissionsGridOptions" ui-grid-exporter ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-large-cell"></div>
                                     </div>
                                 </div>
                             </div>
@@ -239,7 +239,7 @@
                                 </div>
                                 <div class="row animated-item" ng-if="trialHistoryView.showDeletedDocuments && trialHistoryView.deleteDocsGridOptions.data.length > 0">
                                     <div class="col-xs-12">
-                                        <div ui-grid="trialHistoryView.deleteDocsGridOptions" ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-small"></div>
+                                        <div ui-grid="trialHistoryView.deleteDocsGridOptions" ui-grid-exporter ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-small"></div>
                                     </div>
                                 </div>
                             </div>
@@ -259,7 +259,7 @@
                                 </div>
                                 <div class="row animated-item" ng-if="trialHistoryView.updatesGridOptions.data.length > 0">
                                     <div class="col-xs-12">
-                                        <div ui-grid="trialHistoryView.updatesGridOptions" ui-grid-expandable ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-medium-cell"></div>
+                                        <div ui-grid="trialHistoryView.updatesGridOptions" ui-grid-exporter ui-grid-expandable ui-grid-pagination="" external-scopes="clickHandler" class="grid grid-medium-cell"></div>
                                     </div>
                                 </div>
                             </div>

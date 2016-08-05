@@ -129,7 +129,7 @@ As a CTRP Accrual Submitter, I can search CTRP clinical trial in the CTRP Accrua
      When I don't check a box
      Then the trial information column won't be displayed on the trial list
 
-       Scenario: I can sort Trial displayed information using a sort capabilities for all columns 
+       Scenario:#2a I can sort Trial displayed information using a sort capabilities for all columns 
        Given I am on the Trial Search screen
      When I click on the selected trial information column 
      Then Trial Information will be sorted ascendingly or descendingly 

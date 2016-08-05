@@ -26,6 +26,9 @@
         var errors = _.groupBy(results.error || [], 'section');
         vm.issues.errors.admin = errors.PAA;
         vm.issues.errors.scientific = errors.PAS;
+        vm.isValidationPassed = vm.issues.warnings.length === 0 &&
+                                vm.issues.errors.admin.length === 0 &&
+                                vm.issues.errors.scientific.length === 0;
 
         activate();
         function activate() {

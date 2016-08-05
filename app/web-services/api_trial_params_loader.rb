@@ -15,8 +15,10 @@ class ApiTrialParamsLoader
 
     #$rest_params.push
     case type
-      when "register"
+      when "create"
         $rest_params[:edit_type] ="create"
+        $rest_params[:trial_ownerships_attributes] =[]
+        create_owner
       when "update"
         $rest_params[:edit_type] ="update"
       when "amend"
@@ -432,12 +434,19 @@ end
           $errors.store("primaryCompletionDate" ,"If primary completion date type is Anticipated, Primary Completion Date must be in the future")
         end
       end
-
-
-
-
     end
 
+  def create_owner
+    $mapperObject.trialOwners = $mapperObject.trialOwners.uniq
+    $mapperObject.trialOwners.each do |email|
+      user = User.find_by_email(email)
+      if !user.nil? && ["ROLE_ABSTRACTOR", "ROLE_TRIAL-SUBMITTER"].include?(user.role)
+        $rest_params[:trial_ownerships_attributes].push({user_id:user.id})
+      else
+        $errors.store("trialOwner" ,"Given trial owner must have known to CTRP AUM with proper priviliges to register trials")
+      end
+    end
+  end
 
 
 end
