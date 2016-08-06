@@ -136,7 +136,7 @@ Rails.application.routes.draw do
         get 'index'
         post 'history'
         post 'updates_history'
-        get 'submissions_history'
+        post 'submissions_history'
       end
     end
 
@@ -282,7 +282,7 @@ Rails.application.routes.draw do
         collection do
           get 'download/:id' => 'trial_documents#download'
           get  'download_tsr_in_rtf/:trial_id' => 'trial_documents#download_tsr_in_rtf'
-          get 'deleted_documents' # => 'trial_documents#deleted_documents'
+          post 'deleted_documents' # => 'trial_documents#deleted_documents'
         end
       end
 

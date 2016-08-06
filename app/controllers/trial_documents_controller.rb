@@ -106,9 +106,6 @@ class TrialDocumentsController < ApplicationController
 
   def deleted_documents
     @deleted_documents = TrialDocument.where("trial_id= ? AND status = ? OR status = ?",params[:trial_id], "deleted","inactive")
-    respond_to do |format|
-      format.json { render :json => @deleted_documents }
-    end
   end
 
   private

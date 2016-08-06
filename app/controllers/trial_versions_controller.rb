@@ -88,9 +88,7 @@ end
 
     ##pagination
     @submissions = @submissions.group(:'submissions.id').page(params[:start]).per(params[:rows])
-    respond_to do |format|
-      format.json { render :json => @submissions }
-    end
+
   end
 
 private
