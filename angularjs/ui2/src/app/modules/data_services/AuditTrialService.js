@@ -395,12 +395,12 @@
 
 
         function getSubmissions(obj) {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_SUBMISSIONS_HISTORY, obj);
+            return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_SUBMISSIONS_HISTORY, obj);
 
         }
 
         function getDeletedDocs(obj) {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.TRIAL_DELETED_DOCUMENTS, obj);
+            return PromiseTimeoutService.getData(URL_CONFIGS.TRIAL_DELETED_DOCUMENTS, obj);
 
         }
 
