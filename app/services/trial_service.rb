@@ -1502,4 +1502,6 @@ class TrialService
     return ctrp_primary_purpose_code
   end
 
+
+
 end

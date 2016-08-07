@@ -247,7 +247,7 @@ class GeoLocationService
       {:alpha2=>"ZW", :name=>"Zimbabwe", :alpha3=>"ZWE"}]
 
   def get_country_name_from_alpha3(alpha3)
-    country_map = t.detect { |f| f[:alpha3] == alpha3}
+    country_map = @@countries.detect { |f| f[:alpha3] == alpha3}
     if !country_map.nil?
       return country_map[:name]
     else
@@ -256,7 +256,7 @@ class GeoLocationService
   end
 
   def get_country_name_from_alpha2(alpha2)
-    country_map = t.detect { |f| f[:alpha2] == alpha2}
+    country_map = @@countries.detect { |f| f[:alpha2] == alpha2}
     if !country_map.nil?
       return country_map[:alpha2]
     else
@@ -265,7 +265,7 @@ class GeoLocationService
   end
 
   def get_alpha3_code(name)
-    country_map = t.detect { |f| f[:name] == name}
+    country_map = @@countries.detect { |f| f[:name] == name}
     if !country_map.nil?
       return country_map[:alpha3]
     else
@@ -274,13 +274,14 @@ class GeoLocationService
   end
 
   def get_alpha2_code(name)
-    country_map = t.detect { |f| f[:name] == name}
+    country_map = @@countries.detect { |f| f[:name] == name}
     if !country_map.nil?
-      return country_map[:alpha3]
+      return country_map[:alpha2]
     else
       return nil
     end
   end
+
 
   def is_country_existed(name)
     country_map = t.detect { |f| f[:name] == name}
@@ -290,5 +291,10 @@ class GeoLocationService
       return false
     end
   end
+
+  def get_countries
+      return @@countries.map{|x| x[:name]}
+  end
+
 
 end
