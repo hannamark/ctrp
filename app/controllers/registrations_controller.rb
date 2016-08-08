@@ -29,6 +29,10 @@ class RegistrationsController < Devise::RegistrationsController
     self.resource = resource_class.new_with_session(hash || {}, session)
   end
 
-  protected
+  private
+
+  def sign_up_params
+    params[:local_user].permit(:username, :first_name, :last_name, :email, :password, :password_confirmation, :phone, :phone_ext, :organization_id, :domain)
+  end
 
 end

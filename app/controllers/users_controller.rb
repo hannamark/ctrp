@@ -57,12 +57,17 @@ class UsersController < ApplicationController
 
     initalUserRole = @user.role
     initalUserStatusId = @user.user_status_id
+    initalUserStatusDate = @user.status_date
 
     newUser = false
+    justRegistered = false
     if params[:user_status_id] != initalUserStatusId
       @user[:status_date] = Time.now.localtime.strftime '%Y-%m-%d %H:%M:%S'
       if params[:user_status_id] == UserStatus.find_by_code('ACT').id
         newUser = true
+        if initalUserStatusDate == nil
+          justRegistered = true
+        end
       end
     end
 
@@ -72,7 +77,12 @@ class UsersController < ApplicationController
       #must be correct admin for the org, or with correct role or user him/herself
       if userWriteAccess(@user) && @user.update_attributes(user_params)
         if (user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU') || newUser
-          mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
+          if justRegistered && user_params[:domain] == "NIHEXT"
+            mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
+          else
+            mail_template = MailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
+          end
+
           mail_template.body_html.gsub!('${user_name}',      "#{user_params[:first_name]} #{user_params[:last_name]}")
           mail_template.body_html.gsub!('${user_username}',  user_params[:username])
           mail_template.body_html.gsub!('${user_role}',  roles[user_params[:role]])
@@ -177,18 +187,19 @@ end
       if (['ROLE_SITE-SU'].include? current_user.role) && params[:registered_users] != true
         any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
         @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
+        @users = @users.matches_all_registered()
         if any_membership
             @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
         else
             @users = @users.matches('organization_id', current_user.organization_id) unless @users.blank?
         end
       elsif !(['ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR','ROLE_ABSTRACTOR-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role) || params[:registered_users] == true
+          @users = @users.matches_all_registered()
           @users = @users.matches_all_active()
       end
 
       if current_user.role != 'ROLE_SUPER' && current_user.role != 'ROLE_ADMIN' && current_user.role != 'ROLE_ABSTRACTOR' && current_user.role != 'ROLE_ABSTRACTOR-SU' && current_user.role != 'ROLE_ACCOUNT-APPROVER'
         @users = @users.matches_wc('user_statuses', [UserStatus.find_by_code('ACT').id, UserStatus.find_by_code('INR').id]) unless @users.blank?
-        @status = 'Active'
       end
 
       @searchType = current_user.role
@@ -325,7 +336,7 @@ end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name,
+    params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name,
                                  :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
                                  :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
                                  :phone, :phone_ext, :user_status_id, :status_date)

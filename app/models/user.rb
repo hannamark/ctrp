@@ -116,6 +116,10 @@ class  User < ActiveRecord::Base
     end
   }
 
+  scope :matches_all_registered, -> () {
+    where("status_date is NOT NULL")
+  }
+
   scope :matches_all_active, -> () {
 
     familyOrganizations = FamilyMembership.where(
