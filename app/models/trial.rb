@@ -967,7 +967,22 @@ class Trial < TrialBase
     joins(join_clause).where(where_clause, value_exp, value_exp, value_exp)
   }
 
-  scope :with_nci_id, -> (nci_id) { where(nci_id: nci_id) }
+  # scope :with_nci_id, -> (nci_id) { where(nci_id: nci_id) }
+
+  scope :with_nci_id, -> (value) {
+    where_clause = 'trials.nci_id ilike ?'
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      value_exp = "%#{value[1..str_len - 1]}"
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      value_exp = "#{value[0..str_len - 2]}%"
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      value_exp = "%#{value[1..str_len - 2]}%"
+    else
+      value_exp = "#{value}"
+    end
+    where(where_clause, value_exp, value_exp, value_exp)
+  }
 
   scope :with_phase, -> (value) { joins(:phase).where("phases.code = ?", "#{value}") }
 
