@@ -77,7 +77,7 @@ class UsersController < ApplicationController
       #must be correct admin for the org, or with correct role or user him/herself
       if userWriteAccess(@user) && @user.update_attributes(user_params)
         if (user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU') || newUser
-          if justRegistered && user_params[:domain] == "NIHEXT"
+          if justRegistered && @user.domain == "NIHEXT"
             mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
           else
             mail_template = MailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
