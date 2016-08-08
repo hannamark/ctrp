@@ -109,8 +109,7 @@
                 },
                 {name: 'affiliated_orgs', displayName:'Affiliated Orgs',
                     minWidth: '150', width: '*',
-                    cellTemplate:'<div ng-if="row.entity.affiliated_orgs.length > 0">' +
-                    '<div class="text-center" ng-show="row.entity.affiliated_orgs.length > 0">{{COL_FIELD}}</div>' +
+                    cellTemplate:'<div class="ui-grid-cell-contents tooltip-uigrid" ng-if="row.entity.affiliated_orgs.length > 0" title="{{COL_FIELD}}">{{COL_FIELD}}</div>' +
                     //' <master-directive button-label="Click to see" mod="row.entity.affiliated_orgs">' +
                     //'</master-directive></div>' +
                     '<div class="text-center" ng-show="row.entity.affiliated_orgs.length == 0">--</div>'},

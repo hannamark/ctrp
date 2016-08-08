@@ -37,6 +37,7 @@
 #  source                      :string
 #  user_status_id              :integer
 #  phone                       :string
+#  phone_ext                   :string
 #  city                        :string
 #  domain                      :string
 #  status_date                 :datetime

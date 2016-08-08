@@ -52,6 +52,8 @@ var scientificAssociatedTrials = function(){
     this.identifierTypeLst = element(by.id('identifier_type'));
     this.trialIdentifierTxt = element(by.id('trial_identifier'));
     this.lookupTrialBtn = element(by.id('lookup_trial'));
+    this.researchCategoryVw = element(by.id('research_category_view'));
+    this.officialTitleVw = element(by.id('official_title_view'));
 
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
 
@@ -59,8 +61,8 @@ var scientificAssociatedTrials = function(){
     this.resetAssociatedBtn = element(by.id('associated_reset'));
     this.backToAssociatedTrialsListBtn = element(by.id('associated_back'));
 
-    this.associatedPageTitleList = element(by.id('pg_title'));
-    this.associatedPageTitleDetails = element(by.id('outcome_measure_details'));
+    this.associatedPageTitleList = element(by.id('pg_title_list'));
+    this.associatedPageTitleDetails = element(by.id('pg_title_details'));
 
     this.clickAddAssociatedTrial = function(){
         helper.clickButton(self.addAssociatedTrialBtn, "Add Associated Trial - Button");
@@ -112,7 +114,7 @@ var scientificAssociatedTrials = function(){
         helper.wait_for(100);
     };
 
-    this.clickLookupTrialTrial = function(){
+    this.clickLookupTrial = function(){
         helper.clickButton(this.lookupTrialBtn, "Add Look Up Trial - Button");
     };
 
@@ -174,8 +176,8 @@ var scientificAssociatedTrials = function(){
                 console.log("Trial Identifier Type:["+typeVal+"]");
                 if(exppectedTrialIdentifier === typeVal){
                     if (whatToDo === 'verify'){
-                        console.log("Verifying Outcome Measures Expected Type:["+exppectedTrialIdentifier+"]");
-                        console.log("Verifying Outcome Measures Actual Type:["+typeVal+"]");
+                        console.log("Verifying Trial Identifier Expected Value:["+exppectedTrialIdentifier+"]");
+                        console.log("Verifying Trial Identifier Actual Value:["+typeVal+"]");
                         expect(exppectedTrialIdentifier.toString()).to.eql(typeVal.toString());
                         if (identifierTypVf !== ''){
                             var identifierTypeVal = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(02)'));
@@ -202,6 +204,9 @@ var scientificAssociatedTrials = function(){
                         var foundRecord = 'Value : '+exppectedTrialIdentifier+' should not be exists';
                         var notExistsRecord = 'Value : '+exppectedTrialIdentifier+' exists';
                         expect(foundRecord.toString()).to.eql(notExistsRecord.toString());
+                    } else if(whatToDo === 'link') {
+                        var linkDataRw = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(01) a'));
+                        helper.clickButton(linkDataRw.get(1), "Click - Link");
                     } else if(whatToDo === 'delete'){
                         var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05) input'));
                         helper.clickButton(deleteDataRw, "Delete - Button");
@@ -284,6 +289,43 @@ var scientificAssociatedTrials = function(){
         helper.verifyTableRowText(self.tableTHeadColB, thd[1], 'Identifier Type');
         helper.verifyTableRowText(self.tableTHeadColC, thd[2], 'Trial Type');
         helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Official Title');
+    };
+
+    this.verifyResearchCategoryLookup = function(expResearchCat){
+        this.waitForElement(self.researchCategoryVw, 'Waiting For Page title');
+        self.researchCategoryVw.getText().then(function(result) {
+            console.log('Current Research Category value: '+result+'');
+            if (result !== '') {
+                var expResearchCatVal = 'System Identified the research category value: '+result+'';
+                var actResearchCatVal = 'System Identified the research category value: '+result+'';
+                expect(expResearchCatVal.toString()).to.eql(actResearchCatVal.toString());
+                if (expResearchCat != ''){
+                    expect(self.researchCategoryVw.getText()).to.eventually.equal(expResearchCat);
+                }
+            } else {
+                var expResCatVal = 'Unable to display Expected Research Category: '+result+'';
+                var actResCatVal = 'Unable to display Actual Research Category: '+result+'';
+                expect(expResCatVal.toString()).to.eql(actResCatVal.toString());
+            }
+        });
+    };
+
+    this.verifyOfficialTitleLookup = function(expOfficialTitle){
+        this.waitForElement(self.officialTitleVw, 'Waiting For Page title');
+        self.officialTitleVw.getText().then(function(result) {
+            if (result != '') {
+                var expResearchCatVal = 'System Identified the Official Title value: '+result+'';
+                var actResearchCatVal = 'System Identified the Official Title value: '+result+'';
+                expect(expResearchCatVal.toString()).to.eql(actResearchCatVal.toString());
+                if (expOfficialTitle != ''){
+                    expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle);
+                }
+            } else {
+                var expResCatVal = 'Unable to display Expected Official Title';
+                var actResCatVal = 'Unable to display Actual Official Title';
+                expect(expResCatVal.toString()).to.eql(actResCatVal.toString());
+            }
+        });
     };
 
     //Save and Reset

@@ -27,9 +27,20 @@ class UsersController < ApplicationController
   end
 
   def update
-    p "zzzzzzzzzzzzzzzzzzzzzzzzzz"
-    p params[:user]
-    p "shshshsshsshhs"
+
+    roles = {}
+    roles["ROLE_ACCOUNT-APPROVER"] = "Account Approver",
+    roles["ROLE_RO"] = "Read Only"
+    roles["ROLE_SUPER"] = "Super"
+    roles["ROLE_ADMIN"] = "Admin"
+    roles["ROLE_CURATOR"] = "Curator"
+    roles["ROLE_ABSTRACTOR"] = "Abstractor",
+    roles["ROLE_ABSTRACTOR-SU"] = "Abstractor SU"
+    roles["ROLE_TRIAL-SUBMITTER"] = "Trial Submitter"
+    roles["ROLE_ACCRUAL-SUBMITTER"] = "Accrual Submitter"
+    roles["ROLE_SITE-SU"] = "Site Administrator"
+    roles["ROLE_SERVICE-REST"] = "Service Rest"
+
     current_user = current_site_user
     @user = User.find(params[:user][:id])
     if current_user.role != 'ROLE_ACCOUNT-APPROVER' && current_user.role != 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
@@ -46,8 +57,13 @@ class UsersController < ApplicationController
 
     initalUserRole = @user.role
     initalUserStatusId = @user.user_status_id
+
+    newUser = false
     if params[:user_status_id] != initalUserStatusId
-      @user[:status_date] = Time.now
+      @user[:status_date] = Time.now.localtime.strftime '%Y-%m-%d %H:%M:%S'
+      if params[:user_status_id] == UserStatus.find_by_code('ACT').id
+        newUser = true
+      end
     end
 
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
@@ -55,13 +71,17 @@ class UsersController < ApplicationController
     respond_to do |format|
       #must be correct admin for the org, or with correct role or user him/herself
       if userWriteAccess(@user) && @user.update_attributes(user_params)
-        if user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU'
-          begin
-            mail_template = MailTemplate.find_by_code('SITE-ADMIN-ACCESS-GRANTED')
-            CtrpMailer.general_email(mail_template.from, @user.email, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
-          rescue  Exception => e
-            logger.warn "SITE-ADMIN-ACCESS-GRANTED: Email delivery error = #{e}"
-          end
+        if (user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU') || newUser
+          mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
+          mail_template.body_html.gsub!('${user_name}',      "#{user_params[:first_name]} #{user_params[:last_name]}")
+          mail_template.body_html.gsub!('${user_username}',  user_params[:username])
+          mail_template.body_html.gsub!('${user_role}',  roles[user_params[:role]])
+          mail_template.to.gsub!('${user_email}',    "#{user_params[:email]},#{(User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email).join(',')}" )
+          mail_template.body_html.gsub!('${user_phone}',     "#{(user_params[:phone] ? user_params[:phone] : '')} #{(user_params[:phone_ext] ? ' ext ' + user_params[:phone_ext] : '')}" )
+          mail_template.body_html.gsub!('${user_org}',       (user_params[:organization_id] ? Organization.find(user_params[:organization_id]).name : '') )
+          mail_template.body_html.gsub!('${date}',           (Time.now).strftime('%v') )
+
+          CtrpMailerWrapper.send_email(mail_template, nil)
         end
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render json: @user}
@@ -308,6 +328,6 @@ end
     params.require(:user).permit(:domain, :username, :email, :zipcode, :first_name, :last_name,
                                  :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
                                  :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
-                                 :phone, :user_status_id, :status_date)
+                                 :phone, :phone_ext, :user_status_id, :status_date)
   end
 end

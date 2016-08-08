@@ -282,7 +282,7 @@ Rails.application.routes.draw do
         collection do
           get 'download/:id' => 'trial_documents#download'
           get  'download_tsr_in_rtf/:trial_id' => 'trial_documents#download_tsr_in_rtf'
-          post 'deleted_documents'
+          post 'deleted_documents' # => 'trial_documents#deleted_documents'
         end
       end
 

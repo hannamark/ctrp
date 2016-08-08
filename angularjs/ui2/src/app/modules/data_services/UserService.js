@@ -379,20 +379,14 @@
 
                             var searchParams = {
                                 from_user_id: controller.userDetails.id,
-                                transfers: []
+                                to_user_ids: []
                             };
                             var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
                             if (trialIdArr && trialIdArr.length){
-                                _.each(user_ids, function(user_id) {
-                                    _.each(trialIdArr, function (trial_id) {
-                                        searchParams.transfers.push({'user_id': user_id, 'trial_id': trial_id});
-                                    });
-                                });
+                                searchParams.to_user_ids = user_ids;
                                 searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value();
                             } else {
-                                _.each(user_ids, function(user_id) {
-                                    searchParams.transfers.push({'user_id': user_id});
-                                });
+                                searchParams.to_user_ids = user_ids;
                             }
 
                             service.transferUserTrialsOwnership(searchParams).then(function (data) {

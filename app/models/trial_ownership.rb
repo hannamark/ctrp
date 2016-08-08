@@ -57,7 +57,7 @@ class TrialOwnership < TrialBase
     if column == 'internal_source_id'
       joins(join_clause).where("owned_trial.internal_source_id = #{value}")
      elsif column == 'user_id'
-      joins(join_clause).where("trial_ownerships.user_id = #{value} AND trial_ownerships.trial_id is not null AND trial_ownerships.ended_at is null")
+      joins(join_clause).where("owned_trial.nci_id is not null and trial_ownerships.user_id = #{value} AND trial_ownerships.trial_id is not null AND trial_ownerships.ended_at is null")
     end
   }
 

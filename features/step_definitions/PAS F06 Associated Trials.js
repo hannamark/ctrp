@@ -94,25 +94,25 @@ module.exports = function() {
     var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1789';
     var leadProtocolIDA = 'CTRP_01_1777';
+    var nctIDA = 'NCT00334282';
+    var nctIDB = 'NCT02348710';
+    var nciIDA = '';
+    var nciIDB = '';
     var optionA = '';
     var optionB = '';
     var optionC = '';
     var optionD = '';
-    var pageTtitle = 'List of Associated Trials';
-    var pageTtitleA = 'Associated Trial Details';
-    var outTitle = 'Test Outcome Measure Title';
-    var timeFrame ='Test Time Frame';
-    var description = 'Test Description Outcome Measure Details';
-    var lngTitle = 'Test Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor Bearing Microparticles in Metastatic Breast Cancer title';
-    var charLftStr = 'Test Brief Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor verify';
-    var decrCharLft = '4982 characters left';
-    var decrCharLftObjective = '31985 characters left';
-    var decrCharLftObjectiveA = '27000 characters left';
-    var decrCharLftDetail = '31975 characters left';
-    var decrCharLftDetailA = '27000 characters left';
-    var noCharLft = '0 characters left';
-    var errorMSGBT = 'Brief Title is Required';
-    var errorMSGBS = 'Summary is Required';
+    var pageTitle = 'List of Associated Trials';
+    var pageTitleA = 'Associated Trial Details';
+    var identifierTypeA = 'NCI';
+    var identifierTypeB = 'NCT';
+    var trialTypeA = '';
+    var trialTypeB = 'Interventional';
+    var officialTitleA = '';
+    var officialTitleB = 'A Randomised, Double-blind, Placebo Controlled, Multi-center Phase III Study to Evaluate the Efficacy and Safety of Pazopanib (GW786034) Compared to Placebo in Patients With Locally Advanced and/or Metastatic Renal Cell Carcinoma';
+    var errorMSGITypeRequired = 'Identifier Type is Required';
+    var errorMSGTIdentifierRequired = 'Trial Identifier is Required';
+    var errorMSGAlreadyExists = 'Error: Trial association already exists';
 
     /*
      Scenario: #1 I can add an Associated Trial for a trial
@@ -141,71 +141,82 @@ module.exports = function() {
 
     this.Given(/^I am on the Associated Trials screen$/, function (callback) {
         leftNav.clickScientificAssociatedTrials();
-        associated.checkAssociatedTrialPageTitle(pageTtitle, 'list');
+        associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
         associated.deleteAllAssociatedTrialList('yes');
         browser.sleep(25).then(callback);
     });
 
     this.When(/^I have selected the Add button$/, function (callback) {
         associated.clickAddAssociatedTrial();
-        associated.checkAssociatedTrialPageTitle(pageTtitleA, 'details');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I am on the Add Associated Trial screen$/, function (callback) {
-
+        associated.checkAssociatedTrialPageTitle(pageTitleA, 'details');
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I must select (.*)$/, function (IdentifierType, table, callback) {
-        // Write code here that turns the phrase above into concrete actions
+        var idenType = table.raw();
+        optionType = idenType.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + idenType +']');
+        var optionTypeSplt = optionType.toString().split("\n");
+        optionA = optionTypeSplt[1];
+        optionB = optionTypeSplt[2];
+        associated.selectIdentifierType(optionB);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I must enter the Trial Identifier$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.setTrialIdentifierTxt(nctIDA);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I click the Look Up Trial button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.clickLookupTrial();
+        browser.sleep(2500).then(callback);
     });
 
-    this.Then(/^the Requested Trial is retrieved$/, function (table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^the Requested Trial is retrieved from the respective system \(CTRP for NCI and ClinicalTrials\.gov for NCT\)$/, function (callback) {
+
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Clinical Research Category populates$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.verifyResearchCategoryLookup(trialTypeB);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Official Title populates$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.verifyOfficialTitleLookup(officialTitleB);
+        browser.sleep(25).then(callback);
     });
 
     this.When(/^I have clicked the Save button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.clickSaveAssociated();
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the associated study displays on the Associated Trials screen$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nctIDA, 'verify', optionB, trialTypeB, officialTitleB);
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Message Record Created displays$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        console.log('Popup successful message verification is out of scope');
+        browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Associated Trial will be associated with the trial$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+
+        browser.sleep(25).then(callback);
     });
+
+    this.Then(/^I can select the (.*) and the trial is (.*) displayed$/, function (IdentifierIdentifier, Retrievedfrom, table, callback) {
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nctIDA, 'link', optionB, trialTypeB, officialTitleB);
+        browser.sleep(5000).then(callback);
+    });
+
 
 
 };

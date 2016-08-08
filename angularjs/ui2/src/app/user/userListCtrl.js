@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService'];
 
-    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService) {
+    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService) {
 
         var vm = this;
         vm.curUser = userDetailObj;
@@ -161,23 +161,16 @@
             enableGridMenu: true,
             enableSelectAll: false,
             exporterCsvFilename: 'users.csv',
-            exporterPdfDefaultStyle: {fontSize: 9},
-            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
-            exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
-            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Users:', style: 'headerStyle' },
-            exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
-            },
-            exporterPdfCustomFormatter: function ( docDefinition ) {
-                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
-                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
-                return docDefinition;
-            },
             exporterMenuAllData: true,
-            exporterMenuPdfAll: true,
-            exporterPdfOrientation: 'landscape',
-            exporterPdfMaxGridWidth: 700,
-            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            gridMenuCustomItems: [{
+                title: 'Export All Data As CSV',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                }
+            }]
         };
 
          UserService.getUserStatuses().then(function (response) {
@@ -196,7 +189,7 @@
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
-        if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
+        if (!vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
             if (vm.curUser.org_families.length) {
                 vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
             } else {
@@ -226,7 +219,7 @@
             var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
 
             //add extra fields here
-            vm.gridOptions.columnDefs.push(middleName);
+            //vm.gridOptions.columnDefs.push(middleName);
 
             allSearchParams.start = null;
             allSearchParams.rows = null;
