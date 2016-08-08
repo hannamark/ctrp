@@ -119,6 +119,9 @@
                     !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length
                         && vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER'
                             && vm.userRole !== 'ROLE_ACCOUNT-APPROVER') {
+                    if (vm.userDetails.role === 'ROLE_SITE-SU') {
+                        vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
+                    }
                     vm.userDetails.user_status_id = review_id;
                 }
             }
