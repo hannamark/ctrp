@@ -14,11 +14,16 @@
         var vm = this;
 
         vm.userDetailsOrig = angular.copy(userDetailObj);
-        if (vm.userDetailsOrig.username.indexOf('nihusernothaveanaccount') > - 1) {
-            vm.userDetailsOrig.username = '';
+        if (vm.userDetailsOrig.username) {
+            if (vm.userDetailsOrig.username.indexOf('nihusernothaveanaccount') > - 1) {
+                vm.userDetailsOrig.username = '';
+            }
+            vm.userDetails = angular.copy(vm.userDetailsOrig);
+        } else {
+            vm.pageFauilure = true;
+            return;
         }
 
-        vm.userDetails = angular.copy(vm.userDetailsOrig);
         vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
@@ -72,6 +77,19 @@
                 vm.confirmMsg = "You are about to switch this user's role from a role that you have no permissions to re-assign once you leave this form.";
                 return true;
             }
+        };
+
+        vm.validateUserName = function() {
+
+            UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
+                if ( data.total >  0 && vm.userDetails.username !== vm.userDetailsOrig.username){
+                    vm.newUserNameInvalid = true;
+                } else {
+                    vm.newUserNameInvalid = false;
+                }
+            }).catch(function (err) {
+                console.log('Search Users failed: ' + err);
+            });
         };
 
         vm.validateSave = function() {

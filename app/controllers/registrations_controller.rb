@@ -12,7 +12,7 @@ class RegistrationsController < Devise::RegistrationsController
         mail_template.body_html.gsub!('${user_email}',     user[:email])
         mail_template.body_html.gsub!('${user_phone}',     "#{(user[:phone] ? user[:phone] : '')} #{(user[:phone_ext] ? ' ext ' + user[:phone_ext] : '')}" )
         mail_template.body_html.gsub!('${user_org}',       (user[:organization_id] ? Organization.find(user[:organization_id]).name : '') )
-        mail_template.body_html.gsub!('${date}',           (Time.now).strftime('%v') )
+        mail_template.body_html.gsub!('${date}',           (Time.zone.now).strftime('%v') )
 
         CtrpMailerWrapper.send_email(mail_template, nil)
 
