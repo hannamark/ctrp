@@ -27,7 +27,9 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
-    And CTEP Org PK ID will be sent to CTEP  
+    And CTEP Org PK ID will be sent to CTEP
+    And the CTEP "Service Request" will be "Create"
+    
 
 Scenario: #1a CTEP Context Mandatory Fields
     Given I am logged into the CTRP 
@@ -50,9 +52,12 @@ Scenario: #1a CTEP Context Mandatory Fields
 Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a CTRP Context 
     Given I am logged into the CTRP 
     And I am on the Search Organizations Screen
-    When I select Source status as pending
+    When I select"Pending" from "Processing Status" 
     And I select Source context as CTEP
-    Then I can view Organizations in the CTEP Context with Pending status with information Type
+    And I select "Create" from "Service Request"
+    Then I can view Organizations in the CTEP Context with "Processing Status" of "Pending" and a "Service Request" of "Create" 
+    And the CTEP context fields type will be displayed
+    
     |CTEP Context|
     |CTEP Organization ID|
     |CTEP Organization Type|
