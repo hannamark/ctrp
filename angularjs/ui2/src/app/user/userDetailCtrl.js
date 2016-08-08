@@ -13,9 +13,13 @@
     function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
-        vm.userDetails = userDetailObj;
-        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.userDetailsOrig = angular.copy(userDetailObj);
+        if (vm.userDetailsOrig.username.indexOf('nihusernothaveanaccount') > - 1) {
+            vm.userDetailsOrig.username = '';
+        }
+
+        vm.userDetails = angular.copy(vm.userDetailsOrig);
+        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
         vm.states = [];
@@ -31,7 +35,6 @@
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
-            console.log(vm.userDetails)
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
@@ -144,13 +147,6 @@
             vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
         };
-
-        AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
-            vm.domainArr = response.data[0].settings.split('||');
-        }).catch(function (err) {
-            vm.domainArr = [];
-            console.log("Error in retrieving USER_DOMAINS " + err);
-        });
 
         AppSettingsService.getSettings({ setting: 'USER_ROLES'}).then(function (response) {
             vm.rolesArr = JSON.parse(response.data[0].settings);

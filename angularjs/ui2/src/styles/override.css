@@ -1648,3 +1648,7 @@ body.pam_trials .date-radio-label {
     float: left;
 }
 
+body.sign_up .sign_up_form {
+    max-width:650px;
+    margin: 0 auto;
+}

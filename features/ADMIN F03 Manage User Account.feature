@@ -25,7 +25,6 @@ And I enter the folowing option fields
 And I select to either receive or not receive email notifications
 And I can view the following fields for my account
 |Username|
-|Domain|
 |Status|
 |Role|
 And I select the Save option

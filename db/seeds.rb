@@ -1484,7 +1484,7 @@ MailTemplate.find_or_create_by(
 
 MailTemplate.find_or_create_by(
     code: 'USER_ACCOUNT_ACTIVATION',
-    name: 'User Registration',
+    name: 'User Activation',
     from: 'ncictro@mail.nih.gov',
     to:   '${user_email}',
     subject: 'Your NCI CTRP Account has been activated',
@@ -1493,6 +1493,22 @@ MailTemplate.find_or_create_by(
                 <p>Date: ${date}</p>
                 <p>Dear ${user_name},</p>
                 <p>Your NCI CTRP Account has been activated as a ${user_role} at ${user_org}.   You should be able to log in with your LDAP User ID: ${user_username}.</p>
+                <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov or visit our website at http://www.cancer.gov/ncictrp.</p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_REGISTRATION_ACTIVATION',
+    name: 'User Registration',
+    from: 'ncictro@mail.nih.gov',
+    to:   '${user_email}',
+    subject: 'Your NCI CTRP Account has been activated',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <p>Date: ${date}</p>
+                <p>Dear ${user_name},</p>
+                <p>Your NCI CTRP Account has been activated as a ${user_role}.   You should be able to log in with your LDAP User ID: ${user_username}.</p>
                 <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov or visit our website at http://www.cancer.gov/ncictrp.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
                 </body></html>'
