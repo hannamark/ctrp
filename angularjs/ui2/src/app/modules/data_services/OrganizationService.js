@@ -258,7 +258,6 @@
 
                 orgNames = res.orgs.map(function (org) {
                     resObj.organization_id = org.id;
-                    resObj.organization_name = org.name;
                     return org.name;
                 });
 

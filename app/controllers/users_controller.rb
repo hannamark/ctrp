@@ -325,8 +325,6 @@ end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    p params[:username]
-    p params[:username]
     unless params.nil? || params[:id].nil? || params[:username].nil?
       @user = User.find(params[:id]) || User.find(params[:username])
     else

@@ -346,4 +346,8 @@ class  User < ActiveRecord::Base
   def email_changed?
     false
   end
+
+  def password_required?
+    false
+  end
 end
