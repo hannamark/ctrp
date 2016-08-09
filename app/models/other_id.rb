@@ -36,12 +36,13 @@ class OtherId < TrialBase
 
     value.each_with_index { |e, i|
       if i == 0
-        q = "other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?"#, "#{e.to_s}"
+        q = "other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
       else
-        q += " OR other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
+        new_q = " OR other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
+        q += new_q
       end
       p "e is #{e}, i is: #{i}"
-     conditions.push(e)
+      conditions.push(e)
     }
     conditions.insert(0, q)
 

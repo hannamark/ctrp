@@ -514,7 +514,7 @@ class TrialsController < ApplicationController
 
         @trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?('NCI')
 
-        @trials = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0}
+        @trials = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
 
       end
       if params[:admin_checkout].present?
