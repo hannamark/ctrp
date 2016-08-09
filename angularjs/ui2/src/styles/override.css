@@ -1652,3 +1652,38 @@ body.sign_up .sign_up_form {
     max-width:650px;
     margin: 0 auto;
 }
+
+body.sign_up .modal-content .modal-body {
+    padding-top: 35px;
+}
+
+body.sign_up .row-captcha {
+    float: right;
+    margin-right: 10px;
+    padding-top: 25px;
+}
+
+body.sign_up .btn-toolbar {
+    margin-right: 12px;
+}
+
+body.sign_in .input-sm, body.sign_up .input-sm{
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+body.sign_in label {
+    width: 125px;
+}
+
+body.sign_in .btn-toolbar .pull-left {
+    width: 180px;
+}
+
+body.sign_in .btn-toolbar span.pad-height {
+    line-height: 1.3em;
+}

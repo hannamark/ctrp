@@ -1,9 +1,9 @@
 
 
-<div class="modal-content row sign_up_form" ng-show="!userView.defaultSignUp && !userView.NihSignUp">
-    <div class="modal-header">
+<div class="panel-default modal-content row sign_up_form" ng-show="!userView.defaultSignUp && !userView.NihSignUp">
+    <div class="panel-heading">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ui-sref="main.sign_in">&times;</button>
-        <h4 class="modal-title text-center">Do you have an NIH Account?</h4>
+        <div class="panel-title">Do you have an NIH Account?</div>
     </div>
     <div class="dir-modal-body">
         <div class="row modal-footer">
@@ -23,190 +23,188 @@
     </div>
 </div>
 <div class="panel-default modal-content row sign_up_form"  ng-show="userView.defaultSignUp || userView.NihSignUp">
-    <div class="modal-header">
+    <div class="panel-heading">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="userView.defaultSignUp = userView.NihSignUp = false;">&times;</button>
-        <h4 class="modal-title text-center">Sign Up Form</h4>
+        <div class="panel-title">Sign Up Form</div>
     </div>
 
     <div class="modal-body">
-        <div id="chooseTransferTrials" class="modal-body"></div>
+        <form class="form form-horizontal" role="form" name="signup_form" autocomplete="off" novalidate ctrp-submit="userView.updateUser()">
 
-                <form class="form form-horizontal" role="form" name="signup_form" autocomplete="off" novalidate ctrp-submit="userView.updateUser()">
-
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-6" ng-class="userView.NihSignUp ? '' : 'hide'">
-                            <div class="form-group has-feedback required">
-                                <div class="input-group">
-                                    <label for="username">
-                                        Username
-                                    </label>
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                    </span>
-                                    <input class="input-sm" id="username" name="username" type="text"
-                                           required ng-model="userView.userObj.user.username"
-                                           pattern="^[A-Za-z0-9]{4,40}$"  placeholder="Username">
-                                </div>
-                                <span class="help-block" ng-show="signup_form.$submitted && signup_form.username.$error.required">Username is Required</span>
-                                <span class="help-block" ng-show="signup_form.$submitted && !signup_form.username.$error.required && !signup_form.username.$valid">Valid Username is Required</span>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.email)}">
-
-                                <div class="input-group">
-                                    <label for="email">
-                                        Email
-                                    </label>
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-envelope"></i>
-                                    </span>
-                                    <input name="email" id="email" type="email" pattern="[a-zA-Z0-9_\.\+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+" class="input-sm" ng-model="userView.userObj.user.email" placeholder="Email" required>
-                                </div>
-                                <span class="help-block" ng-show="signup_form.$submitted && !signup_form.email.$error.required && !signup_form.email.$valid">Valid Email is Required</span>
-                                <span class="help-block" ng-show="signup_form.$submitted && signup_form.email.$error.required">Email is Required</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.first_name)}">
-                                <div class="input-group">
-                                    <label for="first_name">
-                                        First Name
-                                    </label>
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                    </span>
-                                    <input type="text" name="first_name" id="first_name" required ng-model="userView.userObj.user.first_name"  class="input-sm" placeholder="First Name" capitalize-first>
-                                </div>
-                                <span class="help-block" ng-show="signup_form.$submitted && signup_form.first_name.$error.required">First Name is Required</span>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.last_name)}">
-                                <div class="input-group">
-                                    <label for="last_name">
-                                        Last Name
-                                    </label>
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                    </span>
-                                    <input type="text" name="last_name" id="last_name" required ng-model="userView.userObj.user.last_name"  class="input-sm" placeholder="Last Name" capitalize-first>
-                                </div>
-                                <span class="help-block" ng-show="signup_form.$submitted && signup_form.last_name.$error.required">Last Name is Required</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.phone)}">
-                                <div class="input-group">
-                                    <label for="phone">
-                                        Phone
-                                    </label>
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-phone"></i>
-                                    </span>
-                                    <input type="text" name="phone" id="phone" required ng-model="userView.userObj.user.phone"  class="input-sm" placeholder="Phone" >
-                                </div>
-                                <span class="help-block" ng-show="signup_form.$submitted && signup_form.phone.$error.required">Phone is Required</span>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback" >
-                                <div class="input-group">
-                                    <label for="phone_ext">
-                                        Extension
-                                    </label>
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-phone"></i>
-                                    </span>
-                                    <input type="text" name="phone_ext" id="phone_ext" ng-model="userView.userObj.user.phone_ext"  class="input-sm" placeholder="Phone Extension" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row" ng-if="'yes'==='INACTIVATED FOR NOW'">
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.password)}">
-                                <div class="input-group">
-                                        <label for="password">
-                                            Password
-                                        </label>
-                                        <span class="input-group-addon">
-                                            <i class="glyphicon glyphicon-lock"></i>
-                                        </span>
-                                    <input type="password" class="input-sm" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}" id="password" name="password" ng-model="userView.userObj.user.password" autocomplete="off" placeholder="Password" required>
-                                </div>
-                                <span class="help-block" ng-show="signup_form.$submitted && signup_form.password.$error.required">Password is Required</span>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) || (userView.userObj.user.password !== userView.userObj.user.password_confirmation)}">
-                                <div class="input-group">
-                                    <label for="password_confirm">
-                                        Confirmation
-                                    </label>
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-lock"></i>
-                                    </span>
-                                    <input type="password" id="password_confirm" class="input-sm" name="password_confirmation" ng-model="userView.userObj.user.password_confirmation" placeholder="Password Confirmation" required ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
-                                </div>
-                                <span class="form-control-feedback feedback-height-sm" ng-show="userView.userObj.user.password_confirmation.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.user.password === userView.userObj.user.password_confirmation  ? 'glyphicon glyphicon-ok glyphicon-green' : ''"></span>
-                                <span class="help-block" ng-show="signup_form.$submitted && userView.userObj.user.password !== userView.userObj.user.password_confirmation && signup_form.password_confirmation.$dirty">Passwords do not match</span>
-                            </div>
-                        </div>
-                        <span class="help-block" ng-show="signup_form.$submitted && !signup_form.password.$error.required && !signup_form.password.$valid">Valid Password is Required: 1 uppercase alphabet, 1 lowercase alphabet, 1 digit and 1 special character. Also the minimum allowed length is 8 characters.</span>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.organization_name)}">
-                                <div class="input-group">
-                                    <label for="organization_name">
-                                        Organization
-                                    </label>
-                                            <span class="input-group-addon">
-                                                <i class="glyphicon glyphicon-tower"></i>
-                                            </span>
-                                    <input type="text" id="organization_name" class="input-sm" name="organization_name" required
-                                           autocomplete="off" placeholder="Organization Name" ng-model="userView.org_search_name"
-                                           uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
-                                           typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
-                                </div>
-                                <span class="help-block" ng-show="signup_form.$submitted && (!userView.org_search_name.length || userView.org_search_name.length < 3)">Organization Name is Required</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6"></div>
-                    <div class="row" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(userView.chaptcha)}">
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                            <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(userView.chaptcha)}">
-                                <script src='https://www.google.com/recaptcha/api.js'></script>
-                                <re-captcha ng-model='userView.chaptcha' ></re-captcha>
-                            </div>
-                            <span class="help-block" ng-show="signup_form.$submitted && !userView.chaptcha">
-                                Confirm you are not a robot
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6" ng-class="userView.NihSignUp ? '' : 'hide'">
+                    <div class="form-group has-feedback required">
+                        <div class="input-group">
+                            <label for="username">
+                                Username
+                            </label>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-user"></i>
                             </span>
+                            <input class="input-sm" id="username" name="username" type="text"
+                                   required ng-model="userView.userObj.user.username"
+                                   pattern="^[A-Za-z0-9]{4,40}$"  placeholder="Username">
                         </div>
+                        <span class="help-block" ng-show="signup_form.$submitted && signup_form.username.$error.required">Username is Required</span>
+                        <span class="help-block" ng-show="signup_form.$submitted && !signup_form.username.$error.required && !signup_form.username.$valid">Valid Username is Required</span>
                     </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.email)}">
 
-                    <div id="buttonBar" class="form-group">
-                        <div class="btn-toolbar">
-                            <button type="submit"  class="btn btn-primary pull-right"
-                                    ngs-disabled="signup_form.$invalid || (!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.user.password !== userView.userObj.user.password_confirmation)">
-                                Register
-                            </button>
-                            <button type="reset" class="btn btn-warning pull-right" ng-click="userView.reset()">
-                                <i class="glyphicon glyphicon-remove"></i> Reset
-                            </button>
+                        <div class="input-group">
+                            <label for="email">
+                                Email
+                            </label>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-envelope"></i>
+                            </span>
+                            <input name="email" id="email" type="email" pattern="[a-zA-Z0-9_\.\+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+" class="input-sm" ng-model="userView.userObj.user.email" placeholder="Email" required>
+                        </div>
+                        <span class="help-block" ng-show="signup_form.$submitted && !signup_form.email.$error.required && !signup_form.email.$valid">Valid Email is Required</span>
+                        <span class="help-block" ng-show="signup_form.$submitted && signup_form.email.$error.required">Email is Required</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.first_name)}">
+                        <div class="input-group">
+                            <label for="first_name">
+                                First Name
+                            </label>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                            <input type="text" name="first_name" id="first_name" required ng-model="userView.userObj.user.first_name"  class="input-sm" placeholder="First Name" capitalize-first>
+                        </div>
+                        <span class="help-block" ng-show="signup_form.$submitted && signup_form.first_name.$error.required">First Name is Required</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.last_name)}">
+                        <div class="input-group">
+                            <label for="last_name">
+                                Last Name
+                            </label>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                            <input type="text" name="last_name" id="last_name" required ng-model="userView.userObj.user.last_name"  class="input-sm" placeholder="Last Name" capitalize-first>
+                        </div>
+                        <span class="help-block" ng-show="signup_form.$submitted && signup_form.last_name.$error.required">Last Name is Required</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.phone)}">
+                        <div class="input-group">
+                            <label for="phone">
+                                Phone
+                            </label>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-phone"></i>
+                            </span>
+                            <input type="text" name="phone" id="phone" required ng-model="userView.userObj.user.phone"  class="input-sm" placeholder="Phone" >
+                        </div>
+                        <span class="help-block" ng-show="signup_form.$submitted && signup_form.phone.$error.required">Phone is Required</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback" >
+                        <div class="input-group">
+                            <label for="phone_ext">
+                                Extension
+                            </label>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-phone"></i>
+                            </span>
+                            <input type="text" name="phone_ext" id="phone_ext" ng-model="userView.userObj.user.phone_ext"  class="input-sm" placeholder="Phone Extension" >
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+
+            <div class="row" ng-if="'yes'==='INACTIVATED FOR NOW'">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.password)}">
+                        <div class="input-group">
+                                <label for="password">
+                                    Password
+                                </label>
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-lock"></i>
+                                </span>
+                            <input type="password" class="input-sm" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}" id="password" name="password" ng-model="userView.userObj.user.password" autocomplete="off" placeholder="Password" required>
+                        </div>
+                        <span class="help-block" ng-show="signup_form.$submitted && signup_form.password.$error.required">Password is Required</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) || (userView.userObj.user.password !== userView.userObj.user.password_confirmation)}">
+                        <div class="input-group">
+                            <label for="password_confirm">
+                                Confirmation
+                            </label>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </span>
+                            <input type="password" id="password_confirm" class="input-sm" name="password_confirmation" ng-model="userView.userObj.user.password_confirmation" placeholder="Password Confirmation" required ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password)  ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'">
+                        </div>
+                        <span class="form-control-feedback feedback-height-sm" ng-show="userView.userObj.user.password_confirmation.length" ng-class="!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.user.password === userView.userObj.user.password_confirmation  ? 'glyphicon glyphicon-ok glyphicon-green' : ''"></span>
+                        <span class="help-block" ng-show="signup_form.$submitted && userView.userObj.user.password !== userView.userObj.user.password_confirmation && signup_form.password_confirmation.$dirty">Passwords do not match</span>
+                    </div>
+                </div>
+                <span class="help-block" ng-show="signup_form.$submitted && !signup_form.password.$error.required && !signup_form.password.$valid">Valid Password is Required: 1 uppercase alphabet, 1 lowercase alphabet, 1 digit and 1 special character. Also the minimum allowed length is 8 characters.</span>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.organization_name)}">
+                        <div class="input-group">
+                            <label for="organization_name">
+                                Organization
+                            </label>
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-tower"></i>
+                                    </span>
+                            <input type="text" id="organization_name" class="input-sm" name="organization_name" required
+                                   autocomplete="off" placeholder="Organization Name" ng-model="userView.org_search_name"
+                                   uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
+                                   typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
+                        </div>
+                        <span class="help-block" ng-show="signup_form.$submitted && (!userView.org_search_name.length || userView.org_search_name.length < 3)">Organization Name is Required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6"></div>
+            <div class="row" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(userView.chaptcha)}">
+                <div class="row-captcha">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(userView.chaptcha)}">
+                        <script src='https://www.google.com/recaptcha/api.js'></script>
+                        <re-captcha ng-model='userView.chaptcha' ></re-captcha>
+                    </div>
+                    <span class="help-block" ng-show="signup_form.$submitted && !userView.chaptcha">
+                        Confirm you are not a robot
+                    </span>
+                </div>
+            </div>
+
+            <div id="buttonBar" class="form-group">
+                <div class="btn-toolbar">
+                    <button type="submit"  class="btn btn-primary pull-right"
+                            ngs-disabled="signup_form.$invalid || (!ctrpbtn.signup_form.needsAttention(signup_form.password_confirmation) && userView.userObj.user.password !== userView.userObj.user.password_confirmation)">
+                        Register
+                    </button>
+                    <button type="reset" class="btn btn-warning pull-right" ng-click="userView.reset()">
+                        <i class="glyphicon glyphicon-remove"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
