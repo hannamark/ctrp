@@ -44,7 +44,7 @@ class TrialsControllerTest < ActionController::TestCase
     ['54321', '5*', '*1', '*3*'].each do |x|
       test_response = post :search, protocol_id: x, format: 'json'
       search_result = JSON.parse(test_response.body)
-      assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
+      assert_equal '54321', search_result['trials'][0][['lead_protocol_id']]
     end
   end
 
@@ -164,7 +164,7 @@ class TrialsControllerTest < ActionController::TestCase
                          purpose: purpose.code, pilot: 'No', pi: 'Doe,John', org_type: 'Lead Organization',
                          org: 'Test Org 3', study_source: study_source.code, format: 'json'
     search_result = JSON.parse(test_response.body)
-    assert_equal '54321', search_result['trials'][0]['lead_protocol_id']
+    assert_equal '54321', search_result['trials'][0][['lead_protocol_id']]
   end
 
 end
