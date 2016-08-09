@@ -60,7 +60,7 @@
                 if (msgObj.hasOwnProperty('warnings') && msgObj.warnings.length > 0) {
                     results.warnings = _.map(msgObj.warnings, function(warning) {
                         warning.category = 'warning';
-                        warning.description = warning.message || 'Trial Status ' + warning.status + ' is missing';
+                        warning.description = warning.message || 'Interim status [' + warning.status + '] is missing';
                         warning.item = 'paa_status';
                         if (!!warning.message && warning.message.indexOf('Same') > -1 && warning.sameDate) {
                             warning.description = warning.from + ' and ' + warning.to + ' have the same date';

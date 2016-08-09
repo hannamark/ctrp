@@ -60,7 +60,6 @@
             );
         };
 
-
         vm.gridOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
@@ -73,6 +72,10 @@
 
         vm.searchTrials = function () {
             vm.searching = true;
+            vm.searchParams.protocol_origin_type = _.map(vm.searchParams.protocol_origin_type_codes, function(id) {
+                return id.code;
+            });
+            console.info('protocol_origin_type: ', vm.searchParams.protocol_origin_type);
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
