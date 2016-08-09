@@ -90,6 +90,8 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |Inactive  |
       |Nullified  |
       |Pending  |
+      
+     And result list field no nullify 
 
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context with both "organization Name" and "Organization Address" 
