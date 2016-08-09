@@ -33,12 +33,13 @@ class OtherId < TrialBase
   scope :by_value_array, -> (value) {
     conditions = []
     q = ""
-
+    value.delete('NCI')
     value.each_with_index { |e, i|
+      # next if e == 'NCI'  # skip NCI, because it is not other_id
       if i == 0
-        q = "other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
+        q = "other_ids.protocol_id_origin_id = protocol_id_origins.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
       else
-        new_q = " OR other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
+        new_q = " OR other_ids.protocol_id_origin_id = protocol_id_origins.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
         q += new_q
       end
       p "e is #{e}, i is: #{i}"

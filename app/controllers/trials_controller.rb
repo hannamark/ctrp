@@ -512,9 +512,12 @@ class TrialsController < ApplicationController
       end
       if params[:protocol_origin_type].present?
 
-        @trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?('NCI')
+        nci_trials = []
+        nci_trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?('NCI')
+        trials_other_id = []
+        trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
 
-        @trials = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
+        @trials = nci_trials | trials_other_id # concatenate
 
       end
       if params[:admin_checkout].present?
