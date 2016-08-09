@@ -510,8 +510,15 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && search_process_status_ids.include?(trial.processing_status_wrappers.last.processing_status_id)}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
-      if params[:protocol_origin_type].present? && !params[:protocol_origin_type].include?('NCI')
-        @trials = @trials.select{|trial| trial.other_ids.by_value(params[:protocol_origin_type]).size>0}
+      if params[:protocol_origin_type].present?
+
+        nci_trials = []
+        nci_trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?('NCI')
+        trials_other_id = []
+        trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
+
+        @trials = nci_trials | trials_other_id # concatenate
+
       end
       if params[:admin_checkout].present?
         Rails.logger.info "Admin Checkout Only selected"
