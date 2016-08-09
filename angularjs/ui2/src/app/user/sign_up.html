@@ -3,7 +3,7 @@
 <div class="modal-content row sign_up_form" ng-show="!userView.defaultSignUp && !userView.NihSignUp">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ui-sref="main.sign_in">&times;</button>
-        <h3 class="modal-title text-center">Do you have an NIH Account?</h3>
+        <h4 class="modal-title text-center">Do you have an NIH Account?</h4>
     </div>
     <div class="dir-modal-body">
         <div class="row modal-footer">
@@ -22,10 +22,10 @@
         </div>
     </div>
 </div>
-<div class="modal-content row sign_up_form"  ng-show="userView.defaultSignUp || userView.NihSignUp">
+<div class="panel-default modal-content row sign_up_form"  ng-show="userView.defaultSignUp || userView.NihSignUp">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="userView.defaultSignUp = userView.NihSignUp = false;">&times;</button>
-        <h3 class="modal-title text-center col-xs-12 col-sm-12 col-md-12">Sign Up Form</h3>
+        <h4 class="modal-title text-center">Sign Up Form</h4>
     </div>
 
     <div class="modal-body">

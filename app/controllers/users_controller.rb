@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     newUser = false
     justRegistered = false
     if params[:user_status_id] != initalUserStatusId
-      @user[:status_date] = Time.zone.now
+      params[:user][:status_date] = Time.current
       if params[:user_status_id] == UserStatus.find_by_code('ACT').id
         newUser = true
         if initalUserStatusDate == nil
