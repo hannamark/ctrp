@@ -48,14 +48,7 @@ class TrialOwnershipsController < ApplicationController
     userIdsToAdd = params[:user_ids]
 
     if trialIdsToAdd && trialIdsToAdd.length > 0 && userIdsToAdd && userIdsToAdd.length > 0
-      trialIdsToAdd.each do |trialId|
-        userIdsToAdd.each do |userId|
-          if !TrialOwnership.exists?(trial_id: trialId, user_id: userId, ended_at: nil)
-            TrialOwnership.create(trial_id: trialId, user_id: userId)
-            send_emails 'TRIAL_OWNER_ADD', User.find(userId), Trial.find(trialId)
-          end
-        end
-      end
+      addOwners userIdsToAdd, trialIdsToAdd
     end
 
     @results_msgs = 'success'
@@ -66,7 +59,7 @@ class TrialOwnershipsController < ApplicationController
   # POST /trial_ownerships/end.json
   def end
     @results_msgs = 'fail'
-    begin
+
       #for single user
       unless params[:user_id].nil?
         toEnd = TrialOwnership.where(:ended_at => nil, :user_id => params[:user_id])
@@ -89,19 +82,11 @@ class TrialOwnershipsController < ApplicationController
         toEnd = toEnd.where(:trial_id => params[:trial_ids])
       end
 
-      toEnd.each do |ownership|
-        send_emails 'TRIAL_OWNER_REMOVE', User.find(ownership.user_id), Trial.find(ownership.trial_id)
-      end
-
-      toEnd.update_all(:ended_at => Time.now)
+      endSelected toEnd
 
       @results_msgs = 'success'
-    rescue
-      puts "Error ending trial ownership"
-    ensure
 
       @results_msgs
-    end
   end
 
   # POST /trial_ownerships
@@ -129,34 +114,17 @@ class TrialOwnershipsController < ApplicationController
     ownerUserId = params[:from_user_id]
     if idsToEnd && idsToEnd.length > 0
       #transfer selected
-      toEnd = TrialOwnership.where(id: idsToEnd)
-      toEnd.each do |ownership|
-        send_emails 'TRIAL_OWNER_REMOVE', User.find(ownership.user_id), Trial.find(ownership.trial_id)
-      end
-      toEnd.update_all(:ended_at => Time.now)
-
-      params[:transfers].each do |transfer|
-        if !TrialOwnership.exists?(trial_id: transfer["trial_id"], user_id: transfer["user_id"], ended_at: nil)
-          TrialOwnership.create(trial_id: transfer["trial_id"], user_id: transfer["user_id"])
-          send_emails 'TRIAL_OWNER_ADD', User.find(transfer["user_id"]), Trial.find(transfer["trial_id"])
-        end
-      end
+      ownershipsToEnd = TrialOwnership.where(id: idsToEnd)
+      trial_ids = ownershipsToEnd.pluck(:trial_id)
+      endSelected ownershipsToEnd
+      addOwners params[:to_user_ids], trial_ids
     elsif ownerUserId
       #transfer all
-      toEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
-      toEnd.each do |ownership|
-        send_emails 'TRIAL_OWNER_REMOVE', User.find(ownership.user_id), Trial.find(ownership.trial_id)
-      end
-      trialIds = toEnd.pluck(:trial_id)
-      toEnd.update_all(:ended_at => Time.now)
-      params[:transfers].each do |transfer|
-        trialIds.each do |trial|
-          if !TrialOwnership.exists?(trial_id: trial, user_id: transfer["user_id"], ended_at: nil)
-            TrialOwnership.create(trial_id: trial, user_id: transfer["user_id"])
-            send_emails 'TRIAL_OWNER_ADD', User.find(transfer["user_id"]), Trial.find(trial)
-          end
-        end
-      end
+      ownershipsToEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
+      trial_ids = ownershipsToEnd.pluck(:trial_id)
+      endSelected ownershipsToEnd
+      addOwners params[:to_user_ids], trial_ids
+
     end
 
     @results_msgs = 'success'
@@ -189,31 +157,23 @@ class TrialOwnershipsController < ApplicationController
   end
 
   private
-    def send_emails template, user, trial
-      unless user.nil? || trial.nil?
+    def send_emails template, user, trials
+      unless user.nil? || trials.nil? || trials.length == 0
         email_trials_str = '<hr>'
-        email_trials_str += '<p><b>Title:</b> ' + trial.official_title + '</p>'
-        email_trials_str += '<ul>'
-        email_trials_str += '<li><b style="width: 350px;">NCI Trial ID:</b> ' + trial.nci_id + '</li>'
-        email_trials_str += '<li><b style="width: 350px;">Lead Organization Trial ID:</b> ' + trial.lead_protocol_id.to_s + '</li>'
-        email_trials_str += '<li><b style="width: 350px;">CTRP-assigned Lead Organization ID:</b> ' + trial.lead_org_id.to_s + '</li>'
-        email_trials_str += '</ul>'
-        email_trials_str += '<hr>'
-
-        begin
+        email_trials_str += '<table><tr><th style="width:200px; text-align:left;">NCI Trial ID:</th><th>Lead Organization Trial ID:</th></tr>'
+        trials.each do |trialId|
+          trial = Trial.find(trialId)
+          email_trials_str += '<tr><td>' + trial.nci_id + '</td><td>' + trial.lead_org_id.to_s + '</td></tr>'
+        end
+        email_trials_str += '</table><hr>'
 
         mail_template = MailTemplate.find_by_code(template)
         mail_template.body_html.sub!('${username}', user.first_name + ' ' + user.last_name)
         mail_template.body_html.sub!('${trialcontent}', email_trials_str)
         mail_template.body_html.sub!('${date}', (Time.now).strftime('%v') )
-        mail_template.subject.sub!('${nciTrialIdentifier}', trial.nci_id)
-        mail_template.subject.sub!('${leadOrgTrialIdentifier}', trial.lead_protocol_id.to_s)
+        mail_template.to = user.email
 
-        #CtrpMailer.general_email(mail_template.from, user.email, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
-
-        rescue  Exception => e
-          logger.warn "#{template}: Email delivery error = #{e}"
-        end
+        CtrpMailerWrapper.send_email(mail_template, nil)
       end
     end
 
@@ -225,5 +185,34 @@ class TrialOwnershipsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def trial_ownership_params
       params.permit(:trial_id, :user_id)
+    end
+
+    def addOwners userIdsToAdd, trialIdsToAdd
+      userIdsToAdd.each do |userId|
+        trialsAdded = []
+        trialIdsToAdd.each do |trialId|
+          if !TrialOwnership.exists?(trial_id: trialId, user_id: userId, ended_at: nil)
+            TrialOwnership.create(trial_id: trialId, user_id: userId)
+            trialsAdded.push(trialId)
+          end
+        end
+        send_emails 'TRIAL_OWNER_ADD', User.find(userId), trialsAdded
+      end
+    end
+
+    def endSelected toEnd
+      userowns = {}
+      toEnd.each do |ownership|
+        if userowns[ownership.user_id] == nil
+          userowns[ownership.user_id] = []
+        end
+        userowns[ownership.user_id].push(ownership.trial_id)
+      end
+
+      userowns.keys.each do |user_id|
+        send_emails 'TRIAL_OWNER_REMOVE', User.find(user_id), userowns[user_id]
+      end
+
+      toEnd.update_all(:ended_at => Time.now)
     end
 end

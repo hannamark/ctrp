@@ -23,33 +23,32 @@ As a NCI staff member, I can generate Data Table 4 Reports for each NCI-designat
      And the CTRP Data Table 4 Report will display one row of each trial where the selected Cancer Center is accruing subjects during the selected reporting periods, including report start date and report end date
      And CTRP Data Table 4 Report will contain the columns 
      
-      |Fiscal Year|
-      |Grant Number|
-      |Reporting Start Date|
-      |Reporting End Date|
-      |Clinical Research Cat|
-      |Study Source|
-      |Funding Source|
+      |FY|
+      |GrantNumber|
+      |ReportingStartDate|
+      |ReportingEndDate|
+      |ClinicalResearchCat|
+      |StudySource|
+      |FundingSource|
       |PrimarySite|
-      |NCT Number|
-      |Protocol ID|
-      |Other Protocol IDs|
-      |Multi Institutional|
-      |Last Name|
-      |First Name|
-      |Middle Name|
-      |Program Code|
-      |Open Date|
-      |Close Date|
+      |NCTNumber|
+      |ProtocolID|
+      |MultiInst?|
+      |LastName|
+      |FirstName|
+      |MiddleName|
+      |ProgCode|
+      |OpenDate|
+      |CloseDate|
       |Phase|
-      |Primary Purpose|
-      |Official Title|
-      |Entire Study|
-      |Your Center Total|
-      |Center 12 Months|
-      |Center To Date|
-      |Other 12 Months|
-      |Other To Date|
+      |PrimaryPurpose|
+      |OfficialTitle|
+      |EntireStudy|
+      |YourCenterTotal|
+      |Center12Mos|
+      |CenterToDate|
+      |Other12Mos|
+      |OtherToDate|
       |Comments| 
       
       And I will be able to export the report to Excel or PDF 

@@ -13,9 +13,18 @@
     function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
-        vm.userDetails = userDetailObj;
-        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.userDetailsOrig = angular.copy(userDetailObj);
+        if (vm.userDetailsOrig.username) {
+            if (vm.userDetailsOrig.username.indexOf('nihusernothaveanaccount') > - 1) {
+                vm.userDetailsOrig.username = '';
+            }
+            vm.userDetails = angular.copy(vm.userDetailsOrig);
+        } else {
+            vm.pageFauilure = true;
+            return;
+        }
+
+        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
         vm.states = [];
@@ -31,7 +40,6 @@
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
-            console.log(vm.userDetails)
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
@@ -69,6 +77,19 @@
                 vm.confirmMsg = "You are about to switch this user's role from a role that you have no permissions to re-assign once you leave this form.";
                 return true;
             }
+        };
+
+        vm.validateUserName = function() {
+
+            UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
+                if ( data.total >  0 && vm.userDetails.username !== vm.userDetailsOrig.username){
+                    vm.newUserNameInvalid = true;
+                } else {
+                    vm.newUserNameInvalid = false;
+                }
+            }).catch(function (err) {
+                console.log('Search Users failed: ' + err);
+            });
         };
 
         vm.validateSave = function() {
@@ -119,6 +140,9 @@
                     !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length
                         && vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER'
                             && vm.userRole !== 'ROLE_ACCOUNT-APPROVER') {
+                    if (vm.userDetails.role === 'ROLE_SITE-SU') {
+                        vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
+                    }
                     vm.userDetails.user_status_id = review_id;
                 }
             }
@@ -141,13 +165,6 @@
             vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
         };
-
-        AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
-            vm.domainArr = response.data[0].settings.split('||');
-        }).catch(function (err) {
-            vm.domainArr = [];
-            console.log("Error in retrieving USER_DOMAINS " + err);
-        });
 
         AppSettingsService.getSettings({ setting: 'USER_ROLES'}).then(function (response) {
             vm.rolesArr = JSON.parse(response.data[0].settings);

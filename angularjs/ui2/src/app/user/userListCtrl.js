@@ -99,7 +99,7 @@
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
-            '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+            '{{row.entity.username.indexOf(\'nihusernothaveanaccount\') > - 1 ? \'\': row.entity.username}}</a></div>'
         };
 
         var firstName = {
@@ -170,26 +170,7 @@
                 action: function ($event){
                     this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
                 }
-            }],
-            /*
-            exporterPdfDefaultStyle: {fontSize: 9},
-            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
-            exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
-            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Users:', style: 'headerStyle' },
-            exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
-            },
-            exporterPdfCustomFormatter: function ( docDefinition ) {
-                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
-                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
-                return docDefinition;
-            },
-            exporterMenuAllData: true,
-            exporterMenuPdfAll: true,
-            exporterPdfOrientation: 'landscape',
-            exporterPdfMaxGridWidth: 700,
-            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
-            */
+            }]
         };
 
          UserService.getUserStatuses().then(function (response) {
@@ -208,7 +189,7 @@
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
-        if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
+        if (!vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
             if (vm.curUser.org_families.length) {
                 vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
             } else {

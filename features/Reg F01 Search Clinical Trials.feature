@@ -23,7 +23,7 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Sites|
 |Phase|
 |Primary Purpose|
-|Research Category|
+|Clinical Research Category|
 |Trial Start Date|
 |Responsible Party|
 |Sponsor|

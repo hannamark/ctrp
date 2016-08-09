@@ -110,7 +110,7 @@
         this.convertLocaleDateToISODateStr = function(localeDate) {
             var dateStr = '';
             if (!!localeDate) {
-                var splits = localeDate.split('-');
+                var splits = localeDate.toString().split('-');
                 var year = splits[2];
                 var month = reverseMonthsDict[splits[1]];
                 var day = splits[0];

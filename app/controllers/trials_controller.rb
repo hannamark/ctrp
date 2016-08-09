@@ -323,7 +323,8 @@ class TrialsController < ApplicationController
     elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.all
       @trials = @trials.filter_rejected
-      @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
+      @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present? && !params[:protocol_origin_type].include?('NCI')
+      @trials = @trials.with_nci_id(params[:protocol_id]) if params[:protocol_id].present? && params[:protocol_origin_type].include?('NCI')
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
       @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
@@ -509,7 +510,7 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && search_process_status_ids.include?(trial.processing_status_wrappers.last.processing_status_id)}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
-      if params[:protocol_origin_type].present?
+      if params[:protocol_origin_type].present? && !params[:protocol_origin_type].include?('NCI')
         @trials = @trials.select{|trial| trial.other_ids.by_value(params[:protocol_origin_type]).size>0}
       end
       if params[:admin_checkout].present?
