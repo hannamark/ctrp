@@ -30,6 +30,24 @@ class OtherId < TrialBase
     joins(:protocol_id_origin).where("other_ids.protocol_id_origin_id = protocol_id_origins.id and protocol_id_origins.code = ?","#{value.to_s}")
   }
 
+  scope :by_value_array, -> (value) {
+    conditions = []
+    q = ""
+
+    value.each_with_index { |e, i|
+      if i == 0
+        q = "other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?"#, "#{e.to_s}"
+      else
+        q += " OR other_ids.protocol_id_origin_id = protocol_id_origin.id and protocol_id_origins.code = ?" #, "#{e.to_s}"
+      end
+      p "e is #{e}, i is: #{i}"
+     conditions.push(e)
+    }
+    conditions.insert(0, q)
+
+    joins(:protocol_id_origin).where(conditions)
+  }
+
   scope :latest, -> {
     order("updated_at DESC").first
   }
