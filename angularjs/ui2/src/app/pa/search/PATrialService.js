@@ -232,7 +232,7 @@
          * @return initTrialSearchParams
          */
         function getInitialTrialSearchParams() {
-            return initTrialSearchParams;
+            return angular.copy(initTrialSearchParams);
         } //getInitialTrialSearchParams
 
         function getGridOptions() {
