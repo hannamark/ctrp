@@ -362,7 +362,6 @@ header img {
 	margin-top: 100px;
 }
 .top-offset-lg {
-	margin-top: 185px;
 }
 .bottom-offset-xs {
 	margin-bottom: 25px;
@@ -489,6 +488,7 @@ header img {
         top: 5%;
         right: 50%;
         max-width: 1320px;
+        /*max-height: 1080px;*/
     }
 
     .modal-body {
@@ -501,6 +501,7 @@ header img {
 form label {
     font-size: 12px;
 }
+
 
 .dropdown-submenu {
     position: relative;
@@ -568,7 +569,7 @@ body {
 }
 
 .nav {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .nav.nav-stacked > li {
