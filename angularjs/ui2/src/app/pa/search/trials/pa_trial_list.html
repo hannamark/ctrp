@@ -7,6 +7,11 @@
         </div>
         <div class="row">
             <form class="form form-horizontal" role="form">
+                <div class="row" ng-show="trialView.isEmptySearch && trialView.searchWarningMessage.length > 0" ng-cloak>
+                    <div class="alert alert-warning fade in">
+                        <strong>{{trialView.searchWarningMessage}}</strong>
+                    </div>
+                </div><br />
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <div class="form-group">
@@ -102,13 +107,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-xs-12 col-sm-5">
-                                <div>
-                                    <label for="checkout">
-                                        <input type="checkbox" id="checkout" ng-model="trialView.searchParams.checkout"> Trials I have checked out
-                                    </label>
-                                </div>
-                            </div>
+                            <div class="col-xs-12 col-sm-5"> </div>
                             <div class="col-xs-12 col-sm-5">
                                 <div>
                                     <label for="checkout">
