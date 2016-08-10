@@ -77,7 +77,7 @@
                                uib-datepicker-popup="{{personSearch2View.dateFormat}}" show-weeks="false"
                                ng-model="personSearch2View.searchParams.startDate" is-open="personSearch2View.startDateOpened"
                                datepicker-options="personSearch2View.dateOptions"
-                               ng-required="false" close-text="Close" placeholder="Start Date"  ng-click="openCalendar($event, 'start')" />
+                               ng-required="false" close-text="Close" placeholder="Start Date"  ng-click="openCalendar($event, 'start')" date-formatter>
                         <span class="input-group-btn">
                             <button tabindex="21" type="button" class="btn btn-primary btn-calendar" ng-click="openCalendar($event, 'start')">
                                 <i class="glyphicon glyphicon-calendar"></i>
@@ -94,7 +94,7 @@
                                uib-datepicker-popup="{{personSearch2View.dateFormat}}" show-weeks="false"
                                ng-model="personSearch2View.searchParams.endDate" is-open="personSearch2View.endDateOpened" ng-click="openCalendar($event, 'end')"
                                datepicker-options="personSearch2View.dateOptions" date-later-than="{{personSearch2View.searchParams.startDate| date: 'short'}}"
-                               ng-required="false" close-text="Close" placeholder="End Date" ng-click="openCalendar($event, 'end')" />
+                               ng-required="false" close-text="Close" placeholder="End Date" date-formatter>
                         <span class="input-group-btn">
                             <button tabindex="23" type="button" class="btn btn-primary btn-calendar" ng-click="openCalendar($event, 'end')">
                                 <i class="glyphicon glyphicon-calendar"></i>

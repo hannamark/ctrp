@@ -45,7 +45,7 @@
             '<input id="date-{{row.entity.id}}" min-date="row.entity.submission_received_date" class="form-control" readonly="true"  show-button-bar="true" ' +
             'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="true" ' +
             'ng-disabled="grid.appScope.isCurationEnabled?false:true" ng-click="opened = true;" uib-datepicker-popup="dd-MMM-yyyy" is-open="opened" ' +
-            'datepicker-options="grid.appScope.dateOptions" type="text" />' +
+            'datepicker-options="grid.appScope.dateOptions" type="text" date-formatter>' +
 
             '<span class="input-group-btn">' +
             '<label for="date-{{row.entity.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-calendar"></i></label>' +
