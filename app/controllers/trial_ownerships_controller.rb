@@ -24,7 +24,6 @@ class TrialOwnershipsController < ApplicationController
     unless params[:rows].nil?
       @trial_ownerships = @trial_ownerships.page(params[:start]).per(params[:rows])
     end
-    @trial_ownerships
   end
 
   # GET /trial_documents/1
