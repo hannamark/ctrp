@@ -182,10 +182,11 @@
             }
             if (vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
                 vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
+                    return _.contains(['ACT', 'INR'], item.code);
                 });
             }
          });
+        
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
@@ -280,9 +281,22 @@
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
+        
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchOrganizationFamily);
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams,  vm.searchParams.organization_name, vm.searchOrganizationFamily);
+        };
+
+        vm.setTypeAheadOrg = function (searchObj) {
+            var splitVal = searchObj.split('<span class="hide">');
+            vm.searchParams.organization_name = splitVal[0];
+            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+            vm.searchParams.organization_id = vm.userChosenOrg.id;
+        };
+
+        vm.removeOrgChoice = function () {
+            vm.userChosenOrg = null;
+            vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
         };
 
         /****************************** implementations **************************/

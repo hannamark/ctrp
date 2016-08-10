@@ -52,9 +52,31 @@
                             <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
                             <div class="col-sm-7"  ng-if="!userView.searchOrganization">
                                 <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
-                                       autocomplete="off" placeholder="Organization Name" ng-model="userView.searchParams.organization_name"
+                                       autocomplete="off" placeholder="Organization Name"
+                                       ng-model="userView.searchParams.organization_name"
+                                       typeahead-on-select="userView.setTypeAheadOrg($item)"
+                                       ng-if="!userView.userChosenOrg"
                                        uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                                        typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
+                                <div id="typeAheadResults" ng-if="userView.userChosenOrg">
+                                        <b>{{userView.userChosenOrg.name}}</b>
+                                        <span class="btn-danger crn-rounded" ng-click="userView.removeOrgChoice()"
+                                              title="Change organization">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </span>
+                                        <br>
+                                        <span ng-if="userView.userChosenOrg.address">{{userView.userChosenOrg.address}}<br></span>
+                                        <span ng-if="userView.userChosenOrg.address2">{{userView.userChosenOrg.address2}}<br></span>
+                                        <span ng-if="userView.userChosenOrg.city">{{userView.userChosenOrg.city}},</span>
+                                        <span ng-if="userView.userChosenOrg.state">{{userView.userChosenOrg.state}},</span>
+                                        <span ng-if="userView.userChosenOrg.postal_code">{{userView.userChosenOrg.postal_code}}<br></span>
+                                        <span ng-if="userView.userChosenOrg.country">{{userView.userChosenOrg.country}}<br></span>
+                                        <i>
+                                        <span ng-if="userView.userChosenOrg.phone"><b>Contact:</b> <u>{{userView.userChosenOrg.phone}}</u><br></span>
+                                        <span ng-if="userView.userChosenOrg.email"><b>Email:</b> <u>{{userView.userChosenOrg.email}}</u><br></span>
+                                        <span ng-if="userView.userChosenOrg.fax"><b>Fax:</b> <u>{{userView.userChosenOrg.fax}}</u></span>
+                                        </i>
+                                </div>
                             </div>
                             <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganization">
                                 {{userView.searchOrganization}}

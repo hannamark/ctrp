@@ -212,6 +212,7 @@ end
       @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present? unless @users.blank?
       @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
       @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
+      @users = @users.matches_wc('organization_id', params[:organization_id])  if params[:organization_id].present? unless @users.blank?
 
       if sortBy != 'admin_role' && sortBy != 'organization_family'
         @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
