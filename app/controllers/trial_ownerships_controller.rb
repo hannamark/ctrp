@@ -213,6 +213,6 @@ class TrialOwnershipsController < ApplicationController
         send_emails 'TRIAL_OWNER_REMOVE', User.find(user_id), userowns[user_id]
       end
 
-      toEnd.update_all(:ended_at => Time.now)
+      toEnd.update_all(:ended_at => Time.current)
     end
 end
