@@ -117,11 +117,11 @@ Then a list of all participating sites added on an Imported trial will be displa
 And I can select any one of the participating sites
 And I can update any of these data elements:
 |Local Trial Identifier|
-|Site Principal Investigator|
-|Site Target Accrual Number |
+|Investigators|
+|Primary Contact |
 |Site Specific Program Code|
-|Site Recruitment Status|
 |Site Recruitment Status Date|
+|Site Recruitment Status |
 And I can edit Site Recruitment Status History
 And I can Save any changes
 
@@ -132,10 +132,10 @@ Then a list of participating sites I have added on an Imported trial will be dis
 And I can select one of the participating sites
 And I can update any of these data elements:
 |Local Trial Identifier|
-|Site Principal Investigator|
-|Site Target Accrual Number |
+|Investigators|
+|Primary Contact |
 |Site Specific Program Code|
-|Site Recruitment Status|
 |Site Recruitment Status Date|
+|Site Recruitment Status |
 And I can edit Site Recruitment Status History
 And I can Save any changes
