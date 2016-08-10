@@ -362,7 +362,6 @@ header img {
 	margin-top: 100px;
 }
 .top-offset-lg {
-	margin-top: 185px;
 }
 .bottom-offset-xs {
 	margin-bottom: 25px;
@@ -503,7 +502,6 @@ form label {
     font-size: 12px;
 }
 
-/*#adv-org-search-modal .modal-dialog  {width:75%;}*/
 
 .dropdown-submenu {
     position: relative;
@@ -512,11 +510,6 @@ form label {
 .dropdown-submenu>.dropdown-menu {
     top: 0;
     left: 100%;
-    /*margin-top: -6px;
-    margin-left: -1px;
-    -webkit-border-radius: 0 6px 6px 6px;
-    -moz-border-radius: 0 6px 6px;
-    border-radius: 0 6px 6px 6px;*/
 }
 
 .dropdown-menu li a:hover, a.hand-hover:hover {
@@ -571,6 +564,10 @@ body {
     color: #444;
 }
 
+.header-logo {
+    height: 215px;
+}
+
 .nav {
     font-size: 14px;
 }
@@ -582,6 +579,10 @@ body {
 
 .nav.nav-stacked > li > a {
     padding: 5px 15px;
+}
+
+.nav > li > a {
+    padding: 15px 10px;
 }
 
 .sidebar {
@@ -1068,14 +1069,6 @@ fieldset.sub-bordered {
     margin: 0 0 1.5em 0 !important;
     -webkit-box-shadow:  0px 0px 0px 0px #000;
             box-shadow:  0px 0px 0px 0px #000;
-    /* try out
-    border-radius: 5px 5px 5px 5px;
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-right-width: 0 !important;
-    border-left-width: 3px !important;
-    border-bottom-width: 0 !important;
-    */
 }
 legend.sub-bordered {
     font-size: 1em !important;
@@ -1084,11 +1077,6 @@ legend.sub-bordered {
     width:auto;
     padding:0 10px;
     border-bottom:none;
-
-/* try out
-    font-style: italic;
-    color: #aaa;
-    */
 }
 
 .editable-click,
@@ -1651,4 +1639,68 @@ body.pam_trials .date-radio-label {
 body.sign_up .sign_up_form {
     max-width:650px;
     margin: 0 auto;
+}
+
+body.sign_in .sign_in_form {
+    max-width: 350px;
+    margin: auto;
+}
+
+body.sign_up .modal-content .modal-body {
+    padding-top: 35px;
+}
+
+body.sign_up .row-captcha {
+    float: right;
+    margin-right: 10px;
+    padding-top: 25px;
+}
+
+body.sign_up .btn-toolbar {
+    margin-right: 12px;
+}
+
+body.sign_in .input-sm, body.sign_up .input-sm{
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+body.sign_in label {
+    width: 125px;
+}
+
+body.sign_in .btn-toolbar .pull-left {
+    width: 180px;
+}
+
+body.sign_in .btn-toolbar span.pad-height {
+    line-height: 1.3em;
+}
+
+body.sign_up .input-group-addon {
+    width: 5px;
+}
+
+body.sign_up #organization_name {
+    width: 98%;
+    min-width: 165px;
+}
+
+body.sign_up .account_type {
+    margin: 50px auto;
+}
+
+body.users #typeAheadResults {
+    padding-top: 5px;
+}
+
+.crn-rounded {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 3px 0px 2px 3px;
 }

@@ -19,10 +19,14 @@
                         <div class="form-group">
                             <label for="protocol_origin_type" class="control-label col-xs-12 col-sm-5">Identifier Type: </label>
                             <div class="col-xs-12 col-sm-7">
-                                <select class="form-control input-sm" id="protocol_origin_type" ng-model="trialView.searchParams.protocol_origin_type">
+                                <!-- <select class="form-control input-sm" id="protocol_origin_type" ng-model="trialView.searchParams.protocol_origin_type">
                                     <option value="">-Select an Identifier Type-</option>
                                     <option ng-repeat="protocol_origin_type in trialView.protocolIdOriginArr" value="{{protocol_origin_type.code}}">{{protocol_origin_type.name}}</option>
-                                </select>
+                                </select> -->
+                                <ui-select multiple id="protocol_origin_type" ng-model="trialView.searchParams.protocol_origin_type_codes">
+                                    <ui-select-match placeholder="-Select Identifier Types-">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="id in trialView.protocolIdOriginArr">{{id.name}}</ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 
