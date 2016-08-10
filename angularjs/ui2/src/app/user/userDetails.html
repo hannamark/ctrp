@@ -15,7 +15,7 @@
         </div>
         <div class="row top-offset-xs"></div>
         <div class="row">
-            <form class="form-horizontal" role="form" name="userDetail_form" novalidate ctrp-submit="userDetailView.validateSave()" ctrp-submit-delete>
+            <form class="form-horizontal" role="form" name="userDetail_form" novalidate ctrp-submit="userDetailView.validateSave()" ctrp-submit-delete unsaved-changes>
                 <fieldset restriction-field>
                     <div class="col-xs-12 form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.username) || userDetailView.newUserNameInvalid}">
                         <label class="control-label col-xs-12 col-sm-3">User Name:</label>
@@ -26,7 +26,7 @@
                                    ng-blur="userDetailView.validateUserName()"
 
                                    ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_ACCOUNT-APPROVER'">
-                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.username.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.username) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.username.length"></span>
                             <span class="help-block" ng-show="userDetail_form.username.$error.required">Username is Required</span>
                             <div class="alert-warning" ng-if="userDetailView.newUserNameInvalid" >
                                 This username already exists on CTRP.</div>
@@ -44,7 +44,7 @@
                                 required>
                                 <option value="">Select a status</option>
                             </select>
-                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.id" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.userstatus) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.id"></span>
                             <span class="help-block" ng-show="userDetail_form.userstatus.$error.required">Status is Required</span>
                             <div class="alert-warning" ng-if="userDetailView.inactivatingUser = (userDetailView.statusArr | findObjByAttribute:'id':userDetailView.userDetails.user_status_id)[0].code === 'INA' && (userDetailView.statusArr | findObjByAttribute:'id':userDetailView.userDetailsOrig.user_status_id)[0].code !== 'INA'" >
                                 The User will no longer be able to Access CTRP.</div>
@@ -61,7 +61,7 @@
                                     required>
                                 <option value="">Select a role</option>
                             </select>
-                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.role.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.role) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.role.length"></span>
                             <span class="help-block" ng-show="userDetail_form.role.$invalid">Role is Required</span>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         <label class="control-label col-xs-12 col-sm-3">First Name:</label>
                         <div class="col-xs-12 col-sm-7">
                             <input type="text" class="form-control input-sm" name="first_name" required ng-model="userDetailView.userDetails.first_name" placeholder="First Name">
-                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.first_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.first_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.first_name.length"></span>
                             <span class="help-block" ng-show="userDetail_form.first_name.$error.required">First Name is Required</span>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         <label class="control-label col-xs-12 col-sm-3">Last Name:</label>
                         <div class="col-xs-12 col-sm-7">
                             <input type="text" class="form-control input-sm" name="last_name" required ng-model="userDetailView.userDetails.last_name" placeholder="Last Name">
-                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.last_name.length" ng-class="!ctrpbtn.userDetail_form.needsAttention(userDetail_form.last_name) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                            <span class="form-control-feedback" ng-show="userDetailView.userDetails.last_name.length"></span>
                             <span class="help-block" ng-show="userDetail_form.last_name.$error.required">Last Name is Required</span>
                         </div>
                     </div>
