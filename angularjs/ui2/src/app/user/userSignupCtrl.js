@@ -72,14 +72,20 @@
             var splitVal = searchObj.split('<span class="hide">');
             vm.org_search_name = splitVal[0];
             vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
-            vm.searchParams.organization_id = vm.userChosenOrg.id;
+            vm.userObj.user.organization_id = vm.userChosenOrg.id;
         };
 
         vm.removeOrgChoice = function () {
             vm.userChosenOrg = null;
             vm.org_search_name = vm.userObj.user.organization_id = undefined;
         };
-        
+
+        vm.exitSignUpForm = function () {
+            vm.removeOrgChoice();
+            vm.reset();
+            vm.defaultSignUp = vm.NihSignUp = false;
+        };
+
         vm.updateUser = function () {
             UserService.upsertUserSignup(vm.userObj);
         };
