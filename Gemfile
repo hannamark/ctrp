@@ -108,3 +108,5 @@ gem 'clbustos-rtf', '~> 0.5.0'
 ##logging
 gem "lograge"
 
+##gem for reddis
+gem 'redis'
