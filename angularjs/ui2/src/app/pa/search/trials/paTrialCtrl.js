@@ -96,8 +96,9 @@
             }
 
             vm.searching = true;
-            vm.searchParams.protocol_origin_type = _.map(vm.searchParams.protocol_origin_type_codes, function(id) {
-                return id.code;
+            console.info('vm.searchParams.protocol_origin_type_codes: ', vm.searchParams.protocol_origin_type_codes);
+            vm.searchParams.protocol_origin_type = _.map(vm.searchParams.protocol_origin_type_codes, function(type) {
+                return type.id;
             });
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;

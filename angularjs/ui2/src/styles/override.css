@@ -1641,12 +1641,20 @@ body.sign_up .sign_up_form {
     margin: 0 auto;
 }
 
-body.sign_in .sign_in_form {
-    max-width: 350px;
+body.sign_in .sign_in_form, .welcome_signup_panel {
+    max-width: 395px;
     margin: auto;
 }
 
-body.sign_up .modal-content .modal-body {
+body.sign_in .sign_in_form .modal-body, .welcome_signup_panel .modal-body {
+    padding: 5% 10%;
+}
+
+body.sign_up .dir-modal-body {
+    padding: 5%;
+}
+
+body.sign_up > .modal-content > .modal-body {
     padding-top: 35px;
 }
 
