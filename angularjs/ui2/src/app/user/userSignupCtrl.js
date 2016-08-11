@@ -84,7 +84,6 @@
         };
 
         vm.exitSignUpForm = function () {
-            vm.removeOrgChoice();
             vm.reset();
             vm.defaultSignUp = vm.NihSignUp = false;
         };
@@ -95,6 +94,7 @@
 
         vm.reset = function () {
             vm.userObj = new UserObj();
+            vm.removeOrgChoice();
         };
 
         vm.validateUserName = function() {
