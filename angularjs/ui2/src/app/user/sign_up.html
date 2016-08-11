@@ -1,6 +1,5 @@
 
-
-<div class="panel-default modal-content row sign_up_form account_type" ng-show="!userView.defaultSignUp && !userView.NihSignUp">
+<div class="panel-default modal-content row sign_up_form account_type" ng-show="!userView.defaultSignUp && !userView.NihSignUp && !userView.signUpComplete">
     <div class="panel-heading">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ui-sref="main.sign_in">&times;</button>
         <div class="panel-title">Do you have an NIH Account?</div>
@@ -20,6 +19,7 @@
         </div>
     </div>
 </div>
+
 <div class="panel-default modal-content row sign_up_form"  ng-show="userView.defaultSignUp || userView.NihSignUp">
     <div class="panel-heading">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="userView.exitSignUpForm()">&times;</button>
@@ -40,9 +40,12 @@
                                 <i class="glyphicon glyphicon-user"></i>
                             </span>
                             <input class="input-sm" id="username" name="username" type="text"
+                                   ng-blur-offuse="userView.validateUserName()"
                                    required ng-model="userView.userObj.user.username"
                                    pattern="^[A-Za-z0-9]{2,40}$"  placeholder="Username">
                         </div>
+                        <div class="alert-warning" ng-if="userView.newUserNameInvalid" >
+                            This username already exists on CTRP.</div>
                         <span class="help-block" ng-show="signup_form.$submitted && signup_form.username.$error.required">Username is Required</span>
                         <span class="help-block" ng-show="signup_form.$submitted && !signup_form.username.$error.required && !signup_form.username.$valid">Valid Username is Required</span>
                     </div>
@@ -227,3 +230,18 @@
     </div>
 </div>
 
+
+<div class="panel-default modal-content row welcome_signup_panel" ng-if="userView.signUpComplete">
+    <div class="panel-heading">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ui-sref="main.sign_in">&times;</button>
+        <div class="panel-title">Sign Up</div>
+    </div>
+    <div class="modal-body">
+        <h4>Welcome To CTRP</h4>
+        <p>
+            Thank you for requesting an account for the CTRP system.
+            You will receive an email once the request is processed.
+            Processing the request could take up to 48 hours.
+        </p>
+    </div>
+</div>
