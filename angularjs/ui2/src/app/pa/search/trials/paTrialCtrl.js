@@ -36,7 +36,6 @@
         vm.internalSourceArr = internalSourceObj;
         vm.gridScope = vm;
         vm.searching = false;
-        vm.isEmptySearch = false;
 
         //ui-grid plugin options
         vm.gridOptions = PATrialService.getGridOptions();
@@ -71,32 +70,40 @@
             });
         }; //gridOptions
 
+        var FIELDS_REQUIRED = ['protocol_id', 'protocol_origin_type_codes', 'phases',
+                                'pilot', 'org_types', 'study_sources', 'processing_status',
+                                'submission_type', 'nih_nci_div', 'checkout', 'official_title',
+                                'purposes', 'pi', 'org', 'trial_status', 'milestone', 'research_category',
+                                'submission_method', 'nih_nci_prog', 'internal_sources']; // at least one field must be filled
         vm.searchTrials = function () {
-            var emptyParams = PATrialService.getInitialTrialSearchParams();
-            var keys = _.keys(vm.searchParams);
-            for (var i = 0; i < keys.length; i++) {
-                var key = keys[i];
-                if (key !== 'rows' && key !== 'start' && !angular.isDefined(vm.searchParams[key])) {
-                    vm.isEmptySearch = true;
+            vm.isEmptySearch = true;
+            for (var i = 0; i < FIELDS_REQUIRED.length; i++) {
+                var field = FIELDS_REQUIRED[i];
+                var value = vm.searchParams[field];
+                if (field in vm.searchParams && angular.isDefined(value)) {
+                    vm.isEmptySearch = angular.isArray(value) ? value.length === 0 : false;
+                }
+                if (vm.isEmptySearch === false) {
                     break;
                 }
             }
+
             if (vm.isEmptySearch) {
                 vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
+                vm.gridOptions.totalItems = null;
+                vm.gridOptions.data = [];
                 return;
             }
-
 
             vm.searching = true;
             vm.searchParams.protocol_origin_type = _.map(vm.searchParams.protocol_origin_type_codes, function(id) {
                 return id.code;
             });
-            console.info('protocol_origin_type: ', vm.searchParams.protocol_origin_type);
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;
             }).catch(function (err) {
-                console.log('search trial failed');
+                console.error('search trial failed');
             }).finally(function () {
                 console.log('finished search');
                 vm.searching = false;
