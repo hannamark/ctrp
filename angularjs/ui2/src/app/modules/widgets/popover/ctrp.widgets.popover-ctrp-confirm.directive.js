@@ -72,7 +72,7 @@
                     scope.ngClick();
                     $timeout(function() {
                         $rootScope.$broadcast('deleteConfirmationComplete');
-                    }, 1500);
+                    }, 1000);
                 } else {
                     popover.event = event;
                     if (!popover.$isShown) {
