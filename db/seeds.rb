@@ -1484,7 +1484,7 @@ MailTemplate.find_or_create_by(
 
 MailTemplate.find_or_create_by(
     code: 'USER_ACCOUNT_ACTIVATION',
-    name: 'User Registration',
+    name: 'User Activation',
     from: 'ncictro@mail.nih.gov',
     to:   '${user_email}',
     subject: 'Your NCI CTRP Account has been activated',
@@ -1493,6 +1493,22 @@ MailTemplate.find_or_create_by(
                 <p>Date: ${date}</p>
                 <p>Dear ${user_name},</p>
                 <p>Your NCI CTRP Account has been activated as a ${user_role} at ${user_org}.   You should be able to log in with your LDAP User ID: ${user_username}.</p>
+                <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov or visit our website at http://www.cancer.gov/ncictrp.</p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_REGISTRATION_ACTIVATION',
+    name: 'User Registration',
+    from: 'ncictro@mail.nih.gov',
+    to:   '${user_email}',
+    subject: 'Your NCI CTRP Account has been activated',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <p>Date: ${date}</p>
+                <p>Dear ${user_name},</p>
+                <p>Your NCI CTRP Account has been activated as a ${user_role}.   You should be able to log in with your LDAP User ID: ${user_username}.</p>
                 <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov or visit our website at http://www.cancer.gov/ncictrp.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
                 </body></html>'
@@ -2195,7 +2211,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
    user.password = "Welcome01"
    user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
    user.user_status = UserStatus.find_by_code('ACT')
-   user.status_date = Time.now.localtime.strftime '%Y-%m-%d %H:%M:%S'
+   user.status_date = Time.zone.now
    does_user_exists = User.find_by_username(user.username)
    user.save! if !does_user_exists
   end
@@ -2289,7 +2305,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
       ldap_user.last_name = u["last_name"]
       ldap_user.organization = org0
       ldap_user.user_status = UserStatus.find_by_code('ACT')
-      ldap_user.status_date = Time.now.localtime.strftime '%Y-%m-%d %H:%M:%S'
+      ldap_user.status_date = Time.zone.now
       ldap_user.save(validate: false)
       #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
     end

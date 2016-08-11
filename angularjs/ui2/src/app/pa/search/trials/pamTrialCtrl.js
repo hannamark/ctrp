@@ -31,6 +31,10 @@
                 start: 1
             }
         };
+        var idTemplateWrite = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                '<a ui-sref="main.pa.trialOverview.trialIdentification({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>';
+        var idTemplateRead = '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                '<a ui-sref="main.viewTrial({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>';
 
         var completionDatePickerTemplate = '<div class="ui-grid-datepicker"><i class="glyphicon glyphicon-edit"></i>' +
             '<input class="completion-date-click" ng-disabled="!grid.appScope.isCurationEnabled" class="completion-date-change" ng-focus="grid.appScope.closeToolTips()" readonly="true" ' +
@@ -41,7 +45,7 @@
             '<input id="date-{{row.entity.id}}" min-date="row.entity.submission_received_date" class="form-control" readonly="true"  show-button-bar="true" ' +
             'datepicker-append-to-body="false" ng-model="row.entity.expected_abstraction_completion_date" close-text="Close" show-weeks="true" ' +
             'ng-disabled="grid.appScope.isCurationEnabled?false:true" ng-click="opened = true;" uib-datepicker-popup="dd-MMM-yyyy" is-open="opened" ' +
-            'datepicker-options="grid.appScope.dateOptions" type="text" />' +
+            'datepicker-options="grid.appScope.dateOptions" type="text" date-formatter>' +
 
             '<span class="input-group-btn">' +
             '<label for="date-{{row.entity.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-calendar"></i></label>' +
@@ -81,8 +85,6 @@
                     name: 'nci_id',
                     enableSorting: true,
                     displayName: 'NCI Trial Identifier',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-                    '<a ui-sref="main.pa.trialOverview.trialIdentification({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
                     width: '180'
                 },
                 {
@@ -265,14 +267,16 @@
             vm.gridTrialsSubmittedOptions.useExternalPagination = true;
             vm.gridTrialsSubmittedOptions.useExternalSorting = true;
             UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
+                vm.read_access  = data.userReadAccess;
+                vm.write_access = data.userWriteAccess;
+
+                vm.gridTrialsSubmittedOptions.columnDefs[0].cellTemplate = vm.write_access ? idTemplateWrite :idTemplateRead;
+                vm.gridTrialsSubmittedOptions.totalItems = data.total;
                 vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
                 _.forEach(vm.gridTrialsSubmittedOptions.data, function (val) {
                     val.expected_abstraction_completion_date = moment(val.expected_abstraction_completion_date).format('DD-MMM-YYYY');
                 });
 
-                vm.read_access  = data.userReadAccess;
-                vm.write_access = data.userWriteAccess;
-                vm.gridTrialsSubmittedOptions.totalItems = data.total;
 
                 $rootScope.$broadcast('isWriteModeSupported', vm.write_access);
 

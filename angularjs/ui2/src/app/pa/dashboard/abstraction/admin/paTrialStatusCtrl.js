@@ -354,6 +354,7 @@
                         timeOut: 0
                     });
                     _getTrialDetailCopy();
+                    $scope.trial_status_form.$setPristine();
                 }
             }).finally(function() {
                 vm.disableBtn = false;

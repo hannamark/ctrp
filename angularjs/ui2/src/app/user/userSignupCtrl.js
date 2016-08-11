@@ -17,17 +17,16 @@
 
         var UserObj = function() {
             return {
-                'local_user': {
+                'user': {
                     domain: '',
                     username: '',
                     first_name: '',
                     last_name: '',
                     email: '',
-                    password: '',
-                    password_confirmation: '',
-                    organization_name: '',
                     organization_id: '',
-                    selected_function: ''
+                    phone: '',
+                    phone_ext: '',
+                    user_type: 'LdapUser'
                 },
                 'type': vm.type
             };
@@ -57,18 +56,30 @@
 
         vm.selectedUserFunctions = function(){
             var selectedArr = [];
-            _.each( vm.selectedFunctionsObj[vm.userObj.local_user.domain], function( selected, func ) {
+            _.each( vm.selectedFunctionsObj[vm.userObj.user.domain], function( selected, func ) {
                 if ( selected ) {
                     selectedArr.push(func);
                 }
             });
-            vm.userObj.local_user.selected_function = '';
+            vm.userObj.user.selected_function = '';
         };
 
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.userObj.local_user, vm.searchParams.org_search_name);
+            return OrgService.typeAheadOrgNameSearch(vm.userObj.user, vm.org_search_name);
+        };
+        
+        vm.setTypeAheadOrg = function (searchObj) {
+            var splitVal = searchObj.split('<span class="hide">');
+            vm.org_search_name = splitVal[0];
+            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+            vm.searchParams.organization_id = vm.userChosenOrg.id;
         };
 
+        vm.removeOrgChoice = function () {
+            vm.userChosenOrg = null;
+            vm.org_search_name = vm.userObj.user.organization_id = undefined;
+        };
+        
         vm.updateUser = function () {
             UserService.upsertUserSignup(vm.userObj);
         };

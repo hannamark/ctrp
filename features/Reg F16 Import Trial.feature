@@ -92,7 +92,7 @@ Then the trial information will be displayed including
 |Trial Details (Title)|
 |Official Title|
 |Phase|
-|Research Category|
+|Clinical Research Category|
 |Primary Purpose|
 |Trial Status (Title)|
 |Current Trial Status|

@@ -24,7 +24,6 @@ class TrialOwnershipsController < ApplicationController
     unless params[:rows].nil?
       @trial_ownerships = @trial_ownerships.page(params[:start]).per(params[:rows])
     end
-    @trial_ownerships
   end
 
   # GET /trial_documents/1
@@ -213,6 +212,6 @@ class TrialOwnershipsController < ApplicationController
         send_emails 'TRIAL_OWNER_REMOVE', User.find(user_id), userowns[user_id]
       end
 
-      toEnd.update_all(:ended_at => Time.now)
+      toEnd.update_all(:ended_at => Time.current)
     end
 end

@@ -173,6 +173,8 @@ Rails.application.routes.draw do
     post '/trial_submission_expect_complete' => 'submissions#update'
 
     get '/countries' => 'util#get_countries'
+    get '/countries_for_registry' => 'util#get_countries_for_registry'
+    get '/get_authorities_for_a_country' => 'util#get_authorities_for_a_country'
     get '/states' => 'util#get_states'
     get '/backoffice' => 'backoffice#index'
     get '/backoffice/download_log'

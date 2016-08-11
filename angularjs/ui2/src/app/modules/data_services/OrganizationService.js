@@ -257,9 +257,20 @@
                 var orgNames = [];
 
                 orgNames = res.orgs.map(function (org) {
-                    resObj.organization_id = org.id;
-                    resObj.organization_name = org.name;
-                    return org.name;
+                    return org.name + 
+                        '<span class="hide">{' +
+                            '"id":' + org.id +
+                            ',"name": "' + org.name + '"' +
+                            ',"address": "' + org.address + '"' +
+                            ',"address2": "' + org.address2 + '"' +
+                            ',"city": "' + org.city + '"' +
+                            ',"state_provinces": "' + org.state_province + '"' +
+                            ',"postal_code": "' + org.postal_code + '"' +
+                            ',"country": "' + org.country + '"' +
+                            ',"email": "' + org.email + '"' +
+                            ',"phone": "' + org.phone + '"' +
+                            ',"fax": "' + org.fax + '"' +
+                        '}</span>';
                 });
 
                 return uniqueNames = orgNames.filter(function (name) {

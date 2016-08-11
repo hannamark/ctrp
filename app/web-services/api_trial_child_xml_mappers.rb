@@ -38,6 +38,9 @@ class NonInterventionalTrial
               default_reader.call(obj,xml)
               obj.research_category_id= ResearchCategory.find_by_name(obj.research_category_id).id if !obj.research_category_id.nil?
             }
+  #text_node :studyModelCode, "studyModelCode", :optional=>true
+  #text_node :timePerspectiveCode, "timePerspectiveCode", :optional=>true
+
 end
 
 

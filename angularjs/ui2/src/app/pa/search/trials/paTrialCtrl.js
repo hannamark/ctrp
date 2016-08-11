@@ -36,6 +36,7 @@
         vm.internalSourceArr = internalSourceObj;
         vm.gridScope = vm;
         vm.searching = false;
+        vm.isEmptySearch = false;
 
         //ui-grid plugin options
         vm.gridOptions = PATrialService.getGridOptions();
@@ -60,7 +61,6 @@
             );
         };
 
-
         vm.gridOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
@@ -72,7 +72,26 @@
         }; //gridOptions
 
         vm.searchTrials = function () {
+            var emptyParams = PATrialService.getInitialTrialSearchParams();
+            var keys = _.keys(vm.searchParams);
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                if (key !== 'rows' && key !== 'start' && !angular.isDefined(vm.searchParams[key])) {
+                    vm.isEmptySearch = true;
+                    break;
+                }
+            }
+            if (vm.isEmptySearch) {
+                vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
+                return;
+            }
+
+
             vm.searching = true;
+            vm.searchParams.protocol_origin_type = _.map(vm.searchParams.protocol_origin_type_codes, function(id) {
+                return id.code;
+            });
+            console.info('protocol_origin_type: ', vm.searchParams.protocol_origin_type);
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
                 vm.gridOptions.data = data.trials;
                 vm.gridOptions.totalItems = data.total;

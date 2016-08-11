@@ -26,6 +26,18 @@ class UtilController < ApplicationController
     @countries.insert(1, @countries.delete_at(canada_idx))
   end
 
+  def get_countries_for_registry
+     geo_location_service = GeoLocationService.new
+     @countries = geo_location_service.get_countries
+  end
+
+  def get_authorities_for_a_country
+      @authorities = []
+      trial_rest_service = TrialRestService.new
+      @authorities = trial_rest_service.getAuthorityOrgArr(params[:country])
+  end
+
+
   def get_states
     country = Country.find_country_by_name(params[:country])
     @states = country.states.sort_by { |k, v| v["name"] } if country.present?

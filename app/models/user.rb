@@ -116,6 +116,10 @@ class  User < ActiveRecord::Base
     end
   }
 
+  scope :matches_all_registered, -> () {
+    where("status_date is NOT NULL")
+  }
+
   scope :matches_all_active, -> () {
 
     familyOrganizations = FamilyMembership.where(
@@ -340,6 +344,10 @@ class  User < ActiveRecord::Base
   end
 
   def email_changed?
+    false
+  end
+
+  def password_required?
     false
   end
 end
