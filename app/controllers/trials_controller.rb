@@ -287,6 +287,8 @@ class TrialsController < ApplicationController
   end
 
   def search
+    $redis.set('kk','mm')
+
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     if params[:trial_ownership].blank?
