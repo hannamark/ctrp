@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     newUser = false
     justRegistered = false
     if params[:user_status_id] != initalUserStatusId
-      @user[:status_date] = Time.zone.now
+      params[:user][:status_date] = Time.current
       if params[:user_status_id] == UserStatus.find_by_code('ACT').id
         newUser = true
         if initalUserStatusDate == nil
@@ -212,6 +212,7 @@ end
       @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present? unless @users.blank?
       @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
       @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
+      @users = @users.matches_wc('organization_id', params[:organization_id])  if params[:organization_id].present? unless @users.blank?
 
       if sortBy != 'admin_role' && sortBy != 'organization_family'
         @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
@@ -325,8 +326,6 @@ end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    p params[:username]
-    p params[:username]
     unless params.nil? || params[:id].nil? || params[:username].nil?
       @user = User.find(params[:id]) || User.find(params[:username])
     else

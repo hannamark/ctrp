@@ -98,7 +98,8 @@
                 }
             }
             */
-            return new Date(dateStr);
+
+            return dateStr;
         }; //convertISODateToLocale
 
         /**

@@ -108,4 +108,3 @@ gem 'clbustos-rtf', '~> 0.5.0'
 ##logging
 gem "lograge"
 
-gem "normalize_country"

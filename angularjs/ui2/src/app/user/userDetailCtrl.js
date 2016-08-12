@@ -94,7 +94,7 @@
 
         vm.validateSave = function() {
             var newOrg = vm.selectedOrgsArray[0];
-            
+
             // if inactivating user or changing org of user, check to transfer trials if trials exist
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
@@ -207,16 +207,12 @@
             } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
                 vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
                     var allowedStatus = ['ACT', 'INR'];
-                    if (!vm.userDetails.status_date) {
-                        allowedStatus.push('REJ');
-                    }
                     return _.contains(allowedStatus, item.code);
                 });
             } else {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
                     var allowedStatus = ['ACT', 'INR'];
                     if (!vm.userDetails.status_date) {
-                        allowedStatus.push('REJ');
                     } else {
                         allowedStatus.push('INA', 'DEL');
                     }
@@ -321,7 +317,7 @@
 
         var writeNciId = {
             name: 'nci_id',
-                enableSorting: true,
+            enableSorting: true,
             displayName: 'NCI Trial Identifier',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                 '<a ui-sref="main.pa.trialOverview({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
@@ -337,7 +333,7 @@
         };
         var writeTitle = {
             name: 'official_title',
-                displayName: 'Official Title',
+            displayName: 'Official Title',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
         '<a ui-sref="main.pa.trialOverview({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
             enableSorting: true,
