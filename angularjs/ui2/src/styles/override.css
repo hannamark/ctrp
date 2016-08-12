@@ -1713,6 +1713,14 @@ body.sign_in .input-group-addon {
     width: 23px;
 }
 
+html>/**/body.sign_up .btn-danger .glyphicon , x:-moz-any-link {
+    padding: 0 6px 0 2px;
+}
+
+html>/**/body.sign_up #typeAheadResults , x:-moz-any-link {
+    float: right;
+}
+
 body.sign_in .form-horizontal .form-group,
 body.sign_up .welcome_signup_panel .modal-body .welcome-content {
     width: 305px;
