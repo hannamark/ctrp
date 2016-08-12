@@ -257,8 +257,8 @@
                 var orgNames = [];
 
                 orgNames = res.orgs.map(function (org) {
-                    return org.name + 
-                        '<span class="hide">{' +
+                    return org.name + ', ' + org.city + ', ' + org.country +
+                    '<span class="hide">{' +
                             '"id":' + org.id +
                             ',"name": "' + org.name + '"' +
                             ',"address": "' + org.address + '"' +

@@ -102,7 +102,27 @@ class Organization < ActiveRecord::Base
     return isNullifiable
   end
 
-  # Get an array of maps of the orgs with the same ctrp_id
+
+  def org_created_date
+   if self.created_at.present?
+#     return self.created_at.to_s(:app_time)
+      return self.created_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+#    else
+#      return Time.zone.now
+    end
+  end
+
+  def org_updated_date
+    if self.updated_at.present?
+      return self.updated_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+#      return self.updated_at.to_s(:app_time)
+    else
+      return Time.zone.now
+    end
+  end
+
+
+ # Get an array of maps of the orgs with the same ctrp_id
   def cluster
     tmp_arr = []
     if self.ctrp_id.present? && (self.source_status.nil? || self.source_status.code != 'NULLIFIED')
@@ -357,3 +377,5 @@ class Organization < ActiveRecord::Base
     where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 end
+
+

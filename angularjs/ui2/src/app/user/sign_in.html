@@ -9,27 +9,28 @@
     <div class="modal-body">
         <form class="form-horizontal" role="form" name="signin_form" autocomplete="off" novalidate>
             <div class="form-group">
-                <div class="input-group">
-                    <label for="username">
-                        Username:
-                    </label>
-                    <span class="input-group-addon">
+                <label for="username" class="pull-left">
+                    Username:
+                </label>
+                <div class="pull-left input-group" >
+                    <span class="input-group-addon pull-left">
                         <i class="glyphicon glyphicon-user"></i>
                     </span>
-                    <input name="username" id="username" class="input-sm" type="text" ng-model="userView.userObj.user.username" placeholder="Username" auto-focus required>
+                    <input name="username" id="username" class="pull-left input-sm" type="text" ng-model="userView.userObj.user.username" placeholder="Username" auto-focus required>
                 </div>
             </div>
             <div class="form-group">
-                <div class="input-group">
-                    <label for="password">
-                        Password:
-                    </label>
-                    <span class="input-group-addon">
+                <label for="password" class="pull-left">
+                    Password:
+                </label>
+                <div class="pull-left input-group">
+                    <span class="input-group-addon pull-left">
                         <i class="glyphicon glyphicon-lock"></i>
                     </span>
-                    <input type="password" name="password" id="password" class="input-sm" ng-model="userView.userObj.user.password" autocomplete="off" placeholder="Password" required>
+                    <input type="password" name="password" id="password" class="pull-left input-sm" ng-model="userView.userObj.user.password" autocomplete="off" placeholder="Password" required>
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="btn-toolbar">
                     <div class="pull-left">

@@ -22,9 +22,7 @@
                         <div class="col-xs-12 col-sm-7">
                             <input type="text" class="form-control input-sm" name="username"
                                    required ng-model="userDetailView.userDetails.username" placeholder="Username"
-
                                    ng-blur="userDetailView.validateUserName()"
-
                                    ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_ACCOUNT-APPROVER'">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.username.length"></span>
                             <span class="help-block" ng-show="userDetail_form.username.$error.required">Username is Required</span>

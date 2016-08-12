@@ -94,7 +94,7 @@
 
         vm.validateSave = function() {
             var newOrg = vm.selectedOrgsArray[0];
-            
+
             // if inactivating user or changing org of user, check to transfer trials if trials exist
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
