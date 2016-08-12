@@ -18,7 +18,7 @@ As someone without a CTRP User Account, I can request a user account
   And I must enter an Email Address "Email"
   And I must enter a phone Number "Phone Number"
   And I can enter a phone Number Extension "Phone Extension"
-  And I must select my Organization Name "Organization Name" from the organization look up
+  And I must select my Organization Name "Organization Name" from organizations using type ahead
   And I fill in the CAPTCHA correctly
   And I press "Register"
   Then the system will save the User request to the database 
@@ -40,7 +40,7 @@ As someone without a CTRP User Account, I can request a user account
   And I  must enter my Last Name "Last Name"
   And I must enter an Email Address "Email"
   And I must enter a phone Number "Phone Number"
-  And I must select my Organization Name "Organization Name" from the organization look up
+  And I must select my Organization Name "Organization Name" from the organizations using type ahead
   And I fill in the CAPTCHA correctly
   And I press "Register"
   Then the system will save the User request to the database 
