@@ -569,7 +569,7 @@ body {
     background: #fff;
     width: 100%;
     padding-bottom: 30px;
-    min-height: 600px;
+    min-height: 400px;
 }
 
 .header-logo {
@@ -1728,11 +1728,6 @@ body.sign_in .form-horizontal .form-group .input-group {
     width: 200px;
 }
 
-body.sign_in #mainContent > div, body.sign_up #mainContent > div {
-    margin-top: 7%;
-    padding-bottom: 18%;
-}
-
 body.sign_in .btn-toolbar .pull-left {
     width: 180px;
 }
@@ -1748,10 +1743,6 @@ body.sign_up .input-group-addon {
 body.sign_up #organization_name {
     width: 98%;
     min-width: 165px;
-}
-
-body.sign_up .account_type {
-    margin: 50px auto;
 }
 
 body.users #typeAheadResults {
