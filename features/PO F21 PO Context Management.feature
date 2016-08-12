@@ -2,14 +2,6 @@
 
 Feature: PO F21 PO CTRP-CTEP-NLM Context Management Functionality
 
-And a list of all organization associations will be displayed with source status type-------------------------Display?
-    
-      |Active  |
-      |Inactive  |
-      |Nullified  |
-      |Pending  |
-
-
 Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     Given CTEP creates a new organization and sends it via RESTful Services to CTRP
     When CTRP receives newly created CTEP Organization record through Restful Services
@@ -63,7 +55,8 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And I select Source context as CTEP
     And I select "Create" from "Service Request"
     Then I can view Organizations in the CTEP Context with "Processing Status" of "Pending" and a "Service Request" of "Create" 
-    And the CTEP context fields type will be displayed
+    When I click on the selected CTEP Organization 
+    Then the CTEP context fields type will be displayed in a CTEP context screen
     
     |CTEP Context|
     |CTEP Organization ID|
@@ -84,14 +77,12 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
-    And a list of all organization Context associations will be displayed with source status type
+    And a list of all organization Context associations will be displayed with source status type 
     
       |Active  |
       |Inactive  |
       |Nullified  |
-      |Pending  |
-      
-     And result list field no nullify 
+      |Pending  | 
 
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context with both "organization Name" and "Organization Address" 
@@ -119,11 +110,10 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And the CTEP Service Request will be change from Create to Null 
     And the CTRP Context "Processing Staus" will be "Complete"
     And the CTRP "Organization Status" will be "Active"
-    And The CTRP Organization ID (PO ID) and CTEP Organization ID is sent to CTEP 
-    Then Organizations created in CTRP will sent to CTEP 
+    And The CTEP Org PK ID is sent to CTEP 
+    
    
-      
-      Scenario:#2a CTRP Context Mandatory Fields
+    Scenario:#2a CTRP Context Mandatory Fields
     Given I am logged into the CTRP 
      When A CTRP Context is created
      Then the fields type are mandatory 
@@ -145,7 +135,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And I select Source context as CTEP
     And I select "Create" from "Service Request"
     Then I can view Organizations in the CTEP Context with "Processing Status" of "Pending" and a "Service Request" of "Create" 
-    And the CTEP context fields type will be displayed
+    And the CTEP context fields type will be displayed in the CTEP Context screen
     
     |CTEP Context|
     |CTEP Organization ID|
@@ -168,8 +158,14 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "organization Name" and "Organization Address" 
-    And the CTEP Organization does match any existing CTRP Context Organization name and Organization Address
-    the matches will be listed
+    When the CTEP Organization does match any existing CTRP Context Organization name and Organization Address
+    Then a pop up list of matching CTRP organization with Organization Status "Active" will be displayed with information type
+    
+    |CTRP ID|
+    |CTEP ID|
+    |Organization Name|
+    |Organization Address|
+    
     warning -cancel or proceed to create new
    	Then the curator associates the existing CTRP Organization with the Organization in the CTEP Context
     And the CTEP Processing Status will be changed from "Pending" to "Complete"

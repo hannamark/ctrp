@@ -460,6 +460,8 @@ class TrialsController < ApplicationController
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
+      nci_protocol_origin_id = ProtocolIdOrigin.find_by_code('NCI').id
+
       # PA fields
       if params[:research_category].present?
         Rails.logger.debug " Before params[:research_category] = #{params[:research_category].inspect}"
@@ -506,12 +508,13 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && search_process_status_ids.include?(trial.processing_status_wrappers.last.processing_status_id)}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
-      if params[:protocol_origin_type].present?
+      if params[:protocol_origin_type].present?  # params[:protocol_origin_type] is an array of numerical id
 
         nci_trials = []
-        nci_trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?('NCI')
-        trials_other_id = []
-        trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
+        nci_trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?(nci_protocol_origin_id)
+        trials_other_id = @trials.select { |trial| trial.other_ids.pluck(:protocol_id_origin_id).map { |id| params[:protocol_origin_type].include?(id)}.include?(true)}
+
+        # trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
 
         @trials = nci_trials | trials_other_id # concatenate
 

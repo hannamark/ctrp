@@ -16,13 +16,14 @@ class TrialOwnershipsController < ApplicationController
     params[:start] = 1 if params[:start].blank?
     params[:sort] = 'nci_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
-
-    @trial_ownerships = TrialOwnership.all
-    @trial_ownerships = @trial_ownerships.matches('user_id', params[:user_id]) if params[:user_id].present?
-    @trial_ownerships = @trial_ownerships.matches('internal_source_id', InternalSource.find_by_code('PRO').id)
-    @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}")
-    unless params[:rows].nil?
-      @trial_ownerships = @trial_ownerships.page(params[:start]).per(params[:rows])
+    @trial_ownerships = []
+    if params[:user_id].present?
+      @trial_ownerships = TrialOwnership.matches('user_id', params[:user_id]) if params[:user_id].present?
+      @trial_ownerships = @trial_ownerships.matches('internal_source_id', InternalSource.find_by_code('PRO').id)
+      @trial_ownerships = @trial_ownerships.order("#{params[:sort]} #{params[:order]}")
+      unless params[:rows].nil?
+        @trial_ownerships = @trial_ownerships.page(params[:start]).per(params[:rows])
+      end
     end
   end
 

@@ -1,6 +1,11 @@
 class ApplicationController < ActionController::Base
   respond_to :html, :xml, :json
   around_filter :global_request_logging
+  before_filter :set_time_zone
+
+  def set_time_zone
+    Time.zone = 'Eastern Time (US & Canada)'
+  end
 
 
   #before_filter :wrapper_authenticate_user unless Rails.env.test?

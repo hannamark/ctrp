@@ -28,11 +28,11 @@
 
                     /* Hook for ctrp-confirm directive (and potentially other similar directives) as needed */
                     if (hasSecondaryTask) {
-                        $rootScope.$on('deleteConfirmationComplete', function(e) {
+                        scope.$on('deleteConfirmationComplete', function(e) {
                             if (!e.defaultPrevented) {
                                 e.preventDefault();
                                 if (!formController.$invalid) { // Confirm that form is valid before submitting form via the event broadcast
-                                    scope.formAction(scope);
+                                    scope.formAction(scope, {$event: e});
                                 }
                             }
                         });
@@ -65,7 +65,6 @@
                     var formController = null;
 
                     this.setFormController = function(controller) {
-                        console.log('setting form controller!');
                         formController = controller;
                     };
 
