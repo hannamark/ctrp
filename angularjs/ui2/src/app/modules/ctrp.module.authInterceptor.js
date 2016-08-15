@@ -67,6 +67,7 @@
                     });
                 }
                 */
+               console.info('rejection: ', rejection);
                 if ('errors' in rejection) {
                     Object.keys(rejection.errors).forEach(function(field, index) {
                         if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
@@ -74,8 +75,19 @@
                         }
                     });
                 }
+                var validationErrors = 'Errors: '
+                if (!!rejection.data && angular.isArray(rejection.data)) {
+                    rejection.data.forEach(function(errMsg) {
+                        validationErrors += '\n ' + errMsg;
+                    });
+                }
+                console.info('Validation Errors: ', validationErrors);
 
-                $injector.get('toastr').error(errorMsg, {
+                errorMsg += validationErrors; // concatenate
+                var toastrService = $injector.get('toastr');
+                toastrService.error(validationErrors);
+
+                toastrService.error(errorMsg, {
                     extendedTimeOut: 1000,
                     timeOut: 0
                 });
