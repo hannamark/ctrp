@@ -5,7 +5,8 @@ Feature: PO F21 PO CTRP-CTEP-NLM Context Management Functionality
 Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     Given CTEP creates a new organization and sends it via RESTful Services to CTRP
     When CTRP receives newly created CTEP Organization record through Restful Services
-    Then A new Organization in the CTEP Context with CTEP "Processing Status" of "Pending" gets created in CTRP with information type 
+    Then A CTEP record will be created in CTRP 
+    And the newly created Organization in the CTEP Context with CTEP will display the field types below 
     
     |CTEP Context|
     |CTEP Organization ID|
@@ -26,8 +27,12 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
-    And CTEP Org PK ID will be sent to CTEP
-    And the CTEP "Service Request" will be "Create"
+    And a PK ID will be assigned to the CTEP context
+    And the assigned CTEP Org PK ID will be sent to CTEP
+    And the Service Request will be set to "Create"
+    And the Processing Status Will be set to "Pending"
+   
+    
     
 
 Scenario: #1a CTEP Context Mandatory Fields
