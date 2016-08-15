@@ -88,7 +88,25 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |Inactive  |
       |Nullified  |
       |Pending  | 
-
+    And the displayed organization list will the column type
+    
+      | CTRP ID|
+      |CTEP ID|
+      |Name|
+      |Source Status|
+      |Source Context|
+      |Source ID|
+      |Families|
+      |Phone|
+      |Email|
+      |Last Updated By|
+      |Last Updated Date|
+      |City|
+      |State|
+      |Country|
+      |Postal Code|
+      
+     
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context with both "organization Name" and "Organization Address" 
     And the CTEP Organization does not match an existing CTRP Context Organization name and Organization Address
