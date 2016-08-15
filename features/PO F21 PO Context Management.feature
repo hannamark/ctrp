@@ -90,7 +90,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |Pending  | 
     And the displayed organization list will the column type
     
-      | CTRP ID|
+      |CTRP ID|
       |CTEP ID|
       |Name|
       |Source Status|
