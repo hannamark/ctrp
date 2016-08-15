@@ -179,7 +179,7 @@
                 {
                     name: 'business_days_since_submitted',
                     displayName: 'Business Days Since Submitted',
-                    enableSorting: false,
+                    enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 }

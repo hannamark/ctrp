@@ -42,7 +42,9 @@ if @searchAccess
                     :late_rejection_date,
                     :expected_abstraction_completion_date,
                     :expected_abstraction_completion_date_comments,
-                    :business_days_since_submitted
+                    :business_days_since_submitted,
+                    :owner_user_id,
+                    :current_submission_date
 
     end
   end
