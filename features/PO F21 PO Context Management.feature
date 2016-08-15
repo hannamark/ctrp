@@ -222,7 +222,8 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Proceed   |Create a New CTRP organization            |
     |Select    |To associate an Organization from the search results with the selected CTEO org |
     
-   	When the curator associates the selected CTRP Organization with the Organization in the CTEP Context
+   	When The CTRP Organization displays after clicking on select
+    And the curator clicks on Associate Organization Context to associate the selected CTRP Organization with the Organization in the CTEP Context
     Then the CTEP Processing Status will be changed from "Pending" to "Complete"
     And the CTEP Service Request will be change from Create to Null
     And every CTRP Organization can be associated with only one Organization in the CTEP Context
@@ -301,8 +302,13 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
    Then a CTEP Context for the received organization is created and automatically linked to the CTRP Context
    And CTEP Org PK ID  will be sent to CTEP
 
-     
-       Scenario:#7 I can search a NLM Organization associated with an Organization in the CTRP Context 
+       Scenario: #6' NLM context created in CTRP
+    Given I am logged into the CTEP
+     When A trial is imported with a Sponsor Name that does not exist in the NLM Context
+     Then CTRP creates an NLM Context with a Pending Processing Status and Create Service Request
+
+
+    Scenario:#7 I can search a NLM Organization associated with an Organization in the CTRP Context 
     Given I am logged into the CTRP 
     And I am on the Search Organizations Screen
     When I select Source status as pending
