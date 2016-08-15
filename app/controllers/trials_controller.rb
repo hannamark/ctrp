@@ -76,7 +76,7 @@ class TrialsController < ApplicationController
         trial_service.send_email(@trial.edit_type)
       else
         format.html { render :edit }
-        format.json { render json: @trial.errors, status: :unprocessable_entity }
+        format.json { render json: @trial.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end

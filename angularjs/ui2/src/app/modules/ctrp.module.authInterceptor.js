@@ -58,7 +58,7 @@
                 var errorMsg = '<u>Error Code</u>: ' + rejection.status;
                 errorMsg += '\nError Message: ' + ErrorHandlingService.getErrorMsg(rejection.status);
                 errorMsg += '\nCause(s): ';
-
+                /*
                 if ('data' in rejection) {
                     Object.keys(rejection.data).forEach(function(field, index) {
                         if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
@@ -66,6 +66,7 @@
                         }
                     });
                 }
+                */
                 if ('errors' in rejection) {
                     Object.keys(rejection.errors).forEach(function(field, index) {
                         if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
