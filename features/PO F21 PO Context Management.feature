@@ -179,6 +179,31 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
+    And a list of all organization Context associations will be displayed with source status type 
+    
+      |Active  |
+      |Inactive  |
+      |Nullified  |
+      |Pending  | 
+    And the displayed organization list will the column type
+    
+      |CTRP ID|
+      |CTEP ID|
+      |Name|
+      |Source Status|
+      |Source Context|
+      |Source ID|
+      |Families|
+      |Phone|
+      |Email|
+      |Last Updated By|
+      |Last Updated Date|
+      |City|
+      |State|
+      |Country|
+      |Postal Code|
+      
+    
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "organization Name" and "Organization Address" 
     When the CTEP Organization does match any existing CTRP Context Organization name and Organization Address
@@ -187,11 +212,18 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |CTRP ID|
     |CTEP ID|
     |Organization Name|
-    |Organization Address|
+    |Organization Address:City, State, County, Post Code|
     
-    warning -cancel or proceed to create new
-   	Then the curator associates the existing CTRP Organization with the Organization in the CTEP Context
-    And the CTEP Processing Status will be changed from "Pending" to "Complete"
+    And the curator will review the displayed options
+    And the curator can click on the existing option types <OptionType> to complete the funtion type <FunctionType|
+    
+    |OptionType|FunctionType|
+    |Cancel    |To complete a New Search|
+    |Proceed   |Create a New CTRP organization            |
+    |Select    |To associate an Organization from the search results with the selected CTEO org |
+    
+   	When the curator associates the selected CTRP Organization with the Organization in the CTEP Context
+    Then the CTEP Processing Status will be changed from "Pending" to "Complete"
     And the CTEP Service Request will be change from Create to Null
     And every CTRP Organization can be associated with only one Organization in the CTEP Context
    And The CTRP Organization ID (PO ID) and CTEP Organization ID will be sent to CTEP 
