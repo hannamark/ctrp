@@ -202,7 +202,7 @@
         } else if (!vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
         } else if (vm.registeredUsersPage) {
-            vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg);
+            vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg, optionOrgFamilies);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -284,12 +284,12 @@
         
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams,  vm.searchParams.organization_name, vm.searchOrganizationFamily);
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams,  vm.organization_name, vm.searchOrganizationFamily);
         };
 
         vm.setTypeAheadOrg = function (searchObj) {
             var splitVal = searchObj.split('<span class="hide">');
-            vm.searchParams.organization_name = splitVal[0];
+            vm.organization_name = splitVal[0];
             vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
             vm.searchParams.organization_id = vm.userChosenOrg.id;
         };

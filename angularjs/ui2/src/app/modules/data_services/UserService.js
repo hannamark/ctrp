@@ -357,7 +357,7 @@
                             var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
                             if (trialIdArr && trialIdArr.length){
                                 searchParams.to_user_ids = user_ids;
-                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value();
+                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_ownership_id').value();
                             } else {
                                 searchParams.to_user_ids = user_ids;
                             }

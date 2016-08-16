@@ -365,6 +365,8 @@
                     name: 'current_milestone_name',
                     displayName: 'Current Milestone, Milestone Date',
                     enableSorting: true,
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD.replace(" Date", ", " + row.entity.current_submission_date)}}</div>',
                     width: '*',
                     minWidth: '300'
                 },
@@ -520,16 +522,19 @@
         vm.getUserSubmittedTrials();
 
         vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
+
+        vm.searchOwnedParams = new TrialSearchParams;
+        vm.searchOwnedParams.type = 'own';
         vm.getUserTrials = function () {
             //user_id is undefined if no user was found to begin with
-            if (vm.searchParams.user_id) {
+            if (vm.searchOwnedParams.user_id) {
                 vm.gridTrialsOwnedOptions.useExternalPagination = true;
                 vm.gridTrialsOwnedOptions.useExternalSorting = true;
-                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                UserService.getUserTrialsSubmitted(vm.searchOwnedParams).then(function (data) {
+                    vm.gridTrialsOwnedOptions.data = data['trial_submissions'];
                     vm.gridTrialsOwnedOptions.totalItems = data.total;
                 }).catch(function (err) {
-                    console.log('Get User Trials failed');
+                    console.log('Get User Owned Trials failed');
                 });
             }
         };

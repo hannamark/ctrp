@@ -115,6 +115,7 @@ class Submission < TrialBase
                         select DISTINCT ON (trial_id)
                             submission_id,
                             current_milestone_name,
+                            to_char(submission_current_date, 'DD-Mon-yyyy') as current_submission_date,
                             to_char(submission_received_date, 'DD-Mon-yyyy') as submission_received_date,
                             to_char(validation_processing_start_date, 'DD-Mon-yyyy') as validation_processing_start_date,
                             to_char(validation_processing_completed_date, 'DD-Mon-yyyy') as validation_processing_completed_date,
@@ -257,7 +258,7 @@ class Submission < TrialBase
                         on late_rejection_milestone.id23 = temp.submission_id
 
                         left join
-                        (select DISTINCT ON (submission_id) submission_id as id24, name as current_milestone_name, id as mileston_wrapper_id from temp
+                        (select DISTINCT ON (submission_id) submission_id as id24, name as current_milestone_name, created_at as submission_current_date, id as mileston_wrapper_id from temp
                          order by submission_id, mileston_wrapper_id desc) as current_milestone
                         on current_milestone.id24 = temp.submission_id
 
@@ -269,10 +270,12 @@ class Submission < TrialBase
                    ON submissions.id = latest_milestones.submission_id "
 
     where_clause = "trials.internal_source_id in
-                      (#{protocol_source_id_imp}, #{protocol_source_id_pro})
+                      (#{protocol_source_id_pro}#{ params[:type] != 'own' ? ("," + protocol_source_id_imp.to_s) : ""})
                     AND submissions.trial_id is not null AND submissions.status = 'Active'
                     AND trials.is_rejected IS NOT true "
-    if params[:user_id]
+    if params[:user_id] && params[:type] == 'own'
+      where_clause += " AND trial_ownership.user_id = #{params[:user_id]} "
+    elsif params[:user_id]
       where_clause += " AND submissions.user_id = #{params[:user_id]} "
     end
 
@@ -302,8 +305,14 @@ class Submission < TrialBase
     if filter_clause.length > 0
       where_clause += " AND (" + filter_clause.join(" AND ") + ")"
     end
+
+    join_clause += "LEFT JOIN (select  id as trial_ownership_id, trial_id, user_id from trial_ownerships where ended_at is null) as trial_ownership ON trial_ownership.trial_id = trials.id "
+
     joins(join_clause).where(where_clause).select("
        submissions.*,
+
+       trial_ownership.user_id as owner_user_id,
+       trial_ownership.trial_ownership_id,
 
        trials.nci_id,
        trials.lead_protocol_id,
@@ -325,8 +334,7 @@ class Submission < TrialBase
        trial_lead_org.name as lead_org_name,
        (
           CASE
-            WHEN trials.internal_source_id =  #{protocol_source_id_imp}
-            THEN 'Imported'
+            #{ params[:type] != 'own' ? "WHEN trials.internal_source_id =  " + protocol_source_id_imp.to_s + "THEN 'Imported' " : "" }
             WHEN trials.internal_source_id =  #{protocol_source_id_pro}
               THEN CASE
                 WHEN submissions.submission_num = 1
