@@ -60,7 +60,8 @@ And the Description and Comment will be grouped by Section
   |PAA Participating Sites	                |  Duplicate Investigators at the same site	                                                                        |Duplicate investigators for same site are not allowed.	                                                                |	[Select Participating Sites] from Administrative Data menu.	|
   |PAA Documents	                        |  ‘Protocol_Document’ Document Type is null for each submission	                                                |Protocol_Document is required	                                                                                        |	[Select Trial Related Documents] from Administrative Data menu.	|
   |PAA Documents	                        |  ‘IRB Approved Document’ Document  Type is null for each submission                                               |IRB Approved document is required	                                                                                    |	[Select Trial Related Documents] from Administrative Data menu.	|
- 
+  
+    
 Scenario Outline: #3a Trial Status Abstraction Validation Errors
     Given I am on the Abstraction Validation Screen
     When Trial Status errors exist
@@ -140,6 +141,11 @@ Scenario Outline: #3a Trial Status Abstraction Validation Errors
 |	PAA Trial Status|	Administratively Complete	                  |	Complete	                                  |	ERROR: Invalid status Transition from [ADMINISTRATIVELY COMPLETE] to [COMPLETE]                                                                                                       |	[Select Trial Status] from Administrative Data menu to view Trial Status.	|
 |	PAA Trial Status|	Administratively Complete	                  |	Administratively Complete	                  |	ERROR: Duplicate [ADMINISTRATIVELY COMPLETE] status is not allowed	                                                                                                                  |	[Select Trial Status] from Administrative Data menu to view Trial Status.	|
  
+
+  Scenario:#3b 
+    Given 
+     When 
+     Then 
 
 
 
