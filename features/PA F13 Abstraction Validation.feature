@@ -60,7 +60,8 @@ And the Description and Comment will be grouped by Section
   |PAA Participating Sites	                |  Duplicate Investigators at the same site	                                                                        |Duplicate investigators for same site are not allowed.	                                                                |	[Select Participating Sites] from Administrative Data menu.	|
   |PAA Documents	                        |  ‘Protocol_Document’ Document Type is null for each submission	                                                |Protocol_Document is required	                                                                                        |	[Select Trial Related Documents] from Administrative Data menu.	|
   |PAA Documents	                        |  ‘IRB Approved Document’ Document  Type is null for each submission                                               |IRB Approved document is required	                                                                                    |	[Select Trial Related Documents] from Administrative Data menu.	|
- 
+  
+    
 Scenario Outline: #3a Trial Status Abstraction Validation Errors
     Given I am on the Abstraction Validation Screen
     When Trial Status errors exist
@@ -141,13 +142,24 @@ Scenario Outline: #3a Trial Status Abstraction Validation Errors
 |	PAA Trial Status|	Administratively Complete	                  |	Administratively Complete	                  |	ERROR: Duplicate [ADMINISTRATIVELY COMPLETE] status is not allowed	                                                                                                                  |	[Select Trial Status] from Administrative Data menu to view Trial Status.	|
  
 
-
-
-
+  Scenario:#3b Trial Dates Abstraction Validation Errors
+    Given I am on the Abstraction Validation screen
+    When Trial Dates Errors exists 
+    Then for the Section <Section>, the below Admin Rules <Admin_Error_Rule> will be checked and the screen will display the below description <Description> and comment <Comment> 
+   
+     |Section         |Admin_Error_Rule                                                                                                         |Description                                                                                                                                       |Comment                                                                      |
+     |PAA Trial Status|Trial Status Date is NULL                                                                                                |Each Trial Status must have a Trial Status Date                                                                                                  |[Select Trial Status] from Administrative Data menu to view Trial Status.|                     
+     |PAA Trial Status|Trial Status Type is NULL                                                                                                |Trial Status Type must be selected when a Trial Date is entered                                                                                  |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+     |PAA Trial Status|Trial Start Date is NULL                                                                                                 |Trial Start Date can not be NULL                                                                                                                |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+     |PAA Trial Status|Trial Start Date is the PAST and the Current Trial Status is "IN REVIEW"                                                 |Trial Start Date must be Anticipated when the current Trial Status is "IN REVIEW                                                                 |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+     |PAA Trial Status|Trial Start Date is the PAST and the Current Trial Status is "APPROVED"                                                  |Trial Start Date must be Anticipated when the current Trial Status is "APPROVED"                                                                 |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+     |PAA Trial Status|Primary Completion Date is NULL and NCI Division Program Selected is not "DCP"                                           |Primary Completion Date can not be NULL unless NCI Division Program selected is "DCP" AND Primary Completion Date is set to "NA"                |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+     |PAA Trial Status|Trial Dates are in the future and Trial Date Type is Actual                                                              |Future Dates must be Anticipated                                                                                                                 |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+    
     Scenario: #4 Scientific Validation Display for Errors
     Given I have selected a Trial
-    And I am on the Abstraction Validation screen
     When the Abstraction Validation button is clicked
+    And I am on the Abstraction Validation screen
     Then for the Section <Section>, the below Scientific Rules <Scientific_Error_Rule> will be checked and the screen will display the below description <Description> and comment <Comment> 
     
   |Section               |Scientific_Error_Rule	                                                                                                            |Description                                                                                                                            |Comment                                             |                                                                                                                                                                                                                                                       
