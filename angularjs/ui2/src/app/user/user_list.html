@@ -48,12 +48,12 @@
                         <!-- Status ends -->
 
                         <!-- Organization Name-->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group">
                             <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
                             <div class="col-sm-7"  ng-if="!userView.searchOrganization">
                                 <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
                                        autocomplete="off" placeholder="Organization Name"
-                                       ng-model="userView.searchParams.organization_name"
+                                       ng-model="userView.organization_name"
                                        typeahead-on-select="userView.setTypeAheadOrg($item)"
                                        ng-if="!userView.userChosenOrg"
                                        uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
@@ -115,7 +115,7 @@
                         <!-- Site Admin ends -->
 
                         <!-- Organization Family-->
-                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0) && !userView.registeredUsersPage">
+                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)">
                             <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
                             <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
                                 <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" />
@@ -125,20 +125,6 @@
                             </div>
                         </div>
                         <!-- Organization Family ends -->
-                        <!-- Organization Name-->
-                        <div class="form-group" ng-if="userView.registeredUsersPage">
-                            <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
-                            <div class="col-sm-7"  ng-if="!userView.searchOrganization">
-                                <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
-                                       autocomplete="off" placeholder="Organization Name" ng-model="userView.searchParams.organization_name"
-                                       uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
-                                       typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
-                            </div>
-                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganization">
-                                {{userView.searchOrganization}}
-                            </div>
-                        </div>
-                        <!-- Organization Name ends -->
                     </div>
                 </div><!-- first row ends -->
 

@@ -6,7 +6,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     Given CTEP creates a new organization and sends it via RESTful Services to CTRP
     When CTRP receives newly created CTEP Organization record through Restful Services
     Then A CTEP record will be created in CTRP 
-    And the newly created Organization in the CTEP Context with CTEP will display the field types below 
+    And the newly created Organization in the CTEP Context will display the field types below 
     
     |CTEP Context|
     |CTEP Organization ID|
@@ -60,6 +60,28 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And I select Source context as CTEP
     And I select "Create" from "Service Request"
     Then I can view Organizations in the CTEP Context with "Processing Status" of "Pending" and a "Service Request" of "Create" 
+    And the search results will display the column type
+    
+    |CTRP ID|
+      |CTEP Org PK ID|
+      |CTEP ID|
+      |Name|
+      |Source Status|
+      |Source Context|
+      |Source ID|??????
+      |Families|????
+      |Phone|
+      |Email|
+      |Last Updated By|
+      |Last Updated Date|
+      |City|
+      |State|
+      |Country|
+      |Postal Code|
+      |Funding Mechanism|
+      |Service Request|
+      |Processing Status|
+      
     When I click on the selected CTEP Organization 
     Then the CTEP context fields type will be displayed in a CTEP context screen
     
@@ -82,21 +104,24 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
-    And a list of all organization Context associations will be displayed with source status type 
+    And a list of all organization Context association history will be displayed with source status type 
     
       |Active  |
       |Inactive  |
-      |Nullified  |
-      |Pending  | 
-    And the displayed organization list will the column type
+      |Nullified|
+      |Legacy|
+      
+       
+    And the displayed organization association history will list the column type ????
     
       |CTRP ID|
+      |CTEP Org PK ID|
       |CTEP ID|
       |Name|
       |Source Status|
       |Source Context|
-      |Source ID|
-      |Families|
+      |Source ID|??????
+      |Families|????
       |Phone|
       |Email|
       |Last Updated By|
@@ -105,6 +130,9 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |State|
       |Country|
       |Postal Code|
+      |Funding Mechanism|
+      |Service Request|
+      |Processing Status|
       
      
     When the Curator clicks on the "Clone" button
