@@ -87,10 +87,7 @@
                         successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
                     }
                     toastr.clear();
-                    toastr.success(successMsg, 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success(successMsg, 'Operation Successful!');
                 }
             }).catch(function(err) {
                 console.log("error in updating trial " + JSON.stringify(outerTrial));

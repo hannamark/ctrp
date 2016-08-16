@@ -2936,73 +2936,174 @@ var projectMethodsRegistry = function () {
     };
 
 
-    this.validateTrialFields = function (userWhoWillCreateTrial,                                                                                                             //Name of User who will create Trial
-                                               trialType, leadOrgIdentifier, nciID, allOtherTrialIdentifierWithType,                                  //Trial Identifiers
-                                               officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose, accrualDisease,                              //Trial Details
-                                               leadOrg, principalInv,                                                                                                              //Lead Organization/Principal Investigator
-                                               sponsorOrg,                                                                                                                         //Sponsor
-                                               dataTableOrg, programCode,                                                                                                          //Data Table 4 Information
-                                               grantOption, allGrantValues, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode,                                    //NIH Grant Information (for NIH funded Trials)
-                                               allTrialStatusValues, trialComment, trialWhyStudyStopped,                                                                                    //Trial Status
-                                               INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution,                                             //FDA IND/IDE Information for applicable trials
-                                               responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,    //Regulatory Information
-                                               protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc,                                                            //Trial Related Documents
-                                               saveDraftOrSubmitTrial                                                                                                              //Choose whether to Save Draft OR Submit Trial
+    this.validateTrialFields = function (trialType, leadOrgIdentifier, nciID, allOtherTrialIdentifierWithTypeArr,                                   //Trial Identifiers
+                                         officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose, accrualDisease,     //Trial Details
+                                         leadOrg, principalInv,                                                                                     //Lead Organization/Principal Investigator
+                                         sponsorOrg,                                                                                                //Sponsor
+                                         dataTableOrgArr, programCode,                                                                              //Data Table 4 Information
+                                         grantOption, allGrantValuesArr,                                                                            //NIH Grant Information (for NIH funded Trials)
+                                         allTrialStatusValuesArr,                                                                                   //Trial Status
+                                         startDate,startDateOption, primaryCompletionDate, primaryCompletionDateOption, completionDate, completionDateOption,   //Trial Dates
+                                         INDIDEOption, allINDIDEValuesArr, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution,                                             //FDA IND/IDE Information for applicable trials
+                                         responsibleParty, RPInvestigator, RPInvestigatorTitle, RPInvestigatorAffiliation, allOversightCountryOrgArr, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,    //Regulatory Information
+                                         allTrialRelatedDocsArr, allOtherTrialRelatedDocsWithDescriptionArr                                                           //Trial Related Documents
     ) {
         addTrial.clickExpandAll();
+
         /**** Trial Identifiers ****/
+
         expect(addTrial.addTrialStudySource.$('option:checked').getText()).to.eventually.equal(trialType, 'Validating Trial Source Field in Edit Page');
         expect(addTrial.addTrialLeadProtocolIdentifier.getAttribute('value')).to.eventually.equal(leadOrgIdentifier, 'Validating Trial leadOrgIdentifier Field in Edit Page');
-        if(nciID !== ''){
+        if (nciID !== '') {
             expect(addTrial.trialNCIID.get(1).getText()).to.eventually.equal(nciID, 'Validating Trial nciID Field in Edit Page');
         }
-        if(allOtherTrialIdentifierWithType !== ''){
-            expect(addTrial.addTrialVerifyOtherTrialIdentifier.getText()).to.eventually.equal(allOtherTrialIdentifierWithType, 'Validating Trial otherTrialIdentifier Field in Edit Page');
+        if (allOtherTrialIdentifierWithTypeArr !== '') {
+            addTrial.addTrialVerifyOtherTrialIdentifier.getText().then(function(allOtherIdValue) {
+                expect(allOtherIdValue.sort()).to.eventually.equal(allOtherTrialIdentifierWithTypeArr.sort(), 'Validating Trial allOtherTrialIdentifier Field in Edit Page');
+            });
+        } else {
+            expect(addTrial.addTrialVerifyOtherTrialIdentifierExist.isPresent()).to.eventually.equal(false, 'Validating Trial allOtherTrialIdentifier table is not there in Edit Page');
         }
+
         /**** Trial Details ****/
+
         expect(addTrial.addTrialOfficialTitle.getAttribute('value')).to.eventually.equal(officialTitle, 'Validating Trial officialTitle Field in Edit Page');
         expect(addTrial.addTrialPhase.$('option:checked').getText()).to.eventually.equal(phase, 'Validating Trial phase Field in Edit Page');
-        if(pilotOption.toUpperCase() === 'NO'){
+        if (pilotOption.toUpperCase() === 'NO') {
             expect(addTrial.addTrialPilotOption.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial pilotOption NO Field in Edit Page');
-        }
-        if(pilotOption.toUpperCase() === 'YES'){
+        } else {
             expect(addTrial.addTrialPilotOption.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial pilotOption YES Field in Edit Page');
         }
         expect(addTrial.addTrialResearchCategory.$('option:checked').getText()).to.eventually.equal(researchCategory, 'Validating Trial researchCategory Field in Edit Page');
         expect(addTrial.addTrialPrimaryPurpose.$('option:checked').getText()).to.eventually.equal(primaryPurpose, 'Validating Trial primaryPurpose Field in Edit Page');
-        if(secondaryPurpose === ''){
+        if (secondaryPurpose === '') {
             expect(addTrial.addTrialSecondaryPurpose.$('option:checked').getText()).to.eventually.equal(registryMessage.trialSecondaryPurposeFieldDefaultValue, 'Validating Trial secondaryPurpose Field in Edit Page');
-        }
-        else {
+        } else {
             expect(addTrial.addTrialSecondaryPurpose.$('option:checked').getText()).to.eventually.equal(secondaryPurpose, 'Validating Trial secondaryPurpose Field in Edit Page');
         }
         expect(addTrial.addTrialAccrualDiseaseTerminology.getAttribute('value')).to.eventually.equal(accrualDisease, 'Validating Trial accrualDisease Field in Edit Page');
+
         /**** Lead Organization/Principal Investigator ****/
+
         expect(addTrial.addTrialLeadOrganization.getAttribute('value')).to.eventually.equal(leadOrg, 'Validating Trial leadOrg Field in Edit Page');
         expect(addTrial.addTrialPrincipalInvestigator.getAttribute('value')).to.eventually.equal(principalInv, 'Validating Trial principalInv Field in Edit Page');
+
         /**** Sponsor ****/
+
         expect(addTrial.addTrialSponsor.getAttribute('value')).to.eventually.equal(sponsorOrg, 'Validating Trial sponsorOrg Field in Edit Page');
+
         /**** Data Table 4 Information ****/
-        expect(addTrial.addTrialDataTable4FundingSourceValues.getAttribute('value')).to.eventually.equal(dataTableOrg.split(), 'Validating Trial dataTableOrg Field in Edit Page');
+
+        addTrial.addTrialDataTable4FundingSourceValues.getAttribute('value').then(function(allDataTblOrgValue) {
+            expect(allDataTblOrgValue.sort()).to.eventually.equal(dataTableOrgArr.sort(), 'Validating Trial dataTableOrg Field in Edit Page');
+        });
         expect(addTrial.addTrialDataTable4ProgramCode.getAttribute('value')).to.eventually.equal(programCode, 'Validating Trial programCode Field in Edit Page');
+
         /**** NIH Grant Information ****/
-        if(grantOption.toUpperCase() === 'YES'){
+
+        if (grantOption.toUpperCase() === 'YES') {
             expect(addTrial.addTrialFundedByNCIOption.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial grantOption YES Field in Edit Page');
-        }
-        if(pilotOption.toUpperCase() === 'NO'){
+        } else {
             expect(addTrial.addTrialFundedByNCIOption.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial grantOption NO Field in Edit Page');
         }
-        expect(addTrial.addTrialVerifyGrantTable.getText()).to.eventually.equal(allGrantValues, 'Validating Trial allGrantValues in Edit Page');
+        if (allGrantValuesArr !== '') {
+            addTrial.addTrialVerifyGrantTable.getText().then(function(allGrantValue) {
+                expect(allGrantValue.sort()).to.eventually.equal(allGrantValuesArr.sort(), 'Validating Trial allGrantValues in Edit Page');
+            });
+        } else {
+            expect(addTrial.addTrialVerifyGrantTableExist.isPresent()).to.eventually.equal(false, 'Validating Trial allGrantValues table is not there in Edit Page');
+        }
+
         /**** Trial Status ****/
-        expect(addTrial.addTrialAddStatusTable.getText()).to.eventually.equal(allTrialStatusValues, 'Validating Trial allTrialStatusValues in Edit Page');
 
+        addTrial.addTrialAddStatusTable.getText().then(function(allTrialStatusValue) {
+            expect(allTrialStatusValue.sort()).to.eventually.equal(allTrialStatusValuesArr.sort(), 'Validating Trial allTrialStatusValues in Edit Page');
+        });
 
+        /**** Trial Dates ****/
 
+        expect(addTrial.addTrialStartDate.getAttribute('value')).to.eventually.equal(startDate, 'Validating Trial startDate Field in Edit Page');
+        if (startDateOption.toUpperCase() === 'ACTUAL') {
+            expect(addTrial.addTrialStartDateOption.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial startDateOption ACTUAL Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialStartDateOption.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial startDateOption ANTICIPATED Field in Edit Page');
+        }
+        expect(addTrial.addTrialPrimaryCompletionDate.getAttribute('value')).to.eventually.equal(primaryCompletionDate, 'Validating Trial primaryCompletionDate Field in Edit Page');
+        if (primaryCompletionDateOption.toUpperCase() === 'ACTUAL') {
+            expect(addTrial.addTrialPrimaryCompletionDateOption.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial primaryCompletionDateOption ACTUAL Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialPrimaryCompletionDateOption.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial primaryCompletionDateOption ANTICIPATED Field in Edit Page');
+        }
+        expect(addTrial.addTrialCompletionDate.getAttribute('value')).to.eventually.equal(completionDate, 'Validating Trial completionDate Field in Edit Page');
+        if (completionDateOption.toUpperCase() === 'ACTUAL') {
+            expect(addTrial.addTrialCompletionDateOption.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial completionDateOption ACTUAL Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialCompletionDateOption.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial completionDateOption ANTICIPATED Field in Edit Page');
+        }
 
+        /**** FDA IND/IDE Information ****/
 
-        expect(addTrial.addTrialOfficialTitle.getAttribute('value')).to.eventually.equal(officialTitle, 'Validating Trial officialTitle Field in Edit Page');
+        if (INDIDEOption.toUpperCase() === 'YES') {
+            expect(addTrial.addTrialFDAIND_IDEOption.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial INDIDEOption YES Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialFDAIND_IDEOption.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial INDIDEOption NO Field in Edit Page');
+        }
+        if (allINDIDEValuesArr !== '') {
+            addTrial.addTrialVerifyIND_IDETable.getText().then(function(allINDIDEValue) {
+                expect(allINDIDEValue.sort()).to.eventually.equal(allINDIDEValuesArr.sort(), 'Validating Trial allINDIDEValues in Edit Page');
+            });
+        } else {
+            expect(addTrial.addTrialVerifyIND_IDETableExist.isPresent()).to.eventually.equal(false, 'Validating Trial allINDIDEValues table is not there in Edit Page');
+        }
 
+        /**** Regulatory Information ****/
 
+        if (responsibleParty !== '') {
+            expect(addTrial.addTrialResponsibleParty.$('option:checked').getText()).to.eventually.equal(responsibleParty, 'Validating Trial responsibleParty Field in Edit Page');
+        } else if (responsibleParty === 'Principal Investigator' || responsibleParty === 'Sponsor-Investigator') {
+            expect(addTrial.addTrialInvestigator.getAttribute('value')).to.eventually.equal(RPInvestigator, 'Validating Trial RP Investigator Field in Edit Page');
+            expect(addTrial.addTrialInvestigatorTitle.getAttribute('value')).to.eventually.equal(RPInvestigatorTitle, 'Validating Trial RPInvestigatorTitle Field in Edit Page');
+            expect(addTrial.addTrialInvestigatorAffiliation.getAttribute('value')).to.eventually.equal(RPInvestigatorAffiliation, 'Validating Trial RPInvestigatorAffiliation Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialResponsibleParty.$('option:checked').getText()).to.eventually.equal(registryMessage.trialReponsiblePartyFieldDefaultValue, 'Validating Trial responsibleParty Field in Edit Page');
+        }
+        if (allOversightCountryOrgArr !== '') {
+            addTrial.addTrialVerifyOversightCountryOrganization.getText().then(function(allOversightCountryOrgValue) {
+                expect(allOversightCountryOrgValue.sort()).to.eventually.equal(allOversightCountryOrgArr.sort(), 'Validating Trial allOversightCountryOrg in Edit Page');
+            });
+        } else {
+            expect(addTrial.addTrialVerifyOversightCountryOrganizationExist.isPresent()).to.eventually.equal(false, 'Validating Trial allOversightCountryOrg table is not there in Edit Page');
+        }
+        if (FDARegulatedIndicator.toUpperCase() === 'NO') {
+            expect(addTrial.addTrialFDARegulatedInterventionIndicator.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial FDARegulatedIndicator NO Field in Edit Page');
+        } else if (FDARegulatedIndicator.toUpperCase() === 'YES') {
+            expect(addTrial.addTrialFDARegulatedInterventionIndicator.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial FDARegulatedIndicator YES Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialFDARegulatedInterventionIndicator.get(2).isSelected()).to.eventually.equal(true, 'Validating Trial FDARegulatedIndicator NA Field in Edit Page');
+        }
+        if (section801Indicator.toUpperCase() === 'NO') {
+            expect(addTrial.addTrialSection801Indicator.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial section801Indicator NO Field in Edit Page');
+        } else if (section801Indicator.toUpperCase() === 'YES') {
+            expect(addTrial.addTrialSection801Indicator.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial section801Indicator YES Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialSection801Indicator.get(2).isSelected()).to.eventually.equal(true, 'Validating Trial section801Indicator NA Field in Edit Page');
+        }
+        if (dataMonitoringIndicator.toUpperCase() === 'NO') {
+            expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(0).isSelected()).to.eventually.equal(true, 'Validating Trial dataMonitoringIndicator NO Field in Edit Page');
+        } else if (dataMonitoringIndicator.toUpperCase() === 'YES') {
+            expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(1).isSelected()).to.eventually.equal(true, 'Validating Trial dataMonitoringIndicator YES Field in Edit Page');
+        } else {
+            expect(addTrial.addTrialDataMonitoringCommitteeAppointedIndicator.get(2).isSelected()).to.eventually.equal(true, 'Validating Trial dataMonitoringIndicator NA Field in Edit Page');
+        }
+
+        /**** Trial Related Documents ****/
+
+        addTrial.addTrialVerifyAddedDocs.getText().then(function(allTrialDocsValue) {
+            expect(allTrialDocsValue.sort()).to.eventually.equal(allTrialRelatedDocsArr.sort(), 'Validating Trial allTrialRelatedDocs in Edit Page');
+        });
+        addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function(allTrialOtherDocsDescValue) {
+            expect(allTrialOtherDocsDescValue.sort()).to.eventually.equal(allOtherTrialRelatedDocsWithDescriptionArr.sort(), 'Validating Trial allOtherTrialRelatedDocsWithDecsription in Edit Page');
+        });
     }
 
 };

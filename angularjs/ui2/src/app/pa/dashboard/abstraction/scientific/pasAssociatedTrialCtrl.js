@@ -29,7 +29,7 @@
             // vm.resetAssociations = _getTrialDetailCopy;
             vm.deleteAllAssociations = deleteAllAssociations;
             vm.reload = reload;
-            
+
             vm.disableBtn = false;
 
             activate();
@@ -139,10 +139,7 @@
                         closeLookupForm();
 
                         toastr.clear();
-                        toastr.success('Record Created.', 'Operation Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
+                        toastr.success('Record Created.', 'Operation Successful!');
                         vm.deleteAllAssoCheckbox = false;
                     }
                 }).catch(function(err) {
@@ -208,10 +205,7 @@
                         vm.deleteAllAssoCheckbox = false;
 
                         toastr.clear();
-                        toastr.success('Record(s) deleted.', 'Operation Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
+                        toastr.success('Record(s) deleted.', 'Operation Successful!');
                         _getTrialDetailCopy();
                     }
                 }).catch(function(err) {

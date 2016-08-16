@@ -138,6 +138,7 @@ module.exports = function() {
         expect(addTrial.addTrialDateFields.get(3).isEnabled()).to.eventually.equal(true, 'Validating Trial Completion Date Calender is Enabled');
         expect(addTrial.addTrialCompletionDateOption.get(0).isEnabled()).to.eventually.equal(true, 'Validating Trial Completion Date with Option YES field is Enabled');
         expect(addTrial.addTrialCompletionDateOption.get(1).isEnabled()).to.eventually.equal(true, 'Validating Trial Completion Date with Option NO field is Enabled');
+            projectFunctionsRegistry.validateTrialFields();
         browser.sleep(25).then(callback);
     });
 
@@ -281,7 +282,7 @@ module.exports = function() {
                     return false;
                 }
             });
-        }, 10000, "Save draft page with Uploaded documents did not appear");
+        }, 10000, "View Trial page  did not appear after Submit");
             existingDocs.then(function (value) {
                 var arr1 = value;
                 var newAddedDocuments = protocolDocDocmFileUpd + IRBEXCELFileUpd + PSPDFFileUpd + InformedConsentXlsmFileUpd + OtherXlsbFileUpd;
@@ -289,6 +290,11 @@ module.exports = function() {
                 var newAddedDocumentArrSort = arr1.sort();
                 console.log('New array documents after sort:');
                 console.log(newAddedDocumentArrSort);
+            //    addTrial.addTrialVerifyAddedDocs.getText().then(function (newDocSet) {
+             //       console.log('New array documents in Screen :');
+             //       console.log(newDocSet.sort());
+               //     expect((addTrial.addTrialVerifyAddedDocs.getText()).sort()).to.eql(newAddedDocumentArrSort);
+             //   });
                 addTrial.addTrialVerifyAddedDocs.getText().then(function (newDocSet) {
                     console.log('New array documents in Screen :');
                     console.log(newDocSet.sort());
@@ -303,6 +309,11 @@ module.exports = function() {
             var newCombineArr = existingDocsArr1.concat(newOtherDocsArr2);
             console.log('new Combine array');
             console.log(newCombineArr.sort());
+            //addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (newOtherDocSet) {
+            //    console.log('New array Other documents in Screen :');
+            //    console.log(newOtherDocSet.sort());
+            //    expect((addTrial.addTrialVerifyAddedOtherDocsDescription.getText()).sort()).to.eql(newCombineArr.sort());
+          //  });
             addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (newOtherDocSet) {
                 console.log('New array Other documents in Screen :');
                 console.log(newOtherDocSet.sort());

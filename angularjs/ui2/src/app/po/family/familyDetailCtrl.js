@@ -47,10 +47,7 @@
                     vm.curFamily.new = false;
                     vm.curFamily.family_memberships = response.data.family_memberships_attributes || [];
                     $state.go('main.familyDetail', {familyId: response.data.id});
-                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Family ' + vm.curFamily.name + ' has been recorded', 'Operation Successful!');
                 }
 
                 // To make sure setPristine() is executed after all $watch functions are complete

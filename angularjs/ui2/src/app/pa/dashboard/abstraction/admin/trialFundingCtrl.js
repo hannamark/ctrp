@@ -77,10 +77,7 @@
                     $scope.$emit('updatedInChildScope', {});
 
                     toastr.clear();
-                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
 
                     // To make sure setPristine() is executed after all $watch functions are complete
                     $timeout(function() {

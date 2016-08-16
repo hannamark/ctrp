@@ -72,10 +72,7 @@
                     PATrialService.setCurrentTrial(updatedTrial);
                     // $scope.$emit('updatedInChildScope', {});
                     toastr.clear();
-                    toastr.success('Trial processing information has been recorded', 'Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Trial processing information has been recorded', 'Successful!');
                 }
             }).finally(function() {
                 vm.disableBtn = false;
