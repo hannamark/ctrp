@@ -69,7 +69,8 @@ gem 'paper_trail'
 
 gem 'ci_reporter_minitest'
 
-gem 'countries'
+gem 'countries', '~> 0.11.4'
+
 
 # Add Wizard gem
 gem 'wicked'
