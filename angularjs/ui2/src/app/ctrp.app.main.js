@@ -16,7 +16,8 @@
       angular.extend(toastrConfig, {
         allowHtml: false,
         closeButton: true,
-        timeout: 1000
+        timeOut: 3000,
+        extendedTimeOut: 0
       });
 }).run(function() {});
 })();

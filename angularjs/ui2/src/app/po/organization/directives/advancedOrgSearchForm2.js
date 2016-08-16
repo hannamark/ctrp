@@ -243,7 +243,7 @@
                         toastr.success('Curation was successful', 'Curated!');
                     }
                 }).catch(function (err) {
-                    toastr.error('There was an error in curation', 'Curation error');
+                    toastr.error('There was an error in curation', 'Curation error', { timeOut: 0});
                 });
 
             }; //commitNullification
