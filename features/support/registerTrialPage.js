@@ -21,6 +21,7 @@ var registerTrial = function(){
     this.addTrialProtocolID = element(by.model('trialDetailView.protocol_id'));
     this.addTrialAddProtocolButton = element(by.css('button[ng-click="trialDetailView.addOtherId()"]'));
     this.addTrialVerifyOtherTrialIdentifier = element.all(by.css('tr[ng-repeat="otherId in trialDetailView.addedOtherIds track by $index"]'));
+    this.addTrialVerifyOtherTrialIdentifierExist = element(by.css('tr[ng-repeat="otherId in trialDetailView.addedOtherIds track by $index"]'));
     this.addTrialVerifyOtherTrialIdentifierTable =  element.all(by.binding('otherId.protocol_id'));
     this.addTrialLeadProtocolIdValidationMessage = element(by.css('span[ng-show="ctrpbtn.trial_form.needsAttention(trial_form.lead_protocol_id) || (trial_form.lead_protocol_id.$error.required && trialDetailView.showLpiError)"]'));
     this.addTrialRemoveOtherTrialIdentifier = element(by.css('table[ng-show="trialDetailView.addedOtherIds.length > 0"]')).all(by.css('.glyphicon.glyphicon-remove-circle'));
@@ -118,6 +119,7 @@ var registerTrial = function(){
     this.addTrialFDAProgramCodeList = element.all(by.binding('nihNci.code'));
     this.addTrialAddIND_IDEButton = element(by.css('button[ng-click="trialDetailView.addIndIde()"]'));
     this.addTrialVerifyIND_IDETable = element.all(by.css('tr[ng-repeat="indIde in trialDetailView.addedIndIdes track by $index"]'));
+    this.addTrialVerifyIND_IDETableExist = element(by.css('tr[ng-repeat="indIde in trialDetailView.addedIndIdes track by $index"]'));
 
     /** Regulatory Information **/
     this.addTrialRegulatoryInformationText = element(by.css('.control-label.col-xs-12.col-sm-7'));
@@ -130,6 +132,7 @@ var registerTrial = function(){
     this.addTrialOversightAuthorityOrganization = element(by.model('trialDetailView.authority_org'));
     this.addTrialAddOversightAuthorityButton = element(by.css('button[ng-click="trialDetailView.addAuthority()"]'));
     this.addTrialVerifyOversightCountryOrganization = element.all(by.css('tr[ng-repeat="authority in trialDetailView.addedAuthorities track by $index"]'));
+    this.addTrialVerifyOversightCountryOrganizationExist = element(by.css('tr[ng-repeat="authority in trialDetailView.addedAuthorities track by $index"]'));
     this.addTrialFDARegulatedInterventionIndicator = element.all(by.model('trialDetailView.curTrial.intervention_indicator'));
     this.addTrialSection801Indicator = element.all(by.model('trialDetailView.curTrial.sec801_indicator'));
     this.addTrialDataMonitoringCommitteeAppointedIndicator = element.all(by.model('trialDetailView.curTrial.data_monitor_indicator'));
@@ -161,11 +164,11 @@ var registerTrial = function(){
 
     /**Date fields**/
     this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
-    this.addTrialDateClickToday = element(by.model('date')).element(by.buttonText('Today'));
-    this.addTrialDateClickClear = element(by.model('date')).element(by.buttonText('Clear'));
-    this.addTrialDateClickPreviousMonth = element(by.model('date')).$('.glyphicon.glyphicon-chevron-left');//element(by.css('.glyphicon.glyphicon-chevron-left'));
-    this.addTrialDateClickNextMonth = element(by.model('date')).$('.glyphicon.glyphicon-chevron-right');//element(by.css('.glyphicon.glyphicon-chevron-right'));
-    this.addTrialDateClickYearMonthDate = element(by.model('date')).$('button[role="heading"]');//element(by.css('button[role="heading"]'));
+    this.addTrialDateClickToday = element(by.css('.uib-datepicker-popup.dropdown-menu')).element(by.buttonText('Today'));//element(by.model('date')).element(by.buttonText('Today'));
+    this.addTrialDateClickClear = element(by.css('.uib-datepicker-popup.dropdown-menu')).element(by.buttonText('Clear'));//element(by.model('date')).element(by.buttonText('Clear'));
+    this.addTrialDateClickPreviousMonth = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('.glyphicon.glyphicon-chevron-left');//element(by.model('date')).$('.glyphicon.glyphicon-chevron-left');//element(by.css('.glyphicon.glyphicon-chevron-left'));
+    this.addTrialDateClickNextMonth = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('.glyphicon.glyphicon-chevron-right');//element(by.model('date')).$('.glyphicon.glyphicon-chevron-right');//element(by.css('.glyphicon.glyphicon-chevron-right'));
+    this.addTrialDateClickYearMonthDate = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('button[role="heading"]');//element(by.model('date')).$('button[role="heading"]');//element(by.css('button[role="heading"]'));
 
 
     /******************

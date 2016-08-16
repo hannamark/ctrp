@@ -190,6 +190,8 @@ module.exports = function () {
 
     this.Then(/^I should be either able to Submit Trial OR Save as Draft (.*)$/, function (saveDraftOrSubmitTrial, callback) {
         saveDraftOrSubmitTrial1 = saveDraftOrSubmitTrial;
+        trialMenuItem.clickTrials();
+        trialMenuItem.clickListSearchTrialLink();
         projectFunctionsRegistry.createNewTrial(loggedInUser, trialType1, leadOrgIdentifier1, otherClinicalTrialID1, otherObsoleteClinicalTrialID1, otherIdentifier1, officialTitle1, phase1, pilotOption1, researchCategory1, primaryPurpose1, secondaryPurpose1, accrualDisease1, leadOrg1, principalInv1, sponsorOrg1, dataTableOrg1, programCode1, grantOption1, grantFundingMechanism1, grantInstituteCode1, grantSerialNumber1, grantNCIDivisionCode1, trialStatus1, trialComment1, trialWhyStudyStopped1, INDIDEOption1, INDIDEType1, INDIDENumber1, INDIDEGrantor1, INDIDEHolder1, INDIDEInstitution1, responsibleParty1, trialOversightCountry1, trialOversightOrg1, FDARegulatedIndicator1, section801Indicator1, dataMonitoringIndicator1, protocolDoc1, IRBDoc1, participatingSiteDoc1, informedConsentDoc1, otherDoc1, saveDraftOrSubmitTrial1);
         browser.sleep(25).then(callback);
     });
