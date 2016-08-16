@@ -154,9 +154,9 @@
                     holderTypeObj: function(TrialService) {
                         return TrialService.getHolderTypes();
                     },
-                    GeoLocationService : 'GeoLocationService',
-                    countryList: function(GeoLocationService) {
-                        return GeoLocationService.getCountryList();
+
+                    countryList: function(TrialService) {
+                        return TrialService.getCountryList();
                     },
                     acceptedFileTypesObj: function(TrialService) {
                         return TrialService.getAcceptedFileTypesForRegistry();
