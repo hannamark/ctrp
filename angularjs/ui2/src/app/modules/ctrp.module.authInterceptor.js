@@ -81,7 +81,7 @@
                         validationErrors += '\n ' + errMsg;
                     });
                 }
-                console.info('Validation Errors: ', validationErrors);
+                // console.info('Validation Errors: ', validationErrors);
 
                 errorMsg += validationErrors; // concatenate
                 var toastrService = $injector.get('toastr');
