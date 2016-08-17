@@ -447,9 +447,10 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
 Scenario: #11 As a PO Curator, I can search a NEW person record to associate it with a person in the CTEP Context
     Given Given I am logged into the CTRP 
     And I am on the Search Persons Screen
-    When I select Source status as pending
+    When I select Processing status as"Pending"
+    And Service Request as "Create"
     And I select Source context as CTEP
-    Then I can view Persons in the CTEP Context with "Processing Status" of "Pending"  
+    Then I can view Persons in the CTEP Context with "Processing Status" of "Pending" and Service request of "Create"
     When the viewed CTEP Person does not exist in CTRP
     Then the Curator clicks on "Clone" button to create a new CTRP Person associated with the CTEP Context with the information type
       
@@ -469,7 +470,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
     
     And the CTEP Context Status is changed from Pending to Active
     And The CTEP Context Person Information is copied into the CTRP Context
-    When the viewed CTEP Person exists in CTRP
+    When the viewed CTEP Person exists in CTRP-------------------------------------------------------------------------------Can we use the same functionality as org (pop up box)
     Then A CTRP Curator clicks on "Associate Person Context" to associate an existing CTRP Person record with the CTEP Context
     And The CTEP "Processing Status" is changed from "Pending" to "Active"
     
@@ -486,6 +487,15 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
       |Affiliated Organization CTRP ID|
       |Processing Status (Pending, Complete)|
     
+    
+    Person Record Updates
+    
+    Can all person records be updated in CTEP,what if Person status? 
+    are we concerned only by address and name.
+     
+     
+     
+     
      Scenario: #13 Rules for CTRP Organization Status based on CTEP Organization Status
     Given I am logged into the CTRP 
      When the Organization CTEP context status is Active
@@ -493,19 +503,31 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
      When the Organization CTEP context status is Inactive
      Then the CTRP context can be Inactive OR Nullified
      
-      Scenario: #14 I can Nullify a Duplicate Person record in CTRP
-     Given I am logged into the CTRP PO application
-     And I am on the CTRP PO Curator Review screen
-     When I have been notified of a CTEP Duplicate Person Record
-     Then I will identify two Person Records in the CTRP Context that are duplicates
-     And I select one of the Person Records to be retained per CTEP
-     And I select the other Person Record to be nullified
-     And the Person Record to be nullified does not have an Active Status
-     And all references in CTRP to the nullified Person Record will reference the retained Person Record
-     And any unique Person Organization Affiliations on the nullified Person Record will be added to the retained Person Record
-     And the status of the Person Record to be nullified will be "Nullified"
   
 
+
+Scenario:#8 Curator can identify when two Persons are to be merged 
+    Given I am logged into the CTRP 
+     When CTEP Indicates via REST Service that two Persons are to be merged
+     And the CTEP person <PersonType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Person status <StatusType>
+     
+     |PersonType| PKIDType|CTRPIDType|ServiceRequestType |rocessingStatusType |StatusType|
+     |Person 1  |PK ID 1  |CTRP ID 1 | Merge ID 1        |Pending             |Active    |
+     |Person 2  |PK ID 2  |CTRP ID 2 | Merge ID 2        |Pending             |Inactive  |
+     
+     Then the curator will search CTEP Context for person where Service request is "Merge ID"
+     And the curator will search for matching persons in the CTRP Context
+     When Matching CTRP persons found
+     Then The CTRP person matching CTEP organization with inactive status will be Nullified
+     And  the person <PersonType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Person status <PersonType> 
+     
+     |PersonType| PKIDType|CTRPIDType|ServiceRequestType |ProcessingStatusType |StatusType|
+     |Person 1  |PK ID 1  |CTRP ID 1 | Null              |Complete             |Active    |
+     |Person 2  |PK ID 2  |CTRP ID 2 | Null              |Complete             |Inactive  |
+     And the curator will select the CTRP person associated with the CTEP Active person to replace the trail associations of the nullified person
+     And all references in CTRP to the nullified Person Record will reference the retained Person Record
+     And any unique Person Organization Affiliations on the nullified Person Record will be added to the retained Person Record
+     
     
     
     
