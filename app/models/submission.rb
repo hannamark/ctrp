@@ -96,6 +96,9 @@ class Submission < TrialBase
   }
 
   scope :matchesImpPro, -> (params, protocol_source_id_imp, protocol_source_id_pro) {
+    time_parser_start = "to_char((("
+    time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
+    time_parser_with_hrs_mins_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy HH12:MI am')"
     join_clause  = "INNER JOIN trials ON submissions.trial_id = trials.id "
     join_clause += "INNER JOIN users ON submissions.user_id = users.id "
     join_clause += "LEFT JOIN research_categories as trial_research_category ON trials.research_category_id = trial_research_category.id "
@@ -103,7 +106,7 @@ class Submission < TrialBase
     join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
     join_clause += "LEFT JOIN source_contexts as trial_lead_org_source_context ON trial_lead_org_source_context.id = trial_lead_org.source_context_id "
     join_clause += "LEFT JOIN (
-                        select DISTINCT ON (trial_id) onhold_date, trial_id from onholds
+                        select DISTINCT ON (trial_id) " + time_parser_start + "onhold_date" + time_parser_end + " as onhold_date, onhold_desc, trial_id from onholds
                         where offhold_date is null OR offhold_date > now()::date
                         order by trial_id, onhold_date desc
                     ) as trial_onholds ON trials.id = trial_onholds.trial_id "
@@ -119,206 +122,203 @@ class Submission < TrialBase
                             current_milestone_name,
                             current_processing_status,
                             dcp_protocol_id.protocol_id as dcp_id,
-                            to_char(current_processing_status_date, 'DD-Mon-yyyy') as current_processing_status_date,
-                            to_char(submission_current_date, 'DD-Mon-yyyy') as current_submission_date,
-                            to_char(submission_received_date, 'DD-Mon-yyyy') as submission_received_date,
-                            to_char(validation_processing_start_date, 'DD-Mon-yyyy') as validation_processing_start_date,
-                            to_char(validation_processing_completed_date, 'DD-Mon-yyyy') as validation_processing_completed_date,
-                            to_char(submission_acceptance_date, 'DD-Mon-yyyy') as submission_acceptance_date,
-                            to_char(submission_terminated_date, 'DD-Mon-yyyy') as submission_terminated_date,
-                            to_char(submission_reactivated_date, 'DD-Mon-yyyy') as submission_reactivated_date,
-                            to_char(submission_rejected_date, 'DD-Mon-yyyy') as submission_rejected_date,
-                            to_char(administrative_processing_start_date, 'DD-Mon-yyyy') as administrative_processing_start_date,
-                            to_char(administrative_processing_completed_date, 'DD-Mon-yyyy') as administrative_processing_completed_date,
-                            to_char(administrative_qc_ready_date, 'DD-Mon-yyyy') as administrative_qc_ready_date,
-                            to_char(administrative_qc_start_date, 'DD-Mon-yyyy') as administrative_qc_start_date,
-                            to_char(administrative_qc_completed_date, 'DD-Mon-yyyy') as administrative_qc_completed_date,
-                            to_char(scientific_processing_start_date, 'DD-Mon-yyyy') as scientific_processing_start_date,
-                            to_char(scientific_processing_completed_date, 'DD-Mon-yyyy') as scientific_processing_completed_date,
-                            to_char(scientific_qc_ready_date, 'DD-Mon-yyyy') as scientific_qc_ready_date,
-                            to_char(scientific_qc_start_date, 'DD-Mon-yyyy') as scientific_qc_start_date,
-                            to_char(scientific_qc_completed_date, 'DD-Mon-yyyy') as scientific_qc_completed_date,
-                            to_char(trial_summary_report_ready_date, 'DD-Mon-yyyy') as trial_summary_report_ready_date,
-                            to_char(trial_summary_report_date, 'DD-Mon-yyyy') as trial_summary_report_date,
-                            to_char(submitter_trial_summary_report_feedback_date, 'DD-Mon-yyyy') as submitter_trial_summary_report_feedback_date,
-                            to_char(initial_abstraction_verified_date, 'DD-Mon-yyyy') as initial_abstraction_verified_date,
-                            to_char(ongoing_abstraction_verified_date, 'DD-Mon-yyyy') as ongoing_abstraction_verified_date,
-                            to_char(late_rejection_date, 'DD-Mon-yyyy') as late_rejection_date,
+                            " + time_parser_start + "current_processing_status_date" + time_parser_end + " as current_processing_status_date,
+                            " + time_parser_start + "submission_current_date" + time_parser_end + " as current_submission_date,
+                            " + time_parser_start + "submission_received_date" + time_parser_end + " as submission_received_date,
+                            " + time_parser_start + "validation_processing_start_date" + time_parser_end + " as validation_processing_start_date,
+                            " + time_parser_start + "validation_processing_completed_date" + time_parser_end + " as validation_processing_completed_date,
+                            " + time_parser_start + "submission_acceptance_date" + time_parser_end + " as submission_acceptance_date,
+                            " + time_parser_start + "submission_terminated_date" + time_parser_end + " as submission_terminated_date,
+                            " + time_parser_start + "submission_reactivated_date" + time_parser_end + " as submission_reactivated_date,
+                            " + time_parser_start + "submission_rejected_date" + time_parser_end + " as submission_rejected_date,
+                            " + time_parser_start + "administrative_processing_start_date" + time_parser_end + " as administrative_processing_start_date,
+                            " + time_parser_start + "administrative_processing_completed_date" + time_parser_end + " as administrative_processing_completed_date,
+                            " + time_parser_start + "administrative_qc_ready_date" + time_parser_end + " as administrative_qc_ready_date,
+                            " + time_parser_start + "administrative_qc_start_date" + time_parser_end + " as administrative_qc_start_date,
+                            " + time_parser_start + "administrative_qc_completed_date" + time_parser_end + " as administrative_qc_completed_date,
+                            " + time_parser_start + "scientific_processing_start_date" + time_parser_end + " as scientific_processing_start_date,
+                            " + time_parser_start + "scientific_processing_completed_date" + time_parser_end + " as scientific_processing_completed_date,
+                            " + time_parser_start + "scientific_qc_ready_date" + time_parser_end + " as scientific_qc_ready_date,
+                            " + time_parser_start + "scientific_qc_start_date" + time_parser_end + " as scientific_qc_start_date,
+                            " + time_parser_start + "scientific_qc_completed_date" + time_parser_end + " as scientific_qc_completed_date,
+                            " + time_parser_start + "trial_summary_report_ready_date" + time_parser_end + " as trial_summary_report_ready_date,
+                            " + time_parser_start + "trial_summary_report_date" + time_parser_end + " as trial_summary_report_date,
+                            " + time_parser_start + "submitter_trial_summary_report_feedback_date" + time_parser_end + " as submitter_trial_summary_report_feedback_date,
+                            " + time_parser_start + "initial_abstraction_verified_date" + time_parser_end + " as initial_abstraction_verified_date,
+                            " + time_parser_start + "ongoing_abstraction_verified_date" + time_parser_end + " as ongoing_abstraction_verified_date,
+                            " + time_parser_start + "late_rejection_date" + time_parser_end + " as late_rejection_date,
                             CASE GREATEST(administrative_processing_start_date,
                                           administrative_processing_completed_date,
                                           administrative_qc_ready_date,
                                           administrative_qc_start_date,
                                           administrative_qc_completed_date)
-                                WHEN administrative_processing_start_date       THEN ('Administrative Processing Start, ' || to_char(administrative_processing_start_date, 'DD-Mon-yyyy'))
-                                WHEN administrative_processing_completed_date   THEN ('Administrative Processing Completed, ' || to_char(administrative_processing_completed_date, 'DD-Mon-yyyy'))
-                                WHEN administrative_qc_ready_date               THEN ('Administrative QC Ready, ' || to_char(administrative_qc_ready_date, 'DD-Mon-yyyy'))
-                                WHEN administrative_qc_start_date               THEN ('Administrative QC Start, ' || to_char(administrative_qc_start_date, 'DD-Mon-yyyy'))
-                                WHEN administrative_qc_completed_date           THEN ('Administrative QC Completed, ' || to_char(administrative_qc_completed_date, 'DD-Mon-yyyy'))
+                                WHEN administrative_processing_start_date       THEN ('Administrative Processing Start, ' || " + time_parser_start + "administrative_processing_start_date" + time_parser_end + ")
+                                WHEN administrative_processing_completed_date   THEN ('Administrative Processing Completed, ' || " + time_parser_start + "administrative_processing_completed_date" + time_parser_end + ")
+                                WHEN administrative_qc_ready_date               THEN ('Administrative QC Ready, ' || " + time_parser_start + "administrative_qc_ready_date" + time_parser_end + ")
+                                WHEN administrative_qc_start_date               THEN ('Administrative QC Start, ' || " + time_parser_start + "administrative_qc_start_date" + time_parser_end + ")
+                                WHEN administrative_qc_completed_date           THEN ('Administrative QC Completed, ' || " + time_parser_start + "administrative_qc_completed_date" + time_parser_end + ")
                             END as current_administrative_milestone,
                             CASE GREATEST(scientific_processing_start_date,
                                           scientific_processing_completed_date,
                                           scientific_qc_ready_date,
                                           scientific_qc_start_date,
                                           scientific_qc_completed_date)
-                                WHEN scientific_processing_start_date       THEN ('Administrative Processing Start, ' || to_char(scientific_processing_start_date, 'DD-Mon-yyyy'))
-                                WHEN scientific_processing_completed_date   THEN ('Administrative Processing Completed, ' || to_char(scientific_processing_completed_date, 'DD-Mon-yyyy'))
-                                WHEN scientific_qc_ready_date               THEN ('Administrative QC Ready, ' || to_char(scientific_qc_ready_date, 'DD-Mon-yyyy'))
-                                WHEN scientific_qc_start_date               THEN ('Administrative QC Start, ' || to_char(scientific_qc_start_date, 'DD-Mon-yyyy'))
-                                WHEN scientific_qc_completed_date           THEN ('Administrative QC Completed, ' || to_char(scientific_qc_completed_date, 'DD-Mon-yyyy'))
+                                WHEN scientific_processing_start_date       THEN ('Scientific Processing Start, ' || " + time_parser_start + "scientific_processing_start_date" + time_parser_end + ")
+                                WHEN scientific_processing_completed_date   THEN ('Scientific Processing Completed, ' || " + time_parser_start + "scientific_processing_completed_date" + time_parser_end + ")
+                                WHEN scientific_qc_ready_date               THEN ('Scientific QC Ready, ' || " + time_parser_start + "scientific_qc_ready_date" + time_parser_end + ")
+                                WHEN scientific_qc_start_date               THEN ('Scientific QC Start, ' || " + time_parser_start + "scientific_qc_start_date" + time_parser_end + ")
+                                WHEN scientific_qc_completed_date           THEN ('Scientific QC Completed, ' || " + time_parser_start + "scientific_qc_completed_date" + time_parser_end + ")
                             END as current_scientific_milestone
 
 
 
                         from (
-                        temp
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id1, created_at as submission_received_date from temp where code = 'SRD'
-                         order by submission_id, id desc) as submission_received_milestone
-                         on submission_received_milestone.id1 = temp.submission_id
+                            temp
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id1, created_at as submission_received_date from temp where code = 'SRD'
+                             order by submission_id, id desc) as submission_received_milestone
+                             on submission_received_milestone.id1 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id2, created_at as validation_processing_start_date from temp where code = 'VPS'
-                         order by submission_id, id desc) as validation_processing_started_milestone
-                        on validation_processing_started_milestone.id2 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id2, created_at as validation_processing_start_date from temp where code = 'VPS'
+                             order by submission_id, id desc) as validation_processing_started_milestone
+                            on validation_processing_started_milestone.id2 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id3, created_at as validation_processing_completed_date from temp where code = 'VPC'
-                         order by submission_id, id desc) as validation_processing_completed_milestone
-                        on validation_processing_completed_milestone.id3 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id3, created_at as validation_processing_completed_date from temp where code = 'VPC'
+                             order by submission_id, id desc) as validation_processing_completed_milestone
+                            on validation_processing_completed_milestone.id3 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id4, created_at as submission_acceptance_date from temp where code = 'SAC'
-                         order by submission_id, id desc) as submission_acceptance_milestone
-                        on submission_acceptance_milestone.id4 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id4, created_at as submission_acceptance_date from temp where code = 'SAC'
+                             order by submission_id, id desc) as submission_acceptance_milestone
+                            on submission_acceptance_milestone.id4 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id5, created_at as submission_terminated_date from temp where code = 'STR'
-                         order by submission_id, id desc) as submission_terminated_milestone
-                        on submission_terminated_milestone.id5 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id5, created_at as submission_terminated_date from temp where code = 'STR'
+                             order by submission_id, id desc) as submission_terminated_milestone
+                            on submission_terminated_milestone.id5 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id6, created_at as submission_reactivated_date from temp where code = 'SRE'
-                         order by submission_id, id desc) as submission_reactivated_milestone
-                        on submission_reactivated_milestone.id6 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id6, created_at as submission_reactivated_date from temp where code = 'SRE'
+                             order by submission_id, id desc) as submission_reactivated_milestone
+                            on submission_reactivated_milestone.id6 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id7, created_at as submission_rejected_date from temp where code = 'SRJ'
-                         order by submission_id, id desc) as submission_rejected_milestone
-                        on submission_rejected_milestone.id7 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id7, created_at as submission_rejected_date from temp where code = 'SRJ'
+                             order by submission_id, id desc) as submission_rejected_milestone
+                            on submission_rejected_milestone.id7 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id8, created_at as administrative_processing_start_date from temp where code = 'APS'
-                         order by submission_id, id desc) as administrative_processing_start_milestone
-                        on administrative_processing_start_milestone.id8 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id8, created_at as administrative_processing_start_date from temp where code = 'APS'
+                             order by submission_id, id desc) as administrative_processing_start_milestone
+                            on administrative_processing_start_milestone.id8 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id9, created_at as administrative_processing_completed_date from temp where code = 'APC'
-                         order by submission_id, id desc) as administrative_processing_completed_milestone
-                        on administrative_processing_completed_milestone.id9 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id9, created_at as administrative_processing_completed_date from temp where code = 'APC'
+                             order by submission_id, id desc) as administrative_processing_completed_milestone
+                            on administrative_processing_completed_milestone.id9 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id10, created_at as administrative_qc_ready_date from temp where code = 'RAQ'
-                         order by submission_id, id desc) as administrative_qc_ready_milestone
-                        on administrative_qc_ready_milestone.id10 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id10, created_at as administrative_qc_ready_date from temp where code = 'RAQ'
+                             order by submission_id, id desc) as administrative_qc_ready_milestone
+                            on administrative_qc_ready_milestone.id10 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id11, created_at as administrative_qc_start_date from temp where code = 'AQS'
-                         order by submission_id, id desc) as administrative_qc_start_milestone
-                        on administrative_qc_start_milestone.id11 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id11, created_at as administrative_qc_start_date from temp where code = 'AQS'
+                             order by submission_id, id desc) as administrative_qc_start_milestone
+                            on administrative_qc_start_milestone.id11 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id12, created_at as administrative_qc_completed_date from temp where code = 'AQC'
-                         order by submission_id, id desc) as administrative_qc_completed_milestone
-                        on administrative_qc_completed_milestone.id12 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id12, created_at as administrative_qc_completed_date from temp where code = 'AQC'
+                             order by submission_id, id desc) as administrative_qc_completed_milestone
+                            on administrative_qc_completed_milestone.id12 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id13, created_at as scientific_processing_start_date from temp where code = 'SPS'
-                         order by submission_id, id desc) as scientific_processing_start_milestone
-                        on scientific_processing_start_milestone.id13 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id13, created_at as scientific_processing_start_date from temp where code = 'SPS'
+                             order by submission_id, id desc) as scientific_processing_start_milestone
+                            on scientific_processing_start_milestone.id13 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id14, created_at as scientific_processing_completed_date from temp where code = 'SPC'
-                         order by submission_id, id desc) as scientific_processing_completed_milestone
-                        on scientific_processing_completed_milestone.id14 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id14, created_at as scientific_processing_completed_date from temp where code = 'SPC'
+                             order by submission_id, id desc) as scientific_processing_completed_milestone
+                            on scientific_processing_completed_milestone.id14 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id15, created_at as scientific_qc_ready_date from temp where code = 'RSQ'
-                         order by submission_id, id desc) as scientific_qc_ready_milestone
-                        on scientific_qc_ready_milestone.id15 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id15, created_at as scientific_qc_ready_date from temp where code = 'RSQ'
+                             order by submission_id, id desc) as scientific_qc_ready_milestone
+                            on scientific_qc_ready_milestone.id15 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id16, created_at as scientific_qc_start_date from temp where code = 'SQS'
-                         order by submission_id, id desc) as scientific_qc_start_milestone
-                        on scientific_qc_start_milestone.id16 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id16, created_at as scientific_qc_start_date from temp where code = 'SQS'
+                             order by submission_id, id desc) as scientific_qc_start_milestone
+                            on scientific_qc_start_milestone.id16 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id17, created_at as scientific_qc_completed_date from temp where code = 'SQC'
-                         order by submission_id, id desc) as scientific_qc_completed_milestone
-                        on scientific_qc_completed_milestone.id17 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id17, created_at as scientific_qc_completed_date from temp where code = 'SQC'
+                             order by submission_id, id desc) as scientific_qc_completed_milestone
+                            on scientific_qc_completed_milestone.id17 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id18, created_at as trial_summary_report_ready_date from temp where code = 'RTS'
-                         order by submission_id, id desc) as trial_summary_report_ready_milestone
-                        on trial_summary_report_ready_milestone.id18 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id18, created_at as trial_summary_report_ready_date from temp where code = 'RTS'
+                             order by submission_id, id desc) as trial_summary_report_ready_milestone
+                            on trial_summary_report_ready_milestone.id18 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id19, created_at as trial_summary_report_date from temp where code = 'TSR'
-                         order by submission_id, id desc) as trial_summary_report_milestone
-                        on trial_summary_report_milestone.id19 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id19, created_at as trial_summary_report_date from temp where code = 'TSR'
+                             order by submission_id, id desc) as trial_summary_report_milestone
+                            on trial_summary_report_milestone.id19 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id20, created_at as submitter_trial_summary_report_feedback_date from temp where code = 'STS'
-                         order by submission_id, id desc) as submitter_trial_summary_report_feedback_milestone
-                        on submitter_trial_summary_report_feedback_milestone.id20 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id20, created_at as submitter_trial_summary_report_feedback_date from temp where code = 'STS'
+                             order by submission_id, id desc) as submitter_trial_summary_report_feedback_milestone
+                            on submitter_trial_summary_report_feedback_milestone.id20 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id21, created_at as initial_abstraction_verified_date from temp where code = 'IAV'
-                         order by submission_id, id desc) as initial_abstraction_verified_milestone
-                        on initial_abstraction_verified_milestone.id21 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id21, created_at as initial_abstraction_verified_date from temp where code = 'IAV'
+                             order by submission_id, id desc) as initial_abstraction_verified_milestone
+                            on initial_abstraction_verified_milestone.id21 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id22, created_at as ongoing_abstraction_verified_date from temp where code = 'ONG'
-                         order by submission_id, id desc) as ongoing_abstraction_verified_milestone
-                        on ongoing_abstraction_verified_milestone.id22 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id22, created_at as ongoing_abstraction_verified_date from temp where code = 'ONG'
+                             order by submission_id, id desc) as ongoing_abstraction_verified_milestone
+                            on ongoing_abstraction_verified_milestone.id22 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id23, created_at as late_rejection_date from temp where code = 'LRD'
-                         order by submission_id, id desc) as late_rejection_milestone
-                        on late_rejection_milestone.id23 = temp.submission_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id23, created_at as late_rejection_date from temp where code = 'LRD'
+                             order by submission_id, id desc) as late_rejection_milestone
+                            on late_rejection_milestone.id23 = temp.submission_id
 
-                        left join
-                        (select DISTINCT ON (submission_id) submission_id as id24, name as current_milestone_name, created_at as submission_current_date, id as mileston_wrapper_id from temp
-                         order by submission_id, mileston_wrapper_id desc) as current_milestone
-                        on current_milestone.id24 = temp.submission_id
-
-
-                        left join
-                        (
-                            with current_processing_statuses as (
-                              select DISTINCT ON (trial_id) trial_id, processing_status_id, processing_status_wrappers.created_at
-                                from processing_status_wrappers
-                                order by trial_id, processing_status_wrappers.created_at desc
-                             )
-                            select processing_statuses.name as current_processing_status,
-                              current_processing_statuses.trial_id as processing_trial_id,
-                              current_processing_statuses.created_at as current_processing_status_date
-                            from processing_statuses
-                            inner join current_processing_statuses
-                            on current_processing_statuses.processing_status_id = processing_statuses.id
-                        ) as current_processing
-                        on current_processing.processing_trial_id = temp.trial_id
-
-                        left join
-                        (
-                          select trial_id as protocol_trial_id, protocol_id from other_ids
-                          inner join
-                          ( select id, code from protocol_id_origins where code = 'DCP') as dcp_protocols
-                          on dcp_protocols.id = other_ids.protocol_id_origin_id
-                        ) as dcp_protocol_id
-                        on dcp_protocol_id.protocol_trial_id = temp.trial_id
+                            left join
+                            (select DISTINCT ON (submission_id) submission_id as id24, name as current_milestone_name, created_at as submission_current_date, id as mileston_wrapper_id from temp
+                             order by submission_id, mileston_wrapper_id desc) as current_milestone
+                            on current_milestone.id24 = temp.submission_id
 
 
+                            left join
+                            (
+                                with current_processing_statuses as (
+                                  select DISTINCT ON (trial_id) trial_id, processing_status_id, processing_status_wrappers.created_at
+                                    from processing_status_wrappers
+                                    order by trial_id, processing_status_wrappers.created_at desc
+                                 )
+                                select processing_statuses.name as current_processing_status,
+                                  current_processing_statuses.trial_id as processing_trial_id,
+                                  current_processing_statuses.created_at as current_processing_status_date
+                                from processing_statuses
+                                inner join current_processing_statuses
+                                on current_processing_statuses.processing_status_id = processing_statuses.id
+                            ) as current_processing
+                            on current_processing.processing_trial_id = temp.trial_id
 
+                            left join
+                            (
+                              select trial_id as protocol_trial_id, protocol_id from other_ids
+                              inner join
+                              ( select id, code from protocol_id_origins where code = 'DCP') as dcp_protocols
+                              on dcp_protocols.id = other_ids.protocol_id_origin_id
+                            ) as dcp_protocol_id
+                            on dcp_protocol_id.protocol_trial_id = temp.trial_id
 
                         )
 
@@ -382,6 +382,7 @@ class Submission < TrialBase
        trials.start_date,
        trials.process_priority,
        trials.primary_comp_date,
+       trials.verification_date,
        trials.comp_date,
 	     trim(trailing ', ' from
           concat(
@@ -390,6 +391,7 @@ class Submission < TrialBase
 		      )
         ) as checkout,
         onhold_date,
+        onhold_desc,
 
         latest_milestones.*,
 

@@ -2221,7 +2221,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
     user = User.find_by_username(u["username"])
     unless user.blank?
       user.role = u["role"]
-      unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
+      unless user.role == "ROLE_SERVICE-REST"
         if user.username == 'ctrpsitesu2'
           user.organization = org3
         elsif user.username == 'ctrpsitesu3'

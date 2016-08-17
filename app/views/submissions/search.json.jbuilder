@@ -10,6 +10,7 @@ if @searchAccess
                     :checkout,
                     :official_title,
                     :onhold_date,
+                    :onhold_desc,
                     :comp_date,
                     :lead_protocol_id,
                     :lead_org_id,
@@ -52,7 +53,8 @@ if @searchAccess
                     :current_processing_status_date,
                     :dcp_id,
                     :clinical_research_category,
-                    :submission_method_name
+                    :submission_method_name,
+                    :verification_date
 
     end
   end
