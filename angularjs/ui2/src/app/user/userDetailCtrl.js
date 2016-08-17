@@ -285,7 +285,7 @@
                     width: '110'
                 },
                 {
-                    name: 'dcp_idxxxxxxx',
+                    name: 'dcp_id',
                     displayName: 'DCP ID',
                     enableSorting: true,
                     width: '*',
@@ -359,17 +359,20 @@
             vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, readNciId);
             addRemainingFields();
         }
+
         function addRemainingFields() {
             vm.gridTrialsOwnedOptions.columnDefs.splice(7, 0,
                 {
                     name: 'current_milestone_name',
                     displayName: 'Current Milestone, Milestone Date',
                     enableSorting: true,
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD.replace(" Date", ", " + row.entity.current_submission_date)}}</div>',
                     width: '*',
                     minWidth: '300'
                 },
                 {
-                    name: 'current_admin_milestone',
+                    name: 'current_administrative_milestone',
                     displayName: 'Current Admin Milestone, Milestone Date',
                     enableSorting: true,
                     width: '*',
@@ -395,6 +398,13 @@
                     enableSorting: true,
                     width: '*',
                     minWidth: '250'
+                },
+                {
+                    name: 'clinical_research_category',
+                        displayName: 'Clinical Research Category',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
                 },
                 {
                     name: 'submission_type_label',
@@ -425,20 +435,29 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'current_submi',
-                    displayName: 'Current Submission Type (O for Original, A for Amendment, U for Updated)',
-                    enableSorting: true,
-                    width: '*',
-                    minWidth: '650'
-                },
-                {
-                    name: 'submission_method',
+                    name: 'submission_method_name',
                     displayName: 'Submission Method',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
+                    name: 'checkout',
+                    displayName: 'Checked Out By',
+                    enableSorting: true,
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
+                    cellTemplate: "<div class=\"ui-grid-cell-contents tooltip-uigrid\" >{{grid.appScope.getCheckOut(row.entity.checkout)}}</div>",
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
+                    name: 'action',
+                    displayName: 'Action - View TSR',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                }
+                /*{
                     name: 'checkout',
                     displayName: 'Checked Out for Admin. Use by',
                     enableSorting: true,
@@ -451,9 +470,24 @@
                     enableSorting: true,
                     width: '*',
                     minWidth: '300'
-                }
+                }*/
             );
         }
+
+        vm.getCheckOut = function ( checkOut ) {
+            var checkOutStr = '';
+            if (checkOut.split(',').length > 1) {
+                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
+                    checkOutStr = checkOut.split(',')[0]+ '/SC';
+                } else {
+                    checkOutStr = checkOut;
+                }
+            } else {
+                checkOutStr = checkOut;
+            }
+            return checkOutStr;
+        };
+
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
@@ -520,16 +554,19 @@
         vm.getUserSubmittedTrials();
 
         vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
+
+        vm.searchOwnedParams = new TrialSearchParams;
+        vm.searchOwnedParams.type = 'own';
         vm.getUserTrials = function () {
             //user_id is undefined if no user was found to begin with
-            if (vm.searchParams.user_id) {
+            if (vm.searchOwnedParams.user_id) {
                 vm.gridTrialsOwnedOptions.useExternalPagination = true;
                 vm.gridTrialsOwnedOptions.useExternalSorting = true;
-                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                UserService.getUserTrialsSubmitted(vm.searchOwnedParams).then(function (data) {
+                    vm.gridTrialsOwnedOptions.data = data['trial_submissions'];
                     vm.gridTrialsOwnedOptions.totalItems = data.total;
                 }).catch(function (err) {
-                    console.log('Get User Trials failed');
+                    console.log('Get User Owned Trials failed');
                 });
             }
         };

@@ -69,7 +69,7 @@
                             openGsaModal();
                         }, 500);
                     } else {
-                        toastr.error('Login failed', 'Login error');
+                        toastr.error('Login failed', 'Login error', { timeOut: 0});
                         userObj.processing = false;
                     }
                 }).catch(function (err) {
@@ -181,7 +181,7 @@
                     if(data[0].success) {
                         toastr.success('Success', 'Your Request for Admin Access has been sent.');
                     } else {
-                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error');
+                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error', { timeOut: 0});
                     }
                 });
         };
@@ -357,7 +357,7 @@
                             var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
                             if (trialIdArr && trialIdArr.length){
                                 searchParams.to_user_ids = user_ids;
-                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value();
+                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_ownership_id').value();
                             } else {
                                 searchParams.to_user_ids = user_ids;
                             }

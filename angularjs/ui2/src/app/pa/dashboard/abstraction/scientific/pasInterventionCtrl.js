@@ -109,10 +109,7 @@
                         $scope.$emit('updatedInChildScope', {});
                         if (showToastr) {
                             toastr.clear();
-                            toastr.success('Intervention has been updated', 'Successful!', {
-                                extendedTimeOut: 1000,
-                                timeOut: 0
-                            });
+                            toastr.success('Intervention has been updated', 'Successful!');
                         }
                         _getTrialDetailCopy();
 

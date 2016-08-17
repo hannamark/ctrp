@@ -43,10 +43,7 @@
 
                     PATrialService.setCurrentTrial(angular.copy(vm.curTrial)); // update to cache
                     toastr.clear();
-                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
 
                     $scope.desc_form.$setPristine();
                 }

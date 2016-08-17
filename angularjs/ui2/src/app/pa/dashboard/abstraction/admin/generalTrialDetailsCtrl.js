@@ -122,10 +122,7 @@
                   vm.generalTrialDetailsObj.lock_version = res.lock_version;
                   PATrialService.setCurrentTrial(res); // update to cache
                   $scope.$emit('updatedInChildScope', {});
-                  toastr.success('Trial general details has been updated', 'Successful!', {
-                      extendedTimeOut: 1000,
-                      timeOut: 0
-                  });
+                  toastr.success('Trial general details has been updated', 'Successful!');
                   getTrialDetailCopy();
 
                   // To make sure setPristine() is executed after all $watch functions are complete

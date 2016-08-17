@@ -57,38 +57,45 @@ var dbConnection = function () {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
-        client.query("select * from other_ids where protocol_id = '" + NCTID + "'" + " ORDER BY id DESC LIMIT 1", function (err, trialID) {
+        client.query("select * from protocol_id_origins where code = 'NCT'" , function (err, protocolIDOrigin) {
             if (err) {
-                console.error('error running the Select query to find the protocol ID', err);
+                console.error('error running the Select query to find the protocol ID Origin', err);
                 assert.fail(0, 1, 'error running Query.');
             }
-            trialDBID = trialID.rows[0].trial_id;
-            client.query("UPDATE other_ids SET protocol_id = 'NCT85' || " + projectFunctions.getRandomInt(1, 1000000) + " where protocol_id = '" + NCTID + "'", function (err) {
+            protocolOriginDBID = protocolIDOrigin.rows[0].id;
+            client.query("select * from other_ids where protocol_id = '" + NCTID + "'" + " ORDER BY id DESC LIMIT 1", function (err, trialID) {
                 if (err) {
-                    console.error('error running the UPDATE query', err);
+                    console.error('error running the Select query to find the protocol ID', err);
                     assert.fail(0, 1, 'error running Query.');
                 }
-                client.query("SELECT * FROM other_ids where trial_id = " + trialDBID  + ' and protocol_id_origin_id = 1', function (err, result) {
+                trialDBID = trialID.rows[0].trial_id;
+                client.query("UPDATE other_ids SET protocol_id = 'NCT85' || " + projectFunctions.getRandomInt(1, 1000000) + " where protocol_id = '" + NCTID + "'", function (err) {
                     if (err) {
-                        console.error('error running the SELECT query', err);
+                        console.error('error running the UPDATE query', err);
                         assert.fail(0, 1, 'error running Query.');
                     }
-                    console.log('Value of Updated Row: ' + result.rows);
-                    console.log('***** Updated NCT Protocol ID is ---- ' + result.rows[0].protocol_id + ' ---- For Trial ID :' + trialDBID + ' ******');
-                    client.query("UPDATE trials SET lead_protocol_id = 'cukeScript' || " + projectFunctions.getRandomInt(1, 1000000) + " where id in (" + trialDBID + ")", function (err) {
+                    client.query("SELECT * FROM other_ids where trial_id = " + trialDBID + " and protocol_id_origin_id = " + protocolOriginDBID, function (err, result) {
                         if (err) {
-                            console.error('error running the UPDATE query', err);
+                            console.error('error running the SELECT query', err);
                             assert.fail(0, 1, 'error running Query.');
                         }
-                        client.query("SELECT * FROM trials where id = " + trialDBID , function (err, result) {
+                        console.log('Value of Updated Row: ' + result.rows);
+                        console.log('***** Updated NCT Protocol ID is ---- ' + result.rows[0].protocol_id + ' ---- For Trial ID :' + trialDBID + ' ******');
+                        client.query("UPDATE trials SET lead_protocol_id = 'cukeScript' || " + projectFunctions.getRandomInt(1, 1000000) + " where id in (" + trialDBID + ")", function (err) {
                             if (err) {
-                                console.error('error running the SELECT query', err);
+                                console.error('error running the UPDATE query', err);
                                 assert.fail(0, 1, 'error running Query.');
                             }
-                            console.log('Value of Updated Row: ' + result.rows);
-                            console.log('***** Updated Lead Protocol ID is ---- ' + result.rows[0].lead_protocol_id + ' ---- For Trial ID :' + trialDBID + ' ******');
-                            client.on('end', function () {
-                                console.log("Client was disconnected.")
+                            client.query("SELECT * FROM trials where id = " + trialDBID, function (err, result) {
+                                if (err) {
+                                    console.error('error running the SELECT query', err);
+                                    assert.fail(0, 1, 'error running Query.');
+                                }
+                                console.log('Value of Updated Row: ' + result.rows);
+                                console.log('***** Updated Lead Protocol ID is ---- ' + result.rows[0].lead_protocol_id + ' ---- For Trial ID :' + trialDBID + ' ******');
+                                client.on('end', function () {
+                                    console.log("Client was disconnected.")
+                                });
                             });
                         });
                     });

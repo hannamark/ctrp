@@ -202,6 +202,7 @@ module.exports = function () {
                 expect(projectFunctions.inSearchResults(value)).to.become('true');
                 element(by.linkText(value)).click();
             });
+            browser.sleep(2500);
             searchOrg.clickOrgSearchModel();
             cukeOrganization.then(function (orgValue) {
                 searchOrg.setOrgName(orgValue);

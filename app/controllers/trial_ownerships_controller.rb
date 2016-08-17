@@ -116,6 +116,15 @@ class TrialOwnershipsController < ApplicationController
       #transfer selected
       ownershipsToEnd = TrialOwnership.where(id: idsToEnd)
       trial_ids = ownershipsToEnd.pluck(:trial_id)
+
+      p "##########################################"
+      p "##########################################"
+      p "##########################################"
+      p trial_ids
+      p "##########################################"
+      p "##########################################"
+      p "##########################################"
+
       endSelected ownershipsToEnd
       addOwners params[:to_user_ids], trial_ids
     elsif ownerUserId

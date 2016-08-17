@@ -241,10 +241,7 @@
                                 PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                                 $scope.$emit('updatedInChildScope', {});
                                 toastr.clear();
-                                toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                                    extendedTimeOut: 5,
-                                    timeOut: 0
-                                });
+                                toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
 
                                 if (cbString && cbString === 'editInv') {
                                     vm.editInvestigator(vm.investigatorGrid.length - 1);
@@ -931,10 +928,7 @@
                     }
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                     toastr.clear();
-                    toastr.success('Record(s) deleted.', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Record(s) deleted.', 'Operation Successful!');
                 }
             }).catch(function(err) {
                 console.log("error in deleting participating site=" + psId);

@@ -46,13 +46,13 @@
             var ignoredFields = ['new', 'id', 'server_response']; // fields ignored in the response body
 
             if (!rejection.data) {
-                $injector.get('toastr').error('Please try again.', 'The server may be down');
+                $injector.get('toastr').error('Please try again.', 'The server may be down', { timeOut: 0});
             }
 
             if(rejection.status === 401) {
               //if unauthenticated or unauthorized, kick the user back to sign_in
               $injector.get('$state').go('main.sign_in');
-              $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue');
+              $injector.get('toastr').error('Access to the resources is not authorized', 'Please sign in to continue', { timeOut: 0});
             } else if (rejection.status > 226 && errorCount < 7) {
                 $injector.get('toastr').clear();
                 var errorMsg = '<u>Error Code</u>: ' + rejection.status;
@@ -67,6 +67,7 @@
                     });
                 }
                 */
+               console.info('rejection: ', rejection);
                 if ('errors' in rejection) {
                     Object.keys(rejection.errors).forEach(function(field, index) {
                         if (ignoredFields.indexOf(field) === -1 && !angular.isNumber(field)) {
@@ -74,11 +75,19 @@
                         }
                     });
                 }
+                var validationErrors = 'Errors: ';
+                if (!!rejection.data && angular.isArray(rejection.data)) {
+                    rejection.data.forEach(function(errMsg) {
+                        validationErrors += '\n ' + errMsg;
+                    });
+                }
+                console.info('Validation Errors: ', validationErrors);
 
-                $injector.get('toastr').error(errorMsg, {
-                    extendedTimeOut: 1000,
-                    timeOut: 0
-                });
+                errorMsg += validationErrors; // concatenate
+                var toastrService = $injector.get('toastr');
+                toastrService.error(validationErrors, '', { timeOut: 0 });
+
+                toastrService.error(errorMsg, '', { timeOut: 0 });
                 // $injector.get('UserService').logout();
                 errorCount++;
             }
