@@ -94,6 +94,7 @@ ResponsibleParty.find_or_create_by(code: 'SI').update(name: 'Sponsor-Investigato
 
 ProtocolIdOrigin.find_or_create_by(code: 'NCI').update(name: 'NCI Identifier')
 ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier')
+# ProtocolIdOrigin.find_or_create_by(code: 'LORG').update(name: 'Lead Organization Trial Identifier')
 ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier')
 ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier')
 ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier')

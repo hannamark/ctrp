@@ -285,7 +285,7 @@
                     width: '110'
                 },
                 {
-                    name: 'dcp_idxxxxxxx',
+                    name: 'dcp_id',
                     displayName: 'DCP ID',
                     enableSorting: true,
                     width: '*',
@@ -359,6 +359,7 @@
             vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, readNciId);
             addRemainingFields();
         }
+
         function addRemainingFields() {
             vm.gridTrialsOwnedOptions.columnDefs.splice(7, 0,
                 {
@@ -371,7 +372,7 @@
                     minWidth: '300'
                 },
                 {
-                    name: 'current_admin_milestone',
+                    name: 'current_administrative_milestone',
                     displayName: 'Current Admin Milestone, Milestone Date',
                     enableSorting: true,
                     width: '*',
@@ -397,6 +398,13 @@
                     enableSorting: true,
                     width: '*',
                     minWidth: '250'
+                },
+                {
+                    name: 'clinical_research_category',
+                        displayName: 'Clinical Research Category',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
                 },
                 {
                     name: 'submission_type_label',
@@ -427,20 +435,29 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'current_submi',
-                    displayName: 'Current Submission Type (O for Original, A for Amendment, U for Updated)',
-                    enableSorting: true,
-                    width: '*',
-                    minWidth: '650'
-                },
-                {
-                    name: 'submission_method',
+                    name: 'submission_method_name',
                     displayName: 'Submission Method',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
+                    name: 'checkout',
+                    displayName: 'Checked Out By',
+                    enableSorting: true,
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
+                    cellTemplate: "<div class=\"ui-grid-cell-contents tooltip-uigrid\" >{{grid.appScope.getCheckOut(row.entity.checkout)}}</div>",
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
+                    name: 'action',
+                    displayName: 'Action - View TSR',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                }
+                /*{
                     name: 'checkout',
                     displayName: 'Checked Out for Admin. Use by',
                     enableSorting: true,
@@ -453,9 +470,24 @@
                     enableSorting: true,
                     width: '*',
                     minWidth: '300'
-                }
+                }*/
             );
         }
+
+        vm.getCheckOut = function ( checkOut ) {
+            var checkOutStr = '';
+            if (checkOut.split(',').length > 1) {
+                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
+                    checkOutStr = checkOut.split(',')[0]+ '/SC';
+                } else {
+                    checkOutStr = checkOut;
+                }
+            } else {
+                checkOutStr = checkOut;
+            }
+            return checkOutStr;
+        };
+
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);

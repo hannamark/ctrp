@@ -164,11 +164,16 @@ var registerTrial = function(){
 
     /**Date fields**/
     this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
-    this.addTrialDateClickToday = element(by.css('.uib-datepicker-popup.dropdown-menu')).element(by.buttonText('Today'));//element(by.model('date')).element(by.buttonText('Today'));
-    this.addTrialDateClickClear = element(by.css('.uib-datepicker-popup.dropdown-menu')).element(by.buttonText('Clear'));//element(by.model('date')).element(by.buttonText('Clear'));
-    this.addTrialDateClickPreviousMonth = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('.glyphicon.glyphicon-chevron-left');//element(by.model('date')).$('.glyphicon.glyphicon-chevron-left');//element(by.css('.glyphicon.glyphicon-chevron-left'));
-    this.addTrialDateClickNextMonth = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('.glyphicon.glyphicon-chevron-right');//element(by.model('date')).$('.glyphicon.glyphicon-chevron-right');//element(by.css('.glyphicon.glyphicon-chevron-right'));
-    this.addTrialDateClickYearMonthDate = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('button[role="heading"]');//element(by.model('date')).$('button[role="heading"]');//element(by.css('button[role="heading"]'));
+    this.addTrialDateClickToday = element(by.css('.uib-datepicker-popup.dropdown-menu')).element(by.buttonText('Today'));
+    //this.addTrialDateClickToday = element(by.model('date')).element(by.buttonText('Today'));
+    this.addTrialDateClickClear = element(by.css('.uib-datepicker-popup.dropdown-menu')).element(by.buttonText('Clear'));
+   // this.addTrialDateClickClear = element(by.model('date')).element(by.buttonText('Clear'));
+   this.addTrialDateClickPreviousMonth = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('.glyphicon.glyphicon-chevron-left');
+    //this.addTrialDateClickPreviousMonth = element(by.model('date')).$('.glyphicon.glyphicon-chevron-left');//element(by.css('.glyphicon.glyphicon-chevron-left'));
+    this.addTrialDateClickNextMonth = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('.glyphicon.glyphicon-chevron-right');
+    //this.addTrialDateClickNextMonth = element(by.model('date')).$('.glyphicon.glyphicon-chevron-right');//element(by.css('.glyphicon.glyphicon-chevron-right'));
+    this.addTrialDateClickYearMonthDate = element(by.css('.uib-datepicker-popup.dropdown-menu')).$('button[role="heading"]');
+  //  this.addTrialDateClickYearMonthDate = element(by.model('date')).$('button[role="heading"]');//element(by.css('button[role="heading"]'));
 
 
     /******************

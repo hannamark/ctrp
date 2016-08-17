@@ -98,6 +98,8 @@ class Submission < TrialBase
   scope :matchesImpPro, -> (params, protocol_source_id_imp, protocol_source_id_pro) {
     join_clause  = "INNER JOIN trials ON submissions.trial_id = trials.id "
     join_clause += "INNER JOIN users ON submissions.user_id = users.id "
+    join_clause += "LEFT JOIN research_categories as trial_research_category ON trials.research_category_id = trial_research_category.id "
+    join_clause += "LEFT JOIN submission_methods as submission_method ON submissions.submission_method_id = submission_method.id "
     join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
     join_clause += "LEFT JOIN source_contexts as trial_lead_org_source_context ON trial_lead_org_source_context.id = trial_lead_org.source_context_id "
     join_clause += "LEFT JOIN (
@@ -115,6 +117,9 @@ class Submission < TrialBase
                         select DISTINCT ON (trial_id)
                             submission_id,
                             current_milestone_name,
+                            current_processing_status,
+                            dcp_protocol_id.protocol_id as dcp_id,
+                            to_char(current_processing_status_date, 'DD-Mon-yyyy') as current_processing_status_date,
                             to_char(submission_current_date, 'DD-Mon-yyyy') as current_submission_date,
                             to_char(submission_received_date, 'DD-Mon-yyyy') as submission_received_date,
                             to_char(validation_processing_start_date, 'DD-Mon-yyyy') as validation_processing_start_date,
@@ -138,12 +143,36 @@ class Submission < TrialBase
                             to_char(submitter_trial_summary_report_feedback_date, 'DD-Mon-yyyy') as submitter_trial_summary_report_feedback_date,
                             to_char(initial_abstraction_verified_date, 'DD-Mon-yyyy') as initial_abstraction_verified_date,
                             to_char(ongoing_abstraction_verified_date, 'DD-Mon-yyyy') as ongoing_abstraction_verified_date,
-                            to_char(late_rejection_date, 'DD-Mon-yyyy') as late_rejection_date
+                            to_char(late_rejection_date, 'DD-Mon-yyyy') as late_rejection_date,
+                            CASE GREATEST(administrative_processing_start_date,
+                                          administrative_processing_completed_date,
+                                          administrative_qc_ready_date,
+                                          administrative_qc_start_date,
+                                          administrative_qc_completed_date)
+                                WHEN administrative_processing_start_date       THEN ('Administrative Processing Start, ' || to_char(administrative_processing_start_date, 'DD-Mon-yyyy'))
+                                WHEN administrative_processing_completed_date   THEN ('Administrative Processing Completed, ' || to_char(administrative_processing_completed_date, 'DD-Mon-yyyy'))
+                                WHEN administrative_qc_ready_date               THEN ('Administrative QC Ready, ' || to_char(administrative_qc_ready_date, 'DD-Mon-yyyy'))
+                                WHEN administrative_qc_start_date               THEN ('Administrative QC Start, ' || to_char(administrative_qc_start_date, 'DD-Mon-yyyy'))
+                                WHEN administrative_qc_completed_date           THEN ('Administrative QC Completed, ' || to_char(administrative_qc_completed_date, 'DD-Mon-yyyy'))
+                            END as current_administrative_milestone,
+                            CASE GREATEST(scientific_processing_start_date,
+                                          scientific_processing_completed_date,
+                                          scientific_qc_ready_date,
+                                          scientific_qc_start_date,
+                                          scientific_qc_completed_date)
+                                WHEN scientific_processing_start_date       THEN ('Administrative Processing Start, ' || to_char(scientific_processing_start_date, 'DD-Mon-yyyy'))
+                                WHEN scientific_processing_completed_date   THEN ('Administrative Processing Completed, ' || to_char(scientific_processing_completed_date, 'DD-Mon-yyyy'))
+                                WHEN scientific_qc_ready_date               THEN ('Administrative QC Ready, ' || to_char(scientific_qc_ready_date, 'DD-Mon-yyyy'))
+                                WHEN scientific_qc_start_date               THEN ('Administrative QC Start, ' || to_char(scientific_qc_start_date, 'DD-Mon-yyyy'))
+                                WHEN scientific_qc_completed_date           THEN ('Administrative QC Completed, ' || to_char(scientific_qc_completed_date, 'DD-Mon-yyyy'))
+                            END as current_scientific_milestone
+
+
 
                         from (
                         temp
                         left join
-                        ( select DISTINCT ON (submission_id) submission_id as id1, created_at as submission_received_date from temp where code = 'SRD'
+                        (select DISTINCT ON (submission_id) submission_id as id1, created_at as submission_received_date from temp where code = 'SRD'
                          order by submission_id, id desc) as submission_received_milestone
                          on submission_received_milestone.id1 = temp.submission_id
 
@@ -262,6 +291,35 @@ class Submission < TrialBase
                          order by submission_id, mileston_wrapper_id desc) as current_milestone
                         on current_milestone.id24 = temp.submission_id
 
+
+                        left join
+                        (
+                            with current_processing_statuses as (
+                              select DISTINCT ON (trial_id) trial_id, processing_status_id, processing_status_wrappers.created_at
+                                from processing_status_wrappers
+                                order by trial_id, processing_status_wrappers.created_at desc
+                             )
+                            select processing_statuses.name as current_processing_status,
+                              current_processing_statuses.trial_id as processing_trial_id,
+                              current_processing_statuses.created_at as current_processing_status_date
+                            from processing_statuses
+                            inner join current_processing_statuses
+                            on current_processing_statuses.processing_status_id = processing_statuses.id
+                        ) as current_processing
+                        on current_processing.processing_trial_id = temp.trial_id
+
+                        left join
+                        (
+                          select trial_id as protocol_trial_id, protocol_id from other_ids
+                          inner join
+                          ( select id, code from protocol_id_origins where code = 'DCP') as dcp_protocols
+                          on dcp_protocols.id = other_ids.protocol_id_origin_id
+                        ) as dcp_protocol_id
+                        on dcp_protocol_id.protocol_trial_id = temp.trial_id
+
+
+
+
                         )
 
                         order by trial_id desc, submission_id desc, id desc
@@ -311,6 +369,10 @@ class Submission < TrialBase
     joins(join_clause).where(where_clause).select("
        submissions.*,
 
+       submission_method.name as submission_method_name,
+
+       trial_research_category.name as clinical_research_category,
+
        trial_ownership.user_id as owner_user_id,
        trial_ownership.trial_ownership_id,
 
@@ -318,6 +380,7 @@ class Submission < TrialBase
        trials.lead_protocol_id,
        trials.official_title,
        trials.start_date,
+       trials.process_priority,
        trials.primary_comp_date,
        trials.comp_date,
 	     trim(trailing ', ' from
@@ -356,7 +419,9 @@ class Submission < TrialBase
                 )
             ELSE ''
           END
-       ) as ctep_id
+       ) as ctep_id,
+
+       dcp_id
     ")
   }
   scope :matchesImpProPro, -> (userId, protocol_source_id_imp, protocol_source_id_pro) {

@@ -62,14 +62,13 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     Then I can view Organizations in the CTEP Context with "Processing Status" of "Pending" and a "Service Request" of "Create" 
     And the search results will display the column type
     
-    |CTRP ID|
+      |CTRP ID|
       |CTEP Org PK ID|
       |CTEP ID|
       |Name|
       |Source Status|
       |Source Context|
-      |Source ID|??????
-      |Families|????
+      |Source ID|
       |Phone|
       |Email|
       |Last Updated By|
@@ -120,8 +119,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |Name|
       |Source Status|
       |Source Context|
-      |Source ID|??????
-      |Families|????
+      |Source ID|
       |Phone|
       |Email|
       |Last Updated By|
