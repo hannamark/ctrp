@@ -258,7 +258,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     Then the CTEP Processing Status will be changed from "Pending" to "Complete"
     And the CTEP Service Request will be change from Create to Null
     And every CTRP Organization can be associated with only one Organization in the CTEP Context
-   And The CTRP Organization ID (PO ID) and CTEP Org PK ID  will be sent to CTEP-------------------- not on the workflow diagram, would like to confirm this step.
+ 
     
     
   
@@ -384,12 +384,12 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
      When CTEP Indicates via REST Service that two Organizations are to be merged
      And the CTEP Organizations <OrganizationType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Organization status <StatusType>
      
-     |OrganizationType| PKIDType|CTRPIDType|ServiceRequestType |rocessingStatusType |StatusType|
-     |Organization 1  |PK ID 1  |CTRP ID 1 | Merge ID 1        |Pending             |Active    |
-     |Organization 2  |PK ID 2  |CTRP ID 2 | Merge ID 2        |Pending             |Inactive  |
+     |OrganizationType| PKIDType|CTRPIDType|ServiceRequestType |processingStatusType |StatusType|
+     |Organization 1  |PK ID 1  |CTRP ID 1 | Merge ID 2        |Pending             |Active    |
+     |Organization 2  |PK ID 2  |CTRP ID 2 | Merge ID 1        |Pending             |Inactive  |
      
-     Then the curator will search CTEP Context for organization where Service request is "Merge ID"
-     And the curator will search for matching organization in the CTRP Context
+     Then the curator will search CTEP Context for organization where Service request is "Merge"
+     And the curator will search for matching organizations in the CTRP Context
      When Matching CTRP organizations found
      Then The CTRP organization matching CTEP organization with inactive status will be Nullified
      And  the organizations <OrganizationType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Organization status <StatusType> 
@@ -397,7 +397,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
      |OrganizationType| PKIDType|CTRPIDType|ServiceRequestType |ProcessingStatusType |StatusType|
      |Organization 1  |PK ID 1  |CTRP ID 1 | Null              |Complete            |Active    |
      |Organization 2  |PK ID 2  |CTRP ID 2 | Null              |Complete             |Inactive  |
-     And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trail associations of the nullified organization
+     And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trial associations of the nullified organization
      
     
     
@@ -512,8 +512,8 @@ Scenario:#8 Curator can identify when two Persons are to be merged
      And the CTEP person <PersonType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Person status <StatusType>
      
      |PersonType| PKIDType|CTRPIDType|ServiceRequestType |rocessingStatusType |StatusType|
-     |Person 1  |PK ID 1  |CTRP ID 1 | Merge ID 1        |Pending             |Active    |
-     |Person 2  |PK ID 2  |CTRP ID 2 | Merge ID 2        |Pending             |Inactive  |
+     |Person 1  |PK ID 1  |CTRP ID 1 | Merge ID 2        |Pending             |Active    |
+     |Person 2  |PK ID 2  |CTRP ID 2 | Merge ID 1        |Pending             |Inactive  |
      
      Then the curator will search CTEP Context for person where Service request is "Merge ID"
      And the curator will search for matching persons in the CTRP Context
