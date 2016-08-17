@@ -115,7 +115,7 @@
           outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
           TrialService.upsertTrial(outerTrial).then(function(res) {
               var status = res.server_response.status;
-              toastr.clear();
+            //   toastr.clear();
 
               if (status >= 200 && status <= 210) {
                   vm.generalTrialDetailsObj = res;
