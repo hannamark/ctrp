@@ -69,8 +69,8 @@ Then the Last Active Submission for all the trials the user is an owner of will 
 |Current Processing Status Date|
 |Clinical Research Category|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated)|
 |Submission Method|
 |Checked Out for Admin. Use by|
@@ -92,8 +92,8 @@ And I can sort the trials by the fields:
 |Current Processing Status Date|
 |Clinical Research Category|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated|
 |Submission Method|
 |Checked Out for Admin. Use by|
@@ -140,8 +140,8 @@ Then the Last Active Submission for all the trials the user is a submitter will 
 |Current Processing Status Date|
 |Clinical Research Category|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated)|
 |Submission Method|
 |Checked Out for Admin. Use by|
@@ -163,8 +163,8 @@ And I can sort the trials by the fields:
 |Current Processing Status Date|
 |Clinical Research Category|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated|
 |Submission Method|
 |Checked Out for Admin. Use by|
@@ -184,8 +184,8 @@ And I can export the list of owned trials to Excel including the following field
 |Current Processing Status Date|
 |Clinical Research Category|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated|
 |Submission Method|
 |Checked Out for Admin. Use by|
@@ -210,8 +210,8 @@ Then the Last Active Submission for the user for all the trials user is a partic
 |Clinical Research Category|
 |Trial Sub-type|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated)|
 |Submission Method|
 |Checked Out for Admin. Use by|
@@ -234,8 +234,8 @@ And I can sort the trials by the fields:
 |Clinical Research Category|
 |Trial Sub-type|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated|
 |Submission Method|
 |Checked Out for Admin. Use by|
@@ -256,8 +256,8 @@ And I can export the list of owned trials to Excel including the following field
 |Clinical Research Category|
 |Trial Sub-type|
 |Record Verification Date|
-|On Hold Reasons|
-|On Hold Dates|
+|On Hold Reason (current)|
+|On Hold Date (current)|
 |current Submission Type (O for Original, A for Amendment, U for Updated|
 |Submission Method|
 |Checked Out for Admin. Use by|
