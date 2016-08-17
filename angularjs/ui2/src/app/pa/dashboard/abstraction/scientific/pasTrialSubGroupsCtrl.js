@@ -80,15 +80,12 @@
 
                 if (status >= 200 && status <= 210) {
                     vm.curTrial.lock_version = response.lock_version || '';
-                    vm.curTrial.sub_groups = response["sub_groups"];
+                    vm.curTrial.sub_groups = response['sub_groups'];
                     PATrialService.setCurrentTrial(vm.curTrial);
                     $scope.$emit('updatedInChildScope', {});
 
                     toastr.clear();
-                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    })
+                    toastr.success('Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
 
                     $scope.sg_form.$setPristine();
 
@@ -147,10 +144,7 @@
                     $scope.$emit('updatedInChildScope', {});
 
                     toastr.clear();
-                    toastr.success('Record(s) deleted.', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Record(s) deleted.', 'Operation Successful!');
                 }
             }).catch(function(err) {
                 console.log("error in creating or updating Trial sub group " + JSON.stringify(outerTrial));

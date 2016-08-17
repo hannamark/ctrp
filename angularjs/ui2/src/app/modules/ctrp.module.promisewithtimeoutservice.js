@@ -123,7 +123,7 @@
             if (error.status === 408) {
                 errorMsg = 'Retrieving data from service timed out';
             }
-            toastr.error(errorMsg, 'Error');
+            toastr.error(errorMsg, 'Error', { timeOut: 0});
             console.log('request has timed out');
         } //raiseErrorMessage
 

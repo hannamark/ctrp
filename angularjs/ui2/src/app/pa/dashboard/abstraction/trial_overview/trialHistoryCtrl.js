@@ -429,10 +429,7 @@
                         row.entity = angular.extend(row.entity, vm.entity);
 
                         toastr.clear();
-                        toastr.success('Submission has been acknowledged', 'Operation Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
+                        toastr.success('Submission has been acknowledged', 'Operation Successful!');
                     }
 
                 }).catch(function(err) {
@@ -493,10 +490,7 @@
                         row.entity = angular.extend(row.entity.submission_type_list, vm.entity.submission_type_list);
                         row.entity = angular.extend(row.entity, vm.entity);
                         toastr.clear();
-                        toastr.success('Amendment has been updated', 'Operation Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
+                        toastr.success('Amendment has been updated', 'Operation Successful!');
                     }
 
                 }).catch(function(err) {

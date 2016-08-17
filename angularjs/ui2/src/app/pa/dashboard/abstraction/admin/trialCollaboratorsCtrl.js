@@ -97,10 +97,7 @@
                         successMsg = 'Trial ' + vm.curTrial.lead_protocol_id + ' has been recorded';
                     }
                     toastr.clear();
-                    toastr.success(successMsg, 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success(successMsg, 'Operation Successful!');
                     vm.addMode = false;
                     vm.selectedAllCos = false;
 
@@ -127,10 +124,7 @@
             console.log("updateCollaborator idx = " + idx);
             if(!org_name){
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                toastr.error('The collaborator organization name cannot be empty.' , {
-                    extendedTimeOut: 1,
-                    timeOut: 0
-                });
+                toastr.error('The collaborator organization name cannot be empty.', '', { timeOut: 0});
                 return;
             }
             vm.curTrial.collaborators_attributes=[];

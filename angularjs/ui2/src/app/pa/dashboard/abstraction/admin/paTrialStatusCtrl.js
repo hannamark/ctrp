@@ -272,9 +272,7 @@
                      _loadComments(commentField);
 
                      toastr.clear();
-                     toastr.success('Your comment has been added', 'Successful!', {
-                         timeOut: 1000
-                     });
+                     toastr.success('Your comment has been added', 'Successful!');
                   }
              }).finally(function() {
                  vm.disableBtn = false;
@@ -349,10 +347,7 @@
                     $scope.$emit('updatedInChildScope', {});
 
                     toastr.clear();
-                    toastr.success('Trial statuses has been updated', 'Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Trial statuses has been updated', 'Successful!');
                     _getTrialDetailCopy();
                     $scope.trial_status_form.$setPristine();
                 }

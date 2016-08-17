@@ -112,11 +112,11 @@
         var upsertUserSignup = function (userObj) {
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj).then(function (data) {
                 if (data["server_response"] == 422 || data["server_response"]["status"] == 422) {
-                    toastr.error('Sign Up failed', 'Login error');
+                    toastr.error('Sign Up failed', 'Login error', { timeOut: 0});
                     for (var key in data) {
                         if (data.hasOwnProperty(key)) {
-                            if (key != "server_response") {
-                                toastr.error("SignUp error:", key + " -> " + data[key]);
+                            if (key !== 'server_response') {
+                                toastr.error('SignUp error:', key + ' -> ' + data[key], { timeOut: 0});
                             }
                         }
                     }

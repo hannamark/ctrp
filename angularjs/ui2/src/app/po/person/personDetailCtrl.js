@@ -76,10 +76,7 @@
 
         function showToastr(personName) {
             toastr.clear();
-            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!', {
-                extendedTimeOut: 1000,
-                timeOut: 0
-            });
+            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!');
         }
 
         vm.resetForm = function() {
