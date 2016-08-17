@@ -75,7 +75,7 @@
                         }
                     });
                 }
-                var validationErrors = 'Errors: ';
+                var validationErrors = '\n';
                 if (!!rejection.data && angular.isArray(rejection.data)) {
                     rejection.data.forEach(function(errMsg) {
                         validationErrors += '\n ' + errMsg;
