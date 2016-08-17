@@ -1,5 +1,5 @@
-source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
-#source 'https://rubygems.org'
+# source 'https://ncimvn.nci.nih.gov/nexus/content/repositories/rubygems-org/'
+source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -87,6 +87,7 @@ gem 'pg_sequencer'
 gem 'rack-cors', :require => 'rack/cors'
 
 #gem for reading/writing spreadsheet
+gem 'nokogiri', '~> 1.6.8'
 gem 'roo'
 gem 'roo-xls'
 
@@ -95,7 +96,7 @@ gem 'rufus-scheduler'
 gem 'dbi'
 
 #gems used for xml parsing and mapping to ruby object esp for RESTful Services
-gem 'nokogiri'
+#gem 'nokogiri', '~> 1.5.9'
 gem 'xml-mapping'
 gem 'prawn'
 
