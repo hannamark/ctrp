@@ -85,7 +85,7 @@
 
                 errorMsg += validationErrors; // concatenate
                 var toastrService = $injector.get('toastr');
-                toastrService.error(validationErrors, '', { timeOut: 0 });
+                // toastrService.error(validationErrors, '', { timeOut: 0 });
 
                 toastrService.error(errorMsg, '', { timeOut: 0 });
                 // $injector.get('UserService').logout();
