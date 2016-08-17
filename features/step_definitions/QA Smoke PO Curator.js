@@ -117,6 +117,7 @@ module.exports = function () {
                 searchFamily.clickSearchButton();
                 expect(projectFunctions.inSearchResults(value)).to.become('true');
                 element(by.linkText(value)).click();
+                expect()
             });
             searchOrg.clickOrgSearchModel();
             cukeOrganization.then(function (orgValue) {
@@ -201,9 +202,21 @@ module.exports = function () {
                 searchPeople.clickSearch();
                 expect(projectFunctions.inSearchResults(value)).to.become('true');
                 element(by.linkText(value)).click();
+                addPeople.addPersonFirstName.getAttribute('value').then(function(perFNAme){
+                    console.log("This is the Person First name in Edit Person Page" + perFNAme);
+                expect(perFNAme).to.equal(value, 'Verify the Person name in Edit page.');
+                })
             });
-            browser.sleep(2500);
-            searchOrg.clickOrgSearchModel();
+                 searchOrg.orgModelSearch.isPresent().then(function (state) {
+                    if (state === true) {
+                         searchOrg.orgModelSearch.isDisplayed().then(function (state2) {
+                            if(state2)
+                            searchOrg.clickOrgSearchModel();
+                        });
+                    } else {
+                        assert.fail(0,1,'Organization Model on Edit Person page did not appear');
+                    }
+                });
             cukeOrganization.then(function (orgValue) {
                 searchOrg.setOrgName(orgValue);
                 searchOrg.clickSearchButton();

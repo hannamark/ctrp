@@ -64,6 +64,8 @@ var projectMethodsRegistry = function () {
 
 
     this.selectTrials = function (trialType) {
+        trialMenuItem.clickTrials();
+        trialMenuItem.clickListSearchTrialLink();
         if (trialType === 'National') {
             trialMenuItem.clickRegisterNationalTrialLink();
         }
