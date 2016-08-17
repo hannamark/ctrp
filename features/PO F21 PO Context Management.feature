@@ -111,7 +111,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |Legacy|
       
        
-    And the displayed organization association history will list the column type ????
+    And the displayed organization association history will list the column type
     
       |CTRP ID|
       |CTEP Org PK ID|
@@ -209,17 +209,18 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     
       |Active  |
       |Inactive  |
-      |Nullified  |
-      |Pending  | 
+      |Nullified|
+      |Legacy|
+      
     And the displayed organization list will the column type
     
       |CTRP ID|
+      |CTEP Org PK ID|
       |CTEP ID|
       |Name|
       |Source Status|
       |Source Context|
       |Source ID|
-      |Families|
       |Phone|
       |Email|
       |Last Updated By|
@@ -228,16 +229,20 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |State|
       |Country|
       |Postal Code|
+      |Funding Mechanism|
+      |Service Request|
+      |Processing Status|
       
     
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "organization Name" and "Organization Address" 
     When the CTEP Organization does match any existing CTRP Context Organization name and Organization Address
-    Then a pop up list of matching CTRP organization with Organization Status "Active" will be displayed with information type
+    Then a pop up list of matching CTRP organization with Organization Source Status "Active" will be displayed with information type
     
     |CTRP ID|
     |CTEP ID|
     |Organization Name|
+    |Source Status|
     |Organization Address:City, State, County, Post Code|
     
     And the curator will review the displayed options
@@ -246,14 +251,14 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |OptionType|FunctionType|
     |Cancel    |To complete a New Search|
     |Proceed   |Create a New CTRP organization            |
-    |Select    |To associate an Organization from the search results with the selected CTEO org |
+    |Select    |To associate an Organization from the search results with the selected CTER org |
     
    	When The CTRP Organization displays after clicking on select
     And the curator clicks on Associate Organization Context to associate the selected CTRP Organization with the Organization in the CTEP Context
     Then the CTEP Processing Status will be changed from "Pending" to "Complete"
     And the CTEP Service Request will be change from Create to Null
     And every CTRP Organization can be associated with only one Organization in the CTEP Context
-   And The CTRP Organization ID (PO ID) and CTEP Org PK ID  will be sent to CTEP 
+   And The CTRP Organization ID (PO ID) and CTEP Org PK ID  will be sent to CTEP-------------------- not on the workflow diagram, would like to confirm this step.
     
     
   
@@ -282,7 +287,9 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Organization Name|
     And the CTRP Processing Status will be pending
     And The CTRP Curator will be able to identify by searching CTEP Organization with Service Request "Update"
-    And the CTRP Curator will determine the updates for the CTRP Context
+    And the CTRP Processing Status will be "Pending"
+    When CTRP Curator will determine the updates for the CTRP Context
+    Then the CTRP Processing Status will be "Complete"
     
    
  
@@ -375,21 +382,31 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
   Scenario:#8 Curator can identify when two organizations are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Organizations are to be merged
-     And CTEP identifies one Organization will be Active 
-     And CTEP identifies a second Organization to be Inactive as the result of a merger
-     Then the pending CTRP Nullification event can be identified by searching CTEP context and Merge with CTEP ID  (New Functionality to dicuss)
-      
-       Scenario: #9 I can Nullify the Inactive Organization 
-    Given I am logged into the CTRP 
-     When A curator is notified that a CTEP Organization merger is pending
-    Then The curator will select the CTRP organization associated with the CTEP Inactive organization to be nullified
-    And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trail associations of the nullified organization
+     And the CTEP Organizations <OrganizationType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Organization status <StatusType>
+     
+     |OrganizationType| PKIDType|CTRPIDType|ServiceRequestType |rocessingStatusType |StatusType|
+     |Organization 1  |PK ID 1  |CTRP ID 1 | Merge ID 1        |Pending             |Active    |
+     |Organization 2  |PK ID 2  |CTRP ID 2 | Merge ID 2        |Pending             |Inactive  |
+     
+     Then the curator will search CTEP Context for organization where Service request is "Merge ID"
+     And the curator will search for matching organization in the CTRP Context
+     When Matching CTRP organizations found
+     Then The CTRP organization matching CTEP organization with inactive status will be Nullified
+     And  the organizations <OrganizationType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Organization status <StatusType> 
+     
+     |OrganizationType| PKIDType|CTRPIDType|ServiceRequestType |ProcessingStatusType |StatusType|
+     |Organization 1  |PK ID 1  |CTRP ID 1 | Null              |Complete            |Active    |
+     |Organization 2  |PK ID 2  |CTRP ID 2 | Null              |Complete             |Inactive  |
+     And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trail associations of the nullified organization
+     
+    
     
     Scenario:#10 CTEP Context of a new person record created
     Given I am logged into the CTRP 
     When CTRP receives newly created CTEP person record through Restful Services
-    Then a new person record will be created in the CTEP Context with CTEP Processing Status of "Pending" in CTRP with information type
-    
+    Then a new person record will be created in the CTEP Context with Processing Status of "Pending" and Service Request of "Create" in the CTRP 
+    And the new person record will display the field type
+      
       |CTEP Person ID|
       |CTEP Person Registration Type|
       |CTEP Person Registration Status|
@@ -405,6 +422,9 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |CTEP Person PK ID|
       |Service Request (Create, Update, Merge with CTEP ID, NULL)|
       |Processing Status (Pending, Complete)|
+      And an person record PK ID will be sent to CTEP
+      And the Person Processing status will be " Complete"
+      And the Service Request will be set to "Null"
       
         Scenario:#10a CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
