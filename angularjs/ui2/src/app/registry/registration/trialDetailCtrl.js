@@ -699,6 +699,13 @@
 
         // Add Founding Source to a temp array
         $scope.$watch(function() {
+            return vm.curTrial.start_date;
+        }, function(newValue, oldValue) {
+            console.log('start date values are: ', oldValue, newValue);
+        });
+
+        // Add Founding Source to a temp array
+        $scope.$watch(function() {
             return vm.selectedFsArray.length;
         }, function(newValue, oldValue) {
             if (newValue == oldValue + 1) {
@@ -908,7 +915,7 @@
 
         // Scenario #8 in Reg F11
         vm.validateStartDateQual2 = function() {
-            var startDate = new Date(vm.curTrial.start_date);
+            var startDate = typeof vm.curTrial.start_date === 'string' ? moment(vm.curTrial.start_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.start_date;
             var today = new Date();
             today.setHours(0,0,0,0);
             if ((vm.curTrial.start_date_qual === 'Actual' && startDate.getTime() > today.getTime()) || (vm.curTrial.start_date_qual === 'Anticipated' && startDate.getTime() < today.getTime())) {
@@ -929,7 +936,7 @@
 
         // Scenario #8 in Reg F11
         vm.validatePrimaryCompDateQual2 = function() {
-            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? moment(vm.curTrial.primary_comp_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.primary_comp_date;
             var today = new Date();
             today.setHours(0,0,0,0);
             if ((vm.curTrial.primary_comp_date_qual === 'Actual' && primaryCompDate.getTime() > today.getTime()) || (vm.curTrial.primary_comp_date_qual === 'Anticipated' && primaryCompDate.getTime() < today.getTime())) {
@@ -941,8 +948,8 @@
 
         // Scenario #9 in Reg F11
         vm.validatePrimaryCompDate = function() {
-            var startDate = new Date(vm.curTrial.start_date);
-            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            var startDate = typeof vm.curTrial.start_date === 'string' ? moment(vm.curTrial.start_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.start_date;
+            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? moment(vm.curTrial.primary_comp_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.primary_comp_date;
             if (startDate.getTime() > primaryCompDate.getTime()) {
                 return true;
             } else {
@@ -962,7 +969,7 @@
 
         // Scenario #8 in Reg F11
         vm.validateCompDateQual2 = function() {
-            var compDate = new Date(vm.curTrial.comp_date);
+            var compDate = typeof vm.curTrial.comp_date === 'string' ? moment(vm.curTrial.comp_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.comp_date;
             var today = new Date();
             today.setHours(0,0,0,0);
             if ((vm.curTrial.comp_date_qual === 'Actual' && compDate.getTime() > today.getTime()) || (vm.curTrial.comp_date_qual === 'Anticipated' && compDate.getTime() < today.getTime())) {
@@ -974,7 +981,7 @@
 
         // Scenario #9 in Reg F11
         vm.validateCompDate = function() {
-            var primaryCompDate = new Date(vm.curTrial.primary_comp_date);
+            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? new Date(vm.curTrial.primary_comp_date) : vm.curTrial.primary_comp_date;
             var compDate = new Date(vm.curTrial.comp_date);
             if (primaryCompDate.getTime() > compDate.getTime()) {
                 return true;
