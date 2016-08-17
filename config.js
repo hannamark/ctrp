@@ -33,7 +33,8 @@ exports.config = {
 
 
     onPrepare: function() {
-    var dbConnect = new databaseConnection();
+        browser.driver.manage().window().maximize();
+        var dbConnect = new databaseConnection();
         getDBConnection = dbConnect.buildDBConnection();
         eventsPG.EventEmitter.defaultMaxListeners = 100;
         var configurationFile;
