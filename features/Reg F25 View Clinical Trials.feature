@@ -25,23 +25,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Trial Related Information  |
       |Participating Sites|
       
-      Scenario:#1a Participating Sites Table Columns description
-    Given I am on the View Trial Screen
-     And I can view Participating Site Table
-     And the table displays the columns type
      
-     |CTRP ID|
-     |CTRP Organization Name|
-     |Investigators|
-     |Primary Contact|
-     |Local Trial Identifier|
-     |Program Code|
-     |Current Site Recruitment Status|
-     |Current Site Recruitment Status Date|
-     |Date opened for Accrual|
-     |Date Closed for Accrual|
-     
-    
      Scenario: #2 I can search all clinical trials registered in CTRP when initially submitted
     Given I am logged into the CTRP Registration application
       And I am on the Search Clinical Trials Screen
@@ -93,7 +77,25 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Participating Sites|
       
       
-       Scenario: #5 Trial Identifiers viewed fields
+        Scenario:#4a Participating Sites Table Columns description
+    Given I am on the View Trial Screen
+     And I can view Participating Site Table
+     And the table displays the columns type
+     
+     |CTRP ID|
+     |CTRP Organization Name|
+     |Investigators|
+     |Primary Contact|
+     |Local Trial Identifier|
+     |Program Code|
+     |Current Site Recruitment Status|
+     |Current Site Recruitment Status Date|
+     |Date opened for Accrual|
+     |Date Closed for Accrual|
+     
+    
+       
+        Scenario: #5 Trial Identifiers viewed fields
     Given I am on the Trial Details screen
      And I will view the Trial Identifiers type 
      
@@ -103,8 +105,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Other Trial Identifier  |
 
 
-     
-       Scenario: #6 Amendment Details Viewed Fields
+      Scenario: #6 Amendment Details Viewed Fields
     Given I am on the Trial Details screen
      And I will view the Amendment Details type 
         
