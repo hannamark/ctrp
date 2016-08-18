@@ -1246,7 +1246,17 @@ class Trial < TrialBase
     end
   }
 
-  scope :published,               -> { where(published: true) }
+  scope :published,               -> {
+=begin
+      When a user selects "Submission Type Field = "Update" , the trials returned would be all trials where the last submission was an "update"
+either from registration or restservice and the updates are pending
+the ctro to acknowledge them in "trial history - updates".
+If the last submission for a trial is not an update
+(because it is an original submission or an amendment submission)
+ or an update that has been acknowledged, then these trials will not be displayed.
+=end
+
+    where(published: true) }
   scope :published_and_commented, -> { published.where("comments_count > 0") }
 
 
