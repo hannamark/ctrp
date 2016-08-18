@@ -509,17 +509,20 @@ class TrialsController < ApplicationController
 
 
       if params[:protocol_origin_type].present?  # params[:protocol_origin_type] is an array of numerical id
-
+        @trials_copy = @trials.clone  # create a copy of @trials so as to filter for other_ids
         @trials = @trials.select { |trial| !trial.lead_protocol_id.nil? } if params[:protocol_origin_type].include?(lead_org_trial_origin_id)
 
-        nci_trials = []
-        nci_trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?(nci_protocol_origin_id)
-        @trials |= nci_trials  # concatenate
+        @trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?(nci_protocol_origin_id)
 
-        trials_other_id = @trials.select { |trial| trial.other_ids.pluck(:protocol_id_origin_id).map { |id| params[:protocol_origin_type].include?(id)}.include?(true)}
-          # trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
+        @trials_copy = @trials_copy.select { |trial| trial.other_ids.pluck(:protocol_id_origin_id).map { |id| params[:protocol_origin_type].include?(id)}.include?(true)}
+        # trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
 
-        @trials |= trials_other_id # concatenate
+        if params[:protocol_origin_type].include?(lead_org_trial_origin_id) || params[:protocol_origin_type].include?(nci_protocol_origin_id)
+          @trials |= @trials_copy  # concatenate
+        else
+          @trials = @trials_copy
+        end
+
       end
       if params[:admin_checkout].present?
         Rails.logger.info "Admin Checkout Only selected"
