@@ -1199,6 +1199,10 @@ class Trial < TrialBase
     where("is_rejected = ? OR is_rejected IS NULL", FALSE)
   }
 
+  scope :active_submissions, -> {
+    where("id in (select DISTINCT ON (trial_id) trial_id from submissions where submissions.trial_id is not null AND submissions.status = 'Active')")
+  }
+
   scope :sort_by_col, -> (params) {
     column = params[:sort]
     order = params[:order]

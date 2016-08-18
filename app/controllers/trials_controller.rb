@@ -303,19 +303,18 @@ class TrialsController < ApplicationController
 
       if ['ROLE_ADMIN','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
         if params[:family_id].present?
-          @trials = Trial.in_family(params[:family_id], Date.today).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.in_family(params[:family_id], Date.today).where(nih_nci_prog: nil).filter_rejected.active_submissions
         elsif params[:organization_id].present?
-          @trials = Trial.matches('lead_org_id', params[:organization_id]).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.matches('lead_org_id', params[:organization_id]).where(nih_nci_prog: nil).filter_rejected.active_submissions
         end
       elsif ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
         family = FamilyMembership.find_by_organization_id(current_user.organization_id)
         if family
-          @trials = Trial.in_family(family.family_id, Date.today).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.in_family(family.family_id, Date.today).where(nih_nci_prog: nil).filter_rejected.active_submissions
         else
-          @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected.active_submissions
         end
       end
-
     elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
