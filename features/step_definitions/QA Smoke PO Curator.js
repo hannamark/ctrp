@@ -20,6 +20,7 @@ var addPeoplePage = require('../support/AddPersonPage');
 var searchFamilyPage = require('../support/ListOfFamiliesPage');
 var addFamilyPage = require('../support/AddFamilyPage');
 var selectValuePage = require('../support/CommonSelectList');
+var helperFunctions = require('../support/helper');
 
 
 module.exports = function () {
@@ -34,6 +35,7 @@ module.exports = function () {
     var searchFamily = new searchFamilyPage();
     var addFamily = new addFamilyPage();
     var selectValue = new selectValuePage();
+    var helper = new helperFunctions();
 
 
     this.Given(/^I am logged in to CTRP PO application with User "([^"]*)"$/, function (arg1, callback) {
@@ -211,6 +213,9 @@ module.exports = function () {
                 element(by.xpath('//*[@id="menuitem-31"]/button')).click();
                 element(by.xpath('//*[@id="menuitem-33"]/button')).click();
                 searchOrg.searchResultMenu.click();
+                browser.takeScreenshot().then(function (png) {
+                    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/exceptionA' + moment().format('MMMDoYY hmmss') +'.png');
+                });
                 element(by.linkText(value)).isPresent().then(function (stateLink) {
                     if (stateLink === true) {
                         element(by.linkText(value)).isDisplayed().then(function (state2Link) {
@@ -221,6 +226,9 @@ module.exports = function () {
                     } else {
                         assert.fail(0, 1, 'Person name link did not appear');
                     }
+                });
+                browser.takeScreenshot().then(function (png) {
+                    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/exceptionB' + moment().format('MMMDoYY hmmss') + '.png');
                 });
                 browser.driver.wait(function () {
                     console.log('wait here');
