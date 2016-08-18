@@ -50,7 +50,7 @@
         this.login = function (userObj) {
             userObj.processing = true;
 
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in.json', userObj)
                 .then(function (data) {
                     if (data.token) {
                         LocalCacheService.cacheItem('token', data.token);
