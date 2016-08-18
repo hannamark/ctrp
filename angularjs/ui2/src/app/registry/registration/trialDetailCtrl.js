@@ -24,6 +24,12 @@
         vm.isExp = false;
         vm.studySourceArr = studySourceObj;
         vm.protocolIdOriginArr = protocolIdOriginObj;
+        /*
+        .filter(function(idType) {
+            var types = idType.section.split(',') || [];
+            return _.contains(types, 'registry');
+        });
+         */
         vm.phaseArr = phaseObj;
         vm.researchCategoryArr = researchCategoryObj;
         vm.primaryPurposeArr = primaryPurposeObj;
