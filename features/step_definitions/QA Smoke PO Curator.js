@@ -290,7 +290,8 @@ module.exports = function () {
 
     this.Then(/^I click on the Person from Search page$/, function (callback) {
         cukePerson.then(function (value) {
-            element(by.linkText(value)).click();
+          //  element(by.linkText(value)).click();
+            element(by.linkText('LNsmokeSS')).click();
         });
         browser.sleep(25).then(callback);
     });

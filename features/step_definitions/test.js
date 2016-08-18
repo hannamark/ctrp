@@ -24,6 +24,7 @@ var projectFunctionsPage = require('../support/projectMethods');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
+var assert = require('assert');
 
 module.exports = function() {
     var menuItemList = new MenuItem();
@@ -106,22 +107,24 @@ module.exports = function() {
         login.login('ctrptrialsubmitter', 'Welcome01');
         login.accept();
         menuItemList.clickHomeEnterOrganizations();
-      //  trialMenuItem.clickHomeSearchTrial();
-        projectFunctionsRegistry.selectTrials('National');
-        login.clickWriteMode('On');
+        trialMenuItem.clickHomeSearchTrial();
+     //   projectFunctionsRegistry.selectTrials('National');
+      //  login.clickWriteMode('On');
         browser.sleep(210).then(callback);
      //   callback();
     });
 
     this.Given(/^Test with same login second time$/, function (callback) {
-        element(by.model('trialDetailView.curTrial.official_title')).sendKeys('12345');
+        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild car').then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error123:'+err); expect(true).to.equal(false).and.notify(callback)});
+
+        //    element(by.model('trialDetailView.curTrial.official_title')).sendKeys('12345');
         //login.login('ctrpcurator', 'Welcome01');
         //login.accept();
         //menuItemList.clickHomeEnterOrganizations();
         //login.clickWriteMode('On');
         //menuItemList.clickOrganizations();
         //menuItemList.clickListFamily();
-        browser.sleep(210).then(callback);
+    //    browser.sleep(210).then(callback);
        // callback();
     });
 
