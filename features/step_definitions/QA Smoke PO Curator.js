@@ -221,7 +221,8 @@ module.exports = function () {
                         element(by.linkText(value)).isDisplayed().then(function (state2Link) {
                             if (state2Link)
                                 console.log('element Person link is displayed');
-                            element(by.linkText(value)).click();
+                            element(by.linkText('LNsmokeSS')).click();
+                          //  element(by.linkText(value)).click();
                         });
                     } else {
                         assert.fail(0, 1, 'Person name link did not appear');
