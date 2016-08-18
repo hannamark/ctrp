@@ -1245,4 +1245,10 @@ class Trial < TrialBase
       order("LOWER(trials.#{column}) #{order}")
     end
   }
+
+  scope :published,               -> { where(published: true) }
+  scope :published_and_commented, -> { published.where("comments_count > 0") }
+
+
+
 end
