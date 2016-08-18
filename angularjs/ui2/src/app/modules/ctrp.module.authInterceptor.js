@@ -75,7 +75,7 @@
                         }
                     });
                 }
-                var validationErrors = 'Errors: ';
+                var validationErrors = '\n';
                 if (!!rejection.data && angular.isArray(rejection.data)) {
                     rejection.data.forEach(function(errMsg) {
                         validationErrors += '\n ' + errMsg;
@@ -85,7 +85,7 @@
 
                 errorMsg += validationErrors; // concatenate
                 var toastrService = $injector.get('toastr');
-                toastrService.error(validationErrors, '', { timeOut: 0 });
+                // toastrService.error(validationErrors, '', { timeOut: 0 });
 
                 toastrService.error(errorMsg, '', { timeOut: 0 });
                 // $injector.get('UserService').logout();

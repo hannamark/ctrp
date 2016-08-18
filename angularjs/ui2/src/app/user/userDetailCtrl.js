@@ -414,21 +414,21 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'record_verification_date',
+                    name: 'verification_date',
                     displayName: 'Record Verification Date',
                     enableSorting: true,
                     width: '*',
                     minWidth: '250'
                 },
                 {
-                    name: 'on_hold_reasons',
+                    name: 'onhold_desc',
                     displayName: 'On Hold Reasons',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'on_hold_dates',
+                    name: 'onhold_date',
                     displayName: 'On Hold Dates',
                     enableSorting: true,
                     width: '*',
@@ -457,36 +457,12 @@
                     width: '*',
                     minWidth: '200'
                 }
-                /*{
-                    name: 'checkout',
-                    displayName: 'Checked Out for Admin. Use by',
-                    enableSorting: true,
-                    width: '*',
-                    minWidth: '200'
-                },
-                {
-                    name: 'scientific_checkout',
-                    displayName: 'Checked Out for Scientific Use by',
-                    enableSorting: true,
-                    width: '*',
-                    minWidth: '300'
-                }*/
             );
         }
 
-        vm.getCheckOut = function ( checkOut ) {
-            var checkOutStr = '';
-            if (checkOut.split(',').length > 1) {
-                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
-                    checkOutStr = checkOut.split(',')[0]+ '/SC';
-                } else {
-                    checkOutStr = checkOut;
-                }
-            } else {
-                checkOutStr = checkOut;
-            }
-            return checkOutStr;
-        };
+        vm.gridTrialsOwnedOptions.appScopeProvider = vm;
+
+        vm.getCheckOut = UserService.getCheckOut;
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
