@@ -10,12 +10,12 @@
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$uibModal',
         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj', 'PATrialService',
         'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj',
-        'nciProgObj', 'submissionTypesObj', 'submissionMethodsObj', 'internalSourceObj'];
+        'nciProgObj', 'submissionTypesObj', 'submissionMethodsObj', 'internalSourceObj', '_'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $uibModal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj, PATrialService,
                          milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj,
-                         nciProgObj, submissionTypesObj, submissionMethodsObj, internalSourceObj) {
+                         nciProgObj, submissionTypesObj, submissionMethodsObj, internalSourceObj, _) {
 
         var vm = this;
         var fromStateName = $state.fromState.name || '';
@@ -27,7 +27,11 @@
         vm.trialStatusArr = trialStatusObj;
         vm.milestoneArr = milestoneObj;
         vm.processingStatusArr = processingStatusObj;
-        vm.protocolIdOriginArr = protocolIdOriginObj;
+        console.info('protocolIdOriginObj: ', protocolIdOriginObj);
+        vm.protocolIdOriginArr = protocolIdOriginObj.filter(function(idType) {
+            var types = idType.section.split(',') || [];
+            return _.contains(types, 'pa') || _.contains(types, 'paSearch');
+        });
         vm.researchCategoriesArr = researchCategoriesObj;
         vm.nciDivArr = nciDivObj;
         vm.nciProgArr = nciProgObj;

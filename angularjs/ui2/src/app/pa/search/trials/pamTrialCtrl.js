@@ -200,19 +200,7 @@
             }]
         };
 
-        vm.getCheckOut = function ( checkOut ) {
-            var checkOutStr = '';
-            if (checkOut.split(',').length > 1) {
-                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
-                    checkOutStr = checkOut.split(',')[0]+ '/SC';
-                } else {
-                    checkOutStr = checkOut;
-                }
-            } else {
-                checkOutStr = checkOut;
-            }
-            return checkOutStr;
-        };
+        vm.getCheckOut =  UserService.getCheckOut;
 
         vm.gridTrialsSubmittedOptions.appScopeProvider = vm;
 
