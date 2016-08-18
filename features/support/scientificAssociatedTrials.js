@@ -64,6 +64,14 @@ var scientificAssociatedTrials = function(){
     this.associatedPageTitleList = element(by.id('pg_title_list'));
     this.associatedPageTitleDetails = element(by.id('pg_title_details'));
 
+    this.viewLeadOrgTrialID = element(by.id('view_trial_id'));
+    this.viewNCIID = element(by.id('view_nci_id'));
+    this.viewProtocolID1 = element(by.id('view_protocol_id_0'));
+    this.viewProtocolID2 = element(by.id('view_protocol_id_1'));
+    this.viewProtocolID3 = element(by.id('view_protocol_id_2'));
+
+
+
     this.clickAddAssociatedTrial = function(){
         helper.clickButton(self.addAssociatedTrialBtn, "Add Associated Trial - Button");
     };
@@ -205,8 +213,13 @@ var scientificAssociatedTrials = function(){
                         var notExistsRecord = 'Value : '+exppectedTrialIdentifier+' exists';
                         expect(foundRecord.toString()).to.eql(notExistsRecord.toString());
                     } else if(whatToDo === 'link') {
-                        var linkDataRw = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(01) a'));
-                        helper.clickButton(linkDataRw.get(1), "Click - Link");
+                        if (identifierTypVf === 'NCI'){
+                            var linkDataRwNCI = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(01) #associated_nci a'));
+                            helper.clickButton(linkDataRwNCI, "Click NCI - Link");
+                        } else if (identifierTypVf === 'NCT') {
+                            var linkDataRwNCT = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(01) #associated_ctdotgov a'));
+                            helper.clickButton(linkDataRwNCT, "Click NCT - Link");
+                        }
                     } else if(whatToDo === 'delete'){
                         var deleteDataRw = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child('+iVal+') td:nth-child(05) input'));
                         helper.clickButton(deleteDataRw, "Delete - Button");
@@ -318,6 +331,7 @@ var scientificAssociatedTrials = function(){
                 var actResearchCatVal = 'System Identified the Official Title value: '+result+'';
                 expect(expResearchCatVal.toString()).to.eql(actResearchCatVal.toString());
                 if (expOfficialTitle != ''){
+                    //expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle).then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error:'+err);});
                     expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle);
                 }
             } else {
@@ -326,6 +340,31 @@ var scientificAssociatedTrials = function(){
                 expect(expResCatVal.toString()).to.eql(actResCatVal.toString());
             }
         });
+    };
+
+    this.verifyViewAssociatedTrialNCI = function (expLeadOrgTrialID, expNCIID, expProtocolID1, expProtocolID2, expProtocolID3){
+        this.waitForElement(self.viewLeadOrgTrialID, 'Waiting For View Associated Trial Page');
+        expect(self.viewLeadOrgTrialID.getText()).to.eventually.equal(expLeadOrgTrialID);
+        expect(self.viewNCIID.getText()).to.eventually.equal(expNCIID);
+        if (expProtocolID1 !== ''){
+            self.viewProtocolID1.isDisplayed().then(function(result) {
+                if (result) {
+                    expect(self.viewProtocolID1.getText()).to.eventually.equal(expProtocolID1);
+                }
+            });
+        } else if (expProtocolID2 !== ''){
+            self.viewProtocolID2.isDisplayed().then(function(result) {
+                if (result) {
+                    expect(self.viewProtocolID2.getText()).to.eventually.equal(expProtocolID2);
+                }
+            });
+        } else if (expProtocolID3 !== ''){
+            self.viewProtocolID3.isDisplayed().then(function(result) {
+                if (result) {
+                    expect(self.viewProtocolID3.getText()).to.eventually.equal(expProtocolID3);
+                }
+            });
+        }
     };
 
     //Save and Reset
