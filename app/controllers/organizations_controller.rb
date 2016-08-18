@@ -33,6 +33,8 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new(organization_params)
     @organization.created_by = @current_user.username unless @current_user.nil?
     @organization.updated_by = @organization.created_by
+    @organization.created_at = Time.zone.now
+    @organization.updated_at = Time.zone.now
 
     respond_to do |format|
       if @organization.save

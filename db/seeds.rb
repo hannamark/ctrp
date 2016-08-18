@@ -92,14 +92,16 @@ ResponsibleParty.find_or_create_by(code: 'SPONSOR').update(name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI').update(name: 'Principal Investigator')
 ResponsibleParty.find_or_create_by(code: 'SI').update(name: 'Sponsor-Investigator')
 
-ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CDR').update(name: 'CDR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DNCI').update(name: 'Duplicate NCI Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'ONCT').update(name: 'Obsolete ClinicalTrials.gov Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'OTH').update(name: 'Other Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'NCI').update(name: 'NCI Identifier', section: 'paSearch')
+ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier', section: 'pa,registry')
+ProtocolIdOrigin.find_or_create_by(code: 'LORG').update(name: 'Lead Organization Trial Identifier', section: 'paSearch')
+ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'CDR').update(name: 'CDR Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'DNCI').update(name: 'Duplicate NCI Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'ONCT').update(name: 'Obsolete ClinicalTrials.gov Identifier', section: 'pa,registry')
+ProtocolIdOrigin.find_or_create_by(code: 'OTH').update(name: 'Other Identifier', section: 'pa,registry')
 
 HolderType.find_or_create_by(code: 'INV').update(name: 'Investigator')
 HolderType.find_or_create_by(code: 'ORG').update(name: 'Organization')
@@ -472,7 +474,7 @@ AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES_REG').update(name: 'Acce
 
 AppSetting.find_or_create_by(code: 'ACCEPTED_FILE_TYPES').update(name: 'Accepted File Types for PA', value: 'pdf,doc,docx,docm,xls,xlsx,xlsm,xlsb,rtf,txt', big_value: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-word.document.macroenabled.12, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroenabled.12, application/vnd.ms-excel.sheet.binary.macroenabled.12, application/rtf, text/plain')
 
-AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES').update(name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval Document,TSR,Informed Consent Document,Change Memo,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
+AppSetting.find_or_create_by(code: 'TRIAL_DOCUMENT_TYPES').update(name: 'Trial Related Documents', value: 'Protocol Document,IRB Approval,TSR,Informed Consent Document,Change Memo,Complete Sheet,Other,List of Participating Sites,Protocol Highlighted Document', big_value: 'nothing here')
 
 AppSetting.find_or_create_by(code: 'NIH_NCI_DIV_PA').update(name: 'NCI Division/Department Code List for PA', value: 'see big value', big_value: 'CCR,CTEP,DCCPS,DCP,NHLBI')
 
@@ -1459,7 +1461,7 @@ MailTemplate.find_or_create_by(
 MailTemplate.find_or_create_by(
     code: 'USER_REGISTRATION',
     name: 'User Registration',
-    from: 'noreply@ctrp.nci.nih.gov',
+    from: 'ncictro@mail.nih.gov',
     to:   'ctrpaccountapprover1@ctrp-ci.nci.nih.gov,ctrpaccountapprover2@ctrp-ci.nci.nih.gov',
     subject: 'NCI Clinical Trials Reporting Program (CTRP) Account Request',
     body_text: 'Text version.',
@@ -1476,6 +1478,39 @@ MailTemplate.find_or_create_by(
                 Phone Number/Extension:   ${user_phone}<br>
                 Organization Affiliation: ${user_org}<br>
                 </p>
+                <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov or visit our website at http://www.cancer.gov/ncictrp.</p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_ACCOUNT_ACTIVATION',
+    name: 'User Activation',
+    from: 'ncictro@mail.nih.gov',
+    to:   '${user_email}',
+    subject: 'Your NCI CTRP Account has been activated',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <p>Date: ${date}</p>
+                <p>Dear ${user_name},</p>
+                <p>Your NCI CTRP Account has been activated as a ${user_role} at ${user_org}.   You should be able to log in with your LDAP User ID: ${user_username}.</p>
+                <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov or visit our website at http://www.cancer.gov/ncictrp.</p>
+                <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
+                </body></html>'
+)
+
+MailTemplate.find_or_create_by(
+    code: 'USER_REGISTRATION_ACTIVATION',
+    name: 'User Registration',
+    from: 'ncictro@mail.nih.gov',
+    to:   '${user_email}',
+    subject: 'Your NCI CTRP Account has been activated',
+    body_text: 'Text version.',
+    body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <p>Date: ${date}</p>
+                <p>Dear ${user_name},</p>
+                <p>Your NCI CTRP Account has been activated as a ${user_role}.   You should be able to log in with your LDAP User ID: ${user_username}.</p>
+                <p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov or visit our website at http://www.cancer.gov/ncictrp.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
                 </body></html>'
 )
@@ -1494,16 +1529,32 @@ MailTemplate.find_or_create_by(
     code: 'TRIAL_OWNER_ADD',
     name: 'Trial Ownerships Added',
     from: 'noreply@ctrp.nci.nih.gov',
-    subject: 'NCI CTRP: Trial RECORD OWNER ADDED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    subject: 'NCI CTRP: Trial RECORD OWNER ADDED',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <style>
+                  table {
+                    border:1px solid #C0C0C0;
+                    border-collapse:collapse;
+                    padding:5px;
+                  }
+                  table th {
+                    border:1px solid #C0C0C0;
+                    padding:5px;
+                    background:#F0F0F0;
+                  }
+                  table td {
+                    border:1px solid #C0C0C0;
+                    padding:5px;
+                  }
+                </style>
                 <div>${trialcontent}</div>
                 <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) has added you as an owner of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
-                <p>As an owner of this trial record, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
+                <p>As a trial record owner, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
                 <p><b>NEXT STEPS:</b></p>
-                <p>If you do not want ownership of this trial, or if you have questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
+                <p>If you do not want ownership of the trial record(s), or if you have questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
                 </body></html>'
 )
@@ -1511,16 +1562,32 @@ MailTemplate.find_or_create_by(
 MailTemplate.find_or_create_by(
     code: 'TRIAL_OWNER_REMOVE',
     name: 'Trial Ownerships Removed',
-    from: 'noreply@ctrp.nci.nih.gov',
-    subject: 'NCI CTRP: RECORD OWNERSHIP CANCELLED for ${nciTrialIdentifier}, ${leadOrgTrialIdentifier}',
+    from: 'ncictro@mail.nih.gov',
+    subject: 'NCI CTRP: Trial RECORD OWNERSHIP CANCELLED',
     body_text: 'Text version.',
     body_html: '<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /></head><body>
+                <style>
+                  table {
+                    border:1px solid #C0C0C0;
+                    border-collapse:collapse;
+                    padding:5px;
+                  }
+                  table th {
+                    border:1px solid #C0C0C0;
+                    padding:5px;
+                    background:#F0F0F0;
+                  }
+                  table td {
+                    border:1px solid #C0C0C0;
+                    padding:5px;
+                  }
+                </style>
                 <div>${trialcontent}</div>
                 <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
-                <p>The Clinical Trials Reporting Office (CTRO) cancelled your ownership of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
+                <p>The Clinical Trials Reporting Office (CTRO) cancelled your ownership of the NCI Clinical Trials Reporting Program (CTRP) trial record(s) identified above.</p>
                 <p><b>NEXT STEPS:</b></p>
-                <p>If you believe this is an error, or if you have additional questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
+                <p>f you believe this is an error, or if you have additional questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
                 </body></html>'
 )
@@ -2106,7 +2173,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS49', item: 'pas_trial_description', rule: 'Brief Title must be less than 300 characters', description: 'Brief Title cannot be more than  300 characters', remark: '[Select Trial Description ] from Scientific Data menu.')
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS50', item: 'pas_arms/groups', rule: 'At least one Arm is required', description: 'Arm is required', remark: '[Select Arms/Groups] from Scientific Data menu.')
 ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS51', item: 'pas_arms/groups', rule: 'Arm label cannot be more than 62 characters', description: 'Arm Label cannot be more than 62 characters', remark: '[Select Arms/Groups] from Scientific Data menu.')
-ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS52', item: 'pas_biomarkers', rule: 'At least one pending biomarker must exist on the trial.', description: 'At least one pending biomarker exists on the trial.', remark: '[Select Biomarkers] from Scientific Data menu.')
+ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: 'PAS', code: 'PAS52', item: 'pas_biomarkers', rule: 'At least one pending biomarker must exist on the trial.', description: 'At least one pending biomarker must exist on the trial.', remark: '[Select Biomarkers] from Scientific Data menu.')
 
 
   test_users = [ {"username" => "ctrpsuper", "role" => "ROLE_SUPER", "first_name" => "Fred", "last_name" => "Lathiramalaynathan"},
@@ -2145,6 +2212,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
    user.password = "Welcome01"
    user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
    user.user_status = UserStatus.find_by_code('ACT')
+   user.status_date = Time.zone.now
    does_user_exists = User.find_by_username(user.username)
    user.save! if !does_user_exists
   end
@@ -2153,7 +2221,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
     user = User.find_by_username(u["username"])
     unless user.blank?
       user.role = u["role"]
-      unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
+      unless user.role == "ROLE_SERVICE-REST"
         if user.username == 'ctrpsitesu2'
           user.organization = org3
         elsif user.username == 'ctrpsitesu3'
@@ -2238,6 +2306,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
       ldap_user.last_name = u["last_name"]
       ldap_user.organization = org0
       ldap_user.user_status = UserStatus.find_by_code('ACT')
+      ldap_user.status_date = Time.zone.now
       ldap_user.save(validate: false)
       #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
     end

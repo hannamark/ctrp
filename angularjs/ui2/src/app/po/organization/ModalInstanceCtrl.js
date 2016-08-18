@@ -10,7 +10,6 @@
     angular.module('ctrp.app.po')
         .controller('ModalInstanceCtrl', ModalInstanceCtrl);
 
-
     ModalInstanceCtrl.$inject = ['$uibModalInstance', 'OrgService', 'orgId', '$timeout'];
 
     function ModalInstanceCtrl($uibModalInstance, OrgService, orgId, $timeout) {
@@ -23,17 +22,19 @@
             vm.disableBtn = true;
 
             OrgService.deleteOrg(orgId).then(function(data) {
-                if (data.status > 206) {
+                var status = data.status;
+
+                if (status > 206) {
                     vm.modalTitle = 'Deletion failed';
                     timeoutCloseModal(data.data.family || data.data.person);
                 } else {
                     vm.modalTitle = 'Deletion is successful';
-                    timeoutCloseModal("Permanently deleted", data.status); //204 for successful deletion
+                    timeoutCloseModal('Permanently deleted', data.status); //204 for successful deletion
                 }
             }).catch(function(err) {
-                vm.modalTitle = "Deletion failed";
-                console.log("failed to delete the organization, error code: " + err.status);
-                timeoutCloseModal(err.data || "Failed to delete", err.status);
+                vm.modalTitle = 'Deletion failed';
+                console.log('failed to delete the organization, error code: ' + err.status);
+                timeoutCloseModal(err.data || 'Failed to delete', err.status);
             }).finally(function() {
                 vm.disableBtn = false;
             });

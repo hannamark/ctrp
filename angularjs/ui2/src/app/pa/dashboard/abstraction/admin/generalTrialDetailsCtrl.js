@@ -49,7 +49,10 @@
       vm.curAlternateTitleObj = {category: '', source: '', title: '', _destroy: false};
       vm.centralContactType = ''; // default to None
       vm.otherIdentifier = {protocol_id_origin_id: '', protocol_id: ''};
-      vm.protocolIdOriginArr = protocolIdOriginObj;
+      vm.protocolIdOriginArr = protocolIdOriginObj.filter(function(idType) {
+          var types = idType.section.split(',') || [];
+          return _.contains(types, 'pa');
+      });
       // identifiers allowing for duplication
       var duplicateAllowedIds = vm.protocolIdOriginArr.filter(function(pId) {
           var idName = pId.name.toLowerCase();
@@ -115,17 +118,12 @@
           outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
           TrialService.upsertTrial(outerTrial).then(function(res) {
               var status = res.server_response.status;
-              toastr.clear();
-
               if (status >= 200 && status <= 210) {
                   vm.generalTrialDetailsObj = res;
                   vm.generalTrialDetailsObj.lock_version = res.lock_version;
                   PATrialService.setCurrentTrial(res); // update to cache
                   $scope.$emit('updatedInChildScope', {});
-                  toastr.success('Trial general details has been updated', 'Successful!', {
-                      extendedTimeOut: 1000,
-                      timeOut: 0
-                  });
+                  toastr.success('Trial general details has been updated', 'Successful!');
                   getTrialDetailCopy();
 
                   // To make sure setPristine() is executed after all $watch functions are complete

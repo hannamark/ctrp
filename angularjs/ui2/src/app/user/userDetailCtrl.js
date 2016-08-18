@@ -13,9 +13,18 @@
     function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
         var vm = this;
 
-        vm.userDetails = userDetailObj;
-        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.userDetailsOrig = angular.copy(userDetailObj);
+        if (vm.userDetailsOrig.username) {
+            if (vm.userDetailsOrig.username.indexOf('nihusernothaveanaccount') > - 1) {
+                vm.userDetailsOrig.username = '';
+            }
+            vm.userDetails = angular.copy(vm.userDetailsOrig);
+        } else {
+            vm.pageFauilure = true;
+            return;
+        }
+
+        vm.isCurationEnabled = UserService.isCurationModeEnabled();
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
         vm.states = [];
@@ -31,7 +40,6 @@
             if(vm.selectedOrgsArray.length >0) {
                 vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
-            console.log(vm.userDetails)
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
@@ -71,9 +79,22 @@
             }
         };
 
+        vm.validateUserName = function() {
+
+            UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
+                if ( data.total >  0 && vm.userDetails.username !== vm.userDetailsOrig.username){
+                    vm.newUserNameInvalid = true;
+                } else {
+                    vm.newUserNameInvalid = false;
+                }
+            }).catch(function (err) {
+                console.log('Search Users failed: ' + err);
+            });
+        };
+
         vm.validateSave = function() {
             var newOrg = vm.selectedOrgsArray[0];
-            
+
             // if inactivating user or changing org of user, check to transfer trials if trials exist
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
@@ -119,6 +140,9 @@
                     !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length
                         && vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER'
                             && vm.userRole !== 'ROLE_ACCOUNT-APPROVER') {
+                    if (vm.userDetails.role === 'ROLE_SITE-SU') {
+                        vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
+                    }
                     vm.userDetails.user_status_id = review_id;
                 }
             }
@@ -141,13 +165,6 @@
             vm.passiveTransferMode = true;
             UserService.createTransferTrialsOwnership(vm);
         };
-
-        AppSettingsService.getSettings({ setting: 'USER_DOMAINS'}).then(function (response) {
-            vm.domainArr = response.data[0].settings.split('||');
-        }).catch(function (err) {
-            vm.domainArr = [];
-            console.log("Error in retrieving USER_DOMAINS " + err);
-        });
 
         AppSettingsService.getSettings({ setting: 'USER_ROLES'}).then(function (response) {
             vm.rolesArr = JSON.parse(response.data[0].settings);
@@ -190,16 +207,12 @@
             } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
                 vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
                     var allowedStatus = ['ACT', 'INR'];
-                    if (!vm.userDetails.status_date) {
-                        allowedStatus.push('REJ');
-                    }
                     return _.contains(allowedStatus, item.code);
                 });
             } else {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
                     var allowedStatus = ['ACT', 'INR'];
                     if (!vm.userDetails.status_date) {
-                        allowedStatus.push('REJ');
                     } else {
                         allowedStatus.push('INA', 'DEL');
                     }
@@ -272,7 +285,7 @@
                     width: '110'
                 },
                 {
-                    name: 'dcp_idxxxxxxx',
+                    name: 'dcp_id',
                     displayName: 'DCP ID',
                     enableSorting: true,
                     width: '*',
@@ -304,7 +317,7 @@
 
         var writeNciId = {
             name: 'nci_id',
-                enableSorting: true,
+            enableSorting: true,
             displayName: 'NCI Trial Identifier',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                 '<a ui-sref="main.pa.trialOverview({trialId : row.entity.trial_id })">{{COL_FIELD}}</a></div>',
@@ -320,7 +333,7 @@
         };
         var writeTitle = {
             name: 'official_title',
-                displayName: 'Official Title',
+            displayName: 'Official Title',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
         '<a ui-sref="main.pa.trialOverview({trialId: row.entity.trial_id })">{{COL_FIELD}}</a></div>',
             enableSorting: true,
@@ -346,17 +359,20 @@
             vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, readNciId);
             addRemainingFields();
         }
+
         function addRemainingFields() {
             vm.gridTrialsOwnedOptions.columnDefs.splice(7, 0,
                 {
                     name: 'current_milestone_name',
                     displayName: 'Current Milestone, Milestone Date',
                     enableSorting: true,
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
+                    '{{COL_FIELD.replace(" Date", ", " + row.entity.current_submission_date)}}</div>',
                     width: '*',
                     minWidth: '300'
                 },
                 {
-                    name: 'current_admin_milestone',
+                    name: 'current_administrative_milestone',
                     displayName: 'Current Admin Milestone, Milestone Date',
                     enableSorting: true,
                     width: '*',
@@ -384,6 +400,13 @@
                     minWidth: '250'
                 },
                 {
+                    name: 'clinical_research_category',
+                        displayName: 'Clinical Research Category',
+                    enableSorting: true,
+                    width: '*',
+                    minWidth: '200'
+                },
+                {
                     name: 'submission_type_label',
                     displayName: 'Submission Type',
                     enableSorting: true,
@@ -391,35 +414,28 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'record_verification_date',
+                    name: 'verification_date',
                     displayName: 'Record Verification Date',
                     enableSorting: true,
                     width: '*',
                     minWidth: '250'
                 },
                 {
-                    name: 'on_hold_reasons',
+                    name: 'onhold_desc',
                     displayName: 'On Hold Reasons',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'on_hold_dates',
+                    name: 'onhold_date',
                     displayName: 'On Hold Dates',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'current_submi',
-                    displayName: 'Current Submission Type (O for Original, A for Amendment, U for Updated)',
-                    enableSorting: true,
-                    width: '*',
-                    minWidth: '650'
-                },
-                {
-                    name: 'submission_method',
+                    name: 'submission_method_name',
                     displayName: 'Submission Method',
                     enableSorting: true,
                     width: '*',
@@ -427,20 +443,27 @@
                 },
                 {
                     name: 'checkout',
-                    displayName: 'Checked Out for Admin. Use by',
+                    displayName: 'Checked Out By',
                     enableSorting: true,
+                    cellFilter: 'date:\'dd-MMM-yyyy\'',
+                    cellTemplate: "<div class=\"ui-grid-cell-contents tooltip-uigrid\" >{{grid.appScope.getCheckOut(row.entity.checkout)}}</div>",
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'scientific_checkout',
-                    displayName: 'Checked Out for Scientific Use by',
+                    name: 'action',
+                    displayName: 'Action - View TSR',
                     enableSorting: true,
                     width: '*',
-                    minWidth: '300'
+                    minWidth: '200'
                 }
             );
         }
+
+        vm.gridTrialsOwnedOptions.appScopeProvider = vm;
+
+        vm.getCheckOut = UserService.getCheckOut;
+
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
@@ -507,16 +530,19 @@
         vm.getUserSubmittedTrials();
 
         vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
+
+        vm.searchOwnedParams = new TrialSearchParams;
+        vm.searchOwnedParams.type = 'own';
         vm.getUserTrials = function () {
             //user_id is undefined if no user was found to begin with
-            if (vm.searchParams.user_id) {
+            if (vm.searchOwnedParams.user_id) {
                 vm.gridTrialsOwnedOptions.useExternalPagination = true;
                 vm.gridTrialsOwnedOptions.useExternalSorting = true;
-                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                UserService.getUserTrialsSubmitted(vm.searchOwnedParams).then(function (data) {
+                    vm.gridTrialsOwnedOptions.data = data['trial_submissions'];
                     vm.gridTrialsOwnedOptions.totalItems = data.total;
                 }).catch(function (err) {
-                    console.log('Get User Trials failed');
+                    console.log('Get User Owned Trials failed');
                 });
             }
         };

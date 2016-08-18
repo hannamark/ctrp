@@ -69,7 +69,7 @@
                             openGsaModal();
                         }, 500);
                     } else {
-                        toastr.error('Login failed', 'Login error');
+                        toastr.error('Login failed', 'Login error', { timeOut: 0});
                         userObj.processing = false;
                     }
                 }).catch(function (err) {
@@ -181,7 +181,7 @@
                     if(data[0].success) {
                         toastr.success('Success', 'Your Request for Admin Access has been sent.');
                     } else {
-                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error');
+                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error', { timeOut: 0});
                     }
                 });
         };
@@ -233,33 +233,6 @@
             var configObj = {};
             return PromiseTimeoutService.updateObj(URL_CONFIGS.A_USER + userObj.username + '.json', userObj, configObj);
         };
-
-        this.upsertUserSignup = function (userObj) {
-            //update an existing user
-            var configObj = {};
-
-            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj)
-                .then(function (data) {
-                    console.log('login, data returned: ' + JSON.stringify(data["server_response"]));
-                    if (data["server_response"] == 422 || data["server_response"]["status"] == 422) {
-                        toastr.error('Sign Up failed', 'Login error');
-                        for (var key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                if (key != "server_response") {
-                                    toastr.error("SignUp error:", key + " -> " + data[key]);
-                                }
-                            }
-                        }
-                        $state.go('main.signup');
-                    } else {
-                        toastr.success('Sign Up Success', 'You have been signed up');
-                        $state.go('main.welcome_signup');
-                    }
-                }).catch(function (err) {
-                    $log.error('error in log in: ' + JSON.stringify(err));
-                });
-
-        }; //upsertUserSignup
 
         this.upsertUserChangePassword = function (userObj) {
             //update an existing user
@@ -379,20 +352,14 @@
 
                             var searchParams = {
                                 from_user_id: controller.userDetails.id,
-                                transfers: []
+                                to_user_ids: []
                             };
                             var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
                             if (trialIdArr && trialIdArr.length){
-                                _.each(user_ids, function(user_id) {
-                                    _.each(trialIdArr, function (trial_id) {
-                                        searchParams.transfers.push({'user_id': user_id, 'trial_id': trial_id});
-                                    });
-                                });
-                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value();
+                                searchParams.to_user_ids = user_ids;
+                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_ownership_id').value();
                             } else {
-                                _.each(user_ids, function(user_id) {
-                                    searchParams.transfers.push({'user_id': user_id});
-                                });
+                                searchParams.to_user_ids = user_ids;
                             }
 
                             service.transferUserTrialsOwnership(searchParams).then(function (data) {
@@ -477,11 +444,25 @@
                                     || curUserRole === 'ROLE_ACCOUNT-APPROVER'
                                         || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
-
+        
+        /********* check out string formatter given value from db *******/
+        this.getCheckOut = function ( checkOut ) {
+            var checkOutStr = '';
+            if (checkOut.split(',').length > 1) {
+                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
+                    checkOutStr = checkOut.split(',')[0]+ '/SC';
+                } else {
+                    checkOutStr = checkOut;
+                }
+            } else {
+                checkOutStr = checkOut;
+            }
+            return checkOutStr;
+        };
+        
         /******* helper functions *********/
         $rootScope.$on('$stateChangeSuccess', function(event) {
             service.initVars();
-            console.log('lets c when it gets here');
         });
 
         function _setAppVersion(version) {

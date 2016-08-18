@@ -145,10 +145,7 @@
                             successMsg = 'Record Updated.';
                         }
                         toastr.clear();
-                        toastr.success(successMsg, 'Operation Successful!', {
-                            extendedTimeOut: 1000,
-                            timeOut: 0
-                        });
+                        toastr.success(successMsg, 'Operation Successful!');
                         vm.setToDefaultMode();
                         PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                     }
@@ -206,10 +203,7 @@
                     }
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
                     toastr.clear();
-                    toastr.success('Record(s) deleted.', 'Operation Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Record(s) deleted.', 'Operation Successful!');
                 }
             }).catch(function(err) {
                 console.log("error in deleting outcome measure =" + psId);

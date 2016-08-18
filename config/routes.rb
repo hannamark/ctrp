@@ -173,6 +173,8 @@ Rails.application.routes.draw do
     post '/trial_submission_expect_complete' => 'submissions#update'
 
     get '/countries' => 'util#get_countries'
+    get '/countries_for_registry' => 'util#get_countries'
+    get '/get_authorities_for_a_country' => 'util#get_authorities_for_a_country'
     get '/states' => 'util#get_states'
     get '/backoffice' => 'backoffice#index'
     get '/backoffice/download_log'
@@ -282,7 +284,7 @@ Rails.application.routes.draw do
         collection do
           get 'download/:id' => 'trial_documents#download'
           get  'download_tsr_in_rtf/:trial_id' => 'trial_documents#download_tsr_in_rtf'
-          post 'deleted_documents'
+          post 'deleted_documents' # => 'trial_documents#deleted_documents'
         end
       end
 

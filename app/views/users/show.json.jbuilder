@@ -9,6 +9,7 @@ if @userReadAccess
                 :last_name,
                 :middle_name,
                 :phone,
+                :phone_ext,
                 :prs_organization_name,
                 :receive_email_notifications,
                 :role,

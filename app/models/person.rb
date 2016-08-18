@@ -103,6 +103,20 @@ class Person < ActiveRecord::Base
     return isNullifiable
   end
 
+  def person_created_date
+    if self.created_at.present?
+#     return self.created_at.to_s(:app_time)
+      return self.created_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+    end
+  end
+
+  def person_updated_date
+    if self.updated_at.present?
+      return self.updated_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+#      return self.updated_at.to_s(:app_time)
+    end
+  end
+
   private
 
   # Method to check for the presence of phone or email. If both are empty, then return false

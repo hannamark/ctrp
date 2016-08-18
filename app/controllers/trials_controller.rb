@@ -76,7 +76,7 @@ class TrialsController < ApplicationController
         trial_service.send_email(@trial.edit_type)
       else
         format.html { render :edit }
-        format.json { render json: @trial.errors, status: :unprocessable_entity }
+        format.json { render json: @trial.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end
@@ -287,6 +287,7 @@ class TrialsController < ApplicationController
   end
 
   def search
+
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     if params[:trial_ownership].blank?
@@ -300,29 +301,23 @@ class TrialsController < ApplicationController
 
     if params[:trial_ownership].present?
 
-      if  params[:no_nih_nci_prog].present?
-        @trials =  @trials.where(nih_nci_prog: nil) unless @trials.blank?
-      end
       if ['ROLE_ADMIN','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
         if params[:family_id].present?
-          @trials = @trials.in_family(params[:family_id], Date.today)
+          @trials = Trial.in_family(params[:family_id], Date.today).where(nih_nci_prog: nil).filter_rejected
         elsif params[:organization_id].present?
-          @trials = @trials.matches('lead_org_id', params[:organization_id])
+          @trials = Trial.matches('lead_org_id', params[:organization_id]).where(nih_nci_prog: nil).filter_rejected
         end
-      end
-
-      if ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
+      elsif ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
         family = FamilyMembership.find_by_organization_id(current_user.organization_id)
         if family
-          @trials = @trials.in_family(family.family_id, Date.today)
+          @trials = Trial.in_family(family.family_id, Date.today).where(nih_nci_prog: nil).filter_rejected
         else
-          @trials = @trials.matches('lead_org_id', current_user.organization_id)
+          @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected
         end
       end
 
     elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
-      @trials = Trial.all
-      @trials = @trials.filter_rejected
+      @trials = Trial.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
@@ -463,6 +458,8 @@ class TrialsController < ApplicationController
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
+      nci_protocol_origin_id = ProtocolIdOrigin.find_by_code('NCI').id
+
       # PA fields
       if params[:research_category].present?
         Rails.logger.debug " Before params[:research_category] = #{params[:research_category].inspect}"
@@ -509,8 +506,16 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && search_process_status_ids.include?(trial.processing_status_wrappers.last.processing_status_id)}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
-      if params[:protocol_origin_type].present?
-        @trials = @trials.select{|trial| trial.other_ids.by_value(params[:protocol_origin_type]).size>0}
+      if params[:protocol_origin_type].present?  # params[:protocol_origin_type] is an array of numerical id
+
+        nci_trials = []
+        nci_trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?(nci_protocol_origin_id)
+        trials_other_id = @trials.select { |trial| trial.other_ids.pluck(:protocol_id_origin_id).map { |id| params[:protocol_origin_type].include?(id)}.include?(true)}
+
+        # trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
+
+        @trials = nci_trials | trials_other_id # concatenate
+
       end
       if params[:admin_checkout].present?
         Rails.logger.info "Admin Checkout Only selected"

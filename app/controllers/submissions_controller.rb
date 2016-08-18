@@ -67,7 +67,18 @@ class SubmissionsController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-    params[:sort] = 'submission_received_date' if params[:sort].blank?
+
+    if params[:sort].blank?
+      params[:sort] = 'submission_received_date'
+    elsif params[:sort] == 'business_days_since_submitted'
+      params[:sort] = 'submission_received_date'
+      if params[:order].downcase == 'asc'
+        params[:order] = 'desc'
+      elsif params[:order].downcase == 'desc'
+        params[:order] = 'asc'
+      end
+    end
+
     params[:order] = 'asc' if params[:order].blank?
 
     @trial_submissions = Submission.matchesImpPro(
@@ -143,7 +154,7 @@ class SubmissionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def submission_params
-    params[:submission].permit(:id,:amendment_num,:amendment_date,:amendment_reason_id,:acknowledge,:acknowledge_comment,
+    params[:submission].permit(:id,:amendment_num,:amendment_date,:amendment_reason_id,:acknowledge,:acknowledge_comment, :owner_user_id,
     :expected_abstraction_completion_date,:expected_abstraction_completion_date_comments,:acknowledge_date,:acknowledged_by,:business_days_since_submitted )
   end
 end

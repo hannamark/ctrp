@@ -121,10 +121,7 @@
                     PATrialService.setCurrentTrial(vm.trialDetailObj); // update to cache
                     $scope.$emit('updatedInChildScope', {});
                     toastr.clear();
-                    toastr.success('Submission validation has been updated', 'Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Submission validation has been updated', 'Successful!');
 
                     _getTrialDetailCopy();
                     // To make sure setPristine() is executed after all $watch functions are complete

@@ -31,11 +31,9 @@
         vm.updatePerson = function () {
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
-                //convert the ISO date to Locale Date String
-                //aff['effective_date'] = aff.effective_date ? moment(aff['effective_date']).format('DD-MMM-YYYY') : ''; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                //aff['expiration_date'] = aff.expiration_date ? moment(aff['expiration_date']).format('DD-MMM-YYYY') : ''; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
-                aff['effective_date'] = aff.effective_date ? moment(aff['effective_date'], 'DD-MMM-YYYY') : ''; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? moment(aff['expiration_date'], 'DD-MMM-YYYY') : ''; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
+                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
                 var affStatusIndex = -1; //PoAffiliationStatus index
                 if (aff.effective_date && !aff.expiration_date) {
                     affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
@@ -78,10 +76,7 @@
 
         function showToastr(personName) {
             toastr.clear();
-            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!', {
-                extendedTimeOut: 1000,
-                timeOut: 0
-            });
+            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!');
         }
 
         vm.resetForm = function() {

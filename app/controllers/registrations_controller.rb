@@ -3,22 +3,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(sign_up_params)
+      user = params[:user]
       resource[:user_status_id] = UserStatus.find_by_code('INR').id
+      if user[:user_type]
+        resource[:type] = user[:user_type]
+      end
       if resource.save
-        begin
-          mail_template = MailTemplate.find_by_code('USER_REGISTRATION')
-          user = params[:local_user]
-          mail_template.body_html.gsub!('${user_name}',      "#{user[:first_name]} #{user[:last_name]}")
-          mail_template.body_html.gsub!('${user_username}',  user[:username])
-          mail_template.body_html.gsub!('${user_email}',     user[:email])
-          mail_template.body_html.gsub!('${user_phone}',     "#{(user[:phone] ? user[:phone] : '')} #{(user[:phone_ext] ? ' ext ' + user[:phone_ext] : '')}" )
-          mail_template.body_html.gsub!('${user_org}',       (user[:organization_id] ? Organization.find(user[:organization_id]).name : '') )
-          mail_template.body_html.gsub!('${date}',           (Time.now).strftime('%v') )
-
-          CtrpMailer.general_email(mail_template.from, mail_template.to, mail_template.cc, mail_template.bcc, mail_template.subject, mail_template.body_text, mail_template.body_html).deliver_now
-        rescue  Exception => e
-          logger.warn "email delivery error = #{e}"
-        end
+        send_registration_email user
         render :status => 200, :json => { :success => true, :info => "Sign Up"}
       else
         Rails.logger.debug resource.errors.full_messages
@@ -32,13 +23,21 @@ class RegistrationsController < Devise::RegistrationsController
     self.resource = resource_class.new_with_session(hash || {}, session)
   end
 
-  protected
-  #def after_sign_up_path_for(resource)
- #   after_signup_path(:add_user_details)
- # end
+  private
+  def send_registration_email user
+    mail_template = MailTemplate.find_by_code('USER_REGISTRATION')
+    mail_template.body_html.gsub!('${user_name}',      "#{user[:first_name]} #{user[:last_name]}")
+    mail_template.body_html.gsub!('${user_username}',  user[:username])
+    mail_template.body_html.gsub!('${user_email}',     user[:email])
+    mail_template.body_html.gsub!('${user_phone}',     "#{(user[:phone] ? user[:phone] : '')} #{(user[:phone_ext] ? ' ext ' + user[:phone_ext] : '')}" )
+    mail_template.body_html.gsub!('${user_org}',       (user[:organization_id] ? Organization.find(user[:organization_id]).name : '') )
+    mail_template.body_html.gsub!('${date}',           (Time.zone.now).strftime('%v') )
 
-  #def after_sign_up_path_for(resource)
-   # Rails.logger.info "In after_sign_up_path_for"
-   # redirect_to users_path
-  #end
+    CtrpMailerWrapper.send_email(mail_template, nil)
+  end
+
+  def sign_up_params
+    params[:user].permit(:username, :first_name, :last_name, :email, :phone, :phone_ext, :organization_id, :domain)
+  end
+
 end

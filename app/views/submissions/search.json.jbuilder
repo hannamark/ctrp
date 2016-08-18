@@ -10,6 +10,7 @@ if @searchAccess
                     :checkout,
                     :official_title,
                     :onhold_date,
+                    :onhold_desc,
                     :comp_date,
                     :lead_protocol_id,
                     :lead_org_id,
@@ -42,7 +43,18 @@ if @searchAccess
                     :late_rejection_date,
                     :expected_abstraction_completion_date,
                     :expected_abstraction_completion_date_comments,
-                    :business_days_since_submitted
+                    :business_days_since_submitted,
+                    :owner_user_id,
+                    :current_submission_date,
+                    :current_administrative_milestone,
+                    :current_scientific_milestone,
+                    :process_priority,
+                    :current_processing_status,
+                    :current_processing_status_date,
+                    :dcp_id,
+                    :clinical_research_category,
+                    :submission_method_name,
+                    :verification_date
 
     end
   end

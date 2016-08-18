@@ -17,6 +17,7 @@ var registryMessage = function() {
 
 /******* Default Selected Values *********/
     this.trialSecondaryPurposeFieldDefaultValue = '-Select a Secondary Purpose-';
+    this.trialReponsiblePartyFieldDefaultValue = '-Select a Responsible Party-';
 
 };
 module.exports = registryMessage;

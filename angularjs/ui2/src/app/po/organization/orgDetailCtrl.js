@@ -78,10 +78,7 @@
 
         function showToastr(orgName) {
             toastr.clear();
-            toastr.success('Organization ' + orgName + ' has been recorded', 'Operation Successful!', {
-                extendedTimeOut: 1000,
-                timeOut: 0
-            });
+            toastr.success('Organization ' + orgName + ' has been recorded', 'Operation Successful!');
         }
 
         vm.resetForm = function() {

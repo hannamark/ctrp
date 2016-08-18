@@ -37,6 +37,7 @@
 #  source                      :string
 #  user_status_id              :integer
 #  phone                       :string
+#  phone_ext                   :string
 #  city                        :string
 #  domain                      :string
 #  status_date                 :datetime
@@ -113,6 +114,10 @@ class  User < ActiveRecord::Base
     else
       joins(join_clause).where("#{column_str} ilike ?", "#{value}")
     end
+  }
+
+  scope :matches_all_registered, -> () {
+    where("status_date is NOT NULL")
   }
 
   scope :matches_all_active, -> () {
@@ -339,6 +344,10 @@ class  User < ActiveRecord::Base
   end
 
   def email_changed?
+    false
+  end
+
+  def password_required?
     false
   end
 end

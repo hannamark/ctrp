@@ -274,10 +274,7 @@
                     $scope.$emit('updatedInChildScope', {});
 
                     toastr.clear();
-                    toastr.success('Trial design has been updated', 'Successful!', {
-                        extendedTimeOut: 1000,
-                        timeOut: 0
-                    });
+                    toastr.success('Trial design has been updated', 'Successful!');
                     _getTrialDetailCopy();
 
                     // To make sure setPristine() is executed after all $watch functions are complete

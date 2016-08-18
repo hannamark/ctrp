@@ -77,10 +77,10 @@
             'NCI_DIV_PA': '/ctrp/pa/nih_nci_div_pa.json',
             'NCI_PROG_PA': '/ctrp/pa/nih_nci_prog_pa.json',
             'SUBMISSION_METHODS': '/ctrp/pa/submission_methods.json',
-            'AUDIT_HISTORY': '/ctrp/trial_versions/history',
-            'TRIAL_UPDATES_HISTORY': '/ctrp/trial_versions/updates_history',
-            'TRIAL_SUBMISSIONS_HISTORY': '/ctrp/trial_versions/submissions_history',
-            'TRIAL_DELETED_DOCUMENTS' : '/ctrp/registry/trial_documents/deleted_documents',
+            'AUDIT_HISTORY': '/ctrp/trial_versions/history.json',
+            'TRIAL_UPDATES_HISTORY': '/ctrp/trial_versions/updates_history.json',
+            'TRIAL_SUBMISSIONS_HISTORY': '/ctrp/trial_versions/submissions_history.json',
+            'TRIAL_DELETED_DOCUMENTS' : '/ctrp/registry/trial_documents/deleted_documents.json',
             'OUTCOME_MEASURE_TYPES': '/ctrp/outcome_measure_types.json',
             'OUTCOME_MEASURE_LIST' : '/ctrp/registry/outcome_measures.json',
             'A_OUTCOME_MEASURE' : '/ctrp/registry/outcome_measures/',
@@ -96,6 +96,8 @@
             'NCIT_DISEASE_CODE_LIST': '/ctrp/ncit_disease_codes.json',
             'NCIT_TREE': '/ctrp/ncit_disease_codes/get_tree.json',
             'SEARCH_DISEASE': '/ctrp/ncit_disease_codes/search.json',
+            'COUNTRIES_LIST': '/ctrp/countries_for_registry.json',
+            'AUTHORITIES_FOR_A_COUNTRY' : '/ctrp/get_authorities_for_a_country.json',
 
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',

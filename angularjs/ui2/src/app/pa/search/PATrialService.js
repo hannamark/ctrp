@@ -20,7 +20,9 @@
             sort: '',
             order: '',
             rows: 10,
-            start: 1
+            start: 1,
+            // protocol_id: '',
+            // protocol_origin_type_codes: [],
         }; //initial Trial Search Parameters
 
         var gridOptions = {
@@ -232,7 +234,7 @@
          * @return initTrialSearchParams
          */
         function getInitialTrialSearchParams() {
-            return initTrialSearchParams;
+            return angular.copy(initTrialSearchParams);
         } //getInitialTrialSearchParams
 
         function getGridOptions() {

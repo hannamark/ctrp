@@ -99,7 +99,7 @@
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
             (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
-            '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
+            '{{row.entity.username.indexOf(\'nihusernothaveanaccount\') > - 1 ? \'\': row.entity.username}}</a></div>'
         };
 
         var firstName = {
@@ -170,26 +170,7 @@
                 action: function ($event){
                     this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
                 }
-            }],
-            /*
-            exporterPdfDefaultStyle: {fontSize: 9},
-            exporterPdfTableStyle: {margin: [0, 0, 0, 0]},
-            exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
-            exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Users:', style: 'headerStyle' },
-            exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - Total Users: ' + vm.gridOptions.totalItems, style: 'footerStyle', margin: [40, 10, 40, 40] };
-            },
-            exporterPdfCustomFormatter: function ( docDefinition ) {
-                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
-                docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
-                return docDefinition;
-            },
-            exporterMenuAllData: true,
-            exporterMenuPdfAll: true,
-            exporterPdfOrientation: 'landscape',
-            exporterPdfMaxGridWidth: 700,
-            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
-            */
+            }]
         };
 
          UserService.getUserStatuses().then(function (response) {
@@ -201,14 +182,15 @@
             }
             if (vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
                 vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
-                    return _.contains(['ACT', 'INR', 'REJ'], item.code);
+                    return _.contains(['ACT', 'INR'], item.code);
                 });
             }
          });
+        
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
-        if (!vm.registeredUsersPage && vm.curUser.role === "ROLE_SITE-SU") {
+        if (!vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
             if (vm.curUser.org_families.length) {
                 vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
             } else {
@@ -220,7 +202,7 @@
         } else if (!vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
         } else if (vm.registeredUsersPage) {
-            vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg);
+            vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg, optionOrgFamilies);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
         vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -299,9 +281,22 @@
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
+        
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams, vm.searchParams.organization_name, vm.searchOrganizationFamily);
+            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams,  vm.organization_name, vm.searchOrganizationFamily);
+        };
+
+        vm.setTypeAheadOrg = function (searchObj) {
+            var splitVal = searchObj.split('<span class="hide">');
+            vm.organization_name = splitVal[0];
+            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+            vm.searchParams.organization_id = vm.userChosenOrg.id;
+        };
+
+        vm.removeOrgChoice = function () {
+            vm.userChosenOrg = null;
+            vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
         };
 
         /****************************** implementations **************************/

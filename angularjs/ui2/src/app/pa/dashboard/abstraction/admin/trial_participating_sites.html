@@ -108,7 +108,7 @@
                                                                ng-click="psView.openCalendar($event, 'status_date')"
                                                                is-open="psView.statusDateOpened"
                                                                datepicker-options="psView.dateOptions"
-                                                               close-text="Close" readonly />
+                                                               close-text="Close" readonly date-formatter>
                                                         <span class="input-group-btn">
                                                             <button type="button" restriction-field class="btn btn-primary" ng-click="psView.openCalendar($event, 'status_date')">
                                                                 <i class="glyphicon glyphicon-calendar"></i>
@@ -386,7 +386,9 @@
                                     <label class="control-label col-xs-12 col-sm-3">Type:</label>
                                     <div class="col-xs-12 col-sm-9">
                                         <label ng-repeat="type in psView.centralContactTypes track by $index" for="contact_type_{{$index}}" class="radio-inline control-label">
-                                            <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="psView.currentParticipatingSite.contact_type">{{type.name}}
+                                            <input type="radio" name="contact_type" value="{{type.name}}" id="contact_type_{{$index}}" ng-model="psView.currentParticipatingSite.contact_type">
+                                            <span ng-show="type.name !== 'PI'">{{type.name}}</span>
+                                            <span ng-show="type.name === 'PI'">Site Investigator</span>
                                         </label>
                                     </div>
                                 </div>
@@ -498,7 +500,7 @@
         <div class="table-responsive">
             <table id="list_participating_site_tbl" class="table table-bordered table-striped table-hover" ng-show="psView.curTrial.participating_sites.length">
                 <thead>
-                <th>PO ID</th>
+                <th>CTRP ID</th>
                 <th>PO Name</th>
                 <th>Investigators</th>
                 <th>Site Recruitment Status</th>
