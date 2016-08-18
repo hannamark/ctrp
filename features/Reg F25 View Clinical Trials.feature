@@ -144,7 +144,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Data Table 4 Funding Sponsor/Source |
       |Program Code  |
 
-     Scenario: #10 Status/Dates viewed fields
+     Scenario: #10 Trial Status viewed fields
     Given I am on the Trial Details Screen
     And I will view Status/Dates type
     
@@ -152,9 +152,15 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Current Trial Status  |
       |Why the Study Stopped  |
       |Current Trial Status Date  |
-      |Trial Start Date  |
-      |Primary Completion Date  |
-      |Completion Date  |
+      
+     Scenario: #10 Trial Dates viewed fields
+    Given I am on the Trial Details Screen
+    And I will view Status/Dates type
+      
+      
+      |Trial Start Date: Actual, Anticipated |
+      |Primary Completion Date: Actual, Anticipated  |
+      |Completion Date: Actual, Anticipated  |
 
       Scenario: #11 FDA IND/IDE Information for applicable trials viewed fields
     Given I am on the trial Details screen
