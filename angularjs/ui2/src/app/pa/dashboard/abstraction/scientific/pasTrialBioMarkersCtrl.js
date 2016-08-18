@@ -24,6 +24,7 @@
         vm.disableBtn = false;
         vm.assayTypes=assayTypes;
         vm.checked_assay_types=[];
+        vm.fruits =["orange", "apple"]
 
         vm.evalTypes=evaluationTypes;
         vm.checked_eval_types=[];

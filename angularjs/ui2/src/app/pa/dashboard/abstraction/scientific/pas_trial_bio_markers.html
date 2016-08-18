@@ -141,7 +141,8 @@
                 <!-- end of assay type -->
 
                 <!-- biomarker purpose type -->
-                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || markersView.disableBtn" ng-model="markersView.isBiomarkerPurposesChecked" required="">
+
+                <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_sci_editable || markersView.disableBtn">
                     <legend class="sub-bordered">Biomarker Use & Purpose</legend>
 
                     <!-- bio marker use -->
@@ -156,21 +157,28 @@
                             </span>
                         </div>
                     </div>
+                </fieldset>
 
                     <!-- end of bio marker use -->
 
-                    <div class="form-group no-bottom-margin" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_biomarker_purposes.length)}">
+                    <div class="no-bottom-margin" >
                         <!--label class="control-label col-xs-12 col-sm-2">Purposes:</label-->
                         <div class="col-xs-12 col-sm-10"></div>
                     </div>
-                    <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(markersView.checked_biomarker_purposes.length)}">
+
+                    <div class="form-group" ng-class="{'has-error': ctrpbtn.marker_form.needsAttention(marker_form.biomarker_purpose)}">
                         <div class="col-xs-12 col-sm-2"></div>
                         <div class="col-xs-12 col-sm-10">
                             <div layout="row" layout-wrap flex>
                                 <div class="checkbox checkbox-info" flex="40" ng-repeat="bp in markersView.biomarkerPurposes">
                                     <label>
-                                        <input id="biomarker_purposes_{{$index}}" type="checkbox" ng-checked="exists(bp, markersView.checked_biomarker_purposes)" ng-click="toggle(bp, markersView.checked_biomarker_purposes,'BP')" ng-required="true"> {{ bp.code }}
-                                    </label>
+                                        <input type="checkbox"
+                                               name="biomarker_purpose"
+                                               id="biomarker_purposes_{{$index}}"
+                                               ng-checked="exists(bp, markersView.checked_biomarker_purposes)"
+                                               ng-click="toggle(bp, markersView.checked_biomarker_purposes,'BP')"
+                                               ng-required="true" /> {{ bp.code }}
+                                       </label>
                                 </div>
                             </div>
                             <!--span class="help-block top-offset-xss required" ng-show="required" ng-hide="!markersView.show_biomarker_purpose_alert">Biomarker Purpose is Required</span-->
@@ -182,7 +190,6 @@
                         </div>
 
                     </div>
-                </fieldset>
                 <!-- end of biomarker purpose -->
 
                 <!-- specimen type -->
