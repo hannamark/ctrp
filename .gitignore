@@ -40,8 +40,14 @@ config/environments/ci.rb
 config/environments/demo.rb
 config/environments/stage.rb
 config/environments/production.rb
+
+
 ## Environment normalisation:
+dump.rdb
+Gemfile.lock
+
 /.bundle
+
 /vendor/bundle
 ./db/add_users.rb
 # these should all be checked in to normalise the environment:
@@ -61,7 +67,10 @@ config/environments/production.rb
 /node_modules
 
 # Ignore cucumber tests dir
-/tests/features/output
+#/tests/features/output
+
+# Ignore cucumber tests Screenshot dir
+/tests/testScreenShot
 
 # Ignore cucumber tests cred
 /tests/features/testConfig
@@ -79,4 +88,3 @@ angularjs/ui2/src/bower_components/
 angularjs/ui2/bower_components/
 angularjs/ui2/.tmp
 public/ctrp/ui2/
-dump.rdb

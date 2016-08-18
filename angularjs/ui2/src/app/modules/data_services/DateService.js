@@ -164,8 +164,11 @@
             }
 
             _.each(dateArray, function (item) {
-                var d = new Date(item[dateKey]);
-                item[dateKey] = moment(d).format(dateFormat);
+                if (moment(item[dateKey], dateFormat, true).isValid()) {
+                    item[dateKey] = moment(item[dateKey], dateFormat).format(dateFormat);
+                } else {
+                    item[dateKey] = moment(item[dateKey]).format('DD-MMM-YYYY')
+                }
             });
 
             return dateArray;

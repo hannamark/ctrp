@@ -92,16 +92,16 @@ ResponsibleParty.find_or_create_by(code: 'SPONSOR').update(name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI').update(name: 'Principal Investigator')
 ResponsibleParty.find_or_create_by(code: 'SI').update(name: 'Sponsor-Investigator')
 
-ProtocolIdOrigin.find_or_create_by(code: 'NCI').update(name: 'NCI Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier')
-# ProtocolIdOrigin.find_or_create_by(code: 'LORG').update(name: 'Lead Organization Trial Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CDR').update(name: 'CDR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DNCI').update(name: 'Duplicate NCI Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'ONCT').update(name: 'Obsolete ClinicalTrials.gov Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'OTH').update(name: 'Other Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'NCI').update(name: 'NCI Identifier', section: 'paSearch')
+ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier', section: 'pa,registry')
+ProtocolIdOrigin.find_or_create_by(code: 'LORG').update(name: 'Lead Organization Trial Identifier', section: 'paSearch')
+ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'CDR').update(name: 'CDR Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'DNCI').update(name: 'Duplicate NCI Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'ONCT').update(name: 'Obsolete ClinicalTrials.gov Identifier', section: 'pa,registry')
+ProtocolIdOrigin.find_or_create_by(code: 'OTH').update(name: 'Other Identifier', section: 'pa,registry')
 
 HolderType.find_or_create_by(code: 'INV').update(name: 'Investigator')
 HolderType.find_or_create_by(code: 'ORG').update(name: 'Organization')
@@ -1552,7 +1552,7 @@ MailTemplate.find_or_create_by(
                 <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) has added you as an owner of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
-                <p>As a trail record owner, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
+                <p>As a trial record owner, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
                 <p><b>NEXT STEPS:</b></p>
                 <p>If you do not want ownership of the trial record(s), or if you have questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
