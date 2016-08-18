@@ -25,6 +25,7 @@ var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var assert = require('assert');
+var searchTrialPage = require('../support/searchTrialPage');
 
 module.exports = function() {
     var menuItemList = new MenuItem();
@@ -38,6 +39,7 @@ module.exports = function() {
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
     var trialMenuItem = new trialMenuItemList();
     var addTrial = new addTrialPage();
+    var searchTrial = new searchTrialPage();
 
     this.Given(/^I want to test the Login page$/, function (callback) {
         browser.get('ui/#/main/sign_in');
@@ -114,18 +116,44 @@ module.exports = function() {
      //   callback();
     });
 
-    this.Given(/^Test with same login second time$/, function (callback) {
-        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild car').then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error123:'+err); expect(true).to.equal(false).and.notify(callback)});
+    this.Given(/^Test with same login first time$/, function (callback) {
+        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);callback(err);});
+        searchTrial.setSearchTrialProtocolID('*');
+        searchTrial.clickSearchTrialSearchButton();
+        searchTrial.clickSearchTrialMyTrials();
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback(err);});
+        browser.sleep(2500).then(callback);
+    //    callback();
+    });
 
-        //    element(by.model('trialDetailView.curTrial.official_title')).sendKeys('12345');
-        //login.login('ctrpcurator', 'Welcome01');
-        //login.accept();
-        //menuItemList.clickHomeEnterOrganizations();
-        //login.clickWriteMode('On');
-        //menuItemList.clickOrganizations();
-        //menuItemList.clickListFamily();
-    //    browser.sleep(210).then(callback);
-       // callback();
+    this.Given(/^Test with same login second time$/, function (callback) {
+        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);callback(err);});
+        searchTrial.setSearchTrialProtocolID('*');
+        searchTrial.clickSearchTrialSearchButton();
+        searchTrial.clickSearchTrialMyTrials();
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback(err);});
+        browser.sleep(2500).then(callback);
+        //    callback();
+    });
+
+    this.Given(/^Test with same login third time$/, function (callback) {
+        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);callback(err);});
+        searchTrial.setSearchTrialProtocolID('*');
+        searchTrial.clickSearchTrialSearchButton();
+        searchTrial.clickSearchTrialMyTrials();
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback(err);});
+        browser.sleep(2500).then(callback);
+        //    callback();
+    });
+
+    this.Given(/^Test with same login fourth time$/, function (callback) {
+        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);callback(err);});
+        searchTrial.setSearchTrialProtocolID('*');
+        searchTrial.clickSearchTrialSearchButton();
+        searchTrial.clickSearchTrialMyTrials();
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback(err);});
+        browser.sleep(2500).then(callback);
+        //    callback();
     });
 
     this.Then(/^Test with different login second time$/, function (callback) {
