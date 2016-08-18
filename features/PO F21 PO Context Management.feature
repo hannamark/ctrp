@@ -27,7 +27,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
-    And a PK ID will be assigned to the CTEP context
+    And a CTEP Org PK ID will be assigned to the CTEP context
     And the assigned CTEP Org PK ID will be sent to CTEP
     And the Service Request will be set to "Create"
     And the Processing Status Will be set to "Pending"
@@ -157,9 +157,9 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And the Created CTRP Context will be associated with the CTEP Context 
     And the CTEP Processing Status will be changed from "Pending" to "Complete"
     And the CTEP Service Request will be change from Create to Null 
-    And the CTRP Context "Processing Staus" will be "Complete"
+    And the CTRP Context "Processing Status" will be "Complete"
     And the CTRP "Organization Status" will be "Active"
-    And The CTEP Org PK ID is sent to CTEP 
+    
     
    
     Scenario:#2a CTRP Context Mandatory Fields
@@ -243,15 +243,15 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |CTEP ID|
     |Organization Name|
     |Source Status|
-    |Organization Address:City, State, County, Post Code|
+    |Organization Address:City, State, Country, Postal Code|
     
     And the curator will review the displayed options
-    And the curator can click on the existing option types <OptionType> to complete the funtion type <FunctionType|
+    And the curator can click on the existing option types <OptionType> to complete the funtion type <FunctionType>
     
     |OptionType|FunctionType|
     |Cancel    |To complete a New Search|
     |Proceed   |Create a New CTRP organization            |
-    |Select    |To associate an Organization from the search results with the selected CTER org |
+    |Select    |To associate an Organization from the search results with the selected CTEP org |
     
    	When The CTRP Organization displays after clicking on select
     And the curator clicks on Associate Organization Context to associate the selected CTRP Organization with the Organization in the CTEP Context
@@ -285,9 +285,8 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
     |Organization Name|
-    And the CTRP Processing Status will be pending
+    And the CTRP Processing Status will be "pending"
     And The CTRP Curator will be able to identify by searching CTEP Organization with Service Request "Update"
-    And the CTRP Processing Status will be "Pending"
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
     

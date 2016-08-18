@@ -451,9 +451,10 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'action',
-                    displayName: 'Action - View TSR',
-                    enableSorting: true,
+                    name: 'id',
+                    displayName: 'View TSR',
+                    enableSorting: false,
+                    cellTemplate: "<div class=\"ui-grid-cell-contents tooltip-uigrid\" ><a ui-sref=\"main.pa.trialOverview.viewTSR({trialId: row.entity.id })\" ui-sref-opts=\"{reload: true}\" >View TSR</a></div>",
                     width: '*',
                     minWidth: '200'
                 }
