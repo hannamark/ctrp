@@ -27,8 +27,11 @@ class UtilController < ApplicationController
   end
 
   def get_countries_for_registry
-     geo_location_service = GeoLocationService.new
-     @countries = geo_location_service.get_countries
+    @countries = Country.all.sort
+    us_idx = @countries.index(["United States", "US"])
+    @countries.insert(0, @countries.delete_at(us_idx))
+    canada_idx = @countries.index(["Canada", "CA"])
+    @countries.insert(1, @countries.delete_at(canada_idx))
   end
 
   def get_authorities_for_a_country
