@@ -93,10 +93,11 @@ module.exports = function() {
     var searchTableHeader = '';
     var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1789';
-    var leadProtocolIDA = 'CTRP_01_1777';
+    var leadProtocolIDA = 'CTRP_01_1781';
+    var leadProtocolIDB = 'CTRP_01_1777';
     var nctIDA = 'NCT00334282';
     var nctIDB = 'NCT02348710';
-    var nciIDA = '';
+    var nciIDA = 'NCI-2015-01997';
     var nciIDB = '';
     var optionA = '';
     var optionB = '';
@@ -106,10 +107,8 @@ module.exports = function() {
     var pageTitleA = 'Associated Trial Details';
     var identifierTypeA = 'NCI';
     var identifierTypeB = 'NCT';
-    var trialTypeA = '';
-    var trialTypeB = 'Interventional';
-    var officialTitleA = '';
-    var officialTitleB = 'A Randomised, Double-blind, Placebo Controlled, Multi-center Phase III Study to Evaluate the Efficacy and Safety of Pazopanib (GW786034) Compared to Placebo in Patients With Locally Advanced and/or Metastatic Renal Cell Carcinoma';
+    var trialTypeA = 'Interventional';
+    var officialTitleA = 'A Randomised, Double-blind, Placebo Controlled, Multi-center Phase III Study to Evaluate the Efficacy and Safety of Pazopanib (GW786034) Compared to Placebo in Patients With Locally Advanced and/or Metastatic Renal Cell Carcinoma';
     var errorMSGITypeRequired = 'Identifier Type is Required';
     var errorMSGTIdentifierRequired = 'Trial Identifier is Required';
     var errorMSGAlreadyExists = 'Error: Trial association already exists';
@@ -163,12 +162,12 @@ module.exports = function() {
         var optionTypeSplt = optionType.toString().split("\n");
         optionA = optionTypeSplt[1];
         optionB = optionTypeSplt[2];
-        associated.selectIdentifierType(optionB);
+        associated.selectIdentifierType(optionA);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I must enter the Trial Identifier$/, function (callback) {
-        associated.setTrialIdentifierTxt(nctIDA);
+        associated.setTrialIdentifierTxt(nciIDA);
         browser.sleep(25).then(callback);
     });
 
@@ -183,12 +182,12 @@ module.exports = function() {
     });
 
     this.Then(/^the Clinical Research Category populates$/, function (callback) {
-        associated.verifyResearchCategoryLookup(trialTypeB);
+        associated.verifyResearchCategoryLookup(trialTypeA);
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the Official Title populates$/, function (callback) {
-        associated.verifyOfficialTitleLookup(officialTitleB);
+        associated.verifyOfficialTitleLookup(officialTitleA+'test');
         browser.sleep(25).then(callback);
     });
 
@@ -198,7 +197,7 @@ module.exports = function() {
     });
 
     this.Then(/^the associated study displays on the Associated Trials screen$/, function (callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nctIDA, 'verify', optionB, trialTypeB, officialTitleB);
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', optionA, trialTypeA, officialTitleA);
         browser.sleep(25).then(callback);
     });
 
@@ -208,13 +207,14 @@ module.exports = function() {
     });
 
     this.Then(/^the Associated Trial will be associated with the trial$/, function (callback) {
-
+        associated.verifyAssociatedListTableTHead();
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^I can select the (.*) and the trial is (.*) displayed$/, function (IdentifierIdentifier, Retrievedfrom, table, callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nctIDA, 'link', optionB, trialTypeB, officialTitleB);
-        browser.sleep(5000).then(callback);
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'link', optionA, trialTypeA, officialTitleA);
+        associated.verifyViewAssociatedTrialNCI(leadProtocolIDA, nciIDA, nctIDA, '', '');
+        browser.sleep(25).then(callback);
     });
 
 
