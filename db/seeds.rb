@@ -1552,7 +1552,7 @@ MailTemplate.find_or_create_by(
                 <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) has added you as an owner of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
-                <p>As a trail record owner, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
+                <p>As a trial record owner, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
                 <p><b>NEXT STEPS:</b></p>
                 <p>If you do not want ownership of the trial record(s), or if you have questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>

@@ -40,8 +40,14 @@ config/environments/ci.rb
 config/environments/demo.rb
 config/environments/stage.rb
 config/environments/production.rb
+
+
 ## Environment normalisation:
+dump.rdb
+Gemfile.lock
+
 /.bundle
+
 /vendor/bundle
 ./db/add_users.rb
 # these should all be checked in to normalise the environment:
