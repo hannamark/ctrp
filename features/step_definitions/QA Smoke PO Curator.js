@@ -201,37 +201,52 @@ module.exports = function () {
                 searchPeople.setPersonFirstName(value);
                 searchPeople.clickSearch();
                 expect(projectFunctions.inSearchResults(value)).to.become('true');
+                searchOrg.searchResultMenu.click();
+                //*[@id="menuitem-15"]/button
+                element(by.xpath('//*[@id="menuitem-21"]/button')).click();
+                element(by.xpath('//*[@id="menuitem-23"]/button')).click();
+                element(by.xpath('//*[@id="menuitem-25"]/button')).click();
+                element(by.xpath('//*[@id="menuitem-27"]/button')).click();
+                element(by.xpath('//*[@id="menuitem-29"]/button')).click();
+                element(by.xpath('//*[@id="menuitem-31"]/button')).click();
+                element(by.xpath('//*[@id="menuitem-33"]/button')).click();
+                searchOrg.searchResultMenu.click();
                 element(by.linkText(value)).isPresent().then(function (stateLink) {
                     if (stateLink === true) {
                         element(by.linkText(value)).isDisplayed().then(function (state2Link) {
-                            if(state2Link)
-                            console.log('element Person link is displayed');
-                                element(by.linkText(value)).click();
+                            if (state2Link)
+                                console.log('element Person link is displayed');
+                            element(by.linkText(value)).click();
                         });
                     } else {
-                        assert.fail(0,1,'Person name link did not appear');
+                        assert.fail(0, 1, 'Person name link did not appear');
                     }
                 });
-                addPeople.addPersonFirstName.getAttribute('value').then(function(perFNAme){
-                    console.log("This is the Person First name in Edit Person Page" + perFNAme);
-                expect(perFNAme).to.equal(value, 'Verify the Person name in Edit page.');
-                })
-            });
-                 searchOrg.orgModelSearch.isPresent().then(function (state) {
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 40).then(function () {
+                    addPeople.addPersonFirstName.getAttribute('value').then(function (perFNAme) {
+                        console.log("This is the Person First name in Edit Person Page" + perFNAme);
+                        expect(perFNAme).to.equal(value, 'Verify the Person name in Edit page.');
+                    })
+                });
+                searchOrg.orgModelSearch.isPresent().then(function (state) {
                     if (state === true) {
-                         searchOrg.orgModelSearch.isDisplayed().then(function (state2) {
-                            if(state2)
-                            searchOrg.clickOrgSearchModel();
+                        searchOrg.orgModelSearch.isDisplayed().then(function (state2) {
+                            if (state2)
+                                searchOrg.clickOrgSearchModel();
                         });
                     } else {
-                        assert.fail(0,1,'Organization Model on Edit Person page did not appear');
+                        assert.fail(0, 1, 'Organization Model on Edit Person page did not appear');
                     }
                 });
-            cukeOrganization.then(function (orgValue) {
-                searchOrg.setOrgName(orgValue);
-                searchOrg.clickSearchButton();
-                searchOrg.selectOrgModelItem();
-                searchOrg.clickOrgModelConfirm();
+                cukeOrganization.then(function (orgValue) {
+                    searchOrg.setOrgName(orgValue);
+                    searchOrg.clickSearchButton();
+                    searchOrg.selectOrgModelItem();
+                    searchOrg.clickOrgModelConfirm();
+                });
             });
         });
         browser.sleep(25).then(callback);
