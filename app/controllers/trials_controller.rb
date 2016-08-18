@@ -565,8 +565,32 @@ class TrialsController < ApplicationController
           next if sn.nil?
           search_ids << sn.id
         end
-        @trials = @trials.select{|trial| !trial.submissions.blank? &&  search_ids.include?(trial.submissions.last.submission_type.id)}
+
+        upd = SubmissionType.find_by_code('UPD')
+        ori = SubmissionType.find_by_code('ORI')
+        amd = SubmissionType.find_by_code('AMD')
+
+
+        if search_ids.include?(upd.id)
+          @trials = @trials.select{|trial| !trial.submissions.blank? &&  upd.id == trial.submissions.last.submission_type.id && trial.submissions.last.status ="Active" && trial.submissions.last.acknowledge ="No" }
+        end
+
+
+        if search_ids.include?(ori.id)
+          @trials = @trials.select{|trial| !trial.submissions.blank? &&   !trial.submissions.pluck(:submission_type_id).include?(amd.id) }
+        end
+
+        if search_ids.include?(amd.id)
+          @trials = @trials.select{|trial| !trial.submissions.blank? &&   trial.submissions.pluck(:submission_type_id).include?(amd.id) }
+        end
+
+
+        #@trials = @trials.select{|trial| !trial.submissions.blank? &&  search_ids.include?(trial.submissions.last.submission_type.id)}
+        #Rails.logger.info "After &&&&&&&&&&&&&&&&&&&&&&&&"
+
       end
+
+
       if params[:submission_method].present?
         Rails.logger.debug " Before params[:submission_method] = #{params[:submission_method].inspect}"
         search_ids = []
