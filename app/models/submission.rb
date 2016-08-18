@@ -382,7 +382,7 @@ class Submission < TrialBase
        trials.start_date,
        trials.process_priority,
        trials.primary_comp_date,
-       trials.verification_date,
+       " + time_parser_start + "trials.verification_date" + time_parser_end + " as verification_date,
        trials.comp_date,
 	     trim(trailing ', ' from
           concat(
