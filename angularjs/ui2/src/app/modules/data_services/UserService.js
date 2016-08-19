@@ -450,7 +450,7 @@
                                     || curUserRole === 'ROLE_ACCOUNT-APPROVER'
                                         || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
-        
+
         /********* check out string formatter given value from db *******/
         this.getCheckOut = function ( checkOut ) {
             var checkOutStr = '';
@@ -465,7 +465,7 @@
             }
             return checkOutStr;
         };
-        
+
         /******* helper functions *********/
         $rootScope.$on('$stateChangeSuccess', function(event) {
             service.initVars();
