@@ -82,12 +82,13 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function() {
-            userCtrl.signedIn = false;
-            userCtrl.username = '';
-            userCtrl.userRole = '';
-            userCtrl.isCurationEnabled = false;
-            userCtrl.isCurationModeSupported = false;
-
+            if (userCtrl) {
+                userCtrl.signedIn = false;
+                userCtrl.username = '';
+                userCtrl.userRole = '';
+                userCtrl.isCurationEnabled = false;
+                userCtrl.isCurationModeSupported = false;
+            }
             var username = LocalCacheService.getCacheWithKey('username');
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {username: username, source: 'Angular'})
                 .then(function (data) {
