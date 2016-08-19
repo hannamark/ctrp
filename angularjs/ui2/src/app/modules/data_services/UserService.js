@@ -50,7 +50,7 @@
         this.login = function (userObj) {
             userObj.processing = true;
 
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in.json', userObj)
                 .then(function (data) {
                     if (data.token) {
                         LocalCacheService.cacheItem('token', data.token);
@@ -89,7 +89,7 @@
             userCtrl.isCurationModeSupported = false;
 
             var username = LocalCacheService.getCacheWithKey('username');
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: 'Angular'})
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {username: username, source: 'Angular'})
                 .then(function (data) {
                     if (data.success) {
                         LocalCacheService.clearAllCache();
@@ -246,6 +246,11 @@
         }; //searchUsersTrialsOwnership
 
         this.getUserTrialsSubmitted = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsSubmitted
+
+        this.getUserTrialsParticipation = function (searchParams) {
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
             return user_list;
         }; //searchUsersTrialsSubmitted
