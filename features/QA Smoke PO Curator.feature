@@ -36,7 +36,7 @@ Feature: QA Smoke PO Curator
     Then It should display Family and Organization association with above parameters
 
 
-  @smoke
+  @smoke123
   Scenario: As a Curator Create a Person and associate an Org to that Person then search that Person
     Given I want to create a Person with parameters
       | prefix | firstName  | middleName | lastName  | suffix | email             | phone        |

@@ -64,6 +64,8 @@ var projectMethodsRegistry = function () {
 
 
     this.selectTrials = function (trialType) {
+        trialMenuItem.clickTrials();
+        trialMenuItem.clickListSearchTrialLink();
         if (trialType === 'National') {
             trialMenuItem.clickRegisterNationalTrialLink();
         }
@@ -502,7 +504,8 @@ var projectMethodsRegistry = function () {
                             menuItem.clickListPeople();
                             searchPeople.setPersonFirstName(cukePerson);
                             searchPeople.clickSearch();
-                            element(by.linkText(cukePerson)).click();
+                           // element(by.linkText(cukePerson)).click();
+                            element(by.linkText('lName')).click();
                             searchOrg.clickOrgSearchModel();
                             searchOrg.setOrgName(cukeOrganization);
                             searchOrg.clickSearchButton();

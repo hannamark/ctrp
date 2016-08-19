@@ -154,6 +154,14 @@ var reporterHooks = function() {
         //return obj;   */
         callback();
     });
+
+    // On Error output testResult
+    this.registerHandler('onError', function(event, callback) {
+        var xml = junit(JSON.stringify(testResult), { indent: '    ' });
+        var file = fs.openSync(reportFilePath, 'w+');
+        fs.writeSync(file, JSON.stringify(testResult));
+        callback();
+    });
 };
 
 module.exports = reporterHooks;

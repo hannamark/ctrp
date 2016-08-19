@@ -50,7 +50,7 @@
         this.login = function (userObj) {
             userObj.processing = true;
 
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in', userObj)
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in.json', userObj)
                 .then(function (data) {
                     if (data.token) {
                         LocalCacheService.cacheItem('token', data.token);
@@ -82,14 +82,15 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function() {
-            userCtrl.signedIn = false;
-            userCtrl.username = '';
-            userCtrl.userRole = '';
-            userCtrl.isCurationEnabled = false;
-            userCtrl.isCurationModeSupported = false;
-
+            if (userCtrl) {
+                userCtrl.signedIn = false;
+                userCtrl.username = '';
+                userCtrl.userRole = '';
+                userCtrl.isCurationEnabled = false;
+                userCtrl.isCurationModeSupported = false;
+            }
             var username = LocalCacheService.getCacheWithKey('username');
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: 'Angular'})
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {username: username, source: 'Angular'})
                 .then(function (data) {
                     if (data.success) {
                         LocalCacheService.clearAllCache();
@@ -246,6 +247,11 @@
         }; //searchUsersTrialsOwnership
 
         this.getUserTrialsSubmitted = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsSubmitted
+
+        this.getUserTrialsParticipation = function (searchParams) {
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
             return user_list;
         }; //searchUsersTrialsSubmitted
@@ -444,7 +450,22 @@
                                     || curUserRole === 'ROLE_ACCOUNT-APPROVER'
                                         || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
-
+        
+        /********* check out string formatter given value from db *******/
+        this.getCheckOut = function ( checkOut ) {
+            var checkOutStr = '';
+            if (checkOut.split(',').length > 1) {
+                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
+                    checkOutStr = checkOut.split(',')[0]+ '/SC';
+                } else {
+                    checkOutStr = checkOut;
+                }
+            } else {
+                checkOutStr = checkOut;
+            }
+            return checkOutStr;
+        };
+        
         /******* helper functions *********/
         $rootScope.$on('$stateChangeSuccess', function(event) {
             service.initVars();

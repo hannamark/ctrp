@@ -58,6 +58,39 @@
             vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
             vm.submissionsGridOptions.data = null;
             vm.submissionsGridOptions.totalItems = null;
+            vm.submissionsGridOptions.exporterAllDataFn = function() {
+                var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+
+                vm.trialHistoryObj = {trial_id: trialId,start: vm.submissionParams.start, rows: vm.submissionParams.rows};
+                vm.disableBtn = true;
+
+                AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
+                    var status = data.server_response.status;
+                    console.log('submision data please', data);
+
+                    if (status >= 200 && status <= 210) {
+                        console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                        vm.submissionsGridOptions.data = data.trial_versions;
+                        vm.submissionsGridOptions.totalItems = data.total;
+
+                        _.each(vm.submissionsGridOptions.data, function(version) {
+                            var docsArray = [];
+                            _.each(version.docs, function(doc) {
+                                docsArray.push(doc.file_name);
+                            })
+
+                            version.docs = docsArray.join(';');
+                        });
+                        console.log('export related: ', data.trial_versions);
+                    }
+                }).catch(function (err) {
+                    console.log('Getting trial submissions failed');
+                }).finally(function () {
+                    console.log('search finished');
+
+                    vm.disableBtn = false;
+                });
+            };
             vm.submissionsGridOptions.onRegisterApi = function (gridApi) {
                 vm.gridApi = gridApi;
                 vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
@@ -66,7 +99,6 @@
                     loadTrialSubmissions();
                 });
             }; //gridOptions
-            vm.submissionsGridOptions.exporterAllDataFn = loadTrialSubmissions;
 
             loadTrialSubmissions();
 

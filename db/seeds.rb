@@ -92,16 +92,16 @@ ResponsibleParty.find_or_create_by(code: 'SPONSOR').update(name: 'Sponsor')
 ResponsibleParty.find_or_create_by(code: 'PI').update(name: 'Principal Investigator')
 ResponsibleParty.find_or_create_by(code: 'SI').update(name: 'Sponsor-Investigator')
 
-ProtocolIdOrigin.find_or_create_by(code: 'NCI').update(name: 'NCI Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier')
-# ProtocolIdOrigin.find_or_create_by(code: 'LORG').update(name: 'Lead Organization Trial Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'CDR').update(name: 'CDR Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'DNCI').update(name: 'Duplicate NCI Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'ONCT').update(name: 'Obsolete ClinicalTrials.gov Identifier')
-ProtocolIdOrigin.find_or_create_by(code: 'OTH').update(name: 'Other Identifier')
+ProtocolIdOrigin.find_or_create_by(code: 'NCI').update(name: 'NCI Identifier', section: 'paSearch')
+ProtocolIdOrigin.find_or_create_by(code: 'NCT').update(name: 'ClinicalTrials.gov Identifier', section: 'pa,registry')
+ProtocolIdOrigin.find_or_create_by(code: 'LORG').update(name: 'Lead Organization Trial Identifier', section: 'paSearch')
+ProtocolIdOrigin.find_or_create_by(code: 'CTEP').update(name: 'CTEP Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'DCP').update( name: 'DCP Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'CCR').update(name: 'CCR Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'CDR').update(name: 'CDR Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'DNCI').update(name: 'Duplicate NCI Identifier', section: 'pa')
+ProtocolIdOrigin.find_or_create_by(code: 'ONCT').update(name: 'Obsolete ClinicalTrials.gov Identifier', section: 'pa,registry')
+ProtocolIdOrigin.find_or_create_by(code: 'OTH').update(name: 'Other Identifier', section: 'pa,registry')
 
 HolderType.find_or_create_by(code: 'INV').update(name: 'Investigator')
 HolderType.find_or_create_by(code: 'ORG').update(name: 'Organization')
@@ -113,13 +113,13 @@ TrialStatus.find_or_create_by(code: 'INR').update(name: 'In Review', explanation
 TrialStatus.find_or_create_by(code: 'APP').update(name: 'Approved', explanation: 'Trial has been approved')
 TrialStatus.find_or_create_by(code: 'ACT').update(name: 'Active', explanation: 'The trial is open for Accrual')
 TrialStatus.find_or_create_by(code: 'EBI').update(name: 'Enrolling by Invitation', explanation: '')
-TrialStatus.find_or_create_by(code: 'CAC').update(name: 'Closed to Accrual', explanation: 'Trial has been closed to participant accrual. Participants are still receiving treatment/intervention')
-TrialStatus.find_or_create_by(code: 'CAI').update(name: 'Closed to Accrual and Intervention', explanation: 'Trial is temporarily not accruing. Participants are not receiving intervention')
 TrialStatus.find_or_create_by(code: 'TCL').update(name: 'Temporarily Closed to Accrual', explanation: 'Trial is temporarily not accruing')
 TrialStatus.find_or_create_by(code: 'TCA').update(name: 'Temporarily Closed to Accrual and Intervention', explanation: 'Trial has been closed to participant accrual. No participants are receiving treatment/intervention, but participants are still being followed according to the primary objectives of the study')
-TrialStatus.find_or_create_by(code: 'WIT').update(name: 'Withdrawn', explanation: 'Trial has been withdrawn from development and review')
-TrialStatus.find_or_create_by(code: 'ACO').update(name: 'Administratively Complete', explanation: 'Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)')
+TrialStatus.find_or_create_by(code: 'CAC').update(name: 'Closed to Accrual', explanation: 'Trial has been closed to participant accrual. Participants are still receiving treatment/intervention')
+TrialStatus.find_or_create_by(code: 'CAI').update(name: 'Closed to Accrual and Intervention', explanation: 'Trial is temporarily not accruing. Participants are not receiving intervention')
 TrialStatus.find_or_create_by(code: 'COM').update(name: 'Complete', explanation: 'Trial has been closed to accrual; participants have completed treatment/intervention, and the study has met its primary objectives')
+TrialStatus.find_or_create_by(code: 'ACO').update(name: 'Administratively Complete', explanation: 'Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)')
+TrialStatus.find_or_create_by(code: 'WIT').update(name: 'Withdrawn', explanation: 'Trial has been withdrawn from development and review')
 TrialStatus.find_or_create_by(code: 'AVA').update(name: 'Available', explanation: 'Currently available for this treatment')
 TrialStatus.find_or_create_by(code: 'NLA').update(name: 'No longer available', explanation: 'Was available for this treatment previously but is not currently available and will not be available in the future')
 TrialStatus.find_or_create_by(code: 'TNA').update(name: 'Temporarily not available', explanation: 'Not currently available for this treatment, but is expected to be available in the future')
@@ -1552,7 +1552,7 @@ MailTemplate.find_or_create_by(
                 <p>Date: ${date}</p>
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) has added you as an owner of the NCI Clinical Trials Reporting Program (CTRP) trial record identified above.</p>
-                <p>As a trail record owner, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
+                <p>As a trial record owner, you can update or amend the trial in the CTRP Clinical Trials Registration application.</p>
                 <p><b>NEXT STEPS:</b></p>
                 <p>If you do not want ownership of the trial record(s), or if you have questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
@@ -2221,7 +2221,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
     user = User.find_by_username(u["username"])
     unless user.blank?
       user.role = u["role"]
-      unless user.role == "ROLE_ADMIN" || user.role == "ROLE_SUPER" || user.role == "ROLE_SERVICE-REST"
+      unless user.role == "ROLE_SERVICE-REST"
         if user.username == 'ctrpsitesu2'
           user.organization = org3
         elsif user.username == 'ctrpsitesu3'

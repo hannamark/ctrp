@@ -133,7 +133,7 @@ class TrialsController < ApplicationController
   def search_trial_with_nci_id
 
     if params.has_key?(:nci_id)
-      @search_result = Trial.with_nci_id(params[:nci_id].upcase)
+      @search_result = Trial.where(nci_id: params[:nci_id].upcase) #Trial.with_nci_id(params[:nci_id].upcase)
       @search_result = @search_result.filter_rejected.first
       @search_result = @search_result.nil? ? {error_msg: 'Trial is not found'} : @search_result
     else
@@ -287,7 +287,6 @@ class TrialsController < ApplicationController
   end
 
   def search
-    $redis.set('kk','mm')
 
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
@@ -304,19 +303,18 @@ class TrialsController < ApplicationController
 
       if ['ROLE_ADMIN','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
         if params[:family_id].present?
-          @trials = Trial.in_family(params[:family_id], Date.today).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.in_family(params[:family_id], Date.today).where(nih_nci_prog: nil).filter_rejected.active_submissions
         elsif params[:organization_id].present?
-          @trials = Trial.matches('lead_org_id', params[:organization_id]).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.matches('lead_org_id', params[:organization_id]).where(nih_nci_prog: nil).filter_rejected.active_submissions
         end
       elsif ['ROLE_SITE-SU','ROLE_ACCOUNT-APPROVER'].include? current_user.role
         family = FamilyMembership.find_by_organization_id(current_user.organization_id)
         if family
-          @trials = Trial.in_family(family.family_id, Date.today).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.in_family(family.family_id, Date.today).where(nih_nci_prog: nil).filter_rejected.active_submissions
         else
-          @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected
+          @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected.active_submissions
         end
       end
-
     elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
@@ -460,6 +458,7 @@ class TrialsController < ApplicationController
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
 
       nci_protocol_origin_id = ProtocolIdOrigin.find_by_code('NCI').id
+      lead_org_trial_origin_id = ProtocolIdOrigin.find_by_code('LORG').id
 
       # PA fields
       if params[:research_category].present?
@@ -507,15 +506,22 @@ class TrialsController < ApplicationController
         @trials = @trials.select{|trial| !trial.processing_status_wrappers.blank? && search_process_status_ids.include?(trial.processing_status_wrappers.last.processing_status_id)}
         Rails.logger.debug "After @trials = #{@trials.inspect}"
       end
+
+
       if params[:protocol_origin_type].present?  # params[:protocol_origin_type] is an array of numerical id
+        @trials_copy = @trials.clone  # create a copy of @trials so as to filter for other_ids
+        @trials = @trials.select { |trial| !trial.lead_protocol_id.nil? } if params[:protocol_origin_type].include?(lead_org_trial_origin_id)
 
-        nci_trials = []
-        nci_trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?(nci_protocol_origin_id)
-        trials_other_id = @trials.select { |trial| trial.other_ids.pluck(:protocol_id_origin_id).map { |id| params[:protocol_origin_type].include?(id)}.include?(true)}
+        @trials = @trials.select {|trial| !trial.nci_id.nil?} if params[:protocol_origin_type].include?(nci_protocol_origin_id)
 
+        @trials_copy = @trials_copy.select { |trial| trial.other_ids.pluck(:protocol_id_origin_id).map { |id| params[:protocol_origin_type].include?(id)}.include?(true)}
         # trials_other_id = @trials.select{|trial| trial.other_ids.by_value_array(params[:protocol_origin_type]).size>0} # unless params[:protocol_origin_type].include?('NCI')
 
-        @trials = nci_trials | trials_other_id # concatenate
+        if params[:protocol_origin_type].include?(lead_org_trial_origin_id) || params[:protocol_origin_type].include?(nci_protocol_origin_id)
+          @trials |= @trials_copy  # concatenate
+        else
+          @trials = @trials_copy
+        end
 
       end
       if params[:admin_checkout].present?
@@ -559,8 +565,38 @@ class TrialsController < ApplicationController
           next if sn.nil?
           search_ids << sn.id
         end
-        @trials = @trials.select{|trial| !trial.submissions.blank? &&  search_ids.include?(trial.submissions.last.submission_type.id)}
+
+        upd = SubmissionType.find_by_code('UPD')
+        ori = SubmissionType.find_by_code('ORI')
+        amd = SubmissionType.find_by_code('AMD')
+
+        @trials_upd = []
+        @trials_ori = []
+        @trials_amd = []
+
+        if search_ids.include?(upd.id)
+          @trials_upd = @trials.select{|trial| !trial.submissions.blank?  && trial.has_atleast_one_active_update_sub_with_not_acked}#&&  upd.id == trial.submissions.last.submission_type.id && trial.submissions.last.status ="Active" && trial.submissions.last.acknowledge ="No"
+        end
+
+        if search_ids.include?(ori.id)
+          @trials_ori = @trials.select{|trial| !trial.submissions.blank? && !trial.submissions.pluck(:submission_type_id).include?(amd.id) }
+        end
+
+        if search_ids.include?(amd.id)
+          @trials_amd = @trials.select{|trial| !trial.submissions.blank? && trial.submissions.pluck(:submission_type_id).include?(amd.id) && trial.has_atleast_one_active_amendment_sub }
+        end
+
+        @trials = @trials_upd + @trials_ori + @trials_amd
+        @trials =@trials.uniq
+
+        #Rails.logger.info "following is the union for updates and amendments #{@trials_upd}"
+        #Rails.logger.info "following is the union for updates and amendments #{@trials_ori}"
+        #Rails.logger.info "following is the union for updates and amendments #{@trials_amd}"
+        #@trials = @trials.select{|trial| !trial.submissions.blank? &&  search_ids.include?(trial.submissions.last.submission_type.id)}
+
       end
+
+
       if params[:submission_method].present?
         Rails.logger.debug " Before params[:submission_method] = #{params[:submission_method].inspect}"
         search_ids = []

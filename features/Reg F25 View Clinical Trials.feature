@@ -17,16 +17,16 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Lead Organization/Principal Investigator  |
       |Sponsor/Responsible Party  |
       |Data Table 4 Information  |
-      |Status/Dates  |
+      |Trial Status|
+      |Trial Dates|
       |FDA IND/IDE Information for applicable trials  |
       |NIH Grant Information (for NIH funded Trials)  |
       |Regulatory Information |
       |Trial Related Information  |
+      |Participating Sites|
+      
      
-    
-     
-  
-  Scenario: #2 I can search all clinical trials registered in CTRP when initially submitted
+     Scenario: #2 I can search all clinical trials registered in CTRP when initially submitted
     Given I am logged into the CTRP Registration application
       And I am on the Search Clinical Trials Screen
      When I select the option to search "All Trials"
@@ -36,10 +36,12 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      
       |Trials Identifiers  |
       |Trial Details  |
-      |Trial Details  |
       |Lead Organization/Principal Investigator  |
+      |Sponsor|
       |Data Table 4 Information  |
-      |Status/Dates  |
+      |Trial Status|
+      |Trial Dates|
+      |Participating Sites|
    
   Scenario: #3 Rules for Clinical Trial Record view after Amendment submission 
     Given I am on the Clinical Trial Search Results screen for trials where I am listed as a trial owner
@@ -48,16 +50,17 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       
       |Trials Identifiers  |
       |Amendments Details  |
-      |Other Identifiers  |
       |Trial Details  |
       |Lead Organization/Principal Investigator  |
       |Sponsor/Responsible Party  |
       |Data Table 4 Information  |
-      |Status/Dates  |
+      |Trial Status|
+      |Trial Dates|
       |FDA IND/IDE Information for applicable trials  |
       |NIH Grant Information (for NIH funded Trials)  |
       |Regulatory Information |
       |Trial Related Information  |
+      |Participating Sites|
      
      Scenario: #4 Rules for Clinical Trial Record view after Amendment submission 
     Given I am on the Clinical Trial Search Results screen for all trials where I am not listed as a trial owner
@@ -66,25 +69,43 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      
       |Trials Identifiers  |
       |Amendment Details  |
-      |Other Identifiers  |
       |Trial Details  |
       |Lead Organization/Principal Investigator  |
       |Data Table 4 Information  |
-      |Status/Dates  |
+      |Trial Status  |
+      |Trial Dates|
+      |Participating Sites|
       
       
-       Scenario: #5 Trial Identifiers viewed fields
+        Scenario:#4a Participating Sites Table Columns description
+    Given I am on the View Trial Screen
+     And I can view Participating Site Table
+     And the table displays the columns type
+     
+     |CTRP ID|
+     |CTRP Organization Name|
+     |Investigators|
+     |Primary Contact|
+     |Local Trial Identifier|
+     |Program Code|
+     |Current Site Recruitment Status|
+     |Current Site Recruitment Status Date|
+     |Date opened for Accrual|
+     |Date Closed for Accrual|
+     
+    
+       
+        Scenario: #5 Trial Identifiers viewed fields
     Given I am on the Trial Details screen
      And I will view the Trial Identifiers type 
      
        
-      |NCI Trial Identifier  |
       |Lead Organization Trial Identifier  |
-      |ClinicalTrials.gov Identifier  |
+      |NCI Trial Identifier  |
+      |Other Trial Identifier  |
 
 
-     
-       Scenario: #6 Amendment Details Viewed Fields
+      Scenario: #6 Amendment Details Viewed Fields
     Given I am on the Trial Details screen
      And I will view the Amendment Details type 
         
@@ -123,7 +144,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Data Table 4 Funding Sponsor/Source |
       |Program Code  |
 
-     Scenario: #10 Status/Dates viewed fields
+     Scenario: #10 Trial Status viewed fields
     Given I am on the Trial Details Screen
     And I will view Status/Dates type
     
@@ -131,9 +152,15 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Current Trial Status  |
       |Why the Study Stopped  |
       |Current Trial Status Date  |
-      |Trial Start Date  |
-      |Primary Completion Date  |
-      |Completion Date  |
+      
+     Scenario: #10 Trial Dates viewed fields
+    Given I am on the Trial Details Screen
+    And I will view Status/Dates type
+      
+      
+      |Trial Start Date: Actual, Anticipated |
+      |Primary Completion Date: Actual, Anticipated  |
+      |Completion Date: Actual, Anticipated  |
 
       Scenario: #11 FDA IND/IDE Information for applicable trials viewed fields
     Given I am on the trial Details screen

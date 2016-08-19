@@ -781,6 +781,37 @@ class Trial < TrialBase
     return nil
   end
 
+  def has_atleast_one_active_update_sub_with_not_acked
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      subs = Submission.where('trial_id = ? AND submission_type_id = ? and status = ? and acknowledge = ?', self.id, upd.id, 'Active','No')
+      if subs.count == 0
+        return false
+      else
+        return true
+      end
+    else
+      return false
+    end
+
+  end
+
+  def has_atleast_one_active_amendment_sub
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      subs = Submission.where('trial_id = ? AND submission_type_id = ? and status = ?', self.id, amd.id, 'Active')
+      if subs.count == 0
+        return false
+      else
+        return true
+      end
+    else
+      return false
+    end
+
+  end
+
+
   private
 
   def save_history
@@ -1199,6 +1230,10 @@ class Trial < TrialBase
     where("is_rejected = ? OR is_rejected IS NULL", FALSE)
   }
 
+  scope :active_submissions, -> {
+    where("id in (select DISTINCT ON (trial_id) trial_id from submissions where submissions.trial_id is not null AND submissions.status = 'Active')")
+  }
+
   scope :sort_by_col, -> (params) {
     column = params[:sort]
     order = params[:order]
@@ -1245,4 +1280,7 @@ class Trial < TrialBase
       order("LOWER(trials.#{column}) #{order}")
     end
   }
+
+
+
 end

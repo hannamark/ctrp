@@ -114,7 +114,7 @@
             exporterCsvFilename: 'audit_trail_submissions.csv',
             exporterMenuAllData: true,
             exporterMenuPdf: false,
-            exporterMenuCsv: false,
+            exporterMenuCsv: true,
             gridMenuCustomItems: [{
                 title: 'Export All Data As CSV',
                 order: 100,
@@ -201,6 +201,7 @@
             columnDefs: [
                 {field: 'created_at',  headerName:'Created At'},
                 {field: 'event',  headerName:'Event '},
+                {field: 'updated_by',   headerName:'Updated By'},
                 {field: 'nci_id', headerName: 'NCI ID'},
                 {field: 'lead_protocol_id', headerName: 'Lead Protocol'},
 
@@ -241,7 +242,6 @@
                 {field: 'investigator_title', headerName: 'Investigator Title'},
                 {field: 'investigator_aff_id',   headerName:'Investigator Aff Id'},
                 {field: 'created_by',   headerName:'Created By'},
-                {field: 'updated_by',   headerName:'Updated By'},
                 {field: 'process_priority',   headerName:'Process Priority'},
                 {field: 'process_comment',   headerName:'Process Comment'},
                 {field: 'acronym',   headerName:'Acronym'},

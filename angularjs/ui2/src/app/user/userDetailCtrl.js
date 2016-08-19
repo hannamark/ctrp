@@ -414,21 +414,21 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'record_verification_date',
+                    name: 'verification_date',
                     displayName: 'Record Verification Date',
                     enableSorting: true,
                     width: '*',
                     minWidth: '250'
                 },
                 {
-                    name: 'on_hold_reasons',
+                    name: 'onhold_desc',
                     displayName: 'On Hold Reasons',
                     enableSorting: true,
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'on_hold_dates',
+                    name: 'onhold_date',
                     displayName: 'On Hold Dates',
                     enableSorting: true,
                     width: '*',
@@ -451,54 +451,31 @@
                     minWidth: '200'
                 },
                 {
-                    name: 'action',
-                    displayName: 'Action - View TSR',
-                    enableSorting: true,
+                    name: 'id',
+                    displayName: 'View TSR',
+                    enableSorting: false,
+                    cellTemplate: "<div class=\"ui-grid-cell-contents tooltip-uigrid\" ><a ui-sref=\"main.pa.trialOverview.viewTSR({trialId: row.entity.id })\" ui-sref-opts=\"{reload: true}\" >View TSR</a></div>",
                     width: '*',
                     minWidth: '200'
                 }
-                /*{
-                    name: 'checkout',
-                    displayName: 'Checked Out for Admin. Use by',
-                    enableSorting: true,
-                    width: '*',
-                    minWidth: '200'
-                },
-                {
-                    name: 'scientific_checkout',
-                    displayName: 'Checked Out for Scientific Use by',
-                    enableSorting: true,
-                    width: '*',
-                    minWidth: '300'
-                }*/
             );
         }
 
-        vm.getCheckOut = function ( checkOut ) {
-            var checkOutStr = '';
-            if (checkOut.split(',').length > 1) {
-                if (checkOut.split(',')[0].split(' ')[0] === checkOut.split(',')[1].trim().split(' ')[0]) {
-                    checkOutStr = checkOut.split(',')[0]+ '/SC';
-                } else {
-                    checkOutStr = checkOut;
-                }
-            } else {
-                checkOutStr = checkOut;
-            }
-            return checkOutStr;
-        };
+        vm.gridTrialsOwnedOptions.appScopeProvider = vm;
+
+        vm.getCheckOut = UserService.getCheckOut;
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                vm.searchParams.start = newPage;
-                vm.searchParams.rows = pageSize;
+                vm.searchOwnedParams.start = newPage;
+                vm.searchOwnedParams.rows = pageSize;
                 vm.getUserTrials();
             });
         };
         vm.gridTrialsOwnedOptions.exporterAllDataFn = function () {
-            var allSearchParams = angular.copy(vm.searchParams);
+            var allSearchParams = angular.copy(vm.searchOwnedParams);
             allSearchParams.start = null;
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, allSearchParams).then(
@@ -510,8 +487,9 @@
             );
         };
 
+        /**** start copy for submitted */
         vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
-        vm.gridTrialsSubmittedOptions.exporterCsvFilename = vm.userDetails.username + '-submitted-trials.csv',
+        vm.gridTrialsSubmittedOptions.exporterCsvFilename = vm.userDetails.username + '-submitted-trials.csv';
         vm.gridTrialsSubmittedOptions.exporterPdfHeader.text = 'Trials submitted by ' + vm.userDetails.username + ':';
         vm.gridTrialsSubmittedOptions.exporterPdfFooter = function ( currentPage, pageCount ) {
             return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' submitted a total of ' + vm.gridTrialsSubmittedOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
@@ -552,6 +530,50 @@
             }
         };
         vm.getUserSubmittedTrials();
+        /**** end copy for submitted */
+
+        /**** start copy for participating */
+        vm.gridTrialsParticipationOptions = angular.copy(vm.gridTrialsOwnedOptions);
+        vm.gridTrialsParticipationOptions.exporterCsvFilename = vm.userDetails.username + '-participation-trials.csv';
+
+        vm.gridTrialsParticipationOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+            vm.gridApi.core.on.sortChanged($scope, sortSubmittedChangedCallBack);
+            vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                vm.searchParams.start = newPage;
+                vm.searchParams.rows = pageSize;
+                vm.getUserParticipationTrials();
+            });
+        };
+        vm.gridTrialsParticipationOptions.exporterAllDataFn = function () {
+            var allSearchParams = angular.copy(vm.searchParams);
+            allSearchParams.start = null;
+            allSearchParams.rows = null;
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
+                function (data) {
+                    vm.gridTrialsParticipationOptions.useExternalPagination = false;
+                    vm.gridTrialsParticipationOptions.useExternalSorting = false;
+                    vm.gridTrialsParticipationOptions.data = data['trial_submissions'];
+                }
+            );
+        };
+
+        vm.searchParticipatingParams = new TrialSearchParams;
+        vm.searchParticipatingParams.type = 'participating';
+        vm.searchParticipatingParams.org_id = vm.userDetails.organization_id;
+        vm.searchParticipatingParams.user_id = undefined;
+        vm.getUserParticipationTrials = function () {
+            vm.gridTrialsParticipationOptions.useExternalPagination = true;
+            vm.gridTrialsParticipationOptions.useExternalSorting = true;
+            UserService.getUserTrialsParticipation(vm.searchParticipatingParams).then(function (data) {
+                vm.gridTrialsParticipationOptions.data = data['trial_submissions'];
+                vm.gridTrialsParticipationOptions.totalItems = data.total;
+            }).catch(function (err) {
+                console.log('Get User Participation Trials failed');
+            });
+        };
+        vm.getUserParticipationTrials();
+        /**** end copy for participating */
 
         vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
 
