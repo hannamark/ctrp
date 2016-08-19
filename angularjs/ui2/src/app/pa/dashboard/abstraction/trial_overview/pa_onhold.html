@@ -88,8 +88,8 @@
                             <label class="control-label col-xs-12 col-sm-3">Off Hold Date:</label>
                             <div class="col-xs-12 col-sm-6">
                                 <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                    <input type="text" class="form-control input-sm" name="offhold_date" datepicker-popup="{{onholdView.dateFormat}}" ng-model="onholdView.offhold_date"
-                                           ng-click="onholdView.openCalendar($event, 'offhold_date')" is-open="onholdView.offhold_date_opened" uib-datepicker-options="onholdView.dateOptions" close-text="Close" date-formatter>
+                                    <input type="text" class="form-control input-sm" name="offhold_date" uib-datepicker-popup="{{onholdView.dateFormat}}" ng-model="onholdView.offhold_date"
+                                           ng-click="onholdView.openCalendar($event, 'offhold_date')" is-open="onholdView.offhold_date_opened" datepicker-options="onholdView.dateOptions" close-text="Close" date-formatter>
                                     <span class="input-group-btn">
                                         <button restriction-field type="button" class="btn btn-primary" ng-click="onholdView.openCalendar($event, 'offhold_date')">
                                             <i class="glyphicon glyphicon-calendar"></i>
