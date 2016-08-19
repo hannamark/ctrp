@@ -88,7 +88,7 @@
             'EVALUATION_TYPES': '/ctrp/evaluation_types.json',
             'SPECIMEN_TYPES': '/ctrp/specimen_types.json',
             'BIOMARKER_USES': '/ctrp/biomarker_uses.json',
-            'BIOMARKER_PURPOSES': '/ctrp/biomarker_purposes',
+            'BIOMARKER_PURPOSES': '/ctrp/biomarker_purposes.json',
             'SUB_GROUP_LIST' : '/ctrp/registry/sub_groups.json',
             'A_SUB_GROUP' : '/ctrp/registry/sub_groups/',
             'A_SUBMISSION' : '/ctrp/registry/submissions/',
