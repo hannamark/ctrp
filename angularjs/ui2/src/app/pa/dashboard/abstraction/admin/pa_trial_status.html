@@ -126,7 +126,7 @@
                               <td>{{status.comment}}</td>
                               <td>{{status.why_stopped}}</td>
                               <td>
-                                  <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
+                                  <!--<div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
                                       ERROR: Interim status [{{error.status}}] is missing
                                   </div>
                                   <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message')">
@@ -137,6 +137,28 @@
                                   </div>
                                   <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message')">
                                       WARNING: {{warning.message}}
+                                  </div>
+                                  <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Same Day' && warning.sameDate">
+                                      WARNING: Statuses [{{warning.from}}] and [{{warning.to}}] have the same date
+                                  </div> -->
+
+                                  <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('status')">
+                                      ERROR: Interim status [{{error.status}}] is missing
+                                  </div>
+                                  <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message') && error.message == 'Invalid Transition'">
+                                      ERROR: Invalid status transition from [{{error.from}}] to [{{error.to}}]
+                                  </div>
+                                  <div class="text-danger" ng-repeat="error in trialStatusView.statusValidationMsgs[$index].errors" ng-if="error.hasOwnProperty('message') && error.message == 'Duplicate'">
+                                      ERROR: Duplicate [{{error.dupStatus}}] status is not allowed
+                                  </div>
+                                  <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('status')">
+                                      WARNING: Interim status [{{warning.status}}] is missing
+                                  </div>
+                                  <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Invalid Transition'">
+                                      WARNING: Invalid status transition from [{{warning.from}}] to [{{warning.to}}]
+                                  </div>
+                                  <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Duplicate'">
+                                      WARNING: Duplicate [{{warning.dupStatus}}] status is not allowed
                                   </div>
                                   <div class="text-warning" ng-repeat="warning in trialStatusView.statusValidationMsgs[$index].warnings" ng-if="warning.hasOwnProperty('message') && warning.message == 'Same Day' && warning.sameDate">
                                       WARNING: Statuses [{{warning.from}}] and [{{warning.to}}] have the same date
