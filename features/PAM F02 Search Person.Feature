@@ -1,52 +1,54 @@
 @Global @PA
 Feature: PAM F02 Search Person
 
-As a CTRP PA User, I can search CTRP Person records by various criteria
+As a CTRP PA User with the "Read Only" role or the "Abstractor" roles, I can search CTRP Person records by various criteria
 
 Scenario: #1 I am able to search for persons
 Given I am logged into the CTRP Protocol Abstraction
 And I have selected the option "Search Persons"
 When I select one or more of the following
-|PO Person ID|
-|CTEP Person ID|
-|First Name|
-|Last Name|
-|Phone Number|
+|User Name|
 |Email Address|
-|Organization Affiliations|
+|Last Name|
+|First Name|
+|Status|
+|Site Administrator Priviledges (yes, no, all)|
+|Organization Name|
+|Organization Family|
+|Processing Status (Pending, Complete)|
 And I submit my search request by selecting search
 Then the system should display all persons that meet that criteria 
 And the Person Search Results will display:
-|PO Person ID|
-|CTEP Person ID|
-|Prefix|
+|User Name|
 |First Name|
-|Middle Name|
 |Last Name|
-|Suffex|
-|Phone Number|
 |Email Address|
-|Organization Affiliations|
+|Organization Affilliaton|
+|Organization Family|
+|Site Administrator Priviledges (yes, no, all)|
+|E-mails|
+|Processing Status (Pending, Complete)|
+|Status|
+|Status Date|
 And the system will display the list of Persons ordered assending alphanumeric by Last Name and then assending alphanumeric by First Name and then assending alphanumeric by Middle name
 
 Scenario: #2 I am able to view Person details
 Given I am logged into the CTRP PA user
 When I have selected a Person
 Then the system should display the Person details 
-|PO Person ID|
-|CTEP Person ID|
+|User Name|
+|Status|
+|Role|
 |Prefix|
 |First Name|
 |Middle Name|
 |Last Name|
 |Suffex|
 |Phone Number|
+|Phone Extension|
 |Email Address|
+|Receive E-Mail Notifications (yes, no)|
+|PRS Organization Name|
 |Organization Affiliations|
 |Family Name|
-|City|
-|State|
-|Country|
-|Zip|
-|Web address|
-|Status|
+|Processing Status (Pending, Complete)|
