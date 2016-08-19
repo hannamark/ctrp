@@ -327,7 +327,7 @@
             outerTrial.new = vm.curTrial.new;
             outerTrial.id = vm.curTrial.id;
             outerTrial.trial = vm.curTrial;
-
+            console.info('outer trial: ', outerTrial);
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
@@ -1082,9 +1082,11 @@
 
         function appendEditType() {
             if (vm.curTrial.actions.indexOf($stateParams.editType) < 0) {
+                console.error('no actions!')
                 // Action not allowed
                 $state.go('main.trials', null, {reload: true});
             } else {
+                console.info('editType: ', $stateParams.editType);
                 vm.curTrial.edit_type = $stateParams.editType;
             }
         }
