@@ -114,7 +114,7 @@
             exporterCsvFilename: 'audit_trail_submissions.csv',
             exporterMenuAllData: true,
             exporterMenuPdf: false,
-            exporterMenuCsv: false,
+            exporterMenuCsv: true,
             gridMenuCustomItems: [{
                 title: 'Export All Data As CSV',
                 order: 100,
