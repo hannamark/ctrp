@@ -218,6 +218,10 @@ And I can select the Section 801 indicator
 |Any|
 |Yes|
 |No|
+And I can select if the trial has Results
+|Any |
+|Yes|
+|No|
 And I can enter a PCD Date date range
 |From Date|
 |To Date|
@@ -247,5 +251,5 @@ And I am on the CTRP Results Reporting Dashboard screen
 When I select XML Upload Error and Actions Taken
 Then I can select 
 |All Errors (to display all records in the XML Error and Actions Taken Log)|
-|Open Errors (to display all Open records and All records that were closed with in the last 30 days)|
+|Errors by Date Range (to select a date range using Initial Error Date(start date to end date and all errors without a resolution date) |
 And the XML Upload Error and Actions Taken Log Screen will be displayed (see PAM F27 XML Upload Error and Actions Taken Log)

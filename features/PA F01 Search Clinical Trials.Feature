@@ -263,9 +263,10 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       Given I am logged into the CTRP Protocol Abstraction application
       And I am on the Search Clinical Trials Screen
       When I select one or more Submission Types
-          |Original|
-          |Update|
-          |Amendment|
+        |<Submission Type>|<rule>|
+		|Original         |last active submission is the original submission (may or may not have updates that needs to be acknowledged) |
+		|Amendment        |last active submission is not the original submission (may or may not have updates that needs to be acknowledged) |
+		|Update           |has at least one update that needs to be acknowledged for the last active submission|
       And select search
       Then the search results will display trials that have that latest active Submission Type
 
