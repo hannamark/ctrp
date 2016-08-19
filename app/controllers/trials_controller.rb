@@ -58,8 +58,9 @@ class TrialsController < ApplicationController
 
     Rails.logger.info "params in update: #{params}"
 
+    edit_type = params[:trial][:edit_type]
     trial_service = TrialService.new({trial: @trial})
-    if params[:trial][:edit_type] == 'amend'
+    if edit_type == 'amend'
       trial_json = trial_service.get_json
     end
 
@@ -73,7 +74,7 @@ class TrialsController < ApplicationController
           trial_service.save_history(trial_json)
         end
 
-        trial_service.send_email(@trial.edit_type)
+        trial_service.send_email(edit_type)
       else
         format.html { render :edit }
         format.json { render json: @trial.errors.full_messages, status: :unprocessable_entity }
