@@ -67,7 +67,7 @@ Gemfile.lock
 /node_modules
 
 # Ignore cucumber tests dir
-#/tests/features/output
+/tests/features/output
 
 # Ignore cucumber tests Screenshot dir
 /tests/testScreenShot
