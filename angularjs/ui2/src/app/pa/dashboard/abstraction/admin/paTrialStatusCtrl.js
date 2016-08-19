@@ -16,7 +16,7 @@
         UserService, toastr) {
 
         var vm = this;
-        vm.trialStatusDict = trialStatuses.sort(Common.a2zComparator()); // array of trial statuses
+        vm.trialStatusDict = trialStatuses //.sort(Common.a2zComparator()); // array of trial statuses
         vm.statusObj = _initStatusObj();
         vm.dateFormat = DateService.getFormats()[1];
         vm.startDateRequired = true;
