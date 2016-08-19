@@ -781,6 +781,37 @@ class Trial < TrialBase
     return nil
   end
 
+  def has_atleast_one_active_update_sub_with_not_acked
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      subs = Submission.where('trial_id = ? AND submission_type_id = ? and status = ? and acknowledge = ?', self.id, upd.id, 'Active','No')
+      if subs.count == 0
+        return false
+      else
+        return true
+      end
+    else
+      return false
+    end
+
+  end
+
+  def has_atleast_one_active_amendment_sub
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      subs = Submission.where('trial_id = ? AND submission_type_id = ? and status = ?', self.id, amd.id, 'Active')
+      if subs.count == 0
+        return false
+      else
+        return true
+      end
+    else
+      return false
+    end
+
+  end
+
+
   private
 
   def save_history
@@ -1249,19 +1280,6 @@ class Trial < TrialBase
       order("LOWER(trials.#{column}) #{order}")
     end
   }
-
-  scope :published,               -> {
-=begin
-      When a user selects "Submission Type Field = "Update" , the trials returned would be all trials where the last submission was an "update"
-either from registration or restservice and the updates are pending
-the ctro to acknowledge them in "trial history - updates".
-If the last submission for a trial is not an update
-(because it is an original submission or an amendment submission)
- or an update that has been acknowledged, then these trials will not be displayed.
-=end
-
-    where(published: true) }
-  scope :published_and_commented, -> { published.where("comments_count > 0") }
 
 
 
