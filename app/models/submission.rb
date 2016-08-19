@@ -337,6 +337,12 @@ class Submission < TrialBase
       where_clause += " AND submissions.user_id = #{params[:user_id]} "
     end
 
+    if params[:org_id] && params[:type] == 'participating'
+      join_clause += "inner join (
+                            select distinct on (participating_sites.trial_id) participating_sites.trial_id
+                            from participating_sites where participating_sites.organization_id=#{params[:org_id]}
+                        ) as distinct_participating_sites on submissions.trial_id = distinct_participating_sites.trial_id "
+    end
     filter_clause = []
     if !params[:find_submission_received].nil?
       filter_clause.push("submission_received_date " + ( if params[:find_submission_received] === true then "IS NOT null" else "IS null" end))

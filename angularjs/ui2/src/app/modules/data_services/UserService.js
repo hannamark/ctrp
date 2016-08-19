@@ -82,14 +82,15 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function() {
-            userCtrl.signedIn = false;
-            userCtrl.username = '';
-            userCtrl.userRole = '';
-            userCtrl.isCurationEnabled = false;
-            userCtrl.isCurationModeSupported = false;
-
+            if (userCtrl) {
+                userCtrl.signedIn = false;
+                userCtrl.username = '';
+                userCtrl.userRole = '';
+                userCtrl.isCurationEnabled = false;
+                userCtrl.isCurationModeSupported = false;
+            }
             var username = LocalCacheService.getCacheWithKey('username');
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out', {username: username, source: 'Angular'})
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {username: username, source: 'Angular'})
                 .then(function (data) {
                     if (data.success) {
                         LocalCacheService.clearAllCache();
@@ -246,6 +247,11 @@
         }; //searchUsersTrialsOwnership
 
         this.getUserTrialsSubmitted = function (searchParams) {
+            var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
+            return user_list;
+        }; //searchUsersTrialsSubmitted
+
+        this.getUserTrialsParticipation = function (searchParams) {
             var user_list = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, searchParams);
             return user_list;
         }; //searchUsersTrialsSubmitted
