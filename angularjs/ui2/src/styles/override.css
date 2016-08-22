@@ -1770,6 +1770,6 @@ body.users #typeAheadResults {
     padding: 3px 0 2px 3px;
 }
 
-.ui-select-multiple input.ui-select-search {
+.ui-select-auto-width .ui-select-multiple input.ui-select-search {
   width: auto !important;
 }
