@@ -21,6 +21,11 @@ class SubGroup < TrialBase
   include BasicConcerns
 
   belongs_to :trial
+
+  validates :label, length: {maximum: 62}
+  validates :description, length: {maximum: 1000}
+
+
   after_create :save_index
 
   ## Audit Trail Callbacks
