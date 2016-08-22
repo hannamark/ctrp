@@ -23,6 +23,10 @@ class ArmsGroup < TrialBase
   belongs_to :trial
   has_many :arms_groups_interventions_associations, dependent: :destroy
   accepts_nested_attributes_for :arms_groups_interventions_associations, allow_destroy: true
+
+  validates :label, length: {maximum: 62}
+  validates :description, length: {maximum: 1000}
+
   ## Audit Trail Callbacks
   after_save :touch_trial
   after_destroy :touch_trial

@@ -241,6 +241,7 @@ class Trial < TrialBase
   validates :study_model_other,length: {maximum: 200}
   validates :time_perspective_other, length: {maximum: 200}
   validates :biospecimen_desc, length: {maximum: 1000}
+  validates :study_pop_desc, length: {maximum: 1000}
 
   validates :acronym, length: {maximum: 14}
   validates :lead_protocol_id, length: {maximum: 30}
