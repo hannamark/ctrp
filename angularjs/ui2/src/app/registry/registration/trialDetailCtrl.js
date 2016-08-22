@@ -327,7 +327,7 @@
             outerTrial.new = vm.curTrial.new;
             outerTrial.id = vm.curTrial.id;
             outerTrial.trial = vm.curTrial;
-
+            console.info('outer trial: ', outerTrial);
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
@@ -954,6 +954,10 @@
 
         // Scenario #9 in Reg F11
         vm.validatePrimaryCompDate = function() {
+            if (!vm.curTrial.start_date || !vm.curTrial.primary_comp_date) {
+                return;
+            }
+
             var startDate = typeof vm.curTrial.start_date === 'string' ? moment(vm.curTrial.start_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.start_date;
             var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? moment(vm.curTrial.primary_comp_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.primary_comp_date;
             if (startDate.getTime() > primaryCompDate.getTime()) {
@@ -987,8 +991,12 @@
 
         // Scenario #9 in Reg F11
         vm.validateCompDate = function() {
-            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? new Date(vm.curTrial.primary_comp_date) : vm.curTrial.primary_comp_date;
-            var compDate = new Date(vm.curTrial.comp_date);
+            if (!vm.curTrial.primary_comp_date || !vm.curTrial.comp_date) {
+                return;
+            }
+
+            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ?  moment(vm.curTrial.primary_comp_date, 'DD-MMM-YYYY') : vm.curTrial.primary_comp_date;
+            var compDate = typeof vm.curTrial.comp_date === 'string' ?  moment(vm.curTrial.comp_date, 'DD-MMM-YYYY') : vm.curTrial.comp_date;
             if (primaryCompDate.getTime() > compDate.getTime()) {
                 return true;
             } else {
@@ -1082,9 +1090,11 @@
 
         function appendEditType() {
             if (vm.curTrial.actions.indexOf($stateParams.editType) < 0) {
+                console.error('no actions!')
                 // Action not allowed
                 $state.go('main.trials', null, {reload: true});
             } else {
+                console.info('editType: ', $stateParams.editType);
                 vm.curTrial.edit_type = $stateParams.editType;
             }
         }
