@@ -32,7 +32,7 @@
             vm.curTrial.primary_comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.primary_comp_date);
             vm.curTrial.comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.comp_date);
             vm.curTrial.current_trial_status_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.current_trial_status_date);
+            vm.curTrial.last_amendment_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.last_amendment_date);
         }
     }
 })();
-
