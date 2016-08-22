@@ -25,6 +25,8 @@ class OtherCriterium < TrialBase
   after_save :touch_trial
   after_destroy :touch_trial
 
+  validates :criteria_desc, length: {maximum: 5000}
+
   private
 
   def touch_trial
