@@ -50,6 +50,8 @@ And I can select the Information Source|
 |Imported|
 And I can select one or more trial milestones
 |Submission Received Date|
+|Validation Processing Start Date|
+|Validation Processing Completed Date|
 |Submission Acceptance Date|
 |Submission Terminated Date|
 |Submission Reactivated Date|
