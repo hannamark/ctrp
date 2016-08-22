@@ -232,6 +232,16 @@ class Trial < TrialBase
   validate :lead_protocol_id_lead_org_id_uniqueness
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :official_title, length: {maximum: 600}
+  validates :brief_title, length: {maximum: 300}
+  validates :brief_summary, length: {maximum: 5000}
+  validates :detailed_description, length: {maximum: 32000}
+  validates :objective, length: {maximum: 32000}
+  validates :primary_purpose_other, length: {maximum: 200}
+  validates :secondary_purpose_other, length: {maximum: 1000}
+  validates :study_model_other,length: {maximum: 200}
+  validates :time_perspective_other, length: {maximum: 200}
+  validates :biospecimen_desc, length: {maximum: 1000}
+
   validates :acronym, length: {maximum: 14}
   validates :lead_protocol_id, length: {maximum: 30}
   validates :board_name, length: {maximum: 255}
