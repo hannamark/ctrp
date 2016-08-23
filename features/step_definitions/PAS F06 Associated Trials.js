@@ -187,7 +187,7 @@ module.exports = function() {
     });
 
     this.Then(/^the Official Title populates$/, function (callback) {
-        associated.verifyOfficialTitleLookup(officialTitleA+'test');
+        associated.verifyOfficialTitleLookup(officialTitleA);
         browser.sleep(25).then(callback);
     });
 
@@ -216,6 +216,35 @@ module.exports = function() {
         associated.verifyViewAssociatedTrialNCI(leadProtocolIDA, nciIDA, nctIDA, '', '');
         browser.sleep(25).then(callback);
     });
+
+    /*
+     Scenario Outline: #2   corresponding Associated Trial records will be created for both associated trials
+     Given the added Associated Trial is a CTRP study
+     When the Associated Trial is displayed on the Associated Trials screen
+     Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are added
+
+     |AssociatedTrialFields        |
+     |Identifier Type              |
+     |Trial Identifier             |
+     |Clinical Research Category   |
+     |Official Title               |
+     */
+
+    this.Given(/^the added Associated Trial is a CTRP study$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^the Associated Trial is displayed on the Associated Trials screen$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the (.*) on the Associated Trials screen of the Associated Trial study are added$/, function (AssociatedTrialFields, table, callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
 
 
 

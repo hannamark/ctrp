@@ -331,8 +331,8 @@ var scientificAssociatedTrials = function(){
                 var actResearchCatVal = 'System Identified the Official Title value: '+result+'';
                 expect(expResearchCatVal.toString()).to.eql(actResearchCatVal.toString());
                 if (expOfficialTitle != ''){
-                    expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle).then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error:'+err); browser.sleep(25).then(callback);});
-                    //expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle);
+                    //expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle).then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error:'+err); browser.sleep(25).then(callback);});
+                    expect(self.officialTitleVw.getText()).to.eventually.equal(expOfficialTitle);
                 }
             } else {
                 var expResCatVal = 'Unable to display Expected Official Title';

@@ -284,7 +284,7 @@
         
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.typeAheadParams,  vm.organization_name, vm.searchOrganizationFamily);
+            return OrgService.typeAheadOrgNameSearch(vm.organization_name, vm.searchOrganizationFamily);
         };
 
         vm.setTypeAheadOrg = function (searchObj) {
