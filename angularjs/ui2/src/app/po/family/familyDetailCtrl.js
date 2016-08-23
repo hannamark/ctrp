@@ -269,8 +269,8 @@
             var findOrgName = function(familyAff, cb) {
                 OrgService.getOrgById(familyAff.organization_id).then(function(organization) {
                     var curOrg = {"id" : familyAff.organization_id, "name": organization.name, "ctep_id": organization.ctep_id};
-                    curOrg.effective_date = DateService.convertISODateToLocaleDateStr(familyAff.effective_date);
-                    curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(familyAff.expiration_date);
+                    curOrg.effective_date = moment(familyAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(familyAff.effective_date);
+                    curOrg.expiration_date = moment(familyAff.expiration_date).toDate(); //DateService.convertISODateToLocaleDateStr(familyAff.expiration_date);
                     curOrg.family_membership_id = familyAff.id; //family affiliation id
                     curOrg.family_relationship_id=familyAff.family_relationship_id;
                     curOrg.lock_version = familyAff.lock_version;
