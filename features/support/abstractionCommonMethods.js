@@ -65,7 +65,7 @@ var abstractionCommonMethods = function() {
     this.verifySearchTrialsPAScreen = function () {
         expect(paSearch.searchTrialProtocolID.isDisplayed()).to.eventually.equal(true);
         expect(paSearch.searchTrialOfficialTitle.isDisplayed()).to.eventually.equal(true);
-        expect(paSearch.searchTrialIdentifiertype.isDisplayed()).to.eventually.equal(true);
+        //expect(paSearch.searchTrialIdentifiertype.isDisplayed()).to.eventually.equal(true);
         //expect(paSearch.searchTrialPurpose.isDisplayed()).to.eventually.equal(true);
         //expect(paSearch.searchTrialPhase.isDisplayed()).to.eventually.equal(true);
         //expect(paSearch.searchTrialPrincipalInvestigator.isDisplayed()).to.eventually.equal(true);

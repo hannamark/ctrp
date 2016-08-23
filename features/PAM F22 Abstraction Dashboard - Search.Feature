@@ -15,10 +15,10 @@ Scenario: #1 I can view Search section
 |3 - Low| 
  And I can select one or more submission types
 |<Submission Type>|<rule>|
-|Original|last active submission is the original submission (may or may not have updates that needs to be acknowledged) |
-|Amendment|last active submission is not the original submission (may or may not have updates that needs to be acknowledged) |
-|Update |has at least one update that needs to be acknowledged for the last active submission|
- And I can select one or more On Hold Status
+|Original|last active submission is the original submission (may or may not have any past or current updates that needs to be acknowledged) |
+|Amendment|last active amendment submission , not the original submission (may or may not have any past or current updates that needs to be acknowledged) |
+|Update |has at least one update that needs to be acknowledged for the last active submission(either origional submission or amendment submission)|
+And I can select one or more On Hold Status
 |<On Hold Status>|<comment>
 |On Hold |(currently)|
 |Not On Hold| (currently)|
@@ -85,7 +85,7 @@ And I can select Show Trials Ready for (check boxes)
 |Administrative and Scientific Abstraction|"Submission Acceptance Date" is the curent Administrative milestone|
 |Administrative and Scientific QC|"Ready for Scientific QC Date" and "Ready for Administrative QC Date" are curent Administrative and Scientific milestone when the submission is original or the Amendment Reason Code is "Both"|
 And I select Search
-Then the following fields will be will displayed for each trial
+Then the following fields will be will displayed for all trial that meet the search criteria
 |NCI Trial Identifier|
 |Submission Type (Original (Information Source = Protocol and Submission number = 0) , Amendment (Information Source = Protocol and Submission number > 0), Imported (Information Source = Imported)|  
 |CTEP/DCP|
