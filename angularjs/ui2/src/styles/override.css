@@ -1726,11 +1726,15 @@ body.sign_in .input-group-addon {
     width: 23px;
 }
 
-html>/**/body.sign_up .btn-danger .glyphicon , x:-moz-any-link {
+#typeAheadResults .btn-danger .glyphicon {
+    padding: 1px 5px 0 2px;
+}
+
+html>/**/#typeAheadResults .btn-danger .glyphicon , x:-moz-any-link {
     padding: 0 6px 0 2px;
 }
 
-html>/**/body.sign_up #typeAheadResults , x:-moz-any-link {
+html>/**/#typeAheadResults , x:-moz-any-link {
     float: right;
 }
 
