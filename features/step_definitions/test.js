@@ -117,6 +117,7 @@ module.exports = function() {
     });
 
     this.Given(/^Test with same login first time$/, function (callback) {
+        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error:'+err); browser.sleep(25).then(callback);});
         expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);callback(err);});
         searchTrial.setSearchTrialProtocolID('*');
         searchTrial.clickSearchTrialSearchButton();
