@@ -8,19 +8,19 @@ Feature: PO F3 Create an Organization
     Then I will see "United States" as the default for Country
     And I will see "Active" as the default for Source Status
     And I will see "CTRP" as the default for Source Context
-    ------What about Processing Status, should it be complete and defaulted when organization is created-------
+    And the Processing Status will be set to "Incomplete" (Pending)
 
-  Scenario: #2 As a Curator, I can request the creation of a new Organization in CTRP------request or create?
+  Scenario: #2 As a Curator, I can Create new Organization in CTRP (original)
     Given I am logged in to CTRP PO application
-    And I have complete a Search for Organization------------duplicate check
+    And I have completed a Search for Organization and a duplicate is not found
     And I know the information for the organization I wish to create
     When I provide the full name <Name> of the organization
     And I can enter name Alias <Nam Alias> 
     And I can click on the add button to add the entered Name Alias
     And I provide the address1 <Address1> of the organization
     And I provide the address2 <Address2> of the organization
-    And I leave the country selection as defaulted to "United States" ---------------------
-    And I can change the country selection if country is not United States---------------
+    And I country selection as defaulted to "United States" 
+    And I can change the country selection 
     And I select the state or province of the organization based on the country
     And I provide the city of the organization
     And I provide the Postal Code <Postal Code> of the organization
@@ -32,7 +32,7 @@ Feature: PO F3 Create an Organization
     And  the system should create an organization record that contains information type
       
       |CTRP Organization ID|
-      |organization name|
+      |organization Name|
       |Source Context: CTRP|
       |Source ID|
       |Source Status:Active|
@@ -44,9 +44,10 @@ Feature: PO F3 Create an Organization
       |State or Province|
       |City|
       |Postal Code|
-      |Phone number-Extension|
+      |Phone Number|
+      |Phone Extension|
       |eMail|
-      And the Processing Status will be "Complete"---------------
+      |Processing Status: Incomplete(Pending)|
       
         Scenario: #3 Create Organization Mandatory fields
     Given I am a curator
@@ -76,13 +77,14 @@ Feature: PO F3 Create an Organization
      |Email            |254        |
 
 
-  Scenario: #5 As any Curator, I can request the creation of a new Organization in CTRP that is a duplicate--------
+  Scenario: #5 As any Curator, I can create a new Organization in CTRP (Duplicate Exists)
     Given I am logged in to CTRP PO application
     And I have complete a Search for Organization
     And I have selected the Add Organization function
     And I know the name of the organization I wish to create
     And I provide the full name of the organization I wish to create
-    And I submit my create request
+    And I select submit 
+    And the system will search for organization with the same name for active status
     Then the system should indicate with a warning that the organization is a duplicate name in the same context
 
   Scenario: #6 As a Curator, I can clear any data I entered
