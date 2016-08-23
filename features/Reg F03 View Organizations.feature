@@ -10,7 +10,7 @@ As a CTRP User, I am able to View Organizations
      |Trial Submitter|
      |Site Administrator: Site SU|
      
-    I am logged into the CTRP Registration application
+    And I am logged into the CTRP Registration application
     And the following parameters of an Organization exist:
     |CTRPID |Name|SourceContext|SourceID|SourceStatus|NameAlias|Address1|Address2|Country|State|City|PostalCode|Email|Phone|Fax|Families|
     |9999999|SopNameCancer RegF03vw|CTRP|999999|Active|SopAlias |SopAddress1|SopAddress2|Morocco|Ifrane|SopCity|22306|SopPercukeTrial@pr.com|420-999-8906|420-999-8906|SopFamilies|
