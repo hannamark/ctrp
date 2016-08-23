@@ -22,7 +22,7 @@ And I select the following required information
 And I enter the folowing option fields
 | Middle Initial |
 | PRS Organization Name |
-And I select to either receive or not receive email notifications
+And I select to either receive or not receive email notifications (default to Yes)
 And I can view the following fields for my account
 |Username|
 |Status|

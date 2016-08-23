@@ -205,7 +205,6 @@
                             var psStatus = response.server_response.status;
 
                             if (psStatus >= 200 && psStatus <= 210) {
-                                response.site_rec_status_wrappers = DateService.formatDateArray(response.site_rec_status_wrappers, 'status_date', 'DD-MMM-YYYY');
                                 vm.currentParticipatingSite = response;
                                 vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
                                 vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
@@ -452,7 +451,6 @@
             vm.current_site_recruitment._destroy = false;
             var newSiteRec = vm.current_site_recruitment;
             var siteObj = vm.current_site_recruitment;
-            siteObj.status_date = DateService.convertISODateToLocaleDateStr( vm.current_site_recruitment.status_date);
             _.each(vm.siteRecruitmentStatusesArr, function (status) {
                 if (status.name == siteObj.site_recruitment_status.name) {
                     siteObj.sr_status_name = status.name;
@@ -472,7 +470,7 @@
          **/
         function editSiteRecruitment(index) {
             vm.current_site_recruitment = angular.copy(vm.siteRecruitmentGrid[index]);
-            vm.current_site_recruitment.status_date = moment(vm.current_site_recruitment.status_date, 'DD-MMM-YYYY').toDate();
+            vm.current_site_recruitment.status_date = moment(vm.current_site_recruitment.status_date, 'DD-MMM-YYYY', true).isValid() ? moment(vm.current_site_recruitment.status_date, 'DD-MMM-YYYY').toDate() : moment(vm.current_site_recruitment.status_date).toDate();
             vm.current_site_recruitment.edit = true;
             vm.siteRecruitmentGrid[index].edit = true;
             vm.current_site_recruitment.uiEdit = true;
@@ -488,7 +486,6 @@
         */
         function commitEditSiteRecruitment() {
             if (vm.current_site_recruitment.edit) {
-                vm.current_site_recruitment.status_date = DateService.convertISODateToLocaleDateStr(vm.current_site_recruitment.status_date);
                 vm.current_site_recruitment.site_recruitment_status_id = vm.current_site_recruitment.site_recruitment_status.id;
                 var siteObj = vm.current_site_recruitment;
 
@@ -500,13 +497,11 @@
                         siteObj.site_recruitment_status_id = status.id;
                     }
                 });
-                for (var i = 0; i < vm.siteRecruitmentGrid.length; i++) {
-                    var siteObj = vm.siteRecruitmentGrid[i];
-                    if(siteObj.id == vm.current_site_recruitment.id){
-                        vm.siteRecruitmentGrid[i] = vm.current_site_recruitment;
-                        vm.siteRecruitmentGrid[i].uiEdit = false;
-                    }
-                }
+
+                /* Put back current_site_recruitment object in the correct position in the siteRecruitmentGrid array */
+                vm.siteRecruitmentGrid[vm.current_site_recruitment.index] = vm.current_site_recruitment;
+                vm.siteRecruitmentGrid[vm.current_site_recruitment.index].uiEdit = false;
+
                 vm.Status();
 
                 /* ADDED BY ADIL IN ORDER TO RESET EDIT VIEW AND REMOVE IT FROM THE UI AS NEEDED */
