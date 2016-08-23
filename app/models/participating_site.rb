@@ -36,7 +36,7 @@ class ParticipatingSite < ActiveRecord::Base
   has_many :participating_site_investigators, -> { order 'participating_site_investigators.id' }
   has_many :people, through: :participating_site_investigators
 
-  # validates :contact_name, length: {maximum: 124}
+  validates :contact_name, length: {maximum: 125}
   validates :contact_phone, length: {maximum: 44}
   validates :contact_email, length: {maximum: 254}
 

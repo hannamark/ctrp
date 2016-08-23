@@ -5,7 +5,12 @@ As any CTRP User, I am able to View Existing Persons
 
 
 Scenario: #1 I am able to view existing person in CTRP as a Registry user
-  Given I am logged into the CTRP Registration application
+  Given  Given I am a CTRP user with the the Role Type
+     
+     |Trial Submitter|
+     |Site Administrator: Site SU|
+     
+  And I am logged into the CTRP Registration application
   And the following parameters of a Person exist:
     |Prefix|PersonFirstName|PersonMiddleName|PersonLastName|Suffix|SourceContext|SourceID|SourceStatus |email |phone|OrgAffiliation|
     |Ms|shiFNameTrRegF02 vw|shiMNameTrial |shiLNameTrial |Suffix|CTRP|shiSID|Active |shiPercukeTrial@pr.com| 420-999-8906|ShiOrg|

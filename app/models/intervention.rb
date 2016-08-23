@@ -32,6 +32,8 @@ class Intervention < TrialBase
   belongs_to :trial
   has_many :arms_groups_interventions_associations, dependent: :destroy
 
+  validates :description, length: {maximum: 1000}
+
   after_save :update_intervention_type
 
   ## Audit Trail Callbacks
