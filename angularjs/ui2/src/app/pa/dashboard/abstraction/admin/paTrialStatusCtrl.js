@@ -197,6 +197,7 @@
         function editTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
                 vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
+                vm.statusObj.status_date = moment(vm.statusObj.status_date, 'DD-MMM-YYYY').toDate();
                 vm.statusObj.edit = true;
                 vm.statusObj.index = index;
             }
@@ -300,11 +301,11 @@
 
         function _convertDates() {
             // format the trial-associated date fields
-            vm.trialDetailObj.start_date = !!vm.trialDetailObj.start_date ? moment(vm.trialDetailObj.start_date).format("DD-MMM-YYYY") : '';
+            vm.trialDetailObj.start_date = !!vm.trialDetailObj.start_date ? moment(vm.trialDetailObj.start_date).toDate() : '';
             // DateService.convertISODateToLocaleDateStr()
-            vm.trialDetailObj.primary_comp_date = !!vm.trialDetailObj.primary_comp_date ? moment(vm.trialDetailObj.primary_comp_date).format("DD-MMM-YYYY") : '';
-            vm.trialDetailObj.comp_date = !!vm.trialDetailObj.comp_date ? moment(vm.trialDetailObj.comp_date).format("DD-MMM-YYYY") : '';
-            vm.trialDetailObj.amendment_date = !!vm.trialDetailObj.amendment_date ? moment(vm.trialDetailObj.amendment_date).format("DD-MMM-YYYY") : '';
+            vm.trialDetailObj.primary_comp_date = !!vm.trialDetailObj.primary_comp_date ? moment(vm.trialDetailObj.primary_comp_date).toDate() : '';
+            vm.trialDetailObj.comp_date = !!vm.trialDetailObj.comp_date ? moment(vm.trialDetailObj.comp_date).toDate() : '';
+            vm.trialDetailObj.amendment_date = !!vm.trialDetailObj.amendment_date ? moment(vm.trialDetailObj.amendment_date).toDate() : '';
         }
 
         function openCalendar ($event, type) {

@@ -19,11 +19,8 @@ class UtilController < ApplicationController
   end
 
   def get_countries
-    @countries = Country.all.sort
-    us_idx = @countries.index(["United States", "US"])
-    @countries.insert(0, @countries.delete_at(us_idx))
-    canada_idx = @countries.index(["Canada", "CA"])
-    @countries.insert(1, @countries.delete_at(canada_idx))
+    geo_location_service = GeoLocationService.new
+    @countries = geo_location_service.get_countries
   end
 
   def get_countries_for_registry
@@ -33,14 +30,14 @@ class UtilController < ApplicationController
 
   def get_authorities_for_a_country
       @authorities = []
-      trial_rest_service = TrialRestService.new
-      @authorities = trial_rest_service.getAuthorityOrgArr(params[:country])
+      geo_location_service = GeoLocationService.new
+      @authorities = geo_location_service.getAuthorityOrgArr(params[:country])
   end
 
 
   def get_states
-    country = Country.find_country_by_name(params[:country])
-    @states = country.states.sort_by { |k, v| v["name"] } if country.present?
+    geo_location_service = GeoLocationService.new
+    @states = geo_location_service.get_states(params[:country])
   end
 
   def get_funding_mechanisms

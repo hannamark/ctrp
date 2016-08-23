@@ -318,8 +318,8 @@
             var findOrgName = function(poAff, cb) {
                 OrgService.getOrgById(poAff.organization_id).then(function(organization) {
                     var curOrg = {"id" : poAff.organization_id, "name": organization.name};
-                    curOrg.effective_date = DateService.convertISODateToLocaleDateStr(poAff.effective_date);
-                    curOrg.expiration_date = DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                    curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
+                    curOrg.expiration_date = moment(poAff.expiration_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                     curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                     curOrg.po_affiliation_id = poAff.id; //po affiliation id
                     curOrg.lock_version = poAff.lock_version;

@@ -187,7 +187,7 @@
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="site_rec in psView.siteRecruitmentGrid track by $index" class="animated-item" ng-class="{'deleted-text' : site_rec._destroy, 'edit-selected': site_rec.uiEdit}">
-                                                <td class="text-center">{{site_rec.status_date}}</td>
+                                                <td class="text-center">{{site_rec.status_date | dateFormat}}</td>
                                                 <td>{{site_rec.site_recruitment_status.name}}</td>
                                                 <td>{{site_rec.comments}}</td>
                                                 <td>
@@ -526,7 +526,7 @@
                         {{participating_site.latest_site_recruitment_status}}
                     </td>
                     <td>
-                        {{participating_site.latest_site_recruitment_status_date}}
+                        {{participating_site.latest_site_recruitment_status_date | dateFormat}}
                     </td>
                     <td>
                         {{participating_site.contact_name}}
