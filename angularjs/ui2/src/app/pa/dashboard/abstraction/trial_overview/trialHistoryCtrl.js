@@ -43,9 +43,54 @@
         vm.auditParams = AuditService.getAuditInitialSearchParams();
 
         vm.showSubmissions= showSubmissions;
+        vm.loadTrialSubmissions = loadTrialSubmissions;
 
         //This variable is being used by grid row to download a trial document.(Refer Audit Trial Service)
         $scope.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download/';
+
+        vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
+        vm.submissionsGridOptions.data = null;
+        vm.submissionsGridOptions.totalItems = null;
+        vm.submissionsGridOptions.exporterAllDataFn = function () {
+            var trialId = $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId;
+
+            vm.trialHistoryObj = {trial_id: trialId,start: vm.submissionParams.start, rows: vm.submissionParams.rows};
+            vm.disableBtn = true;
+
+            return AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    console.log('received search results: ' + JSON.stringify(data.trial_versions));
+                    vm.submissionsGridOptions.data = data.trial_versions;
+                    vm.submissionsGridOptions.totalItems = data.total;
+
+                    _.each(vm.submissionsGridOptions.data, function(version) {
+                        var docsArray = [];
+                        _.each(version.docs, function(doc) {
+                            docsArray.push(doc.file_name);
+                        })
+
+                        version.docs = docsArray.join(';');
+                    });
+                    console.log('export related: ', data.trial_versions);
+                }
+            }).catch(function (err) {
+                console.log('Getting trial submissions failed');
+            }).finally(function () {
+                console.log('search finished');
+
+                vm.disableBtn = false;
+            });
+        };
+        vm.submissionsGridOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+            vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                vm.submissionParams.start = newPage;
+                vm.submissionParams.rows = pageSize;
+                vm.loadTrialSubmissions();
+            });
+        }; //gridOptions
 
 
         activate();
@@ -53,20 +98,6 @@
             //vm.auditGridOptions = getGridOptions();
             vm.auditGridOptions.data =null;
             vm.auditGridOptions.totalItems = null;
-
-
-            vm.submissionsGridOptions = AuditService.getSubmissionsGridOptions();
-            vm.submissionsGridOptions.data = null;
-            vm.submissionsGridOptions.totalItems = null;
-            vm.submissionsGridOptions.onRegisterApi = function (gridApi) {
-                vm.gridApi = gridApi;
-                vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                    vm.submissionParams.start = newPage;
-                    vm.submissionParams.rows = pageSize;
-                    loadTrialSubmissions();
-                });
-            }; //gridOptions
-            vm.submissionsGridOptions.exporterAllDataFn = loadTrialSubmissions;
 
             loadTrialSubmissions();
 
@@ -122,7 +153,7 @@
 
          function showSubmissions() {
 
-             loadTrialSubmissions();
+             vm.loadTrialSubmissions();
 
         };
 

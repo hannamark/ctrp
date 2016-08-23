@@ -267,7 +267,12 @@
                 }
             }  else if (type == 'authority_country') {
                 vm.authority_org = '';
-                vm.authorityOrgArr = TrialService.getAuthorityOrgArr(vm.authority_country);
+                TrialService.getAuthorityOrgArr(vm.authority_country).then(function (response) {
+                    vm.authorityOrgArr  = response.authorities;
+                    console.log(vm.authorityOrgArr)
+                }).catch(function (err) {
+                    console.log("Error in retrieving authorities for country");
+                });
             }
         };
 

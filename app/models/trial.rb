@@ -232,6 +232,17 @@ class Trial < TrialBase
   validate :lead_protocol_id_lead_org_id_uniqueness
   validates :official_title, presence: true, if: 'is_draft == false && edit_type != "import" && edit_type != "imported_update" && (internal_source.nil? || internal_source.code != "IMP")'
   validates :official_title, length: {maximum: 600}
+  validates :brief_title, length: {maximum: 300}
+  validates :brief_summary, length: {maximum: 5000}
+  validates :detailed_description, length: {maximum: 32000}
+  validates :objective, length: {maximum: 32000}
+  validates :primary_purpose_other, length: {maximum: 200}
+  validates :secondary_purpose_other, length: {maximum: 1000}
+  validates :study_model_other,length: {maximum: 200}
+  validates :time_perspective_other, length: {maximum: 200}
+  validates :biospecimen_desc, length: {maximum: 1000}
+  validates :study_pop_desc, length: {maximum: 1000}
+
   validates :acronym, length: {maximum: 14}
   validates :lead_protocol_id, length: {maximum: 30}
   validates :board_name, length: {maximum: 255}
@@ -781,6 +792,37 @@ class Trial < TrialBase
     return nil
   end
 
+  def has_atleast_one_active_update_sub_with_not_acked
+    upd = SubmissionType.find_by_code('UPD')
+    if upd.present?
+      subs = Submission.where('trial_id = ? AND submission_type_id = ? and status = ? and acknowledge = ?', self.id, upd.id, 'Active','No')
+      if subs.count == 0
+        return false
+      else
+        return true
+      end
+    else
+      return false
+    end
+
+  end
+
+  def has_atleast_one_active_amendment_sub
+    amd = SubmissionType.find_by_code('AMD')
+    if amd.present?
+      subs = Submission.where('trial_id = ? AND submission_type_id = ? and status = ?', self.id, amd.id, 'Active')
+      if subs.count == 0
+        return false
+      else
+        return true
+      end
+    else
+      return false
+    end
+
+  end
+
+
   private
 
   def save_history
@@ -1249,19 +1291,6 @@ class Trial < TrialBase
       order("LOWER(trials.#{column}) #{order}")
     end
   }
-
-  scope :published,               -> {
-=begin
-      When a user selects "Submission Type Field = "Update" , the trials returned would be all trials where the last submission was an "update"
-either from registration or restservice and the updates are pending
-the ctro to acknowledge them in "trial history - updates".
-If the last submission for a trial is not an update
-(because it is an original submission or an amendment submission)
- or an update that has been acknowledged, then these trials will not be displayed.
-=end
-
-    where(published: true) }
-  scope :published_and_commented, -> { published.where("comments_count > 0") }
 
 
 

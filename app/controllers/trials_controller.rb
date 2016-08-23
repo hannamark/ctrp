@@ -58,8 +58,9 @@ class TrialsController < ApplicationController
 
     Rails.logger.info "params in update: #{params}"
 
+    edit_type = params[:trial][:edit_type]
     trial_service = TrialService.new({trial: @trial})
-    if params[:trial][:edit_type] == 'amend'
+    if edit_type == 'amend'
       trial_json = trial_service.get_json
     end
 
@@ -73,7 +74,7 @@ class TrialsController < ApplicationController
           trial_service.save_history(trial_json)
         end
 
-        trial_service.send_email(@trial.edit_type)
+        trial_service.send_email(edit_type)
       else
         format.html { render :edit }
         format.json { render json: @trial.errors.full_messages, status: :unprocessable_entity }
@@ -133,7 +134,7 @@ class TrialsController < ApplicationController
   def search_trial_with_nci_id
 
     if params.has_key?(:nci_id)
-      @search_result = Trial.with_nci_id(params[:nci_id].upcase)
+      @search_result = Trial.where(nci_id: params[:nci_id].upcase) #Trial.with_nci_id(params[:nci_id].upcase)
       @search_result = @search_result.filter_rejected.first
       @search_result = @search_result.nil? ? {error_msg: 'Trial is not found'} : @search_result
     else
@@ -570,23 +571,29 @@ class TrialsController < ApplicationController
         ori = SubmissionType.find_by_code('ORI')
         amd = SubmissionType.find_by_code('AMD')
 
+        @trials_upd = []
+        @trials_ori = []
+        @trials_amd = []
 
         if search_ids.include?(upd.id)
-          @trials = @trials.select{|trial| !trial.submissions.blank? &&  upd.id == trial.submissions.last.submission_type.id && trial.submissions.last.status ="Active" && trial.submissions.last.acknowledge ="No" }
+          @trials_upd = @trials.select{|trial| !trial.submissions.blank?  && trial.has_atleast_one_active_update_sub_with_not_acked}#&&  upd.id == trial.submissions.last.submission_type.id && trial.submissions.last.status ="Active" && trial.submissions.last.acknowledge ="No"
         end
 
-
         if search_ids.include?(ori.id)
-          @trials = @trials.select{|trial| !trial.submissions.blank? &&   !trial.submissions.pluck(:submission_type_id).include?(amd.id) }
+          @trials_ori = @trials.select{|trial| !trial.submissions.blank? && !trial.submissions.pluck(:submission_type_id).include?(amd.id) }
         end
 
         if search_ids.include?(amd.id)
-          @trials = @trials.select{|trial| !trial.submissions.blank? &&   trial.submissions.pluck(:submission_type_id).include?(amd.id) }
+          @trials_amd = @trials.select{|trial| !trial.submissions.blank? && trial.submissions.pluck(:submission_type_id).include?(amd.id) && trial.has_atleast_one_active_amendment_sub }
         end
 
+        @trials = @trials_upd + @trials_ori + @trials_amd
+        @trials =@trials.uniq
 
+        #Rails.logger.info "following is the union for updates and amendments #{@trials_upd}"
+        #Rails.logger.info "following is the union for updates and amendments #{@trials_ori}"
+        #Rails.logger.info "following is the union for updates and amendments #{@trials_amd}"
         #@trials = @trials.select{|trial| !trial.submissions.blank? &&  search_ids.include?(trial.submissions.last.submission_type.id)}
-        #Rails.logger.info "After &&&&&&&&&&&&&&&&&&&&&&&&"
 
       end
 

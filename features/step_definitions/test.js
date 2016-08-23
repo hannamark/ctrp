@@ -122,7 +122,7 @@ module.exports = function() {
         searchTrial.setSearchTrialProtocolID('*');
         searchTrial.clickSearchTrialSearchButton();
         searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback(err);});
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback.fail(err);});//browser.sleep(210).then(callback(err));});
         browser.sleep(2500).then(callback);
     //    callback();
     });
@@ -168,6 +168,11 @@ module.exports = function() {
         //login.clickWriteMode('On');
        // browser.sleep(50).then(callback);
        // callback();
+    });
+
+    this.After(function(callback) {
+        console.log('Cleaning up');
+        callback();
     });
 
 }

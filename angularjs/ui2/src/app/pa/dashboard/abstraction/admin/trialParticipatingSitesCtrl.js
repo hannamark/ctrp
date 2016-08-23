@@ -472,6 +472,7 @@
          **/
         function editSiteRecruitment(index) {
             vm.current_site_recruitment = angular.copy(vm.siteRecruitmentGrid[index]);
+            vm.current_site_recruitment.status_date = moment(vm.current_site_recruitment.status_date, 'DD-MMM-YYYY').toDate();
             vm.current_site_recruitment.edit = true;
             vm.siteRecruitmentGrid[index].edit = true;
             vm.current_site_recruitment.uiEdit = true;

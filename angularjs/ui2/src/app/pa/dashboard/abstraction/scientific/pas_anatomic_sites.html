@@ -11,7 +11,7 @@
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': anatomicView.anatomicSitesError}">
                             <label for="anatomic_sites" class="control-label col-xs-12 col-sm-3">Anatomic Sites: </label>
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-6 ui-select-auto-width">
                                 <ui-select multiple id="anatomic_sites" name="anatomic_sites" ng-model="anatomicView.anatomic_sites_selected" ng-required="true">
                                     <ui-select-match placeholder="-Select Anatomic Sites -">{{$item.name}}</ui-select-match>
                                     <ui-select-choices repeat="anatomicSite in anatomicView.anatomicSitesArr">{{anatomicSite.name}}</ui-select-choices>

@@ -327,7 +327,7 @@
             outerTrial.new = vm.curTrial.new;
             outerTrial.id = vm.curTrial.id;
             outerTrial.trial = vm.curTrial;
-
+            console.info('outer trial: ', outerTrial);
             TrialService.upsertTrial(outerTrial).then(function(response) {
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
@@ -705,7 +705,7 @@
 
         // Add Founding Source to a temp array
         $scope.$watch(function() {
-            return vm.curTrial.start_date;
+            return vm.curTrial.comp_date;
         }, function(newValue, oldValue) {
             console.log('start date values are: ', oldValue, newValue);
         });
@@ -921,10 +921,15 @@
 
         // Scenario #8 in Reg F11
         vm.validateStartDateQual2 = function() {
-            var startDate = typeof vm.curTrial.start_date === 'string' ? moment(vm.curTrial.start_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.start_date;
+            if (!vm.curTrial.start_date) {
+                return;
+            }
+
+            var startDate = typeof vm.curTrial.start_date === 'string' ? moment(vm.curTrial.start_date, 'YYYY-MM-DD').toDate() : vm.curTrial.start_date;
+            var startDateTimeValue = startDate.getTime();
             var today = new Date();
             today.setHours(0,0,0,0);
-            if ((vm.curTrial.start_date_qual === 'Actual' && startDate.getTime() > today.getTime()) || (vm.curTrial.start_date_qual === 'Anticipated' && startDate.getTime() < today.getTime())) {
+            if ((vm.curTrial.start_date_qual === 'Actual' && startDateTimeValue > today.getTime()) || (vm.curTrial.start_date_qual === 'Anticipated' && startDateTimeValue < today.getTime())) {
                 return true;
             } else {
                 return false;
@@ -942,10 +947,15 @@
 
         // Scenario #8 in Reg F11
         vm.validatePrimaryCompDateQual2 = function() {
-            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? moment(vm.curTrial.primary_comp_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.primary_comp_date;
+            if (!vm.curTrial.primary_comp_date) {
+                return;
+            }
+
+            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? moment(vm.curTrial.primary_comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.primary_comp_date;
+            var primaryCompDateTimeValue = primaryCompDate.getTime();
             var today = new Date();
             today.setHours(0,0,0,0);
-            if ((vm.curTrial.primary_comp_date_qual === 'Actual' && primaryCompDate.getTime() > today.getTime()) || (vm.curTrial.primary_comp_date_qual === 'Anticipated' && primaryCompDate.getTime() < today.getTime())) {
+            if ((vm.curTrial.primary_comp_date_qual === 'Actual' && primaryCompDateTimeValue > today.getTime()) || (vm.curTrial.primary_comp_date_qual === 'Anticipated' && primaryCompDateTimeValue < today.getTime())) {
                 return true;
             } else {
                 return false;
@@ -954,9 +964,15 @@
 
         // Scenario #9 in Reg F11
         vm.validatePrimaryCompDate = function() {
-            var startDate = typeof vm.curTrial.start_date === 'string' ? moment(vm.curTrial.start_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.start_date;
-            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? moment(vm.curTrial.primary_comp_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.primary_comp_date;
-            if (startDate.getTime() > primaryCompDate.getTime()) {
+            if (!vm.curTrial.start_date || !vm.curTrial.primary_comp_date) {
+                return;
+            }
+
+            var startDate = typeof vm.curTrial.start_date === 'string' ? moment(vm.curTrial.start_date, 'YYYY-MM-DD').toDate() : vm.curTrial.start_date;
+            var startDateTimeValue = startDate.getTime();
+            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? moment(vm.curTrial.primary_comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.primary_comp_date;
+            var primaryCompDateTimeValue = primaryCompDate.getTime();
+            if (startDateTimeValue > primaryCompDateTimeValue) {
                 return true;
             } else {
                 return false;
@@ -975,10 +991,15 @@
 
         // Scenario #8 in Reg F11
         vm.validateCompDateQual2 = function() {
-            var compDate = typeof vm.curTrial.comp_date === 'string' ? moment(vm.curTrial.comp_date, 'DD-MMM-YYYY').toDate() : vm.curTrial.comp_date;
+            if (!vm.curTrial.comp_date) {
+                return;
+            }
+
+            var compDate = typeof vm.curTrial.comp_date === 'string' ? moment(vm.curTrial.comp_date, 'YYYY-MM-DD').toDate(): vm.curTrial.comp_date;
+            var compDateTimeValue = compDate.getTime();
             var today = new Date();
             today.setHours(0,0,0,0);
-            if ((vm.curTrial.comp_date_qual === 'Actual' && compDate.getTime() > today.getTime()) || (vm.curTrial.comp_date_qual === 'Anticipated' && compDate.getTime() < today.getTime())) {
+            if ((vm.curTrial.comp_date_qual === 'Actual' && compDateTimeValue > today.getTime()) || (vm.curTrial.comp_date_qual === 'Anticipated' && compDateTimeValue < today.getTime())) {
                 return true;
             } else {
                 return false;
@@ -987,9 +1008,15 @@
 
         // Scenario #9 in Reg F11
         vm.validateCompDate = function() {
-            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ? new Date(vm.curTrial.primary_comp_date) : vm.curTrial.primary_comp_date;
-            var compDate = new Date(vm.curTrial.comp_date);
-            if (primaryCompDate.getTime() > compDate.getTime()) {
+            if (!vm.curTrial.primary_comp_date || !vm.curTrial.comp_date) {
+                return;
+            }
+
+            var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ?  moment(vm.curTrial.primary_comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.primary_comp_date;
+            var primaryCompTimeValue = primaryCompDate.getTime;
+            var compDate = typeof vm.curTrial.comp_date === 'string' ?  moment(vm.curTrial.comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.comp_date;
+            var compTimeValue = compDate.getTime();
+            if (primaryCompTimeValue > compTimeValue) {
                 return true;
             } else {
                 return false;
@@ -1082,18 +1109,20 @@
 
         function appendEditType() {
             if (vm.curTrial.actions.indexOf($stateParams.editType) < 0) {
+                console.error('no actions!')
                 // Action not allowed
                 $state.go('main.trials', null, {reload: true});
             } else {
+                console.info('editType: ', $stateParams.editType);
                 vm.curTrial.edit_type = $stateParams.editType;
             }
         }
 
         function convertDate() {
-            vm.curTrial.start_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.start_date);
-            vm.curTrial.primary_comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.primary_comp_date);
-            vm.curTrial.comp_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.comp_date);
-            vm.curTrial.amendment_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.amendment_date);
+            vm.curTrial.start_date = moment(vm.curTrial.start_date).toDate(); //DateService.convertISODateToLocaleDateStr(vm.curTrial.start_date);
+            vm.curTrial.primary_comp_date = moment(vm.curTrial.primary_comp_date).toDate(); //DateService.convertISODateToLocaleDateStr(vm.curTrial.primary_comp_date);
+            vm.curTrial.comp_date = moment(vm.curTrial.comp_date).toDate(); //DateService.convertISODateToLocaleDateStr(vm.curTrial.comp_date);
+            vm.curTrial.amendment_date = moment(vm.curTrial.amendment_date).toDate(); //DateService.convertISODateToLocaleDateStr(vm.curTrial.amendment_date);
         }
 
         // Populate Study Source field based on the param studySourceCode
