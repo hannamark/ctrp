@@ -31,15 +31,9 @@ class GeoLocationService
       case  country
 
           when 'United States'
-              authorityOrgArr = ['Federal Government',
-                                 'Food and Drug Administration',
-                                 'Institutional Review Board'];
-
+              authorityOrgArr = ['Federal Government', 'Food and Drug Administration', 'Institutional Review Board'];
           when 'Canada'
-              authorityOrgArr = ['Canadian Institutes of Health Research',
-                                 'Ethics Review Committee',
-                                 'Health Canada',
-                                 'Ministry of Health & Long Term Care, Ontario'];
+              authorityOrgArr = ['Canadian Institutes of Health Research', 'Ethics Review Committee', 'Health Canada', 'Ministry of Health & Long Term Care, Ontario'];
           when 'Afghanistan'
               authorityOrgArr = ['Ministry of Public Health'];
           when 'Albania'
@@ -49,17 +43,11 @@ class GeoLocationService
           when 'Andorra'
               authorityOrgArr = ['Ministeri de Salut i Benestar'];
           when 'Argentina'
-              authorityOrgArr = ['Administracion Nacional de Medicamentos, Alimentos y Tecnologia Medica',
-                                 'Human Research Bioethics Committee',
-                                 'Ministry of Health'];
+              authorityOrgArr = ['Administracion Nacional de Medicamentos, Alimentos y Tecnologia Medica', 'Human Research Bioethics Committee', 'Ministry of Health'];
           when 'Armenia'
               authorityOrgArr = ['Ministry of Health'];
-
           when 'Australia'
-              authorityOrgArr = ['Department of Health and Ageing Therapeutic Goods Administration',
-                                 'Human Research Ethics Committee',
-                                 'National Health and Medical Research Council'];
-
+              authorityOrgArr = ['Department of Health and Ageing Therapeutic Goods Administration', 'Human Research Ethics Committee', 'National Health and Medical Research Council'];
           when 'Austria'
               authorityOrgArr = ['Federal Ministry for Labour, Health, and Social Affairs',
                                  'Agency for Health and Food Safety',
@@ -68,9 +56,7 @@ class GeoLocationService
                                  'Federal Ministry for Health and Women',
                                  'Federal Office for Safety in Health Care'];
           when 'Bangladesh'
-              authorityOrgArr = ['Bangladesh Medical Research Council',
-                                 'Directorate of Drug Administration',
-                                 'Ethical Review Committee'];
+              authorityOrgArr = ['Bangladesh Medical Research Council', 'Directorate of Drug Administration', 'Ethical Review Committee'];
           when 'Barbados'
               authorityOrgArr = ['Ministry of Health'];
           when 'Belarus'
@@ -86,26 +72,22 @@ class GeoLocationService
           when 'Bosnia'
               authorityOrgArr = ['Federal Ministry of Health'];
           when 'Botswana'
-              authorityOrgArr = ['Health Research and Development Committee',
-                                 'Ministry of Health'];
+              authorityOrgArr = ['Health Research and Development Committee', 'Ministry of Health'];
           when 'Brazil'
               authorityOrgArr = ['Ethics Committee',
                                  'Ministry of Health',
                                  'National Committee of Ethics in Research',
                                  'National Health Surveillance Agency'];
           when 'Bulgaria'
-              authorityOrgArr = ['Bulgarian Drug Agency',
-                                 'Ministry of Health'];
+              authorityOrgArr = ['Bulgarian Drug Agency', 'Ministry of Health'];
           when 'Burkina Faso'
-              authorityOrgArr = ['Ministry for Higher Education and Research',
-                                 'Ministry of Health'];
+              authorityOrgArr = ['Ministry for Higher Education and Research', 'Ministry of Health'];
           when 'Cambodia'
               authorityOrgArr = ['Ministry of Health'];
           when 'Cameroon'
               authorityOrgArr = ['Ministry of Public Health'];
           when 'Chile'
-              authorityOrgArr = ['Comisión Nacional de Investigación Científica y Tecnológica',
-                                 'Instituto de Salud Publica de Chile'];
+              authorityOrgArr = ['Comisión Nacional de Investigación Científica y Tecnológica', 'Instituto de Salud Publica de Chile'];
           when 'China'
               authorityOrgArr = ['Ethics Committee',
                                  'Ministry of Health',
@@ -115,8 +97,7 @@ class GeoLocationService
               authorityOrgArr = ['INVIMA Instituto Nacional de Vigilancia de Medicamentos y Alimentos',
                                  'Institutional Review Board', 'National Institutes of Health'];
           when 'Costa Rica'
-              authorityOrgArr = ['Ethics Committee',
-                                 'Ministry of Health Costa Rica'];
+              authorityOrgArr = ['Ethics Committee', 'Ministry of Health Costa Rica'];
           when 'Côte D\'Ivoire'
               authorityOrgArr = ['Ministry of AIDS',
                                  'Ministry of Health and Public Hygiene',

@@ -177,6 +177,8 @@ class ApiTrialParamsLoader
     save_responsible_party()
 
     if !$mapperObject.regulatoryInformation.nil?
+      save_oversight_authority($mapperObject.regulatoryInformation.country, $mapperObject.regulatoryInformation.authorityName)
+
       $rest_params[:sec801_indicator]=       $mapperObject.regulatoryInformation.sec801_indicator
       $rest_params[:intervention_indicator]= $mapperObject.regulatoryInformation.intervention_indicator
       $rest_params[:data_monitor_indicator]= $mapperObject.regulatoryInformation.data_monitor_indicator
@@ -338,7 +340,21 @@ def save_responsible_party
 
 end
 
-
+  def save_oversight_authority(alpha3, authority)
+    authorities = []
+    $rest_params[:oversight_authorities_attributes] =[]
+    geo_location_service = GeoLocationService.new
+    country = geo_location_service.get_country_name_from_alpha3(alpha3)
+    authorities = geo_location_service.getAuthorityOrgArr(country) if !country.nil?
+    if authorities.size !=0 && authorities.include?(authority)
+      oa_hash ={}
+      oa_hash[:country]=country
+      oa_hash[:organization]=authority
+      $rest_params[:oversight_authorities_attributes].push(oa_hash)
+    else
+      $errors.store("regulatoryInformation","Given country and authority does not match")
+    end
+  end
 
 
   def add_file(file_name, file_content,document_type,tmp_file_name)
