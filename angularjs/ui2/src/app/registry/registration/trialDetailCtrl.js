@@ -137,27 +137,27 @@
             /* Reset UI bindings */
             vm.collapsed = false;
             vm.isExp = false;
-            vm.grantorArr = [];
-            vm.nihNciArr = [];
-            vm.authorityOrgArr = [];
+            vm.grantorArr.length = 0;
+            vm.nihNciArr.length = 0;
+            vm.authorityOrgArr.length = 0;
             vm.status_date_opened = false;
             vm.start_date_opened = false;
             vm.primary_comp_date_opened = false;
             vm.comp_date_opened = false;
             vm.amendment_date_opened = false;
-            vm.addedOtherIds = [];
-            vm.addedFses = [];
-            vm.addedGrants = [];
-            vm.addedStatuses = [];
-            vm.addedIndIdes = [];
-            vm.addedAuthorities = [];
-            vm.addedDocuments = [];
-            vm.selectedLoArray = [];
-            vm.selectedPiArray = [];
-            vm.selectedSponsorArray = [];
-            vm.selectedInvArray = [];
-            vm.selectedIaArray = [];
-            vm.selectedFsArray = [];
+            vm.addedOtherIds.length = 0;
+            vm.addedFses.length = 0;
+            vm.addedGrants.length = 0;
+            vm.addedStatuses.length = 0;
+            vm.addedIndIdes.length = 0;
+            vm.addedAuthorities.length = 0;
+            vm.addedDocuments.length = 0;
+            vm.selectedLoArray.length = 0;
+            vm.selectedPiArray.length = 0;
+            vm.selectedSponsorArray.length = 0;
+            vm.selectedInvArray.length = 0;
+            vm.selectedIaArray.length = 0;
+            vm.selectedFsArray.length = 0;
             vm.showPrimaryPurposeOther = false;
             vm.showSecondaryPurposeOther = false;
             vm.showInvestigator = false;
@@ -217,6 +217,8 @@
             $timeout(function() {
                $scope.trial_form.$setPristine();
             }, 1);
+
+            console.log('selected fs array length is: ', vm.selectedFsArray.length);
         };
 
         vm.updateTrial = function(updateType) {
@@ -714,6 +716,8 @@
         $scope.$watch(function() {
             return vm.selectedFsArray.length;
         }, function(newValue, oldValue) {
+            console.log('selectedFsArray length is: ', newValue, oldValue);
+            console.log('addedFsesArray length is: ', vm.addedFses.length);
             if (newValue == oldValue + 1) {
                 var newFs = {};
                 newFs.organization_id = vm.selectedFsArray[vm.selectedFsArray.length - 1].id;
