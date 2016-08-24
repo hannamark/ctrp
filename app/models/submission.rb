@@ -110,7 +110,7 @@ class Submission < TrialBase
                         where offhold_date is null OR offhold_date > now()::date
                         order by trial_id, onhold_date desc
                     ) as trial_onholds ON trials.id = trial_onholds.trial_id "
-    join_clause += "LEFT JOIN (
+    join_clause += "INNER JOIN (
                         with temp as (
                             select milestone_wrappers.id, milestone_wrappers.trial_id, milestone_wrappers.created_at, submission_id, milestones.name, milestones.code
                               from milestone_wrappers inner join milestones
@@ -345,7 +345,6 @@ class Submission < TrialBase
       else
         where_clause += " AND submissions.user_id = #{params[:user_id]} "
       end
-      join_clause += "LEFT JOIN (select id as trial_ownership_id, trial_id, user_id from trial_ownerships where ended_at is null) as trial_ownership ON trial_ownership.trial_id = trials.id "
     end
 
     filter_clause = []
