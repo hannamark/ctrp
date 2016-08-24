@@ -61,6 +61,7 @@ if @searchAccess
   json.userWriteAccess @userWriteAccess
   json.userReadAccess @userReadAccess
   json.search_access @searchAccess
+  json.total @trial_submissions.size
 else
   json.search_access @searchAccess
 end
