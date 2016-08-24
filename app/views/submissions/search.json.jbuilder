@@ -44,7 +44,6 @@ if @searchAccess
                     :expected_abstraction_completion_date,
                     :expected_abstraction_completion_date_comments,
                     :business_days_since_submitted,
-                    :owner_user_id,
                     :current_submission_date,
                     :current_administrative_milestone,
                     :current_scientific_milestone,
