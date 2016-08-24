@@ -9,7 +9,6 @@ class ApiTrialParamsLoader
   end
 
   def load_params(xmlMapperObject,type,trial)
-
     $rest_params = {}
     $mapperObject =xmlMapperObject
 
