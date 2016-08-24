@@ -110,7 +110,7 @@ class Submission < TrialBase
                         where offhold_date is null OR offhold_date > now()::date
                         order by trial_id, onhold_date desc
                     ) as trial_onholds ON trials.id = trial_onholds.trial_id "
-    join_clause += "LEFT JOIN (
+    join_clause += "INNER JOIN (
                         with temp as (
                             select milestone_wrappers.id, milestone_wrappers.trial_id, milestone_wrappers.created_at, submission_id, milestones.name, milestones.code
                               from milestone_wrappers inner join milestones
@@ -331,11 +331,6 @@ class Submission < TrialBase
                       (#{protocol_source_id_pro}#{ params[:type] != 'own' ? ("," + protocol_source_id_imp.to_s) : ""})
                     AND submissions.trial_id is not null AND submissions.status = 'Active'
                     AND trials.is_rejected IS NOT true "
-    if params[:user_id] && params[:type] == 'own'
-      where_clause += " AND trial_ownership.user_id = #{params[:user_id]} "
-    elsif params[:user_id]
-      where_clause += " AND submissions.user_id = #{params[:user_id]} "
-    end
 
     if params[:org_id] && params[:type] == 'participating'
       join_clause += "inner join (
@@ -343,6 +338,15 @@ class Submission < TrialBase
                             from participating_sites where participating_sites.organization_id=#{params[:org_id]}
                         ) as distinct_participating_sites on submissions.trial_id = distinct_participating_sites.trial_id "
     end
+
+    if params[:user_id]
+      if params[:type] == 'own'
+        where_clause += " AND trial_ownership.user_id = #{params[:user_id]} "
+      else
+        where_clause += " AND submissions.user_id = #{params[:user_id]} "
+      end
+    end
+
     filter_clause = []
     if !params[:find_submission_received].nil?
       filter_clause.push("submission_received_date " + ( if params[:find_submission_received] === true then "IS NOT null" else "IS null" end))
@@ -369,18 +373,12 @@ class Submission < TrialBase
     if filter_clause.length > 0
       where_clause += " AND (" + filter_clause.join(" AND ") + ")"
     end
-
-    join_clause += "LEFT JOIN (select  id as trial_ownership_id, trial_id, user_id from trial_ownerships where ended_at is null) as trial_ownership ON trial_ownership.trial_id = trials.id "
-
     joins(join_clause).where(where_clause).select("
-       submissions.*,
+       DISTINCT submissions.*,
 
        submission_method.name as submission_method_name,
 
        trial_research_category.name as clinical_research_category,
-
-       trial_ownership.user_id as owner_user_id,
-       trial_ownership.trial_ownership_id,
 
        trials.nci_id,
        trials.lead_protocol_id,
@@ -431,14 +429,6 @@ class Submission < TrialBase
 
        dcp_id
     ")
-  }
-  scope :matchesImpProPro, -> (userId, protocol_source_id_imp, protocol_source_id_pro) {
-    join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
-    join_clause += "LEFT JOIN users ON submissions.user_id = users.id"
-
-    joins(join_clause).where(" submitted_trial.internal_source_id in (#{protocol_source_id_imp}, #{protocol_source_id_pro})
-       and submissions.user_id = #{userId} AND submissions.trial_id is not null")
-
   }
 
 end
