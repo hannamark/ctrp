@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160825144539) do
+ActiveRecord::Schema.define(version: 20160825162835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -286,6 +286,15 @@ ActiveRecord::Schema.define(version: 20160825144539) do
     t.string   "model"
     t.string   "field"
     t.integer  "parent_id"
+  end
+
+  create_table "ctep_org_types", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
   end
 
   create_table "diseases", force: :cascade do |t|
@@ -739,6 +748,15 @@ ActiveRecord::Schema.define(version: 20160825144539) do
   add_index "onholds", ["onhold_reason_id"], name: "index_onholds_on_onhold_reason_id", using: :btree
   add_index "onholds", ["trial_id"], name: "index_onholds_on_trial_id", using: :btree
 
+  create_table "org_funding_mechanisms", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "organizations", force: :cascade do |t|
     t.string   "source_id",         limit: 255
     t.string   "name",              limit: 255
@@ -995,6 +1013,15 @@ ActiveRecord::Schema.define(version: 20160825144539) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "service_requests", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "uuid",         limit: 255
+    t.integer  "lock_version",             default: 0
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false
     t.text     "data"
@@ -1046,13 +1073,17 @@ ActiveRecord::Schema.define(version: 20160825144539) do
   end
 
   create_table "source_statuses", force: :cascade do |t|
-    t.string   "code",         limit: 255
-    t.string   "name",         limit: 255
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "uuid",         limit: 255
-    t.integer  "lock_version",             default: 0
+    t.string   "code",              limit: 255
+    t.string   "name",              limit: 255
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "uuid",              limit: 255
+    t.integer  "lock_version",                  default: 0
+    t.string   "status"
+    t.integer  "source_context_id"
   end
+
+  add_index "source_statuses", ["source_context_id"], name: "index_source_statuses_on_source_context_id", using: :btree
 
   create_table "specimen_types", force: :cascade do |t|
     t.string   "code",         limit: 255
@@ -1609,6 +1640,7 @@ ActiveRecord::Schema.define(version: 20160825144539) do
   add_foreign_key "processing_status_wrappers", "trials"
   add_foreign_key "site_rec_status_wrappers", "participating_sites"
   add_foreign_key "site_rec_status_wrappers", "site_recruitment_statuses"
+  add_foreign_key "source_statuses", "source_contexts"
   add_foreign_key "sub_groups", "trials"
   add_foreign_key "submissions", "amendment_reasons"
   add_foreign_key "submissions", "submission_methods"
@@ -1683,6 +1715,7 @@ ActiveRecord::Schema.define(version: 20160825144539) do
   create_sequence "citations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "collaborators_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "comments_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ctep_org_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "diseases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "evaluation_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "families_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1719,6 +1752,7 @@ ActiveRecord::Schema.define(version: 20160825144539) do
   create_sequence "ncit_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onhold_reasons_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "onholds_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "org_funding_mechanisms_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "organizations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "other_criteria_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "other_ids_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
@@ -1741,6 +1775,7 @@ ActiveRecord::Schema.define(version: 20160825144539) do
   create_sequence "seq_families_id", :increment => 5, :min => 1, :max => 9223372036854775807, :start => 65000000, :cache => 1, :cycle => false
   create_sequence "seq_organizations_id", :increment => 5, :min => 1, :max => 9223372036854775807, :start => 65000000, :cache => 1, :cycle => false
   create_sequence "seq_persons_id", :increment => 5, :min => 1, :max => 9223372036854775807, :start => 65000000, :cache => 1, :cycle => false
+  create_sequence "service_requests_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "sessions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "site_rec_status_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "site_recruitment_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
