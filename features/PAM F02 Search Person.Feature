@@ -12,7 +12,6 @@ When I select one or more of the following
 |Last Name|
 |First Name|
 |Status|
-|Site Administrator Priviledges (yes, no, all)|
 |Organization Name|
 |Organization Family|
 |Processing Status (Pending, Complete)|
@@ -25,7 +24,6 @@ And the Person Search Results will display:
 |Email Address|
 |Organization Affilliaton|
 |Organization Family|
-|Site Administrator Priviledges (yes, no, all)|
 |E-mails|
 |Processing Status (Pending, Complete)|
 |Status|
