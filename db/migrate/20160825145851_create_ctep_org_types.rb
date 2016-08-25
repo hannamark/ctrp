@@ -1,6 +1,6 @@
-class CreateSourceStatuses < ActiveRecord::Migration
+class CreateCtepOrgTypes < ActiveRecord::Migration
   def change
-    create_table :source_statuses do |t|
+    create_table :ctep_org_types do |t|
       t.static_member_base_columns
       t.timestamps null: false
       t.ctrp_base_columns

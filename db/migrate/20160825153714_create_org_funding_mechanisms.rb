@@ -1,6 +1,6 @@
-class CreateSourceStatuses < ActiveRecord::Migration
+class CreateOrgFundingMechanisms < ActiveRecord::Migration
   def change
-    create_table :source_statuses do |t|
+    create_table :org_funding_mechanisms do |t|
       t.static_member_base_columns
       t.timestamps null: false
       t.ctrp_base_columns
