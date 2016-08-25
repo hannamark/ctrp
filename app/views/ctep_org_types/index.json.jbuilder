@@ -1,0 +1,1 @@
+json.array! @ctep_org_types, partial: 'ctep_org_types/ctep_org_type', as: :ctep_org_type

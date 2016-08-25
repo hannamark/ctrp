@@ -1,0 +1,1 @@
+json.array! @org_funding_mechanisms, partial: 'org_funding_mechanisms/org_funding_mechanism', as: :org_funding_mechanism

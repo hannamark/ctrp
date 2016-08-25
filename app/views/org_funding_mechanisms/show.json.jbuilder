@@ -1,0 +1,1 @@
+json.partial! "org_funding_mechanisms/org_funding_mechanism", org_funding_mechanism: @org_funding_mechanism
