@@ -180,6 +180,7 @@ module.exports = function() {
                 var addedFundingSrc = (firstOrg.split()).concat(secondOrg.split());
                 console.log('Added funding Src org');
                 console.log(addedFundingSrc);
+                browser.sleep(7500);
                 addTrial.getVerifyAddTrialFundingSource(addedFundingSrc);
             });
         });
