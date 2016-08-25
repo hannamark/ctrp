@@ -68,7 +68,7 @@
         };
 
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.userObj.user, vm.org_search_name);
+            return OrgService.typeAheadOrgNameSearch(vm.org_search_name);
         };
 
         vm.setTypeAheadOrg = function (searchObj) {

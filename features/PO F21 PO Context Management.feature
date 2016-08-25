@@ -63,12 +63,13 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And the search results will display the column type
     
       |CTRP ID|
-      |CTEP Org PK ID|
+      |CTEP Org PK ID|?????
       |CTEP ID|
       |Name|
       |Source Status|
       |Source Context|
       |Source ID|
+      |Family|
       |Phone|
       |Email|
       |Last Updated By|
@@ -103,37 +104,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
-    And a list of all organization Context association history will be displayed with source status type 
-    
-      |Active  |
-      |Inactive  |
-      |Nullified|
-      |Legacy|
-      
-       
-    And the displayed organization association history will list the column type
-    
-      |CTRP ID|
-      |CTEP Org PK ID|
-      |CTEP ID|
-      |Name|
-      |Source Status|
-      |Source Context|
-      |Source ID|
-      |Phone|
-      |Email|
-      |Last Updated By|
-      |Last Updated Date|
-      |City|
-      |State|
-      |Country|
-      |Postal Code|
-      |Funding Mechanism|
-      |Service Request|
-      |Processing Status|
-      
-     
-    When the Curator clicks on the "Clone" button
+ 	When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context with both "organization Name" and "Organization Address" 
     And the CTEP Organization does not match an existing CTRP Context Organization name and Organization Address
     Then the CTEP Organization information will be copied into a new CTRP Organization with the field type 
@@ -205,64 +176,27 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,Legacy,NULL)|
     |Processing Status (Pending, Complete)|
     
-    And a list of all organization Context associations will be displayed with source status type 
-    
-      |Active  |
-      |Inactive  |
-      |Nullified|
-      |Legacy|
-      
-    And the displayed organization list will the column type
-    
-      |CTRP ID|
-      |CTEP Org PK ID|
-      |CTEP ID|
-      |Name|
-      |Source Status|
-      |Source Context|
-      |Source ID|
-      |Phone|
-      |Email|
-      |Last Updated By|
-      |Last Updated Date|
-      |City|
-      |State|
-      |Country|
-      |Postal Code|
-      |Funding Mechanism|
-      |Service Request|
-      |Processing Status|
-      
-    
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "organization Name" and "Organization Address" 
     When the CTEP Organization does match any existing CTRP Context Organization name and Organization Address
-    Then a pop up list of matching CTRP organization with Organization Source Status "Active" will be displayed with information type
-    
-    |CTRP ID|
-    |CTEP ID|
-    |Organization Name|
-    |Source Status|
-    |Organization Address:City, State, Country, Postal Code|
-    
-    And the curator will review the displayed options
+    Then a warning message "Warning: Marching CTRP Organization Exist" will be displayed
+   	And the curator will review the displayed options
     And the curator can click on the existing option types <OptionType> to complete the funtion type <FunctionType>
     
     |OptionType|FunctionType|
-    |Cancel    |To complete a New Search|
-    |Proceed   |Create a New CTRP organization            |
-    |Select    |To associate an Organization from the search results with the selected CTEP org |
-    
-   	When The CTRP Organization displays after clicking on select
-    And the curator clicks on Associate Organization Context to associate the selected CTRP Organization with the Organization in the CTEP Context
+    |Cancel    |Clone a New CTRP Organization |
+    |Proceed   |Create Existing CTRP Context to associate to CTEP |
+ 
+    When the curator clicks on Proceed
+    Then the curator will search matching CTRP Context Organization to associate to CTEP Context
     Then the CTEP Processing Status will be changed from "Pending" to "Complete"
     And the CTEP Service Request will be change from Create to Null
+    And the CTRP Processing status will be complete-------
     And every CTRP Organization can be associated with only one Organization in the CTEP Context
  
     
     
-  
- Scenario: #4  CTRP Organization information gets updated with the New information received from CTEP
+  Scenario: #4  CTRP Organization information gets updated with the New information received from CTEP
     Given I am on the Search Organizations Screen
     When CTEP updated organization information is sent to CTRP via Restful service
     Then the CTEP Service Request will be set to "Update"

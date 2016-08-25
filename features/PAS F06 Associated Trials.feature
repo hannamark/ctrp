@@ -1,7 +1,7 @@
 ﻿@PA @global
 Feature:  PAS F06 Associated Trials
 As a CTRP Scientific  Abstractor, I can add and edit Associated Trial
-@runthis
+
 Scenario: #1 I can add an Associated Trial for a trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a trial
@@ -25,12 +25,16 @@ And I can select the <trialIdentifier> and the trial is <Retrievedfrom> displaye
     |trialIdentifier   |Retrievedfrom          |
     |NCI-yyyy-nnnnn    |CTRP                   |
     |NCTnnnnnnnn       |ClinicalTrials.gov     |
-
-Scenario Outline: #2   corresponding Associated Trial records will be created for both associated trials  
-Given the added Associated Trial is a CTRP study
+@runthis
+Scenario: #2   corresponding Associated Trial records will be created for both associated trials
+Given I am logged into the CTRP Protocol Abstraction application
+And I have selected a trial
+And I am on the Associated Trials screen
+When  I have selected the Add button
+Then I am on the Add Associated Trial screen
+And the added Associated Trial is a CTRP study
 When the Associated Trial is displayed on the Associated Trials screen
 Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are added
-
 |AssociatedTrialFields        |
 |Identifier Type              |
 |Trial Identifier             |

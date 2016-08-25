@@ -81,19 +81,22 @@ class SubmissionsController < ApplicationController
 
     params[:order] = 'asc' if params[:order].blank?
 
-    @trial_submissions = Submission.matchesImpPro(
-        params,
-        InternalSource.find_by_code('IMP').id,
-        InternalSource.find_by_code('PRO').id,
-    )
-
-    @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
-    unless params[:rows].nil?
-      @trial_submissions = @trial_submissions.page(params[:start]).per(params[:rows])
-    end
-
     @userReadAccess  = userReadAccess  current_site_user
     @userWriteAccess = userWriteAccess current_site_user
+
+    unless @userReadAccess == false && @userWriteAccess == false
+      @trial_submissions = Submission.matchesImpPro(
+          params,
+          InternalSource.find_by_code('IMP').id,
+          InternalSource.find_by_code('PRO').id,
+      )
+
+      @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
+      unless params[:rows].nil?
+        @trial_submissions = @trial_submissions.page(params[:start]).per(params[:rows])
+      end
+    end
+
     @searchAccess = true
   end
 

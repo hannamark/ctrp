@@ -15,7 +15,7 @@ Feature: PO F3 Create an Organization
     And I have completed a Search for Organization and a duplicate is not found
     And I know the information for the organization I wish to create
     When I provide the full name <Name> of the organization
-    And I can enter name Alias <Nam Alias> 
+    And I can enter name Alias <Name Alias> 
     And I can click on the add button to add the entered Name Alias
     And I provide the address1 <Address1> of the organization
     And I provide the address2 <Address2> of the organization
@@ -30,6 +30,7 @@ Feature: PO F3 Create an Organization
     When I click on the save button
     Then a unique CTRP Organization ID <Source ID> will be assigned to the created organization
     And  the system should create an organization record that contains information type
+    ------------------Meeting note: CTRP Org PK ID/CTRP ID/Source ID---------------------
       
       |CTRP Organization ID|
       |organization Name|
@@ -48,6 +49,8 @@ Feature: PO F3 Create an Organization
       |Phone Extension|
       |eMail|
       |Processing Status: Incomplete(Pending)|
+      |Created By|------
+      |Updated By|----
       
         Scenario: #3 Create Organization Mandatory fields
     Given I am a curator
@@ -96,15 +99,42 @@ Feature: PO F3 Create an Organization
       Scenario: #7 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
     Given I am a curator 
     And I am on the CTRP PO Application
-     When I create an Organizaiton record in CTRP
-     Then I can click on the Associate Button <Associate> to search ACTIVE CTEP organization Context for both "organization Name" and "Organization Address" 
-    When the CTRP Organization does match an existing CTEP Context Organization name and Organization Address
-    Then the CTEP Context will be associated to the Selected CTRP Organization
-    And the curator can review the CTEP Context 
-    And save the association 
-    And the CTRP Processing Status will be complete
+     When I create an Organization record in CTRP
+     Then I can click on the Associate Button <Associate> 
+     Then CTRP will search "ACTIVE" Source Status for matching organization with CTEP Context 
+     And CTRP will search Name and Alias for matching organization with NLM Context  
+      When any match is found 
+      Then the resulted search will display the grid below with columns type
+      -------------------------------------------------------------------------
+      
+       |CTRP ID|
+       |CTEP ID|
+       |NLM Org PK ID|
+       |Name|
+       |Source Status|
+       |Source Context|
+       |Source ID|
+       |Phone|
+       |Email|
+       |Last Updated By|
+       |Last Updated Date|
+       |City|
+       |State|
+       |Country|
+       |Postal Code|
+       |Processing Status|
+       |Service Request|
+       
+     Scenario: #7 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
+    Given I am a curator 
+    And I am on the CTRP PO Application
+     When I can click on the Associate Button <Associate> 
+     Then CTRP will search "ACTIVE" Source Status for matching organization with CTEP Context 
+     When A mactch is found
+     Then CTRP is associated to a CTEP context  
+   And the CTRP Processing Status will be complete
     And the CTEP Processing status will be complete
-    And the CTEP context will display the data type
+    And the CTEP context will be displayed the data type on the same screen in a new tap labeled "CTEP"
     
     |CTEP Context|
     |CTEP Organization ID|
@@ -125,25 +155,23 @@ Feature: PO F3 Create an Organization
     |Service Request (NULL)|
     |Processing Status (Complete)|
 
+    
 
     Scenario: #7 As a Curator, I can associate a CTRP organization with an Existing NLM organization- Sponsor Name-
     Given I am a curator 
     And I am on the CTRP PO Application
-     When I create an Organizaiton record in CTRP
-     Then I can click on the Associate Button <Associate> to search NLM organization Context for matching Organization name 
-     When the CTRP Organization does match an existing NLM Context Organization 
-    Then the NLM Context will be associated to the Selected CTRP Organization
-    And the curator can review the NLM Context 
-    And save the association 
-    And the NLM Processing Status will be complete
-    And the CTRP Processing status will be complete
-    And the NLM context will display the data type
+     When I can click on the Associate Button <Associate> 
+     Then CTRP will search "ACTIVE" Source Status for matching organization with NLM Context 
+     When A mactch is found
+     Then CTRP will be associated to a NLM context  
+   And the CTRP Processing Status will be complete
+    And the NLM Processing status will be complete
+    And the NLM context will be displayed the data type on the same screen in a new tap labeled "NLM"
     
-    |NLM Organization Status: Active|
-    |Name: Sponsor|
     |NLM Org PK ID|
-    |NLM Service Request: NULL|
-    |Processing Status: Complete|
-    
+    |Name: Sponsor Name|
+    |NLM Organization Status|
+    |NLM Service Request|
+    |Processing Status|
     
     
