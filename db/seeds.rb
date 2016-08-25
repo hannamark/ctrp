@@ -1145,13 +1145,23 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                              big_value:
                                  '[
                                      {
+                                        "id": "ROLE_RO",
+                                        "name": "Read Only",
+                                        "assign_access": ""
+                                     },
+                                     {
                                         "id": "ROLE_ACCOUNT-APPROVER",
                                         "name": "Account Approver",
                                         "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
                                      },
                                      {
-                                        "id": "ROLE_RO",
-                                        "name": "Read Only",
+                                        "id": "ROLE_CURATOR",
+                                        "name": "Curator",
+                                        "assign_access": ""
+                                     },
+                                     {
+                                        "id": "ROLE_ABSTRACTOR",
+                                        "name": "Abstractor",
                                         "assign_access": ""
                                      },
                                      {
@@ -1165,28 +1175,8 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                         "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU,ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
                                      },
                                      {
-                                        "id": "ROLE_CURATOR",
-                                        "name": "Curator",
-                                        "assign_access": ""
-                                     },
-                                     {
-                                        "id": "ROLE_ABSTRACTOR",
-                                        "name": "Abstractor",
-                                        "assign_access": ""
-                                     },
-                                     {
-                                        "id": "ROLE_ABSTRACTOR-SU",
-                                        "name": "Abstractor SU",
-                                        "assign_access": ""
-                                     },
-                                     {
                                         "id": "ROLE_TRIAL-SUBMITTER",
                                         "name": "Trial Submitter",
-                                        "assign_access": ""
-                                     },
-                                     {
-                                        "id": "ROLE_ACCRUAL-SUBMITTER",
-                                        "name": "Accrual Submitter",
                                         "assign_access": ""
                                      },
                                      {
@@ -2213,6 +2203,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
    user.encrypted_password = "$2a$10$Kup4LOl1HMoxIDrqxeUbNOsh3gXJhMz/FYPPJyVAPbY0o3DxuFaXK"
    user.user_status = UserStatus.find_by_code('ACT')
    user.status_date = Time.zone.now
+   user.phone = "111-111-1111"
    does_user_exists = User.find_by_username(user.username)
    user.save! if !does_user_exists
   end
@@ -2307,6 +2298,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
       ldap_user.organization = org0
       ldap_user.user_status = UserStatus.find_by_code('ACT')
       ldap_user.status_date = Time.zone.now
+      ldap_user.phone = "111-111-1111"
       ldap_user.save(validate: false)
       #puts "Saved user = #{ldap_user.username}  role = #{ldap_user.role}"
     end
