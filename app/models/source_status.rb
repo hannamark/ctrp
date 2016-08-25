@@ -14,5 +14,5 @@
 class SourceStatus < ActiveRecord::Base
   include BasicConcerns
   belongs_to :source_context
-  validates :code, uniqueness: true
+  #validates :code, uniqueness: true
 end
