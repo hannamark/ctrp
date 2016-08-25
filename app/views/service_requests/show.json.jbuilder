@@ -1,1 +1,1 @@
-json.partial! "service_requests/service_request", service_request: @service_request
+json.extract! @service_request, :id, :code, :name, :created_at, :updated_at

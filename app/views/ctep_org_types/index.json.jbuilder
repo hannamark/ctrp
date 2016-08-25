@@ -1,1 +1,4 @@
-json.array! @ctep_org_types, partial: 'ctep_org_types/ctep_org_type', as: :ctep_org_type
+json.array!(@ctep_org_types) do |ctep_org_type|
+  json.extract! ctep_org_type, :id, :code, :name
+  json.url ctep_org_type_url(ctep_org_type, format: :json)
+end

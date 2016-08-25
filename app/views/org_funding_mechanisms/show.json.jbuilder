@@ -1,1 +1,1 @@
-json.partial! "org_funding_mechanisms/org_funding_mechanism", org_funding_mechanism: @org_funding_mechanism
+json.extract! @org_funding_mechanism, :id, :code, :name, :created_at, :updated_at
