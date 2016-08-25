@@ -1,1 +1,1 @@
-json.partial! "ctep_org_types/ctep_org_type", ctep_org_type: @ctep_org_type
+json.extract! @ctep_org_type, :id, :code, :name, :created_at, :updated_at
