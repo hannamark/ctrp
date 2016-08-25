@@ -44,7 +44,6 @@ if @searchAccess
                     :expected_abstraction_completion_date,
                     :expected_abstraction_completion_date_comments,
                     :business_days_since_submitted,
-                    :owner_user_id,
                     :current_submission_date,
                     :current_administrative_milestone,
                     :current_scientific_milestone,
@@ -62,6 +61,7 @@ if @searchAccess
   json.userWriteAccess @userWriteAccess
   json.userReadAccess @userReadAccess
   json.search_access @searchAccess
+  json.total @trial_submissions.size
 else
   json.search_access @searchAccess
 end

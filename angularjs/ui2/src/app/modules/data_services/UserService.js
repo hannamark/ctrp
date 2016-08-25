@@ -82,12 +82,13 @@
          * Log out user from backend as well as removing local cache
          */
         this.logout = function() {
-            userCtrl.signedIn = false;
-            userCtrl.username = '';
-            userCtrl.userRole = '';
-            userCtrl.isCurationEnabled = false;
-            userCtrl.isCurationModeSupported = false;
-
+            if (userCtrl) {
+                userCtrl.signedIn = false;
+                userCtrl.username = '';
+                userCtrl.userRole = '';
+                userCtrl.isCurationEnabled = false;
+                userCtrl.isCurationModeSupported = false;
+            }
             var username = LocalCacheService.getCacheWithKey('username');
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {username: username, source: 'Angular'})
                 .then(function (data) {
@@ -194,6 +195,22 @@
             return LocalCacheService.getCacheWithKey('user_role') || '';
         };
 
+        this.getUserRoleName = function(controller) {
+            var userRole = service.getUserRole();
+            if ( userRole ) {
+                AppSettingsService.getSettings({setting: 'USER_ROLES'}).then(function (response) {
+                    var userRole = service.getUserRole();
+                    var rolesArr = JSON.parse(response.data[0].settings);
+                    var roleName = _.find(rolesArr, function (obj) {
+                        return obj.id === userRole
+                    }).name.toLowerCase();
+                    controller.userRoleName = roleName;
+                }).catch(function (err) {
+                    console.log("Error in retrieving USER_ROLES " + err);
+                    return '';
+                });
+            }
+        };
 
         this.getAppVersion = function () {
             return LocalCacheService.getCacheWithKey('app_version') || '';
@@ -449,7 +466,7 @@
                                     || curUserRole === 'ROLE_ACCOUNT-APPROVER'
                                         || curUserRole === 'ROLE_SITE-SU')) ? menuArr : [];
         };
-        
+
         /********* check out string formatter given value from db *******/
         this.getCheckOut = function ( checkOut ) {
             var checkOutStr = '';
@@ -464,7 +481,7 @@
             }
             return checkOutStr;
         };
-        
+
         /******* helper functions *********/
         $rootScope.$on('$stateChangeSuccess', function(event) {
             service.initVars();

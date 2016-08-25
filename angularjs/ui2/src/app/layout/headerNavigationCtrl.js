@@ -22,8 +22,11 @@
         vm.isCurationModeSupported = false;
         vm.warning = null;
         vm.timedout = null;
+        vm.userRoleName = null;
         vm.currrentState = $state;
         vm.navbarIsActive = navbarIsActive;
+
+        UserService.getUserRoleName(vm);
 
         vm.toggleCurationMode = function() {
             UserService.saveCurationMode(vm.isCurationEnabled);
@@ -71,6 +74,7 @@
             vm.userRole = UserService.getUserRole().split('_')[1] || '';
             vm.userRole = !!vm.userRole ? vm.userRole.toLowerCase() : '';
             vm.isCurationEnabled = UserService.isCurationModeEnabled();
+            UserService.getUserRoleName(vm);
         } //pullUserInfo
 
         function listenToSectionWriteMode() {

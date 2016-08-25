@@ -1726,11 +1726,15 @@ body.sign_in .input-group-addon {
     width: 23px;
 }
 
-html>/**/body.sign_up .btn-danger .glyphicon , x:-moz-any-link {
+#typeAheadResults .btn-danger .glyphicon {
+    padding: 1px 5px 0 2px;
+}
+
+html>/**/#typeAheadResults .btn-danger .glyphicon , x:-moz-any-link {
     padding: 0 6px 0 2px;
 }
 
-html>/**/body.sign_up #typeAheadResults , x:-moz-any-link {
+html>/**/#typeAheadResults , x:-moz-any-link {
     float: right;
 }
 
@@ -1768,4 +1772,8 @@ body.users #typeAheadResults {
     float: right;
     margin: -1% 3px 0 10px;
     padding: 3px 0 2px 3px;
+}
+
+.ui-select-auto-width .ui-select-multiple input.ui-select-search {
+  width: auto !important;
 }

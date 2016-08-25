@@ -5,7 +5,7 @@
     <div class="col-xs-12 drop-shadow">
         <div class="row">
             <h4>Edit User Profile</h4>
-            <div class="row" ng-if="userDetailView.gridTrialsOwnedOptions.data.length > 0 || userDetailView.gridTrialsSubmittedOptions.data.length > 0">
+            <div class="row" ng-if="userDetailView.gridTrialsOwnedOptions.data.length > 0 || userDetailView.gridTrialsSubmittedOptions.data.length > 0 || userDetailView.gridTrialsParticipationOptions.data.length > 0">
                 <div class="col-xs-12 col-sm-9">
                     <a ng-if="!userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View trials owned by this user</a>
                     <a ng-if="userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View my trials</a>
@@ -89,7 +89,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-12 col-sm-6 form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.email)}">
+                    <div class="col-xs-12 col-sm-6 form-group has-feedback required" ng-class="{'has-error': ctrpbtn.userDetail_form.needsAttention(userDetail_form.phone)}">
                         <label class="control-label col-xs-12 col-sm-6">Phone:</label>
                         <div class="col-xs-12 col-sm-6">
                             <input name="phone" type="text" class="form-control input-sm" required ng-model="userDetailView.userDetails.phone" placeholder="Phone">

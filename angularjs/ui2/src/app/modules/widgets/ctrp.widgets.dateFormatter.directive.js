@@ -19,7 +19,7 @@
               var output = null;
 
               if (value) {
-                output = moment(value, 'DD-MMM-YYYY').toDate();
+                output = moment(value, 'DD-MMM-YYYY', true).isValid() ? moment(value, 'DD-MMM-YYYY').toDate() : moment(value).toDate();
                 return output;
               }
           });

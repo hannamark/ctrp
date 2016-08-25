@@ -60,10 +60,10 @@ Scenario: #2 I can view the Results Reporting Dashboard - XML Upload Error and A
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the CTRP Results Reporting Dashboard screen
 And I select XML Upload Error and Actions Taken
-And I select Open Errors (to display all Open records and All records that were closed with in the last 30 days) 
+And I select Errors by Date Range (to display all Open records and all records within the specified date range) 
 Then a list of all XML Upload Errors and Actions Taken will be displayed that includes the following
-|the Initial Error Date will be with 30 days from the current date |
-|Any Initial Error Date when the Resolution Date is null|
+|All errors within the specified date range using Initial Error Date|
+|Any error when the Resolution Date is null|
 
 And will display the following fields
 |Initial Error Date|

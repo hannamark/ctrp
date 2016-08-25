@@ -33,6 +33,11 @@ class OutcomeMeasure < TrialBase
   after_save :touch_trial
   after_destroy :touch_trial
 
+  validates :title, length: {maximum: 254}
+  validates :time_frame, length: {maximum: 254}
+  validates :description, length: {maximum: 999}
+
+
   private
 
   def touch_trial

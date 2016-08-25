@@ -47,17 +47,20 @@ end
 class RegulatoryInformationXml
   include XML::Mapping
 
-  text_node :sec801_indicator, "section801", :default_value=>nil, :optional=>true,
+      text_node :country, "country", :optional=>true
+      text_node :authorityName, "authorityName", :optional=>true
+
+      text_node :sec801_indicator, "section801", :default_value=>nil, :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
               default_reader.call(obj,xml)
               obj.sec801_indicator=BooleanMapper.map(obj.sec801_indicator)
             }
-  text_node :intervention_indicator, "fdaRegulated", :default_value=>nil, :optional=>true,
+      text_node :intervention_indicator, "fdaRegulated", :default_value=>nil, :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
               default_reader.call(obj,xml)
               obj.intervention_indicator=BooleanMapper.map(obj.intervention_indicator)
             }
-  text_node :data_monitor_indicator, "dataMonitoringCommitteeAppointed", :default_value=>nil, :optional=>true,
+      text_node :data_monitor_indicator, "dataMonitoringCommitteeAppointed", :default_value=>nil, :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
               default_reader.call(obj,xml)
               obj.data_monitor_indicator=BooleanMapper.map(obj.data_monitor_indicator)
