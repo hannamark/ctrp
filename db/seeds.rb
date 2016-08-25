@@ -26,10 +26,19 @@ SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP').update( name: 'CTRP')
 SourceContext.find_or_create_by(code: 'NLM').update( name: 'NLM')
 
-SourceStatus.find_or_create_by(code: 'ACT').update( name: 'Active')
-SourceStatus.find_or_create_by(code: 'PEND').update( name: 'Pending')
-SourceStatus.find_or_create_by(code: 'INACT').update( name: 'InActive')
-SourceStatus.find_or_create_by(code: 'NULLIFIED').update( name: 'Nullified')
+ctrp_context = SourceContext.find_by_code('CTRP')
+ctep_context = SourceContext.find_by_code('CTEP')
+nlm_context =  SourceContext.find_by_code('NLM')
+
+SourceStatus.create(code: 'ACT' , source_context_id: ctrp_context.id,  name: 'Active', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctrp_context.id).nil?
+SourceStatus.create(code: 'PEND', source_context_id: ctrp_context.id,  name: 'Pending', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('PEND', ctrp_context.id).nil?
+SourceStatus.create(code: 'INACT', source_context_id: ctrp_context.id, name: 'InActive', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctrp_context.id).nil?
+SourceStatus.create(code: 'NULLIFIED', source_context_id: ctrp_context.id, name: 'Nullified', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('NULLIFIED', ctrp_context.id).nil?
+
+SourceStatus.create(code: 'ACT', source_context_id: ctep_context.id, name: 'Active', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctep_context.id).nil?
+SourceStatus.create(code: 'INACT', source_context_id: ctep_context.id, name: 'InActive', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctep_context.id).nil?
+SourceStatus.create(code: 'LEG', source_context_id: ctep_context.id, name: 'Legacy', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('LEG', ctep_context.id).nil?
+
 
 FamilyRelationship.find_or_create_by(code: 'ORG').update( name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF').update( name: 'Affiliation')
