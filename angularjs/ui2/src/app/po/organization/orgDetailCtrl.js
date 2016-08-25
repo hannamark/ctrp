@@ -22,6 +22,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
+        vm.curOrg.processing_status = !!orgDetailObj ? orgDetailObj.processing_status : 'Active';
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
         //vm.curSourceContextName = '';
@@ -32,6 +33,10 @@
         vm.curationReady = false;
         vm.showPhoneWarning = false;
         vm.disableBtn = false;
+        vm.processStatusArr = [
+            {id: 1, name: 'Active'},
+            {id: 2, name: 'Inactive'}
+        ];
         var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
         vm.updateOrg = function () {
