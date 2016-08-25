@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160825183100) do
+ActiveRecord::Schema.define(version: 20160825193446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -785,6 +785,7 @@ ActiveRecord::Schema.define(version: 20160825183100) do
     t.integer  "service_request_id"
     t.integer  "ctep_org_type_id"
     t.integer  "org_funding_mechanism_id"
+    t.string   "processing_status"
   end
 
   add_index "organizations", ["ctep_org_type_id"], name: "index_organizations_on_ctep_org_type_id", using: :btree
