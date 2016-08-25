@@ -40,6 +40,7 @@ SourceStatus.create(code: 'INACT', source_context_id: ctep_context.id, name: 'In
 SourceStatus.create(code: 'LEG', source_context_id: ctep_context.id, name: 'Legacy', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('LEG', ctep_context.id).nil?
 
 
+
 FamilyRelationship.find_or_create_by(code: 'ORG').update( name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF').update( name: 'Affiliation')
 
