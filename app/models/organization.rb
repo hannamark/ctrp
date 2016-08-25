@@ -42,7 +42,10 @@ class Organization < ActiveRecord::Base
   has_many :users
   belongs_to :source_status
   belongs_to :source_context
- # belongs_to :source_cluster
+  belongs_to :service_request
+  belongs_to :ctep_org_type
+  belongs_to :org_funding_mechanism
+  #belongs_to :source_cluster
   has_many :trial_funding_sources
   has_many :fs_trials, through: :trial_funding_sources, source: :trial
   has_many :trial_co_lead_orgs
