@@ -67,6 +67,9 @@ Rails.application.routes.draw do
     end
 
     resources :source_statuses
+    resources :service_requests
+    resources :org_funding_mechanisms
+    resources :ctep_org_types
 
     resources :source_contexts
 
