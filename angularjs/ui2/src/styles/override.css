@@ -1682,15 +1682,26 @@ body.sign_up > .modal-content > .modal-body {
     padding-top: 20px;
 }
 
-body.sign_up .row-captcha {
+body.sign_up .row-captcha > div {
     float: right;
-    margin-right: 2%;
-    width: 245px;
+}
+
+body.sign_up .row-captcha re-captcha {
     transform:scale(0.88);
     -webkit-transform:scale(0.88);
     transform-origin:0 0;
     -webkit-transform-origin:0 0;
+    width: 245px;
     height: 78px;
+    margin-right: 1%;
+}
+
+body.sign_up .help-block {
+    padding-left: 110px;
+}
+
+body.sign_up .row-captcha .help-block {
+    padding-left: 0;
 }
 
 body.sign_in .input-group {

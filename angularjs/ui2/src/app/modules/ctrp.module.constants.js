@@ -98,7 +98,7 @@
             'SEARCH_DISEASE': '/ctrp/ncit_disease_codes/search.json',
             'COUNTRIES_LIST': '/ctrp/countries_for_registry.json',
             'AUTHORITIES_FOR_A_COUNTRY' : '/ctrp/get_authorities_for_a_country.json',
-
+            'SERVICE_REQUESTS': '/ctrp/service_requests.json',
             'TRIALS': {
                 'STATUS_WITH_ID': '/ctrp/registry/trial_statuses/{:id}.json',
                 'PARTICIPATING_SITE_WITH_ID': '/ctrp/registry/participating_sites/{:id}.json',

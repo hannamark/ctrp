@@ -71,7 +71,7 @@ Feature: PO F3 Create an Organization
       Scenario:#4 Create Organization fields's character Limit 
     Given I can request the creation of a new Organization in CTRP
      When I provide the field name <FieldName>
-     Then the entered field name will respect the field character limit <FieldLength>
+     Then the I can not enter more then the <FieldLength> listed below
      
      |FieldName        |FieldLength|
      |Organization Name|254        |

@@ -345,6 +345,7 @@ class Submission < TrialBase
       else
         where_clause += " AND submissions.user_id = #{params[:user_id]} "
       end
+      join_clause += "LEFT JOIN (select id as trial_ownership_id, trial_id, user_id from trial_ownerships where ended_at is null) as trial_ownership ON trial_ownership.trial_id = trials.id "
     end
 
     filter_clause = []
