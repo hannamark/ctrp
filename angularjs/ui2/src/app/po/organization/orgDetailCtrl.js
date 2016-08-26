@@ -33,10 +33,7 @@
         vm.curationReady = false;
         vm.showPhoneWarning = false;
         vm.disableBtn = false;
-        vm.processStatusArr = [
-            {id: 1, name: 'Complete'},
-            {id: 2, name: 'Incomplete'}
-        ];
+        vm.processStatusArr = OrgService.getProcessingStatuses();
         var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
         vm.updateOrg = function () {

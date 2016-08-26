@@ -34,6 +34,7 @@
             email : '',
             postal_code : '',
             phone: '',
+            processing_status: 'Complete',
 
             //for pagination and sorting
             sort: '',
@@ -146,7 +147,9 @@
             curateOrg: curateOrg,
             findContextId: findContextId,
             checkUniqueOrganization: checkUniqueOrganization,
-            typeAheadOrgNameSearch: typeAheadOrgNameSearch
+            typeAheadOrgNameSearch: typeAheadOrgNameSearch,
+            getServiceRequests: getServiceRequests,
+            getProcessingStatuses: getProcessingStatuses,
         };
 
         return services;
@@ -362,9 +365,12 @@
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + '.json');
         }
 
-
-
-
+        function getProcessingStatuses() {
+            return [
+                {id: 1, name: 'Complete'},
+                {id: 2, name: 'Incomplete'}
+            ];
+        }
 
         /**
          * Check if targetOrgsArr contains orgObj by checking the 'id' field
@@ -437,6 +443,10 @@
          */
         function curateOrg(curationObject) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_ORG, curationObject);
+        }
+
+        function getServiceRequests() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SERVICE_REQUESTS);
         }
 
 
