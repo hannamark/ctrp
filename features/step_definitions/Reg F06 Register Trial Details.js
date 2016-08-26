@@ -142,9 +142,9 @@ module.exports = function() {
     });
 
     this.Then(/^I must provide the Primary Purpose other description$/, function (callback) {
-        expect(projectFunctions.verifyWarningMessage('Other Primary Purpose is required')).to.become('true');
+        expect(projectFunctions.verifyWarningMessage('Other Primary Purpose is Required')).to.become('true');
         addTrial.setAddTrialPrimaryPurposeOtherDescription('Primary Purpose Other Description');
-        expect(projectFunctions.verifyWarningMessage('Other Primary Purpose is required')).to.become('false');
+        expect(projectFunctions.verifyWarningMessage('Other Primary Purpose is Required')).to.become('false');
         browser.sleep(25).then(callback);
     });
 
@@ -155,9 +155,9 @@ module.exports = function() {
     });
 
     this.Then(/^I must provide the Secondary Purpose other description$/, function (callback) {
-        expect(projectFunctions.verifyWarningMessage('Other Secondary Purpose is required')).to.become('true');
+        expect(projectFunctions.verifyWarningMessage('Other Secondary Purpose is Required')).to.become('true');
         addTrial.setAddTrialSecondaryPurposeOtherDescription('Secondary Purpose Other Description');
-        expect(projectFunctions.verifyWarningMessage('Other Secondary Purpose is required')).to.become('false');
+        expect(projectFunctions.verifyWarningMessage('Other Secondary Purpose is Required')).to.become('false');
         browser.sleep(25).then(callback);
     });
 

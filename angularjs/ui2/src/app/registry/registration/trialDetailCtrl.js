@@ -217,8 +217,6 @@
             $timeout(function() {
                $scope.trial_form.$setPristine();
             }, 1);
-
-            console.log('selected fs array length is: ', vm.selectedFsArray.length);
         };
 
         vm.updateTrial = function(updateType) {
@@ -619,7 +617,7 @@
             if (vm.status_date && vm.trial_status_id && (vm.why_stopped_disabled || (!vm.why_stopped_disabled && vm.why_stopped))) {
                 if (notFutureDate(vm.status_date)) {
                     var newStatus = {};
-                    newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
+                    newStatus.status_date = vm.status_date; //DateService.convertISODateToLocaleDateStr(vm.status_date);
                     newStatus.trial_status_id = vm.trial_status_id;
                     // For displaying status name in the table
                     _.each(vm.trialStatusArr, function (status) {
@@ -707,17 +705,8 @@
 
         // Add Founding Source to a temp array
         $scope.$watch(function() {
-            return vm.curTrial.comp_date;
-        }, function(newValue, oldValue) {
-            console.log('start date values are: ', oldValue, newValue);
-        });
-
-        // Add Founding Source to a temp array
-        $scope.$watch(function() {
             return vm.selectedFsArray.length;
         }, function(newValue, oldValue) {
-            console.log('selectedFsArray length is: ', newValue, oldValue);
-            console.log('addedFsesArray length is: ', vm.addedFses.length);
             if (newValue == oldValue + 1) {
                 var newFs = {};
                 newFs.organization_id = vm.selectedFsArray[vm.selectedFsArray.length - 1].id;
@@ -1237,7 +1226,7 @@
             for (var i = 0; i < vm.curTrial.trial_status_wrappers.length; i++) {
                 var statusWrapper = {};
                 statusWrapper.id = vm.curTrial.trial_status_wrappers[i].id;
-                statusWrapper.status_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date);
+                statusWrapper.status_date = vm.curTrial.trial_status_wrappers[i].status_date //DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date);
                 statusWrapper.trial_status_id = vm.curTrial.trial_status_wrappers[i].trial_status_id;
                 // For displaying status name in the table
                 _.each(vm.trialStatusArr, function (status) {

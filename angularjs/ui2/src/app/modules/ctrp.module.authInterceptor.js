@@ -84,9 +84,11 @@
                 } else if (!!rejection.data) {
                     Object.keys(rejection.data).forEach(function(key) {
                         var arr = rejection.data[key];
-                        arr.forEach(function(msg) {
-                            validationErrors += '\n' + key + ' ' + msg;
-                        });
+                        if (angular.isArray(arr)) {
+                            arr.forEach(function(msg) {
+                                validationErrors += '\n' + key + ' ' + msg;
+                            });
+                        }
                     });
                 }
                 // console.info('Validation Errors: ', validationErrors);

@@ -41,7 +41,7 @@ module.exports = function() {
             console.log('value of i' + i);
             console.log('value of data field  :  ' + data[i]);
             addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', data[i])).click();
-            addTrial.setAddTrialProtocolID('NCT65478912');
+            addTrial.setAddTrialProtocolID('NCT6644998'+ i);
             addTrial.clickAddTrialAddProtocolButton();
         }
         browser.sleep(25).then(callback);
@@ -49,11 +49,17 @@ module.exports = function() {
 
 
     this.Then(/^the Register Trial Protocol Identifiers section will not indicate any errors during Trial Review$/, function (callback) {
-        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('ClinicalTrials.gov Identifier', 'NCT65478912');
-        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('Obsolete ClinicalTrials.gov Identifier', 'NCT65478912');
-        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('Other Identifier', 'NCT65478912');
+        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('ClinicalTrials.gov Identifier', 'NCT66449980');
+        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('Obsolete ClinicalTrials.gov Identifier', 'NCT66449981');
+        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier('Other Identifier', 'NCT66449982');
         browser.sleep(25).then(callback);
     });
+
+    this.When(/^I have entered more than (\d+) charaters for the Identifier Type (.*) then an error message will display (.*)$/, function (arg1, IdentifierType, ErrorType, table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
 
 
     this.Given(/^I am on the Register Trial Protocol Identifiers screen$/, function (callback) {
@@ -113,8 +119,7 @@ module.exports = function() {
         addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
         addTrial.setAddTrialProtocolID('NCT55556666');
         addTrial.clickAddTrialAddProtocolButton();
-       // helper.alertDialog('accept', arg1 + ' NCT55556666 already exists' );
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1 + ' NCT55556666 already exists')).to.become('true');
+        expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1 + ': NCT55556666 already exists')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT55556666')).to.become('true');
         expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT44442222')).to.become('true');
         browser.sleep(25).then(callback);

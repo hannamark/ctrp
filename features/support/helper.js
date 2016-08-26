@@ -28,6 +28,7 @@ var helper = function() {
     var retListCurrentValue = '';
     var retTextCurrentValue = '';
     this.header_Page = element(by.css('.sub-title')); //element(by.css('span[style="font-size:large;font-weight:bold;"]'));
+    var self = this;
 
     this.wait = function (element, label) {
         browser.wait(function () {
@@ -98,6 +99,7 @@ var helper = function() {
         this.wait(link, errorMessage);
         link.click();
         console.log(errorMessage + " was clicked");
+        self.alertDialog('OK', '');
         expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
     };
 
@@ -105,6 +107,7 @@ var helper = function() {
         this.wait(link.get(index), errorMessage);
         link.get(index).click();
         console.log(errorMessage + " was clicked");
+        self.alertDialog('OK', '');
         expect(this.header_Page.getText()).to.eventually.equal(header_Page_Text);
     };
 
