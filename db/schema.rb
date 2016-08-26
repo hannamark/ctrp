@@ -782,6 +782,8 @@ ActiveRecord::Schema.define(version: 20160825183100) do
     t.string   "created_by"
     t.string   "updated_by"
     t.string   "extension",                limit: 255
+    t.string   "processing_status"
+    t.string   "address3"
     t.integer  "service_request_id"
     t.integer  "ctep_org_type_id"
     t.integer  "org_funding_mechanism_id"
