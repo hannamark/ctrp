@@ -91,7 +91,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
                     <div class="col-xs-12 col-sm-6 form-text">
-                        {{vm.entity.submission_date}}
+                        {{vm.entity.submission_date | dateFormat}}
                     </div>
                 </div>
 
@@ -131,7 +131,7 @@
                     <div class="form-group">
                         <label class="control-label col-xs-12 col-sm-4">Submission Date:</label>
                         <div class="col-xs-12 col-sm-6 form-text">
-                            {{vm.entity.submission_date}}
+                            {{vm.entity.submission_date | dateFormat}}
                         </div>
                     </div>
 
@@ -146,7 +146,7 @@
                         <label class="control-label col-xs-12 col-sm-4">Amendment Date:</label>
                         <div class="col-xs-12 col-sm-3">
                             <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
-                                <input type="text" class="form-control input-sm" id="amendment_date" name="amendment_date" datepicker-popup="{{vm.dateFormat}}"
+                                <input type="text" class="form-control input-sm" id="amendment_date" name="amendment_date" uib-datepicker-popup="dd-MMM-yyyy"
                                        ng-model="vm.entity.amendment_date"
                                        ng-required="true"
                                        ng-click="vm.openCalendar($event, 'amendment_date')"
@@ -276,7 +276,7 @@
                                 <div class="col-xs-12 col-sm-2">
                                     <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                         <input type="text" id="start_date" name="status_date" class="form-control input-sm"
-                                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.start_date"
+                                               uib-datepicker-popup="dd-MMM-yyyy" ng-model="trialHistoryView.start_date"
                                                ng-click="trialHistoryView.openCalendar($event, 'start_date')"
                                                is-open="trialHistoryView.startDateOpened"
                                                datepicker-options="trialHistoryView.dateOptions"
@@ -292,7 +292,7 @@
                                 <div class="col-xs-12 col-sm-2">
                                     <div class="input-group add-on date datepicker">
                                         <input type="text" id="end_date" name="end_date" class="form-control input-sm"
-                                               uib-datepicker-popup="{{trialHistoryView.dateFormat}}" ng-model="trialHistoryView.end_date"
+                                               uib-datepicker-popup="dd-MMM-yyyy" ng-model="trialHistoryView.end_date"
                                                ng-click="trialHistoryView.openCalendar($event, 'end_date')"
                                                is-open="trialHistoryView.endDateOpened"
                                                datepicker-options="trialHistoryView.dateOptions"

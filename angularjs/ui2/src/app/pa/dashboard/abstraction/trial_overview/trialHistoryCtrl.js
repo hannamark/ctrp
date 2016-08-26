@@ -436,13 +436,13 @@
             var vm = this;
             vm.entity = angular.copy(row.entity);
             vm.submission_num     =   row.entity.submission_num;
-            vm.submission_date    =   DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
+            vm.submission_date    =   moment(row.entity.submission_date).format('DD-MMM-YYYY'); //DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
             vm.acknowledgeUpdate  =   acknowledgeUpdate;
             vm.disableBtn         =   false;
 
             function acknowledgeUpdate() {
                 vm.entity.acknowledge ="Yes";
-                vm.entity.acknowledge_date = new Date();
+                vm.entity.acknowledge_date = moment().toDate();
                 vm.entity.acknowledged_by = userDetailObj.first_name +" , "+ userDetailObj.last_name;
                 var obj={'id':row.entity.id,
                     'acknowledge_comment':vm.entity.acknowledge_comment,
@@ -456,7 +456,7 @@
                     var status = res.server_response.status;
 
                     if (status >= 200 && status <= 210) {
-                        vm.entity.acknowledge_date = DateService.convertISODateToLocaleDateStr(vm.entity.acknowledge_date);
+                        //vm.entity.acknowledge_date = DateService.convertISODateToLocaleDateStr(vm.entity.acknowledge_date);
                         row.entity = angular.extend(row.entity, vm.entity);
 
                         toastr.clear();
@@ -483,7 +483,7 @@
             var vm = this;
             vm.entity = angular.copy(row.entity);
             vm.entity.submission_num = row.entity.submission_num;
-            vm.entity.submission_date = DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
+            vm.entity.submission_date =  row.entity.submission_date; //DateService.convertISODateToLocaleDateStr(row.entity.submission_date);
             vm.entity.amendment_num = row.entity.amendment_num;
 
             vm.reasonArr = reasonsArr;
@@ -514,7 +514,8 @@
                     if (status >= 200 && status <= 210) {
                         vm.entity.submission_type_list=[];
                         vm.entity.submission_type_list.push("Amendment");
-                        vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));
+                        vm.entity.submission_type_list.push("Date:" + vm.entity.amendment_date);
+                        //vm.entity.submission_type_list.push("Date:" + DateService.convertISODateToLocaleDateStr(vm.entity.amendment_date));
                         vm.entity.submission_type_list.push("Reason:" +vm.entity.amendment_reason_id);
                         vm.entity.submission_type_list.push("Number:" +vm.entity.amendment_num);
                         vm.entity.submission_type ="Amendment";
