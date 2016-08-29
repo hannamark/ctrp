@@ -173,7 +173,7 @@
             <div class="form-group">
                 <label for="processing_status" class="control-label col-xs-12 col-sm-3">Processing Status:</label>
                 <div class="col-xs-12 col-sm-9">
-                    <select restriction-field ng-init="searchParams.processing_status"
+                    <select ng-init="searchParams.processing_status"
                             class="form-control input-sm" id="processing_status"
                             ng-model="searchParams.processing_status"
                             ng-options="status.name as status.name for status in processingStatuses">
@@ -184,7 +184,7 @@
             <div class="form-group">
                 <label for="service_request" class="control-label col-xs-12 col-sm-3">Service Request:</label>
                 <div class="col-xs-12 col-sm-9">
-                    <select restriction-field ng-init="searchParams.service_request"
+                    <select ng-init="searchParams.service_request"
                             class="form-control input-sm" id="service_request"
                             ng-model="searchParams.service_request"
                             ng-options="request.id as request.name for request in serviceRequests">
