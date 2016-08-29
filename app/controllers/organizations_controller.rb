@@ -188,6 +188,8 @@ class OrganizationsController < ApplicationController
       @organizations = @organizations.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present?
       @organizations = @organizations.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
       @organizations = @organizations.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
+      @organizations = @organizations.matches('processing_status', params[:processing_status]) if params[:processing_status].present?
+      @organizations = @organizations.with_service_request(params[:service_request]) if params[:service_request].present?
       @organizations = @organizations.sort_by_col(params[:sort], params[:order])
 
       if params[:rows] != nil
