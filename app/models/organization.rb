@@ -346,6 +346,8 @@ class Organization < ActiveRecord::Base
 
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
 
+  scope :with_service_request, -> (value) { joins(:service_request).where("service_requests.id = ?", "#{value}")}
+
   scope :with_family, -> (value) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
