@@ -14,7 +14,8 @@ When I select one or more of the following
 |Status|
 |Organization Name|
 |Organization Family|
-|Processing Status (Pending, Complete)|
+|Processing Status (Incomplete, Complete)|
+|Service Request|
 And I submit my search request by selecting search
 Then the system should display all persons that meet that criteria 
 And the Person Search Results will display:
@@ -25,7 +26,8 @@ And the Person Search Results will display:
 |Organization Affilliaton|
 |Organization Family|
 |E-mails|
-|Processing Status (Pending, Complete)|
+|Processing Status (Incomplete, Complete)|
+|Service Request|
 |Status|
 |Status Date|
 And the system will display the list of Persons ordered assending alphanumeric by Last Name and then assending alphanumeric by First Name and then assending alphanumeric by Middle name
@@ -49,4 +51,5 @@ Then the system should display the Person details
 |PRS Organization Name|
 |Organization Affiliations|
 |Family Name|
-|Processing Status (Pending, Complete)|
+|Processing Status (Incomplete, Complete)|
+|Service Request|
