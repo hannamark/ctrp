@@ -6,11 +6,13 @@
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
-    .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
+    .controller('trialPsWarningModalController', trialPsWarningModalController)
+    .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl)
 
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
+    trialPsWarningModalController.$inject = ['$scope', '$uibModalInstance'];
+    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$window', '$uibModal', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $timeout, $state, $stateParams, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
+    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $window, $uibModal, $timeout, $state, $stateParams, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
 
         var vm = this;
 
@@ -127,6 +129,24 @@
             vm.currentParticipatingSite.contact_phone =  vm.currentParticipatingSite.contact_phone ? vm.currentParticipatingSite.contact_phone : vm.currentParticipatingSite.person.phone;
             vm.currentParticipatingSite.contact_email =  vm.currentParticipatingSite.contact_email ? vm.currentParticipatingSite.contact_email : vm.currentParticipatingSite.person.email;
             vm.currentParticipatingSite.extension = vm.currentParticipatingSite.extension ? vm.currentParticipatingSite.extension : vm.currentParticipatingSite.person.extension;
+        }
+
+        vm.validateParticipatingSite = function() {
+            var isPrimaryContactMarkedForDeletion = false;
+            var markedInv;
+
+            _.each(vm.investigatorGrid, function(inv) {
+                if (inv.set_as_contact && inv._destroy) {
+                    isPrimaryContactMarkedForDeletion = true;
+                    markedInv = inv;
+                }
+            });
+
+            if (isPrimaryContactMarkedForDeletion) {
+                activateModal();
+            } else {
+                vm.saveParticipatingSite();
+            }
         }
 
         vm.saveParticipatingSite = function(callBackString){
@@ -1025,14 +1045,43 @@
             }
         }
 
+        function activateModal() {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'app/pa/dashboard/abstraction/admin/trial_participating_sites_warning_modal.html',
+                controller: 'trialPsWarningModalController as psWarning',
+                size: 'md',
+                windowClass: 'modal-center'
+            });
+
+            /*modalInstance.result.then(function(result) {
+                if (result === 'Confirm') {
+                    scope.ngConfirm();
+                }
+            });*/
+        }
+
+
         function resetDirtyForms() {
             $scope.ps_sites_form.$setPristine();
             $scope.ps_inv_form.$setPristine();
             $scope.ps_contact_form.$setPristine();
         }
 
-
-
     } //trialParticipatingSitesCtrl
 
+
+    function trialPsWarningModalController($scope, $uibModalInstance) {
+        var vm = this;
+
+        vm.message = '';
+
+        vm.confirm = function() {
+            $uibModalInstance.close('Confirm');
+        };
+
+        vm.cancel = function() {
+            $uibModalInstance.dismiss('canceled');
+        };
+    }
 })();

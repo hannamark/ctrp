@@ -240,7 +240,7 @@
                 <md-tab ng-disabled="!psView.currentParticipatingSite.organization.name || psView.duplicateParticipatingSite">
                     <md-tab-label><span id="investigators">Investigators</span></md-tab-label>
                     <md-tab-body>
-                        <form class="form form-horizontal" role="form" id="ps_inv_form" name="ps_inv_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
+                        <form class="form form-horizontal" role="form" id="ps_inv_form" name="ps_inv_form" novalidate ctrp-submit="psView.validateParticipatingSite()">
                             <!-- first row in the accordion body -->
                             <!-- fieldset for Investigator -->
                             <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || psView.disableBtn">
