@@ -623,7 +623,7 @@
 
                 var searchParams = {user_id: vm.userDetails.id};
                 if (trialOwnershipIdArr) {
-                    searchParams['ids'] = trialOwnershipIdArr;
+                    searchParams['trial_ids'] = trialOwnershipIdArr;
                 }
                 UserService.endUserTrialsOwnership(searchParams).then(function (data) {
                     if (data.results === 'success') {

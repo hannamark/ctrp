@@ -371,7 +371,6 @@
                             controller.userOptions.selectedItems = [];
                         },
                         save: function () {
-
                             var searchParams = {
                                 from_user_id: controller.userDetails.id,
                                 to_user_ids: []
@@ -379,7 +378,7 @@
                             var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
                             if (trialIdArr && trialIdArr.length){
                                 searchParams.to_user_ids = user_ids;
-                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_ownership_id').value();
+                                searchParams.ids = trialIdArr;
                             } else {
                                 searchParams.to_user_ids = user_ids;
                             }
@@ -438,7 +437,7 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
-                            console.log(controller.gridApi.selection.getSelectedRows())
+                            console.log(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value())
                             service.createTransferTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value());
                         }
                     },
@@ -456,7 +455,7 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
-                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value());
                         }
                     }
                 ];
