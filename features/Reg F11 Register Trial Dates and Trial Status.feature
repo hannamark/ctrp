@@ -416,13 +416,14 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Approved                                       |
       |Active                                         |
       |Enrolling by Invitation                        |
-      |Closed to Accrual                              |
-      |Closed to Accrual and Intervention             |
       |Temporarily Closed to Accrual                  |
       |Temporarily Closed to Accrual and Intervention |
-      |Withdrawn                                      |
+      |Closed to Accrual                              |
+      |Closed to Accrual and Intervention             |
       |Administratively Complete                      |
       |Complete                                       |
+      |Withdrawn                                      |
+
 
     Examples:
       |trialType  |
