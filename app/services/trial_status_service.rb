@@ -28,6 +28,7 @@ class TrialStatusService
         @validation_msgs.append(validation_msg)
       end
     end
+    return @validation_msgs
   end
 
   private
@@ -77,6 +78,9 @@ class TrialStatusService
         end
       end
     end
+
+     Rails.logger.info "Errors are #{msg['errors']}"
+     Rails.logger.info "Warnings are   #{msg['warnings']}"
 
     return msg
   end
