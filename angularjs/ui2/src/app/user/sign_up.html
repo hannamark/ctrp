@@ -178,7 +178,7 @@
                                    typeahead-on-select="userView.setTypeAheadOrg($item)"
                                    uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                                    typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
-                            <span id="typeAheadResults" ng-if="userView.userChosenOrg">
+                            <div id="typeAheadResults" ng-if="userView.userChosenOrg">
                                     <b>{{userView.userChosenOrg.name}}</b>
                                     <span class="btn-danger crn-rounded" ng-click="userView.removeOrgChoice()"
                                         title="Change organization">
@@ -196,7 +196,7 @@
                                     <span ng-if="userView.userChosenOrg.email"><b>Email:</b> <u>{{userView.userChosenOrg.email}}</u><br></span>
                                     <span ng-if="userView.userChosenOrg.fax"><b>Fax:</b> <u>{{userView.userChosenOrg.fax}}</u></span>
                                     </i>
-                            </span>
+                            </div>
                         </div>
                         <span class="help-block" ng-show="signup_form.$submitted && (!userView.org_search_name.length || userView.org_search_name.length < 3)">Organization Name is Required</span>
                     </div>

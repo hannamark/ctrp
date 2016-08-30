@@ -1738,15 +1738,7 @@ body.sign_in .input-group-addon {
 }
 
 #typeAheadResults .btn-danger .glyphicon {
-    padding: 1px 5px 0 2px;
-}
-
-html>/**/#typeAheadResults .btn-danger .glyphicon , x:-moz-any-link {
-    padding: 0 6px 0 2px;
-}
-
-html>/**/#typeAheadResults , x:-moz-any-link {
-    float: right;
+    padding: 2px 6px 3px 3px;
 }
 
 body.sign_in .form-horizontal .form-group,
@@ -1787,4 +1779,14 @@ body.users #typeAheadResults {
 
 .ui-select-auto-width .ui-select-multiple input.ui-select-search {
   width: auto !important;
+}
+
+/* firefox only*/
+@-moz-document url-prefix() {
+    #typeAheadResults {
+        float: right;
+    }
+    #typeAheadResults .btn-danger .glyphicon {
+        padding: 0 6px 0 2px;
+    }
 }

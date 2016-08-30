@@ -104,7 +104,6 @@ class Submission < TrialBase
     join_clause += "LEFT JOIN research_categories as trial_research_category ON trials.research_category_id = trial_research_category.id "
     join_clause += "LEFT JOIN submission_methods as submission_method ON submissions.submission_method_id = submission_method.id "
     join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
-    join_clause += "LEFT JOIN source_contexts as trial_lead_org_source_context ON trial_lead_org_source_context.id = trial_lead_org.source_context_id "
     join_clause += "LEFT JOIN (
                         select DISTINCT ON (trial_id) " + time_parser_start + "onhold_date" + time_parser_end + " as onhold_date, onhold_desc, trial_id from onholds
                         where offhold_date is null OR offhold_date > now()::date
@@ -121,7 +120,8 @@ class Submission < TrialBase
                             submission_id,
                             current_milestone_name,
                             current_processing_status,
-                            dcp_protocol_id.protocol_id as dcp_id,
+                            dcp_id,
+                            ctep_id,
                             " + time_parser_start + "current_processing_status_date" + time_parser_end + " as current_processing_status_date,
                             " + time_parser_start + "submission_current_date" + time_parser_end + " as current_submission_date,
                             " + time_parser_start + "submission_received_date" + time_parser_end + " as submission_received_date,
@@ -313,12 +313,21 @@ class Submission < TrialBase
 
                             left join
                             (
-                              select trial_id as protocol_trial_id, protocol_id from other_ids
+                              select trial_id as protocol_trial_id, protocol_id as dcp_id from other_ids
                               inner join
                               ( select id, code from protocol_id_origins where code = 'DCP') as dcp_protocols
                               on dcp_protocols.id = other_ids.protocol_id_origin_id
                             ) as dcp_protocol_id
                             on dcp_protocol_id.protocol_trial_id = temp.trial_id
+
+                            left join
+                            (
+                              select trial_id as protocol_trial_id, protocol_id as ctep_id from other_ids
+                              inner join
+                              ( select id, code from protocol_id_origins where code = 'CTEP') as ctep_protocols
+                              on ctep_protocols.id = other_ids.protocol_id_origin_id
+                            ) as ctep_protocol_id
+                            on ctep_protocol_id.protocol_trial_id = temp.trial_id
 
                         )
 
@@ -415,19 +424,7 @@ class Submission < TrialBase
             ELSE ''
           END
        ) as submission_type_label,
-       (
-          CASE
-            WHEN trial_lead_org_source_context.code = 'CTEP'
-            THEN
-                (
-                  SELECT string_agg(organizations.source_id, ',') from organizations
-                  INNER JOIN source_contexts ON source_contexts.id = organizations.source_context_id
-                  where ctrp_id = trial_lead_org.ctrp_id and source_contexts.code = 'CTEP'
-                )
-            ELSE ''
-          END
-       ) as ctep_id,
-
+       ctep_id,
        dcp_id
     ")
   }
