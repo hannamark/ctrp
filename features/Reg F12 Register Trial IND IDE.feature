@@ -6,7 +6,7 @@ Feature: Reg F12 Register Trial IND IDE
   Scenario Outline: #1 I can indicate that the trial does not have an associated IND or IDE
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial IND/IDE Information screen
-    When I have selected "No" for the question "Does this trial have an associated IND/IDE?"
+    When I have selected "No" for the question "Does this trial have an associated IND/IDE?:"
     Then the IND/IDE Information section for the trial registration will not indicate any errors during trial review
 
 
@@ -21,7 +21,7 @@ Feature: Reg F12 Register Trial IND IDE
   Scenario Outline: #2 I can enter the IND or IDE information for a trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial IND/IDE Information screen
-    And I have selected "Yes" for the question "Does this trial have an associated IND/IDE?"
+    And I have selected "Yes" for the question "Does this trial have an associated IND/IDE?:"
     When I have selected the IND/IDE Type:
       |IND|
       |IDE|
