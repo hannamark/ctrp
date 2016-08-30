@@ -636,17 +636,20 @@ class TrialsController < ApplicationController
   def validate_status
     trial_status_service = TrialStatusService.new('TRIAL_STATUS_TRANSITION',params['statuses'])
     @validation_msgs = trial_status_service.validate_status
+    #Rails.logger.info "vaidation messages are #{@validation_msgs}"
   end
 
   def paa_validate_trial_status
     trial_status_service = TrialStatusService.new('PA_TRIAL_STATUS_TRANSITION', params['statuses'])
     @validation_msgs = trial_status_service.validate_status
+    #Rails.logger.info "vaidation messages are #{@validation_msgs}"
   end
 
   ## part of the abstraction validation
   def abstraction_validate_trial_status
     trial_status_service = TrialStatusService.new('PA_VALIDATION_TRIAL_STATUS_TRANSITION',params['statuses'])
     @validation_msgs = trial_status_service.validate_status
+    #Rails.logger.info "vaidation messages are #{@validation_msgs}"
   end
 
   def validate_milestone
