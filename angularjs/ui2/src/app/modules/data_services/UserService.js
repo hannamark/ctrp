@@ -437,7 +437,6 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
-                            console.log(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value())
                             service.createTransferTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value());
                         }
                     },
