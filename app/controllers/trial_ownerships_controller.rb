@@ -111,15 +111,15 @@ class TrialOwnershipsController < ApplicationController
   # POST /trial_ownerships/transfer
   # POST /trial_ownerships/transfer.json
   def transfer
-    idsToEnd = params[:ids]
+    trialIdsToEnd = params[:ids]
     ownerUserId = params[:from_user_id]
+
     @results_msgs = {}
-    if idsToEnd && idsToEnd.length > 0
+    if trialIdsToEnd && trialIdsToEnd.length > 0
       #transfer selected
-      ownershipsToEnd = TrialOwnership.where(id: idsToEnd)
-      trial_ids = ownershipsToEnd.pluck(:trial_id)
+      ownershipsToEnd = TrialOwnership.where(trial_id: trialIdsToEnd, user_id: ownerUserId)
       endSelected ownershipsToEnd
-      addOwners params[:to_user_ids], trial_ids, @results_msgs
+      addOwners params[:to_user_ids], trialIdsToEnd, @results_msgs
     elsif ownerUserId
       #transfer all
       ownershipsToEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
