@@ -19,6 +19,7 @@
         vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
+        console.info('orgDetailObj: ', orgDetailObj);
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
@@ -130,7 +131,6 @@
         };// toggleSelection
 
         activate();
-
 
         // Swap context when different tab is selected
         $scope.$watch(function() {
