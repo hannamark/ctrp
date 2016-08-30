@@ -22,6 +22,17 @@ puts "Begin seeding"
 
 puts "Seeding static members"
 
+if CtepOrgType.all.size == 0
+  ## Reading and importing ctep org type spreadsheets
+  DataImport.import_ctep_org_types
+end
+
+if OrgFundingMechanism.all.size == 0
+## Reading and Org funding mechanisms spreadsheets
+  DataImport.import_org_funding_mechanisms
+end
+
+
 SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP').update( name: 'CTRP')
 SourceContext.find_or_create_by(code: 'NLM').update( name: 'NLM')
