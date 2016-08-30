@@ -144,7 +144,7 @@
 
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.sub_form.needsAttention(sub_form.amendment_date)}">
                         <label class="control-label col-xs-12 col-sm-4">Amendment Date:</label>
-                        <div class="col-xs-12 col-sm-3">
+                        <div class="col-xs-12 col-sm-4">
                             <div class="input-group add-on date datepicker" date-date-format="yyyy-mm-dd">
                                 <input type="text" class="form-control input-sm" id="amendment_date" name="amendment_date" uib-datepicker-popup="dd-MMM-yyyy"
                                        ng-model="vm.entity.amendment_date"
@@ -163,7 +163,7 @@
                                     <span class="help-block" ng-message="required">Amendment Date is Required</span>
                                  </span>
                         </div>
-                        <div class="col-xs-12 col-sm-5"></div>
+                        <div class="col-xs-12 col-sm-4"></div>
                     </div>
 
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.sub_form.needsAttention(sub_form.amendment_reason)}">
