@@ -28,6 +28,8 @@ class TrialStatusService
         @validation_msgs.append(validation_msg)
       end
     end
+
+    return @validation_msgs
   end
 
   private
