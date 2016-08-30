@@ -7,7 +7,7 @@
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
     .controller('trialPsWarningModalController', trialPsWarningModalController)
-    .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl)
+    .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
     trialPsWarningModalController.$inject = ['$scope', '$uibModalInstance'];
     trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$window', '$uibModal', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
@@ -602,7 +602,8 @@
             /* currentParticipatingSite can be empty {} so check to see if it has participating_site_investigators [] as a property */
             if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators') && vm.currentParticipatingSite.participating_site_investigators[index]){
                 vm.currentParticipatingSite.participating_site_investigators[index].edit = false;
-                vm.current_investigator = angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
+                vm.current_investigator =   angular.copy(vm.currentParticipatingSite.participating_site_investigators[index]);
+
                 if (vm.currentParticipatingSite.contact_type === "PI") {
                     // refreshing the current participating site person
                     if(vm.persisted_contact && vm.persisted_contact.persisted_person) {
@@ -624,6 +625,7 @@
                         $scope.ps_contact_form.$setPristine();
                     }
                 }
+
                 if( vm.current_investigator) {
                     vm.current_investigator._destroy = true;
                     vm.investigatorGrid[index]._destroy = !vm.investigatorGrid[index]._destroy;
@@ -635,6 +637,8 @@
                 //vm.investigatorGrid.splice(index,1);
                 vm.investigatorGrid[index].uiDestroy = !vm.investigatorGrid[index].uiDestroy;
             }
+
+            $scope.ps_inv_form.$setDirty();
         }
 
         /**
@@ -1054,11 +1058,11 @@
                 windowClass: 'modal-center'
             });
 
-            /*modalInstance.result.then(function(result) {
+            modalInstance.result.then(function(result) {
                 if (result === 'Confirm') {
-                    scope.ngConfirm();
+                    vm.saveParticipatingSite();
                 }
-            });*/
+            });
         }
 
 
