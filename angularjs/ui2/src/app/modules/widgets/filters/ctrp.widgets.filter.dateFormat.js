@@ -7,6 +7,10 @@
         var newFormat = nFormat ? nFormat : 'DD-MMM-YYYY';
         var date;
 
+        if (!d) {
+            return;
+        }
+
         /* Means date is already a date object that just needs the correct formatting */
         if (typeof d === 'object') {
             date = moment(d).format(newFormat); // Use more reliable Moment.js library for date conversions
