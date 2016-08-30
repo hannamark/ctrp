@@ -343,7 +343,7 @@
                                                 </button>
                                             </td>
                                             <td class="text-center td-icon">
-                                                <button type="button" class="btn btn-warning" restriction-field ng-click="psView.deleteInvestigator($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
+                                                <button type="button" class="btn btn-warning" restriction-field ng-click="psView.markInvestigatorForDeletion($index)" ng-disabled="psView.current_investigator.edit || psView.current_investigator.uiEdit">
                                                     <i class="glyphicon" ng-class="inv._destroy || inv.uiDestroy ? 'glyphicon-ok-circle' : 'glyphicon-remove-circle'"></i>
                                                 </button>
                                             </td>
@@ -376,7 +376,7 @@
                     <md-tab-body>
                         <!-- General Contact Begin -->
                         <!-- fieldset for Central Contact -->
-                        <form class="form form-horizontal" role="form" id="ps_contact_form" name="ps_contact_form" novalidate ctrp-submit="psView.saveContact()">
+                        <form class="form form-horizontal" role="form" id="ps_contact_form" name="ps_contact_form" novalidate ctrp-submit="psView.saveParticipatingSite()">
                             <!-- fieldset for Organization -->
                             <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || psView.disableBtn">
                                 <legend class="sub-bordered">General Contact</legend>

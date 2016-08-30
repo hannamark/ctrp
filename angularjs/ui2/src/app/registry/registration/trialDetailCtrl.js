@@ -1006,7 +1006,7 @@
             }
 
             var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ?  moment(vm.curTrial.primary_comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.primary_comp_date;
-            var primaryCompTimeValue = primaryCompDate.getTime;
+            var primaryCompTimeValue = primaryCompDate.getTime();
             var compDate = typeof vm.curTrial.comp_date === 'string' ?  moment(vm.curTrial.comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.comp_date;
             var compTimeValue = compDate.getTime();
             if (primaryCompTimeValue > compTimeValue) {
