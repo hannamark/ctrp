@@ -177,6 +177,9 @@
                             class="form-control input-sm" id="processing_status"
                             ng-model="searchParams.processing_status"
                             ng-options="status.name as status.name for status in processingStatuses">
+                        <option value="">
+                            Please select --
+                        </option>
                     </select>
                 </div>
             </div>
@@ -188,6 +191,9 @@
                             class="form-control input-sm" id="service_request"
                             ng-model="searchParams.service_request"
                             ng-options="request.id as request.name for request in serviceRequests">
+                            <option value="">
+                                Please select --
+                            </option>
                     </select>
                 </div>
             </div>
