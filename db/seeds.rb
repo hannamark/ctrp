@@ -33,6 +33,9 @@ if OrgFundingMechanism.all.size == 0
 end
 
 
+#ServiceRequest.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
+
+
 SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP').update( name: 'CTRP')
 SourceContext.find_or_create_by(code: 'NLM').update( name: 'NLM')
