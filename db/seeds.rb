@@ -33,8 +33,12 @@ if OrgFundingMechanism.all.size == 0
 end
 
 
-#ServiceRequest.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
-
+ServiceRequest.find_or_create_by(code: 'CREATE').update(name: 'Create', status:'Active')
+ServiceRequest.find_or_create_by(code: 'UPDATE').update(name: 'Update', status:'Active')
+ServiceRequest.find_or_create_by(code: 'MERGE_W_CTEP').update(name: 'Merge with CTEP ID', status:'Active')
+ServiceRequest.find_or_create_by(code: 'NULLIFY_W_CTEP').update(name: 'Nullify with CTEP ID', status:'Active')
+ServiceRequest.find_or_create_by(code: 'LINK_W_CTRP').update(name: 'Link with CTRP ID', status:'Active')
+ServiceRequest.find_or_create_by(code: 'NULL').update(name: 'NULL', status:'Active')
 
 SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP').update( name: 'CTRP')
