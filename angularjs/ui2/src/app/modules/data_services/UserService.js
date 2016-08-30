@@ -385,7 +385,7 @@
                             }
 
                             service.transferUserTrialsOwnership(searchParams).then(function (data) {
-                                if(data.results === 'success') {
+                                if(data.results.complete === true) {
                                     toastr.success('Trial Ownership Transferred', 'Success!');
                                     if (controller.passiveTransferMode) {
                                         controller.passiveTransferMode = false;
@@ -438,6 +438,7 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
+                            console.log(controller.gridApi.selection.getSelectedRows())
                             service.createTransferTrialsOwnership(controller, _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value());
                         }
                     },

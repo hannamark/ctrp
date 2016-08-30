@@ -99,9 +99,9 @@
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                 UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
-                    vm.gridTrialsOwnedOptions.totalItems = data.total;
-                    if (vm.gridTrialsOwnedOptions.totalItems > 0
+                    vm.userOptions.data = data['trial_ownerships'];
+                    vm.userOptions.totalItems = data.total;
+                    if (vm.userOptions.totalItems > 0
                            && (vm.userRole === 'ROLE_ADMIN'
                                 || vm.userRole === 'ROLE_SUPER'
                                     || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
@@ -243,7 +243,7 @@
         vm.export_column_type = "visible";
         vm.searchParams = new TrialSearchParams;
         vm.viewCount = vm.searchParams.start + vm.searchParams.rows - 1;
-        vm.gridTrialsOwnedOptions = {
+        vm.userOptions = {
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
@@ -301,7 +301,7 @@
             exporterPdfTableHeaderStyle: {fontSize: 12, bold: true},
             exporterPdfHeader: {margin: [40, 10, 40, 40], text: 'Trials owned by ' + vm.userDetails.username + ':', style: 'headerStyle' },
             exporterPdfFooter: function ( currentPage, pageCount ) {
-                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' owns a total of ' + vm.gridTrialsOwnedOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
+                return { text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString() + ' - ' + vm.userDetails.username + ' owns a total of ' + vm.userOptions.totalItems + ' trials.', style: 'footerStyle', margin: [40, 10, 40, 40] };
             },
             exporterPdfCustomFormatter: function ( docDefinition ) {
                 docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
@@ -351,17 +351,17 @@
         };
 
         if (vm.userDetails.write_access && vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
-            vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, writeNciId);
-            vm.gridTrialsOwnedOptions.columnDefs.splice(4, 0, writeTitle);
+            vm.userOptions.columnDefs.splice(0, 0, writeNciId);
+            vm.userOptions.columnDefs.splice(4, 0, writeTitle);
             addRemainingFields();
         } else {
-            vm.gridTrialsOwnedOptions.columnDefs.splice(4, 0, readTitle);
-            vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, readNciId);
+            vm.userOptions.columnDefs.splice(4, 0, readTitle);
+            vm.userOptions.columnDefs.splice(0, 0, readNciId);
             addRemainingFields();
         }
 
         function addRemainingFields() {
-            vm.gridTrialsOwnedOptions.columnDefs.splice(7, 0,
+            vm.userOptions.columnDefs.splice(7, 0,
                 {
                     name: 'current_milestone_name',
                     displayName: 'Current Milestone, Milestone Date',
@@ -461,11 +461,11 @@
             );
         }
 
-        vm.gridTrialsOwnedOptions.appScopeProvider = vm;
+        vm.userOptions.appScopeProvider = vm;
 
         vm.getCheckOut = UserService.getCheckOut;
 
-        vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
+        vm.userOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
@@ -474,21 +474,21 @@
                 vm.getUserTrials();
             });
         };
-        vm.gridTrialsOwnedOptions.exporterAllDataFn = function () {
+        vm.userOptions.exporterAllDataFn = function () {
             var allSearchParams = angular.copy(vm.searchOwnedParams);
             allSearchParams.start = null;
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, allSearchParams).then(
                 function (data) {
-                    vm.gridTrialsOwnedOptions.useExternalPagination = false;
-                    vm.gridTrialsOwnedOptions.useExternalSorting = false;
-                    vm.gridTrialsOwnedOptions.data = data['trials'];
+                    vm.userOptions.useExternalPagination = false;
+                    vm.userOptions.useExternalSorting = false;
+                    vm.userOptions.data = data['trials'];
                 }
             );
         };
 
         /**** start copy for submitted */
-        vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
+        vm.gridTrialsSubmittedOptions = angular.copy(vm.userOptions);
         vm.gridTrialsSubmittedOptions.exporterCsvFilename = vm.userDetails.username + '-submitted-trials.csv';
         vm.gridTrialsSubmittedOptions.exporterPdfHeader.text = 'Trials submitted by ' + vm.userDetails.username + ':';
         vm.gridTrialsSubmittedOptions.exporterPdfFooter = function ( currentPage, pageCount ) {
@@ -533,7 +533,7 @@
         /**** end copy for submitted */
 
         /**** start copy for participating */
-        vm.gridTrialsParticipationOptions = angular.copy(vm.gridTrialsOwnedOptions);
+        vm.gridTrialsParticipationOptions = angular.copy(vm.userOptions);
         vm.gridTrialsParticipationOptions.exporterCsvFilename = vm.userDetails.username + '-participation-trials.csv';
 
         vm.gridTrialsParticipationOptions.onRegisterApi = function (gridApi) {
@@ -560,7 +560,7 @@
 
         vm.searchParticipatingParams = new TrialSearchParams;
         vm.searchParticipatingParams.type = 'participating';
-        vm.searchParticipatingParams.org_id = vm.userDetails.organization_id;
+        vm.searchParticipatingParams.org_id = vm.userDetails.organization_id
         vm.searchParticipatingParams.user_id = undefined;
         vm.getUserParticipationTrials = function () {
             vm.gridTrialsParticipationOptions.useExternalPagination = true;
@@ -575,18 +575,18 @@
         vm.getUserParticipationTrials();
         /**** end copy for participating */
 
-        vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
+        vm.userOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
 
         vm.searchOwnedParams = new TrialSearchParams;
         vm.searchOwnedParams.type = 'own';
         vm.getUserTrials = function () {
             //user_id is undefined if no user was found to begin with
             if (vm.searchOwnedParams.user_id) {
-                vm.gridTrialsOwnedOptions.useExternalPagination = true;
-                vm.gridTrialsOwnedOptions.useExternalSorting = true;
+                vm.userOptions.useExternalPagination = true;
+                vm.userOptions.useExternalSorting = true;
                 UserService.getUserTrialsSubmitted(vm.searchOwnedParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_submissions'];
-                    vm.gridTrialsOwnedOptions.totalItems = data.total;
+                    vm.userOptions.data = data['trial_submissions'];
+                    vm.userOptions.totalItems = data.total;
                 }).catch(function (err) {
                     console.log('Get User Owned Trials failed');
                 });
@@ -615,7 +615,7 @@
             }
 
             //if you are admin offer to transfer
-            if (vm.gridTrialsOwnedOptions.totalItems > 0 && vm.isCurrentUser && vm.userRole === 'ROLE_SITE-SU') {
+            if (vm.userOptions.totalItems > 0 && vm.isCurrentUser && vm.userRole === 'ROLE_SITE-SU') {
                 vm.chooseTransferTrials = true;
                 vm.confirmChangeFamilyPopUp = false;
             } else {
@@ -705,7 +705,7 @@
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-            vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
+            vm.userOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
 })();
