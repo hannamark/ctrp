@@ -114,7 +114,24 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
       |Institutional            |
 
 
-  Scenario Outline:#5 I can select the Trial's information for FDAAA required Regulatory Information for a non FDA Regulated Interventional trial
+	Scenario Outline: #4b The Investigator Title field Length Rule
+    Given I have selected the option to register a trial <trialType>
+    And I can edit Investigator Title information 
+    Then a comment appears below the Investigator Title field to display the number of characters available to enter into the field.  
+     |254 characters left|
+     And "x characters left" will be displayed as characters are added
+    When 254 characters have been entered
+    Then no additional text can be entered
+    
+    Examples:
+      |trialType              |
+      |National                 |
+      |Externally Peer-Reviewed  |
+      |Institutional            |
+
+
+	
+    Scenario Outline:#5 I can select the Trial's information for FDAAA required Regulatory Information for a non FDA Regulated Interventional trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Regulatory Information screen
     When I have selected "NA" for FDA Regulated Intervention Indicator
