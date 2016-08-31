@@ -27,6 +27,12 @@ And I should be allowed to enter one "DCP Identifier" with unique IDs
 And I should be allowed to enter one "CTEP Identifier" with unique IDs
 And I should be allowed to enter one "CCR Identifier" with unique IDs
 And I should be allowed to enter one "CDR Identifier" with unique IDs
+Then a comment appears below the all identifiers fields to display the number of characters available to enter into the field.  
+|30 characters left|
+And "x characters left" will be displayed as characters are added
+When 30 characters have been entered
+Then no additional text can be entered
+
 And all Trial Identifiers should not be more than 30 characters in Length
 Then the Protocol Identifiers section will indicate zero errors
 
