@@ -201,6 +201,9 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def clone
+  @organization = Organization.find_by_id(1)
+  end
 
   #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
