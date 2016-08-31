@@ -371,7 +371,6 @@
                             controller.userOptions.selectedItems = [];
                         },
                         save: function () {
-
                             var searchParams = {
                                 from_user_id: controller.userDetails.id,
                                 to_user_ids: []
@@ -379,13 +378,13 @@
                             var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
                             if (trialIdArr && trialIdArr.length){
                                 searchParams.to_user_ids = user_ids;
-                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_ownership_id').value();
+                                searchParams.ids = trialIdArr;
                             } else {
                                 searchParams.to_user_ids = user_ids;
                             }
 
                             service.transferUserTrialsOwnership(searchParams).then(function (data) {
-                                if(data.results === 'success') {
+                                if(data.results.complete === true) {
                                     toastr.success('Trial Ownership Transferred', 'Success!');
                                     if (controller.passiveTransferMode) {
                                         controller.passiveTransferMode = false;
@@ -455,7 +454,7 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
-                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value());
                         }
                     }
                 ];

@@ -20,7 +20,7 @@
             }
             vm.userDetails = angular.copy(vm.userDetailsOrig);
         } else {
-            vm.pageFauilure = true;
+            vm.pageFailure = true;
             return;
         }
 
@@ -623,7 +623,7 @@
 
                 var searchParams = {user_id: vm.userDetails.id};
                 if (trialOwnershipIdArr) {
-                    searchParams['ids'] = trialOwnershipIdArr;
+                    searchParams['trial_ids'] = trialOwnershipIdArr;
                 }
                 UserService.endUserTrialsOwnership(searchParams).then(function (data) {
                     if (data.results === 'success') {
