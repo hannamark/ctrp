@@ -3,7 +3,7 @@ Feature: ADMIN F11 Site Administration - Account Approver
 
 As a CTRP User with Admin role or Account Approver role, I can grant Site Administrator privileges to CTRP Users
 
-Scenario: #1 I can view CTRP Users with the roles:  Admin, Account Approver
+Scenario: #1 I can view CTRP Users with the roles: Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature (User Management)
 Then I will see a list of all CTRP Users 
