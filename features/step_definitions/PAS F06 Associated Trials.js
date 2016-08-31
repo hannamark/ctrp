@@ -239,17 +239,30 @@ module.exports = function() {
      |Official Title               |
      */
 
+    //this.Given(/^the added Associated Trial is a CTRP study$/, function (callback) {
+    //    //pageMenu.clickSearchTrialAbstractor();
+    //    //pageMenu.clickTrials();
+    //    //pageMenu.clickSearchTrialsPA();
+    //    //helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+    //    //login.clickWriteMode('On');
+    //    //commonFunctions.verifySearchTrialsPAScreen();
+    //    //pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+    //    //pageSearchTrail.clickSearchTrialSearchButton();
+    //    //commonFunctions.clickLinkText(leadProtocolID);
+    //    //leftNav.scientificCheckOut();
+    //    helper.wait_for(5000);
+    //    browser.sleep(25).then(callback);
+    //});
+    //
+    //this.When(/^the Associated Trial is displayed on the Associated Trials screen$/, function (callback) {
+    //    associated.selectIdentifierType(identifierTypeA);
+    //    associated.setTrialIdentifierTxt(nciIDA);
+    //    associated.clickLookupTrial();
+    //    browser.sleep(25).then(callback);
+    //});
+
     this.Given(/^the added Associated Trial is a CTRP study$/, function (callback) {
-        //pageMenu.clickSearchTrialAbstractor();
-        //pageMenu.clickTrials();
-        //pageMenu.clickSearchTrialsPA();
-        //helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-        //login.clickWriteMode('On');
-        //commonFunctions.verifySearchTrialsPAScreen();
-        //pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
-        //pageSearchTrail.clickSearchTrialSearchButton();
-        //commonFunctions.clickLinkText(leadProtocolID);
-        //leftNav.scientificCheckOut();
+
         browser.sleep(25).then(callback);
     });
 
