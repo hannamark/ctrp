@@ -19,10 +19,11 @@
         vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
-        vm.hasCtrpContext = _.findIndex(orgDetailObj.cluster || [], {context: 'CTRP'}) > -1;
+
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
+        vm.hasCtrpContext = _.findIndex(vm.curOrg.cluster || [], {context: 'CTRP'}) > -1;
         vm.curOrg.processing_status = !!orgDetailObj ? orgDetailObj.processing_status : 'Complete';
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
