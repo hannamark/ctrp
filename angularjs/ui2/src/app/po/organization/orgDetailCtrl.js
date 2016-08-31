@@ -8,18 +8,18 @@
     angular.module('ctrp.app.po')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter',
+    orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter', '_',
         '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal', '$timeout',
         'GeoLocationService'];
 
-    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter,
+    function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter, _,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout) {
         var vm = this;
         $scope.organization_form = {};
         vm.addedNameAliases = [];
         vm.numbers = [1, 2, 3];
         vm.states = [];
-        console.info('orgDetailObj: ', orgDetailObj);
+        vm.hasCtrpContext = _.findIndex(orgDetailObj.cluster || [], {context: 'CTRP'}) > -1;
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
@@ -366,6 +366,14 @@
             vm.IsPhoneValid = isValidNumberPO(vm.curOrg.phone, vm.curOrg.country);
             vm.showPhoneWarning = true;
             console.log('Is phone valid: ' + vm.IsPhoneValid);
+        };
+
+        vm.cloneCtepOrg = function(ctepOrgId) {
+            OrgService.cloneCtepOrg(ctepOrgId).then(function(response) {
+                console.info('clone response: ', response);
+            }).catch(function(err) {
+                console.error('clone error: ', err);
+            });
         };
     }
 })();

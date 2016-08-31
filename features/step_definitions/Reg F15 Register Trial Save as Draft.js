@@ -28,7 +28,7 @@ module.exports = function() {
     var emailVerify = new mailVerificationPage();
     var searchTrial = new searchTrialPage();
 
-    var leadOrgTrialIdentifier = 'Shi Lead Organization Draft ';
+    var leadOrgTrialIdentifier = 'SSDftLdOg';
     var grantOption = 'yes';
     var grantFundMcm = 'R01';
     var grantInstitute = 'CA';
@@ -48,7 +48,7 @@ module.exports = function() {
 
     this.Given(/^I have entered the Lead Organization Trial ID$/, function (callback) {
         /**** Trial Identifiers ****/
-        addTrial.setAddTrialLeadProtocolIdentifier(leadOrgTrialIdentifier + typeOfTrial  + ' ' + moment().format('MMMDoYY hmm') );
+        addTrial.setAddTrialLeadProtocolIdentifier(leadOrgTrialIdentifier + typeOfTrial.substring(0, 3)  + ' ' + moment().format('MMMDoYY h m') );
         /** Stores the value of Lead Protocol Identifier **/
         storeLeadProtocolId = addTrial.addTrialLeadProtocolIdentifier.getAttribute('value').then(function (value) {
             console.log('This is the Lead Organization Trial Identifier that is added' + value);
@@ -91,7 +91,11 @@ module.exports = function() {
         expect(addTrial.addTrialSecondaryPurposeOtherDescription.getAttribute('value')).to.eventually.equal(secondaryPurposeOtherDescription);
         projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier(otherIdentifierType, otherIdentifierID);
         projectFunctionsRegistry.verifyAddTrialGrantInformation(grantFundMcm,grantInstitute,grantSerialNumber,grantDivision);
-        expect(trialDoc.trailFileUploadOther.getAttribute('value')).to.eventually.equal(otherDocument);
+        addTrial.addTrialVerifyAddedDocs.getText().then(function(value){
+            console.log('Value of Documents For Reg F15 draft:');
+            console.log(value);
+            expect(value).to.eql([otherDocument], 'Verification of Trial related Docs');
+        });
         browser.sleep(25).then(callback);
     });
 
@@ -116,7 +120,11 @@ module.exports = function() {
         expect(addTrial.addTrialSecondaryPurposeOtherDescription.getAttribute('value')).to.eventually.equal(secondaryPurposeOtherDescription);
         projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier(otherIdentifierType, otherIdentifierID);
         projectFunctionsRegistry.verifyAddTrialGrantInformation(grantFundMcm,grantInstitute,grantSerialNumber,grantDivision);
-        expect(trialDoc.trailFileUploadOther.getAttribute('value')).to.eventually.equal(otherDocument);
+        addTrial.addTrialVerifyAddedDocs.getText().then(function(value){
+            console.log('Value of Documents For Reg F15 draft:');
+            console.log(value);
+            expect(value).to.eql([otherDocument], 'Verification of Trial related Docs');
+        });
 
         browser.sleep(25).then(callback);
     });

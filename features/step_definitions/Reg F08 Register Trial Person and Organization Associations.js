@@ -213,7 +213,7 @@ module.exports = function() {
         addTrial.getVerifyAddTrialDataTable4ProgramCode('programCode' + typeOfTrial);
 
         /***** This will verify the warning for Funding Source is not there ******/
-        expect(projectFunctions.verifyWarningMessage('Funding Source is required')).to.become('false');
+        expect(projectFunctions.verifyWarningMessage('Funding Source is Required')).to.become('false');
         browser.sleep(25).then(callback);
     });
 
@@ -223,7 +223,7 @@ module.exports = function() {
     });
 
     this.Then(/^The Register Trial Funding Source will indicate a error as "([^"]*)"$/, function (arg1, callback) {
-        expect(projectFunctions.verifyWarningMessage('Funding Source is required')).to.become('true').and.notify(callback);
+        expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true').and.notify(callback);
     });
 
 

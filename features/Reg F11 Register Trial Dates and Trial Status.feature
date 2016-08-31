@@ -420,8 +420,8 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual and Intervention |
       |Closed to Accrual                              |
       |Closed to Accrual and Intervention             |
-      |Administratively Complete                      |
       |Complete                                       |
+      |Administratively Complete                      |
       |Withdrawn                                      |
 
 

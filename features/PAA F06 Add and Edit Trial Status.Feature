@@ -566,4 +566,114 @@ When I select Delete a Trial Status
 And I have not entered a Comment
 Then the will display the error "A comment must be entered"
 
- 
+# On Hold
+   # Scenario Outline: #24 Rules for Status/Dates relationships for "Trial Start Date"
+   # Given I have selected the option to register a trial <trialType>
+   # And I am on the Trial Dates Section
+   # When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there
+      |TrialStatusType                                  |DateTypeActual                       | DateTypeActualError       |
+      |In Review                                        |allowed                              |                           |
+      |Approved                                         |allowed                              |                           |
+      |Active                                           |allowed                              |                           |
+      |Enrolling by Invitation                          |allowed                              |                           |
+      |Closed to Accrual                                |allowed                              |                           |
+      |Closed to Accrual and Intervention               |allowed                              |                           |
+      |Temporarily Closed to Accrual                    |allowed                              |                           |
+      |Temporarily Closed to Accrual and Intervention   |allowed                              |                           |
+      |Withdrawn                                        |allowed                              |                           |
+      |Administratively Complete                        |allowed                              |                           |
+      |Complete                                         |allowed                              |                           |
+    #When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Anticipated" <DateTypeAnticipated> along with the error <DateTypeAnticipatedError> should be there
+      |TrialStatusType                                  |DateTypeAnticipated                | DateTypeAnticipatedError|
+      |In Review                                        |allowed                            |                           |
+      |Approved                                         |allowed                            |                           |
+      |Active                                           |not allowed                        |If current Trial Status is Active, Trial Start Date must be Actual                          |
+      |Enrolling by Invitation                          |not allowed                        |If current Trial Status is Enrolling by Invitation, Trial Start Date must be Actual                            |
+      |Closed to Accrual                                |not allowed                        |If current Trial Status is Closed to Accrual, Trial Start Date must be Actual                            |
+      |Closed to Accrual and Intervention               |not allowed                        |If current Trial Status is Closed to Accrual and Intervention, Trial Start Date must be Actual                             |
+      |Temporarily Closed to Accrual                    |not allowed                        |If current Trial Status is Temporarily Closed to Accrual, Trial Start Date must be Actual                            |
+      |Temporarily Closed to Accrual and Intervention   |not allowed                        |If current Trial Status is Temporarily Closed to Accrual and Intervention, Trial Start Date must be Actual                             |
+      |Withdrawn                                        |allowed                            |                             |
+      |Administratively Complete                        |not allowed                        |If current Trial Status is Administratively Complete, Trial Start Date must be Actual                             |
+      |Complete                                         |not allowed                        |If current Trial Status is Complete, Trial Start Date must be Actual                             |
+
+   # Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+
+  #Scenario Outline: #25 Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section
+   # When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there
+      |TrialStatusType                                |DateTypeActual                       | DateTypeActualError     |
+      |In Review                                      |allowed                              |                           |
+      |Approved                                       |allowed                              |                           |
+      |Active                                         |allowed                              |                           |
+      |Enrolling by Invitation                        |allowed                              |                           |
+      |Closed to Accrual                              |allowed                              |                           |
+      |Closed to Accrual and Intervention             |allowed                              |                           |
+      |Temporarily Closed to Accrual                  |allowed                              |                           |
+      |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
+      |Withdrawn                                      |allowed                              |                           |
+      |Administratively Complete                      |allowed                              |                           |
+      |Complete                                       |allowed                              |                           |
+    #When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with the error <DateTypeAnticipatedError> should be there
+      |TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedError|
+      |In Review                                      |allowed                           |                           |
+      |Approved                                       |allowed                           |                           |
+      |Active                                         |allowed                           |                           |
+      |Enrolling by Invitation                        |allowed                           |                           |
+      |Closed to Accrual                              |allowed                           |                           |
+      |Closed to Accrual and Intervention             |allowed                           |                           |
+      |Temporarily Closed to Accrual                  |allowed                           |                           |
+      |Temporarily Closed to Accrual and Intervention |allowed                           |                           |
+      |Withdrawn                                      |allowed                           |                           |
+      |Administratively Complete                      |not allowed                       |If current Trial Status is Administratively Complete, Primary Completion Date must be Actual                             |
+      |Complete                                       |not allowed                       |If current Trial Status is Complete, Primary Completion Date must be Actual                             |
+
+    #Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+
+
+       #Scenario Outline: #26 Rules for Status/Dates relationships for "Completion Date"
+       #Given I have selected the option to register a trial <trialType>
+       #And I am on the Trial Dates Section
+   # When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there
+      |TrialStatusType                                |DateTypeActual                       | DateTypeActualError    |
+      |In Review                                      |not allowed                          |If current Trial Status is In Review, Completion Date must be Anticipated                           |
+      |Approved                                       |not allowed                          |If current Trial Status is Approved, Completion Date must be Anticipated                           |
+      |Active                                         |not allowed                          |If current Trial Status is Active, Completion Date must be Anticipated                          |
+      |Enrolling by Invitation                        |not allowed                          |If current Trial Status is Enrolling by Invitation, Completion Date must be Anticipated                      |
+      |Closed to Accrual                              |not allowed                          |If current Trial Status is Closed to Accrual, Completion Date must be Anticipated                          |
+      |Closed to Accrual and Intervention             |not allowed                          |If current Trial Status is Closed to Accrual and Intervention, Completion Date must be Anticipated                          |
+      |Temporarily Closed to Accrual                  |not allowed                          |If current Trial Status is Temporarily Closed to Accrual, Completion Date must be Anticipated                           |
+      |Temporarily Closed to Accrual and Intervention |not allowed                          |If current Trial Status is Temporarily Closed to Accrual and Intervention, Completion Date must be Anticipated                      |
+      |Withdrawn                                      |not allowed                          |If current Trial Status is Withdrawn, Completion Date must be Anticipated                           |
+      |Administratively Complete                      |allowed                              |                           |
+      |Complete                                       |allowed                              |                           |
+   # When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Anticipated" <DateTypeAnticipated> along with the error <DateTypeAnticipatedError> should be there
+      |TrialStatusType                                |DateTypeAnticipated                  | DateTypeAnticipatedError|
+      |In Review                                      |allowed                              |                           |
+      |Approved                                       |allowed                              |                           |
+      |Active                                         |allowed                              |                           |
+      |Enrolling by Invitation                        |allowed                              |                           |
+      |Closed to Accrual                              |allowed                              |                           |
+      |Closed to Accrual and Intervention             |allowed                              |                           |
+      |Temporarily Closed to Accrual                  |allowed                              |                           |
+      |Temporarily Closed to Accrual and Intervention |allowed                              |                           |
+      |Withdrawn                                      |allowed                              |                           |
+      |Administratively Complete                      |not allowed                          |If current Trial Status is Administratively Complete, Completion Date must be Actual                           |
+      |Complete                                       |not allowed                          |If current Trial Status is Complete, Completion Date must be Actual                           |
+
+    #Examples:
+      |trialType  |
+      |National                 |
+      |Externally Peer-Reviewed |
+      |Institutional            |
+

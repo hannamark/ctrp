@@ -11,6 +11,7 @@ var projectFunctionsPage= require('../support/projectMethods');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var moment = require('moment');
+var assert = require('assert');
 
 module.exports = function() {
     var addTrial = new addTrialPage();
@@ -26,16 +27,16 @@ module.exports = function() {
     var warningMsgClosedToAccrualAndIntervention = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing';
     var warningMsgTemporarilyClosedToAccrualAndIntervention = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Temporarily Closed to Accrual] is missing';
     var warningMsgCompleteAdministrativelyComplete = 'WARNING: Interim status [In Review] is missing\nWARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing';
-    var errorMsgStatus = 'Trial Status is required';
-    var errorMsgStatusStatusDate = 'Please provide a Status Date, select a Status';
-    var errorMsgStatusStatusDateStudyStopped = 'Please provide a Status Date, select a Status and enter Why Study Stopped';
+    var errorMsgStatus = 'Trial Status is Required';
+    var errorMsgStatusStatusDate = 'Status Date and Status are required';
+    var errorMsgStatusStatusDateStudyStopped = 'Status Date, Status and Why Study Stopped are Required';
     var errorMsgTrialStatusFuture = 'The Status Date should not be in the future';
-    var errorMsgTrialStartDate = 'Trial Start Date is required';
-    var errorMsgTrialPrimaryCompletionDate = 'Primary Completion Date is required';
-    var errorMsgTrialCompletionDate = 'Completion Date is required';
-    var errorMsgTrialStartDateType = 'Trial Start Date Type is required';
-    var errorMsgTrialPrimaryCompletionDateType = 'Primary Completion Date Type is required';
-    var errorMsgTrialCompletionDateType = 'Completion Date Type is required';
+    var errorMsgTrialStartDate = 'Trial Start Date is Required';
+    var errorMsgTrialPrimaryCompletionDate = 'Primary Completion Date is Required';
+    var errorMsgTrialCompletionDate = 'Completion Date is Required';
+    var errorMsgTrialStartDateType = 'Trial Start Date Type is Required';
+    var errorMsgTrialPrimaryCompletionDateType = 'Primary Completion Date Type is Required';
+    var errorMsgTrialCompletionDateType = 'Completion Date Type is Required';
     var errorMsgTrialStartDatePastTypeAnticipated = 'Trial Start Date type cannot be Anticipated if Trial Start Date is in the past';
     var errorMsgTrialPrimaryCompletionDatePastTypeAnticipated = 'Primary Completion Date type cannot be Anticipated if Primary Completion Date is in the past';
     var errorMsgTrialCompletionDatePastTypeAnticipated = 'Completion Date type cannot be Anticipated if Completion Date is in the past';
@@ -411,7 +412,10 @@ module.exports = function() {
         trialStatusList = table.raw();
         console.log('value of table' + trialStatusList);
         addTrial.addTrialStatusList.getText().then(function(value) {
+            console.log('From screen table value');
             console.log(value);
+            console.log('From Table converted to arrary value');
+            console.log(trialStatusList.toString().split(","));
             expect(value).to.eql(trialStatusList.toString().split(","));
         });
         browser.sleep(25).then(callback);
@@ -423,34 +427,49 @@ module.exports = function() {
     });
 
     this.Then(/^I should get an error message as "([^"]*)"$/, function (arg1, callback) {
-        if(arg1 === errorMsgStatus){
+        if(arg1 === errorMsgStatus ){
             expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
+        }
+        else if(arg1 === errorMsgStatusStatusDate ) {
+            addTrial.clickAddTrialAddStatusButton();
+            /****** Status Date and Status both not provided *********/
+            expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1)).to.become('true');
+            /****** Status Date provided but Status not provided *********/
+            addTrial.clickAddTrialDateField('0');
+            addTrial.clickAddTrialDateToday();
+            addTrial.clickAddTrialAddStatusButton();
+            expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1)).to.become('true');
+            /****** Status Date not provided but Status provided *********/
+            addTrial.clickAddTrialResetButton();
+            addTrial.selectAddTrialStatus('In Review');
+            addTrial.clickAddTrialAddStatusButton();
+            expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1)).to.become('true');
+            /****** Status Date and Status both provided so no error *********/
+            addTrial.clickAddTrialResetButton();
+            addTrial.clickAddTrialDateField('0');
+            addTrial.clickAddTrialDateToday();
+            addTrial.selectAddTrialStatus('In Review');
+            addTrial.clickAddTrialAddStatusButton();
+            expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1)).to.become('false');
+        }
+        else if(arg1 === errorMsgStatusStatusDateStudyStopped) {
+            for (var i = 0; i < trialStatusStudyStoppedItems.length; i++) {
+                addTrial.clickAddTrialResetButton();
+                addTrial.clickAddTrialDateField('0');
+                addTrial.clickAddTrialDateToday();
+                addTrial.selectAddTrialStatus(trialStatusStudyStoppedItems[i]);
+                addTrial.clickAddTrialAddStatusButton();
+                expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1)).to.become('true');
+            }
+        }
+        else {
+            assert.fail(0,1,'No assertion is there for the provided error message: ' + arg1 + '\n 1.Make sure correct error message is provided. \n 2. OR make sure the Step is there to verify the error msg.');
         }
         browser.sleep(25).then(callback);
     });
 
     this.Given(/^On Add Trial Status if Status Date or Status is missing$/, function (callback) {
-        addTrial.clickAddTrialAddStatusButton();
-        /****** Status Date and Status both not provided *********/
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('true');
-        /****** Status Date provided but Status not provided *********/
-        addTrial.clickAddTrialDateField('0');
-        addTrial.clickAddTrialDateToday();
-        addTrial.clickAddTrialAddStatusButton();
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('true');
-        /****** Status Date not provided but Status provided *********/
-        addTrial.clickAddTrialResetButton();
-        addTrial.selectAddTrialStatus('In Review');
-        addTrial.clickAddTrialAddStatusButton();
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('true');
-        /****** Status Date and Status both provided so no error *********/
-        addTrial.clickAddTrialResetButton();
-        addTrial.clickAddTrialDateField('0');
-        addTrial.clickAddTrialDateToday();
-        addTrial.selectAddTrialStatus('In Review');
-        addTrial.clickAddTrialAddStatusButton();
-        expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDate)).to.become('false');
-        browser.sleep(25).then(callback);
+       callback();
     });
 
     this.Given(/^On Add Trial Status when the Status selected is$/, function (table, callback) {
@@ -464,15 +483,7 @@ module.exports = function() {
     });
 
     this.Given(/^Why Study Stopped reason is not provided$/, function (callback) {
-        for (var i = 0; i < trialStatusStudyStoppedItems.length; i++) {
-            addTrial.clickAddTrialResetButton();
-            addTrial.clickAddTrialDateField('0');
-            addTrial.clickAddTrialDateToday();
-            addTrial.selectAddTrialStatus(trialStatusStudyStoppedItems[i]);
-            addTrial.clickAddTrialAddStatusButton();
-            expect(projectFunctionsRegistry.verifyTrialValidationMessage(errorMsgStatusStatusDateStudyStopped)).to.become('true');
-        }
-        browser.sleep(25).then(callback);
+        callback();
     });
 
     this.When(/^I select a Status Date in Past$/, function (callback) {
@@ -938,16 +949,19 @@ module.exports = function() {
         addTrial.clickAddTrialDateField('3');
         addTrial.clickAddTrialDateFieldPreviousMonth('01');
         addTrial.clickAddTrialReviewButton();
+        browser.sleep(5000);
         expect(addTrial.addTrialCompletionDateErrorMessageWithTrialPrimaryCompletionDate.getText()).to.eventually.equal(completionDateErrorMessageWithTrialPrimaryCompletionDate);
         console.log('******* Trial Completion Date Verification Date in Today as compare to Primary Completion Date *********');
         addTrial.clickAddTrialDateField('3');
         addTrial.clickAddTrialDateToday();
         addTrial.clickAddTrialReviewButton();
+        browser.sleep(5000);
         expect(addTrial.addTrialCompletionDateErrorMessageWithTrialPrimaryCompletionDate.getText()).to.eventually.equal('');
         console.log('******* Trial Completion Date Verification Date in later as compare to Primary Completion Date *********');
         addTrial.clickAddTrialDateField('3');
         addTrial.clickAddTrialDateFieldNextMonth('01');
         addTrial.clickAddTrialReviewButton();
+        browser.sleep(5000);
         expect(addTrial.addTrialCompletionDateErrorMessageWithTrialPrimaryCompletionDate.getText()).to.eventually.equal('');
         browser.sleep(25).then(callback);
     });

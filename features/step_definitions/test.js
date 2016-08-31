@@ -26,6 +26,7 @@ var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var assert = require('assert');
 var searchTrialPage = require('../support/searchTrialPage');
+var Q = require('q');
 
 module.exports = function() {
     var menuItemList = new MenuItem();
@@ -117,14 +118,28 @@ module.exports = function() {
     });
 
     this.Given(/^Test with same login first time$/, function (callback) {
-        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error:'+err); browser.sleep(25).then(callback);});
-        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);callback(err);});
+     //   expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error:'+err); browser.sleep(25).then(callback);});
+     //   expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);callback(err);});
         searchTrial.setSearchTrialProtocolID('*');
         searchTrial.clickSearchTrialSearchButton();
         searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback.fail(err);});//browser.sleep(210).then(callback(err));});
-        browser.sleep(2500).then(callback);
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);callback.fail();});//browser.sleep(210).then(callback(err));});
+     //   browser.sleep(2500).then(callback);
+      //  promise.should.be.fulfilled.and.notify(callback);
+     //   expect(element(by.css('.col-xs-12.col-sm-7')).getText()).to.eventually.equal('Clinical Trials Reporting Program').and.notify(callback);
+      //  assert.eventually.equal(Promise.resolve(2 + 2), 4, "This had better be true, eventually").and.notify(callback);
     //    callback();
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 40).then(function () {
+            callback();
+            //new Promise(function (resolve) {
+            //    assert.ok(true);
+            //    resolve();
+            //})
+            //    .then(callback);
+        });
     });
 
     this.Given(/^Test with same login second time$/, function (callback) {

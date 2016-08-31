@@ -50,6 +50,7 @@ Rails.application.routes.draw do
         post 'search'
         post 'select'
         post 'curate'
+        post 'clone'
         post 'unique', defaults: {format: 'json'}
       end
     end

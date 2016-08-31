@@ -34,7 +34,8 @@
             email : '',
             postal_code : '',
             phone: '',
-            processing_status: 'Complete',
+            processing_status: '',
+            service_request: '',
 
             //for pagination and sorting
             sort: '',
@@ -150,6 +151,7 @@
             typeAheadOrgNameSearch: typeAheadOrgNameSearch,
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
+            cloneCtepOrg: cloneCtepOrg,
         };
 
         return services;
@@ -447,6 +449,10 @@
 
         function getServiceRequests() {
             return PromiseTimeoutService.getData(URL_CONFIGS.SERVICE_REQUESTS);
+        }
+
+        function cloneCtepOrg(orgId) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CLONE_CTEP_ORG, {org_id: orgId});
         }
 
 
