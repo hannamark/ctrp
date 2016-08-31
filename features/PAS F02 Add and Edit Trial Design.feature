@@ -299,11 +299,12 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I have selected a trial
   And I am on the Trial Design screen
   And the 'If Primary Purpose is 'Other', describe' field displays
-  And I can type 200 characters in the displayed field
- When I start typing text in field
- Then the 200 characters provided under the Intervention Description field starts to decrement
- When I have reach the 200 characters limit
+  Then a comment appears below the Primary Purpose of Other field to display the number of characters available to enter into the field.  
+ |200 characters left|
+ And "x characters left" will be displayed as characters are added
+ When 200 characters have been entered
  Then no additional text can be entered
+  
 
 Scenario:  #13 Secondary Purpose of Other
 Given I am logged into the CTRP Protocol Abstraction application
@@ -317,13 +318,13 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I have selected a trial
   And I am on the Trial Design screen
   And the 'If Secondary Purpose is 'Other', describe' box displays
-  And I can type 1000 characters in the displayed field
- When I start typing text in field
- Then the 1000 characters provided under the Intervention Description field starts to decrement
- When I have reach the 1000 characters limit
+  Then a comment appears below the Secondary Purpose of Other field to display the number of characters available to enter into the field.  
+ |1000 characters left|
+ And "x characters left" will be displayed as characters are added
+ When 1000 characters have been entered
  Then no additional text can be entered
-
-
+  
+ 
 Scenario:  #15 I can Reset Trial Description screen for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
   And I have selected a trial
@@ -336,30 +337,35 @@ Scenario:  #16 Character display for Study Model of Other
  Given I am on the Trial Design screen
    And Clinical Research Category is Observational or Ancillary Correlative
   And the 'Study Model' is 'Other', describe' box displays
-  And I can type 200 characters in the displayed field
- When I start typing text in field
- Then the 200 characters provided under the Study Model Other field starts to decrement
- When I have reach the 200 characters limit
- Then no additional text can be entered
+  Then a comment appears below the Study Model of Other field to display the number of characters available to enter into the field.  
+ |200 characters left|
+  And "x characters left" will be displayed as characters are added
+  When 200 characters have been entered
+  Then no additional text can be entered
+  
+ 
 
-Scenario:  #17 Character display for TIme Prespective of Other
+Scenario:  #17 Character display for Time Perspective of Other
  Given I am on the Trial Design screen
    And Clinical Research Category is Observational or Ancillary Correlative
   And the 'time Perspective' is 'Other', describe' box displays
-  And I can type 200 characters in the displayed field
- When I start typing text in field
- Then the 200 characters provided under the Time Perspective Other field starts to decrement
- When I have reach the 200 characters limit
+ Then a comment appears below the Time Perspective of Other field to display the number of characters available to enter into the field.  
+ |200 characters left|
+ And "x characters left" will be displayed as characters are added
+ When 200 characters have been entered
  Then no additional text can be entered
+ 
+ 
   
-  
-Scenario: #17'Bio-specimen Description character count
+  Scenario: #17'Bio-specimen Description character count
 Given I am on the Trial Design screen
 When I am typing into the Bio-specimen Description  Field
-Then information text appears below the Bio-specimen Description Field to display the number of characters available to enter into the field 
-|1000 characters left|
-When 1000 characters have been entered
-Then no additional text can be entered
+Then a comment appears below the Biospecimen Description field to display the number of characters available to enter into the field.  
+ |1000 characters left|
+ And "x characters left" will be displayed as characters are added
+ When 1000 characters have been entered
+ Then no additional text can be entered
+
 
   
   

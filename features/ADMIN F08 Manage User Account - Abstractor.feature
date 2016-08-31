@@ -1,7 +1,7 @@
 @Admin @Global 
 Feature: ADMIN F08 Manage User Account - Abstractor
 
-As someone with Abstractor privileges (CTRP Abstractor Role or CTRP Super role), I can manage account information
+As someone with Abstractor privileges (CTRP Abstractor Role or CTRP Super role),  I can manage account information
 
 Scenario: #1 I can view all CTRP Users 
 Given I am logged into CTRP 

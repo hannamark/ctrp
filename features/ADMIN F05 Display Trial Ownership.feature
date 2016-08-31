@@ -1,5 +1,5 @@
 @Admin @Global 
-Feature: ADMIN F05 Display Trial Ownership (Registered User Details)
+Feature: ADMIN F05 Display Trial Ownership (Registered User Details) 
 
 As a CTRP User I view registered user details
 
