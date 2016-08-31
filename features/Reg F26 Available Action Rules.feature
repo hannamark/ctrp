@@ -4,7 +4,10 @@ As any CTRP User, I can select available Actions
 
   Scenario:#1 Available rules for Registered Trials when I am a Trial Owner 
     Given I am logged into the CTRP Registration application
-    And I am on My Clinical Trials search Results
+    And I search Trials by
+     |All Trials|
+     |My Trials|
+     
     When the Trial Processing Status is Any Processing Status type
      
      
@@ -22,6 +25,7 @@ As any CTRP User, I can select available Actions
      
       |Update	  |
       |Change Status  |
+      
 
      When the Trial Processing Status is
      
