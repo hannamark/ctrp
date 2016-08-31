@@ -30,7 +30,7 @@
         <form class="form form-horizontal" role="form" name="signup_form" autocomplete="off" novalidate ctrp-submit="userView.updateUser()">
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6" ng-class="userView.NihSignUp ? '' : 'hide'">
+                <div class="col-xs-12 col-sm-6 col-md-6" ng-if="userView.NihSignUp" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(signup_form.username)}">
                     <div class="form-group has-feedback required">
                         <div class="input-group">
                             <label for="username">
@@ -178,7 +178,7 @@
                                    typeahead-on-select="userView.setTypeAheadOrg($item)"
                                    uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                                    typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
-                            <span id="typeAheadResults" ng-if="userView.userChosenOrg">
+                            <div id="typeAheadResults" ng-if="userView.userChosenOrg">
                                     <b>{{userView.userChosenOrg.name}}</b>
                                     <span class="btn-danger crn-rounded" ng-click="userView.removeOrgChoice()"
                                         title="Change organization">
@@ -196,7 +196,7 @@
                                     <span ng-if="userView.userChosenOrg.email"><b>Email:</b> <u>{{userView.userChosenOrg.email}}</u><br></span>
                                     <span ng-if="userView.userChosenOrg.fax"><b>Fax:</b> <u>{{userView.userChosenOrg.fax}}</u></span>
                                     </i>
-                            </span>
+                            </div>
                         </div>
                         <span class="help-block" ng-show="signup_form.$submitted && (!userView.org_search_name.length || userView.org_search_name.length < 3)">Organization Name is Required</span>
                     </div>
@@ -204,13 +204,13 @@
             </div>
             <div class="row" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(userView.chaptcha)}">
                 <div class="row-captcha">
-                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(userView.chaptcha)}">
+                    <div class="has-feedback required" ng-class="{'has-error': ctrpbtn.signup_form.needsAttention(userView.chaptcha)}">
                         <script src='https://www.google.com/recaptcha/api.js'></script>
                         <re-captcha ng-model='userView.chaptcha' ></re-captcha>
+                        <span class="help-block" ng-show="signup_form.$submitted && !userView.chaptcha">
+                            Confirm you are not a robot
+                        </span>
                     </div>
-                    <span class="help-block" ng-show="signup_form.$submitted && !userView.chaptcha">
-                        Confirm you are not a robot
-                    </span>
                 </div>
             </div>
 

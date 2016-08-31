@@ -87,7 +87,7 @@
                             vm.curTrialDetailObj.trial_documents[index].deletion_date = null;
                         } else {
                             vm.curTrialDetailObj.trial_documents[index].deleted_by = UserService.getLoggedInUsername();
-                            vm.curTrialDetailObj.trial_documents[index].deletion_date = DateService.convertISODateToLocaleDateStr(new Date().toISOString());
+                            vm.curTrialDetailObj.trial_documents[index].deletion_date = moment().format('DD-MMM-YYYY');
                         }
                     }, 0);
                 }
@@ -240,6 +240,7 @@
                 vm.saveBtnDisabled = true;
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
+                        /* CHANGE RESPONSE: Response should not be null or [..null, null...]; instead should at the very least, return a status code to check against */
                         if (angular.isArray(res)) {
                             _.each(res, function(uploadedDoc, index) {
                                 if (uploadedDoc !== null) {
@@ -257,23 +258,27 @@
                         // get the most updated lock_version
                         outerTrial.trial.lock_version = PATrialService.getCurrentTrialFromCache().lock_version;
                         TrialService.upsertTrial(outerTrial).then(function(res) {
-                            vm.curTrialDetailObj = res;
-                            vm.curTrialDetailObj.lock_version = res.lock_version;
-                            PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
-                            // $scope.$emit('updatedInChildScope', {});
-                            _filterActiveDocs();
-                            vm.curDoc = _initCurDoc();
-                            vm.docTypeError = '';
-                            vm.formError = '';
-                            if (showToastr) {
-                                toastr.clear();
-                                toastr.success('Trial related documents have been saved', 'Successful!');
-                            }
+                            var status = res.server_response.status;
 
-                            // To make sure setPristine() is executed after all $watch functions are complete
-                            $timeout(function() {
-                               $scope.trial_docs_form.$setPristine();
-                            }, 1);
+                            if (status >= 200 && status <= 210) {
+                                vm.curTrialDetailObj = res;
+                                vm.curTrialDetailObj.lock_version = res.lock_version;
+                                PATrialService.setCurrentTrial(vm.curTrialDetailObj); // update to cache
+                                // $scope.$emit('updatedInChildScope', {});
+                                _filterActiveDocs();
+                                vm.curDoc = _initCurDoc();
+                                vm.docTypeError = '';
+                                vm.formError = '';
+                                if (showToastr) {
+                                    toastr.clear();
+                                    toastr.success('Trial related documents have been saved', 'Successful!');
+                                }
+
+                                // To make sure setPristine() is executed after all $watch functions are complete
+                                $timeout(function() {
+                                   $scope.trial_docs_form.$setPristine();
+                                }, 1);
+                            }
                         }).catch(function(err) {
                             console.log('trial update error: ', err);
                         }).finally(function() {

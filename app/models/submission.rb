@@ -104,13 +104,12 @@ class Submission < TrialBase
     join_clause += "LEFT JOIN research_categories as trial_research_category ON trials.research_category_id = trial_research_category.id "
     join_clause += "LEFT JOIN submission_methods as submission_method ON submissions.submission_method_id = submission_method.id "
     join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
-    join_clause += "LEFT JOIN source_contexts as trial_lead_org_source_context ON trial_lead_org_source_context.id = trial_lead_org.source_context_id "
     join_clause += "LEFT JOIN (
                         select DISTINCT ON (trial_id) " + time_parser_start + "onhold_date" + time_parser_end + " as onhold_date, onhold_desc, trial_id from onholds
                         where offhold_date is null OR offhold_date > now()::date
                         order by trial_id, onhold_date desc
                     ) as trial_onholds ON trials.id = trial_onholds.trial_id "
-    join_clause += "LEFT JOIN (
+    join_clause += "INNER JOIN (
                         with temp as (
                             select milestone_wrappers.id, milestone_wrappers.trial_id, milestone_wrappers.created_at, submission_id, milestones.name, milestones.code
                               from milestone_wrappers inner join milestones
@@ -121,7 +120,8 @@ class Submission < TrialBase
                             submission_id,
                             current_milestone_name,
                             current_processing_status,
-                            dcp_protocol_id.protocol_id as dcp_id,
+                            dcp_id,
+                            ctep_id,
                             " + time_parser_start + "current_processing_status_date" + time_parser_end + " as current_processing_status_date,
                             " + time_parser_start + "submission_current_date" + time_parser_end + " as current_submission_date,
                             " + time_parser_start + "submission_received_date" + time_parser_end + " as submission_received_date,
@@ -313,12 +313,21 @@ class Submission < TrialBase
 
                             left join
                             (
-                              select trial_id as protocol_trial_id, protocol_id from other_ids
+                              select trial_id as protocol_trial_id, protocol_id as dcp_id from other_ids
                               inner join
                               ( select id, code from protocol_id_origins where code = 'DCP') as dcp_protocols
                               on dcp_protocols.id = other_ids.protocol_id_origin_id
                             ) as dcp_protocol_id
                             on dcp_protocol_id.protocol_trial_id = temp.trial_id
+
+                            left join
+                            (
+                              select trial_id as protocol_trial_id, protocol_id as ctep_id from other_ids
+                              inner join
+                              ( select id, code from protocol_id_origins where code = 'CTEP') as ctep_protocols
+                              on ctep_protocols.id = other_ids.protocol_id_origin_id
+                            ) as ctep_protocol_id
+                            on ctep_protocol_id.protocol_trial_id = temp.trial_id
 
                         )
 
@@ -331,11 +340,6 @@ class Submission < TrialBase
                       (#{protocol_source_id_pro}#{ params[:type] != 'own' ? ("," + protocol_source_id_imp.to_s) : ""})
                     AND submissions.trial_id is not null AND submissions.status = 'Active'
                     AND trials.is_rejected IS NOT true "
-    if params[:user_id] && params[:type] == 'own'
-      where_clause += " AND trial_ownership.user_id = #{params[:user_id]} "
-    elsif params[:user_id]
-      where_clause += " AND submissions.user_id = #{params[:user_id]} "
-    end
 
     if params[:org_id] && params[:type] == 'participating'
       join_clause += "inner join (
@@ -343,6 +347,16 @@ class Submission < TrialBase
                             from participating_sites where participating_sites.organization_id=#{params[:org_id]}
                         ) as distinct_participating_sites on submissions.trial_id = distinct_participating_sites.trial_id "
     end
+
+    if params[:user_id]
+      if params[:type] == 'own'
+        where_clause += " AND trial_ownership.user_id = #{params[:user_id]} "
+      else
+        where_clause += " AND submissions.user_id = #{params[:user_id]} "
+      end
+      join_clause += "LEFT JOIN (select id as trial_ownership_id, trial_id, user_id from trial_ownerships where ended_at is null) as trial_ownership ON trial_ownership.trial_id = trials.id "
+    end
+
     filter_clause = []
     if !params[:find_submission_received].nil?
       filter_clause.push("submission_received_date " + ( if params[:find_submission_received] === true then "IS NOT null" else "IS null" end))
@@ -369,18 +383,12 @@ class Submission < TrialBase
     if filter_clause.length > 0
       where_clause += " AND (" + filter_clause.join(" AND ") + ")"
     end
-
-    join_clause += "LEFT JOIN (select  id as trial_ownership_id, trial_id, user_id from trial_ownerships where ended_at is null) as trial_ownership ON trial_ownership.trial_id = trials.id "
-
     joins(join_clause).where(where_clause).select("
-       submissions.*,
+       DISTINCT submissions.*,
 
        submission_method.name as submission_method_name,
 
        trial_research_category.name as clinical_research_category,
-
-       trial_ownership.user_id as owner_user_id,
-       trial_ownership.trial_ownership_id,
 
        trials.nci_id,
        trials.lead_protocol_id,
@@ -416,29 +424,9 @@ class Submission < TrialBase
             ELSE ''
           END
        ) as submission_type_label,
-       (
-          CASE
-            WHEN trial_lead_org_source_context.code = 'CTEP'
-            THEN
-                (
-                  SELECT string_agg(organizations.source_id, ',') from organizations
-                  INNER JOIN source_contexts ON source_contexts.id = organizations.source_context_id
-                  where ctrp_id = trial_lead_org.ctrp_id and source_contexts.code = 'CTEP'
-                )
-            ELSE ''
-          END
-       ) as ctep_id,
-
+       ctep_id,
        dcp_id
     ")
-  }
-  scope :matchesImpProPro, -> (userId, protocol_source_id_imp, protocol_source_id_pro) {
-    join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
-    join_clause += "LEFT JOIN users ON submissions.user_id = users.id"
-
-    joins(join_clause).where(" submitted_trial.internal_source_id in (#{protocol_source_id_imp}, #{protocol_source_id_pro})
-       and submissions.user_id = #{userId} AND submissions.trial_id is not null")
-
   }
 
 end

@@ -22,12 +22,12 @@ Feature: Reg F05 Register Trial Protocol Identifiers
    Scenario Outline: #1a Trial Identifiers Character Limit Rules
     Given  I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Protocol Identifiers screen
-     When I have entered more than 30 charaters for the Identifier Type <IdentifierType> then an error message will display <ErrorType> 
-       
-      |IdentifierType                      |ErrorType                                                             |
-      |Lead Organization Trial Identifier  |Lead Organization Trial Identifier cannot be more than 30 characters  |
-      |Other Identifier                    |Other Identifier cannot be more than 30 characters                    |
-
+    Then a comment appears below the all identifiers fields to display the number of characters available to enter into the field.  
+    |30 characters left|
+    And "x characters left" will be displayed as characters are added
+    When 30 characters have been entered
+    Then no additional text can be entered
+    
     
     Examples:
 

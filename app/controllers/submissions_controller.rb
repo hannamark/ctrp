@@ -87,13 +87,15 @@ class SubmissionsController < ApplicationController
         InternalSource.find_by_code('PRO').id,
     )
 
-    @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
-    unless params[:rows].nil?
-      @trial_submissions = @trial_submissions.page(params[:start]).per(params[:rows])
-    end
-
     @userReadAccess  = userReadAccess  current_site_user
     @userWriteAccess = userWriteAccess current_site_user
+    unless @userReadAccess == false && @userWriteAccess == false
+      @trial_submissions = @trial_submissions.order("#{params[:sort]} #{params[:order]}")
+      unless params[:rows].nil?
+        @trial_submissions = @trial_submissions.page(params[:start]).per(params[:rows])
+      end
+    end
+
     @searchAccess = true
   end
 
@@ -114,17 +116,13 @@ class SubmissionsController < ApplicationController
   end
 
   def userReadAccess userToUpdate
-    if current_site_user
-      user = current_site_user
-      write_access = userWriteAccess user
-    end
+    user = current_site_user
+    write_access = userWriteAccess user
     user && userToUpdate ? (user.role == 'ROLE_RO' || write_access)  : false
   end
 
   def userWriteAccess userToUpdate
-    if current_site_user
-      user = current_site_user
-    end
+     user = current_site_user
     user && userToUpdate ?
         ( user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
             user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||

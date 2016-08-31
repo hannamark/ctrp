@@ -137,27 +137,27 @@
             /* Reset UI bindings */
             vm.collapsed = false;
             vm.isExp = false;
-            vm.grantorArr = [];
-            vm.nihNciArr = [];
-            vm.authorityOrgArr = [];
+            vm.grantorArr.length = 0;
+            vm.nihNciArr.length = 0;
+            vm.authorityOrgArr.length = 0;
             vm.status_date_opened = false;
             vm.start_date_opened = false;
             vm.primary_comp_date_opened = false;
             vm.comp_date_opened = false;
             vm.amendment_date_opened = false;
-            vm.addedOtherIds = [];
-            vm.addedFses = [];
-            vm.addedGrants = [];
-            vm.addedStatuses = [];
-            vm.addedIndIdes = [];
-            vm.addedAuthorities = [];
-            vm.addedDocuments = [];
-            vm.selectedLoArray = [];
-            vm.selectedPiArray = [];
-            vm.selectedSponsorArray = [];
-            vm.selectedInvArray = [];
-            vm.selectedIaArray = [];
-            vm.selectedFsArray = [];
+            vm.addedOtherIds.length = 0;
+            vm.addedFses.length = 0;
+            vm.addedGrants.length = 0;
+            vm.addedStatuses.length = 0;
+            vm.addedIndIdes.length = 0;
+            vm.addedAuthorities.length = 0;
+            vm.addedDocuments.length = 0;
+            vm.selectedLoArray.length = 0;
+            vm.selectedPiArray.length = 0;
+            vm.selectedSponsorArray.length = 0;
+            vm.selectedInvArray.length = 0;
+            vm.selectedIaArray.length = 0;
+            vm.selectedFsArray.length = 0;
             vm.showPrimaryPurposeOther = false;
             vm.showSecondaryPurposeOther = false;
             vm.showInvestigator = false;
@@ -617,7 +617,7 @@
             if (vm.status_date && vm.trial_status_id && (vm.why_stopped_disabled || (!vm.why_stopped_disabled && vm.why_stopped))) {
                 if (notFutureDate(vm.status_date)) {
                     var newStatus = {};
-                    newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
+                    newStatus.status_date = vm.status_date; //DateService.convertISODateToLocaleDateStr(vm.status_date);
                     newStatus.trial_status_id = vm.trial_status_id;
                     // For displaying status name in the table
                     _.each(vm.trialStatusArr, function (status) {
@@ -702,13 +702,6 @@
                 vm.showAddAuthorityError = true;
             }
         };
-
-        // Add Founding Source to a temp array
-        $scope.$watch(function() {
-            return vm.curTrial.comp_date;
-        }, function(newValue, oldValue) {
-            console.log('start date values are: ', oldValue, newValue);
-        });
 
         // Add Founding Source to a temp array
         $scope.$watch(function() {
@@ -1013,7 +1006,7 @@
             }
 
             var primaryCompDate = typeof vm.curTrial.primary_comp_date === 'string' ?  moment(vm.curTrial.primary_comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.primary_comp_date;
-            var primaryCompTimeValue = primaryCompDate.getTime;
+            var primaryCompTimeValue = primaryCompDate.getTime();
             var compDate = typeof vm.curTrial.comp_date === 'string' ?  moment(vm.curTrial.comp_date, 'YYYY-MM-DD').toDate() : vm.curTrial.comp_date;
             var compTimeValue = compDate.getTime();
             if (primaryCompTimeValue > compTimeValue) {
@@ -1233,7 +1226,7 @@
             for (var i = 0; i < vm.curTrial.trial_status_wrappers.length; i++) {
                 var statusWrapper = {};
                 statusWrapper.id = vm.curTrial.trial_status_wrappers[i].id;
-                statusWrapper.status_date = DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date);
+                statusWrapper.status_date = vm.curTrial.trial_status_wrappers[i].status_date //DateService.convertISODateToLocaleDateStr(vm.curTrial.trial_status_wrappers[i].status_date);
                 statusWrapper.trial_status_id = vm.curTrial.trial_status_wrappers[i].trial_status_id;
                 // For displaying status name in the table
                 _.each(vm.trialStatusArr, function (status) {

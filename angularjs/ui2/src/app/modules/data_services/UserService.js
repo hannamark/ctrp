@@ -195,6 +195,22 @@
             return LocalCacheService.getCacheWithKey('user_role') || '';
         };
 
+        this.getUserRoleName = function(controller) {
+            var userRole = service.getUserRole();
+            if ( userRole ) {
+                AppSettingsService.getSettings({setting: 'USER_ROLES'}).then(function (response) {
+                    var userRole = service.getUserRole();
+                    var rolesArr = JSON.parse(response.data[0].settings);
+                    var roleName = _.find(rolesArr, function (obj) {
+                        return obj.id === userRole
+                    }).name.toLowerCase();
+                    controller.userRoleName = roleName;
+                }).catch(function (err) {
+                    console.log("Error in retrieving USER_ROLES " + err);
+                    return '';
+                });
+            }
+        };
 
         this.getAppVersion = function () {
             return LocalCacheService.getCacheWithKey('app_version') || '';
@@ -355,7 +371,6 @@
                             controller.userOptions.selectedItems = [];
                         },
                         save: function () {
-
                             var searchParams = {
                                 from_user_id: controller.userDetails.id,
                                 to_user_ids: []
@@ -363,13 +378,13 @@
                             var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
                             if (trialIdArr && trialIdArr.length){
                                 searchParams.to_user_ids = user_ids;
-                                searchParams.ids = _.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_ownership_id').value();
+                                searchParams.ids = trialIdArr;
                             } else {
                                 searchParams.to_user_ids = user_ids;
                             }
 
                             service.transferUserTrialsOwnership(searchParams).then(function (data) {
-                                if(data.results === 'success') {
+                                if(data.results.complete === true) {
                                     toastr.success('Trial Ownership Transferred', 'Success!');
                                     if (controller.passiveTransferMode) {
                                         controller.passiveTransferMode = false;
@@ -439,7 +454,7 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function (){
-                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('trial_id').value());
                         }
                     }
                 ];

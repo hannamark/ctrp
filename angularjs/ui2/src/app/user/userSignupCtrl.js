@@ -34,28 +34,6 @@
 
         vm.userObj = new UserObj();
         vm.timestamp = Date.now();
-        AppSettingsService.getSettings({setting: 'USER_DOMAINS', external: true}).then(function (response) {
-            vm.domainsArr = response.data[0].settings.split('||');
-            vm.selectedFunctionsObj = [];
-            vm.selectAbleUserFunctions = [];
-            angular.forEach(vm.domainsArr, function (domain) {
-                AppSettingsService.getSettings({
-                    setting: domain + '_USER_FUNCTIONS',
-                    external: true
-                }).then(function (response) {
-                    var functionsArr = response.data[0].settings.split('||');
-                    vm.selectedFunctionsObj[domain] = {};
-                    angular.forEach(functionsArr, function (func) {
-                        vm.selectAbleUserFunctions[domain] = functionsArr.length;
-                        vm.selectedFunctionsObj[domain][func] = vm.selectAbleUserFunctions[domain] > 1 ? false : true;
-                    });
-                }).catch(function (err) {
-                    console.log("Error in retrieving " + domain + "_USER_FUNCTIONS " + err);
-                });
-            });
-        }).catch(function (err) {
-            console.log("Error in retrieving USER_DOMAINS " + err);
-        });
 
         vm.selectedUserFunctions = function () {
             var selectedArr = [];
@@ -68,7 +46,7 @@
         };
 
         vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.userObj.user, vm.org_search_name);
+            return OrgService.typeAheadOrgNameSearch(vm.org_search_name);
         };
 
         vm.setTypeAheadOrg = function (searchObj) {

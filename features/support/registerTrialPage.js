@@ -147,7 +147,7 @@ var registerTrial = function(){
     this.addTrialOtherDocsDescription = element.all(by.model('trialDetailView.other_document_subtypes[$index]'));
 
     /**buttons**/
-    this.addTrialResetButton = element(by.css('button[ng-click="trialDetailView.reload()"]'));
+    this.addTrialResetButton = element(by.css('button[ng-click="trialDetailView.reset()"]'));//element(by.css('button[ng-click="trialDetailView.reload()"]'));
     this.addTrialReviewSubmitButton = element(by.css('button[type="submit"]'));
     this.addTrialSaveDraftButton = element(by.css('button[ng-click="trialDetailView.saveDraft()"]'));
     this.addTrialReviewButton = element(by.buttonText('Review'));

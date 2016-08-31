@@ -680,7 +680,7 @@
                 status.trial_status_name = curStatusObj.name || '';
                 status.trial_status_code = curStatusObj.code || '';
                 status._destroy = false;
-                status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
+                //status.status_date = moment(status.status_date).format("DD-MMM-YYYY");
                 delete status.trial_status; // delete the trial_status object
                 delete status.updated_at;
                 delete status.created_at;

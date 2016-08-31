@@ -21,7 +21,27 @@ Feature: PO F2 Search for Organization
     And I submit my search request
     Then the system should display all organizations that contain the name
     And the result should be sorted by Organization Name
-
+    
+      Scenario: #2a A a Curator, I can search organization when Exact Search is checked
+    Given I know the name of the organization I wish to search for
+    And I am logged in to CTRP PO application
+    And I have selected the option to search for an organization
+    When I provide the full exact name of the organization I wish to search for
+    And the Exact search checked
+    And I submit my search request
+    Then the system should display all organizations that contain the exact name searched
+    And the result should be sorted by Organization Name
+    
+    Scenario: #2b A a Curator, I can search organization when Exact Search is unchecked
+    Given I know the name of the organization I wish to search for
+    And I am logged in to CTRP PO application
+    And I have selected the option to search for an organization
+    When I provide the full exact name of the organization I wish to search for
+    And the Exact search is unchecked 
+    And I submit my search request
+    Then the system should not display organizations that contain the exact name provided
+   
+    
 
   Scenario:#3 As any Curator, I am able to search for organizations by Source Context and Source ID
     Given I know the Source Context and Source ID of the organization I wish to search for
@@ -154,36 +174,44 @@ Feature: PO F2 Search for Organization
     And I select the State <State> from a list of state names
     And I enter the Phone Number <Phone Number>
     And I enter the Email <Email>
+    And I enter Proccessing status type
+    |Complete|
+    |Incomplete|
+    And I enter Service Request Type
+    |Create|
+    |Update|
+    |Merge with CTEP ID|
+    |Link with CTRP ID|
+    |Legacy|
     And I enter the Curator Name <Curator Name>
     And I enter the Curator Date <Curator Date>
     And I submit my search request
-    Then the system should display <Result> with organizations that match the search criteria Organization Name <Organization Name>, Search Aliases <Search Aliases>, Source Context <Source Context>, Source ID <Source ID>, Source Status <Source Status>, Family Name <Family Name>, City <City>, Country <Country>, State <State>, Phone Number <Phone Number>, Email <Email>, Curator Name <Curator Name>, Curator Date <Curator Date>
-    And the following fields should be displayed:
+    Then the system should display <Result> with organizations that match the search criteria entered
+    And  The organization search results will display the field type
       |CTRP ID|
-      |Organization Name|
-      |Family Name - display first 5|
       |CTEP ID|
-      |Source Context|
       |Source ID|
+      |Name|
+      |CTEP Org Type|
+      |Funding Mechanism|
       |Source Status|
+      |Source Context|
+      |Processing Status|
+      |Service Request|
+      |Families|
+      |Phone|
+      |Email|
+      |Last Updated by|
+      |Last Updated Date|
       |City|
       |State|
       |Country|
       |Postal Code|
-      |Email|
-      |Phone|
-      |Last Updated By|
-      |Last Updated Date|
+      
+      
     And the result should be sorted by Organization Name
 
-    Examples:
-      |Organization Name	||Search Aliases||Source Context	||Source ID	||Source Status	||Family Name	||City	||State	||Country	||Phone Number	||Email	||Curator Name	||Curator Date	||Result|
-      |*                	||No		    ||              	||		    ||             	||           	||    	||     	||       	||           	||     	||            	||            	||true|
-      |	        		||No		    ||CTEP  			||WAKE		||		        ||	        	||  	||	    ||		    ||		        ||	    ||      		||		        ||true|
-      |		        	||No		    ||		        	||	    	||		        ||*fam*	||	    ||	    ||		    ||		        ||	    ||	        	||		        ||true|
-      |			        ||No    		||			        ||		    ||	        	||		        ||	    ||	    ||		    ||		        ||  	||*curator	    ||		        ||true|
-
-
+   
   Scenario:#16 As a Curator, I will get message if no Search Parameter is provided
     Given I know the parameters of organization I wish to search for
     And I am logged in to CTRP PO application
@@ -211,7 +239,6 @@ Feature: PO F2 Search for Organization
       |Postal Code|
       |Email|
       |Phone Number|
-      |Fax Number|
       |Family|
       |Aliases|
 
@@ -222,21 +249,24 @@ Feature: PO F2 Search for Organization
     And I have selected the option to search for an organization
     When I select organization name in the search results
     Then the complete organization information will be displayed including:
-      |CTRP Organization ID|
-      |Organization Name|
+      |CTRP ID|
+      |CTRP Context ID|
+      |Name|
       |Source Context|
       |Source ID|
       |Source Status|
+      |Processing Status|
+      |Name Alias|
       |Address 1|
       |Address 2|
-      |City|
-      |State|
       |Country|
-      |Postal Code|
+      |State|
+      |City|
       |Email|
-      |Phone Number|
-      |Fax Number|
-      |Aliases|
+      |Phone Number: Extension|
+      |Created By|
+      |Updated By|
+     
 
 
   Scenario:#19 As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected

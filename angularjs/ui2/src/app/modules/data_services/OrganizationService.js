@@ -34,6 +34,7 @@
             email : '',
             postal_code : '',
             phone: '',
+            processing_status: 'Complete',
 
             //for pagination and sorting
             sort: '',
@@ -146,7 +147,9 @@
             curateOrg: curateOrg,
             findContextId: findContextId,
             checkUniqueOrganization: checkUniqueOrganization,
-            typeAheadOrgNameSearch: typeAheadOrgNameSearch
+            typeAheadOrgNameSearch: typeAheadOrgNameSearch,
+            getServiceRequests: getServiceRequests,
+            getProcessingStatuses: getProcessingStatuses,
         };
 
         return services;
@@ -237,7 +240,7 @@
             return gridOptions;
         }
 
-        function typeAheadOrgNameSearch(resObj, field, family) {
+        function typeAheadOrgNameSearch(field, family) {
 
             var wildcardOrgName = field.indexOf('*') > -1 ? field : '*' + field + '*';
             //search context: 'CTRP', to avoid duplicate names
@@ -248,7 +251,13 @@
             };
 
             if(family && family.length){
-                queryObj['family_name'] = family
+                if (family === 'no_family') {
+                    queryObj['alias'] = false;
+                    queryObj['rows'] = 50;
+                    queryObj['no_family'] = true;
+                } else {
+                    queryObj['family_name'] = family;
+                }
             }
 
             return searchOrgs(queryObj).then(function(res) {
@@ -356,9 +365,12 @@
             return PromiseTimeoutService.deleteObjFromBackend(URL_CONFIGS.AN_ORG + orgId + '.json');
         }
 
-
-
-
+        function getProcessingStatuses() {
+            return [
+                {id: 1, name: 'Complete'},
+                {id: 2, name: 'Incomplete'}
+            ];
+        }
 
         /**
          * Check if targetOrgsArr contains orgObj by checking the 'id' field
@@ -431,6 +443,10 @@
          */
         function curateOrg(curationObject) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_ORG, curationObject);
+        }
+
+        function getServiceRequests() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SERVICE_REQUESTS);
         }
 
 

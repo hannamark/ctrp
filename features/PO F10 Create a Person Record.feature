@@ -22,7 +22,10 @@ Feature: PO F10 Create a Person Record
    Scenario:#1a Create Person fields's character Limit 
     Given I can request the creation of a new Organization in CTRP
      When I provide the field name <FieldName>
-     Then the entered field name will respect the field character limit <FieldLength>
+     Then a comment appears below the Field Type <fieldName> to display the number of characters available to enter into the field <FieldLength>
+     And "x characters left" will be displayed as characters are added
+     When the field Length <FieldLength> characters have been entered
+    Then no additional text can be entered
      
      |FieldName        |FieldLength|
      |First Name       |62         |

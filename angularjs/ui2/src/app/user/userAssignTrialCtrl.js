@@ -8,54 +8,39 @@
     angular.module('ctrp.app.user')
         .controller('userAssignTrialCtrl', userAssignTrialCtrl);
 
-    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', '$scope', 'toastr', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS'];
+    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', 'toastr', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS'];
 
-    function userAssignTrialCtrl(PromiseTimeoutService, $scope, toastr, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS) {
+    function userAssignTrialCtrl(PromiseTimeoutService, toastr, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS) {
         var vm = this;
         vm.curUser = userDetailObj;
-        if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
-            vm.familySearchParams = FamilyService.getInitialFamilySearchParams();
-            vm.familySearchParams.name = '*';
-            vm.familySearchParams.rows = undefined;
-            vm.familySearchParams.allrows = true;
-            FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
-                if (data.data) {
-                    vm.families = data.data.families;
-                    if(vm.curUser.org_families[0] && vm.curUser.org_families[0].id) {
-                        vm.family_id = vm.curUser.org_families[0].id;
-                        vm.family_name = vm.curUser.org_families[0].name;
-                        vm.getFamilyTrialsUsers();
-                    }
-                }
-            }).catch(function (err) {
-                console.log('family search people failed: ' + err);
-            });
-        }
-        if(!(vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
-            vm.orgSearchParams = OrgService.getInitialOrgSearchParams();
-            vm.orgSearchParams.name = '*';
-            vm.orgSearchParams.rows = undefined;
-            vm.orgSearchParams.allrows = true;
-            vm.orgSearchParams.no_family = true;
-            OrgService.searchOrgs(vm.orgSearchParams).then(function (data) {
-                if (data.orgs) {
-                    vm.no_family_orgs = data.orgs;
-                    if(vm.curUser.organization && vm.curUser.organization.id) {
-                        vm.organization_id = vm.curUser.organization.id;
-                        vm.organization_name = vm.curUser.organization.name;
-                        vm.getFamilyTrialsUsers();
-                    }
-                }
-            }).catch(function (err) {
-                console.log('organization search people failed: ' + err);
-            });
-        }
+
+        vm.typeAheadNameSearch = function () {
+            return OrgService.typeAheadOrgNameSearch(vm.org_search_name, 'no_family');
+        };
+
+        vm.setTypeAheadOrg = function (searchObj) {
+            var splitVal = searchObj.split('<span class="hide">');
+            vm.org_search_name = splitVal[0];
+            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+            vm.organization_id = vm.userChosenOrg.id;
+            vm.family_id = undefined;
+            vm.getFamilyTrialsUsers();
+        };
+
+        vm.removeOrgChoice = function () {
+            vm.userChosenOrg = null;
+            vm.organization_id = vm.org_search_name = undefined;
+            vm.showSelects = vm.family_id || vm.organization_id;
+        };
 
         vm.getFamilyTrialsUsers = function () {
             if (vm.family_id || vm.organization_id) {
                 UserService.createTransferTrialsOwnership(vm);
                 TrialService.createTransferTrialsOwnership(vm);
                 vm.showSelects = vm.family_id || vm.organization_id;
+            }
+            if (!vm.organization_id) {
+                vm.removeOrgChoice();
             }
         };
 
@@ -76,7 +61,7 @@
                     trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
                 };
                 PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams).then(function (data) {
-                    if(data.results === 'success') {
+                    if(data.results && data.results.complete === true) {
                         toastr.success('Trial Ownership(s) Created', 'Success!');
                         vm.resetAll();
                     }
@@ -97,5 +82,36 @@
                 });
             }
         };
+
+        vm.familySearchParams = {
+            name: '*',
+            wc_search: true,
+            family_status:'Active',
+            allrows: true
+        };
+
+        if(!(vm.curUser.org_families && vm.curUser.org_families[0])) {
+
+            if(vm.curUser.organization && vm.curUser.organization.id) {
+                vm.organization_id = vm.curUser.organization.id;
+                vm.organization_name = vm.curUser.organization.name;
+                vm.getFamilyTrialsUsers();
+            }
+        }
+
+        if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
+            FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
+                if (data.data) {
+                    vm.families = data.data.families;
+                    if(vm.curUser.org_families[0] && vm.curUser.org_families[0].id) {
+                        vm.family_id = vm.curUser.org_families[0].id;
+                        vm.family_name = vm.curUser.org_families[0].name;
+                        vm.getFamilyTrialsUsers();
+                    }
+                }
+            }).catch(function (err) {
+                console.log('family search people failed: ' + err);
+            });
+        }
     }
 })();

@@ -1,4 +1,4 @@
-﻿@PA @global
+@PA @global
 Feature: PAA F01 Add and Edit General Trial Details
 
 As any CTRP PA User, I can enter general trial details
@@ -27,6 +27,12 @@ And I should be allowed to enter one "DCP Identifier" with unique IDs
 And I should be allowed to enter one "CTEP Identifier" with unique IDs
 And I should be allowed to enter one "CCR Identifier" with unique IDs
 And I should be allowed to enter one "CDR Identifier" with unique IDs
+Then a comment appears below the all identifiers fields to display the number of characters available to enter into the field.  
+|30 characters left|
+And "x characters left" will be displayed as characters are added
+When 30 characters have been entered
+Then no additional text can be entered
+
 And all Trial Identifiers should not be more than 30 characters in Length
 Then the Protocol Identifiers section will indicate zero errors
 
@@ -34,9 +40,17 @@ Scenario: #2 I can enter the Acronym and Official Title for a trial
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 When I edit the Official Title for the trial
-And the official Title should not be more than 600 characters in length
+Then a comment appears below the Official Title field to display the number of characters available to enter into the field.  
+|600 characters left|
+And "x characters left" will be displayed as characters are added
+When 600 characters have been entered
+Then no additional text can be entered
 And I can optionally enter or edit the Acronym for the trial
-And the Acronym should not be more than 14 characters long
+Then a comment appears below the Acronym field to display the number of characters available to enter into the field.  
+|14 characters left|
+And "x characters left" will be displayed as characters are added
+When 14 characters have been entered
+Then no additional text can be entered
 Then the title section will be complete
 
 Scenario: #3 I can enter the Keywords for a trial

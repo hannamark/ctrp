@@ -12,6 +12,7 @@ var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
+var helperFunctions = require('../support/helper');
 
 
 module.exports = function() {
@@ -20,6 +21,7 @@ module.exports = function() {
     var addTrial = new addTrialPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
     var commonFunctions = new abstractionCommonMethods();
+    var helper = new helperFunctions();
 
     this.Given(/^I am logged into the CTRP Registration application$/, function (callback) {
     //    browser.get('ui/#/main/sign_in');

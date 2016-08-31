@@ -27,7 +27,13 @@ Given I have selected a trial to abstract the Regulatory Information FDAAA
 And I am on the Trial Regulatory Information screen
 When I enter the Title for the Investigator (Field will be prefilled with �Principal Investigator�)
 Then the selected value will be recorded as the Responsible Party Type with the Principal Investigator title
-And the investigator title should not exceed 254 characters 
+Then a comment appears below the Investigator Title field to display the number of characters available to enter into the field.  
+|254 characters left|
+And "x characters left" will be displayed as characters are added
+When 254 characters have been entered
+Then no additional text can be entered
+
+
 
 Scenario: #4 I can associate an organization as an Affiliation of the Investigator
 Given I have selected a trial to abstract the Regulatory Information FDAAA

@@ -58,11 +58,12 @@ class ApplicationController < ActionController::Base
     #Rails.logger.debug "\n, In Application controller, parse_request_header, auth_string = #{auth_string.inspect}"
     accept_flag = auth_string.split(" ")[0]
     #Rails.logger.debug "In Application controller, parse_request_header, accept_flag = #{accept_flag.inspect}"
-    if accept_flag != "Accept"
-      Rails.logger.error "The User didnot Accept the GSA"
-      Rails.logger.debug "Accept flag is not true"
-      raise CanCan::AccessDenied.new("Not authorized!")
-    end
+    #if accept_flag != "Accept"
+     # Rails.logger.error "The User didnot Accept the GSA"
+      #Rails.logger.debug "Accept flag is not true"
+      #raise CanCan::AccessDenied.new("Not authorized!")
+      #redirect_to destroy_session_url
+    #end
     token = auth_string.split(" ")[1]
     return token
   end

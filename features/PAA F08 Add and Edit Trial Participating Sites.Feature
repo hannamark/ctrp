@@ -27,7 +27,7 @@ And I can add  the phone number extension <Ext> for the investigator contact
 And I can add  the contact e-mail for the contact <e-mail address> 
 Then the participating site information will be associated with the trial
 And the organization address information <Org City> <Org State> <Org Country> <Org zip code> will be associated with the trial
-And the system will disly "Yes" with the investigator is the "Primary Contact?"<Primary Contact?>
+And the system will display "Yes" with the investigator is the "Primary Contact?"<Primary Contact?>
 And the system will display the list of participating sites ordered ascending alphanumeric by participating site name
 And the system will display a message that the Participating Site Has been Updated <Message>
 And the Participating Site table can be sorted by
@@ -42,7 +42,10 @@ Examples:
   Scenario: #1'Participating site field's character limit
     Given I can add a participating site to a trial
      When I add a participating site field type <Field>
-     Then the field character limit should not exceed required field length <FieldLength> 
+     Then a comment appears below the Field Type <field> to display the number of characters available to enter into the field <FieldLength>
+     And "x characters left" will be displayed as characters are added
+     When the field Length <FieldLength> characters have been entered
+    Then no additional text can be entered
        
        |Field               |FieldLength|
        |Organization Name   |254        |

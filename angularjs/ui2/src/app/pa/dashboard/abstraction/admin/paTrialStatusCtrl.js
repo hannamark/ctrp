@@ -112,8 +112,6 @@
             vm.statusErrorMsg = '';
             if (vm.statusObj.status_date && vm.statusObj.trial_status_id) {
                 var clonedStatusObj = angular.copy(vm.statusObj);
-                // clonedStatusObj.status_date = clonedStatusObj.status_date.toISOString(); // ISOString for POST to backend
-                clonedStatusObj.status_date = DateService.convertISODateToLocaleDateStr(clonedStatusObj.status_date); // for display in table
                 var selectedStatus = _.findWhere(vm.trialStatusDict, {id: clonedStatusObj.trial_status_id});
 
                 if (!!selectedStatus) {
@@ -197,7 +195,7 @@
         function editTrialStatus(index) {
             if (index < vm.tempTrialStatuses.length) {
                 vm.statusObj = angular.copy(vm.tempTrialStatuses[index]);
-                vm.statusObj.status_date = moment(vm.statusObj.status_date, 'DD-MMM-YYYY').toDate();
+                vm.statusObj.status_date = moment(vm.statusObj.status_date).toDate();
                 vm.statusObj.edit = true;
                 vm.statusObj.index = index;
             }
@@ -210,9 +208,6 @@
                 return;
             }
             if (vm.statusObj.edit) {
-                // vm.statusObj.status_date = moment(vm.statusObj.status_date).format("DD-MMM-YYYY"); // e.g. 03-Feb-2016
-                // format date from 'yyyy-mm-DD' to 'yyyy-MMM-DD' (e.g. from 2009-12-03 to 03-Feb-2009)
-                vm.statusObj.status_date = DateService.convertISODateToLocaleDateStr(vm.statusObj.status_date);
                 var selectedStatus = _.findWhere(vm.trialStatusDict, {id: vm.statusObj.trial_status_id});
                 if (!!selectedStatus) {
                     vm.statusObj.trial_status_name = selectedStatus.name;
@@ -302,7 +297,6 @@
         function _convertDates() {
             // format the trial-associated date fields
             vm.trialDetailObj.start_date = !!vm.trialDetailObj.start_date ? moment(vm.trialDetailObj.start_date).toDate() : '';
-            // DateService.convertISODateToLocaleDateStr()
             vm.trialDetailObj.primary_comp_date = !!vm.trialDetailObj.primary_comp_date ? moment(vm.trialDetailObj.primary_comp_date).toDate() : '';
             vm.trialDetailObj.comp_date = !!vm.trialDetailObj.comp_date ? moment(vm.trialDetailObj.comp_date).toDate() : '';
             vm.trialDetailObj.amendment_date = !!vm.trialDetailObj.amendment_date ? moment(vm.trialDetailObj.amendment_date).toDate() : '';

@@ -9,21 +9,21 @@ And I am on the Trial Status Screen
 Given I have selected trail
 And I have selected a trial status from the list of:
 |Select a status|
-|Active|
-|Administratively Complete|
+|In Review|
 |Approved|
-|Approved for marketing###Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
-|Available###Only when Clinical Research Category is expanded access and is currently available for this treatment|
+|Active|
+|Enrolling by Invitation|
+|Temporarily Closed to Accrual|
+|Temporarily Closed to Accrual and Intervention|
 |Closed to Accrual|
 |Closed to Accrual and Intervention|
 |Complete|
-|Enrolling by Invitation|
-|In Review|
-|No longer available###Only when Clinical Research Category is expanded access and was available for this treatment previously but is not currently available and will not be available in the future|
-|Temporarily Closed to Accrual|
-|Temporarily Closed to Accrual and Intervention|
-|Temporarily not available###Only when Clinical Research Category is expanded access and is not currently available for this treatment, but is expected to be available in the future|
+|Administratively Complete|
 |Withdrawn|
+|Available###Only when Clinical Research Category is expanded access and is currently available for this treatment|
+|No longer available###Only when Clinical Research Category is expanded access and was available for this treatment previously but is not currently available and will not be available in the future|
+|Temporarily not available###Only when Clinical Research Category is expanded access and is not currently available for this treatment, but is expected to be available in the future|
+|Approved for marketing###Only when a Clinical Research Category is expanded access and this treatment has been approved for sale to the public.|
 And I have entered or selected a Current Trial Status Date
 And I have entered or selected a Trial Start Date
 And I have selected the Trial Start Date Type of "Actual" , "Anticipated"

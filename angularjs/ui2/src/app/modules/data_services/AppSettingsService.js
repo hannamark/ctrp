@@ -13,7 +13,11 @@
         appSettingsService.getSettings = function (requestedSettings) {
             return appSettingsService.appSettings[requestedSettings.setting] || _getRequestedSettings(requestedSettings);
         };
-
+        
+        appSettingsService.destroySettings = function (requestedSettings) {
+            appSettingsService.appSettings[requestedSettings.setting] = undefined;
+        };
+        
         var _getRequestedSettings = function (requestedSettings) {
             var requestURL = '/ctrp/';
             requestURL = requestedSettings.json_path ? requestedSettings.json_path : (requestedSettings.external ?
