@@ -3,7 +3,7 @@ Feature: ADMIN F10 Site Administration - Abstractor
 
 As a CTRP User with Abstractor, Super, Admin, Account Approver roles, I can grant Site Administrator roles to CTRP Users
 
-Scenario: #1 I can view CTRP Users (with roles: CTRP-RO, Abstractor, Super, Admin, Account Approver)
+Scenario: #1 I can view CTRP Users (with roles:  CTRP-RO, Abstractor, Super, Admin, Account Approver)
 Given I am logged into CTRP 
 When I select the Site Administration feature (User Management)
 Then I will see a list of all CTRP Users 
