@@ -50,8 +50,12 @@ Feature: Reg F06 Register Trial Details
   Scenario Outline: #1a Trial Official Title Character Limit rule
     Given I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Details screen
-     When The enter more than 600 charaters for the official title
-     Then the error message wil be displayed " Official Title cannot be more than 600 charaters"
+    Then a comment appears below the Official Title field to display the number of characters available to enter into the field.  
+    |600 characters left|
+   And "x characters left" will be displayed as characters are added
+   When 600 characters have been entered
+   Then no additional text can be entered
+     
      
      Examples:
       |TrialType               |
