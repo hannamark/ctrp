@@ -367,5 +367,14 @@
             vm.showPhoneWarning = true;
             console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
+
+        vm.cloneCtepOrg = function(ctepOrgId) {
+            console.info('cloning org Id: ', ctepOrgId);
+            OrgService.cloneCtepOrg(ctepOrgId).then(function(response) {
+                console.info('clone response: ', response);
+            }).catch(function(err) {
+                console.error('clone error: ', err);
+            });
+        };
     }
 })();
