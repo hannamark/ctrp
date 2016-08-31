@@ -1682,15 +1682,26 @@ body.sign_up > .modal-content > .modal-body {
     padding-top: 20px;
 }
 
-body.sign_up .row-captcha {
+body.sign_up .row-captcha > div {
     float: right;
-    margin-right: 2%;
-    width: 245px;
+}
+
+body.sign_up .row-captcha re-captcha {
     transform:scale(0.88);
     -webkit-transform:scale(0.88);
     transform-origin:0 0;
     -webkit-transform-origin:0 0;
+    width: 245px;
     height: 78px;
+    margin-right: 1%;
+}
+
+body.sign_up .help-block {
+    padding-left: 110px;
+}
+
+body.sign_up .row-captcha .help-block {
+    padding-left: 0;
 }
 
 body.sign_in .input-group {
@@ -1727,15 +1738,7 @@ body.sign_in .input-group-addon {
 }
 
 #typeAheadResults .btn-danger .glyphicon {
-    padding: 1px 5px 0 2px;
-}
-
-html>/**/#typeAheadResults .btn-danger .glyphicon , x:-moz-any-link {
-    padding: 0 6px 0 2px;
-}
-
-html>/**/#typeAheadResults , x:-moz-any-link {
-    float: right;
+    padding: 2px 6px 3px 3px;
 }
 
 body.sign_in .form-horizontal .form-group,
@@ -1776,4 +1779,14 @@ body.users #typeAheadResults {
 
 .ui-select-auto-width .ui-select-multiple input.ui-select-search {
   width: auto !important;
+}
+
+/* firefox only*/
+@-moz-document url-prefix() {
+    #typeAheadResults {
+        float: right;
+    }
+    #typeAheadResults .btn-danger .glyphicon {
+        padding: 0 6px 0 2px;
+    }
 }

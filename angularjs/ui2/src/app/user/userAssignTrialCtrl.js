@@ -61,7 +61,7 @@
                     trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
                 };
                 PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams).then(function (data) {
-                    if(data.results === 'success') {
+                    if(data.results && data.results.complete === true) {
                         toastr.success('Trial Ownership(s) Created', 'Success!');
                         vm.resetAll();
                     }
@@ -83,6 +83,13 @@
             }
         };
 
+        vm.familySearchParams = {
+            name: '*',
+            wc_search: true,
+            family_status:'Active',
+            allrows: true
+        };
+
         if(!(vm.curUser.org_families && vm.curUser.org_families[0])) {
 
             if(vm.curUser.organization && vm.curUser.organization.id) {
@@ -93,10 +100,6 @@
         }
 
         if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
-            vm.familySearchParams = FamilyService.getInitialFamilySearchParams();
-            vm.familySearchParams.name = '*';
-            vm.familySearchParams.rows = undefined;
-            vm.familySearchParams.allrows = true;
             FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
                 if (data.data) {
                     vm.families = data.data.families;

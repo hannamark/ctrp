@@ -42,7 +42,10 @@ class Organization < ActiveRecord::Base
   has_many :users
   belongs_to :source_status
   belongs_to :source_context
- # belongs_to :source_cluster
+  belongs_to :service_request
+  belongs_to :ctep_org_type
+  belongs_to :org_funding_mechanism
+  #belongs_to :source_cluster
   has_many :trial_funding_sources
   has_many :fs_trials, through: :trial_funding_sources, source: :trial
   has_many :trial_co_lead_orgs
@@ -342,6 +345,8 @@ class Organization < ActiveRecord::Base
   scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
 
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
+
+  scope :with_service_request, -> (value) { joins(:service_request).where("service_requests.id = ?", "#{value}")}
 
   scope :with_family, -> (value) {
     str_len = value.length

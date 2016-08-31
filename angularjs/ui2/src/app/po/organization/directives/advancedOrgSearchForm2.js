@@ -53,6 +53,8 @@
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
             $scope.searchWarningMessage = '';
+            $scope.processingStatuses = OrgService.getProcessingStatuses();
+            $scope.serviceRequests = [];
             $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             $scope.dateFormat = DateService.getFormats()[1];
             $scope.searching = false;
@@ -349,6 +351,15 @@
                             statuses.sort(Common.a2zComparator());
                             $scope.sourceStatuses = statuses;
                         }
+                    }
+                });
+
+                OrgService.getServiceRequests().then(function (requests) {
+                    console.info('requests: ', requests);
+                    var status = requests.server_response.status;
+                    delete requests.server_response;
+                    if (status >= 200 && status <= 210) {
+                        $scope.serviceRequests = requests;
                     }
                 });
 

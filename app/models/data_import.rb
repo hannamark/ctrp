@@ -339,4 +339,39 @@ class DataImport
       trial.save!
     end
   end
+
+  def self.import_ctep_org_types
+    spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctep_org_types.xls'))
+    spreadsheet.default_sheet = spreadsheet.sheets.first
+    ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
+       code = spreadsheet.cell(row,'A')
+       name = spreadsheet.cell(row,'B')
+       sent_to_ctrp = spreadsheet.cell(row,'C')
+
+          org = CtepOrgType.new
+          org.code = code
+          org.name = name
+          org.sent_to_ctrp = sent_to_ctrp
+          org.status = "Active"
+          org.save!
+        end
+  end
+
+  def self.import_org_funding_mechanisms
+    spreadsheet = Roo::Excel.new(Rails.root.join('db', 'org_funding_mechanisms.xls'))
+    spreadsheet.default_sheet = spreadsheet.sheets.first
+    ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
+      code = spreadsheet.cell(row,'A')
+      name = spreadsheet.cell(row,'B')
+
+      fm = OrgFundingMechanism.new
+      fm.code = code
+      fm.name = name
+      fm.status = "Active"
+      fm.save!
+    end
+  end
+
+
 end
+

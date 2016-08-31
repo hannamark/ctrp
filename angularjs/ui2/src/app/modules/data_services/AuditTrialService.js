@@ -75,7 +75,7 @@
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , enabledSorting: true , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Update Date', enableSorting: true, minWidth: '100', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date  | dateFormat}}</div>'},
                 {name: 'submission_source', displayName:'Update Source',enableSorting: true, minWidth: '100', width: '*'},
                 {
                     name: 'Acknowledge ',
@@ -83,7 +83,7 @@
                 },
                 {name: 'acknowledge_comment', displayName:'Comment',enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'acknowledge_date', displayName:'Update Acknowldegement Date',enableSorting: true, minWidth: '100', width: '*',
-                cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.acknowledge_date | date: "dd-MMM-yyyy"}}</div>'},
+                cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.acknowledge_date | dateFormat}}</div>'},
                 {name: 'acknowledged_by', displayName:'User ID',enableSorting: true, minWidth: '150', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'}
 
@@ -125,7 +125,7 @@
             columnDefs: [
                 {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '10', width: '*'},
                 {name: 'submission_date',displayName:'Date', minWidth: '100', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | date: "dd-MMM-yyyy"}}</div>'},
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | dateFormat}}</div>'},
                 {field: 'submission_type_list', displayName: 'Type',minWidth: '150', width: '*',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'},
                 {field: 'first_four_docs',displayName:'Documents', enableSorting: true, minWidth: '380', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents">' +
@@ -168,7 +168,7 @@
             columnDefs: [
 
                 {name: 'deletion_date',displayName:'Deletion Date', enableSorting: true, minWidth: '100', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.deletion_date | date: "dd-MMM-yyyy"}}</div>'},
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.deletion_date | dateFormat}}</div>'},
 
                 {name: 'deleted_by',displayName:'Deleted by Username', enableSorting: true, minWidth: '100', width: '*'},
 

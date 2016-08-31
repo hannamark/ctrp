@@ -110,7 +110,7 @@
             var outerTrial = {};
             outerTrial.new = false;
             // if the approval number is not entered, enter the date (dd-MMM-yyyy)
-            vm.trialDetailsObj.board_approval_num = !vm.trialDetailsObj.board_approval_num ? DateService.convertISODateToLocaleDateStr(moment().toISOString()) : vm.trialDetailsObj.board_approval_num;
+            vm.trialDetailsObj.board_approval_num = !vm.trialDetailsObj.board_approval_num ? moment().format('DD-MMM-YYYY') : vm.trialDetailsObj.board_approval_num;
             outerTrial.id = vm.trialDetailsObj.id;
             outerTrial.trial = vm.trialDetailsObj;
             // get the most updated lock_version

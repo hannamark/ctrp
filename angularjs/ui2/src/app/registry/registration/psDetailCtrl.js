@@ -103,7 +103,7 @@
         vm.addStatus = function () {
             if (vm.status_date && vm.sr_status_id) {
                 var newStatus = {};
-                newStatus.status_date = DateService.convertISODateToLocaleDateStr(vm.status_date);
+                newStatus.status_date = vm.status_date;
                 newStatus.site_recruitment_status_id = vm.sr_status_id;
                 // For displaying status name in the table
                 _.each(vm.srStatusArr, function (status) {
@@ -215,7 +215,7 @@
                 vm.isManageScreen = false;
             }
         }
-        
+
         // Populate available organization list
         function populateOrgs() {
             if (vm.curUser.role === 'ROLE_SITE-SU') {
@@ -249,7 +249,7 @@
             for (var i = 0; i < vm.curPs.site_rec_status_wrappers.length; i++) {
                 var statusWrapper = {};
                 statusWrapper.id = vm.curPs.site_rec_status_wrappers[i].id;
-                statusWrapper.status_date = DateService.convertISODateToLocaleDateStr(vm.curPs.site_rec_status_wrappers[i].status_date);
+                statusWrapper.status_date = vm.curPs.site_rec_status_wrappers[i].status_date;
                 statusWrapper.site_recruitment_status_id = vm.curPs.site_rec_status_wrappers[i].site_recruitment_status_id;
                 // For displaying status name in the table
                 _.each(vm.srStatusArr, function (status) {
@@ -267,4 +267,3 @@
         }
     }
 })();
-

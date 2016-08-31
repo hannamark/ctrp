@@ -25,8 +25,8 @@ And will display the following fields
 |Results Designee (all)|
 |PCD|
 |PCD Type ("Act" for actual, "Ant" for anticipated)|
-|PCD Sent to PIO|
-|PCD Confirmed|
+|Last Designee Contact Date|
+|Last Designee Response Date|
 |Designee Notified|
 |Reporting in Process|
 |3 Month Reminder|
@@ -52,8 +52,8 @@ And the following columns can be sorted
 |Results Designee (all)|
 |PCD|
 |PCD Type ("Act" for actual, "Ant" for anticipated)|
-|PCD Sent to PIO|
-|PCD Confirmed|
+|Last Designee Contact Date|
+|Last Designee Response Date|
 |Designee Notified|
 |Reporting in Process|
 |3 Month Reminder|
@@ -78,8 +78,8 @@ And the following columns can be filtered
 |Results Designee (all)|
 |PCD|
 |PCD Type ("Act" for actual, "Ant" for anticipated)|
-|PCD Sent to PIO|
-|PCD Confirmed|
+|Last Designee Contact Date|
+|Last Designee Response Date|
 |Designee Notified|
 |Reporting in Process|
 |3 Month Reminder|
@@ -104,8 +104,8 @@ Then all trials with a last active submission will be displayed for the followin
 |Lead Organization |Not "NCI - Center for Cancer Research"|
 |Current Milestone |Not "Rejected", Not "Submission Terminated"|
 And I can enter enter a date in the following fields
-|PCD Sent to PIO|
-|PCD Confirmed|
+|Last Designee Contact Date|
+|Last Designee Response Date|
 |Designee Notified|
 |Reporting in Process|
 |3 Month Reminder|
@@ -128,8 +128,8 @@ Then all trials with a last active submission will be displayed for the followin
 |Lead Organization |Not "NCI - Center for Cancer Research"|
 |Current Milestone |Not "Rejected", Not "Submission Terminated"|
 And I can edit a date in the following fields
-|PCD Sent to PIO|
-|PCD Confirmed|
+|Last Designee Contact Date|
+|Last Designee Response Date|
 |Designee Notified|
 |Reporting in Process|
 |3 Month Reminder|
@@ -177,8 +177,8 @@ And will include the following fields:
 |Phase|
 |PCD|
 |PCD Type ("Act" for actual, "Ant" for anticipated)|
-|PCD Sent to PIO|
-|PCD Confirmed|
+|Last Designee Contact Date|
+|Last Designee Response Date|
 |Designee Notified|
 |Reporting in Process|
 |3 Month Reminder|

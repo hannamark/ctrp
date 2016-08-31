@@ -22,14 +22,42 @@ puts "Begin seeding"
 
 puts "Seeding static members"
 
+if CtepOrgType.all.size == 0
+  ## Reading and importing ctep org type spreadsheets
+  DataImport.import_ctep_org_types
+end
+
+if OrgFundingMechanism.all.size == 0
+## Reading and Org funding mechanisms spreadsheets
+  DataImport.import_org_funding_mechanisms
+end
+
+
+ServiceRequest.find_or_create_by(code: 'CREATE').update(name: 'Create', status:'Active')
+ServiceRequest.find_or_create_by(code: 'UPDATE').update(name: 'Update', status:'Active')
+ServiceRequest.find_or_create_by(code: 'MERGE_W_CTEP').update(name: 'Merge with CTEP ID', status:'Active')
+ServiceRequest.find_or_create_by(code: 'NULLIFY_W_CTEP').update(name: 'Nullify with CTEP ID', status:'Active')
+ServiceRequest.find_or_create_by(code: 'LINK_W_CTRP').update(name: 'Link with CTRP ID', status:'Active')
+ServiceRequest.find_or_create_by(code: 'NULL').update(name: 'NULL', status:'Active')
+
 SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP').update( name: 'CTRP')
 SourceContext.find_or_create_by(code: 'NLM').update( name: 'NLM')
 
-SourceStatus.find_or_create_by(code: 'ACT').update( name: 'Active')
-SourceStatus.find_or_create_by(code: 'PEND').update( name: 'Pending')
-SourceStatus.find_or_create_by(code: 'INACT').update( name: 'InActive')
-SourceStatus.find_or_create_by(code: 'NULLIFIED').update( name: 'Nullified')
+ctrp_context = SourceContext.find_by_code('CTRP')
+ctep_context = SourceContext.find_by_code('CTEP')
+nlm_context =  SourceContext.find_by_code('NLM')
+
+SourceStatus.create(code: 'ACT' , source_context_id: ctrp_context.id,  name: 'Active', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctrp_context.id).nil?
+SourceStatus.create(code: 'PEND', source_context_id: ctrp_context.id,  name: 'Pending', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('PEND', ctrp_context.id).nil?
+SourceStatus.create(code: 'INACT', source_context_id: ctrp_context.id, name: 'InActive', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctrp_context.id).nil?
+SourceStatus.create(code: 'NULLIFIED', source_context_id: ctrp_context.id, name: 'Nullified', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('NULLIFIED', ctrp_context.id).nil?
+
+SourceStatus.create(code: 'ACT', source_context_id: ctep_context.id, name: 'Active', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctep_context.id).nil?
+SourceStatus.create(code: 'INACT', source_context_id: ctep_context.id, name: 'InActive', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctep_context.id).nil?
+SourceStatus.create(code: 'LEG', source_context_id: ctep_context.id, name: 'Legacy', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('LEG', ctep_context.id).nil?
+
+
 
 FamilyRelationship.find_or_create_by(code: 'ORG').update( name: 'Organizational')
 FamilyRelationship.find_or_create_by(code: 'AFF').update( name: 'Affiliation')
