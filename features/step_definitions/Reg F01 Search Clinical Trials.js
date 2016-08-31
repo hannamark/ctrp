@@ -103,7 +103,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^CTRP will display all trials where I am listed as a Trial Owner and the trials match the trial search criteria$/, function (callback) {
+    this.Then(/^CTRP will display all trials with a last active submission where I am listed as a Trial Owner and the trials match the trial search criteria$/, function (callback) {
         trialMenuItem.clickTrials();
         trialMenuItem.clickListSearchTrialLink();
         searchTrial.setSearchTrialProtocolID(wildCardParameter);
@@ -172,7 +172,7 @@ module.exports = function() {
         browser.sleep(25).then(callback);
     });
 
-    this.Then(/^CTRP will display all trials that match the trial search criteria$/, function (callback) {
+    this.Then(/^CTRP will display all trials with a last active submission that match the trial search criteria$/, function (callback) {
         trialMenuItem.clickTrials();
         trialMenuItem.clickListSearchTrialLink();
         searchTrial.setSearchTrialProtocolID(wildCardParameter);

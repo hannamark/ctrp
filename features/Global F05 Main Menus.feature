@@ -79,7 +79,6 @@ Then the Administrative menu is expanded and includes:
 | Registered User Details|
 | User Management| 
 | Assign Trial Ownership|
-| Manage Site Admins|
 | New Biomarker Requests|
 | Manage NCIt Terms|
 

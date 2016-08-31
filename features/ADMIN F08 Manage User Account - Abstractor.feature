@@ -1,7 +1,7 @@
 @Admin @Global 
 Feature: ADMIN F08 Manage User Account - Abstractor
 
-As someone with a CTRP Abstractor or CTRP Super Abstractor role, I can account information
+As someone with Abstractor privileges (CTRP Abstractor Role or CTRP Super role),  I can manage account information
 
 Scenario: #1 I can view all CTRP Users 
 Given I am logged into CTRP 
@@ -33,7 +33,7 @@ And I enter search criteria as
 |Site Admin Privilege|
 |Status|
 And I select the Search option
-Then I will see a list of all CTRP Users with the same Site Affiliation as I have, that match the search criteria, listing:
+Then I will see a list of all CTRP Users that match the search criteria, listing:
 |Username|
 |Last Name |
 |First Name |
@@ -72,12 +72,13 @@ And I enter the folowing option fields
 |Middle Initial |
 |PRS Organization Name |
 And I select to either receive or not receive email notifications
+And I select the Inactive status when the status is Active
+And I can select the roles
+|Trial Submitter|
+|Site Administratior|
+And I can select an Organizational Affiliation
 And I can view
-|Status|
-|Role|
-|Organizational Affiliation |
 |Username|
-|Domain|
 And I select the Save option
 Then the account information will be updated in CTRP
 

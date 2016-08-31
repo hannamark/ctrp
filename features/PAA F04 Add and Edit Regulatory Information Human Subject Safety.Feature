@@ -84,7 +84,12 @@ And I am on the Trial Regulatory Information� Human Subject Safety screen
 And I have selected organization look-up at the Regulatory Information� Human Subject Safety screen
 When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed in the lookup window
 Then the selected organization will associated with the trial as the Board Affiliation along with the Board
-And the Board Affiliation should be more than 255 characters long
+Then a comment appears below the Board Affiliation field to display the number of characters available to enter into the field.  
+|255 characters left|
+And "x characters left" will be displayed as characters are added
+When 255 characters have been entered
+Then no additional text can be entered
+
 
 Scenario Outline: #9 Hide non required fields for  Regulatory Information - Human Subject Safety
 Given I am logged into the CTRP Protocol Abstraction application

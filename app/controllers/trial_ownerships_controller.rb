@@ -46,13 +46,15 @@ class TrialOwnershipsController < ApplicationController
   def add
     trialIdsToAdd = params[:trial_ids]
     userIdsToAdd = params[:user_ids]
+    @results_msgs = {}
+
+    @results_msgs[:complete] = false
 
     if trialIdsToAdd && trialIdsToAdd.length > 0 && userIdsToAdd && userIdsToAdd.length > 0
-      addOwners userIdsToAdd, trialIdsToAdd
+      addOwners userIdsToAdd, trialIdsToAdd, @results_msgs
     end
 
-    @results_msgs = 'success'
-    @results_msgs
+    @results_msgs[:complete] = true
   end
 
   # POST /trial_ownerships/end
@@ -86,7 +88,6 @@ class TrialOwnershipsController < ApplicationController
 
       @results_msgs = 'success'
 
-      @results_msgs
   end
 
   # POST /trial_ownerships
@@ -110,25 +111,25 @@ class TrialOwnershipsController < ApplicationController
   # POST /trial_ownerships/transfer
   # POST /trial_ownerships/transfer.json
   def transfer
-    idsToEnd = params[:ids]
+    trialIdsToEnd = params[:ids]
     ownerUserId = params[:from_user_id]
-    if idsToEnd && idsToEnd.length > 0
+
+    @results_msgs = {}
+    if trialIdsToEnd && trialIdsToEnd.length > 0
       #transfer selected
-      ownershipsToEnd = TrialOwnership.where(id: idsToEnd)
-      trial_ids = ownershipsToEnd.pluck(:trial_id)
+      ownershipsToEnd = TrialOwnership.where(trial_id: trialIdsToEnd, user_id: ownerUserId)
       endSelected ownershipsToEnd
-      addOwners params[:to_user_ids], trial_ids
+      addOwners params[:to_user_ids], trialIdsToEnd, @results_msgs
     elsif ownerUserId
       #transfer all
       ownershipsToEnd = TrialOwnership.where(user_id: ownerUserId, ended_at: nil)
       trial_ids = ownershipsToEnd.pluck(:trial_id)
       endSelected ownershipsToEnd
-      addOwners params[:to_user_ids], trial_ids
+      addOwners params[:to_user_ids], trial_ids, @results_msgs
 
     end
 
-    @results_msgs = 'success'
-    @results_msgs
+    @results_msgs[:complete] = true
   end
 
 
@@ -187,16 +188,31 @@ class TrialOwnershipsController < ApplicationController
       params.permit(:trial_id, :user_id)
     end
 
-    def addOwners userIdsToAdd, trialIdsToAdd
+    def addOwners userIdsToAdd, trialIdsToAdd, resultsMsgs
       userIdsToAdd.each do |userId|
-        trialsAdded = []
+        resultsMsgs[:trialsAdded] = Array.new
+        resultsMsgs[:trialsFailed] = Array.new
+
         trialIdsToAdd.each do |trialId|
           if !TrialOwnership.exists?(trial_id: trialId, user_id: userId, ended_at: nil)
-            TrialOwnership.create(trial_id: trialId, user_id: userId)
-            trialsAdded.push(trialId)
+
+            trial_ownership_params = {trial_id: trialId, user_id: userId}
+            trial_ownership = TrialOwnership.new(trial_ownership_params)
+
+            begin
+              if trial_ownership.save
+                resultsMsgs[:trialsAdded].push(trialId)
+              else
+                resultsMsgs[:trialsFailed].push(trialId)
+              end
+            rescue
+              resultsMsgs[:trialsFailed].push(trialId)
+            ensure
+            end
+
           end
         end
-        send_emails 'TRIAL_OWNER_ADD', User.find(userId), trialsAdded
+        send_emails 'TRIAL_OWNER_ADD', User.find(userId), resultsMsgs[:trialsAdded]
       end
     end
 

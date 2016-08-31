@@ -1,7 +1,7 @@
 @Admin @Global 
 Feature: ADMIN F09 Manage User Account - Account Approver
 
-As someone with a CTRP Account Approver, Admin roles, I can manage all accounts
+As someone with a CTRP Account Approver privileges (Admin or Account approver roles ), I can manage all accounts
 
 Scenario: #1 I can view all CTRP Users 
 Given I am logged into CTRP 
@@ -65,7 +65,6 @@ When I enter or edit information in the following required fields
 And I select the following required information
 |Organizational Affiliation |
 |Username|
-|Domain|
 |Status|
 |Role|
 And I enter the folowing option fields

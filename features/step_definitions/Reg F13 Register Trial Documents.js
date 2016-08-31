@@ -63,7 +63,7 @@ module.exports = function() {
      */
 
     this.Given(/^I am on the Register Trial Related Documents screen$/, function (callback) {
-        addTrial.setAddTrialLeadProtocolIdentifier('shiTrialDocUpload ' +  typeOfTrial + moment().format('MMMDoYY h m'));
+        addTrial.setAddTrialLeadProtocolIdentifier('docSS ' +  typeOfTrial.substring(0, 3) + moment().format('MMMDoYY h m'));
         browser.sleep(25).then(callback);
     });
 
@@ -114,13 +114,22 @@ module.exports = function() {
                     return false;
                 }
             });
-        }, 10000, "Save draft page with Uploaded documents did not appear");
+        }, 25000, "Save draft page with Uploaded documents did not appear");
         addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function(value){
+            console.log('value of added docs array with description');
+            console.log(value);
+            console.log(testSampleRichTextFile + '\n' + DescriptionFirstDoc, testSampleXlsmFile + '\n' + DescriptionSecondDoc );
+            expect(value.sort()).to.eql([ testSampleRichTextFile + '\n' + DescriptionFirstDoc, testSampleXlsmFile + '\n' + DescriptionSecondDoc].sort(), 'Verification of Other docs with description');
+        });
+        addTrial.addTrialVerifyAddedDocs.getText().then(function(value){
             console.log('value of added docs array');
             console.log(value);
+            console.log(testSampleDocxFile, testSampleDocFile_IRB, testSampleEXCELFile, testSamplePDFFile, testSampleXlsmFile, testSampleRichTextFile  );
+            expect(value.sort()).to.eql([ testSampleDocxFile, testSampleDocFile_IRB, testSampleEXCELFile, testSamplePDFFile, testSampleRichTextFile, testSampleXlsmFile].sort(), 'Verification of Added Documents');
+
         });
-        expect(addTrial.addTrialVerifyAddedDocs.getText()).to.eventually.eql([ testSampleDocxFile, testSampleDocFile_IRB, testSampleEXCELFile, testSamplePDFFile, testSampleXlsmFile, testSampleRichTextFile ]);
-        expect(addTrial.addTrialVerifyAddedOtherDocsDescription.getText()).to.eventually.eql([ testSampleRichTextFile + '\n' + DescriptionFirstDoc, testSampleXlsmFile + '\n' + DescriptionSecondDoc ]);
+      //  expect(addTrial.addTrialVerifyAddedDocs.getText()).to.eventually.eql([ testSampleDocxFile, testSampleDocFile_IRB, testSampleEXCELFile, testSamplePDFFile, testSampleRichTextFile, testSampleXlsmFile ], 'Verification of Added Documents');
+      //  expect(addTrial.addTrialVerifyAddedOtherDocsDescription.getText()).to.eventually.eql([ testSampleRichTextFile + '\n' + DescriptionFirstDoc, testSampleXlsmFile + '\n' + DescriptionSecondDoc ], 'Verification of Other docs with description');
         browser.sleep(25).then(callback);
     });
 
@@ -254,6 +263,7 @@ module.exports = function() {
             trialDoc.trialRelatedFileUpload('reg', '3', testSampleCSVFile);
             trialDoc.trialRelatedFileUpload('reg', '4', testSampleCSVFile);
             trialDoc.trialRelatedFileUpload('reg', '5', testSampleCSVFile);
+            addTrial.clickAddTrialReviewButton();
             expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
             addTrial.clickAddTrialResetButton();
             trialDoc.trialRelatedFileUpload('reg', '1', testSampleMSGFile);
@@ -261,6 +271,7 @@ module.exports = function() {
             trialDoc.trialRelatedFileUpload('reg', '3', testSampleMSGFile);
             trialDoc.trialRelatedFileUpload('reg', '4', testSampleMSGFile);
             trialDoc.trialRelatedFileUpload('reg', '5', testSampleMSGFile);
+            addTrial.clickAddTrialReviewButton();
             expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
             addTrial.clickAddTrialResetButton();
             trialDoc.trialRelatedFileUpload('reg', '1', testSampleHtmlFile);
@@ -268,6 +279,7 @@ module.exports = function() {
             trialDoc.trialRelatedFileUpload('reg', '3', testSampleHtmlFile);
             trialDoc.trialRelatedFileUpload('reg', '4', testSampleHtmlFile);
             trialDoc.trialRelatedFileUpload('reg', '5', testSampleHtmlFile);
+            addTrial.clickAddTrialReviewButton();
             expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
             addTrial.clickAddTrialResetButton();
             trialDoc.trialRelatedFileUpload('reg', '1', testSampleXMLFile);
@@ -275,6 +287,7 @@ module.exports = function() {
             trialDoc.trialRelatedFileUpload('reg', '3', testSampleXMLFile);
             trialDoc.trialRelatedFileUpload('reg', '4', testSampleXMLFile);
             trialDoc.trialRelatedFileUpload('reg', '5', testSampleXMLFile);
+            addTrial.clickAddTrialReviewButton();
             expect(addTrial.addTrialAcceptedFileExtensionMsg.getText()).to.eventually.eql([arg1, arg1, arg1, arg1, arg1]);
         }
         browser.sleep(25).then(callback);

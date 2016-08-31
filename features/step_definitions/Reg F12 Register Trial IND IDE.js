@@ -18,7 +18,7 @@ module.exports = function() {
     /*********************
      * Validation message *
      *********************/
-    var FDAIND_IDERequired = 'IND/IDE is required';
+    var FDAIND_IDERequired = 'IND/IDE is Required';
     var FDATableValidationMessage = 'Please select an IND/IDE Type, enter an IND/IDE Number, select an IND/IDE Grantor and IND/IDE Holder Type';
 
     this.Given(/^I am on the Register Trial IND\/IDE Information screen$/, function (callback) {
@@ -194,6 +194,22 @@ module.exports = function() {
         addTrial.clickAddTrialReviewButton();
         expect(projectFunctions.verifyWarningMessage(arg1)).to.become('true');
         browser.sleep(25).then(callback);
+    });
+
+
+    this.When(/^I have selected the (.*) Type as$/, function (INDIDEholder, table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Given(/^I don’t provide the NIH Institution or NCI Division\/Program$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
+
+    this.Then(/^I should get the error message as (.*)$/, function (Error, table, callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
     });
 
 };

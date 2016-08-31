@@ -13,6 +13,7 @@
             'SEARCH_ORG': '/ctrp/organizations/search.json',
             'CURATE_ORG': '/ctrp/organizations/curate',
             'UNIQUE_ORG': '/ctrp/organizations/unique',
+            'CLONE_CTEP_ORG': '/ctrp/organizations/clone.json',
             'COUNTRY_LIST': '/ctrp/countries.json',
             'STATES_IN_COUNTRY': '/ctrp/states.json?country=',
             'SOURCE_CONTEXTS': '/ctrp/source_contexts.json',
