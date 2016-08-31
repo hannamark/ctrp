@@ -131,17 +131,16 @@
 
         vm.validateParticipatingSite = function() {
             var isPrimaryContactMarkedForDeletion = false;
-            var markedInv;
 
             _.each(vm.investigatorGrid, function(inv) {
                 if (inv.set_as_contact && inv._destroy) {
                     isPrimaryContactMarkedForDeletion = true;
-                    markedInv = inv;
                 }
             });
 
-            if (isPrimaryContactMarkedForDeletion) {
+            if (isPrimaryContactMarkedForDeletion && vm.investigatorGrid.length > 1) {
                 activateModal();
+
             } else {
                 vm.saveParticipatingSite();
             }

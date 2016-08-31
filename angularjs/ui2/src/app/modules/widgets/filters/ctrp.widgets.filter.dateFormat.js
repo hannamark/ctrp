@@ -14,7 +14,13 @@
             date = moment(d).format(newFormat); // Use more reliable Moment.js library for date conversions
         } else {
             /* date is just the date string(d) if the format is already correct, otherwise change to the correct format  */
-            date = moment(d, 'DD-MMM-YYYY', true).isValid() ? d : moment(d, curFormat).format(newFormat);
+            if (moment(d, 'DD-MMM-YYYY', true).isValid()) {
+                date = d;
+            } else if (moment(d, curFormat, true).isValid()) {
+                date = moment(d, curFormat).format(newFormat);
+            } else {
+                date = moment(d).format('DD-MMM-YYYY, H:mm');
+            }
         }
 
         return date;
