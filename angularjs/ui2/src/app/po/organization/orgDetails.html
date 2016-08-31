@@ -48,6 +48,12 @@
                                 <label class="control-label col-xs-12 col-sm-3">CTRP ID:</label>
                                 <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.ctrp_id}}</div>
                             </div>
+                            <div class="form-group" ng-show="clusterOrg.context == 'CTEP'">
+                                <label class="control-label col-xs-12 col-sm-3">CTEP Organization ID:</label>
+                                <div class="col-xs-12 col-sm-6 form-text">
+                                    TODO:
+                                </div>
+                            </div>
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name) || orgDetailView.showUniqueWarning}">
                                 <label for="organization_name" class="control-label col-xs-12 col-sm-3">Name:</label>
                                 <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
@@ -151,9 +157,15 @@
                                         </table>
                                     </div>
                                 </div>
+                                <div class="form-group" ng-show="clusterOrg.context == 'CTEP'">
+                                    <label class="control-label col-xs-12 col-sm-3">CTEP Organization Type:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">
+                                        TODO:
+                                    </div>
+                                </div>
                                 <div class="form-group has-feedback required"  ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.address)}">
-                                    <label class="control-label col-xs-12 col-xs-12 col-sm-3">Address 1:</label>
-                                    <div class="col-xs12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
+                                    <label class="control-label col-xs-12 col-sm-3">Address 1:</label>
+                                    <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
                                         <input type="text" restriction-field class="form-control input-sm" id="address" ng-model="orgDetailView.curOrg.address" name="address" required>
                                         <span class="form-control-feedback" ng-show="orgDetailView.curOrg.address.length"></span>
                                         <span class="help-block" ng-show="organization_form.address.$error.required">Address is Required</span>
@@ -169,6 +181,13 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6 form-text" ng-if="!orgDetailView.curOrgEditable">
                                         {{orgDetailView.curOrg.address2}}
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="clusterOrg.context == 'CTEP'">
+                                    <label class="control-label col-xs-12 col-sm-3">Address 3:</label>
+                                    <!-- CTEP has address 3 -->
+                                    <div class="col-xs-12 col-sm-6 form-text">
+                                        {{orgDetailView.curOrg.address3}}
                                     </div>
                                 </div>
                                 <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.country)}">
@@ -271,6 +290,12 @@
                                         <p ng-repeat="family in orgDetailView.curOrg.families">
                                           <a ui-sref="main.familyDetail({familyId : family.id })">{{family.name}}</a>
                                         </p>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="clusterOrg.context == 'CTEP'">
+                                    <label class="control-label col-xs-12 col-sm-3">Funding Mechanism:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">
+                                        {{clusterOrg.fuding_mechanism.name}} <!-- TODO -->
                                     </div>
                                 </div>
                                 <div class="form-group" ng-show="clusterOrg.context == 'CTEP'">
