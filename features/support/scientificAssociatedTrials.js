@@ -1,7 +1,7 @@
 /**
  * Author: Shamim Ahmed
  * Date: 07/12/2016
- * Page Object: Scientific Outcome Measures
+ * Page Object: Scientific Associated Trial Details
  */
 
 var chai = require('chai');
@@ -26,7 +26,7 @@ var scientificAssociatedTrials = function(){
     var self = this;
 
     /***********************************
-     * List of Outcome Measure object(s)
+     * Associated Trial Details object(s)
      ***********************************/
 
     this.addAssociatedTrialBtn = element(by.id('add_associated'));
@@ -47,7 +47,7 @@ var scientificAssociatedTrials = function(){
     var rowsLengthVal = '';
 
     /***********************************
-     * Outcome Measure Details object(s)
+     * Associated Trial Details object(s)
      ***********************************/
     this.identifierTypeLst = element(by.id('identifier_type'));
     this.trialIdentifierTxt = element(by.id('trial_identifier'));
@@ -55,7 +55,15 @@ var scientificAssociatedTrials = function(){
     this.researchCategoryVw = element(by.id('research_category_view'));
     this.officialTitleVw = element(by.id('official_title_view'));
 
+    this.identifierTypeLstLbl = element(by.id('identifier_type_lbl'));
+    this.trialIdentifierTxtLbl = element(by.id('trial_identifier_lbl'));
+    this.researchCategoryVwLbl = element(by.id('research_category_lbl'));
+    this.officialTitleVwLbl = element(by.id('official_title_lbl'));
+
+    this.notFoundMsg = element.all(by.css('.help-block.ng-binding'));
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
+
+    this.trialOverviewLbls = element.all(by.css('.col-sm-4.col-xs-12>p'));
 
     this.saveAssociatedBtn = element(by.id('associated_save'));
     this.resetAssociatedBtn = element(by.id('associated_reset'));
@@ -78,6 +86,10 @@ var scientificAssociatedTrials = function(){
 
     this.selectAllAssociatedTrial = function (){
         helper.clickButton(this.tableSelectAll, "Selecte All - Button");
+    };
+
+    this.clickDeleteButton = function(){
+        helper.clickButton(self.deleteSelectedAssociated, "Delete Trial - Button");
     };
 
     this.clickDeleteSelectedAssocaited = function(yesCancel){
@@ -304,6 +316,13 @@ var scientificAssociatedTrials = function(){
         helper.verifyTableRowText(self.tableTHeadColD, thd[3], 'Official Title');
     };
 
+    this.verifyAssociatedListTableTHeadByVal = function (TrialIdentifier, IdentifierType, TrialType, OfficialTitle){
+        helper.verifyTableRowText(self.tableTHeadColA, TrialIdentifier, 'Trial Identifier');
+        helper.verifyTableRowText(self.tableTHeadColB, IdentifierType, 'Identifier Type');
+        helper.verifyTableRowText(self.tableTHeadColC, TrialType, 'Trial Type');
+        helper.verifyTableRowText(self.tableTHeadColD, OfficialTitle, 'Official Title');
+    };
+
     this.verifyResearchCategoryLookup = function(expResearchCat){
         this.waitForElement(self.researchCategoryVw, 'Waiting For Page title');
         self.researchCategoryVw.getText().then(function(result) {
@@ -365,6 +384,13 @@ var scientificAssociatedTrials = function(){
                 }
             });
         }
+    };
+
+    this.verifyTrialOverview = function (index, expectedVal){
+        self.trialOverviewLbls.get(index).getText().then(function(overviewInfo){
+            console.log('Trial Overview in index: ['+ index +'] identified as: ['+ overviewInfo +']');
+            expect(expectedVal.toString()).to.eql(overviewInfo.toString());
+        });
     };
 
     //Save and Reset

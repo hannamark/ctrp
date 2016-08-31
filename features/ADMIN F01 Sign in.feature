@@ -4,7 +4,7 @@ Feature: ADMIN F01 Sign in
 As a CTRP User, I can sign in to the CTRP application
 
 Scenario: #1 I can sign in using my NIH credentials 
-Given I am a valid account in CTRP
+Given I have a valid account in CTRP
 And I am on the CTRP Login Page
 And I enter my user id
 And I enter my password 

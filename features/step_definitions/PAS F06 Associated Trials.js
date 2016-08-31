@@ -94,24 +94,22 @@ module.exports = function() {
     var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1789';
     var leadProtocolIDA = 'CTRP_01_1781';
-    var leadProtocolIDB = 'CTRP_01_1777';
+    var leadProtocolIDB = 'CTRP_01_1797';
     var nctIDA = 'NCT00334282';
     var nctIDB = 'NCT02348710';
     var nciIDA = 'NCI-2015-01997';
-    var nciIDB = '';
+    var nciIDB = 'NCI-2011-02309';
+    var nciIDNotFound = 'NCI-2016-NOTFOUND';
+    var nciIDRejected = 'NCI-2017-01010';
     var optionA = '';
     var optionB = '';
-    var optionC = '';
-    var optionD = '';
     var pageTitle = 'List of Associated Trials';
     var pageTitleA = 'Associated Trial Details';
     var identifierTypeA = 'NCI';
     var identifierTypeB = 'NCT';
     var trialTypeA = 'Interventional';
     var officialTitleA = 'A Randomised, Double-blind, Placebo Controlled, Multi-center Phase III Study to Evaluate the Efficacy and Safety of Pazopanib (GW786034) Compared to Placebo in Patients With Locally Advanced and/or Metastatic Renal Cell Carcinoma';
-    var errorMSGITypeRequired = 'Identifier Type is Required';
-    var errorMSGTIdentifierRequired = 'Trial Identifier is Required';
-    var errorMSGAlreadyExists = 'Error: Trial association already exists';
+
 
     /*
      Scenario: #1 I can add an Associated Trial for a trial
@@ -218,6 +216,17 @@ module.exports = function() {
     });
 
     /*
+
+     Scenario: #2   corresponding Associated Trial records will be created for both associated trials
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Associated Trials screen
+     When  I have selected the Add button
+     Then I am on the Add Associated Trial screen
+     And the added Associated Trial is a CTRP study
+     When the Associated Trial is displayed on the Associated Trials screen
+     Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are added
+
      Scenario Outline: #2   corresponding Associated Trial records will be created for both associated trials
      Given the added Associated Trial is a CTRP study
      When the Associated Trial is displayed on the Associated Trials screen
@@ -231,21 +240,349 @@ module.exports = function() {
      */
 
     this.Given(/^the added Associated Trial is a CTRP study$/, function (callback) {
-
+        //pageMenu.clickSearchTrialAbstractor();
+        //pageMenu.clickTrials();
+        //pageMenu.clickSearchTrialsPA();
+        //helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+        //login.clickWriteMode('On');
+        //commonFunctions.verifySearchTrialsPAScreen();
+        //pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        //pageSearchTrail.clickSearchTrialSearchButton();
+        //commonFunctions.clickLinkText(leadProtocolID);
+        //leftNav.scientificCheckOut();
         browser.sleep(25).then(callback);
     });
 
     this.When(/^the Associated Trial is displayed on the Associated Trials screen$/, function (callback) {
-
+        associated.selectIdentifierType(identifierTypeA);
+        associated.setTrialIdentifierTxt(nciIDA);
+        associated.clickLookupTrial();
         browser.sleep(25).then(callback);
     });
 
     this.Then(/^the (.*) on the Associated Trials screen of the Associated Trial study are added$/, function (AssociatedTrialFields, table, callback) {
+        var AssociatedTrialFields = table.raw();
+        optionFields = AssociatedTrialFields.toString().replace(/,/g, "\n", -1);
+        console.log('Value(s) in the data table:[' + AssociatedTrialFields +']');
+        var optionTypeSplt = optionFields.toString().split("\n");
+        optionFieldsA = optionTypeSplt[1];
+        optionFieldsB = optionTypeSplt[2];
+        optionFieldsC = optionTypeSplt[3];
+        optionFieldsD = optionTypeSplt[4];
+        helper.getVerifyLabel(associated.identifierTypeLstLbl, optionFieldsA, 'Verify Identifier Type field');
+        helper.getVerifyLabel(associated.trialIdentifierTxtLbl, optionFieldsB, 'Verify Trial Identifier field');
+        helper.getVerifyLabel(associated.researchCategoryVwLbl, optionFieldsC, 'Verify Research Category field');
+        helper.getVerifyLabel(associated.officialTitleVwLbl, optionFieldsD, 'Verify Official Title field');
+        associated.clickSaveAssociated();
+        associated.verifyAssociatedListTableTHead();
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #3 Associated Trial is not found
+     Given I am on the Add Associated Trials screen
+     And  I have selected Identifier Type
+     And I have entered the Trial Identifier
+     And I have selected the Look Up Trial button
+     When trial identifer is not found
+     Then the message 'Trial is not found' displays
+     */
+
+    this.Given(/^I am on the Add Associated Trials screen$/, function (callback) {
+        pageMenu.clickSearchTrialAbstractor();
+        pageMenu.clickTrials();
+        pageMenu.clickSearchTrialsPA();
+        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.clickLinkText(leadProtocolID);
+        leftNav.scientificCheckOut();
+        leftNav.clickScientificAssociatedTrials();
+        associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
+        associated.clickAddAssociatedTrial();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected Identifier Type$/, function (callback) {
+        associated.selectIdentifierType(identifierTypeA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered the Trial Identifier$/, function (callback) {
+        associated.setTrialIdentifierTxt(nciIDNotFound);
+        browser.sleep(250).then(callback);
+    });
+
+    this.Given(/^I have selected the Look Up Trial button$/, function (callback) {
+        associated.clickLookupTrial();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^trial identifer is not found$/, function (callback) {
 
         browser.sleep(25).then(callback);
     });
 
+    this.Then(/^the message 'Trial is not found' displays$/, function (callback) {
+        msgNotFound = 'Trial is not found';
+        commonFunctions.verifyTxtByIndex(associated.notFoundMsg, msgNotFound, '0', 'Verify Trial is not found message');
+        browser.sleep(25).then(callback);
+    });
 
+    /*
+     Scenario: #3a Associated Trial is not rejected
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Add Associated Trials screen
+     And I have selected Identifier Type of NCI
+     And I have entered the rejected Trial Identifier
+     And I have selected the Look Up Trial button
+     And the trial does not have a last active submission
+     Then the message 'Trial is not found' displays
+     */
+
+    this.Given(/^I have selected Identifier Type of NCI$/, function (callback) {
+        associated.selectIdentifierType(identifierTypeA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have entered the rejected Trial Identifier$/, function (callback) {
+        associated.setTrialIdentifierTxt(nciIDRejected);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^the trial does not have a last active submission$/, function (callback) {
+        pageMenu.clickSearchTrialAbstractor();
+        pageMenu.clickTrials();
+        pageMenu.clickSearchTrialsPA();
+        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(nciIDRejected);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.clickLinkText(nciIDRejected);
+        checkLastActiveSubmission = 'Last Submitter:';
+        associated.verifyTrialOverview('9', checkLastActiveSubmission);
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario:  #4 Trial Identifier information not null
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Add Associated Trials screen
+     And the Trial Identifier is Null
+     When I click on 'Look Up Trial' button
+     Then an error message will appear "Trial Identifier is Required”
+     */
+
+    this.Given(/^the Trial Identifier is Null$/, function (callback) {
+        associated.setTrialIdentifierTxt('');
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I click on 'Look Up Trial' button$/, function (callback) {
+        associated.clickLookupTrial();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^an error message will appear "Trial Identifier is Required”$/, function (callback) {
+        errorMSGTI = 'Trial Identifier is Required';
+        commonFunctions.verifyTxtByIndex(associated.requiredMsg, errorMSGTI, '0', 'Verify Trial Identifier is Required');
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario:  #5 Identifier Type not null
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Add Associated Trials screen
+     And the Identifier Type is Null
+     When I click on 'Look Up Trial' button
+     Then an error message will appear "Identifier Type is Required”
+     */
+
+    this.Given(/^the Identifier Type is Null$/, function (callback) {
+        var idenTypNull = '-- Please select a trial identifier type...';
+        associated.selectIdentifierType(idenTypNull);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^an error message will appear "Identifier Type is Required”$/, function (callback) {
+        errorMSGIT = 'Identifier Type is Required';
+        commonFunctions.verifyTxtByIndex(associated.requiredMsg, errorMSGIT, '0', 'Verify Identifier Type is Required');
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #6 Deleted Associated Trials
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Associated Trials screen
+     And I have checked the Delete box for an Associated Trial
+     And I have selected the delete check box for another Associated Trial
+     When I have clicked on Delete button
+     Then the message displays 'click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort'
+     When I have clicked on the cancel button
+     Then the Associated Trial(s) is not removed
+     And no message displays
+     And I have clicked on OK
+     Then the Associated Trial will be removed from the trial
+     When I have clicked the Select All button
+     Then the Delete check box is checked for all entries
+     When I have clicked on Delete button
+     Then the message displays 'Click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort'
+     When I have clicked on the cancel button
+     Then the Associated Trial is not removed
+     And no message displays
+     When I click on the OK button
+     Then the Associated Trial(s) is removed from the trial record
+     And the message ‘Record(s) deleted’ displays
+     */
+
+    this.Given(/^I have checked the Delete box for an Associated Trial$/, function (callback) {
+        associated.clickAddAssociatedTrial();
+        associated.selectIdentifierType(identifierTypeA);
+        associated.setTrialIdentifierTxt(nciIDA);
+        associated.clickLookupTrial();
+        associated.clickSaveAssociated();
+        associated.clickAddAssociatedTrial();
+        associated.selectIdentifierType(identifierTypeA);
+        associated.setTrialIdentifierTxt(nciIDB);
+        associated.clickLookupTrial();
+        associated.clickSaveAssociated();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected the delete check box for another Associated Trial$/, function (callback) {
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'delete', identifierTypeA, trialTypeA, officialTitleA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have clicked on Delete button$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the message displays 'click OK to remove selected Associated Trial\(s\) from the study\. Click Cancel to abort'$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have clicked on the cancel button$/, function (callback) {
+        associated.clickDeleteSelectedAssocaited('cancel');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Associated Trial\(s\) is not removed$/, function (callback) {
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^no message displays$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^I have clicked on OK$/, function (callback) {
+        associated.clickDeleteSelectedAssocaited('yes');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Associated Trial will be removed from the trial$/, function (callback) {
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'notexists', identifierTypeA, trialTypeA, officialTitleA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have clicked the Select All button$/, function (callback) {
+        associated.clickAddAssociatedTrial();
+        associated.selectIdentifierType(identifierTypeA);
+        associated.setTrialIdentifierTxt(nciIDA);
+        associated.clickLookupTrial();
+        associated.clickSaveAssociated();
+        associated.selectAllAssociatedTrial();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Delete check box is checked for all entries$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I have clicked on Delete button for all entries$/, function (callback) {
+        //associated.clickDeleteButton();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the message displays 'Click OK to remove selected Associated Trial\(s\) from the study\. Click Cancel to abort'$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Associated Trial is not removed$/, function (callback) {
+        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
+        associated.selectAllAssociatedTrial();
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I click on the OK button$/, function (callback) {
+        associated.deleteAllAssociatedTrialList('yes');
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Associated Trial\(s\) is removed from the trial record$/, function (callback) {
+        associated.verifyDeleteAllAssociatedTrialList();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the message ‘Record\(s\) deleted’ displays$/, function (callback) {
+
+        browser.sleep(25).then(callback);
+    });
+
+    /*
+     Scenario: #7 Reset Add Associated Trial for a trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am on the Add Associated Trials screen
+     And I have entered Identifier Type and Trial Identifier
+     And I have selected 'Look Up Trial' button
+     And Clinical Research Category and Official Title have populated
+     When I select the Reset button
+     Then the information on the Add Associated Trial screen will not be saved to the trial record
+     And the Associated Trials screen displays
+     */
+
+    this.Given(/^I have entered Identifier Type and Trial Identifier$/, function (callback) {
+        associated.selectIdentifierType(identifierTypeA);
+        associated.setTrialIdentifierTxt(nciIDA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^I have selected 'Look Up Trial' button$/, function (callback) {
+        associated.clickLookupTrial();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Given(/^Clinical Research Category and Official Title have populated$/, function (callback) {
+        associated.verifyResearchCategoryLookup(trialTypeA);
+        associated.verifyOfficialTitleLookup(officialTitleA);
+        browser.sleep(25).then(callback);
+    });
+
+    this.When(/^I select the Reset button$/, function (callback) {
+        associated.clickResetAssociated();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the information on the Add Associated Trial screen will not be saved to the trial record$/, function (callback) {
+        associated.clickBackToAssociatedTrialList();
+        browser.sleep(25).then(callback);
+    });
+
+    this.Then(/^the Associated Trials screen displays$/, function (callback) {
+        associated.verifyDeleteAllAssociatedTrialList();
+        browser.sleep(25).then(callback);
+    });
 
 
 };

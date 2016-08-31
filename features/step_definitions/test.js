@@ -170,10 +170,10 @@ module.exports = function() {
        // callback();
     });
 
-    this.After(function(callback) {
-        console.log('Cleaning up');
-        callback();
-    });
+    //this.After(function(callback) {
+    //    console.log('Cleaning up');
+    //    callback();
+    //});
 
 }
 
