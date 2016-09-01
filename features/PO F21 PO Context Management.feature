@@ -151,7 +151,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Address|
     |City|
     |Country|
-    |Processing Status (Pending, Complete)|
+    |Processing Status (Incomplete, Complete)|
 
     
     Scenario: #3 As a PO Curator,I can associate an existing CTRP Organization with the Organization in the CTEP Context
@@ -180,7 +180,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Funding Mechanism|
     |CTEP Org PK ID|
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,NULL)|
-    |Processing Status (Pending, Complete)|
+    |Processing Status (Incomplete, Complete)|
     
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "organization Name" and "Organization State and Country" 
