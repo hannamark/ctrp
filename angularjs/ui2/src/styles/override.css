@@ -1572,9 +1572,10 @@ div[disabled] {
     padding-left: 10px;
 }
 
-.assign-trial-ownership .btn-toolbar {
-    padding-right: 15px;
+.assign-trial-ownership .popover-confirm .btn-toolbar, .user-detail .popover-confirm .btn-toolbar, .assign-ownership .popover-confirm .btn-toolbar {
+    padding-right:10px;
 }
+
 .assign-trial-ownership .ctrptransferselect .pool {
     height: 400px;
 }

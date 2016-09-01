@@ -192,7 +192,7 @@
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
-        if (!vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
+        if (!vm.trialId && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
             if (vm.curUser.org_families.length) {
                 vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
             } else {
@@ -201,9 +201,9 @@
             }
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-        } else if (!vm.registeredUsersPage){
+        } else if (!vm.trialId && !vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-        } else if (vm.registeredUsersPage) {
+        } else if (vm.trialId || vm.registeredUsersPage) {
             vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg, optionOrgFamilies);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
