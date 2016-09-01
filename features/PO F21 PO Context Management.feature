@@ -449,7 +449,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
       |Processing Status (Incomplete, Complete)|
       
    And both the CTRP and CTEP context will be linked
-    When the CTEP Organization does match any existing CTRP Context Person name and Phone, email
+    When the CTEP Person does match any existing CTRP Context Person name and Phone, email
     Then Matching CTRP Person will be displayed in a grid with the information type
     |CTRP Person ID|
     |CTEP Person ID|
