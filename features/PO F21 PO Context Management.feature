@@ -403,8 +403,8 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |Processing Status (Incomplete, Complete)|
       
       And a CTEP Context Person ID will be sent to CTEP
-      And the Person Processing status will be " Complete"
-      And the Service Request will be set to "Null"
+      And the Person Processing status will be " InComplete"
+      And the Service Request will be set to "Create"
       
         Scenario:#10a CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
