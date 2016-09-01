@@ -1232,6 +1232,7 @@ body.trial-sub-groups a.menu-trial-sub-groups {
 
 body.trial-related-documents #trial-doc-upload {
     width: 100%;
+    text-align:left;
 }
 
 

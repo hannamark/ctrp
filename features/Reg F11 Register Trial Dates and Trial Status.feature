@@ -685,7 +685,24 @@ Scenario Outline: #8 Rules for Study Date types
       |Externally Peer-Reviewed |
       |Institutional            |
 
-     
+    Scenario: #10 Trial Status Why Study Stopped? field character count
+Given I am logged into the CTRP Registration application
+And I am on the Trial Status Section
+Then a comment appears below the Why Study Stopped? field to display the number of characters available to enter into the field.  
+|160 characters left|
+And "x characters left" will be displayed as characters are added
+When 160 characters have been entered
+Then no additional text can be entered
+
+
+Scenario: #11 Trial Status Comments field character count
+Given I am logged into the CTRP Registration application
+And I am on the Trial Status Section 
+Then a comment appears below the Comments field to display the number of characters available to enter into the field.  
+|160 characters left|
+And "x characters left" will be displayed as characters are added
+When 160 characters have been entered
+Then no additional text can be entered 
 
 
 

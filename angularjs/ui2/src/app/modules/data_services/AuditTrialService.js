@@ -9,11 +9,11 @@
         .factory('AuditService', AuditService);
 
     AuditService.$inject = ['URL_CONFIGS', 'MESSAGES', '$log', '_',
-        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants','HOST', 'uiGridExporterConstants', 'uiGridExporterService'];
+        'GeoLocationService', 'Common', '$rootScope', 'PromiseTimeoutService','UserService','uiGridConstants','HOST', 'uiGridExporterConstants', 'uiGridExporterService', '$filter'];
 
     function AuditService(URL_CONFIGS, MESSAGES, $log, _,
                         GeoLocationService, Common, $rootScope,
-                        PromiseTimeoutService,UserService,uiGridConstants,HOST, uiGridExporterConstants, uiGridExporterService) {
+                        PromiseTimeoutService,UserService,uiGridConstants,HOST, uiGridExporterConstants, uiGridExporterService, $filter) {
 
         var initUpdateSearchParams = {
             //for pagination and sorting
@@ -199,7 +199,7 @@
             suppressSizeToFit: false,
 
             columnDefs: [
-                {field: 'created_at',  headerName:'Created At'},
+                {field: 'created_at',  headerName:'Created At', cellRenderer: dateTimeFormatRenderer},
                 {field: 'event',  headerName:'Event '},
                 {field: 'updated_by',   headerName:'Updated By'},
                 {field: 'nci_id', headerName: 'NCI ID'},
@@ -210,11 +210,11 @@
 
                 {field: 'program_code',   headerName:'Program Code'},
                 {field: 'grant_question',   headerName:'Grant Question'},
-                {field: 'start_date',   headerName:'Start Date'},
+                {field: 'start_date',   headerName:'Start Date', cellRenderer: dateFormatRenderer},
                 {field: 'start_date_qual',   headerName:'Start Date Qual'},
-                {field: 'primary_comp_date',   headerName:'Primary Comp Date'},
+                {field: 'primary_comp_date',   headerName:'Primary Comp Date', cellRenderer: dateFormatRenderer},
                 {field: 'primary_comp_date_qual',   headerName:'Primary Comp Date Qual'},
-                {field: 'comp_date',   headerName:'Completion Date'},
+                {field: 'comp_date',   headerName:'Completion Date', cellRenderer: dateFormatRenderer},
                 {field: 'comp_date_qual',   headerName:'Completion Date Qual'},
                 {field: 'ind_ide_question',   headerName:'Ind Ide Question'},
                 {field: 'intervention_indicator',   headerName:'Intervention Indicator'},
@@ -324,7 +324,7 @@
 
 
                 {field: 'submission_number',   headerName:'Submission Number'},
-                {field: 'submission_date',   headerName:'Submission Date'},
+                {field: 'submission_date',   headerName:'Submission Date', cellRenderer: dateFormatRenderer},
 
 
 
@@ -354,6 +354,16 @@
 
         return services;
 
+
+        /*********************** Grid Helper Callbacks *****************/
+
+        function dateTimeFormatRenderer(dateTime) {
+            return $filter('dateFormat')(dateTime.value, '', 'DD-MMM-YYYY, H:mm');
+        }
+
+        function dateFormatRenderer(date) {
+            return $filter('dateFormat')(date.value, '', 'DD-MMM-YYYY');
+        }
 
 
         /*********************** implementations *****************/
