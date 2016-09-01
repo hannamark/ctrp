@@ -433,7 +433,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
     When When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "Person Name" and "Phone, email" 
     When the CTEP Person does not match any existing CTRP Context person name and phone, email
-    Then the CTEP person will be copied to create a new CTRP Person associated with the information type
+    Then the CTRP Person will be created and associated to the CTEP Context with the information type
       
       |CTRP Person ID|
       |CTRP Context Person ID|
@@ -446,7 +446,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
       |Email|
       |Person Status|
       |Affiliated Organization CTRP ID|
-      |Processing Status (Incomplete, Complete)|
+      |Processing Status (Complete)|
       
    And both the CTRP and CTEP context will be linked
     When the CTEP Person does match any existing CTRP Context Person name and Phone, email
