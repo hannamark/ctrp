@@ -58,11 +58,12 @@
             <h2>2. Select Users</h2>
             <ctrptransferselect options="trialOwnershipView.userOptions"> </ctrptransferselect>
         </div>
-        <hr>
         <div class="row" ng-if="!trialOwnershipView.trialId && trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
             <h2>3. Select Trials</h2>
             <ctrptransferselect options="trialOwnershipView.trialOptions"> </ctrptransferselect>
         </div>
+
+        <hr>
         <div ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
             <div class="form-group row btn-toolbar">
                 <button
