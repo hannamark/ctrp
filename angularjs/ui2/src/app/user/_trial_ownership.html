@@ -63,32 +63,35 @@
             <h2>3. Select Trials</h2>
             <ctrptransferselect options="trialOwnershipView.trialOptions"> </ctrptransferselect>
         </div>
-        <div class="form-group row btn-toolbar" ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
-            <button
-                    type="button" class="btn btn-primary pull-right ng-isolate-scope"
-                    id="save_btn"
-                    ng-click = "trialOwnershipView.validateAssignment()"
-                    ctrp-confirm ctrp-click="trialOwnershipView.save()"
-                    ng-attr-confirm-off="{{trialOwnershipView.trialOptions.selectedItems.length === 0 || trialOwnershipView.userOptions.selectedItems.length === 0}}"
-                    confirm-msg="You have selected to 'Add' ownership of the trial(s) to the Selected User(s) above."> <i class="glyphicon glyphicon-ok"></i>  Add Selected User(s) to Trial(s)
-            </button>
+        <div ng-if="trialOwnershipView.showSelects && trialOwnershipView.userOptions.resetItems.length">
+            <div class="form-group row btn-toolbar">
+                <button
+                        type="button" class="btn btn-primary pull-right ng-isolate-scope"
+                        id="save_btn"
+                        ng-click = "trialOwnershipView.validateAssignment()"
+                        ctrp-confirm ctrp-click="trialOwnershipView.save()"
+                        ng-attr-confirm-off="{{trialOwnershipView.trialOptions.selectedItems.length === 0 || trialOwnershipView.userOptions.selectedItems.length === 0}}"
+                        confirm-msg="You have selected to 'Add' ownership of the trial(s) to the Selected User(s) above."> <i class="glyphicon glyphicon-ok"></i>  Add Selected User(s) to Trial(s)
+                </button>
 
-            <button type="button" class="btn btn-danger pull-right"
-                    id="remove_btn"
-                    ng-click = "trialOwnershipView.validateAssignment()"
-                    ctrp-confirm ctrp-click="trialOwnershipView.removeTrialsOwnerships()"
-                    ng-attr-confirm-off="{{trialOwnershipView.trialOptions.selectedItems.length === 0 || trialOwnershipView.userOptions.selectedItems.length === 0}}"
-                    confirm-msg="You have selected to 'End' ownership of the trials to the Selected User(s) above.">
-                <i class="glyphicon glyphicon-remove"></i> Remove Selected User(s) from Trial(s)
-            </button>
+                <button type="button" class="btn btn-danger pull-right"
+                        id="remove_btn"
+                        ng-click = "trialOwnershipView.validateAssignment()"
+                        ctrp-confirm ctrp-click="trialOwnershipView.removeTrialsOwnerships()"
+                        ng-attr-confirm-off="{{trialOwnershipView.trialOptions.selectedItems.length === 0 || trialOwnershipView.userOptions.selectedItems.length === 0}}"
+                        confirm-msg="You have selected to 'End' ownership of the trials to the Selected User(s) above.">
+                    <i class="glyphicon glyphicon-remove"></i> Remove Selected User(s) from Trial(s)
+                </button>
+            </div>
 
-            <button type="button" class="btn btn-warning pull-right" id="save_reset" ng-click="trialOwnershipView.resetAll()">
-                <i class="glyphicon glyphicon-remove"></i> Reset All
-            </button>
-
-            <button ng-if="trialOwnershipView.trialId" type="button" class="btn btn-warning pull-right" id="save_cancel" ng-click = "trialOwnershipView.setAddMode = false">
-                <i class="glyphicon glyphicon-remove"></i>  Cancel and View Current Owners of this trial
-            </button>
+            <div class="form-group row btn-toolbar" >
+                <button ng-if="trialOwnershipView.trialId" type="button" class="btn btn-warning pull-right" id="save_cancel" ng-click = "trialOwnershipView.setAddMode = false">
+                    <i class="glyphicon glyphicon-remove"></i>  Cancel and View Current Owners of this trial
+                </button>
+                <button type="button" class="btn btn-warning pull-right" id="save_reset" ng-click="trialOwnershipView.resetAll()">
+                    <i class="glyphicon glyphicon-remove"></i> Reset All
+                </button>
+            </div>
         </div>
         <ul class="text-right add-association-error list-unstyled" ng-if="trialOwnershipView.showErrors">
             <li ng-if="trialOwnershipView.userOptions.selectedItems.length === 0">Please first select the 'users'.</li>

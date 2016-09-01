@@ -32,7 +32,7 @@
             vm.userChosenOrg = null;
             vm.organization_id = vm.org_search_name = undefined;
             vm.showSelects = vm.family_id || vm.organization_id;
-            vm.resetAll();
+            vm.showErrors = false;
         };
 
         vm.getFamilyTrialsUsers = function () {
