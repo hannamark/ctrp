@@ -1,10 +1,21 @@
-<div class="row">
+
+<div class="row" ng-if="!trialOwnershipView.setAddMode">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">Assign Ownership</div>
         </div>
         <div class="panel-body">
-            <strong>Placeholder ....</strong>
+            <div class="form-group no-bottom-margin">
+                <div ng-controller="userListCtrl as userView">
+                    <div ng-include src="'app/user/_user_list_grid.html'"></div>
+                </div>
+                <div class="btn-toolbar">
+                    <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field ng-click="trialOwnershipView.setAddMode = true">
+                        <i class="glyphicon glyphicon-plus"></i> Add Ownership
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<div ng-if="trialOwnershipView.setAddMode == true" ng-include src="'app/user/_trial_ownership.html'"></div>

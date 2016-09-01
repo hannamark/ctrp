@@ -1782,6 +1782,14 @@ body.users #typeAheadResults {
   width: auto !important;
 }
 
+body.assign-trial-ownership .drop-shadow {
+    padding-top: 10px;
+}
+body.assign-ownership .grid {
+    height: auto;
+    max-height: 550px;
+}
+
 /* firefox only*/
 @-moz-document url-prefix() {
     #typeAheadResults {

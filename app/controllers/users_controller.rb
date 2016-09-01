@@ -174,7 +174,12 @@ end
       if sortBy == 'organization_name'
         sortBy = 'user_org.name'
       end
-      @users = User.all
+
+      if params[:trial_id].present? && !params[:trial_id].nil?
+        @users = User.users_own_trial(params[:trial_id])
+      else
+        @users = User.all
+      end
 
       if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
         if params[:family_id].present?

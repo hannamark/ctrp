@@ -8,12 +8,13 @@
     angular.module('ctrp.app.user')
         .controller('userAssignTrialCtrl', userAssignTrialCtrl);
 
-    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', 'toastr', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS'];
+    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', 'toastr', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS', '$stateParams'];
 
-    function userAssignTrialCtrl(PromiseTimeoutService, toastr, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS) {
+    function userAssignTrialCtrl(PromiseTimeoutService, toastr, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS, $stateParams) {
         var vm = this;
         vm.curUser = userDetailObj;
-
+        vm.trialId = $stateParams.trialId;
+        
         vm.typeAheadNameSearch = function () {
             return OrgService.typeAheadOrgNameSearch(vm.org_search_name, 'no_family');
         };
@@ -31,12 +32,15 @@
             vm.userChosenOrg = null;
             vm.organization_id = vm.org_search_name = undefined;
             vm.showSelects = vm.family_id || vm.organization_id;
+            vm.resetAll();
         };
 
         vm.getFamilyTrialsUsers = function () {
             if (vm.family_id || vm.organization_id) {
                 UserService.createTransferTrialsOwnership(vm);
-                TrialService.createTransferTrialsOwnership(vm);
+                if (!vm.trialId) {
+                    TrialService.createTransferTrialsOwnership(vm);
+                }
                 vm.showSelects = vm.family_id || vm.organization_id;
             }
             if (!vm.organization_id) {
@@ -45,41 +49,68 @@
         };
 
         vm.resetAll = function () {
+            vm.showErrors = false;
             vm.userOptions.reset();
-            vm.trialOptions.reset();
+            if (!vm.trialId) {
+                vm.trialOptions.reset();
+            }
         };
+
         vm.validateAssignment = function () {
             vm.showErrors = false;
-            if (vm.trialOptions.selectedItems.length === 0 || vm.userOptions.selectedItems.length === 0) {
+            if ((!vm.trialId && vm.trialOptions.selectedItems.length === 0) || vm.userOptions.selectedItems.length === 0) {
                 vm.showErrors = true;
             }
         };
+
+        var submitAddOwnerships = function ( url, params) {
+            PromiseTimeoutService.postDataExpectObj(url, params).then(function (data) {
+                if(data.results && data.results.complete === true) {
+                    toastr.success('Trial Ownership(s) Created', 'Success!');
+                    vm.resetAll();
+                }
+            });
+        };
+
+        var submitEndOwnerships = function (params, msg) {
+            UserService.endUserTrialsOwnership(params).then(function (data) {
+                if (data.results === 'success') {
+                    toastr.success('Trial Ownership Removed', 'Success!');
+                    vm.resetAll();
+                }
+            });
+        };
+
         vm.save = function () {
-            if (vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
+            if (!vm.trialId && vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
                 var searchParams = {
                     user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
                     trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
                 };
-                PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams).then(function (data) {
-                    if(data.results && data.results.complete === true) {
-                        toastr.success('Trial Ownership(s) Created', 'Success!');
-                        vm.resetAll();
-                    }
-                });
+                submitAddOwnerships(URL_CONFIGS.USER_TRIALS_ADD, searchParams);
+            } else if (vm.trialId && vm.userOptions.selectedItems.length) {
+                var searchParams = {
+                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
+                    trial_ids: [vm.trialId]
+                };
+                submitAddOwnerships(URL_CONFIGS.USER_TRIALS_ADD, searchParams);
+                vm.setAddMode = false;
             }
         };
         vm.removeTrialsOwnerships = function () {
-            if (vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
+            if (!vm.trialId && vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
                 var searchParams = {
                     user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
                     trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
                 };
-                UserService.endUserTrialsOwnership(searchParams).then(function (data) {
-                    if (data.results === 'success') {
-                        toastr.success('Trial Ownership Removed', 'Success!');
-                        vm.resetAll();
-                    }
-                });
+                submitEndOwnerships(searchParams);
+            } else if (vm.trialId && vm.userOptions.selectedItems.length) {
+                var searchParams = {
+                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
+                    trial_ids: [vm.trialId]
+                };
+                submitEndOwnerships(searchParams);
+                vm.setAddMode = false;
             }
         };
 
@@ -99,7 +130,7 @@
             }
         }
 
-        if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN') {
+        if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN' || vm.curUser.role === 'ROLE_SUPER' || vm.curUser.role === 'ROLE_ABSTRACTOR') {
             FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
                 if (data.data) {
                     vm.families = data.data.families;
