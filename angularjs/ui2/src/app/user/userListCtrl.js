@@ -100,7 +100,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
             '{{row.entity.username.indexOf(\'nihusernothaveanaccount\') > - 1 ? \'\': row.entity.username}}</a></div>'
         };
 
@@ -111,7 +111,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -122,7 +122,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -134,7 +134,7 @@
             visible: false,
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
