@@ -238,7 +238,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
     |Organization Name|
-    And the CTRP Processing Status will be "pending"
+    And the CTRP Processing Status will be "Incomplete"
     And The CTRP Curator will be able to identify by searching CTEP Organization with Service Request "Update"
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
