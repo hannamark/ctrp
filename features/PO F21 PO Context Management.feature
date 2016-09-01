@@ -466,6 +466,8 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
     |Affiliated Orgs|
     |Last Updated Date|
     |Last Updated By|
+    |Prefix|
+    |Suffix|
     
     And the curator will review the displayed options and select a person to associate
     And the curator will click on the Associate Selection Button
