@@ -8,19 +8,20 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService) {
+    function userListCtrl(PromiseTimeoutService, $state, $scope, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
-        vm.curUser = userDetailObj;
+        vm.curUser = UserService.getCurrentUserDetails();
+        vm.trialId = $stateParams.trialId;
 
         vm.registeredUsersPage = $state.includes('main.registeredUsers');
 
         // Initial User Search Parameters
         var SearchParams = function (){
             return {
-                username: '',
+                username: vm.trialId ? '*' : '',
                 first_name: '',
                 middle_name: '',
                 last_name: '',
@@ -28,7 +29,8 @@
                 phone: '',
                 approved: '',
                 rows: 25,
-                registered_users: vm.registeredUsersPage ? true : false,
+                trial_id: vm.trialId ? vm.trialId : undefined,
+                registered_users: vm.registeredUsersPage || vm.trialId? true : false,
                 start: 1
             }
         }; //initial User Search Parameters
@@ -186,7 +188,7 @@
                 });
             }
          });
-        
+
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
@@ -265,7 +267,6 @@
                     }
                     vm.gridOptions.data = data['users'];
                     vm.gridOptions.totalItems =  data.total;
-                    $location.hash('users_search_results');
                 }).catch(function (err) {
                     console.log('Search Users failed: ' + err);
                 });
@@ -298,6 +299,10 @@
             vm.userChosenOrg = null;
             vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
         };
+
+        if (vm.trialId) {
+            vm.searchUsers();
+        }
 
         /****************************** implementations **************************/
 
