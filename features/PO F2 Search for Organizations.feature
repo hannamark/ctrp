@@ -1,6 +1,6 @@
 @Global
 @PO
-Feature: PO F2 Search for Organization
+Feature: PO F2 Search and Edit Organization
 
   Scenario:#1 As any Curator,I am able to search for organizations by name including aliases
     Given I know the name of the organization I wish to search for
@@ -158,7 +158,12 @@ Feature: PO F2 Search for Organization
       |Created By|
       |Updated By|
       |Families|
+     And I can edit all CTRP Organization Fields except field type
      
+     |CTRP Organization ID|
+     |Context Organization ID|
+     |Source ID|
+     |Source Context|
 
 
   Scenario:#9 As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected
