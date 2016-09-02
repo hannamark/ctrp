@@ -30,9 +30,11 @@
                   sourceContextObj: function(OrgService) {
                       return OrgService.getSourceContexts();
                   },
-                  sourceStatusObj : function(OrgService) {
-                      console.log("getting source statuses!");
+                  sourceStatusObj: function(OrgService) {
                       return OrgService.getSourceStatuses();
+                  },
+                  serviceRequests: function(OrgService) {
+                    return OrgService.getServiceRequests();
                   },
                   GeoLocationService : 'GeoLocationService',
                   countryList : function(GeoLocationService) {

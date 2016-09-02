@@ -211,10 +211,13 @@ Scenario:  #14 Character display for Eligibility Criterion Description
 And I have selected a trial
       And I am on the Add/Edit Eligibility Criteria screen
   When I am entering text for Eligibility Criteria Description
-     Then information text appears to display the number of characters available to enter into the field
-      | 5000 characters left | 
-And a cumulative message displays with the Total Character of all Eligibility Criterion Descriptions that have been saved 
-     "Total characters for all 'Other Criteria is ####"   
+   Then information text appears below the Eligibility Criteria Description field to display the number of characters available to enter into the field.
+|5000 characters left|
+ And "x characters left" will be displayed as characters are added
+When 5000 characters have been entered into the Eligibility Criteria Description field
+Then no additional text can be entered at the Eligibility Criteria Description field  
+ And a cumulative message displays with the Total Character of all Eligibility Criterion Descriptions that have been saved 
+     "Total characters for all 'Other Criteria is x"   
 
 Scenario:  #15 I can Delete Eligibility Criterion for a Trial
 Given I am logged into the CTRP Protocol Abstraction application

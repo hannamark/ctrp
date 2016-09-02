@@ -18,7 +18,7 @@ Then the Add Participating Site screen will display with the following informati
 And I will be able to view a list of sites of my Family Organizations in the Add Organization Field
 And I can select a participating site I would like to add
 
-Scenario: #3 As a CTRP User without Administrative Privileges, I can select my affiliated organization as a participating site on an Industrial, Other, or Expanded Access Trial
+Scenario: #2 As a CTRP User without Administrative Privileges, I can select my affiliated organization as a participating site on an Industrial, Other, or Expanded Access Trial
 Given I am logged into CTRP
 And I have performed a trial search
 And there is a trial in the search results with the Select Action to Add My Site
@@ -36,7 +36,7 @@ And I will be able to view my affiliated organization in the Add Organization Fi
 And I can select my affiliated organization to add as a participating site
 
 
-Scenario Outline: #2 As a CTRP User, I can enter my participating site information after selecting a site as participating on a trial
+Scenario Outline: #3 As a CTRP User, I can enter my participating site information after selecting a site as participating on a trial
 Given I am on the Add Participating Site screen
 When I have selected a participating site
 And I have clicked on the Next button
@@ -69,24 +69,27 @@ When I enter one or more Site Recruitment Status type
  |Trial Realted Documents|
  |Paticipating Sites Table|
  
-   Scenario:#2'' Participating Sites Table Columns description
+   Scenario:#4 Participating Sites Table Columns description
     Given I am on the View Trial Screen
      And I can view Participating Site Table
      And the table displays the columns type
      
      |CTRP ID|
      |CTRP Organization Name|
-     |Investigators|
-     |Primary Contact|
+     |Investigators, Role (Principal Investigator or Sub-Investigator)|
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
      |Date opened for Accrual|
      |Date Closed for Accrual|
+     |Primary Contact|
+     |Email|
+     |Phone Number, Phone Number Extension|
+     
      
 
-Scenario: #2' Add Participating Site Mandatory Fields
+Scenario: #5 Add Participating Site Mandatory Fields
     Given I am on the Add Participating Site screen
      When Add Participating site fields <PSType> id not added
      Then the error message <PSError> will be displayed
@@ -96,7 +99,7 @@ Scenario: #2' Add Participating Site Mandatory Fields
      |Site Recruitment|At least one Site Recruitment Status is Required |
 
 
-Scenario Outline: #2a As a CTRP User, I can add Investigators 
+Scenario Outline: #6 As a CTRP User, I can add Investigators 
 Given I am on the Add Participating Site screen
 When I click on the Investigator tab
 Then the Investigator screen opens
@@ -123,7 +126,7 @@ Then the added investigator will be displayed with data type
 |Delete|
 And I have to click on the save button to associate added investigators to the participating site
 
-Senario: #2b As a CTRP User, I can add a site contact
+Senario: #7 As a CTRP User, I can add a site contact
 Given I am on the Add Participating Site feature
 When I click on the Contact tab
 Then the General Contact screen opens
@@ -138,28 +141,28 @@ When I click on the save button
 Then the added contact will be associated with the participating site
 
 
-Scenario: #2c I can add contact when contact type is Site investigator
+Scenario: #8 I can add contact when contact type is Site investigator
 Given I am on the Contact Screen
 When the contact type selected is Site Investigator 
 Then I can select a contact form a list of added Investigators
 And I must enter an Email Address
 And I must enter a Phone Number and Extention
 
-Senario: #2d I can add contact when contact type is Person
+Senario: #9 I can add contact when contact type is Person
 Given I am on the Contact Screen
 When the contact type selected is Person 
 Then I can select a person by conducting a Person Search 
 And I must enter an Email Address
 And I must enter a Phone Number and Extention
 
-Senario: #2c I can add contact when contact type is General
+Senario: #10 I can add contact when contact type is General
 Given I am on the Contact Screen
 When the contact type selected is General
 Then I must enter a contact information
 And I must enter an Email Address
 And I must enter a Phone Number and Extention
 
-Scenario: #6 As a CTRP User with Administrative Privileges, I can update any added site associated with the admin's family on an Imported trial
+Scenario: #11 As a CTRP User with Administrative Privileges, I can update any added site associated with the admin's family on an Imported trial
 Given I can view all participating sites added to an Imported trial
 And I can update any sites associated with the admin's family on an Imported Trial
 When I have selected the Available Action to Update Site
@@ -174,7 +177,7 @@ And I can update any of these data elements:
 And I can update Investigators
 And I can update contact Information
 
-Scenario: #7 As a CTRP User without Administrative Privileges, I can update my participating site I added on an Imported trial
+Scenario: #12 As a CTRP User without Administrative Privileges, I can update my participating site I added on an Imported trial
 Given I have added my participating site on an Imported trial
 And I have selected the Available Action to Update My Site
 Then the participating site I have added on an Imported trial will be displayed

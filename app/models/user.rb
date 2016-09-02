@@ -165,6 +165,10 @@ class  User < ActiveRecord::Base
     where(organization_id: familyOrganizations)
 
   }
+  scope :users_own_trial, -> (value) {
+    join_clause = "LEFT JOIN trial_ownerships on users.id = trial_ownerships.user_id"
+    joins(join_clause).where("trial_id = #{value} AND trial_ownerships.ended_at is null")
+  }
 
   attr_accessor :password
 

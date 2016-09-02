@@ -29,11 +29,11 @@ Feature: PO F3 Create an Organization
     And I provide the email of the organization
     When I click on the save button
     Then a unique CTRP Organization ID <Source ID> will be assigned to the created organization
-    And a unique CTRP Context ID will be assigned to the created organization
+    And a unique CTRP Context Organization ID will be assigned to the created organization
     And  the system should create an organization record that contains information type
       
       |CTRP Organization ID|
-      |CTRP Context ID|
+      |Context Organization ID|
       |organization Name|
       |Source Context: CTRP|
       |Source ID|
@@ -53,20 +53,7 @@ Feature: PO F3 Create an Organization
       |Updated By|
       
       
-     Scenario: #2a Create Person fields's character Limit 
-    Given I am logged in to CTRP PO application
-     When I provide the field name <FieldName>
-     Then a comment appears below the Field Type <fieldName> to display the number of characters available to enter into the field <FieldLength>
-     And "x characters left" will be displayed as characters are added
-     When the field Length <FieldLength> characters have been entered
-    Then no additional text can be entered
      
-     |FieldName        |FieldLength|
-     |First Name       |62         |
-     |Last Name        |62         |
-     |Phone Number     |30         |
-     |Phone Extension  |30         |
-     |Email            |254        |
       
         Scenario: #3 Create Organization Mandatory fields
     Given I am a curator
@@ -119,13 +106,12 @@ Feature: PO F3 Create an Organization
      Then the edit screen will display
      And I can edit all fields except
      
-     |CTRP ID|
-     |CTRP Context ID|
+     |CTRP Organization ID|
+     |Context Organization ID|
      |Source ID|
      |Source Context|
 
 
-    
     Scenario: #8 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
     Given I am a curator 
     And I am on the CTRP PO Application
@@ -135,9 +121,10 @@ Feature: PO F3 Create an Organization
       When any match is found 
       Then the resulted search will display the grid below with columns type
    
-       |CTRP ID|
-       |CTEP ID|
+       |CTRP Organization ID|
+       |CTEP Organization ID|
        |Source ID|
+       |Context Organization ID|
        |Name|
        |CTEP Org Type|
        |Funding Mechanism|
@@ -150,29 +137,34 @@ Feature: PO F3 Create an Organization
        |Email|
        |Last Updated By|
        |Last Updated Date|
+       |Address1|
+       |Address2|
        |City|
        |State|
        |Country|
        |Postal Code|
-       |Source ID|
+     
        
       And the curator selects the matching CTEP organization to link to CTRP org
       When the curator clicks on Associate Selection Button <AssociateSelection>
       Then the CTRP and CTEP association is complete
       And the CTEP Processing status will be complete
+      And the CTEP Service Request will be NULL
       And CTRP Organizaiton must be associated to only one CTEP organization
       And both organization Source Status must be Active
       And Organizations can be associated only from the CTRP context 
-      And an Association Grid history will be displayed under the CTRP org screen to displayed all CTEP associations with source status type
+      And an Association Grid history will be displayed under the CTRP organization screen to displayed all CTRP and CTEP associations with source status type
       
       |Active|
       |Inactive|
+      |Pending|
+      |Nullified|
       |Legacy|
      
      And the CTEP context will be displayed the data type on the same screen in a new tap labeled "CTEP"
     
     |CTEP Context|
-    |CTEP Organization ID|
+    |CTRP Organization ID|
     |Name|
     |Source Context|
     |Source ID|
@@ -183,12 +175,12 @@ Feature: PO F3 Create an Organization
     |Address3|
     |City|
     |State_province|
-    |Postal_code|
+    |Postal code|
     |Country|
-    |Public Research Email|
-    |Public Research Phone|
+    |Email|
+    |Phone|
     |Funding Mechanism|
-    |CTEP Context ID|
+    |Context Organization ID|
     |Service Request (NULL)|
     |Processing Status (Complete)|
 
@@ -201,9 +193,10 @@ Feature: PO F3 Create an Organization
      When A match is found
      Then the resulted search will display the grid below with columns type
    
-       |CTRP ID|
-       |CTEP ID|
+       |CTRP Organization ID|
+       |CTEP Organization ID|
        |Source ID|
+       |Context Organization ID|
        |Name|
        |CTEP Org Type|
        |Funding Mechanism|
@@ -216,23 +209,26 @@ Feature: PO F3 Create an Organization
        |Email|
        |Last Updated By|
        |Last Updated Date|
+       |Address1|
+       |Address2|
        |City|
        |State|
        |Country|
        |Postal Code|
-       |Source ID|
        
       And the curator selects the matching NLM organization to link to CTRP org
       When the curator clicks on Associate Selection Button <AssociateSelection>
       Then the CTRP and NLM association is complete
       And the NLM Processing status will be complete
+      And the NLM Service Request will be NULL
       And CTRP Organizaiton must be associated to one or more NLM organization
+      And the curator can associate one NLM organization at a time
       And both organization Source Status must be Active
       And Organizations can be associated only from the CTRP context 
-      And an Association Grid history will be displayed under the CTRP org screen to displayed all NLM associations       
+      And an Association Grid history will be displayed under the CTRP org screen to displayed all NLM associations 
       And the NLM context will be displayed the data type on the same screen in a new tap labeled "NLM"
     
-    |NLM Context ID|
+    |Context Organization ID|
     |Name: Sponsor Name|
     |NLM Organization Status|
     |NLM Service Request|

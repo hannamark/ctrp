@@ -123,6 +123,7 @@ And I am on the Outcome Measures screen
 When I am entering into Title
 Then information text appears below the title field to display the number of characters available to enter into the field.
 |255 characters left|
+ And "x characters left" will be displayed as characters are added
 When 255 characters have been entered at the title field
 Then no additional text can be entered at the title field
 
@@ -133,6 +134,7 @@ And I am on the Outcome Measures screen
 When I am entering into Time Frame field 
 Then information text appears below the Time Frame field to display the number of characters available to enter into the field.  
 |255 characters left|
+ And "x characters left" will be displayed as characters are added
 When 255 characters have been entered at the time frame field
 Then no additional text can be entered at the time frame field
 
@@ -143,5 +145,6 @@ And I am on the Outcome Measures screen
 When I am entering into Description
 Then information text appears below the Detailed Description field to display the number of characters available to enter into the field.  
 |1000 characters left|
+    And "x characters left" will be displayed as characters are added
 When 1000 characters have been entered at the description field
 Then no additional text can be entered at the description field

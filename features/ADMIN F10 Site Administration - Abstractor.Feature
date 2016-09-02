@@ -71,7 +71,7 @@ When I select the Site Administration feature
 And I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the status to inactive
-And the system will display a warning message that "The User will no longer be able to Access CTRP"
+And the system will display a warning message that "The User will no longer be able to access CTRP"
 And the system will determine if the user is an owner of any trials with an active submission
 And display the message that "The trial(s) owned by this user will need to be reassigned to a new owner"
 And the system will display the following action buttons

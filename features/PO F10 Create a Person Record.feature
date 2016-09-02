@@ -10,7 +10,7 @@ Feature: PO F10 Create a Person Record
     And I provide either the Phone <Phone> or email <Email> of the Person I wish to create
     And I have searched Organizations and selected an affiliated organization
     And I submit my create request for Person
-    Then the system should create a Person record that contains a unique PO ID, the person first name, last name, middle name, prefix, suffix, the CTEP ID as Null, the phone <Phone> and/or email <Email>, and the affiliated organization
+    Then the system should create a Person record that contains a unique CTRP Person ID,CTRP Context ID, the person first name, last name, middle name, prefix, suffix, the CTEP ID as Null, the phone <Phone> and/or email <Email>, and the affiliated organization, Processing Status "Complete"
     And the Person status should be Active and the status date should be the current date and time
 
     Examples:
@@ -50,4 +50,35 @@ Feature: PO F10 Create a Person Record
     And I enter person first name which is duplicate
     And I enter person last name which is duplicate
     Then I should get warning message "Warning: Person exists in the database. Please verify and create a new Person record." for duplicate Person
+
+     Scenario: #4 As a curator, I can associated an Existing CTEP Person record from CTRP Person Context
+     Given I am on the CTRP Person Context
+     And I can view CTRP Person Records 
+     When I click on the "Associate Person Context" at the botton of the screen
+     Then  When the CTRP system finds a match in a CTEP Context Person name and Phone, email
+    Then Matching CTEP Person will be displayed in a grid with the information type
+    |CTRP Person ID|
+    |CTEP Person ID|
+    |Context person ID|
+    |Source ID|
+    |Source Context|
+    |Source Status|
+    |CTEP Person Registration Type|
+    |First Name|
+    |Middle Name|
+    |Last Name|
+    |Processing Status|
+    |Service Request|
+    |Affiliated Orgs|
+    |Last Updated Date|
+    |Last Updated By|
+    |Prefix|
+    |Suffix|
+    
+    And the curator will review the displayed options and select a person to associate
+    And the curator will click on the Associate Selection Button
+    And both contexts will be associated 
+	Then the CTEP Processing Status will be changed from "Incomplete" to "Complete"
+    And the CTEP Service Request will be change from Create to Null
+    And the CTEP CTRP association will be complete
 

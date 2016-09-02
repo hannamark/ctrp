@@ -313,8 +313,15 @@
 
                                 <div class="form-group" ng-show="clusterOrg.context == 'CTEP'">
                                     <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
-                                    <div class="col-xs-12 col-sm-6 form-text">
-                                        {{orgDetailView.curOrg.processing_status}}
+                                    <div class="col-xs-12 col-sm-3">
+                                        <select ng-init="orgDetailView.curOrg.processing_status"
+                                                class="form-control input-sm" id="processing_status"
+                                                ng-model="orgDetailView.curOrg.processing_status"
+                                                ng-options="status.name as status.name for status in orgDetailView.processingStatuses">
+                                            <option value="">
+                                                Please select --
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -325,6 +332,25 @@
                                             ng-click="orgDetailView.cloneCtepOrg(orgDetailView.curOrg.id)">Clone</button>
                                     </div>
                                 </div>
+                                <!-- reset and save buttons for CTEP context only -->
+                                <div class="form-group no-bottom-margin" ng-show="clusterOrg.context == 'CTEP'">
+                                    <div class="col-xs-12 col-sm-3"></div>
+                                    <div class="btn-toolbar col-xs-12 col-sm-6">
+                                        <button type="button" restriction-field class="btn btn-primary pull-right" id="save_btn_ctep" ng-disabled="orgDetailView.disableBtn">
+                                            <i class="glyphicon glyphicon-ok"></i> Save
+                                        </button><!-- TODO: update CTEP -->
+                                        <button type="button" ng-hide="!orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn_ctep" ng-click="orgDetailView.clearForm()" ng-disabled="orgDetailView.disableBtn">
+                                            <i class="glyphicon glyphicon-remove"></i> Reset
+                                        </button>
+                                        <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn_ctep" ng-click="orgDetailView.resetForm()" ng-disabled="orgDetailView.disableBtn">
+                                            <i class="glyphicon glyphicon-remove"></i> Reset
+                                        </button>
+                                        <!-- <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')" ng-disabled="orgDetailView.disableBtn">
+                                            <i class="glyphicon glyphicon-trash"></i> Delete This Organization
+                                        </button> -->
+                                    </div>
+                                </div>
+                                <!-- end of reset and save buttons for CTEP -->
 
                                 <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
                                     <div class="col-xs-12 col-sm-3"></div>
@@ -338,9 +364,9 @@
                                         <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()" ng-disabled="orgDetailView.disableBtn">
                                             <i class="glyphicon glyphicon-remove"></i> Reset
                                         </button>
-                                        <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')" ng-disabled="orgDetailView.disableBtn">
+                                        <!-- <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="orgDetailView.confirmDelete('sm')" ng-disabled="orgDetailView.disableBtn">
                                             <i class="glyphicon glyphicon-trash"></i> Delete This Organization
-                                        </button>
+                                        </button> -->
                                     </div>
                                 </div>
                         </div>
