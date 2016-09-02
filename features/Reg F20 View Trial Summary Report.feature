@@ -64,7 +64,7 @@ And I can view TSR document
      And the TSR Trial Details Section fields will be displayed following the rules below
      
      
-      |TSR Section     |Field                                        |Field Required  |Conditional Fields                                      |Display Rule when Field t  |General Details |Research Category                            |Required        |                                                        |Display "No data available"    |
+      |TSR Section     |Field                                        |Field Required  |Conditional Fields                                      |Display Rule when Field t  |
       |                |Lead Organization                            |Required        |                                                        |Display "No data available"    |
       |                |Sponsor                                      |Required        |                                                        |Display "No data available"    |
       |                |Responsible Party                            |Required        |                                                        |Display "No data available"    |
