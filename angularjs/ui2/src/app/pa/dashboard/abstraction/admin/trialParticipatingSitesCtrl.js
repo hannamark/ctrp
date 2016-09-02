@@ -138,7 +138,7 @@
                 }
             });
 
-            if (isPrimaryContactMarkedForDeletion && vm.investigatorGrid.length > 1) {
+            if (isPrimaryContactMarkedForDeletion && !checkArrayForDeletion(vm.investigatorGrid)) {
                 activateModal();
 
             } else {

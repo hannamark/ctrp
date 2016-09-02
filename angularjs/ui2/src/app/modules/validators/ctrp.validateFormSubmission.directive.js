@@ -42,14 +42,14 @@
                         var formAction = $parse(attrs.ctrpSubmit);
 
                         submitController.attempted = formController.$submitted;
-                        $log.info('form is submitted: ' + formController.$submitted);
+                        //$log.info('form is submitted: ' + formController.$submitted);
 
                         if (!scope.$$phase) {
                             scope.$apply();
                         }
 
                         if (formController.$invalid) { //|| formController.$pristine
-                            $log.error('form submission invalid or untouched!');
+                            //$log.error('form submission invalid or untouched!');
                             return false;
                         } else if (!hasSecondaryTask) {
                             /* Execute the form action normally if valid/and no secondary tasks */
