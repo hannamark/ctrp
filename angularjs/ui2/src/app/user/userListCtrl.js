@@ -8,19 +8,20 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'userDetailObj', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService'];
+    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, $state, $scope, userDetailObj, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService) {
+    function userListCtrl(PromiseTimeoutService, $state, $scope, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
-        vm.curUser = userDetailObj;
+        vm.curUser = UserService.getCurrentUserDetails();
+        vm.trialId = $stateParams.trialId;
 
         vm.registeredUsersPage = $state.includes('main.registeredUsers');
 
         // Initial User Search Parameters
         var SearchParams = function (){
             return {
-                username: '',
+                username: vm.trialId ? '*' : '',
                 first_name: '',
                 middle_name: '',
                 last_name: '',
@@ -28,7 +29,8 @@
                 phone: '',
                 approved: '',
                 rows: 25,
-                registered_users: vm.registeredUsersPage ? true : false,
+                trial_id: vm.trialId ? vm.trialId : undefined,
+                registered_users: vm.registeredUsersPage || vm.trialId? true : false,
                 start: 1
             }
         }; //initial User Search Parameters
@@ -98,7 +100,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
             '{{row.entity.username.indexOf(\'nihusernothaveanaccount\') > - 1 ? \'\': row.entity.username}}</a></div>'
         };
 
@@ -109,7 +111,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -120,7 +122,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -132,7 +134,7 @@
             visible: false,
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -186,11 +188,11 @@
                 });
             }
          });
-        
+
         //ui-grid plugin options
         vm.searchParams = new SearchParams;
         vm.gridOptions = gridOptions;
-        if (!vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
+        if (!vm.trialId && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
             if (vm.curUser.org_families.length) {
                 vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
             } else {
@@ -199,9 +201,9 @@
             }
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-        } else if (!vm.registeredUsersPage){
+        } else if (!vm.trialId && !vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-        } else if (vm.registeredUsersPage) {
+        } else if (vm.trialId || vm.registeredUsersPage) {
             vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg, optionOrgFamilies);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -265,7 +267,6 @@
                     }
                     vm.gridOptions.data = data['users'];
                     vm.gridOptions.totalItems =  data.total;
-                    $location.hash('users_search_results');
                 }).catch(function (err) {
                     console.log('Search Users failed: ' + err);
                 });
@@ -298,6 +299,10 @@
             vm.userChosenOrg = null;
             vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
         };
+
+        if (vm.trialId) {
+            vm.searchUsers();
+        }
 
         /****************************** implementations **************************/
 

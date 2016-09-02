@@ -53,20 +53,7 @@ Feature: PO F3 Create an Organization
       |Updated By|
       
       
-     Scenario: #2a Create Person fields's character Limit 
-    Given I am logged in to CTRP PO application
-     When I provide the field name <FieldName>
-     Then a comment appears below the Field Type <fieldName> to display the number of characters available to enter into the field <FieldLength>
-     And "x characters left" will be displayed as characters are added
-     When the field Length <FieldLength> characters have been entered
-    Then no additional text can be entered
      
-     |FieldName        |FieldLength|
-     |First Name       |62         |
-     |Last Name        |62         |
-     |Phone Number     |30         |
-     |Phone Extension  |30         |
-     |Email            |254        |
       
         Scenario: #3 Create Organization Mandatory fields
     Given I am a curator

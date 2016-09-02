@@ -151,7 +151,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Address|
     |City|
     |Country|
-    |Processing Status (Pending, Complete)|
+    |Processing Status (Incomplete, Complete)|
 
     
     Scenario: #3 As a PO Curator,I can associate an existing CTRP Organization with the Organization in the CTEP Context
@@ -180,7 +180,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     |Funding Mechanism|
     |CTEP Org PK ID|
     |Service Request (Create,Update,Merge with CTEP ID,Link with CTRP ID,NULL)|
-    |Processing Status (Pending, Complete)|
+    |Processing Status (Incomplete, Complete)|
     
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "organization Name" and "Organization State and Country" 
@@ -238,7 +238,7 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
     |Organization Name|
-    And the CTRP Processing Status will be "pending"
+    And the CTRP Processing Status will be "Incomplete"
     And The CTRP Curator will be able to identify by searching CTEP Organization with Service Request "Update"
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
@@ -403,8 +403,8 @@ Scenario: #2 As a PO Curator, I can search a NEW CTEP Organization to create a C
       |Processing Status (Incomplete, Complete)|
       
       And a CTEP Context Person ID will be sent to CTEP
-      And the Person Processing status will be " Complete"
-      And the Service Request will be set to "Null"
+      And the Person Processing status will be " InComplete"
+      And the Service Request will be set to "Create"
       
         Scenario:#10a CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
@@ -433,7 +433,7 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
     When When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "Person Name" and "Phone, email" 
     When the CTEP Person does not match any existing CTRP Context person name and phone, email
-    Then the CTEP person will be copied to create a new CTRP Person associated with the information type
+    Then the CTRP Person will be created and associated to the CTEP Context with the information type
       
       |CTRP Person ID|
       |CTRP Context Person ID|
@@ -446,10 +446,10 @@ Scenario: #11 As a PO Curator, I can search a NEW person record to associate it 
       |Email|
       |Person Status|
       |Affiliated Organization CTRP ID|
-      |Processing Status (Incomplete, Complete)|
+      |Processing Status (Complete)|
       
    And both the CTRP and CTEP context will be linked
-    When the CTEP Organization does match any existing CTRP Context Person name and Phone, email
+    When the CTEP Person does match any existing CTRP Context Person name and Phone, email
     Then Matching CTRP Person will be displayed in a grid with the information type
     |CTRP Person ID|
     |CTEP Person ID|

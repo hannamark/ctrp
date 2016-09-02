@@ -255,7 +255,7 @@
             if(family && family.length){
                 if (family === 'no_family') {
                     queryObj['alias'] = false;
-                    queryObj['rows'] = 50;
+                    queryObj['rows'] = 25;
                     queryObj['no_family'] = true;
                 } else {
                     queryObj['family_name'] = family;

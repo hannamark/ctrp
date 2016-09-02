@@ -1572,9 +1572,10 @@ div[disabled] {
     padding-left: 10px;
 }
 
-.assign-trial-ownership .btn-toolbar {
-    padding-right: 15px;
+.assign-trial-ownership .popover-confirm .btn-toolbar, .user-detail .popover-confirm .btn-toolbar, .assign-ownership .popover-confirm .btn-toolbar {
+    padding-right:10px;
 }
+
 .assign-trial-ownership .ctrptransferselect .pool {
     height: 400px;
 }
@@ -1780,6 +1781,14 @@ body.users #typeAheadResults {
 
 .ui-select-auto-width .ui-select-multiple input.ui-select-search {
   width: auto !important;
+}
+
+body.assign-trial-ownership .drop-shadow {
+    padding-top: 10px;
+}
+body.assign-ownership .grid {
+    height: auto;
+    max-height: 550px;
 }
 
 /* firefox only*/
