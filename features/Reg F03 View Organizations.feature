@@ -45,7 +45,7 @@ And the following button type should also be invisible to the user
       |Delete This Organization |
       |Reset Button  |
       |Save Button  |
-When I click on Families Link
+When I click on Family Name Link
 Then I will view family details type
 
       |Family Name  |
