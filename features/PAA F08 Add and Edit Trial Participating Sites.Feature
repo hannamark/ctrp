@@ -73,8 +73,6 @@ Then the following fields will be required
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
-     |Date opened for Accrual|
-     |Date Closed for Accrual|
      |Primary Contact|
      |Email|
      |Phone Number, Phone Number Extension|
