@@ -126,7 +126,7 @@ Then the audit trail will be displayed for the Trial ordered by date with newest
 |Processing Status processing_status_wrappers.status_date, processing_status_id: processing_statuses.name |
 | Trial co leads (multiple) xxxx trial_co_lead_orgs.organization_id: organizations.name|
 | Co-PIs trial_co_pis.person_id : people.fname, mname, lname|
-| Trial Status trial_status_wrappers.status_date, why_stopped, trial_status_id: trial_statuses.name|
+| Trial Status trial_status_wrappers.status_date, Comments, why_stopped, trial_status_id: trial_statuses.name|
 
 Examples:
 |field name| data example|
