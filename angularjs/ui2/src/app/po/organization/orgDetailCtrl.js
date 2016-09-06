@@ -9,12 +9,10 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter', '_',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal', '$timeout',
-        'GeoLocationService', 'serviceRequests'];
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal', '$timeout', 'GeoLocationService', 'serviceRequests'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter, _,
-                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal,
-                           $timeout, serviceRequests) {
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout, GeoLocationService, serviceRequests) {
         var vm = this;
         $scope.organization_form = {};
         vm.addedNameAliases = [];
@@ -37,7 +35,7 @@
         vm.showPhoneWarning = false;
         vm.disableBtn = false;
         vm.processStatusArr = OrgService.getProcessingStatuses();
-        var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
+        var orgContextCache = {'CTRP': null, 'CTEP': null, 'NLM': null};
 
         vm.updateOrg = function () {
             vm.disableBtn = true;
