@@ -8,12 +8,13 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
+    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService, $stateParams) {
+    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService,uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
         vm.curUser = UserService.getCurrentUserDetails();
+        vm.curationMode = UserService.isCurationModeEnabled();
         vm.trialId = $stateParams.trialId;
 
         vm.registeredUsersPage = $state.includes('main.registeredUsers');
@@ -166,25 +167,13 @@
             exporterMenuAllData: true,
             exporterMenuPdf: false,
             exporterMenuCsv: false,
-            gridMenuCustomItems: [
-                {
-                    title: 'Export All Data As CSV',
-                    order: 1,
-                    action: function ($event){
-                        this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
-                    }
-                },
-                {
-                    title: 'Remove Selected User from Ownership',
-                    order: 2,
-                    shown: function () {
-                        return vm.gridApi.selection.getSelectedRows().length > 0
-                    },
-                    action: function (){
-                        vm.confirmRemoveTrialsOwnerships(_.chain(vm.gridApi.selection.getSelectedRows()).pluck('id').value());
-                    }
+            gridMenuCustomItems: [{
+                title: 'Export All Data As CSV',
+                order: 100,
+                action: function ($event){
+                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
                 }
-            ]
+            }]
         };
 
          UserService.getUserStatuses().then(function (response) {
@@ -313,6 +302,7 @@
         };
 
         if (vm.trialId) {
+            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
             vm.searchUsers();
         }
 
@@ -372,6 +362,13 @@
             //do the search with the updated sorting
             vm.searchUsers();
         } //sortChangedCallBack
+
+
+        //Listen to the write-mode switch
+        $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
+            vm.curationMode = UserService.isCurationModeEnabled();
+        });
     }
 
 })();

@@ -7,10 +7,10 @@
     angular.module('ctrp.module.dataservices')
         .service('UserService', UserService);
 
-    UserService.$inject = ['LocalCacheService', 'TrialService', 'PromiseTimeoutService', '$log', '$uibModal',
+    UserService.$inject = ['LocalCacheService', 'TrialService', 'PromiseTimeoutService', '$log', '$uibModal', 'uiGridExporterConstants',
         '$timeout', '$state', 'toastr', 'Common', 'DMZ_UTILS', 'URL_CONFIGS', 'AppSettingsService', '$rootScope'];
 
-    function UserService(LocalCacheService, TrialService, PromiseTimeoutService, $log, $uibModal,
+    function UserService(LocalCacheService, TrialService, PromiseTimeoutService, $log, $uibModal, uiGridExporterConstants,
                          $timeout, $state, toastr, Common, DMZ_UTILS, URL_CONFIGS, AppSettingsService, $rootScope) {
 
         var service = this;
@@ -410,6 +410,35 @@
                 });
             });
 
+        };
+
+        this.TransferTrialsRemoveGridItem = function (scope, controller) {
+            var curUserRole = service.getUserRole();
+            var menuArr =
+                [
+                    {
+                        title: 'Export All Data As CSV',
+                        order: 100,
+                        action: function ($event){
+                            this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                        }
+                    }
+                ]
+            if (service.isCurationModeEnabled() && (curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN')) {
+                menuArr.push(
+                    {
+                        title: 'Remove Selected User from Ownership',
+                        order: 1,
+                        shown: function () {
+                            return controller.gridApi.selection.getSelectedRows().length > 0
+                        },
+                        action: function () {
+                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                        }
+                    }
+                );
+            }
+            return menuArr;
         };
 
         this.TransferTrialsGridMenuItems = function (scope, controller) {

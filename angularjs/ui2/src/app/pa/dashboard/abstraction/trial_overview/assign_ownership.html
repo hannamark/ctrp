@@ -15,7 +15,8 @@
                                 <h4>{{userView.gridOptions.totalItems}} Owner(s) found</h4>
                             </div>
                             <div class="row animated-item" ng-if="userView.gridOptions.data.length > 0">
-                                <div ui-grid="userView.gridOptions" ui-grid-selection ui-grid-pagination="" external-scopes="clickHandler" ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                                <div ui-grid="userView.gridOptions" ui-grid-exporter ui-grid-selection ui-grid-pagination="" ng-class="{'edit-off': !userView.curationMode}"
+                                     external-scopes="clickHandler" ui-grid-exporter ui-grid-move-columns class="grid"></div>
                             </div>
                         </div>
                     </div>
