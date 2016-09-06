@@ -104,35 +104,21 @@ Feature: Reg F06 Register Trial Details
       |Institutional           |
 
 
-Scenario Outline:  #4 Character display for Primary Purpose of Other
-Given  I have selected the option to register a trial <TrialType>
+       Scenario Outline:#4 Other description field's character Limit 
+    Given  I have selected the option to register a trial <TrialType>
     And I am on the Register Trial Details screen
-  And the 'Primary Purpose' is 'Other'
-  Then a comment appears below the Primary Purpose of Other Describe field to display the number of characters available to enter into the field.  
- |200 characters left|
- And "x characters left" will be displayed as characters are added
- When 200 characters have been entered
- Then no additional text can be entered
- 
- Examples:
+    When I provide the field name <FieldName>
+    Then a comment appears below the field name <FieldName> to display the number of characters available to enter into the field.  
+     And "x characters left" will be displayed as characters are added
+    When required characters <Fieldlength> have been entered 
+    Then no additional text can be entered
+     
+     |FieldName                         |FieldLength|
+     |Primary Purpose of Other Describe |200        |
+     |Secondary Purpose of Other        |1000       |
 
-      |TrialType               |
-      |National                |
-      |Externally Peer-Reviewed|
-      |Institutional           |
-  
-Scenario Outline:  #5 Character display for Secondary Purpose of Other
-Given  I have selected the option to register a trial <TrialType>
-    And I am on the Register Trial Details screen
-  And the 'Secondary Purpose' is 'Other'
-  And the ' Secondary Purpose' is 'Other'
-  Then a comment appears below the Secondary Purpose of Other Describe field to display the number of characters available to enter into the field.  
- |1000 characters left|
- And "x characters left" will be displayed as characters are added
- When 1000 characters have been entered
- Then no additional text can be entered
- 
- Examples:
+
+Examples:
 
       |TrialType               |
       |National                |
