@@ -75,20 +75,20 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
      Then the documents type will be displayed during update
      
      
-      |Original Protocol  |
-      |Original IRB Approval  |
-      |Original Informed Consent  |
+      |Current Protocol  |
+      |Current IRB Approval  |
+      |Current Informed Consent  |
       |Other-A  |
       |Other-B  |
 
       When I have selected the Update option when Trial Summary Report Date Milestone is entered
       Then the documents type will be displayed during update
        
-      |Original Protocol  |
-      |Original IRB Aproval  |
-      |Original Informed Consent  |
+      |Current Protocol  |
+      |Current IRB Aproval  |
+      |Current Informed Consent  |
       |Other-A  |
-      |Original TSR     |
+      |Current TSR     |
       |Other-B  |
 
 
@@ -100,7 +100,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
      Then the documents type will be displayed during update
       
       |Current Protocol |
-      |Current Change Memo  |
+      |Current Change Memo (or Highlighted Protocol Document) |
       |Current IRB Approval  |
       |Other-C |
       |Other-D  |

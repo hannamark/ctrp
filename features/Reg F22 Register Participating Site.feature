@@ -66,7 +66,7 @@ When I enter one or more Site Recruitment Status type
  |Data Table 4 Information|
  |Trial Status|
  |Trial Dates|
- |Trial Realted Documents|
+ |Trial Related Documents|
  |Paticipating Sites Table|
  
    Scenario:#4 Participating Sites Table Columns description
@@ -81,8 +81,6 @@ When I enter one or more Site Recruitment Status type
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
-     |Date opened for Accrual|
-     |Date Closed for Accrual|
      |Primary Contact|
      |Email|
      |Phone Number, Phone Number Extension|

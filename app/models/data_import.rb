@@ -352,7 +352,7 @@ class DataImport
           org.code = code
           org.name = name
           org.sent_to_ctrp = sent_to_ctrp
-          org.status = "Active"
+          org.record_status = "Active"
           org.save!
         end
   end
@@ -367,7 +367,7 @@ class DataImport
       fm = OrgFundingMechanism.new
       fm.code = code
       fm.name = name
-      fm.status = "Active"
+      fm.record_status = "Active"
       fm.save!
     end
   end
