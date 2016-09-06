@@ -18,20 +18,24 @@ class SourceStatus < ActiveRecord::Base
 
   def self.ctrp_context_source_statuses
     ctrp_context = SourceContext.find_by_code("CTRP")
-    source_statuses = SourceStatus.where(source_context:ctrp_context, status:"Active")
+    source_statuses = SourceStatus.where(source_context:ctrp_context, record_status:"Active")
     return source_statuses
   end
 
   def self.ctep_context_source_statuses
     ctep_context = SourceContext.find_by_code("CTEP")
-    source_statuses = SourceStatus.where(source_context:ctep_context, status:"Active")
+    source_statuses = SourceStatus.where(source_context:ctep_context, record_status:"Active")
     return source_statuses
   end
 
   def self.nlm_context_source_statuses
     nlm_context = SourceContext.find_by_code("NLM")
-    source_statuses = SourceStatus.where(source_context:nlm_context, status:"Active")
+    source_statuses = SourceStatus.where(source_context:nlm_context, record_status:"Active")
     return source_statuses
+  end
+
+  def self.source_statuses_with_active_record_status
+    return SourceStatus.where(record_status: "Active")
   end
 
 end

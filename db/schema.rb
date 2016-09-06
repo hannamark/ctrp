@@ -289,14 +289,14 @@ ActiveRecord::Schema.define(version: 20160825183100) do
   end
 
   create_table "ctep_org_types", force: :cascade do |t|
-    t.string   "code",         limit: 255
-    t.string   "name",         limit: 255
-    t.string   "status"
+    t.string   "code",          limit: 255
+    t.string   "name",          limit: 255
+    t.string   "record_status"
     t.string   "sent_to_ctrp"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "uuid",         limit: 255
-    t.integer  "lock_version",             default: 0
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "uuid",          limit: 255
+    t.integer  "lock_version",              default: 0
   end
 
   create_table "diseases", force: :cascade do |t|
@@ -751,13 +751,13 @@ ActiveRecord::Schema.define(version: 20160825183100) do
   add_index "onholds", ["trial_id"], name: "index_onholds_on_trial_id", using: :btree
 
   create_table "org_funding_mechanisms", force: :cascade do |t|
-    t.string   "code",         limit: 255
-    t.string   "name",         limit: 255
-    t.string   "status"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "uuid",         limit: 255
-    t.integer  "lock_version",             default: 0
+    t.string   "code",          limit: 255
+    t.string   "name",          limit: 255
+    t.string   "record_status"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "uuid",          limit: 255
+    t.integer  "lock_version",              default: 0
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -1025,13 +1025,13 @@ ActiveRecord::Schema.define(version: 20160825183100) do
   end
 
   create_table "service_requests", force: :cascade do |t|
-    t.string   "code",         limit: 255
-    t.string   "name",         limit: 255
-    t.string   "status"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "uuid",         limit: 255
-    t.integer  "lock_version",             default: 0
+    t.string   "code",          limit: 255
+    t.string   "name",          limit: 255
+    t.string   "record_status"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "uuid",          limit: 255
+    t.integer  "lock_version",              default: 0
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -1091,7 +1091,7 @@ ActiveRecord::Schema.define(version: 20160825183100) do
     t.datetime "updated_at",                                null: false
     t.string   "uuid",              limit: 255
     t.integer  "lock_version",                  default: 0
-    t.string   "status"
+    t.string   "record_status"
     t.integer  "source_context_id"
   end
 
