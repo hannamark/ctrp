@@ -442,9 +442,9 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual                  |
       |Temporarily Closed to Accrual and Intervention |
       |Withdrawn                                      |
-      |Administratively Complete                      |
+      |Administratively Complete                      
     And Why Study Stopped reason is not provided
-    Then I should get an error message as "Status Date, Status and  Why Study Stopped are Required"
+    Then I should get an error message as "Status Date, Status and Why Study Stopped are Required"
 
     Examples:
       |trialType  |
