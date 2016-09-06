@@ -427,7 +427,7 @@
             if (service.isCurationModeEnabled() && (curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN')) {
                 menuArr.push(
                     {
-                        title: 'Remove Selected User from Ownership',
+                        title: 'Remove Selected User(s) from Trial',
                         order: 1,
                         shown: function () {
                             return controller.gridApi.selection.getSelectedRows().length > 0
