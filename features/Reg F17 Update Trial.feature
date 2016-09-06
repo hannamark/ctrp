@@ -100,7 +100,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
      Then the documents type will be displayed during update
       
       |Current Protocol |
-      |Current Change Memo  |
+      |Current Change Memo (or Highlighted Protocol Document) |
       |Current IRB Approval  |
       |Other-C |
       |Other-D  |
