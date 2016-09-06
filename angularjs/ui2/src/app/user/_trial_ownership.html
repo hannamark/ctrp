@@ -85,11 +85,11 @@
                 </button>
             </div>
 
-            <div class="form-group row btn-toolbar" >
+            <div class="form-group row btn-toolbar">
                 <button ng-if="trialOwnershipView.trialId" type="button" class="btn btn-warning pull-right" id="save_cancel" ng-click = "trialOwnershipView.setAddMode = false">
                     <i class="glyphicon glyphicon-remove"></i>  Cancel and View Current Owners of this trial
                 </button>
-                <button type="button" class="btn btn-warning pull-right" id="save_reset" ng-click="trialOwnershipView.resetAll()">
+                <button ng-if="!trialOwnershipView.trialId" type="button" class="btn btn-warning pull-right" id="save_reset" ng-click="trialOwnershipView.resetAll()">
                     <i class="glyphicon glyphicon-remove"></i> Reset All
                 </button>
             </div>
