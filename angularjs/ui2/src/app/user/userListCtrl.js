@@ -8,9 +8,11 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
+    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'PATrialService',
+        'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService,uiGridExporterConstants, uiGridExporterService, $stateParams) {
+    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, $location, AppSettingsService, PATrialService,
+                          URL_CONFIGS, OrgService,uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
         vm.curUser = UserService.getCurrentUserDetails();
@@ -302,6 +304,7 @@
         };
 
         if (vm.trialId) {
+            vm.curTrial = PATrialService.getCurrentTrialFromCache();
             vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
             vm.searchUsers();
         }

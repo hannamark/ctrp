@@ -194,7 +194,7 @@ class TrialOwnershipsController < ApplicationController
         resultsMsgs[:trialsFailed] = Array.new
 
         trialIdsToAdd.each do |trialId|
-          if !TrialOwnership.exists?(trial_id: trialId, user_id: userId, ended_at: nil)
+          if !TrialOwnership.exists?(trial_id: trialId, user_id: userId, ended_at: nil) && Trial.find(trialId).is_rejected == false
 
             trial_ownership_params = {trial_id: trialId, user_id: userId}
             trial_ownership = TrialOwnership.new(trial_ownership_params)
@@ -209,13 +209,13 @@ class TrialOwnershipsController < ApplicationController
               resultsMsgs[:trialsFailed].push(trialId)
             ensure
             end
-
+          else
+            resultsMsgs[:trialsFailed].push(trialId)
           end
+          send_emails 'TRIAL_OWNER_ADD', User.find(userId), resultsMsgs[:trialsAdded]
         end
-        send_emails 'TRIAL_OWNER_ADD', User.find(userId), resultsMsgs[:trialsAdded]
       end
     end
-
     def endSelected toEnd
       userowns = {}
       toEnd.each do |ownership|
