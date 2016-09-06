@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', '$state', '$scope', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
+    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, $state, $scope, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService, $stateParams) {
+    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, UserService, uiGridConstants, $location, AppSettingsService, URL_CONFIGS, OrgService, uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
         vm.curUser = UserService.getCurrentUserDetails();
@@ -166,13 +166,25 @@
             exporterMenuAllData: true,
             exporterMenuPdf: false,
             exporterMenuCsv: false,
-            gridMenuCustomItems: [{
-                title: 'Export All Data As CSV',
-                order: 100,
-                action: function ($event){
-                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+            gridMenuCustomItems: [
+                {
+                    title: 'Export All Data As CSV',
+                    order: 1,
+                    action: function ($event){
+                        this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                    }
+                },
+                {
+                    title: 'Remove Selected User from Ownership',
+                    order: 2,
+                    shown: function () {
+                        return vm.gridApi.selection.getSelectedRows().length > 0
+                    },
+                    action: function (){
+                        vm.confirmRemoveTrialsOwnerships(_.chain(vm.gridApi.selection.getSelectedRows()).pluck('id').value());
+                    }
                 }
-            }]
+            ]
         };
 
          UserService.getUserStatuses().then(function (response) {
@@ -282,7 +294,7 @@
                 vm.searchParams[key] = '';
             });
         }; //resetSearch
-        
+
         vm.typeAheadParams = {};
         vm.typeAheadNameSearch = function () {
             return OrgService.typeAheadOrgNameSearch(vm.organization_name, vm.searchOrganizationFamily);
@@ -303,6 +315,33 @@
         if (vm.trialId) {
             vm.searchUsers();
         }
+
+        vm.trialOwnershipRemoveIdArr = null;
+        vm.confirmRemoveTrialOwnershipsPopUp = false;
+        vm.confirmRemoveTrialsOwnerships = function (userIdArr) {
+            vm.confirmRemoveTrialOwnershipsPopUp = true;
+            vm.trialOwnershipRemoveIdArr = userIdArr;
+        };
+        vm.cancelRemoveTrialsOwnerships = function () {
+            vm.confirmRemoveTrialOwnershipsPopUp = false;
+        };
+
+        vm.removeTrialsOwnerships = function () {
+            var searchParams = {
+                user_ids: vm.trialOwnershipRemoveIdArr,
+                trial_ids: [vm.trialId]
+            };
+            UserService.endUserTrialsOwnership(searchParams).then(function (data) {
+                if (data.results === 'success') {
+                    toastr.success('Trial Ownerships Removed', 'Success!');
+                    vm.trialOwnershipRemoveIdArr = null;
+                    vm.confirmRemoveTrialOwnershipsPopUp = false;
+                    vm.searchUsers();
+                }
+            });
+        };
+
+
 
         /****************************** implementations **************************/
 

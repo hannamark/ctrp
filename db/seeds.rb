@@ -1605,7 +1605,7 @@ MailTemplate.find_or_create_by(
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) cancelled your ownership of the NCI Clinical Trials Reporting Program (CTRP) trial record(s) identified above.</p>
                 <p><b>NEXT STEPS:</b></p>
-                <p>f you believe this is an error, or if you have additional questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
+                <p>If you believe this is an error, or if you have additional questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
                 </body></html>'
 )
