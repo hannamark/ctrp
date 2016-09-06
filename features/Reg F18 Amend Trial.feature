@@ -61,23 +61,25 @@ And if there are no errors, I can select the option to Edit the trial informatio
      When I have selected the Amend option after an original Submission
      Then the documents type will be displayed 
       
-      |Original Protocol  |
-      |Original IRB Aproval  |
-      |Original Informed Consent  |
-      |Other-A  |
-      |TSR  |
+      |Protocol Document- Current Protocol |
+      |IRB Approval- Current IRB Approval  |
+      |Informed Consent Document- Current Informed Consent Document |
+      |Other- Current Other Documents |
+      |TSR- Current TSR    |
+      
 
      When I have selected the Amend option after an Amendment 
      Then the documents type will be displayed 
-       
-      |Current Protocol  |
-      |Current Change Memo  |
-      |Current IRB Approval  |
-      |Other-C  |
-      |TRS #2  |
-
-    
- Scenario:#5 Delete option should not be included for existing documents 
+      
+      |Protocol Document- Current Protocol |
+      |IRB Approval- Current IRB Approval  |
+      |Change Memo -Current Change Memo|
+      |Protocol Highlighted Document: Current Protocol Highlighted Document|
+      |Other- Current Other Documents |
+      |TSR- Current TSR    |
+      
+      
+Scenario:#5 Delete option should not be included for existing documents 
     Given I am in the CTRP Registration Application 
      When I Amend a trial 
      Then I can see the most current documents
