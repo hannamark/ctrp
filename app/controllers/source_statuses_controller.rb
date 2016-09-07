@@ -8,9 +8,13 @@ class SourceStatusesController < ApplicationController
     #TODO need to use constant for ROLE_CURATOR and ROLE_SUPER
     if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR"
       @source_statuses = SourceStatus.source_statuses_with_active_record_status
+      #@source_statuses = SourceStatus.all
+
     else
       #TODO need to use constant for Active
-      @source_statuses = [SourceStatus.ctrp_context_source_statuses.find_by_code("ACT")]
+      #@source_statuses = SourceStatus.all
+      @source_statuses = [SourceStatus.ctrp_context_source_statuses.find_by_name("Active")]
+
     end
   end
 
