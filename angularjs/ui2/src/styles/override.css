@@ -1796,14 +1796,8 @@ body.assign-ownership .grid {
     max-height: 550px;
 }
 
-/* firefox only*/
-@-moz-document url-prefix() {
-    #typeAheadResults {
-        float: right;
-    }
-    #typeAheadResults .btn-danger .glyphicon {
-        padding: 0 6px 0 2px;
-    }
+body.assign-ownership .ui-grid-pager-container, body.assign-ownership .ui-grid-pager-count-container {
+    visibility: hidden;
 }
 
 .edit-off .ui-grid-row:nth-child(odd):hover .ui-grid-cell.ui-grid-row-header-cell,
@@ -1813,4 +1807,15 @@ body.assign-ownership .grid {
 
 .edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
     display: none;
+}
+
+
+/* firefox only*/
+@-moz-document url-prefix() {
+    #typeAheadResults {
+        float: right;
+    }
+    #typeAheadResults .btn-danger .glyphicon {
+        padding: 0 6px 0 2px;
+    }
 }
