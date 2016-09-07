@@ -303,12 +303,6 @@
             vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
         };
 
-        if (vm.trialId) {
-            vm.curTrial = PATrialService.getCurrentTrialFromCache();
-            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
-            vm.searchUsers();
-        }
-
         vm.trialOwnershipRemoveIdArr = null;
         vm.confirmRemoveTrialOwnershipsPopUp = false;
         vm.confirmRemoveTrialsOwnerships = function (userIdArr) {
@@ -372,6 +366,15 @@
             vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
             vm.curationMode = UserService.isCurationModeEnabled();
         });
+
+        if (vm.trialId) {
+            vm.curTrial = PATrialService.getCurrentTrialFromCache();
+            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
+            $scope.$watch('displayTrialOwnershipGrid', function(newValue, oldValue) {
+                vm.searchUsers();
+            });
+        }
+
     }
 
 })();
