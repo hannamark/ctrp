@@ -54,7 +54,7 @@ Feature: Reg F06 Register Trial Details
 | Field                                                                                                                                                                    | Number of Characters left                 |
 | Official Title                                                                                                                                                      | 600 characters left                         |
 | Describe "Other" Primary Purpose (When Primary Purpose is selected as Other)                  | 200 characters left                         |
-| Describe "Other" Secondary Purpose (When Secondary Purpose is selected as Other)      | 200 characters left                         |
+| Describe "Other" Secondary Purpose (When Secondary Purpose is selected as Other)      | 1000 characters left                         |
 
   And "x characters left" will be displayed as characters are added
   When all the characters mentioned above for field have been entered
