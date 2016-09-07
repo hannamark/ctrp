@@ -574,8 +574,10 @@
                 newId.protocol_id_origin_name = originName;
                 newId.protocol_id = vm.protocol_id;
                 newId._destroy = false;
-                if (_.findIndex(vm.addedOtherIds, {protocol_id_origin_id: parseFloat(newId.protocol_id_origin_id)}) > -1) {
-                    vm.addOtherIdError = originName + ' already exists';
+                console.info('newId: ', newId);
+                if (_.findIndex(vm.addedOtherIds, {protocol_id_origin_id: parseFloat(newId.protocol_id_origin_id)}) > -1 ||
+                    _.findIndex(vm.addedOtherIds, {protocol_id: newId.protocol_id}) > -1) {
+                    vm.addOtherIdError = originName + ' must be unique';
                     vm.showAddOtherIdError = true;
                     return;
                 }
