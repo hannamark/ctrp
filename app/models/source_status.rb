@@ -35,7 +35,8 @@ class SourceStatus < ActiveRecord::Base
   end
 
   def self.source_statuses_with_active_record_status
-    return SourceStatus.where(record_status: "Active")
+    source_statuses = SourceStatus.where(record_status: "Active")
+    return source_statuses
   end
 
 end

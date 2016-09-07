@@ -557,21 +557,16 @@
         // Add other ID to a temp array
         vm.addOtherId = function () {
             // Get other ID origin name
-            var originCode;
-            var originName;
-            _.each(vm.protocolIdOriginArr, function (origin) {
-                if (origin.id == vm.protocol_id_origin_id) {
-                    originCode = origin.code;
-                    originName = origin.name;
-                }
-            });
+            var originObj = _.findWhere(vm.protocolIdOriginArr, {id: parseFloat(vm.protocol_id_origin_id)});
+            var originCode = originObj.code || null;
+            var originName = originObj.name || null;
 
             // Force NCT ID to be upper case
             if (originCode === 'NCT' || originCode === 'ONCT') {
                 vm.protocol_id = vm.protocol_id.toUpperCase();
             }
 
-            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, originCode, vm.protocol_id, vm.addedOtherIds);
+            var errorMsg = TrialService.checkOtherId(vm.protocol_id_origin_id, originCode, vm.protocol_id, vm.addedOtherIds); // false for not allowing duplicates
 
             if (!errorMsg) {
                 var newId = {};
@@ -579,6 +574,11 @@
                 newId.protocol_id_origin_name = originName;
                 newId.protocol_id = vm.protocol_id;
                 newId._destroy = false;
+                if (_.findIndex(vm.addedOtherIds, {protocol_id_origin_id: parseFloat(newId.protocol_id_origin_id)}) > -1) {
+                    vm.addOtherIdError = originName + ' already exists';
+                    vm.showAddOtherIdError = true;
+                    return;
+                }
                 vm.addedOtherIds.push(newId);
                 vm.protocol_id_origin_id = null;
                 vm.protocol_id = null;

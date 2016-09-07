@@ -13,10 +13,13 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
     | Expanded Access            |
     | Observational              |
     | Ancillary Correlative      |
-
+  When The Clinical Reasearch Category <ClinicalResearchCategoryS> is updated to <ClinicalResearchCategoryF>
+  Then the field <field> will follow the action rule <action> for display or delete
+  
 Examples:
 
-   |From Clinical Research category        |To Clinical Research category            |field                                    |action (diplays OR deleted) |
+
+   |From <ClinicalResearchCategory>                 |To <ClinicalResearchCategoryF>                     |field                                    |action (diplays OR deleted) |
 
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                          |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                    |displays|
@@ -42,9 +45,8 @@ Examples:
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Target enrollment                        |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Final Enrollment for clinicalTrials.gov  |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Accruals                                 |displays|
-  
-  
-    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Primary Purpose                          |displays|
+
+	|Observational or Ancillary Correlative   |Interventional  or Expanded Access     |Primary Purpose                          |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Primary Purpose Other                    |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose                        |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose Other                  |displays|
