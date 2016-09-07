@@ -72,25 +72,22 @@ Feature: PO F2 Search and Edit Organization
     |Create|
     |Update|
     |Merge with CTEP ID|
-    |Link with CTRP ID|
-    |Legacy|
+    
     And I enter the Curator Name <Curator Name>
     And I enter the Curator Date <Curator Date>
     And I submit my search request
-    Then the system should display <Result> with organizations that match the search criteria entered
+    Then the system should display <Results> with organizations that match the search criteria entered
     And  The organization search results will display the field type
       |CTRP ID|
       |CTEP ID|
       |Source ID|
       |Context Organization ID|
       |Name|
-      |CTEP Org Type|
-      |Funding Mechanism|
       |Source Status|
       |Source Context|
       |Processing Status|
       |Service Request|
-      |Families|
+      |Family Name|
       |Phone|
       |Email|
       |Last Updated by|
@@ -153,8 +150,9 @@ Feature: PO F2 Search and Edit Organization
       |Country|
       |State|
       |City|
+      |Postal Code|
       |Email|
-      |Phone Number: Extension|
+      |Phone Number: Phone Number Extension|
       |Created By|
       |Updated By|
       |Families|

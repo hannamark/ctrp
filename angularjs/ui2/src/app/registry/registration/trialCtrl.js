@@ -243,15 +243,17 @@
             allSearchParams.start = null;
             allSearchParams.rows = 10000000; // To get back all results, for now
 
-            return TrialService.searchTrials(allSearchParams).then(
-                function (data) {
+            return TrialService.searchTrials(allSearchParams).then(function (data) {
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     vm.gridOptions.useExternalPagination = false;
                     vm.gridOptions.useExternalSorting = false;
                     vm.gridOptions.data = data['trials'];
 
                     vm.gridOptions.columnDefs = origGridColumnDefs;
                 }
-            );
+            });
         };
 
 
@@ -287,8 +289,12 @@
                 vm.searching = true;
 
                 TrialService.searchTrials(vm.searchParams).then(function (data) {
-                    vm.gridOptions.data = data.trials;
-                    vm.gridOptions.totalItems = data.total;
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridOptions.data = data.trials;
+                        vm.gridOptions.totalItems = data.total;
+                    }
                 }).catch(function (err) {
                     console.log('search trial failed');
                 }).finally(function() {

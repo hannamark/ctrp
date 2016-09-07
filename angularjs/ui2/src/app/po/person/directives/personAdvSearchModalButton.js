@@ -53,7 +53,6 @@
             $scope.allowOverwrite = $scope.allowOverwrite == undefined ? true : $scope.allowOverwrite;
             var modalOpened = false;
 
-            //console.log('maxRow selectable: ' + $scope.maxRowSelectable + ', builtInTemplate: ' + $scope.useBuiltInTemplate);
             $scope.searchPerson = function(size) {
                 if (modalOpened) return; //prevent modal open twice in single click
 

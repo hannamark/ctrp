@@ -442,9 +442,9 @@ Feature: Reg F11 Register Trial Dates and Trial Status
       |Temporarily Closed to Accrual                  |
       |Temporarily Closed to Accrual and Intervention |
       |Withdrawn                                      |
-      |Administratively Complete                      |
+      |Administratively Complete                      
     And Why Study Stopped reason is not provided
-    Then I should get an error message as "Status Date, Status and  Why Study Stopped are Required"
+    Then I should get an error message as "Status Date, Status and Why Study Stopped are Required"
 
     Examples:
       |trialType  |
@@ -684,26 +684,26 @@ Scenario Outline: #8 Rules for Study Date types
       |National                 |
       |Externally Peer-Reviewed |
       |Institutional            |
+    
+      Scenario Outline: #10 Rule for Character length for Trial Status section 
+  Given I have selected the option to register a trial <trialType>
+  And I am on the Trial Status Section
+  Then a comment appears below the field to display the number of characters available to enter into the field
+    | Field                                             | Number of Characters left       |
+    | Why Study Stopped                                 | 160 characters left             |
+    | Comment                                           | 160 characters left             |
 
-    Scenario: #10 Trial Status Why Study Stopped? field character count
-Given I am logged into the CTRP Registration application
-And I am on the Trial Status Section
-Then a comment appears below the Why Study Stopped? field to display the number of characters available to enter into the field.  
-|160 characters left|
-And "x characters left" will be displayed as characters are added
-When 160 characters have been entered
-Then no additional text can be entered
+  And "x characters left" will be displayed as characters are added
+  When all the characters mentioned above for field have been entered
+  Then no additional text can be entered
 
+  Examples:
+    |trialType  |
+    |National                 |
+    |Externally Peer-Reviewed |
+    |Institutional            |
 
-Scenario: #11 Trial Status Comments field character count
-Given I am logged into the CTRP Registration application
-And I am on the Trial Status Section 
-Then a comment appears below the Comments field to display the number of characters available to enter into the field.  
-|160 characters left|
-And "x characters left" will be displayed as characters are added
-When 160 characters have been entered
-Then no additional text can be entered 
-
+   
 
 
 

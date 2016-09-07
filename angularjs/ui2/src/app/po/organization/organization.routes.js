@@ -64,6 +64,9 @@
                   sourceStatusObj : function(OrgService) {
                       return OrgService.getSourceStatuses();
                   },
+                  serviceRequests: function(OrgService) {
+                    return OrgService.getServiceRequests();
+                  },
                   orgDetailObj: function($q) {
                       var deferred = $q.defer();
                       deferred.resolve(null);
