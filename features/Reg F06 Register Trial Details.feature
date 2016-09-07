@@ -46,26 +46,28 @@ Feature: Reg F06 Register Trial Details
       |Externally Peer-Reviewed|
       |Institutional           |
 
-  
-  Scenario Outline: #1a Trial Official Title Character Limit rule
-    Given I have selected the option to register a trial <TrialType>
-    And I am on the Register Trial Details screen
-    Then a comment appears below the Official Title field to display the number of characters available to enter into the field.  
-    |600 characters left|
-   And "x characters left" will be displayed as characters are added
-   When 600 characters have been entered
-   Then no additional text can be entered
-     
-     
-     Examples:
-      |TrialType               |
-      |National                |
-      |Externally Peer-Reviewed|
-      |Institutional           |
+	
+    Scenario Outline: #1a Rule for Character length for Trial Details 
+  Given I have selected the option to register a trial <trialType>
+  And I am on the Register Trial Details screen
+  Then a comment appears below the field to display the number of characters available to enter into the field
+| Field                                                                                                                                                                    | Number of Characters left                 |
+| Official Title                                                                                                                                                      | 600 characters left                         |
+| Describe "Other" Primary Purpose (When Primary Purpose is selected as Other)                  | 200 characters left                         |
+| Describe "Other" Secondary Purpose (When Secondary Purpose is selected as Other)      | 200 characters left                         |
+
+  And "x characters left" will be displayed as characters are added
+  When all the characters mentioned above for field have been entered
+  Then no additional text can be entered
+
+  Examples:
+    |trialType  |
+    |National                 |
+    |Externally Peer-Reviewed |
+    |Institutional            |
 
 
-
-  Scenario Outline: #2 I must enter Trial Details Types
+ 	Scenario Outline: #2 I must enter Trial Details Types
     Given I have selected the option to register a trial <TrialType>
     When I have not entered The official Title
     And I have not entered the trial Phase type
@@ -104,23 +106,4 @@ Feature: Reg F06 Register Trial Details
       |Institutional           |
 
 
-       Scenario Outline:#4 Other description field's character Limit 
-    Given  I have selected the option to register a trial <TrialType>
-    And I am on the Register Trial Details screen
-    When I provide the field name <FieldName>
-    Then a comment appears below the field name <FieldName> to display the number of characters available to enter into the field.  
-     And "x characters left" will be displayed as characters are added
-    When required characters <Fieldlength> have been entered 
-    Then no additional text can be entered
      
-     |FieldName                         |FieldLength|
-     |Primary Purpose of Other Describe |200        |
-     |Secondary Purpose of Other        |1000       |
-
-
-Examples:
-
-      |TrialType               |
-      |National                |
-      |Externally Peer-Reviewed|
-      |Institutional           |
