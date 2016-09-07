@@ -534,61 +534,68 @@
                 'trial_ownership': true,
                 'no_nih_nci_prog': true
             }).then(function (data) {
-                if (controller.showAddTrialsModal === false) {
-                    controller.showAddTrialsModal = true;
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (controller.showAddTrialsModal === false) {
+                        controller.showAddTrialsModal = true;
+                    }
+                    controller.trialOptions = {
+                        title: '',
+                        type: 'trials',
+                        filterPlaceHolder: 'Start typing to filter the trials below.',
+                        labelAll: 'Unselected Trials',
+                        labelSelected: 'Selected Trials',
+                        helpMessage: ' Click on trial details to transfer trials between selected and unselected.',
+                        orderProperty: 'name',
+                        resetItems: [],
+                        items: [],
+                        selectedItems: [],
+                        openModal: controller.showAddTrialsModal,
+                        showSave: controller.showAddTrialsModal,
+                        confirmMessage: controller.userDetails ? 'You have selected to add ownership of the Selected Trial(s) above, to ' + controller.userDetails.last_name + ', '
+                                    + controller.userDetails.first_name + ' (' + controller.userDetails.username + ')' + '.':'',
+                        close: function () {
+                            controller.showAddTrialsModal = false;
+                        },
+                        reset: function () {
+                            controller.trialOptions.searchTerm = '';
+                            controller.trialOptions.items = angular.copy(controller.trialOptions.resetItems);
+                            controller.trialOptions.selectedItems = [];
+                        },
+                        save: function () {
+                            controller.showAddTrialsModal = false;
+                            var searchParams = {
+                                user_ids: [controller.userDetails.id],
+                                trial_ids: _.chain(controller.trialOptions.selectedItems).pluck('id').value()
+                            };
+
+                            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
+                                .then(function (data) {
+                                    var postStatus = data.server_response.status;
+
+                                    if (postStatus >= 200 && postStatus <= 210) {
+                                        if(data.results === 'success') {
+                                            toastr.success('Trial Ownership Created', 'Success!');
+                                            controller.getUserTrials();
+                                        }
+                                    }
+                            });
+                        }
+                    };
+                    _.each(data.trials, function (trial) {
+                        if(trial.id ) {
+                            controller.trialOptions.items.push({
+                                'id': trial.id,
+                                'col1': trial.nci_id,
+                                'col2': trial.lead_protocol_id,
+                                'col6': trial.lead_org,
+                                'col7': trial.official_title
+                            });
+                        }
+                    });
+                    controller.trialOptions.resetItems = angular.copy(controller.trialOptions.items);
                 }
-                controller.trialOptions = {
-                    title: '',
-                    type: 'trials',
-                    filterPlaceHolder: 'Start typing to filter the trials below.',
-                    labelAll: 'Unselected Trials',
-                    labelSelected: 'Selected Trials',
-                    helpMessage: ' Click on trial details to transfer trials between selected and unselected.',
-                    orderProperty: 'name',
-                    resetItems: [],
-                    items: [],
-                    selectedItems: [],
-                    openModal: controller.showAddTrialsModal,
-                    showSave: controller.showAddTrialsModal,
-                    confirmMessage: controller.userDetails ? 'You have selected to add ownership of the Selected Trial(s) above, to ' + controller.userDetails.last_name + ', '
-                                + controller.userDetails.first_name + ' (' + controller.userDetails.username + ')' + '.':'',
-                    close: function () {
-                        controller.showAddTrialsModal = false;
-                    },
-                    reset: function () {
-                        controller.trialOptions.searchTerm = '';
-                        controller.trialOptions.items = angular.copy(controller.trialOptions.resetItems);
-                        controller.trialOptions.selectedItems = [];
-                    },
-                    save: function () {
-                        controller.showAddTrialsModal = false;
-                        var searchParams = {
-                            user_ids: [controller.userDetails.id],
-                            trial_ids: _.chain(controller.trialOptions.selectedItems).pluck('id').value()
-                        };
-
-                        PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
-                            .then(function (data) {
-                            if(data.results === 'success') {
-                                toastr.success('Trial Ownership Created', 'Success!');
-                                controller.getUserTrials();
-                            }
-                        });
-                    }
-                };
-                _.each(data.trials, function (trial) {
-                    if(trial.id ) {
-                        controller.trialOptions.items.push({
-                            'id': trial.id,
-                            'col1': trial.nci_id,
-                            'col2': trial.lead_protocol_id,
-                            'col6': trial.lead_org,
-                            'col7': trial.official_title
-                        });
-                    }
-                });
-                controller.trialOptions.resetItems = angular.copy(controller.trialOptions.items);
-
             });
         }
     }

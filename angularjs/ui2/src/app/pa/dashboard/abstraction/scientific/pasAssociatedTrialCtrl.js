@@ -172,7 +172,7 @@
                             if (newVal === 1) {
                                 vm.trialQueryObj.trialIdentifier = 'NCI-';
                             } else {
-                                vm.trialQueryObj.trialIdentifier = 'NCT-';
+                                vm.trialQueryObj.trialIdentifier = 'NCT';
                             }
                         }
                 }, true);

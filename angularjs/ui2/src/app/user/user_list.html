@@ -155,7 +155,7 @@
             <div class="col-xs-12">
                 <div class="row" ng-if="userView.gridOptions.totalItems != null">
                     <a href="" id="user_search_results"></a>
-                    <h4>User Search Results: {{userView.gridOptions.totalItems}} found</h4>
+                    <h4>{{userView.gridOptions.totalItems}} User(s) found</h4>
                 </div>
                 <div class="row animated-item" ng-if="userView.gridOptions.data.length > 0">
                     <div ui-grid="userView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" ui-grid-exporter ui-grid-move-columns class="grid"></div>
@@ -163,6 +163,5 @@
             </div>
         </div>
         <div class="row top-offset-xs" ng-if="userView.gridOptions.totalItems != null"></div>
-        <div class="row top-offset-xs"></div>
     </div>
 </div>

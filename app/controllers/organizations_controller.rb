@@ -202,8 +202,9 @@ class OrganizationsController < ApplicationController
   end
 
   def clone
-    p params[:org_id]
-    @organization = Organization.find_by_id(1)
+    ctep_org_id = params[:org_id]
+
+    @organizations = Organization.find_by_id()
   end
 
   #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.

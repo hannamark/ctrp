@@ -18,7 +18,7 @@ When I selected one or more of the values to search all trials
 |Zip|
 |Phone|
 |E-mail|
-|Processing Status (Pending, Complete)|
+|Processing Status (Incomplete, Complete)|
 And I submit my search request by selecting search
 Then the system should display the organizations that have those parameters
 And the Organization Search Results will display:
@@ -28,7 +28,7 @@ And the Organization Search Results will display:
       |Source Status|      
       |Source Context|
       |Source ID|
-      |Organization Family|
+      |Family Name|
       |Address 1|
       |Address 2|
       |City|
@@ -38,9 +38,8 @@ And the Organization Search Results will display:
       |Email|
       |Phone Number|
       |Phone Extension|
-      |Fax Number|
       |Aliases|
-      |Processing Status (Pending, Complete)|
+      |Processing Status (Incomplete, Complete)|
       |Last Updated By|
       |Last Updated Date|
 And the system will display the list of organizations ordered assending alphanumeric by organization name
@@ -53,7 +52,7 @@ Then the system should display the organizations details
       |CTEP ID|
       |Organization Name|
       |Aliases|
-      |Organization Family|      
+      |Family Name|      
       |Source Status|      
       |Source Context|
       |Source ID|
@@ -66,8 +65,7 @@ Then the system should display the organizations details
       |Email|
       |Phone Number|
       |Phone Extension|
-      |Fax Number|
-      |Processing Status (Pending, Complete)|
+      |Processing Status (Incomplete, Complete)|
       |Last Updated By|
       |Last Updated Date|
 

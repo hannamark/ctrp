@@ -129,26 +129,28 @@
                         $scope.searchParams.source_status = 'Active';
                     }
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
-                        // console.log('received data for person search: ' + JSON.stringify(data));
-                        if ($scope.showGrid && data.data.people) {
-                            // console.log("received person search results: " + JSON.stringify(data.data.people));
-                            $scope.gridOptions.data = data.data.people;
-                            $scope.gridOptions.totalItems = data.data.total;
-                            //pin the selected rows, if any, at the top of the results
-                            _.each($scope.selectedRows, function (curRow, idx) {
-                                var ctrpId = curRow.entity.id;
-                                var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
-                                if (indexOfCurRowInGridData > -1) {
-                                    $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
-                                    $scope.gridOptions.totalItems--;
-                                }
-                                $scope.gridOptions.data.unshift(curRow.entity);
-                                $scope.gridOptions.totalItems++;
+                        var status = data.status;
 
-                            });
-                            // $scope.gridApi.grid.refresh();
+                        if (status >= 200 && status <= 210) {
+                            if ($scope.showGrid && data.data.people) {
+                                // console.log("received person search results: " + JSON.stringify(data.data.people));
+                                $scope.gridOptions.data = data.data.people;
+                                $scope.gridOptions.totalItems = data.data.total;
+                                //pin the selected rows, if any, at the top of the results
+                                _.each($scope.selectedRows, function (curRow, idx) {
+                                    var ctrpId = curRow.entity.id;
+                                    var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                    if (indexOfCurRowInGridData > -1) {
+                                        $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                        $scope.gridOptions.totalItems--;
+                                    }
+                                    $scope.gridOptions.data.unshift(curRow.entity);
+                                    $scope.gridOptions.totalItems++;
+
+                                });
+                            }
+                            $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                         }
-                        $scope.$parent.personSearchResults = data.data; //{people: [], total, }
                     }).catch(function (err) {
                         console.log('search people failed');
                     }).finally(function() {
@@ -196,15 +198,19 @@
                 var wildcardOrgName = $scope.searchParams.affiliated_org_name.indexOf('*') > -1 ? $scope.searchParams.affiliated_org_name : '*' + $scope.searchParams.affiliated_org_name + '*';
 
                 return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function (res) {
-                    var uniqueNames = [];
-                    var orgNames = [];
-                    orgNames = res.orgs.map(function (org) {
-                        return org.name;
-                    });
+                    var status = res.server_response.status;
 
-                    return uniqueNames = orgNames.filter(function (name) {
-                        return uniqueNames.indexOf(name) === -1;
-                    });
+                    if (status >= 200 && status <= 210) {
+                        var uniqueNames = [];
+                        var orgNames = [];
+                        orgNames = res.orgs.map(function (org) {
+                            return org.name;
+                        });
+
+                        return uniqueNames = orgNames.filter(function (name) {
+                            return uniqueNames.indexOf(name) === -1;
+                        });
+                    }
                 });
             }; //typeAheadOrgNameSearch
 
@@ -256,11 +262,14 @@
             $scope.commitNullification = function() {
                 console.log('tobeCurated: ' + JSON.stringify($scope.toBeCurated));
                 PersonService.curatePerson($scope.toBeCurated).then(function(res) {
-                    // console.log('successful in curation: res is: ' + JSON.stringify(res));
-                    initCurationObj();
-                    clearSelectedRows();
-                    $scope.searchPeople();
-                    toastr.success('Curation was successful', 'Curated!');
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        initCurationObj();
+                        clearSelectedRows();
+                        $scope.searchPeople();
+                        toastr.success('Curation was successful', 'Curated!');
+                    }
                 }).catch(function(err) {
                     toastr.error('There was an error in curation', 'Curation error', { timeOut: 0});
                 });
@@ -413,11 +422,19 @@
             function getPromisedData() {
 
                 OrgService.getSourceContexts().then(function(data) {
-                    $scope.sourceContextArr = data.sort(Common.a2zComparator());
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        $scope.sourceContextArr = data.sort(Common.a2zComparator());
+                    }
                 });
 
                 OrgService.getSourceStatuses().then(function(data) {
-                    $scope.sourceStatusArr = data.sort(Common.a2zComparator());
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        $scope.sourceStatusArr = data.sort(Common.a2zComparator());
+                    }
                 });
             } //getPromisedData
 
@@ -449,10 +466,14 @@
 
                     return PersonService.searchPeople(allSearchParams).then(
                         function (data) {
-                            $scope.gridOptions.useExternalPagination = false;
-                            $scope.gridOptions.useExternalSorting = false;
-                            $scope.gridOptions.data = data['data']['people'];
-                            $scope.gridOptions.columnDefs = origGridColumnDefs;
+                            var status = data.status;
+
+                            if (status >= 200 && status <= 210) {
+                                $scope.gridOptions.useExternalPagination = false;
+                                $scope.gridOptions.useExternalSorting = false;
+                                $scope.gridOptions.data = data['data']['people'];
+                                $scope.gridOptions.columnDefs = origGridColumnDefs;
+                            }
                         }
                     );
                 };

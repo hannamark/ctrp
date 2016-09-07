@@ -64,7 +64,7 @@ And I can view TSR document
      And the TSR Trial Details Section fields will be displayed following the rules below
      
      
-      |TSR Section     |Field                                        |Field Required  |Conditional Fields                                      |Display Rule when Field t  |General Details |Research Category                            |Required        |                                                        |Display "No data available"    |
+      |TSR Section     |Field                                        |Field Required  |Conditional Fields                                      |Display Rule when Field t  |
       |                |Lead Organization                            |Required        |                                                        |Display "No data available"    |
       |                |Sponsor                                      |Required        |                                                        |Display "No data available"    |
       |                |Responsible Party                            |Required        |                                                        |Display "No data available"    |
@@ -130,7 +130,7 @@ And I can view TSR document
       |                      |Affiliation               |Required        |Display "No data available"    |  
       
       
-  Scenario:#8 Trial Design Section Display Rules Associated with Interventional Research Category
+  Scenario:#8 Trial Design Section Display Rules Associated with Interventional Clinical Research Category
      Given I can View TSR document
      And the Trial Design Section fields will be displayed following the rules below
      
@@ -150,7 +150,7 @@ And I can view TSR document
     
          
       
-    Scenario:#8a Trial Design Section Display Rules Associated with Observational Research Category
+    Scenario:#8a Trial Design Section Display Rules Associated with Observational Clinical Research Category
      Given I can View TSR document
      And the Trial Design Section fields will be displayed following the rules below 
      
@@ -204,15 +204,15 @@ And I can view TSR document
      Given I can View TSR document
      And the Eligibility Criteria Section fields will be displayed following the rules below
       
-      |TSR Section           |Field                       |Field Required |Conditional Fields                               |Display Rule when Field Blank|
-      |Eligibility Criteria  |Accepts Healthy Volunteers  |Required       |                                                 |Display "No data available"
-      |                      |Gender                      |Required       |                                                 |Display "No data available"
-      |                      |Minimum Age                 |Required       |                                                 |Display "No data available"
-      |                      |Maximum Age                 |Required       |                                                 |Display "No data available"
-      |                      |Sampling Method             |Required       |Conditional if Research Category is Observational|Display "No data available"
-      |                      |Study Population            |Required       |Conditional if Research Category is Observational|Display "No data available"
-      |                      |Inclusion Criteria          |Required       |                                                 |Display "No data available"
-      |                      |Exclusion Criteria          |Required       |                                                 |Display "No data available"
+      |TSR Section           |Field                       |Field Required |Conditional Fields                                        |Display Rule when Field Blank|
+      |Eligibility Criteria  |Accepts Healthy Volunteers  |Required       |                                                          |Display "No data available"
+      |                      |Gender                      |Required       |                                                          |Display "No data available"
+      |                      |Minimum Age                 |Required       |                                                          |Display "No data available"
+      |                      |Maximum Age                 |Required       |                                                          |Display "No data available"
+      |                      |Sampling Method             |Required       |Conditional if Clinical Research Category is Observational|Display "No data available"
+      |                      |Study Population            |Required       |Conditional if Clinical Research Category is Observational|Display "No data available"
+      |                      |Inclusion Criteria          |Required       |                                                          |Display "No data available"
+      |                      |Exclusion Criteria          |Required       |                                                          |Display "No data available"
 
 
 

@@ -30,9 +30,11 @@
                   sourceContextObj: function(OrgService) {
                       return OrgService.getSourceContexts();
                   },
-                  sourceStatusObj : function(OrgService) {
-                      console.log("getting source statuses!");
+                  sourceStatusObj: function(OrgService) {
                       return OrgService.getSourceStatuses();
+                  },
+                  serviceRequests: function(OrgService) {
+                    return OrgService.getServiceRequests();
                   },
                   GeoLocationService : 'GeoLocationService',
                   countryList : function(GeoLocationService) {
@@ -61,6 +63,9 @@
                   },
                   sourceStatusObj : function(OrgService) {
                       return OrgService.getSourceStatuses();
+                  },
+                  serviceRequests: function(OrgService) {
+                    return OrgService.getServiceRequests();
                   },
                   orgDetailObj: function($q) {
                       var deferred = $q.defer();

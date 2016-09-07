@@ -98,7 +98,7 @@ class Organization < ActiveRecord::Base
     source_status_arr = []
     source_status_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
     source_status_arr.each_with_index { |e, i|
-      if SourceStatus.find_by_id(e).code == "ACT"
+      if SourceStatus.ctrp_context_source_statuses.find_by_id(e).code == "ACT"
         isNullifiable = false;
       end
     }
@@ -266,7 +266,7 @@ class Organization < ActiveRecord::Base
 
       #The status of the organization to be nullified will be "Nullified"
       ##
-      @toBeNullifiedOrg.source_status_id=SourceStatus.find_by_code('NULLIFIED').id;
+      @toBeNullifiedOrg.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id;
       @toBeNullifiedOrg.save!
     end
 

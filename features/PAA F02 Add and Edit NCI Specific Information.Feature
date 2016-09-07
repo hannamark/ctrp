@@ -1,4 +1,4 @@
-﻿@PA @global
+@PA @global
 Feature: PAA F02 Add and Edit NCI Specific Information
 
 As any CTRP PA User, I can enter NCI Specific Information
@@ -50,7 +50,7 @@ And the Trial Sponsor is "National Cancer Institute" (Trial/Sponsor_ID where org
 And the Trial Lead Organization is not "NCI - Center for Cancer Research" (Trial/Lead_Org_ID where Organizations/Name = "NCI - Center for Cancer Research")
 And the Trial processing status is "Verification Pending", "Abstracted", "Abstraction Verified No Response", or "Abstraction Verified Response"
 And the Trial Overall Status is not "Complete", "Administratively Complete" or "Terminated"
-And the trial Research Category is "Interventional" (Trial/Research_Category_id where Research_Categories/Name = "Interventional")
+And the trial Clinical Research Category is "Interventional" (Trial/Clinica_Research_Category_id where Clinical_Research_Categories/Name = "Interventional")
 When I select the radio button for Yes or No for �Send Trial Information to ClinicalTrials.gov?� 
 Then the selected value for �Send Trial Information to ClinicalTrials.gov?� will be Yes or No
 
@@ -90,7 +90,7 @@ Examples:
 |Trial Overall Status is "Complete"|trial_status_wrappers.trial_status_id trial_statuses.name = "Complete"|
 |Trial Overall Status is "Administratively Complete"|trial_status_wrappers.trial_status_id trial_statuses.name = "Administratively Complete"|
 |Trial Overall Status is "Terminated"|trial_status_wrappers.trial_status_id trial_statuses.name = "Terminated"|
-|Trial Research Category is not "Interventional"|trials.Research_catagory_id Research_catagories.name not = "Interventional"|
+|Trial Clinical Research Category is not "Interventional"|trials.Clinical_Research_catagory_id Clinical_Research_catagories.name not = "Interventional"|
 
 Scenario: #11a I cannot view the �Send Trial Information to ClinicalTrials.gov?�
 Given I am logged into the CTRP PA application

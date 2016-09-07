@@ -255,7 +255,7 @@
             if(family && family.length){
                 if (family === 'no_family') {
                     queryObj['alias'] = false;
-                    queryObj['rows'] = 50;
+                    queryObj['rows'] = 25;
                     queryObj['no_family'] = true;
                 } else {
                     queryObj['family_name'] = family;
@@ -267,26 +267,30 @@
                 var uniqueNames = [];
                 var orgNames = [];
 
-                orgNames = res.orgs.map(function (org) {
-                    return org.name + ', ' + org.city + ', ' + org.country +
-                    '<span class="hide">{' +
-                            '"id":' + org.id +
-                            ',"name": "' + org.name + '"' +
-                            ',"address": "' + org.address + '"' +
-                            ',"address2": "' + org.address2 + '"' +
-                            ',"city": "' + org.city + '"' +
-                            ',"state_provinces": "' + org.state_province + '"' +
-                            ',"postal_code": "' + org.postal_code + '"' +
-                            ',"country": "' + org.country + '"' +
-                            ',"email": "' + org.email + '"' +
-                            ',"phone": "' + org.phone + '"' +
-                            ',"fax": "' + org.fax + '"' +
-                        '}</span>';
-                });
+                var status = res.server_response.status;
 
-                return uniqueNames = orgNames.filter(function (name) {
-                    return uniqueNames.indexOf(name) === -1;
-                });
+                if (status >= 200 && status <= 210) {
+                    orgNames = res.orgs.map(function (org) {
+                        return org.name + ', ' + org.city + ', ' + org.country +
+                        '<span class="hide">{' +
+                                '"id":' + org.id +
+                                ',"name": "' + org.name + '"' +
+                                ',"address": "' + org.address + '"' +
+                                ',"address2": "' + org.address2 + '"' +
+                                ',"city": "' + org.city + '"' +
+                                ',"state_provinces": "' + org.state_province + '"' +
+                                ',"postal_code": "' + org.postal_code + '"' +
+                                ',"country": "' + org.country + '"' +
+                                ',"email": "' + org.email + '"' +
+                                ',"phone": "' + org.phone + '"' +
+                                ',"fax": "' + org.fax + '"' +
+                            '}</span>';
+                    });
+
+                    return uniqueNames = orgNames.filter(function (name) {
+                        return uniqueNames.indexOf(name) === -1;
+                    });
+                }
             });
         }
 
@@ -300,14 +304,18 @@
 
                     GeoLocationService.getStateListInCountry(countryName)
                         .then(function (response) {
-                            statesOrProvinces = response;
+                            var status = response.server_response.status;
 
-                            //states or provinces are not available
-                            if (statesOrProvinces.length === 0) {
-                                broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
-                                return;
+                            if (status >= 200 && status <= 210) {
+                                statesOrProvinces = response;
+
+                                //states or provinces are not available
+                                if (statesOrProvinces.length === 0) {
+                                    broadcastMsg(MESSAGES.STATES_UNAVAIL, 'states or provinces are not available');
+                                    return;
+                                }
+                                broadcastMsg(MESSAGES.STATES_AVAIL, 'come get your states or provinces');
                             }
-                            broadcastMsg(MESSAGES.STATES_AVAIL, 'come get your states or provinces');
                         }).catch(function (err) {
                             $log.info('error in retrieving states for country: ' + countryName);
                         });

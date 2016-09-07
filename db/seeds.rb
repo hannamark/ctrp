@@ -33,12 +33,12 @@ if OrgFundingMechanism.all.size == 0
 end
 
 
-ServiceRequest.find_or_create_by(code: 'CREATE').update(name: 'Create', status:'Active')
-ServiceRequest.find_or_create_by(code: 'UPDATE').update(name: 'Update', status:'Active')
-ServiceRequest.find_or_create_by(code: 'MERGE_W_CTEP').update(name: 'Merge with CTEP ID', status:'Active')
-ServiceRequest.find_or_create_by(code: 'NULLIFY_W_CTEP').update(name: 'Nullify with CTEP ID', status:'Active')
-ServiceRequest.find_or_create_by(code: 'LINK_W_CTRP').update(name: 'Link with CTRP ID', status:'Active')
-ServiceRequest.find_or_create_by(code: 'NULL').update(name: 'NULL', status:'Active')
+ServiceRequest.find_or_create_by(code: 'CREATE').update(name: 'Create', record_status:'Active')
+ServiceRequest.find_or_create_by(code: 'UPDATE').update(name: 'Update', record_status:'Active')
+ServiceRequest.find_or_create_by(code: 'MERGE_W_CTEP').update(name: 'Merge with CTEP ID', record_status:'Active')
+ServiceRequest.find_or_create_by(code: 'NULLIFY_W_CTEP').update(name: 'Nullify with CTEP ID', record_status:'Active')
+ServiceRequest.find_or_create_by(code: 'LINK_W_CTRP').update(name: 'Link with CTRP ID', record_status:'Active')
+ServiceRequest.find_or_create_by(code: 'NULL').update(name: 'NULL', record_status:'Active')
 
 SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
 SourceContext.find_or_create_by(code: 'CTRP').update( name: 'CTRP')
@@ -48,14 +48,14 @@ ctrp_context = SourceContext.find_by_code('CTRP')
 ctep_context = SourceContext.find_by_code('CTEP')
 nlm_context =  SourceContext.find_by_code('NLM')
 
-SourceStatus.create(code: 'ACT' , source_context_id: ctrp_context.id,  name: 'Active', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctrp_context.id).nil?
-SourceStatus.create(code: 'PEND', source_context_id: ctrp_context.id,  name: 'Pending', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('PEND', ctrp_context.id).nil?
-SourceStatus.create(code: 'INACT', source_context_id: ctrp_context.id, name: 'InActive', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctrp_context.id).nil?
-SourceStatus.create(code: 'NULLIFIED', source_context_id: ctrp_context.id, name: 'Nullified', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('NULLIFIED', ctrp_context.id).nil?
+SourceStatus.create(code: 'ACT' , source_context_id: ctrp_context.id,  name: 'Active', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctrp_context.id).nil?
+SourceStatus.create(code: 'PEND', source_context_id: ctrp_context.id,  name: 'Pending', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('PEND', ctrp_context.id).nil?
+SourceStatus.create(code: 'INACT', source_context_id: ctrp_context.id, name: 'InActive', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctrp_context.id).nil?
+SourceStatus.create(code: 'NULLIFIED', source_context_id: ctrp_context.id, name: 'Nullified', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('NULLIFIED', ctrp_context.id).nil?
 
-SourceStatus.create(code: 'ACT', source_context_id: ctep_context.id, name: 'Active', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctep_context.id).nil?
-SourceStatus.create(code: 'INACT', source_context_id: ctep_context.id, name: 'InActive', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctep_context.id).nil?
-SourceStatus.create(code: 'LEG', source_context_id: ctep_context.id, name: 'Legacy', status: 'Active') if SourceStatus.find_by_code_and_source_context_id('LEG', ctep_context.id).nil?
+SourceStatus.create(code: 'ACT', source_context_id: ctep_context.id, name: 'Active', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', ctep_context.id).nil?
+SourceStatus.create(code: 'INACT', source_context_id: ctep_context.id, name: 'InActive', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctep_context.id).nil?
+SourceStatus.create(code: 'LEG', source_context_id: ctep_context.id, name: 'Legacy', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('LEG', ctep_context.id).nil?
 
 
 
@@ -1605,7 +1605,7 @@ MailTemplate.find_or_create_by(
                 <p>Dear ${username},</p>
                 <p>The Clinical Trials Reporting Office (CTRO) cancelled your ownership of the NCI Clinical Trials Reporting Program (CTRP) trial record(s) identified above.</p>
                 <p><b>NEXT STEPS:</b></p>
-                <p>f you believe this is an error, or if you have additional questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
+                <p>If you believe this is an error, or if you have additional questions about this or other CTRP topics, please contact the CTRO at ncictro@mail.nih.gov.</p>
                 <p>Thank you for participating in the NCI Clinical Trials Reporting Program.</p>
                 </body></html>'
 )

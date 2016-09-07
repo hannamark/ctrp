@@ -1145,6 +1145,10 @@ md-checkbox.md-default-theme.md-checked .md-icon {
 }
 
 /* Angular Material Overrides */
+.md-layout-column > .flex-33, .md-layout-column > .flex-34, .md-layout-column > .flex-33, .md-layout-column > .flex-34 {
+  flex: 0 0 auto;
+}
+
 .md-tab {
     font-size: 13px;
     text-transform:capitalize;
@@ -1232,6 +1236,7 @@ body.trial-sub-groups a.menu-trial-sub-groups {
 
 body.trial-related-documents #trial-doc-upload {
     width: 100%;
+    text-align:left;
 }
 
 
@@ -1571,9 +1576,10 @@ div[disabled] {
     padding-left: 10px;
 }
 
-.assign-trial-ownership .btn-toolbar {
-    padding-right: 15px;
+.assign-trial-ownership .popover-confirm .btn-toolbar, .user-detail .popover-confirm .btn-toolbar, .assign-ownership .popover-confirm .btn-toolbar {
+    padding-right:10px;
 }
+
 .assign-trial-ownership .ctrptransferselect .pool {
     height: 400px;
 }
@@ -1781,6 +1787,15 @@ body.users #typeAheadResults {
   width: auto !important;
 }
 
+body.assign-trial-ownership .drop-shadow {
+    padding-top: 10px;
+}
+body.assign-ownership .grid {
+    height: auto;
+    min-height: 280px;
+    max-height: 550px;
+}
+
 /* firefox only*/
 @-moz-document url-prefix() {
     #typeAheadResults {
@@ -1789,4 +1804,13 @@ body.users #typeAheadResults {
     #typeAheadResults .btn-danger .glyphicon {
         padding: 0 6px 0 2px;
     }
+}
+
+.edit-off .ui-grid-row:nth-child(odd):hover .ui-grid-cell.ui-grid-row-header-cell,
+.edit-off .ui-grid-row:nth-child(even):hover .ui-grid-cell.ui-grid-row-header-cell {
+    background: #eee;
+}
+
+.edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
+    display: none;
 }

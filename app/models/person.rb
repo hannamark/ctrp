@@ -96,7 +96,7 @@ class Person < ActiveRecord::Base
     source_status_arr = []
     source_status_arr = Person.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
     source_status_arr.each_with_index { |e, i|
-      if e.present? && SourceStatus.find_by_id(e).code == "ACT"
+      if e.present? && SourceStatus.ctrp_context_source_statuses.find_by_id(e).code == "ACT"
         isNullifiable = false;
       end
     }
@@ -183,7 +183,7 @@ class Person < ActiveRecord::Base
 
       ## Destroy to_be_nullified_person
       ##
-      @toBeNullifiedPerson.source_status_id=SourceStatus.find_by_code('NULLIFIED').id;
+      @toBeNullifiedPerson.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id;
       @toBeNullifiedPerson.save!
     end
   end

@@ -36,35 +36,8 @@ Then the comment appears below the Trial Status?
 |Administratively Complete - Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)|
 |Withdrawn - Trial has been withdrawn from development and review.|
 
-Scenario: #5 PA Trial Status Why Study Stopped? field character count
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Trial Status Screen
-Then a comment appears below the Why Study Stopped? field to display the number of characters available to enter into the field.  
-|160 characters left|
-And "x characters left" will be displayed as characters are added
-When 160 characters have been entered
-Then no additional text can be entered
 
-
-Scenario: #6 PA Trial Status Comments field character count
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Trial Status Screen
-Then a comment appears below the Comments field to display the number of characters available to enter into the field.  
-|160 characters left|
-And "x characters left" will be displayed as characters are added
-When 160 characters have been entered
-Then no additional text can be entered
-
-Scenario: #7 PA General Trails Details Official Title field character count
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the General Trails Details Screen
-Then a comment appears below the Official Title field to display the number of characters available to enter into the field.  
-|4000 characters left|
-And "x characters left" will be displayed as characters are added
-When 4000 characters have been entered
-Then no additional text can be entered
-
-Scenario: #8 PA General Trails Details Keywords field character count
+Scenario: #8 PA General Trials Details Keywords field character count
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the General Trails Details Screen
 Then a comment appears below the Keywords field to display the number of characters available to enter into the field.  

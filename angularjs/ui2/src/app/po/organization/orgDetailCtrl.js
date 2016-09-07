@@ -9,20 +9,20 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['orgDetailObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter', '_',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal', '$timeout',
-        'GeoLocationService'];
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal', '$timeout', 'GeoLocationService', 'serviceRequests'];
 
     function orgDetailCtrl(orgDetailObj, OrgService, toastr, MESSAGES, UserService, $filter, _,
-                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout) {
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout, GeoLocationService, serviceRequests) {
         var vm = this;
         $scope.organization_form = {};
         vm.addedNameAliases = [];
-        vm.numbers = [1, 2, 3];
+        console.info('serviceRequests: ', serviceRequests);
         vm.states = [];
-        vm.hasCtrpContext = _.findIndex(orgDetailObj.cluster || [], {context: 'CTRP'}) > -1;
+        vm.processingStatuses = OrgService.getProcessingStatuses();
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.curOrg = orgDetailObj || {name: '', country: '', state: '', source_status_id: ''}; //orgDetailObj.data;
+        vm.hasCtrpContext = _.findIndex(vm.curOrg.cluster || [], {context: 'CTRP'}) > -1;
         vm.curOrg.processing_status = !!orgDetailObj ? orgDetailObj.processing_status : 'Complete';
         vm.masterCopy= angular.copy(vm.curOrg);
         vm.sourceContextArr = sourceContextObj;
@@ -35,7 +35,7 @@
         vm.showPhoneWarning = false;
         vm.disableBtn = false;
         vm.processStatusArr = OrgService.getProcessingStatuses();
-        var orgContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
+        var orgContextCache = {'CTRP': null, 'CTEP': null, 'NLM': null};
 
         vm.updateOrg = function () {
             vm.disableBtn = true;

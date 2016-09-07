@@ -13,7 +13,7 @@ And user Status is
 |Inactive|
 And the Family is Active
 And the Organization is Active
-And the affiliation between the organization an the Family is not Not Expired
+And the affiliation between the organization an the Family is Not Expired
 Then I will see a list of all CTRP Users that have organization Affiliation to the same Family as my organization affiliation:
 |Username|
 |First Name |
@@ -46,6 +46,7 @@ Then I will see a list of all CTRP Users that have organization Affiliation as m
 |display an indicator if the CTRP Users will receive e-mails|
 |Status|
 |Status Date (Current status date)|
+
 Scenario: #2 I can search for CTRP Users as a Site Admin
 Given I am logged into CTRP 
 And I have Site Administrator privileges
@@ -65,7 +66,7 @@ And user Status is
 |Active|
 |Pending|
 |Inactive|
-And the affiliation between the organization an the Family is not Not Expired
+And the affiliation between the organization an the Family is Not Expired
 And the Family is Active
 And the Organization is Active
 And the list will be ordered by Last Name and then First name
@@ -123,7 +124,7 @@ And user Status is
 |Inactive|
 And the Family is Active
 And the Organization is Active
-And the affiliation between the organization an the Family is not Not Expired
+And the affiliation between the organization an the Family is Not Expired
 When I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
@@ -142,7 +143,7 @@ And user Status is
 |Inactive|
 And the Family is Active
 And the Organization is Active
-And the affiliation between the organization an the Family is not Not Expired
+And the affiliation between the organization and the Family is Not Expired
 When I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
@@ -157,7 +158,7 @@ When I select the Site Administration feature
 And I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the status to inactive
-And the system will display a warning message that "The User will no longer be able to Access CTRP"
+And the system will display a warning message that "The User will no longer be able to access CTRP"
 And the system will determine if the user is an owner of trials with an Active Submission 
 And display the message that "The trial(s) owned by this user will need to be reassigned to a new owner"
 And the system will display the following action buttons

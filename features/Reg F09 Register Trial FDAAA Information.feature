@@ -27,6 +27,24 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
       |Institutional            |
 
 
+Scenario Outline: #1a Rule for Character length for Trial Regulatory Information 
+  Given I have selected the option to register a trial <trialType>
+  And I am on the Register Trial Regulatory Information screen
+  Then a comment appears below the field to display the number of characters available to enter into the field
+    | Field                                | Number of Characters left          |
+    | Investigator Title                   | 254 characters left                         |
+
+  And "x characters left" will be displayed as characters are added
+  When all the characters mentioned above for field have been entered
+  Then no additional text can be entered
+
+  Examples:
+    |trialType  |
+    |National                 |
+    |Externally Peer-Reviewed |
+    |Institutional            |
+
+
   Scenario Outline: #2 Responsible Party Rules - When the Responsible Party is the Sponsor
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Regulatory Information screen
@@ -114,23 +132,6 @@ Feature: Reg F09 Register Trial Regulatory Information FDAAA
       |Institutional            |
 
 
-	Scenario Outline: #4b The Investigator Title field Length Rule
-    Given I have selected the option to register a trial <trialType>
-    And I can edit Investigator Title information 
-    Then a comment appears below the Investigator Title field to display the number of characters available to enter into the field.  
-     |254 characters left|
-     And "x characters left" will be displayed as characters are added
-    When 254 characters have been entered
-    Then no additional text can be entered
-    
-    Examples:
-      |trialType              |
-      |National                 |
-      |Externally Peer-Reviewed  |
-      |Institutional            |
-
-
-	
     Scenario Outline:#5 I can select the Trial's information for FDAAA required Regulatory Information for a non FDA Regulated Interventional trial
     Given I have selected the option to register a trial <trialType>
     And I am on the Register Trial Regulatory Information screen

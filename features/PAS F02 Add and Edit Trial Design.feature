@@ -16,31 +16,41 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
 
 Examples:
 
-    |From Research category                 |To Research category                     |field                                    |action (diplays OR deleted) |
+    |From Clinical Research category                 |To Clinical Research category                     |field                                    |action (diplays OR deleted) |
 
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose                        |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose Other                  |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Intervention Model                       |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Number of Arms/Groups                    |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking                                  |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role Subject                     |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role investigator                |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role Caregiver                   |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role outcome Assessor            |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Allocation                               |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Classification                     |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Final Enrollment for clinicalTrials.gov  |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Accruals                                 |deleted |
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Model                              |displays|
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Model other                        |displays|
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen Retention                   |displays|
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen description                 |displays|
-    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Number of Arms/Groups  or Expanded Access|displays|
-
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                        |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                  |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose                        |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose Other                  |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Trial Phase                            |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Is this a Pilot                          |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Intervention Model                       |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking                                  |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role Subject                     |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role investigator                |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role Caregiver                   |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role outcome Assessor            |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Allocation                               |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Classification                     |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Model                              |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Model other                        |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Time Perspective                         |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Time Perspective Other                   |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen Retention                   |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen Description                 |displays|
+      |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Number of Arms/Groups                 |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Target enrollment                        |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Final Enrollment for clinicalTrials.gov  |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Accruals                                 |displays|
+  
+  
+    |Observational or Ancillary Correlative   |Interventional  or Expanded Access     |Primary Purpose                          |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Primary Purpose Other                    |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose                        |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose Other                  |displays|
-    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Intervention Model                       |displays|
-    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Number of Arms/Groups                    |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Trial Phase                              |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Is this a Pilot                          |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Intervention Model                       |displays|   
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking                                  |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking role Subject                     |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking role investigator                |displays|
@@ -48,15 +58,16 @@ Examples:
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking role outcome Assessor            |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Allocation                               |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Study Classification                     |displays|
-    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Final Enrollment for clinicalTrials.gov  |displays|
-    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Accruals                                 |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Study Model                              |deleted |
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Study Model other                        |deleted |
     |Observational or Ancillary Correlative |Interventional or Expanded Access        |Time Perspective                         |deleted |
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Time Perspective Other                   |deleted | 
     |Observational or Ancillary Correlative |Interventional or Expanded Access        |Bio Specimen Retention                   |deleted |
-    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Bio Specimen description                 |deleted |
-    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Number of Arms/Groups                    |deleted |
-
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Bio Specimen Description                 |deleted |
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Number of Arms/Groups                    |displays|
+   |Observational or Ancillary Correlative |Interventional or Expanded Access        |Target enrollment                        |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Final Enrollment for clinicalTrials.gov  |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Accruals                                 |displays|
 
 Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application
@@ -241,13 +252,27 @@ Given I am on the Trial Design Screen
  Then an error message <TrialDesignErrorMessage> will be displayed
 Examples:
 
-  | <TrialDesignField>    | <TrialDesignErrorMessage>             |
+  | <TrialDesignField>    | <TrialDesignErrorMessage>         |
   | Primary Purpose       | Primary Purpose is Required       |
   | Trial Phase           | Trial Phase is Required           |
   | Number of Arms/Groups | Number of Arms/Groups is Required |
   | Masking            | Masking is Required                  |
   | Allocation         | Allocation is Required               |
   | Target Enrollment  | Target Enrollment is Required        |
+  
+  Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
+Given I am on the Trial Design Screen
+  And the Clinical research Category is Observational
+  And the Information Source is 'Protocol'
+ When The Trial Design field <TrialDesignField> is not entered
+  And I have seleted the save Button
+ Then an error message <TrialDesignErrorMessage> will be displayed
+Examples:
+
+  | <TrialDesignField>    | <TrialDesignErrorMessage>         |
+  | Study Model       | Study Model is Required       |
+  | Time Perspective           | Time Perspective           |
+
 
 Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for IMPORT Information Source
 Given I am on the Trial Design Screen

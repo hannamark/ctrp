@@ -66,14 +66,17 @@ Scenario Outline: #1c Participating site required fields
 Given I am logged into the CTRP Protocol Abstraction application
 And I have added a Participating Site
 Then the following fields will be required
-|Organization| 
-|Site Recruitment Status|
-|Site Recruitment status date |
-|Investigator |
-|Investigator Role|
-|Central Contact |
-|Central Contact Phone (when there is no E-mail Address)|
-|Central Contact E-mail Address (when there is not phone number)|   
+     |CTRP ID|
+     |CTRP Organization Name|
+     |Investigators, Role (Principal Investigator or Sub-Investigator)|
+     |Local Trial Identifier|
+     |Program Code|
+     |Current Site Recruitment Status|
+     |Current Site Recruitment Status Date|
+     |Primary Contact|
+     |Email|
+     |Phone Number, Phone Number Extension|
+     
 
 
 Scenario Outline: #2 I can edit a participating site on a trial
@@ -232,7 +235,7 @@ When I add a trial status from <statusFrom> to trial status <statusTo> along wit
       |In Review	                                    |Complete	                                    |			       |yes     |WARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing           |
       |In Review	                                    |Administratively Complete	                    |Add Stopped Reason|yes	    |WARNING: Interim status [Approved] is missing\nWARNING: Interim status [Active] is missing\nWARNING: Interim status [Closed to Accrual] is missing\nWARNING: Interim status [Closed to Accrual and Intervention] is missing	       |
       
- Scenario Outline : #11b Trial Status Transition Rules - Approved status
+ Scenario: #11b Trial Status Transition Rules - Approved status
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Participating Site Page
 And I have selected an organization 

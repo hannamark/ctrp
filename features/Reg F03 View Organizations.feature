@@ -12,7 +12,7 @@ As a CTRP User, I am able to View Organizations
      
     And I am logged into the CTRP Registration application
     And the following parameters of an Organization exist:
-    |CTRPID |Name|SourceContext|SourceID|SourceStatus|NameAlias|Address1|Address2|Country|State|City|PostalCode|Email|Phone|Fax|Families|
+    |CTRPID |Name|SourceContext|SourceID|SourceStatus|NameAlias|Address1|Address2|Country|State|City|PostalCode|Email|Phone|Fax|FamilyName|
     |9999999|SopNameCancer RegF03vw|CTRP|999999|Active|SopAlias |SopAddress1|SopAddress2|Morocco|Ifrane|SopCity|22306|SopPercukeTrial@pr.com|420-999-8906|420-999-8906|SopFamilies|
     
     And I have completed an organization search 
@@ -36,7 +36,7 @@ As a CTRP User, I am able to View Organizations
       |Email  |SopPercukeTrial@pr.com  |
       |Phone  |420-999-8906  |
       |Fax  |420-999-8906  |
-      |Families  |SopFamilies  |
+      |FamilyName  |SopFamilies  |
       
   And I should not be allowed to edit organization parameters
 And I should not view, edit or delete comments added by curators
@@ -45,7 +45,7 @@ And the following button type should also be invisible to the user
       |Delete This Organization |
       |Reset Button  |
       |Save Button  |
-When I click on Families Link
+When I click on Family Name Link
 Then I will view family details type
 
       |Family Name  |

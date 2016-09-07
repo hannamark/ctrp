@@ -33,7 +33,6 @@
 
                 /* Set UserService flag for (self) unsaved-changes directive */
                 UserService.setUnsavedFormFlag(true);
-                console.log('or will this happen first');
 
                 setFormVars();
 
