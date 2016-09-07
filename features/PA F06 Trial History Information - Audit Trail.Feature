@@ -39,7 +39,7 @@ Then the audit trail will be displayed for the Trial ordered by date with newest
 |Investigator (investigator_id: People/Last Name, First Name, Middle Name)|
 |created_at|
 |updated_at|
-|research category (research_category_id:  research_categories/Name)|
+|Clinical Research category (clinical_research_category_id:  clinical_research_categories/Name)|
 |accrual disease term (accrual_disease_term_id: accrual_disease_terms/name)|
 |investigator_title|
 |investigator aff id (investigator_aff_id: Organizations/Name)|
@@ -158,7 +158,7 @@ Examples:
 |Investigator Last Name, First Name, Middle Name | Becker, Pamela |
 |Created At | July 29, 2015|
 |updated_at |September 18, 2015|
-|research category|Interventional   |
+|Clinical Research Category|Interventional   |
 |accrual disease term|ICD9|
 |investigator_title|XXX|
 |investigator aff id (investigator_aff_id: Organizations/Name)|XXX|
