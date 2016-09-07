@@ -55,19 +55,20 @@
             outerPs.participating_site = vm.curPs;
 
             TrialService.upsertParticipatingSite(outerPs).then(function(response) {
-                if (response.server_response.status < 300) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     if (vm.isManageScreen) {
                         $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
                     } else {
                         $state.go('main.viewTrial', {trialId: response.trial.id});
                     }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
-                } else {
-                    // Enable buttons in case of backend error
-                    vm.disableBtn = false;
                 }
             }).catch(function(err) {
-                console.log("error in updating trial " + JSON.stringify(outerPs));
+                console.log('error in updating trial ' + JSON.stringify(outerPs));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 
@@ -137,12 +138,16 @@
             }
 
             TrialService.validateSrStatus({"statuses": noDestroyStatusArr}).then(function(response) {
-                vm.statusValidationMsgs = response.validation_msgs;
+                var status = response.server_response.status;
 
-                // Add empty object to positions where _destroy is true
-                for (var i = 0; i < vm.addedStatuses.length; i++) {
-                    if (vm.addedStatuses[i]._destroy) {
-                        vm.statusValidationMsgs.splice(i, 0, {});
+                if (status >= 200 && status <= 210) {
+                    vm.statusValidationMsgs = response.validation_msgs;
+
+                    // Add empty object to positions where _destroy is true
+                    for (var i = 0; i < vm.addedStatuses.length; i++) {
+                        if (vm.addedStatuses[i]._destroy) {
+                            vm.statusValidationMsgs.splice(i, 0, {});
+                        }
                     }
                 }
             }).catch(function(err) {

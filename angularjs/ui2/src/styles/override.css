@@ -1805,3 +1805,12 @@ body.assign-ownership .grid {
         padding: 0 6px 0 2px;
     }
 }
+
+.edit-off .ui-grid-row:nth-child(odd):hover .ui-grid-cell.ui-grid-row-header-cell,
+.edit-off .ui-grid-row:nth-child(even):hover .ui-grid-cell.ui-grid-row-header-cell {
+    background: #eee;
+}
+
+.edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
+    display: none;
+}
