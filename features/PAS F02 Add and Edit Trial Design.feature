@@ -16,7 +16,7 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
 
 Examples:
 
-    |From Research category                 |To Research category                     |field                                    |action (diplays OR deleted) |
+    |From Clinical Research category                 |To Clinical Research category                     |field                                    |action (diplays OR deleted) |
 
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                        |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                  |displays|
