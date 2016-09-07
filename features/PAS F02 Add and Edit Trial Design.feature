@@ -357,7 +357,7 @@ Scenario:  #17 Character display for Time Perspective of Other
  
  
   
-  Scenario: #17'Bio-specimen Description character count
+  Scenario: #18 Bio-specimen Description character count
 Given I am on the Trial Design screen
 When I am typing into the Bio-specimen Description  Field
 Then a comment appears below the Biospecimen Description field to display the number of characters available to enter into the field.  

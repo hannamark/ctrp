@@ -212,6 +212,7 @@ module.exports = function() {
     this.Then(/^I can select the (.*) and the trial is (.*) displayed$/, function (IdentifierIdentifier, Retrievedfrom, table, callback) {
         associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'link', optionA, trialTypeA, officialTitleA);
         associated.verifyViewAssociatedTrialNCI(leadProtocolIDA, nciIDA, nctIDA, '', '');
+        associated.clickViewCloseBtn();
         browser.sleep(25).then(callback);
     });
 
@@ -239,27 +240,23 @@ module.exports = function() {
      |Official Title               |
      */
 
-    //this.Given(/^the added Associated Trial is a CTRP study$/, function (callback) {
-    //    //pageMenu.clickSearchTrialAbstractor();
-    //    //pageMenu.clickTrials();
-    //    //pageMenu.clickSearchTrialsPA();
-    //    //helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-    //    //login.clickWriteMode('On');
-    //    //commonFunctions.verifySearchTrialsPAScreen();
-    //    //pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
-    //    //pageSearchTrail.clickSearchTrialSearchButton();
-    //    //commonFunctions.clickLinkText(leadProtocolID);
-    //    //leftNav.scientificCheckOut();
-    //    helper.wait_for(5000);
-    //    browser.sleep(25).then(callback);
-    //});
-    //
-    //this.When(/^the Associated Trial is displayed on the Associated Trials screen$/, function (callback) {
-    //    associated.selectIdentifierType(identifierTypeA);
-    //    associated.setTrialIdentifierTxt(nciIDA);
-    //    associated.clickLookupTrial();
-    //    browser.sleep(25).then(callback);
-    //});
+    this.Given(/^I am on the Add Associated Trials screen$/, function (callback) {
+        pageMenu.clickSearchTrialAbstractor();
+        pageMenu.clickTrials();
+        pageMenu.clickSearchTrialsPA();
+        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+        login.clickWriteMode('On');
+        commonFunctions.verifySearchTrialsPAScreen();
+        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+        pageSearchTrail.clickSearchTrialSearchButton();
+        commonFunctions.clickLinkText(leadProtocolID);
+        leftNav.scientificCheckOut();
+        leftNav.clickScientificAssociatedTrials();
+        associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
+        associated.deleteAllAssociatedTrialList('yes');
+        associated.clickAddAssociatedTrial();
+        browser.sleep(25).then(callback);
+    });
 
     this.Given(/^the added Associated Trial is a CTRP study$/, function (callback) {
 
@@ -301,23 +298,6 @@ module.exports = function() {
      When trial identifer is not found
      Then the message 'Trial is not found' displays
      */
-
-    this.Given(/^I am on the Add Associated Trials screen$/, function (callback) {
-        pageMenu.clickSearchTrialAbstractor();
-        pageMenu.clickTrials();
-        pageMenu.clickSearchTrialsPA();
-        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-        login.clickWriteMode('On');
-        commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
-        pageSearchTrail.clickSearchTrialSearchButton();
-        commonFunctions.clickLinkText(leadProtocolID);
-        leftNav.scientificCheckOut();
-        leftNav.clickScientificAssociatedTrials();
-        associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
-        associated.clickAddAssociatedTrial();
-        browser.sleep(25).then(callback);
-    });
 
     this.Given(/^I have selected Identifier Type$/, function (callback) {
         associated.selectIdentifierType(identifierTypeA);

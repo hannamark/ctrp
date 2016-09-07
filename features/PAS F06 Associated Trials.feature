@@ -25,18 +25,18 @@ And I can select the <trialIdentifier> and the trial is <Retrievedfrom> displaye
     |trialIdentifier   |Retrievedfrom          |
     |NCI-yyyy-nnnnn    |CTRP                   |
     |NCTnnnnnnnn       |ClinicalTrials.gov     |
-@runthis
+
 Scenario: #2   corresponding Associated Trial records will be created for both associated trials
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Add Associated Trials screen
 And the added Associated Trial is a CTRP study
 When the Associated Trial is displayed on the Associated Trials screen
 Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are added
-|AssociatedTrialFields        |
-|Identifier Type              |
-|Trial Identifier             |
-|Research Category            |
-|Official Title               |
+|AssociatedTrialFields         |
+|Identifier Type:              |
+|Trial Identifier:             |
+|Research Category:            |
+|Official Title:               |
 #Examples:
 #|CTRPstudyID|Title       |ClinRschCat            |AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory|AssociatedTrial_Official Title|
 #|NCI111     |Root study  |Interventional         |NCI555                            |Ancillary Correlative                   |Assoc study                   |
