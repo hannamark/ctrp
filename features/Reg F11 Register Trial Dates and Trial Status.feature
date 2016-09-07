@@ -684,28 +684,24 @@ Scenario Outline: #8 Rules for Study Date types
       |National                 |
       |Externally Peer-Reviewed |
       |Institutional            |
-      
-      
-      Scenario Outline:#4 Trial Status fields's character Limit
-    Given  I have selected the option to register a trial <TrialType>
-    And I am on the Register Trial Status screen
-    When I provide the field name <FieldName>
-    Then a comment appears below the field name <FieldName> to display the number of characters available to enter into the field.  
-     And "x characters left" will be displayed as characters are added
-    When required characters <Fieldlength> have been entered 
-    Then no additional text can be entered
-     
-     |FieldName                         |FieldLength|
-     |Comments                          |160        |
-     |Why Study Stopped                 |160      |
+    
+      Scenario Outline: #10 Rule for Character length for Trial Status section 
+  Given I have selected the option to register a trial <trialType>
+  And I am on the Trial Status Section
+  Then a comment appears below the field to display the number of characters available to enter into the field
+    | Field                                             | Number of Characters left       |
+    | Why Study Stopped                                 | 160 characters left             |
+    | Comment                                           | 160 characters left             |
 
+  And "x characters left" will be displayed as characters are added
+  When all the characters mentioned above for field have been entered
+  Then no additional text can be entered
 
-Examples:
-
-      |TrialType               |
-      |National                |
-      |Externally Peer-Reviewed|
-      |Institutional           |
+  Examples:
+    |trialType  |
+    |National                 |
+    |Externally Peer-Reviewed |
+    |Institutional            |
 
    
 
