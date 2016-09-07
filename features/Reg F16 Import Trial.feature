@@ -42,7 +42,7 @@ And the Search Studies feature indicates that the trial has not been registered 
 And the trial NCT ID, Status, and Study Title, Conditions, and Interventions are displayed
 Then I can import the trial information from ClinicalTrials.gov into CTRP
 And the trial Study Souce will be listed as Industrial
-And the trial Research Category will be listed as Expanded Access
+And the trial Clinical Research Category will be listed as Expanded Access
 And the XML from ClinicalTrials.gov will be added to the trial related document
 And the trial milestone "Submission Received Date" will be added with date of the import
 And the trial status will match the trial status in ClinicalTrials.gov as:
