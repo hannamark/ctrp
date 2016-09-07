@@ -44,9 +44,7 @@ Examples:
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Target enrollment                        |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Final Enrollment for clinicalTrials.gov  |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Accruals                                 |displays|
-  
-  
-    |Observational or Ancillary Correlative   |Interventional  or Expanded Access     |Primary Purpose                          |displays|
+	|Observational or Ancillary Correlative   |Interventional  or Expanded Access     |Primary Purpose                          |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Primary Purpose Other                    |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose                        |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose Other                  |displays|
