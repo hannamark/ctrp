@@ -119,12 +119,6 @@
                 templateUrl: 'app/pa/dashboard/abstraction/trial_overview/assign_ownership.html',
                 controller: 'userListCtrl as userView',
                 section: 'pa',
-                resolve: {
-                    UserService: 'UserService',
-                    userDetailObj: function(UserService) {
-                        return UserService.getCurrentUserDetails();
-                    }
-                },
                 ncyBreadcrumb: {
                     parent: 'main.pa.trialOverview',
                     label: 'Assign Ownership'

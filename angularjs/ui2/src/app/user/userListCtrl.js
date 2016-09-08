@@ -8,14 +8,14 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'userDetailObj', 'uiGridConstants', '$location', 'AppSettingsService', 'PATrialService', '$timeout',
+    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'PATrialService', '$timeout',
         'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, userDetailObj, uiGridConstants, $location, AppSettingsService, PATrialService, $timeout,
+    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, $location, AppSettingsService, PATrialService, $timeout,
                           URL_CONFIGS, OrgService,uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
-        vm.curUser = userDetailObj;
+        vm.curUser = UserService.getCurrentUserDetails();
         vm.curationMode = UserService.isCurationModeEnabled();
         vm.trialId = $stateParams.trialId;
         vm.ownerListMode = ( vm.trialId && !vm.setAddMode );
