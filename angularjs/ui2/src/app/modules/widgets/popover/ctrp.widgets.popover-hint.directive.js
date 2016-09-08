@@ -28,7 +28,7 @@
                     templateUrl: 'app/modules/widgets/popover/_default_popover_hint.tpl.html',
                     html: true,
                     trigger: 'manual',
-                    placement: 'right',
+                    placement: 'top',
                     animation: 'am-flip-x',
                     scope: scope,
                     viewport: 'body'
