@@ -306,23 +306,26 @@
                 errorMsg = 'Both Protocol ID Origin and a Protocol ID are Required';
                 return errorMsg;
             }
-            var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
+            var idObj = _.findWhere(addedOtherIds, {'protocol_id': protocolId});
             var codeArr = ['OTH', 'ONCT', 'DNCI'];
             if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
                 errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ' already exists';
                 return errorMsg;
-            } else if (angular.isDefined(idObj) && idObj.protocol_id === protocolId &&
+            }
+            /*
+            else if (angular.isDefined(idObj) && idObj.protocol_id === protocolId &&
                 _.contains(codeArr, protocolIdOriginCode)) {
 
                 errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ': ' + idObj.protocol_id + ' already exists';
                 return errorMsg;
             }
+            */
             // Validate the format of ClinicalTrials.gov Identifier: NCT00000000
             if ((protocolIdOriginCode === 'NCT' || protocolIdOriginCode === 'ONCT') && !/^NCT\d{8}$/.test(protocolId)) {
                 errorMsg = 'The format must be "NCT" followed by 8 numeric characters';
                 return errorMsg;
             }
-            if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId}) > -1) {
+            if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId, 'protocol_id_origin_id': protocolIdOriginId}) > -1) {
                 errorMsg = 'Obsolete ClinicalTrials.gov Identifier must be unique';
                 return errorMsg;
             }

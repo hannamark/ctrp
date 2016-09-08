@@ -553,7 +553,7 @@
                 }
             }
         }; //openCalendar
-
+        console.info('protocolIdOriginArr: ', vm.protocolIdOriginArr);
         // Add other ID to a temp array
         vm.addOtherId = function () {
             // Get other ID origin name
@@ -574,13 +574,6 @@
                 newId.protocol_id_origin_name = originName;
                 newId.protocol_id = vm.protocol_id;
                 newId._destroy = false;
-
-                if (_.findIndex(vm.addedOtherIds, {protocol_id_origin_id: parseFloat(newId.protocol_id_origin_id)}) > -1 ||
-                    _.findIndex(vm.addedOtherIds, {protocol_id: newId.protocol_id}) > -1) {
-                    vm.addOtherIdError = originName + ' must be unique';
-                    vm.showAddOtherIdError = true;
-                    return;
-                }
                 vm.addedOtherIds.push(newId);
                 vm.protocol_id_origin_id = null;
                 vm.protocol_id = null;
