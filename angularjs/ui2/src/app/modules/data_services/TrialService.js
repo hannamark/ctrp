@@ -308,9 +308,6 @@
             }
             var idObj = _.findWhere(addedOtherIds, {'protocol_id': protocolId});
             var codeArr = ['OTH', 'ONCT', 'DNCI'];
-            console.info('addedOtherIds: ', addedOtherIds, protocolId);
-            console.info('idObj: ', idObj);
-            console.info('protocolIdOriginCode: ', protocolIdOriginCode);
             if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
                 errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ' already exists';
                 return errorMsg;
