@@ -1797,14 +1797,17 @@ body.users #typeAheadResults {
 body.assign-trial-ownership .drop-shadow {
     padding-top: 10px;
 }
-body.assign-ownership .grid {
-    height: auto;
-    min-height: 280px;
-    max-height: 550px;
+
+body.assign-ownership .owners-list .ui-grid-pager-container, body.assign-ownership .owners-list .ui-grid-pager-count-container {
+    visibility: hidden;
 }
 
-body.assign-ownership .ui-grid-pager-container, body.assign-ownership .ui-grid-pager-count-container {
-    visibility: hidden;
+body.assign-ownership .add-owner-section .add-buttons {
+    margin-right: 20px;
+}
+
+.user-list-search-results {
+    margin-right: 10px;
 }
 
 .edit-off .ui-grid-row:nth-child(odd):hover .ui-grid-cell.ui-grid-row-header-cell,

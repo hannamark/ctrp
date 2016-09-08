@@ -24,12 +24,7 @@
         vm.isExp = false;
         vm.studySourceArr = studySourceObj;
         vm.protocolIdOriginArr = protocolIdOriginObj;
-        /*
-        .filter(function(idType) {
-            var types = idType.section.split(',') || [];
-            return _.contains(types, 'registry');
-        });
-         */
+        vm.indIdeHolderTypeCode = '';
         vm.phaseArr = phaseObj;
         vm.researchCategoryArr = researchCategoryObj;
         vm.primaryPurposeArr = primaryPurposeObj;
@@ -44,6 +39,7 @@
         vm.holderTypeArr = holderTypeObj;
         vm.nihNciArr = [];
         vm.countryArr = countryList.data;
+        vm.nihHolderTypeError = '';
         vm.authorityOrgArr = [];
         vm.status_date_opened = false;
         vm.start_date_opened = false;
@@ -648,6 +644,15 @@
         // Add IND/IDE to a temp array
         vm.addIndIde = function () {
             if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
+
+                if (_.contains(['NIH', 'NCI'], vm.indIdeHolderTypeCode) && !vm.nih_nci) {
+                    if (vm.indIdeHolderTypeCode === 'NCI') {
+                        vm.nihHolderTypeError = 'NCI Division/Program is Required';
+                    } else if (vm.indIdeHolderTypeCode === 'NIH') {
+                        vm.nihHolderTypeError = 'NIH Institution is Required';
+                    }
+                    return;
+                }
                 var newIndIde = {};
                 newIndIde.ind_ide_type = vm.ind_ide_type;
                 newIndIde.ind_ide_number = vm.ind_ide_number;
@@ -671,9 +676,12 @@
                 vm.grantorArr = [];
                 vm.nihNciArr = [];
                 vm.showAddIndIdeError = false;
+                vm.indIdeHolderTypeCode = '';
+                vm.nihHolderTypeError = '';
             } else {
                 vm.showAddIndIdeError = true;
             }
+
         };
 
         // Add Oversight Authority to a temp array
@@ -1026,6 +1034,7 @@
             getExpFlag();
             adjustResearchCategoryArr();
             adjustTrialStatusArr();
+            watchIndIdeHolderType();
 
             if (vm.curTrial.new) {
                 vm.curTrial.pilot = 'No';
@@ -1050,6 +1059,18 @@
                 appendAuthorities();
                 appendDocuments();
             }
+        }
+        console.info('vm.hoderTypeArr: ', vm.holderTypeArr);
+        function watchIndIdeHolderType() {
+            $scope.$watch(function() {return vm.holder_type_id;}, function(newVal, oldVal) {
+                if (angular.isDefined(newVal) && newVal !== oldVal) {
+                    var typeObj = _.findWhere(vm.holderTypeArr, {id: parseFloat(newVal)});
+                    if (!!typeObj) {
+                        vm.indIdeHolderTypeCode = typeObj.code;
+                    }
+                }
+                console.info('newVal: ', newVal);
+            }, true);
         }
 
         /**

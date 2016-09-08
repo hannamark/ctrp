@@ -272,6 +272,10 @@
             return user_list;
         }; //searchUsersTrialsSubmitted
 
+        this.addUserTrialsOwnership = function (searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams);
+        }; //endUsersTrialsOwnership
+
         this.endUserTrialsOwnership = function (searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_END, searchParams);
         }; //endUsersTrialsOwnership
@@ -424,7 +428,7 @@
                         }
                     }
                 ]
-            if (service.isCurationModeEnabled() && (curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN')) {
+            if (service.isCurationModeEnabled() && (curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN') && controller.ownerListMode) {
                 menuArr.push(
                     {
                         title: 'Remove Selected User(s) from Trial',
@@ -433,7 +437,36 @@
                             return controller.gridApi.selection.getSelectedRows().length > 0
                         },
                         action: function () {
-                            controller.confirmRemoveTrialsOwnerships(_.chain(controller.gridApi.selection.getSelectedRows()).pluck('id').value());
+                            controller.removeOwnersSubmit();
+                        }
+                    }
+                );
+            }
+            return menuArr;
+        };
+        
+        this.TransferTrialsAddGridItem = function (scope, controller) {
+            var curUserRole = service.getUserRole();
+            var menuArr =
+                [
+                    {
+                        title: 'Export All Data As CSV',
+                        order: 100,
+                        action: function ($event){
+                            this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                        }
+                    }
+                ]
+            if (service.isCurationModeEnabled() && (curUserRole === 'ROLE_SUPER' || curUserRole === 'ROLE_ADMIN') && controller.setAddMode) {
+                menuArr.push(
+                    {
+                        title: 'Assign Ownership to Selected User(s)',
+                        order: 1,
+                        shown: function () {
+                            return controller.gridApi.selection.getSelectedRows().length > 0
+                        },
+                        action: function () {
+                            controller.addOwnersSubmit();
                         }
                     }
                 );

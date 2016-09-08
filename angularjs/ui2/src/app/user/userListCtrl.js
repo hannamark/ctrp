@@ -8,32 +8,30 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'PATrialService',
+    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'PATrialService', '$timeout',
         'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, $location, AppSettingsService, PATrialService,
+    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, $location, AppSettingsService, PATrialService, $timeout,
                           URL_CONFIGS, OrgService,uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
         vm.curUser = UserService.getCurrentUserDetails();
         vm.curationMode = UserService.isCurationModeEnabled();
         vm.trialId = $stateParams.trialId;
+        vm.ownerListMode = ( vm.trialId && !vm.setAddMode );
 
         vm.registeredUsersPage = $state.includes('main.registeredUsers');
 
         // Initial User Search Parameters
         var SearchParams = function (){
             return {
-                username: vm.trialId ? '*' : '',
+                username: vm.ownerListMode ? '*' : '',
                 first_name: '',
                 middle_name: '',
                 last_name: '',
                 email: '',
                 phone: '',
                 approved: '',
-                rows: 25,
-                trial_id: vm.trialId ? vm.trialId : undefined,
-                registered_users: vm.registeredUsersPage || vm.trialId? true : false,
                 start: 1
             }
         }; //initial User Search Parameters
@@ -103,7 +101,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.ownerListMode ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
             '{{row.entity.username.indexOf(\'nihusernothaveanaccount\') > - 1 ? \'\': row.entity.username}}</a></div>'
         };
 
@@ -114,7 +112,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.ownerListMode ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -125,7 +123,7 @@
             minWidth: '120',
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.ownerListMode ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -137,7 +135,7 @@
             visible: false,
             width: '*',
             cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
-            (vm.registeredUsersPage || vm.trialId ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
+            (vm.registeredUsersPage || vm.ownerListMode ? '<a ui-sref="main.regUserDetail({username : row.entity.username })">' : '<a ui-sref="main.userDetail({username : row.entity.username })">') +
                 '{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
         };
 
@@ -151,31 +149,34 @@
                 '{{COL_FIELD CUSTOM_FILTERS}}</div>'
         };
 
-        var gridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            paginationPageSizes: vm.trialId ? false: [10, 25, 50, 100, 1000],
-            paginationPageSize: vm.trialId ? false: 25,
-            useExternalPagination: vm.trialId ? false: true,
-            useExternalSorting: true,
-            enableFiltering: vm.trialId ? true: false,
-            enableVerticalScrollbar: 2,
-            enableHorizontalScrollbar: 2,
-            columnDefs: [],
-            enableGridMenu: true,
-            enableSelectAll: false,
-            exporterCsvFilename: vm.trialId ? 't' + vm.trialId + '_owners.csv': 'users.csv',
-            exporterMenuAllData: true,
-            exporterMenuPdf: false,
-            exporterMenuCsv: false,
-            gridMenuCustomItems: [{
-                title: 'Export All Data As CSV',
-                order: 100,
-                action: function ($event){
-                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
-                }
-            }]
+        var GridOptions = function (){
+            return {
+                enableColumnResizing: true,
+                totalItems: null,
+                rowHeight: 22,
+                paginationPageSizes: [10, 25, 50, 100, 1000],
+                paginationPageSize: 25,
+                useExternalPagination: true,
+                useExternalSorting: true,
+                enableVerticalScrollbar: 2,
+                enableHorizontalScrollbar: 2,
+                enablePaging: true,
+                enableFiltering: false,
+                exporterCsvFilename: 'users.csv',
+                columnDefs: [],
+                enableGridMenu: true,
+                enableSelectAll: true,
+                exporterMenuAllData: true,
+                exporterMenuPdf: false,
+                exporterMenuCsv: false,
+                gridMenuCustomItems: [{
+                    title: 'Export All Data As CSV',
+                    order: 100,
+                    action: function ($event) {
+                        this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
+                    }
+                }]
+            }
         };
 
          UserService.getUserStatuses().then(function (response) {
@@ -193,9 +194,9 @@
          });
 
         //ui-grid plugin options
-        vm.searchParams = new SearchParams;
-        vm.gridOptions = gridOptions;
-        if (!vm.trialId && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
+        vm.searchParams = new SearchParams();
+        vm.gridOptions = new GridOptions();
+        if (!vm.ownerListMode && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
             if (vm.curUser.org_families.length) {
                 vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
             } else {
@@ -204,9 +205,9 @@
             }
             vm.searchType = vm.curUser.role;
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-        } else if (!vm.trialId && !vm.registeredUsersPage){
+        } else if (!vm.ownerListMode && !vm.registeredUsersPage){
             vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-        } else if (vm.trialId || vm.registeredUsersPage) {
+        } else if (vm.ownerListMode || vm.registeredUsersPage) {
             vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg, optionOrgFamilies);
         }
         vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -217,6 +218,7 @@
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchParams.start = newPage;
                 vm.searchParams.rows = pageSize;
+                gridApi.selection.clearSelectedRows();
                 vm.searchUsers();
             });
         };
@@ -243,6 +245,7 @@
         vm.searchUsers = function () {
             vm.gridOptions.useExternalPagination = true;
             vm.gridOptions.useExternalSorting = true;
+            vm.requireSelection = false;
 
             /**
              * If not, it should throw a warning to the user to select atleast one parameter.
@@ -278,7 +281,7 @@
 
         vm.resetSearch = function () {
             vm.searchParams = new SearchParams;
-            vm.gridOptions.data.length = 0;
+            vm.gridOptions.data = [];
             vm.gridOptions.totalItems = null;
 
             Object.keys(vm.searchParams).forEach(function (key) {
@@ -303,6 +306,7 @@
             vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
         };
 
+        /* remove ownership */
         vm.trialOwnershipRemoveIdArr = null;
         vm.confirmRemoveTrialOwnershipsPopUp = false;
         vm.confirmRemoveTrialsOwnerships = function (userIdArr) {
@@ -319,17 +323,68 @@
                 trial_ids: [vm.trialId]
             };
             UserService.endUserTrialsOwnership(searchParams).then(function (data) {
-                if (data.results === 'success') {
-                    toastr.success('Trial Ownerships Removed', 'Success!');
+                var status = data.server_response.status;
+                if (status >= 200 && status <= 210) {
+                    if (data.results === 'success') {
+                        toastr.success('Trial Ownerships Removed', 'Success!');
+                        vm.searchUsers();
+                        vm.gridApi.selection.clearSelectedRows();
+                    }
                     vm.trialOwnershipRemoveIdArr = null;
                     vm.confirmRemoveTrialOwnershipsPopUp = false;
-                    vm.searchUsers();
                 }
             });
         };
 
+        /* add ownership */
 
+        vm.trialOwnershipAddIdArr = null;
+        vm.confirmAddTrialOwnershipsPopUp = false;
+        vm.confirmAddTrialsOwnerships = function (userIdArr) {
+            vm.confirmAddTrialOwnershipsPopUp = true;
+            vm.trialOwnershipAddIdArr = userIdArr;
+        };
+        vm.cancelAddTrialsOwnerships = function () {
+            vm.confirmAddTrialOwnershipsPopUp = false;
+        };
 
+        vm.addTrialsOwnerships = function () {
+            var searchParams = {
+                user_ids: vm.trialOwnershipAddIdArr,
+                trial_ids: [vm.trialId]
+            };
+            UserService.addUserTrialsOwnership(searchParams).then(function (data) {
+                var status = data.server_response.status;
+                if (status >= 200 && status <= 210) {
+                    vm.trialOwnershipAddIdArr = null;
+                    vm.confirmAddTrialOwnershipsPopUp = false;
+                    $timeout(function() {
+                        if (data.results && data.results.complete) {
+                            toastr.success('Trial Ownerships Added', 'Success!');
+                            vm.gridApi.selection.clearSelectedRows();
+                            $scope.$parent.userView.setAddMode = false;
+                        }
+                    }, 1000);
+                }
+            });
+        };
+
+        vm.addOwnersSubmit = function () {
+            if (!vm.gridApi.selection.getSelectedRows().length) {
+                vm.requireSelection = true;
+            } else {
+                vm.confirmAddTrialsOwnerships(_.chain(vm.gridApi.selection.getSelectedRows()).pluck('id').value());
+            }
+        };
+
+        vm.removeOwnersSubmit = function () {
+            if (!vm.gridApi.selection.getSelectedRows().length) {
+                vm.requireSelection = true;
+            } else {
+                vm.confirmRemoveTrialsOwnerships(_.chain(vm.gridApi.selection.getSelectedRows()).pluck('id').value());
+            }
+        };
+        
         /****************************** implementations **************************/
 
         /**
@@ -369,8 +424,19 @@
 
         if (vm.trialId) {
             vm.curTrial = PATrialService.getCurrentTrialFromCache();
-            vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
             $scope.$watch('displayTrialOwnershipGrid', function(newValue, oldValue) {
+                if (vm.ownerListMode) {
+                    vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
+                } else {
+                    vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsAddGridItem($scope, vm);
+                }
+                vm.gridOptions.enablePaging = (vm.ownerListMode ? false: true);
+                vm.gridOptions.enableFiltering = (vm.ownerListMode ? true : false);
+                vm.gridOptions.exporterCsvFilename = (vm.ownerListMode ? 't' + vm.trialId + '_owners.csv' : 'users.csv');
+                vm.ownerListMode = ( vm.trialId && !vm.setAddMode );
+                vm.searchParams.rows = (vm.ownerListMode ? undefined: 25);
+                vm.searchParams.trial_id = (vm.ownerListMode ? vm.trialId : undefined);
+                vm.searchParams.registered_users = (vm.registeredUsersPage || vm.trialId ? true : false);
                 vm.searchUsers();
             });
         }
