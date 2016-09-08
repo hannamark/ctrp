@@ -646,7 +646,11 @@
             if (vm.ind_ide_type && vm.ind_ide_number && vm.grantor && vm.holder_type_id) {
 
                 if (_.contains(['NIH', 'NCI'], vm.indIdeHolderTypeCode) && !vm.nih_nci) {
-                    vm.nihHolderTypeError = vm.indIdeHolderTypeCode + ' Division/Program is required';
+                    if (vm.indIdeHolderTypeCode === 'NCI') {
+                        vm.nihHolderTypeError = 'NCI Division/Program is Required';
+                    } else if (vm.indIdeHolderTypeCode === 'NIH') {
+                        vm.nihHolderTypeError = 'NIH Institution is Required';
+                    }
                     return;
                 }
                 var newIndIde = {};
