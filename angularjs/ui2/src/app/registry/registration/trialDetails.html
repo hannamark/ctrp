@@ -829,10 +829,14 @@
                                             </td>
                                             <td class="col-md-3">
                                                 <div>
-                                                    <select restriction-field class="form-control input-sm" id="nih_nci" ng-model="trialDetailView.nih_nci">
+                                                    <select restriction-field class="form-control input-sm" id="nih_nci"
+                                                        ng-model="trialDetailView.nih_nci" ng-required="trialDetailView.indIdeHolderTypeCode ==='NCI' || trialDetailView.indIdeHolderTypeCode === 'NIH' ">
                                                         <option value="">-Select-</option>
                                                         <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">{{nihNci.code}}</option>
                                                     </select>
+                                                </div>
+                                                <div class="add-association-error" ng-show="trialDetailView.nihHolderTypeError.length > 0">
+                                                    {{trialDetailView.nihHolderTypeError}}
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
