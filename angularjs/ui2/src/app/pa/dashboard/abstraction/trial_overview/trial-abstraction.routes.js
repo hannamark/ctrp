@@ -117,11 +117,10 @@
             .state('main.pa.trialOverview.assignOwnership', {
                 url: '/assign-ownership',
                 templateUrl: 'app/pa/dashboard/abstraction/trial_overview/assign_ownership.html',
-                controller: 'userAssignTrialCtrl as trialOwnershipView',
+                controller: 'userListCtrl as userView',
                 section: 'pa',
                 resolve: {
                     UserService: 'UserService',
-                    TrialService: 'TrialService',
                     userDetailObj: function(UserService) {
                         return UserService.getCurrentUserDetails();
                     }
