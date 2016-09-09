@@ -12,7 +12,7 @@
         ctrpHint.$inject = ['$window', '$uibModal', '$popover', '$timeout'];
 
         function ctrpHint($window, $uibModal, $popover, $timeout) {
-
+            var hintCount = 0;
             var directiveObject = {
                 restrict: 'A',
                 link: linkerFn
@@ -35,11 +35,15 @@
                 });
 
                 hintFields.on('change keyup', function(e) {
+                    if (hintCount > 1) {
+                        return;
+                    }
+
                     if (checkHintFields()) {
                         var event = e;
                         if (!popover.$isShown) {
                             popover.show();
-
+                            hintCount += 1;
                             /*
                                 Popover rendering causes current input to blur.
                                 Code below focuses back on target input field
