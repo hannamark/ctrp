@@ -1806,6 +1806,10 @@ body.assign-ownership .add-owner-section .add-buttons {
     margin-right: 20px;
 }
 
+body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_status {
+    display: none;
+}
+
 .user-list-search-results {
     margin-right: 10px;
 }
