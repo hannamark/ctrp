@@ -5,6 +5,7 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
       user = params[:user]
       resource[:user_status_id] = UserStatus.find_by_code('INR').id
+      resource[:receive_email_notifications] = true
       if user[:user_type]
         resource[:type] = user[:user_type]
       end

@@ -38,14 +38,21 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |On-Hold Reason|
 
   
-   Scenario: #1a I can search for my clinical trials registered in CTRP where my Org is listed as participating site
+   Scenario: #1a I can search for my clinical trials registered in CTRP where my Org is listed as participating site on Imported Trials
   Given I am logged into the CTRP Registration application
   And I am on the Search Clinical Trials Screen
   And I know the search Parameters of trial
   When I select the option to search "My Trials"
   Then CTRP will display imported trials with a last active submission where my affiliated org is registered as participating site 
   
+  Scenario: #1b As a Site Admin I can search for Imported Clinical Trials in CTRP 
+  Given I am logged into the CTRP Registration application
+  And I am on the Search Clinical Trials Screen
+   And I know the search Parameters of trial
+   When I select the option to search Trials "My Trials" 
+  Then CTRP will display imported Trials with a last active submission where any affiliated organization in my family is registered as a participating site
 
+  
 Scenario: #2 I can search all clinical trials registered in CTRP
 Given I am logged into the CTRP Registration application
 And I am on the Search Clinical Trials Screen

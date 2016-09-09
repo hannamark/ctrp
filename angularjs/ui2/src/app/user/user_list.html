@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
                         <!-- username -->
-                        <div class="form-group">
+                        <div class="form-group" id="user_list_username">
                             <label for="username" class="control-label col-sm-5">Username: </label>
                             <div class="col-sm-7">
                                 <input type="text" id="username" class="form-control input-sm" placeholder="Username" ng-model="userView.searchParams.username" auto-focus/>
@@ -24,8 +24,8 @@
                         <!-- username ends -->
 
                         <!--Last Name-->
-                        <div class="form-group">
-                            <label for="first_name" class="control-label col-sm-5">Last Name:</label>
+                        <div class="form-group" id="user_list_last_name">
+                            <label for="last_name" class="control-label col-sm-5">Last Name:</label>
                             <div class="col-sm-7">
                                 <input type="text" id="last_name" class="form-control input-sm" placeholder="Last Name" ng-model="userView.searchParams.last_name"/>
                             </div>
@@ -33,7 +33,7 @@
                         <!-- Last Name ends -->
 
                         <!--Status-->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage" id="user_list_status">
                             <label for="first_name" class="control-label col-sm-5">Status:</label>
                             <div class="col-sm-7" ng-if="!userView.searchStatus">
                                 <select class="form-control input-sm" id="user_status_id" ng-model="userView.searchParams.user_status_id">
@@ -48,7 +48,7 @@
                         <!-- Status ends -->
 
                         <!-- Organization Name-->
-                        <div class="form-group">
+                        <div class="form-group" id="user_list_organization">
                             <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
                             <div class="col-sm-7"  ng-if="!userView.searchOrganization">
                                 <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-xs-12 col-md-6">
                         <!--email-->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage" id="user_list_email">
                             <label for="email" class="control-label col-sm-5">Email:</label>
                             <div class="col-sm-7">
                                 <input type="text" id="email" class="form-control input-sm" placeholder="email" ng-model="userView.searchParams.email" />
@@ -95,7 +95,7 @@
                         <!-- email ends -->
 
                         <!--First Name-->
-                        <div class="form-group">
+                        <div class="form-group" id="user_list_first_name">
                             <label for="first_name" class="control-label col-sm-5">First Name:</label>
                             <div class="col-sm-7">
                                 <input type="text" id="first_name" class="form-control input-sm" placeholder="First Name" ng-model="userView.searchParams.first_name" />
@@ -104,7 +104,7 @@
                         <!-- First Name ends -->
 
                         <!-- Site Admin-->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage" id="user_list_admin_priv">
                             <label for="site_admin" class="control-label col-sm-5">Site Administrator Privileges:</label>
                             <div class="col-sm-7">
                                 <label class="control-label radio-line">Yes: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="true"/></label>
@@ -115,7 +115,7 @@
                         <!-- Site Admin ends -->
 
                         <!-- Organization Family-->
-                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)">
+                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)" id="user_list_org_family">
                             <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
                             <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
                                 <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" />
