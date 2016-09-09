@@ -100,7 +100,7 @@ class Submission < TrialBase
     time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
     time_parser_with_hrs_mins_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy HH12:MI am')"
     join_clause  = "INNER JOIN trials ON submissions.trial_id = trials.id "
-    join_clause += "INNER JOIN users ON submissions.user_id = users.id "
+    join_clause += "LEFT JOIN users ON submissions.user_id = users.id "
     join_clause += "LEFT JOIN research_categories as trial_research_category ON trials.research_category_id = trial_research_category.id "
     join_clause += "LEFT JOIN submission_methods as submission_method ON submissions.submission_method_id = submission_method.id "
     join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
