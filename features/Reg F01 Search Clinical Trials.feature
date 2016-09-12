@@ -20,7 +20,6 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Current Processing Status|
 |Available Actions|
 |Accrual Disease Terminology|
-|Sites|
 |Phase|
 |Primary Purpose|
 |Clinical Research Category|
@@ -68,7 +67,6 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Principal Investigator|
 |ClinicalTrials.gov Identifier|
 |Other Identifiers|
-|Sites|
 |Available Actions|
 
 
@@ -79,12 +77,11 @@ And I know the search Parameters of trial
 When I select the option to search "Saved Drafts"
 Then CTRP will display all of my draft registrations that match the trial search criteria
 And the Clinical Trials Search Results will display the following sorted by "Lead Org Trial Identifier"
-|Temp Trial Identifier|
-|Title|
+
+|Official Title|
 |Lead Organization|
 |Lead Org Trial Identifier|
-|Action to Complete Registration|
-|Action to Delete Draft Registration|
+|Available Actions |
 
 
 Scenario: #4 I can search for clinical trials by Title
