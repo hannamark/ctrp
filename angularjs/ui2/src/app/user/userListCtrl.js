@@ -246,7 +246,10 @@
                 vm.gridOptions.useExternalPagination = true;
                 vm.gridOptions.useExternalSorting = true;
                 vm.requireSelection = false;
-
+                if (!vm.searchParams.organization_id)  {
+                    vm.searchParams.organization_name = vm.organization_name;
+                }
+                
                 /**
                  * If not, it should throw a warning to the user to select atleast one parameter.
                  * Right now, ignoring the alias parameter as it is set to true by default.
@@ -283,7 +286,7 @@
                 vm.searchParams = new SearchParams;
                 vm.gridOptions.data = [];
                 vm.gridOptions.totalItems = null;
-
+                vm.removeOrgChoice();
                 Object.keys(vm.searchParams).forEach(function (key) {
                     vm.searchParams[key] = '';
                 });
@@ -303,7 +306,7 @@
 
             vm.removeOrgChoice = function () {
                 vm.userChosenOrg = null;
-                vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
+                vm.organization_name = vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
             };
 
             /* remove ownership */
