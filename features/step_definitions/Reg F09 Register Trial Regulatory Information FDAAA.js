@@ -243,7 +243,7 @@ module.exports = function () {
     //    browser.sleep(25).then(callback);
     //});
 
-    this.Given(/^the Investigation Affiliation can be changed$/, function () {
+    this.Given(/^the Investigator Affiliation can be changed$/, function () {
         return browser.sleep(25).then(function () {
             /* Create or use an Org to affiliate Person Org **/
             projectFunctionsRegistry.createOrgforTrial('shiTrialPIOrg0', typeOfTrial, '3', 'ctrptrialsubmitter');
@@ -395,7 +395,7 @@ module.exports = function () {
         //  browser.sleep(25).then(callback);
     });
 
-    this.Given(/^the Investigation Affiliation cannot be changed$/, function () {
+    this.Given(/^the Investigator Affiliation cannot be changed$/, function () {
         return browser.sleep(25).then(function () {
             expect(addTrial.addTrialOrgSearchModel.get(3).isDisplayed()).to.become(false);
         });
