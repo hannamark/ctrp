@@ -8,10 +8,10 @@
     angular.module('ctrp.app.user')
         .controller('userListCtrl', userListCtrl);
 
-    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', '$location', 'AppSettingsService', 'PATrialService', '$timeout',
+    userListCtrl.$inject = ['PromiseTimeoutService', 'toastr', '$state', '$scope', 'MESSAGES', 'UserService', 'uiGridConstants', 'PATrialService', '$timeout',
         'URL_CONFIGS', 'OrgService', 'uiGridExporterConstants', 'uiGridExporterService', '$stateParams'];
 
-    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, $location, AppSettingsService, PATrialService, $timeout,
+    function userListCtrl(PromiseTimeoutService, toastr, $state, $scope, MESSAGES, UserService, uiGridConstants, PATrialService, $timeout,
                           URL_CONFIGS, OrgService,uiGridExporterConstants, uiGridExporterService, $stateParams) {
 
         var vm = this;
@@ -249,7 +249,7 @@
                 if (!vm.searchParams.organization_id)  {
                     vm.searchParams.organization_name = vm.organization_name;
                 }
-                
+
                 /**
                  * If not, it should throw a warning to the user to select atleast one parameter.
                  * Right now, ignoring the alias parameter as it is set to true by default.

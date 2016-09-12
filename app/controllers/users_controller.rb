@@ -83,15 +83,28 @@ class UsersController < ApplicationController
             mail_template = MailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
           end
 
-          mail_template.body_html.gsub!('${user_name}',      "#{user_params[:first_name]} #{user_params[:last_name]}")
-          mail_template.body_html.gsub!('${user_username}',  user_params[:username])
-          mail_template.body_html.gsub!('${user_role}',  roles[user_params[:role]])
-          mail_template.to.gsub!('${user_email}',    "#{user_params[:email]},#{(User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email).join(',')}" )
-          mail_template.body_html.gsub!('${user_phone}',     "#{(user_params[:phone] ? user_params[:phone] : '')} #{(user_params[:phone_ext] ? ' ext ' + user_params[:phone_ext] : '')}" )
-          mail_template.body_html.gsub!('${user_org}',       (user_params[:organization_id] ? Organization.find(user_params[:organization_id]).name : '') )
-          mail_template.body_html.gsub!('${date}',           (Time.now).strftime('%v') )
+          site_admins_array = (User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email)
 
-          CtrpMailerWrapper.send_email(mail_template, nil)
+          if @user.receive_email_notifications && site_admins_array.any?
+            mail_template.to.gsub!('${user_email}',    "#{user_params[:email]},#{site_admins_array.join(',')}" )
+          elsif @user.receive_email_notifications?
+            mail_template.to.gsub!('${user_email}',    "#{user_params[:email]}" )
+          elsif site_admins_array.any?
+            mail_template.to.gsub!('${user_email}',    "#{site_admins_array.join(',')}" )
+          end
+
+          unless mail_template.to.blank?
+            mail_template.body_html.gsub!('${user_name}',      "#{user_params[:first_name]} #{user_params[:last_name]}")
+            mail_template.body_html.gsub!('${user_username}',  user_params[:username])
+            mail_template.body_html.gsub!('${user_role}',  roles[user_params[:role]])
+            mail_template.to.gsub!('${user_email}',    "#{user_params[:email]},#{(User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email).join(',')}" )
+            mail_template.body_html.gsub!('${user_phone}',     "#{(user_params[:phone] ? user_params[:phone] : '')} #{(user_params[:phone_ext] ? ' ext ' + user_params[:phone_ext] : '')}" )
+            mail_template.body_html.gsub!('${user_org}',       (user_params[:organization_id] ? Organization.find(user_params[:organization_id]).name : '') )
+            mail_template.body_html.gsub!('${date}',           (Time.now).strftime('%v') )
+
+            CtrpMailerWrapper.send_email(mail_template, nil)
+          end
+
         end
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render json: @user}
