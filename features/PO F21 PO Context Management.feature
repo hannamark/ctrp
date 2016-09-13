@@ -433,11 +433,11 @@ Scenario: #1a CTEP Context Mandatory Fields
      Scenario:#8 Curator can identify when two organizations are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Organizations are to be merged
-     And the CTEP Organizations <OrganizationType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Organization status <StatusType>
+     And the CTEP Organizations <OrganizationType> will have CTEP Context Org ID <CTEPContextOrgID>, CTRP Org ID <CTRPOrgIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Organization status <StatusType>
      
-     |OrganizationType| PKIDType|CTRPIDType|ServiceRequestType |processingStatusType |StatusType|
-     |Organization 1  |PK ID 1  |CTRP ID 1 | Merge ID 2        |Pending             |Active    |
-     |Organization 2  |PK ID 2  |CTRP ID 2 | Merge ID 1        |Pending             |Inactive  |
+     |<OrganizationType>|<CTEPContextOrgID>|<CTRPOrgIDType>    |<ServiceRequestType> |<processingStatusType> |<StatusType>|
+     |Organization 1    |PK ID 1  |CTRP ID 1 | Merge ID 2        |Pending              |Active    |
+     |Organization 2    |PK ID 2  |CTRP ID 2 | Merge ID 1        |Pending              |Inactive  |
      
      Then the curator will search CTEP Context for organization where Service request is "Merge"
      And the curator will search for matching organizations in the CTRP Context
