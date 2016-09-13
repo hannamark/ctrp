@@ -2,7 +2,7 @@
 
 Feature: PO F22 PO Person CTRP-CTEP Context Management Functionality
 
-Scenario:#10 CTEP Context of a new person record created
+Scenario:#1 CTEP Context of a new person record created
     Given I am logged into the CTRP 
     When CTRP receives newly created CTEP person record through Restful Services
     Then a new person record will be created in the CTEP Context with Processing Status of "Incomplete" and Service Request of "Create" in the CTRP 
@@ -27,7 +27,7 @@ Scenario:#10 CTEP Context of a new person record created
       And the Person Processing status will be " InComplete"
       And the Service Request will be set to "Create"
       
-        Scenario:#10a CTEP Person Context Mandatory Fields 
+        Scenario:#1a CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
      When CTEP Context of a person record is created
      Then the person record fields type are mandatory
@@ -44,7 +44,7 @@ Scenario:#10 CTEP Context of a new person record created
       
 
       
-Scenario: #11 As a PO Curator, I can search a NEW person record to associate it with a person in the CTRP Context
+Scenario: #2 As a PO Curator, I can search a NEW person record to associate it with a person in the CTRP Context
     Given Given I am logged into the CTRP 
     And I am on the Search Persons Screen
     When I select Processing status as"Incomplete"
