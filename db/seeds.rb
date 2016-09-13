@@ -1166,8 +1166,29 @@ AppSetting.find_or_create_by(code: 'NCI_THESAURUS_TREE_URL').update(name: 'NCI T
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_INTERVENTIONS').update(name: 'NCI Thesaurus files for Interventions', value: 'see big value', big_value: 'Drug_Food_Chemical_or_Biomedical_Material.zip')
 
-AppSetting.find_or_create_by(code: 'USER_DOMAINS', description: 'Double pipe delimited values').update(name: 'User Domains', value: 'see big value', big_value: 'NIH||NIHEXT||Federated')
+AppSetting.find_or_create_by(code: 'NIH_GSA_MSG').update(name: 'User Login GSA Message for user', value: 'see big value',
+                             big_value: '
+                                  This is a U.S. Government computer system, which may be accessed and used only for authorized Government business by authorized personnel. Unauthorized access or use of this computer system may subject violators to criminal, civil, and/or administrative action.
 
+                                  All information on this computer system may be intercepted, recorded, read, copied, and disclosed by and to authorized personnel for official purposes, including criminal investigations. Such information includes sensitive data encrypted to comply with confidentiality and privacy requirements. Access or use of this computer system by any person, whether authorized or unauthorized, constitutes consent to these terms.
+                                  There is no right of privacy in this system.
+                             ')
+
+AppSetting.find_or_create_by(code: 'NON_NIH_GSA_MSG').update(name: 'User Login GSA Message for user', value: 'see big value',
+                             big_value: '
+                                  This is a U.S. Government computer system, which may be accessed and used only for authorized Government business by authorized personnel. Unauthorized access or use of this computer system may subject violators to criminal, civil, and/or administrative action.
+
+                                  All information on this computer system may be intercepted, recorded, read, copied, and disclosed by and to authorized personnel for official purposes, including criminal investigations. Such information includes sensitive data encrypted to comply with confidentiality and privacy requirements. Access or use of this computer system by any person, whether authorized or unauthorized, constitutes consent to these terms. There is no right of privacy in this system.
+
+
+                                  NOTIFICATION TO RESPONDENT OF ESTIMATED BURDEN
+                                  OMB#: 0925-0600 EXP. DATE: 5/31/16
+                                  Public reporting burden for this collection of information is estimated to average sixty (60) minutes for this questionnaire, including the time to review instructions, search existing data sources, gather and maintain the data needed, and complete and review the collection of information. An agency may not conduct or sponsor, and a person is not required to respond to, a collection of information unless it displays a current, valid OMB control number.
+
+                                  Send comments regarding this burden estimate or any other aspect of this collection of information, including suggestions for reducing the burden to:  NIH, Project Clearance Branch, 6705 Rockledge Drive, MSC 7974, Bethesda, MD 20892-7974, ATTN: PRA (0925-0600).
+
+                                  Do not return the completed form to this address.
+                             ')
 #AUM Role Matrix (roles will be assigned per environment i.e. prod, qa, demo)
 AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delimited values').update(name: 'User Roles', value: 'see big value',
                              big_value:

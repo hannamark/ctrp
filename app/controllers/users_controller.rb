@@ -161,15 +161,19 @@ class UsersController < ApplicationController
 
     unless user.nil?
       authenticate_user(user)
+
+      nih_user_gsa_msg = AppSetting.find_by_code('NIH_GSA_MSG') ? AppSetting.find_by_code('NIH_GSA_MSG')["big_value"] : ''
+      non_nih_user_gsa_msg = AppSetting.find_by_code('NON_NIH_GSA_MSG') ? AppSetting.find_by_code('NON_NIH_GSA_MSG')["big_value"] : ''
+
       if user.is_a?(LocalUser)
-        gsa_text = yml_content['en']['non_nih_user_gsa_msg']
+        gsa_text = non_nih_user_gsa_msg
       elsif user.is_a?(LdapUser)
-        gsa_text = yml_content['en']['nih_user_gsa_msg']
+        gsa_text = nih_user_gsa_msg
       else
-        gsa_text = yml_content['en']['non_nih_user_gsa_msg']
+        gsa_text = non_nih_user_gsa_msg
       end
     else
-      gsa_text = yml_content['en']['non_nih_user_gsa_msg']
+      gsa_text = non_nih_user_gsa_msg
     end
 
     render :status => 200, :json => { :success => true, :gsa => "#{gsa_text}", :info => "GSA Msg"}
