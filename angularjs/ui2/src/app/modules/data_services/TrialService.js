@@ -532,7 +532,6 @@
                 'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
                 'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id,
                 'protocol_id':'*',
-                'internal_sources': [{'code':'PRO'}],
                 'searchType': 'All Trials',
                 'trial_ownership': true,
                 'no_nih_nci_prog': true

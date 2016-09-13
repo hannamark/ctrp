@@ -983,10 +983,11 @@ class TrialService
     if last_sub_type.present? && last_sub_method.present?
       if last_sub_type.code == 'ORI' && last_sub_method.code == 'REG' && !@trial.edit_type.include?('submission')
         mail_template = MailTemplate.find_by_code('TRIAL_REG')
-        if mail_template.present?
-          ## populate the mail_template with data for trial registration
-          mail_template.to = @trial.current_user.email if @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications
 
+        ## populate the mail_template with data for trial registration
+        mail_template.to = @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications : @trial.current_user.email : nil
+
+        if mail_template.present? && !mail_template.to.blank?
           # Populate the trial data in the email body
           mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
@@ -1010,13 +1011,12 @@ class TrialService
 
       elsif last_sub_type.code == 'UPD' && !@trial.edit_type.include?('submission')
         mail_template = MailTemplate.find_by_code('TRIAL_UPDATE')
-        # trial_owner = TrialOwnership.find_by_trial_id(@trial.id)
-        # trial_registrant_email = trial_owner.nil? ? nil : trial_owner.user.email
-        if mail_template.present?
-          ## populate the mail_template with data for trial update
+
+        ## populate the mail_template with data for trial update
+        mail_template.to = @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications : @trial.current_user.email : nil
+
+        if mail_template.present? && !mail_template.to.blank?
           mail_template.from = 'ncictro@mail.nih.gov'
-          # mail_template.to = trial_registrant_email
-          mail_template.to = @trial.current_user.email if @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications
           mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
           mail_template.body_html.sub!('${trialTitle}', trial_title)
@@ -1040,37 +1040,44 @@ class TrialService
           mail_template = MailTemplate.find_by_code('AMEND_SUB_REJECTED')
         end
 
-        ## populate the mail_template with data for trial update
-        mail_template.from = 'ncictro@mail.nih.gov'
         trial_owner = TrialOwnership.find_by_trial_id(@trial.id) # send email to trial owner
         trial_owners_email = trial_owner.nil? ? nil : trial_owner.user.email
-        mail_template.to = trial_owners_email if trial_owners_email.present? && trial_owner.user.receive_email_notifications
 
-        mail_template.subject.sub!('${amendNum}', last_amend_num)  # for amendment trials
-        mail_template.body_html.sub!('${amendNum}', last_amend_num) # for amendment trials
-        mail_template.body_html.sub!('${submissionDate}', trial_amend_date) # for amendment trials
+        ## populate the mail_template with data for trial update
+        mail_template.to =  trial_owners_email.present? && trial_owner.user.receive_email_notifications ? trial_owners_email : nil
 
-        mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
-        mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
-        mail_template.body_html.sub!('${trialTitle}', trial_title)
-        mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
-        mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
-        mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
-        mail_template.body_html.sub!('${leadOrgName}', org_name)
-        mail_template.body_html.sub!('${submissionDate}', last_submission_date)
-        mail_template.body_html.sub!('${nctId}', nctIdentifier.nil? ? '' : nctIdentifier)
-        mail_template.body_html.sub!('${ctepId}', ctepIdentifier.nil? ? '' : ctepIdentifier)
-        mail_template.body_html.sub!('${dcpId}', dcpIdentifier.nil? ? '' : dcpIdentifier)
-        mail_template.body_html.sub!('${otherIds}', otherIdStr)
-        mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
-        mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
+        if !mail_template.to.blank?
+
+          mail_template.from = 'ncictro@mail.nih.gov'
+
+          mail_template.subject.sub!('${amendNum}', last_amend_num)  # for amendment trials
+          mail_template.body_html.sub!('${amendNum}', last_amend_num) # for amendment trials
+          mail_template.body_html.sub!('${submissionDate}', trial_amend_date) # for amendment trials
+
+          mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
+          mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+          mail_template.body_html.sub!('${trialTitle}', trial_title)
+          mail_template.body_html.sub!('${nciTrialIdentifier}', nci_id)
+          mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
+          mail_template.body_html.sub!('${ctrp_assigned_lead_org_id}', org_id)
+          mail_template.body_html.sub!('${leadOrgName}', org_name)
+          mail_template.body_html.sub!('${submissionDate}', last_submission_date)
+          mail_template.body_html.sub!('${nctId}', nctIdentifier.nil? ? '' : nctIdentifier)
+          mail_template.body_html.sub!('${ctepId}', ctepIdentifier.nil? ? '' : ctepIdentifier)
+          mail_template.body_html.sub!('${dcpId}', dcpIdentifier.nil? ? '' : dcpIdentifier)
+          mail_template.body_html.sub!('${otherIds}', otherIdStr)
+          mail_template.body_html.sub!('${CurrentDate}', Date.today.strftime('%d-%b-%Y'))
+          mail_template.body_html.sub!('${SubmitterName}', last_submitter_name)
+        end
 
       elsif last_sub_type.code == 'AMD' && !@trial.edit_type.include?('submission')  # must not be submission_accepted/rejected
         mail_template = MailTemplate.find_by_code('TRIAL_AMEND')
-        if mail_template.present?
-          ## populate the mail_template with data for trial amendment
+
+        ## populate the mail_template with data for trial amendment
+        mail_template.to =  @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications ? @trial.current_user.email : nil
+
+        if mail_template.present? && !mail_template.to.blank?
           mail_template.from = 'ncictro@mail.nih.gov'
-          mail_template.to = @trial.current_user.email if @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications
           mail_template.subject.sub!('${trialAmendNumber}', last_amend_num)
           mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
@@ -1095,10 +1102,12 @@ class TrialService
 
     elsif @trial.is_draft == TRUE  && !@trial.edit_type.include?('submission')
       mail_template = MailTemplate.find_by_code('TRIAL_DRAFT')
-      if mail_template.present?
-        ## populate the mail_template with data for trial draft
+
+      ## populate the mail_template with data for trial draft
+      mail_template.to =  @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications ? @trial.current_user.email : nil
+
+      if mail_template.present? && !mail_template.to.blank?
         mail_template.from = 'ncictro@mail.nih.gov'
-        mail_template.to = @trial.current_user.email if @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications
         mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
         mail_template.body_html.sub!('${trialTitle}', trial_title)
         mail_template.body_html.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)

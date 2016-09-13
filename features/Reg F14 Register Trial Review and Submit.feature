@@ -88,7 +88,7 @@ And the option to Register Trial will be not available
   |Externally Peer-Reviewed |
   |Institutional            |
   
-  On Review it will not give any error and when the User click Submit then the error is thrown.
+  
 
 Scenario Outline: #3a Check for Duplicate trials
 Given I have selected the option to register a trial <trialType>

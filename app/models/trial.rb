@@ -1243,6 +1243,7 @@ class Trial < TrialBase
 
   scope :active_submissions, -> {
     where("id in (select DISTINCT ON (trial_id) trial_id from submissions where submissions.trial_id is not null AND submissions.status = 'Active')")
+    joins(:internal_source).where("internal_sources.code = 'PRO'")
   }
 
   scope :sort_by_col, -> (params) {
