@@ -9,7 +9,7 @@ Feature: PO F3 Create an Organization
     And I will see "Active" as the default for Source Status
     And I will see "CTRP" as the default for Source Context
     And the Processing Status will be set to "Complete" 
-
+     
   Scenario: #2 As a Curator, I can Create new Organization in CTRP (original)
     Given I am logged in to CTRP PO application
     And I have completed a Search for Organization and a duplicate is not found 
@@ -30,7 +30,7 @@ Feature: PO F3 Create an Organization
     When I click on the save button
     Then a unique CTRP Organization ID <Source ID> will be assigned to the created organization
     And a unique CTRP Context Organization ID <ContextOrgID> will be assigned to the created organization
-    And  the system should create an organization record that contains information type
+    And a CTRP organization record that contains information type will be created
       
       |CTRP Organization ID|
       |Context Organization ID|
@@ -46,19 +46,15 @@ Feature: PO F3 Create an Organization
       |State|
       |City|
       |Postal Code|
+      |Email|
       |Phone Number|
       |Phone Number Extension|
-      |eMail|
       |Created By|
       |Updated By|
       
-      
-      Scenario: #2a Cancel Entered Organization Information
-      Given I am logged into the CTRP PO application
-      And I am on the Add Organization screen
       When I select Reset 
-     Then the information entered or edited on the Add Organization screen fields will not be saved to the trial record 
-      And the Add Organization information screen will be refreshed with the existing data
+     Then the information entered on the Add Organization screen fields will not be saved to the trial record 
+      And the Add Organization information screen will be refreshed and blank
      
      
         Scenario: #3 Create Organization Mandatory fields
@@ -78,27 +74,28 @@ Feature: PO F3 Create an Organization
    
     
       Scenario:#4 Create Organization fields's character Limit 
-    Given I can request the creation of a new Organization in CTRP
-     Then a comment appears below the field to display the number of characters available to enter into the field
+    Given I am logged in to the PO Application
+    And I am on the Add Organization Screen
+     Then a comment appears below the field <Field> to display the number of characters available <Number of Characters left> to enter into the field
      | Field                | Number of Characters left  |
      |Organization Name     |254        |
      |Phone Number          |30         |
      |Phone Extension       |30         |
      |Email                 |254        |
 	 And "x characters left" will be displayed as characters are added
- 	 When all the characters mentioned above for field have been entered
+ 	 When all the characters <Number of Characters left> mentioned above for field have been entered
   	Then no additional text can be entered
 
 
-  Scenario: #5 As any Curator, I can create a new Organization in CTRP (Duplicate Exists)
-    Given I am logged in to CTRP PO application
-    And I have complete a Search for Organization
+  Scenario: #5 As any Curator, I can NOT create a duplicate Organization in CTRP 
+    Given I am logged into CTRP PO application
     And I have selected the Add Organization function
-    And I know the name of the organization I wish to create
     And I provide the full name of the organization I wish to create
-    And I select submit 
+    And the entered full name of the organizaton exists in CTRP with an Active Status
+    When I select submit 
     And the system will search for organization with the same name for active status
     Then the system should indicate with a warning that the organization is a duplicate name in the same context
+    And a duplicate Organization record should not be created
 
   
      Scenario:#7 As a Curator, I can Edit created Organization
@@ -114,15 +111,20 @@ Feature: PO F3 Create an Organization
      |Source Context|
      When I click on the save button
      Then the edited information will be saved to the trial records
-
+     When I select Reset 
+     Then the information entered or edited on the Add Organization screen fields will not be saved to the trial record 
+      And the Add Organization information screen will be refreshed with the existing data
+     
     Scenario: #8 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
     Given I am a curator 
     And I am on the CTRP PO Application
      When I create an Organization record in CTRP
      Then I can click on the Associate Organization Context Button <Associate Organization Context> 
      Then CTRP will search "ACTIVE" Source Status for matching organization Context type
-     	|CTEP|
+     	
+        |CTEP|
         |NLM|
+        
       When any match is found 
       Then the resulted search will display matching records in CTEP and NLM with columns type
    
@@ -145,9 +147,8 @@ Feature: PO F3 Create an Organization
        |Country|
        |Postal Code|
      
-       
-      And the curator selects the matching CTEP organization to link to CTRP org
-      And the curator selects the matching NLM Organization to link to CTRP org
+      And the curator can select the matching CTEP organization to link to CTRP org
+      And the curator can select the matching NLM Organization to link to CTRP org
       When the curator clicks on Associate Selection Button <AssociateSelection> to associate selection
       Then the CTRP association is complete
       And the Processing status will be complete for context type
@@ -185,31 +186,34 @@ Feature: PO F3 Create an Organization
        
      And the curator can delete associations (should we provide a reason for deletion?)
      And the CTEP context will be displayed on the same screen in a new tab labeled "CTEP"
+    
     |CTEP Context|
     |CTRP Organization ID|
     |Source ID|
+    |Context Organization ID|
+    |Service Request (NULL)|
+    |Processing Status (Complete)|
     |CTEP Organization Type|
-    |CTEP Organization Status (Active, Inactive, Legacy)|
+    |CTEP Organization Status (Active)|
+    |Funding Mechanism|
     |Name|
     |Address|
     |Address2|
     |Address3|
-    |City|
-    |State_province|
-    |Postal_code|
     |Country|
+    |State|
+    |City|
+    |Postal code|
     |Email|
     |Phone|
-    |Funding Mechanism|
-    |Context Organization ID|
-    |Service Request (NULL)|
-    |Processing Status (Complete)|
     
-     
-     And the NLM context will be displayed on the same screen in a new tab called "NLM" with data type
+    
+    And the NLM context will be displayed on the same screen in a new tab called "NLM" with data type
+    
+    |CTRP Organization ID|
     |Context Organization ID|
     |Name: Sponsor Name|
-    |NLM Organization Status: Active??????|
+    |NLM Organization Status: Active|
     |NLM Service Request: NULL|
     |Processing Status: Complete|
     
