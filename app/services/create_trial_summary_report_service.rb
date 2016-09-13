@@ -1,10 +1,18 @@
 
 class CreateTrialSummaryReportService
 
+  NO_DATA_AVAILABLE     =   "No Data Available";
+
   def initialize(params)
     @trial_id = params[:trial_id]
     @store_file_on_server = params[:store_file_on_server]
     @trial = Trial.find_by_id(@trial_id)
+
+    Hash h = Hash.new
+    h1 = {
+        'trail_type' => {'required' => true, 'not_displayed_when_no_data' => true},
+        'trail_type1' => {'required' => true, 'not_displayed_when_no_data' => true},
+    }
 
   end
 
@@ -223,8 +231,9 @@ class CreateTrialSummaryReportService
   end
 
   def get_value_based_on_display_rule(field,rule)
+    
     if rule == "Required"
-      field.nil? ? field = "No Data Available" : field = field
+      field.nil? ? field = NO_DATA_AVAILABLE : field = field
     end
     return field
   end
@@ -269,10 +278,10 @@ class CreateTrialSummaryReportService
     array.border_width =10
 
     Hash h = Hash.new
-    @trial.research_category_id.nil? ? trail_type = "No Data Available" : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
-    @trial.lead_org_id.nil? ? lead_org = "No Data Available" : lead_org = Organization.find_by_id(@trial.lead_org_id).name
-    @trial.sponsor_id.nil? ? sponsor = "No Data Available" : sponsor = Organization.find_by_id(@trial.sponsor_id).name
-    @trial.responsible_party_id.nil? ? responsible_party="No Data Available" : responsible_party = ResponsibleParty.find_by_id(@trial.responsible_party_id).name
+    @trial.research_category_id.nil? ? trail_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
+    @trial.lead_org_id.nil? ? lead_org = NO_DATA_AVAILABLE : lead_org = Organization.find_by_id(@trial.lead_org_id).name
+    @trial.sponsor_id.nil? ? sponsor = NO_DATA_AVAILABLE : sponsor = Organization.find_by_id(@trial.sponsor_id).name
+    @trial.responsible_party_id.nil? ? responsible_party=NO_DATA_AVAILABLE : responsible_party = ResponsibleParty.find_by_id(@trial.responsible_party_id).name
     h.store("Trial Type",trial_type)
     h.store("Lead Organization",lead_org)
     h.store("Sponsor",sponsor)
@@ -373,7 +382,7 @@ class CreateTrialSummaryReportService
     create_a_table_row(@grey,@foreground_th_text_color,"Summary 4 Information")
 
     Hash h = Hash.new
-    @trial.study_source_id.nil? ? study_source = "No Data Available" : study_source = StudySource.find_by_id(@trial.study_source_id).name
+    @trial.study_source_id.nil? ? study_source = NO_DATA_AVAILABLE : study_source = StudySource.find_by_id(@trial.study_source_id).name
     h.store("Funding Category",study_source)
     array =@document.table(1, 2,4000,4000)
     array.border_width =10
@@ -404,7 +413,7 @@ class CreateTrialSummaryReportService
 
     if funding_sources_num == 0
       array =@document.table(1, 1,8000)
-      array[0][0] << "No Data Available"
+      array[0][0] << NO_DATA_AVAILABLE
       array.border_width =10
     end
 
@@ -427,7 +436,7 @@ class CreateTrialSummaryReportService
 
     if anatomic_sites_num == 0
       array =@document.table(1, 1,8000)
-      array[0][0] << "No Data Available"
+      array[0][0] << NO_DATA_AVAILABLE
       array.border_width =10
     end
 
@@ -460,7 +469,7 @@ class CreateTrialSummaryReportService
 
           if oversight_authorities_num == 0
             array =@document.table(1, 1,8000)
-            array[0][0] << "No Data Available"
+            array[0][0] << NO_DATA_AVAILABLE
             array.border_width =10
           end
 
@@ -502,16 +511,16 @@ class CreateTrialSummaryReportService
           array.border_width =10
           i = 0
           ind_ides.each do |ind_ide|
-            ind_ide.ind_ide_type.nil? ? array[i][0] << ind_ide.ind_ide_type="No Data Available" : array[i][0] << ind_ide.ind_ide_type
-            ind_ide.grantor.nil? ? array[i][1] << ind_ide.grantor="No Data Available" : array[i][1] << ind_ide.grantor
-            ind_ide.ind_ide_number.nil? ? array[i][2] << ind_ide.ind_ide_number="No Data Available" : array[i][2] << ind_ide.ind_ide_number
-            ind_ide.holder_type_id.nil? ?  array[i][3]="No Data Available" : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
+            ind_ide.ind_ide_type.nil? ? array[i][0] << ind_ide.ind_ide_type=NO_DATA_AVAILABLE : array[i][0] << ind_ide.ind_ide_type
+            ind_ide.grantor.nil? ? array[i][1] << ind_ide.grantor=NO_DATA_AVAILABLE : array[i][1] << ind_ide.grantor
+            ind_ide.ind_ide_number.nil? ? array[i][2] << ind_ide.ind_ide_number=NO_DATA_AVAILABLE : array[i][2] << ind_ide.ind_ide_number
+            ind_ide.holder_type_id.nil? ?  array[i][3]=NO_DATA_AVAILABLE : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
             i = i +1
           end
 
           if ind_ides_num == 0
             array =@document.table(1, 1,8000)
-            array[0][0] << "No Data Available"
+            array[0][0] << NO_DATA_AVAILABLE
             array.border_width =10
           end
 
@@ -521,7 +530,7 @@ class CreateTrialSummaryReportService
           array[0][0] << "Human Subject Safety"
 
           Hash h = Hash.new
-          @trial.board_approval_status_id.nil? ? board_approval_status = "No Data Available" : board_approval_status = BoardApprovalStatus.find_by_id(@trial.board_approval_status_id).name
+          @trial.board_approval_status_id.nil? ? board_approval_status = NO_DATA_AVAILABLE : board_approval_status = BoardApprovalStatus.find_by_id(@trial.board_approval_status_id).name
           h.store("Board Approval Status", board_approval_status)
           h.store("Board Approval Number",get_value_based_on_display_rule(@trial.board_approval_num,"Required"))
           h.store("Board",get_value_based_on_display_rule(@trial.board_name,"Required"))
@@ -530,7 +539,7 @@ class CreateTrialSummaryReportService
           org.nil? ? address = nil : address = org.address
           org.nil? ? phone = nil : phone = org.phone
           org.nil? ? email = nil : email = org.email
-          org.nil? ? affiliation = "No Data Available" : affiliation = org.name
+          org.nil? ? affiliation = NO_DATA_AVAILABLE : affiliation = org.name
 
 
           num_of_rows= 4
@@ -565,7 +574,7 @@ class CreateTrialSummaryReportService
 
           Hash h = Hash.new
           #h.store("Type", board_approval_status)
-          @trial.primary_purpose_id.nil? ? primary_purpose="No Data Available" : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
+          @trial.primary_purpose_id.nil? ? primary_purpose=NO_DATA_AVAILABLE : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
           @trial.secondary_purpose_id.nil? ? secondary_purpose="N/A" : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
           @trial.phase_id.nil? ? phase="N/A" : phase = Phase.find_by_id(@trial.phase_id).name
           @trial.intervention_model_id.nil? ? interventional_model="N/A" : interventional_model = InterventionModel.find_by_id(@trial.intervention_model_id).name
@@ -603,10 +612,10 @@ class CreateTrialSummaryReportService
           create_a_table_row(@grey,@foreground_th_text_color,"Trial Description")
           create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
 
-          @trial.brief_title.nil? ? brief_title = "No Data Available" : brief_title = @trial.brief_title
-          @trial.brief_summary.nil? ? brief_summary = "No Data Available" : brief_summary = @trial.brief_summary
-          @trial.objective.nil? ? objective = "No Data Available" : objective = @trial.objective
-          @trial.detailed_description.nil? ? detailed_description = "No Data Available" : detailed_description = @trial.detailed_description
+          @trial.brief_title.nil? ? brief_title = NO_DATA_AVAILABLE : brief_title = @trial.brief_title
+          @trial.brief_summary.nil? ? brief_summary = NO_DATA_AVAILABLE : brief_summary = @trial.brief_summary
+          @trial.objective.nil? ? objective = NO_DATA_AVAILABLE : objective = @trial.objective
+          @trial.detailed_description.nil? ? detailed_description = NO_DATA_AVAILABLE : detailed_description = @trial.detailed_description
 
           create_a_table_row_node(@trial_description_table,brief_title)
 
@@ -780,7 +789,7 @@ class CreateTrialSummaryReportService
           if num_of_rows == 0
 
             array = @document.table(1,1,8000)
-            array[0][0] << "No Data Available"
+            array[0][0] << NO_DATA_AVAILABLE
           end
 
           i=1
