@@ -71,9 +71,10 @@ Feature: PO F3 Create an Organization
      |Postal Code|Postal Code is Required|
     When I provide the country other than the "United States"
     Then Postal Code is not required
-   
     
-      Scenario:#4 Create Organization fields's character Limit 
+   
+   
+    Scenario:#4 Create Organization fields's character Limit 
     Given I am logged in to the PO Application
     And I am on the Add Organization Screen
      Then a comment appears below the field <Field> to display the number of characters available <Number of Characters left> to enter into the field
@@ -98,7 +99,7 @@ Feature: PO F3 Create an Organization
     And a duplicate Organization record should not be created
 
   
-     Scenario:#7 As a Curator, I can Edit created Organization
+     Scenario:#6 As a Curator, I can Edit created Organization
     Given I am logged in to CTRP PO application
     And I am on the search Organization results screen
      When I select an organization I want to edit
@@ -115,7 +116,7 @@ Feature: PO F3 Create an Organization
      Then the information entered or edited on the Add Organization screen fields will not be saved to the trial record 
       And the Add Organization information screen will be refreshed with the existing data
      
-    Scenario: #8 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
+    Scenario: #7 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
     Given I am a curator 
     And I am on the CTRP PO Application
      When I create an Organization record in CTRP
