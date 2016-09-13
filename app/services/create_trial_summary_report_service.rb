@@ -71,11 +71,14 @@ class CreateTrialSummaryReportService
 
 
     @document.paragraph(@styles['PS_NORMAL']) do |p2|
+      today_date = Date.today()
+      @trial.verification_date.nil? ? verification_date="" : verification_date = @trial.verification_date.strftime("%d-%h-%Y").to_s
+
       p2.foreground(@foreground_th_text_color) << 'Trial Summary Report'
       p2.line_break()
-      p2 << 'Date:'
+      p2 << 'Date: '+ today_date.strftime("%d-%h-%Y").to_s
       p2.line_break()
-      p2  << 'Record Verification Date:'
+      p2  << 'Record Verification Date:' + verification_date
       p2.line_break()
     end
 
