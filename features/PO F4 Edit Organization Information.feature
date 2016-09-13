@@ -118,6 +118,25 @@ Feature: PO F4 Edit Organization Information
     Then the system should change all the parameters in the organization record
     And my name should be listed as last update with the current date and time
     And the organization status should be Pending or Active as indicated
+    
+    
+    Scenario:#9a As a Curator, I can Edit created Organization
+    Given I am logged in to CTRP PO application
+    And I am on the search Organization results screen
+     When I select an organization I want to edit
+     Then the edit screen will display
+     And I can edit all fields except
+     
+     |CTRP Organization ID|
+     |Context Organization ID|
+     |Source ID|
+     |Source Context|
+     When I click on the save button
+     Then the edited information will be saved to the trial records
+     When I select Reset 
+     Then the information entered or edited on the Add Organization screen fields will not be saved to the trial record 
+      And the Add Organization information screen will be refreshed with the existing data
+     
 
   Scenario:#10 As a Curator, I can reset the edit values during the edit process
     Given I am in the Edit Organization feature
@@ -140,9 +159,9 @@ Feature: PO F4 Edit Organization Information
     And I am logged in to the CTRP PO Application
     And I have selected the organization I want to edit
     And I am on the Edit Organization screen
-    When I am on the CTEP Context and my write mode is on
+    When I am on the CTEP or NLM Context and my write mode is on
     Then I should not be allowed to edit any features
-    When I am on the CTEP Context and my write mode is off
+    When I am on the CTEP or NLM Context and my write mode is off
     Then I should not be allowed to edit any features
 
 

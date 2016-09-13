@@ -183,7 +183,15 @@ Feature: PO F3 Create an Organization
        |Postal Code|
        |Association Start Date|
        |Association End Date|
-       
+      
+     And Asscociation History Source Status can be of any status type
+     
+     |Active|
+     |Inactive|
+     |Pending|
+     |Nullified|
+     |Legacy|
+     
      And the curator can delete associations (should we provide a reason for deletion?)
      And the CTEP context will be displayed on the same screen in a new tab labeled "CTEP"
     
