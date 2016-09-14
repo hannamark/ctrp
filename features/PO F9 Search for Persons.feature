@@ -81,7 +81,26 @@ Feature: PO F9 Search for Persons
     |Last Updated By|
     |Prefix|
     |Suffix|
-    And I deleted a person association 
+    And I can delete person  association
+    
+    
+    Scenario:#6 As a curator, I can editperson records
+    Given I am logged in to CTRP PO application
+    When I select a person from the search person results table
+     Then the edit screen will display
+     And I can edit all fields except
+     
+     |CTRP Person ID|
+     |Context Person ID|
+     |Source ID|
+     |Source Context|
+     When I click on the save button
+     Then the edited information will be saved to the trial records
+     When I select Reset 
+     Then the information entered or edited on the Add person fields will not be saved to the trial record 
+      And the Add person records screen will be refreshed with the existing data
+     
+    
     
   Scenario:#2 As a Curator, I will get a message if searched with no parameters
     Given I am logged in to CTRP PO application
