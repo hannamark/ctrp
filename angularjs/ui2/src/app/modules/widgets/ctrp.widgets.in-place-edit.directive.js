@@ -50,6 +50,7 @@
         scope.saveEdit = saveEdit;
         scope.cancelEdit = cancelEdit;
         var prevValue;
+        var inputElem = element.find('input');
 
         //cancel edit on blur
         element.bind('blur', cancelEdit);
@@ -88,7 +89,7 @@
           scope.saveHandler({value: scope.model});
         }
 
-        function cancelEdit() {
+        function cancelEdit(e) {
           scope.editMode = false;
           scope.model = prevValue;
         }

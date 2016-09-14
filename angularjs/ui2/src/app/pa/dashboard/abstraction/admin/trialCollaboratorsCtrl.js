@@ -24,6 +24,7 @@
         vm.selectedDeleteCollaboratorsList = [];
         vm.collaboratorsNum = 0;
         vm.addMode=false;
+        vm.disableOrderBy =true;
         vm.disableBtn = false;
 
         /*
@@ -74,6 +75,7 @@
         vm.saveTrial = function(params){
             vm.disableBtn = true;
             var successMsg = '';
+            vm.disableOrderBy = false;
 
             // An outer param wrapper is needed for nested attributes to work
             var outerTrial = {};
@@ -110,6 +112,7 @@
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             }).finally(function() {
                 vm.disableBtn = false;
+                vm.disableOrderBy = true;
             });
 
         }//saveTrial
