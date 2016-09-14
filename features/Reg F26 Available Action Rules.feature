@@ -4,7 +4,7 @@ As any CTRP User, I can select available Actions
 
   Scenario:#1 Available rules for Registered Trials when I am a Trial Owner 
     Given I am logged into the CTRP Registration application
-    And the Trial is a Protocol Trail
+    And the Trial is a Protocol Trial
     And I search Trials by
      |All Trials|
      |My Trials|
@@ -51,9 +51,9 @@ As any CTRP User, I can select available Actions
 
  Scenario:#5 Available rules for Drafts when I am a Trial Owner 
     Given I am logged into the CTRP Registration application
-    And the Trial is a Protocol Trail
+    And the Trial is a Protocol Trial
     And the Trial is a Draft
     And I search Trials by
      |Saved Drafts|
-    Then the Available Actions type display
+    Then the Available Action type displayed
       |Complete |
