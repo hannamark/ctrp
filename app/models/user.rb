@@ -25,10 +25,6 @@
 #  updated_at                  :datetime
 #  first_name                  :string
 #  last_name                   :string
-#  street_address              :text
-#  zipcode                     :string
-#  country                     :string
-#  state                       :string
 #  middle_name                 :string
 #  prs_organization_name       :string
 #  receive_email_notifications :boolean

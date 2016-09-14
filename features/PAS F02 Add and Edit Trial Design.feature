@@ -19,7 +19,7 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
 Examples:
 
 
-   |From <ClinicalResearchCategory>                 |To <ClinicalResearchCategoryF>                     |field                                    |action (diplays OR deleted) |
+   |From <ClinicalResearchCategoryS>                 |To <ClinicalResearchCategoryF>                     |field                                    |action (diplays OR deleted) |
 
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                          |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                    |displays|
@@ -262,14 +262,14 @@ Examples:
   | Allocation         | Allocation is Required               |
   | Target Enrollment  | Target Enrollment is Required        |
   
-  Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
-Given I am on the Trial Design Screen
-  And the Clinical research Category is Observational
-  And the Information Source is 'Protocol'
- When The Trial Design field <TrialDesignField> is not entered
-  And I have seleted the save Button
- Then an error message <TrialDesignErrorMessage> will be displayed
-Examples:
+  #Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
+#Given I am on the Trial Design Screen
+  #And the Clinical research Category is Observational
+  #And the Information Source is 'Protocol'
+ #When The Trial Design field <TrialDesignField> is not entered
+  #And I have seleted the save Button
+ #Then an error message <TrialDesignErrorMessage> will be displayed
+#Examples:
 
   | <TrialDesignField>    | <TrialDesignErrorMessage>         |
   | Study Model       | Study Model is Required       |

@@ -15,7 +15,7 @@ Then the View TSR option will available
 When I click on the view TSR option
 Then the TSR document will be downloaded with data for the last active submission for the trial
 And I can view TSR document
-And the TSR document rules are stated "TSRFieldDisplayRulesExcelsheet " in the shared drive"B:\CTRP AUM\Functional\Registration\TSR"
+
 
 
   Scenario: #1 TSR Heading Section Display Rules
@@ -32,7 +32,7 @@ And the TSR document rules are stated "TSRFieldDisplayRulesExcelsheet " in the s
      |		        |		                 |		            |		
      |TSR HEADING   |Trial Summary Report    |Required	        |		  
      |		       	|Date                    |Required		    |	
-     |		        |Record Verification Date|Required		    |
+     |		        |Record Verification Date(Trials.Verification_Date)|Required		    |
      
       Scenario: #2 Official Title Section Display Rules
     Given I can view TSR document

@@ -22,7 +22,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |FDA IND/IDE Information for applicable trials  |
       |NIH Grant Information (for NIH funded Trials)  |
       |Regulatory Information |
-      |Trial Related Information  |
+      |Trial Related Documents  |  
       |Participating Sites|
       
      
@@ -59,7 +59,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |FDA IND/IDE Information for applicable trials  |
       |NIH Grant Information (for NIH funded Trials)  |
       |Regulatory Information |
-      |Trial Related Information  |
+      |Trial Related Documents  |
       |Participating Sites|
      
      Scenario: #4 Rules for Clinical Trial Record view after Amendment submission 
@@ -77,21 +77,20 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Participating Sites|
       
       
-        Scenario:#4a Participating Sites Table Columns description
+        Scenario:#4a Participating Sites Table Columns description for all trials (Protocol and Imported)
     Given I am on the View Trial Screen
-     And I can view Participating Site Table
+     And I can view Participating Site Table for all trials
      And the table displays the columns type
      
-     |CTRP ID|
+     |CTRP Org ID (Group ID)|
      |CTRP Organization Name|
-     |Investigators|
-     |Primary Contact|
+     |Investigators (Last Name, First Name)|
+     |Primary Contact (Last Name, First Name)|
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
-     |Date opened for Accrual|
-     |Date Closed for Accrual|
+     
      
     
        
@@ -197,16 +196,18 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Delayed Posting Indicator  |
       |Data Monitoring Committee Appointed Indicator  |
 
-  Scenario: #14 Trial Related Documents viewed
+ 
+
+      Scenario: #14 Trial Related Documents viewed
     Given I am on the trial Details screen
      And I will view Trial Related Documents type
      
       |Protocol Document  |
       |IRB Approval Document  |
       |Change Memo Document  |
+      |Protocol Highlighted Document|
       |TSR  |
-
-     
+      |Other|
 
 
 
