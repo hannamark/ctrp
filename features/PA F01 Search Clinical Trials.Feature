@@ -28,6 +28,7 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
           |NIH/NCI Division/Department Identifier|
           |NIH/NCI Program Identifier|
           |Infofmation Source (Trials.internal_source_id Internal_Sources.name (Protocol, Imported))|
+      And the trial is not a Draft     
       Then CTRP will then display the results for all the Clinical Trials Search Results
           |NCI Trial Identifier|
           |Processing Priority|
