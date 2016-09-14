@@ -32,7 +32,7 @@ And I can view TSR document
      |		        |		                 |		            |		
      |TSR HEADING   |Trial Summary Report    |Required	        |		  
      |		       	|Date                    |Required		    |	
-     |		        |Record Verification Date|Required		    |
+     |		        |Record Verification Date(Trials.Verification_Date)|Required		    |
      
       Scenario: #2 Official Title Section Display Rules
     Given I can view TSR document
