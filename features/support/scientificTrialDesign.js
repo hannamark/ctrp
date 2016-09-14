@@ -1,7 +1,7 @@
 /**
  * Author: Shamim Ahmed
- * Date: 07/12/2016
- * Page Object: Scientific Associated Trial Details
+ * Date: 08/24/2016
+ * Page Object: Scientific Trial Design
  */
 
 var chai = require('chai');
@@ -18,7 +18,7 @@ var fs = require('fs');
 var junit = require('cucumberjs-junitxml');
 var testFileUpload = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testSamples';
 
-var scientificAssociatedTrials = function(){
+var scientificTrialDesign = function(){
 
     var commonFunctions = new abstractionCommonMethods();
     var dateFunctions = new addTrialPage();
@@ -26,28 +26,49 @@ var scientificAssociatedTrials = function(){
     var self = this;
 
     /***********************************
-     * Associated Trial Details object(s)
+     * Trial Design object(s)
      ***********************************/
 
-    this.addAssociatedTrialBtn = element(by.id('add_associated'));
-    this.deleteSelectedAssociated = element(by.id('delete_btn'));
-    this.deleteConfirmAssociated = element(by.id('confirmed_btn'));
-    this.deleteCancelAssociated = element(by.id('cancel_confirm_btn'));
+    this.trialDesignHeader = element(by.id('trial_design_hdr'));
 
-    this.tableAssociatedAll = element.all(by.css('.table.table-bordered.table-striped.table-hover tbody tr'));
-    this.tableTHeadAssociated = element(by.css('.table.table-bordered.table-striped.table-hover thead'));
-    this.tableTHeadColA = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(01)'));
-    this.tableTHeadColB = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(02)'));
-    this.tableTHeadColC = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(03)'));
-    this.tableTHeadColD = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(04)'));
+    this.researchCategoryLst = element(by.id('research_category'));
+    this.primaryPurposeLst = element(by.id('primary_purpose'));
+    this.secondaryPurposeLst = element(by.id('secondary_purpose'));
+    this.trialPhaseLst = element(by.id('trial_phase'));
 
-    this.tableSelectAll = element(by.css('.table.table-bordered.table-striped.table-hover thead tr th:nth-child(05) input'));
+    this.isThisAPilotYes = element(by.id('is_this_pilot_yes'));
+    this.isThisAPilotNo = element(by.id('is_this_pilot_no'));
 
-    this.tableTBodyRowAColA = element(by.css('.table.table-bordered.table-striped.table-hover tbody tr:nth-child(1) td:nth-child(01)'));
-    var rowsLengthVal = '';
+    this.interventionModelLst = element(by.id('intervention_model'));
+
+    this.maskingLst = element(by.id('masking'));
+
+
+
+    this.allocationLst = element(by.id('allocation'));
+    this.studyClassficationLst = element(by.id('study_classification'));
+
+    this.numberOfArmsTxt = element(by.id('num_arms'));
+    this.targetEnrollmentTxt = element(by.id('target_enrollment'));
+    this.finalEnrollmentTxt = element(by.id('final_enrollment'));
+
+    this.accrualsView = element(by.id('accruals_nmbr'));
+
+    //Masking Roles
+    this.maskingRolesSubjectCheck = element(by.id('masking_role_subject'));
+    this.maskingRolesInvestigatorCheck = element(by.id('masking_role_investigator'));
+    this.maskingRolesCaregiverCheck = element(by.id('masking_role_caregiver'));
+    this.maskingRolesOutcomesAssessorCheck = element(by.id('masking_role_outcome_assessor'));
+
+    //Others
+    this.descriptionOfOtherPrimaryPurposeTxt = element(by.id('description_other'));
+    this.descriptionOfOtherSecondaryPurposeTxt = element(by.id('description_other2'));
+    this.descriptionOfOtherStudyModelTxt = element(by.id('study_model_other'));
+    this.descriptionOfOtherTimePerspectiveTxt = element(by.id('time_perspective_other'));
+
 
     /***********************************
-     * Associated Trial Details object(s)
+     * Trial Design Required Message
      ***********************************/
     this.identifierTypeLst = element(by.id('identifier_type'));
     this.trialIdentifierTxt = element(by.id('trial_identifier'));
@@ -65,9 +86,9 @@ var scientificAssociatedTrials = function(){
 
     this.trialOverviewLbls = element.all(by.css('.col-sm-4.col-xs-12>p'));
 
-    this.saveAssociatedBtn = element(by.id('associated_save'));
-    this.resetAssociatedBtn = element(by.id('associated_reset'));
-    this.backToAssociatedTrialsListBtn = element(by.id('associated_back'));
+    this.saveTrialDesignBtn = element(by.id('save_btn'));
+    this.resetTrialDesignBtn = element(by.id('cancel_btn'));
+
 
     this.associatedPageTitleList = element(by.id('pg_title_list'));
     this.associatedPageTitleDetails = element(by.id('pg_title_details'));
@@ -414,4 +435,4 @@ var scientificAssociatedTrials = function(){
     };
 };
 
-module.exports = scientificAssociatedTrials;
+module.exports = scientificTrialDesign;

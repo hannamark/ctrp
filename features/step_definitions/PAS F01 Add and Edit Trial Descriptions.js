@@ -160,6 +160,7 @@ module.exports = function() {
         pageMenu.clickSearchTrialAbstractor();
         pageMenu.clickTrials();
         pageMenu.clickSearchTrialsPA();
+        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
         login.clickWriteMode('On');
         commonFunctions.verifySearchTrialsPAScreen();
         pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);

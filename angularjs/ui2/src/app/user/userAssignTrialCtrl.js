@@ -63,8 +63,8 @@
             }
         };
 
-        var submitAddOwnerships = function ( url, params) {
-            PromiseTimeoutService.postDataExpectObj(url, params).then(function (data) {
+        var submitAddOwnerships = function (params) {
+            UserService.addUserTrialsOwnership(params).then(function (data) {
                 if(data.results && data.results.complete === true) {
                     toastr.success('Trial Ownership(s) Created', 'Success!');
                     vm.resetAll();
@@ -87,13 +87,13 @@
                     user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
                     trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
                 };
-                submitAddOwnerships(URL_CONFIGS.USER_TRIALS_ADD, searchParams);
+                submitAddOwnerships(searchParams);
             } else if (vm.trialId && vm.userOptions.selectedItems.length) {
                 var searchParams = {
                     user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
                     trial_ids: [vm.trialId]
                 };
-                submitAddOwnerships(URL_CONFIGS.USER_TRIALS_ADD, searchParams);
+                submitAddOwnerships(searchParams);
                 vm.setAddMode = false;
             }
         };

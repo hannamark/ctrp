@@ -25,55 +25,54 @@ And I can select the <trialIdentifier> and the trial is <Retrievedfrom> displaye
     |trialIdentifier   |Retrievedfrom          |
     |NCI-yyyy-nnnnn    |CTRP                   |
     |NCTnnnnnnnn       |ClinicalTrials.gov     |
-@runthis
+
 Scenario: #2   corresponding Associated Trial records will be created for both associated trials
 Given I am logged into the CTRP Protocol Abstraction application
-And I have selected a trial
-And I am on the Associated Trials screen
-When  I have selected the Add button
-Then I am on the Add Associated Trial screen
+And I am on the Add Associated Trials screen
 And the added Associated Trial is a CTRP study
 When the Associated Trial is displayed on the Associated Trials screen
 Then the <AssociatedTrialFields> on the Associated Trials screen of the Associated Trial study are added
-|AssociatedTrialFields        |
-|Identifier Type              |
-|Trial Identifier             |
-|Clinical Research Category   |
-|Official Title               |
-
-Examples:
-|CTRPstudyID|Title       |ClinRschCat            |AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory|AssociatedTrial_Official Title|
-|NCI111     |Root study  |Interventional         |NCI555                            |Ancillary Correlative                   |Assoc study                   |
-|NCI555     |Assoc Study |Ancillary Correlative  |NCI111                            |Inteventional                           |Root Study                    |
+|AssociatedTrialFields         |
+|Identifier Type:              |
+|Trial Identifier:             |
+|Research Category:            |
+|Official Title:               |
+#Examples:
+#|CTRPstudyID|Title       |ClinRschCat            |AssociatedTrial_Trial Identifier  |AssociatedTrial_ClinicalResearchCategory|AssociatedTrial_Official Title|
+#|NCI111     |Root study  |Interventional         |NCI555                            |Ancillary Correlative                   |Assoc study                   |
+#|NCI555     |Assoc Study |Ancillary Correlative  |NCI111                            |Inteventional                           |Root Study                    |
 
 Scenario: #3 Associated Trial is not found
-Given I am on the Add Associated Trials screen
-And  I have selected Identifier Type
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Add Associated Trials screen
+And I have selected Identifier Type
 And I have entered the Trial Identifier 
 And I have selected the Look Up Trial button
 When trial identifer is not found
 Then the message 'Trial is not found' displays 
 
 Scenario: #3a Associated Trial is not rejected
-Given I am on the Add Associated Trials screen
-And  I have selected Identifier Type of NCI
-And I have entered the Trial Identifier 
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Add Associated Trials screen
+And I have selected Identifier Type of NCI
+And I have entered the rejected Trial Identifier
 And I have selected the Look Up Trial button
-And the trial does not have a last active submission  
-Then the message 'Trial is not found' displays 
+Then the message 'Trial is not found' displays
+And the trial does not have a last active submission
 
-Scenario:  #4 Trial Identifier information not null   
-Given I am I am on the Add Associated Trial screen
-When I click on 'Look Up Trial' button 
+Scenario:  #4 Trial Identifier information not null
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Add Associated Trials screen
 And the Trial Identifier is Null
+When I click on 'Look Up Trial' button
 Then an error message will appear "Trial Identifier is Required” 
 
-Scenario:  #5 Identifier Type not null   
-Given I am I am on the Add Associated Trial screen
-When I click on 'Look Up Trial' button 
+Scenario:  #5 Identifier Type not null
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Add Associated Trials screen
 And the Identifier Type is Null
-Then an error message will appear "Identifier Type is Required” 
-
+When I click on 'Look Up Trial' button
+Then an error message will appear "Identifier Type is Required”
 
 Scenario: #6 Deleted Associated Trials
 Given I am logged into the CTRP Protocol Abstraction application
@@ -83,24 +82,25 @@ And I have checked the Delete box for an Associated Trial
 And I have selected the delete check box for another Associated Trial
 When I have clicked on Delete button
 Then the message displays 'click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort'
+When I have clicked on the cancel button
+Then the Associated Trial(s) is not removed
+And no message displays
 And I have clicked on OK
 Then the Associated Trial will be removed from the trial
-When I have clicked on the cancel button 
-Then the Associated Trial(s) is not removed 
-And no message displays
 When I have clicked the Select All button
 Then the Delete check box is checked for all entries
-When I have clicked on Delete button
+When I have clicked on Delete button for all entries
 Then the message displays 'Click OK to remove selected Associated Trial(s) from the study. Click Cancel to abort'
+When I have clicked on the cancel button
+Then the Associated Trial is not removed
+And no message displays
 When I click on the OK button 
 Then the Associated Trial(s) is removed from the trial record
 And the message ‘Record(s) deleted’ displays
-When I have clicked on the cancel button 
-Then the Associated Trial is not removed 
-And no message displays
 
 Scenario: #7 Reset Add Associated Trial for a trial
-Given I am on the Add Associated Trial screen
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Add Associated Trials screen
 And I have entered Identifier Type and Trial Identifier
 And I have selected 'Look Up Trial' button
 And Clinical Research Category and Official Title have populated

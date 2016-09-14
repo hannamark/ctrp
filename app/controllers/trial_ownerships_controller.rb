@@ -159,7 +159,7 @@ class TrialOwnershipsController < ApplicationController
 
   private
     def send_emails template, user, trials
-      unless user.nil? || trials.nil? || trials.length == 0
+      unless !user.receive_email_notifications || user.nil? || trials.nil? || trials.length == 0
         email_trials_str = '<hr>'
         email_trials_str += '<table><tr><th style="width:200px; text-align:left;">NCI Trial ID:</th><th>Lead Organization Trial ID:</th></tr>'
         trials.each do |trialId|

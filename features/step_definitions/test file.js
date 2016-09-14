@@ -1,5 +1,5 @@
 /**
- *
+ * Author: Shamim Ahmed
  */
 
 var chai = require('chai');
@@ -39,6 +39,7 @@ module.exports = function() {
     var trialMenuItem = new trialMenuItemList();
     var addTrial = new addTrialPage();
     var searchTrial = new searchTrialPage();
+    var promiseVal = '';
 
     this.Given(/^the user login to the ctrp application$/, function (callback) {
         browser.get('ui/#/main/sign_in');
@@ -49,42 +50,70 @@ module.exports = function() {
         browser.sleep(210).then(callback);
     });
 
-    this.Given(/^step definition test 1st attempt$/, function (callback) {
-        //expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);}, function(err){console.log('Error:'+err); browser.sleep(25).then(callback);});
-        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);if(err !== ''){callback(err);}});
-        searchTrial.setSearchTrialProtocolID('*');
+    this.Then(/^step definition test first attempt$/, function (callback) {
+        trialMenuItem.clickHomeSearchTrial();
+        searchTrial.setSearchTrialProtocolID('CTRP*');
         searchTrial.clickSearchTrialSearchButton();
         searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        browser.sleep(2500).then(callback);
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
+        console.log('#############################false#######################################');
+        if (promiseVal === 'Passed'){
+            promiseVal = '';
+            callback();
+        } else {
+            browser.sleep(25).then(callback);
+        }
+        //browser.sleep(25).then(callback);
     });
 
-    this.Given(/^step definition test 2nd attempt$/, function (callback) {
-        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);if(err !== ''){callback(err);}});
+    this.Then(/^step definition test second attempt$/, function (callback) {
         searchTrial.setSearchTrialProtocolID('*');
         searchTrial.clickSearchTrialSearchButton();
         searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        browser.sleep(2500).then(callback);
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
+        console.log('###########################true#########################################');
+        if (promiseVal === 'Passed'){
+            promiseVal = '';
+            callback();
+        } else {
+            browser.sleep(25).then(callback);
+        }
+        //browser.sleep(25).then(callback);
     });
 
-    this.Given(/^step definition test 3rd attempt$/, function (callback) {
-        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);if(err !== ''){callback(err);}});
+    this.Then(/^step definition test third attempt$/, function (callback) {
         searchTrial.setSearchTrialProtocolID('*');
         searchTrial.clickSearchTrialSearchButton();
         searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        browser.sleep(2500).then(callback);
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
+        console.log('###########################true#########################################');
+        if (promiseVal === 'Passed'){
+            promiseVal = '';
+            callback();
+        } else {
+            browser.sleep(25).then(callback);
+        }
+        //browser.sleep(25).then(callback);
     });
 
-    this.Given(/^step definition test 4th attempt$/, function (callback) {
-        expect(element(by.css('div.row > h4')).getText()).to.eventually.equal('Search Trials * for wild card').then(function (pass){console.log('Passed:'+pass);},function(err){console.log('Error123:'+err);if(err !== ''){callback(err);}});
+    this.Then(/^step definition test fourth attempt$/, function (callback) {
         searchTrial.setSearchTrialProtocolID('*');
         searchTrial.clickSearchTrialSearchButton();
         searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true).then(function (pass){console.log('Passed for next:'+pass);},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        browser.sleep(2500).then(callback);
+        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
+        if (promiseVal === 'Passed'){
+            promiseVal = '';
+            callback();
+        } else {
+            browser.sleep(25).then(callback);
+        }
+        //browser.sleep(25).then(callback);
     });
+
+    //this.After(function(callback) {
+    //    console.log('Cleaning up');
+    //    callback();
+    //});
 
 
 }

@@ -65,7 +65,7 @@ Scenario Outline: #1a Rule for Character length for Trial Regulatory Information
     And the Investigator Title will be displayed as "Principal Investigator"
     And the Investigator Title may be edited
     And the Investigator Affiliation will be the Sponsor Organization
-    And the Investigation Affiliation can be changed
+    And the Investigator Affiliation can be changed
 
      Examples:
       |trialType                |
@@ -102,8 +102,8 @@ Scenario Outline: #1a Rule for Character length for Trial Regulatory Information
     Then the person selected will be recorded as the Sponsor-Investigator
     And the Investigator Title will be displayed as "Principal Investigator"
     And the Investigator Title may be edited
-    And the Investigation Affiliation will be the Sponsor Organization
-    And the Investigation Affiliation cannot be changed
+    And the Investigator Affiliation will be the Sponsor Organization
+    And the Investigator Affiliation cannot be changed
 
     Examples:
       |trialType              |

@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
                         <!-- username -->
-                        <div class="form-group">
+                        <div class="form-group" id="user_list_username">
                             <label for="username" class="control-label col-sm-5">Username: </label>
                             <div class="col-sm-7">
                                 <input type="text" id="username" class="form-control input-sm" placeholder="Username" ng-model="userView.searchParams.username" auto-focus/>
@@ -24,8 +24,8 @@
                         <!-- username ends -->
 
                         <!--Last Name-->
-                        <div class="form-group">
-                            <label for="first_name" class="control-label col-sm-5">Last Name:</label>
+                        <div class="form-group" id="user_list_last_name">
+                            <label for="last_name" class="control-label col-sm-5">Last Name:</label>
                             <div class="col-sm-7">
                                 <input type="text" id="last_name" class="form-control input-sm" placeholder="Last Name" ng-model="userView.searchParams.last_name"/>
                             </div>
@@ -33,7 +33,7 @@
                         <!-- Last Name ends -->
 
                         <!--Status-->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage" id="user_list_status">
                             <label for="first_name" class="control-label col-sm-5">Status:</label>
                             <div class="col-sm-7" ng-if="!userView.searchStatus">
                                 <select class="form-control input-sm" id="user_status_id" ng-model="userView.searchParams.user_status_id">
@@ -48,8 +48,8 @@
                         <!-- Status ends -->
 
                         <!-- Organization Name-->
-                        <div class="form-group">
-                            <label for="organization_name" class="control-label col-sm-5">Organization Name:</label>
+                        <div class="form-group" id="user_list_organization">
+                            <label for="organization_name" class="control-label col-sm-5">Organization:</label>
                             <div class="col-sm-7"  ng-if="!userView.searchOrganization">
                                 <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
                                        autocomplete="off" placeholder="Organization Name"
@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-xs-12 col-md-6">
                         <!--email-->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage" id="user_list_email">
                             <label for="email" class="control-label col-sm-5">Email:</label>
                             <div class="col-sm-7">
                                 <input type="text" id="email" class="form-control input-sm" placeholder="email" ng-model="userView.searchParams.email" />
@@ -95,7 +95,7 @@
                         <!-- email ends -->
 
                         <!--First Name-->
-                        <div class="form-group">
+                        <div class="form-group" id="user_list_first_name">
                             <label for="first_name" class="control-label col-sm-5">First Name:</label>
                             <div class="col-sm-7">
                                 <input type="text" id="first_name" class="form-control input-sm" placeholder="First Name" ng-model="userView.searchParams.first_name" />
@@ -104,7 +104,7 @@
                         <!-- First Name ends -->
 
                         <!-- Site Admin-->
-                        <div class="form-group" ng-if="!userView.registeredUsersPage">
+                        <div class="form-group" ng-if="!userView.registeredUsersPage" id="user_list_admin_priv">
                             <label for="site_admin" class="control-label col-sm-5">Site Administrator Privileges:</label>
                             <div class="col-sm-7">
                                 <label class="control-label radio-line">Yes: <input type="radio" id="site_admin" ng-model="userView.searchParams.site_admin" ng-value="true"/></label>
@@ -115,7 +115,7 @@
                         <!-- Site Admin ends -->
 
                         <!-- Organization Family-->
-                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)">
+                        <div class="form-group" ng-if="!(userView.searchOrganizationFamily !== undefined && userView.searchOrganizationFamily.length === 0)" id="user_list_org_family">
                             <label for="organization_family" class="control-label col-sm-5">Organization Family:</label>
                             <div class="col-sm-7" ng-if="!userView.searchOrganizationFamily">
                                 <input type="text" id="organization_family" class="form-control input-sm" placeholder="Organization Family" ng-model="userView.searchParams.organization_family" />
@@ -141,6 +141,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="row top-offset-xs" ng-if="userView.gridOptions.totalItems == null"></div>
             </form>
         </div>
 
@@ -157,11 +158,25 @@
                     <a href="" id="user_search_results"></a>
                     <h4>{{userView.gridOptions.totalItems}} User(s) found</h4>
                 </div>
-                <div class="row animated-item" ng-if="userView.gridOptions.data.length > 0">
-                    <div ui-grid="userView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" ui-grid-exporter ui-grid-move-columns class="grid"></div>
+                <div class="row animated-item user-list-search-results" ng-if="userView.gridOptions.data.length > 0">
+                    <div ui-grid="userView.gridOptions" ui-grid-pagination="" external-scopes="clickHandler" ui-grid-exporter ui-grid-move-columns ui-grid-selection  class="grid" ng-class="{'edit-off': !userView.curationMode}"></div>
                 </div>
             </div>
         </div>
         <div class="row top-offset-xs" ng-if="userView.gridOptions.totalItems != null"></div>
+
+        <!-- Saving the form for the Add Ownership -->
+        <div class="add-buttons" ng-if="userView.setAddMode === true && userView.trialId && userView.gridOptions.totalItems">
+            <div class="form-group">
+                <div class="btn-toolbar" ng-if="userView.curationMode">
+                    <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="userView.addOwnersSubmit()">
+                        <i class="glyphicon glyphicon-ok"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-warning pull-right" id="out_cm_reset" ng-click="userView.gridApi.selection.clearSelectedRows()">
+                        <i class="glyphicon glyphicon-remove"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

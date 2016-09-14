@@ -18,13 +18,14 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
   
 Examples:
 
-    |From <ClinicalResearchCategory>                 |To <ClinicalResearchCategoryF>                     |field                                    |action (diplays OR deleted) |
 
-   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                        |displays |
-   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                  |displays|
+   |From <ClinicalResearchCategoryS>                 |To <ClinicalResearchCategoryF>                     |field                                    |action (diplays OR deleted) |
+
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                          |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                    |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose                        |deleted |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose Other                  |deleted |
-   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Trial Phase                            |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Trial Phase                              |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Is this a Pilot                          |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Intervention Model                       |deleted |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking                                  |deleted |
@@ -40,10 +41,11 @@ Examples:
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Time Perspective Other                   |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen Retention                   |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen Description                 |displays|
-      |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Number of Arms/Groups                 |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Number of Arms/Groups                    |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Target enrollment                        |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Final Enrollment for clinicalTrials.gov  |displays|
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Accruals                                 |displays|
+
 	|Observational or Ancillary Correlative   |Interventional  or Expanded Access     |Primary Purpose                          |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Primary Purpose Other                    |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose                        |displays|
@@ -65,7 +67,7 @@ Examples:
     |Observational or Ancillary Correlative |Interventional or Expanded Access        |Bio Specimen Retention                   |deleted |
     |Observational or Ancillary Correlative |Interventional or Expanded Access        |Bio Specimen Description                 |deleted |
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Number of Arms/Groups                    |displays|
-   |Observational or Ancillary Correlative |Interventional or Expanded Access        |Target enrollment                        |displays|
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Target enrollment                        |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Final Enrollment for clinicalTrials.gov  |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Accruals                                 |displays|
 
@@ -260,14 +262,14 @@ Examples:
   | Allocation         | Allocation is Required               |
   | Target Enrollment  | Target Enrollment is Required        |
   
-  Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
-Given I am on the Trial Design Screen
-  And the Clinical research Category is Observational
-  And the Information Source is 'Protocol'
- When The Trial Design field <TrialDesignField> is not entered
-  And I have seleted the save Button
- Then an error message <TrialDesignErrorMessage> will be displayed
-Examples:
+  #Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
+#Given I am on the Trial Design Screen
+  #And the Clinical research Category is Observational
+  #And the Information Source is 'Protocol'
+ #When The Trial Design field <TrialDesignField> is not entered
+  #And I have seleted the save Button
+ #Then an error message <TrialDesignErrorMessage> will be displayed
+#Examples:
 
   | <TrialDesignField>    | <TrialDesignErrorMessage>         |
   | Study Model       | Study Model is Required       |
@@ -382,7 +384,7 @@ Scenario:  #17 Character display for Time Perspective of Other
  
  
   
-  Scenario: #17'Bio-specimen Description character count
+  Scenario: #18 Bio-specimen Description character count
 Given I am on the Trial Design screen
 When I am typing into the Bio-specimen Description  Field
 Then a comment appears below the Biospecimen Description field to display the number of characters available to enter into the field.  

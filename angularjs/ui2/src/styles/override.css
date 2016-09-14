@@ -953,6 +953,13 @@ td > .form-text {
 
 .popover {
     color: #444;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.popover.popover-sm {
+    font-size: 11px;
+    width: 100%;
 }
 
 .comment-modal {
@@ -1351,8 +1358,8 @@ div.datepicker {
     display: none;
     max-width: 550px;
     padding: 1px;
-    font-family: Helvetica Neue, Helvetica, Aria, sans-serif;
-    font-size:14px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:12px;
     font-weight: normal;
     background-color: #fff;
     -webkit-background-clip: padding-box;
@@ -1790,20 +1797,21 @@ body.users #typeAheadResults {
 body.assign-trial-ownership .drop-shadow {
     padding-top: 10px;
 }
-body.assign-ownership .grid {
-    height: auto;
-    min-height: 280px;
-    max-height: 550px;
+
+body.assign-ownership .owners-list .ui-grid-pager-container, body.assign-ownership .owners-list .ui-grid-pager-count-container {
+    visibility: hidden;
 }
 
-/* firefox only*/
-@-moz-document url-prefix() {
-    #typeAheadResults {
-        float: right;
-    }
-    #typeAheadResults .btn-danger .glyphicon {
-        padding: 0 6px 0 2px;
-    }
+body.assign-ownership .add-owner-section .add-buttons {
+    margin-right: 20px;
+}
+
+body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_status {
+    display: none;
+}
+
+.user-list-search-results {
+    margin-right: 10px;
 }
 
 .edit-off .ui-grid-row:nth-child(odd):hover .ui-grid-cell.ui-grid-row-header-cell,
@@ -1813,4 +1821,15 @@ body.assign-ownership .grid {
 
 .edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
     display: none;
+}
+
+
+/* firefox only*/
+@-moz-document url-prefix() {
+    #typeAheadResults {
+        float: right;
+    }
+    #typeAheadResults .btn-danger .glyphicon {
+        padding: 0 6px 0 2px;
+    }
 }

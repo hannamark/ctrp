@@ -16,6 +16,8 @@ When I click on the view TSR option
 Then the TSR document will be downloaded with data for the last active submission for the trial
 And I can view TSR document
 
+
+
   Scenario: #1 TSR Heading Section Display Rules
     Given I can view TSR document
     And the document heading will display the data type

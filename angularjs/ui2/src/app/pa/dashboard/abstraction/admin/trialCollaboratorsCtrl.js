@@ -164,7 +164,6 @@
 
         // Add Collaborator to a temp array
         $scope.$watch(function() {
-            //console.log("1curTrial =" + JSON.stringify(vm.curTrial));
             return vm.selectedCollaborators.length;
         }, function(newValue, oldValue) {
             if (newValue == oldValue + 1) {
@@ -174,11 +173,7 @@
                 newCollaborator._destroy = false;
                 vm.addedCollaborators.push(newCollaborator);
                 vm.collaboratorsNum++;
-
-                $scope.trial_form.$setDirty();
             }
-
-
         });
 
         activate();

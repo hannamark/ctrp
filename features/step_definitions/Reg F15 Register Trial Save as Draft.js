@@ -7,7 +7,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
-var projectFunctionsPage= require('../support/projectMethods');
+var projectFunctionsPage = require('../support/projectMethods');
 var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
@@ -18,7 +18,7 @@ var mailVerificationPage = require('../support/mailVerification');
 var searchTrialPage = require('../support/searchTrialPage');
 
 
-module.exports = function() {
+module.exports = function () {
     var trialMenuItem = new trialMenuItemList();
     var addTrial = new addTrialPage();
     var projectFunctions = new projectFunctionsPage();
@@ -46,87 +46,99 @@ module.exports = function() {
     var firstLastName = 'rita tam';
 
 
-    this.Given(/^I have entered the Lead Organization Trial ID$/, function (callback) {
-        /**** Trial Identifiers ****/
-        addTrial.setAddTrialLeadProtocolIdentifier(leadOrgTrialIdentifier + typeOfTrial.substring(0, 3)  + ' ' + moment().format('MMMDoYY h m') );
-        /** Stores the value of Lead Protocol Identifier **/
-        storeLeadProtocolId = addTrial.addTrialLeadProtocolIdentifier.getAttribute('value').then(function (value) {
-            console.log('This is the Lead Organization Trial Identifier that is added' + value);
-            return value;
+    this.Given(/^I have entered the Lead Organization Trial ID$/, function () {
+        return browser.sleep(25).then(function () {
+            /**** Trial Identifiers ****/
+            addTrial.setAddTrialLeadProtocolIdentifier(leadOrgTrialIdentifier + typeOfTrial.substring(0, 3) + ' ' + moment().format('MMMDoYY h m'));
+            /** Stores the value of Lead Protocol Identifier **/
+            storeLeadProtocolId = addTrial.addTrialLeadProtocolIdentifier.getAttribute('value').then(function (value) {
+                console.log('This is the Lead Organization Trial Identifier that is added' + value);
+                return value;
+            });
+            //browser.sleep(25).then(callback);
         });
-        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have entered some other Trial information$/, function (callback) {
-        if (grantOption !== '') {
-            addTrial.selectAddTrialFundedByNCIOption(grantOption);
-        }
-        if (grantOption.toUpperCase() !== 'NO' && grantOption !== '1') {
-            addTrial.selectAddTrialFundingMechanism(grantFundMcm);
-            addTrial.selectAddTrialInstituteCode(grantInstitute);
-            addTrial.setAddTrialSerialNumber(grantSerialNumber);
-            addTrial.addTrialSerialNumberSelect.click();
-            addTrial.selectAddTrialNCIDivisionProgramCode(grantDivision);
-            addTrial.clickAddTrialAddGrantInfoButton();
-        }
-        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', otherIdentifierType)).click();
-        addTrial.setAddTrialProtocolID(otherIdentifierID);
-        addTrial.clickAddTrialAddProtocolButton();
-        addTrial.selectAddTrialSecondaryPurpose(secondaryPurpose);
-        addTrial.setAddTrialSecondaryPurposeOtherDescription(secondaryPurposeOtherDescription);
-        trialDoc.trialRelatedFileUpload('reg', '5', otherDocument);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have entered some other Trial information$/, function () {
+        return browser.sleep(25).then(function () {
+            if (grantOption !== '') {
+                addTrial.selectAddTrialFundedByNCIOption(grantOption);
+            }
+            if (grantOption.toUpperCase() !== 'NO' && grantOption !== '1') {
+                addTrial.selectAddTrialFundingMechanism(grantFundMcm);
+                addTrial.selectAddTrialInstituteCode(grantInstitute);
+                addTrial.setAddTrialSerialNumber(grantSerialNumber);
+                addTrial.addTrialSerialNumberSelect.click();
+                addTrial.selectAddTrialNCIDivisionProgramCode(grantDivision);
+                addTrial.clickAddTrialAddGrantInfoButton();
+            }
+            addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', otherIdentifierType)).click();
+            addTrial.setAddTrialProtocolID(otherIdentifierID);
+            addTrial.clickAddTrialAddProtocolButton();
+            addTrial.selectAddTrialSecondaryPurpose(secondaryPurpose);
+            addTrial.setAddTrialSecondaryPurposeOtherDescription(secondaryPurposeOtherDescription);
+            trialDoc.trialRelatedFileUpload('reg', '5', otherDocument);
+            //  browser.sleep(25).then(callback);
+        });
     });
 
-    this.When(/^I have selected Save as Draft$/, function (callback) {
-        addTrial.clickAddTrialSaveDraftButton();
-        browser.sleep(25).then(callback);
+    this.When(/^I have selected Save as Draft$/, function () {
+        return browser.sleep(25).then(function () {
+            addTrial.clickAddTrialSaveDraftButton();
+            //browser.sleep(25).then(callback);
+        });
     });
 
-    this.Then(/^the CTRP application will save all information that was entered as a draft$/, function (callback) {
-        storeLeadProtocolId.then(function(value) {
-            addTrial.getVerifyAddTrialLeadProtocolIdentifier(value);
+    this.Then(/^the CTRP application will save all information that was entered as a draft$/, function () {
+        return browser.sleep(25).then(function () {
+            storeLeadProtocolId.then(function (value) {
+                addTrial.getVerifyAddTrialLeadProtocolIdentifier(value);
+            });
+            addTrial.getVerifyAddTrialSecondaryPurpose(secondaryPurpose);
+            expect(addTrial.addTrialSecondaryPurposeOtherDescription.getAttribute('value')).to.eventually.equal(secondaryPurposeOtherDescription);
+            projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier(otherIdentifierType, otherIdentifierID);
+            projectFunctionsRegistry.verifyAddTrialGrantInformation(grantFundMcm, grantInstitute, grantSerialNumber, grantDivision);
+            addTrial.addTrialVerifyAddedDocs.getText().then(function (value) {
+                console.log('Value of Documents For Reg F15 draft:');
+                console.log(value);
+                expect(value).to.eql([otherDocument], 'Verification of Trial related Docs');
+            });
+            //browser.sleep(25).then(callback);
         });
-        addTrial.getVerifyAddTrialSecondaryPurpose(secondaryPurpose);
-        expect(addTrial.addTrialSecondaryPurposeOtherDescription.getAttribute('value')).to.eventually.equal(secondaryPurposeOtherDescription);
-        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier(otherIdentifierType, otherIdentifierID);
-        projectFunctionsRegistry.verifyAddTrialGrantInformation(grantFundMcm,grantInstitute,grantSerialNumber,grantDivision);
-        addTrial.addTrialVerifyAddedDocs.getText().then(function(value){
-            console.log('Value of Documents For Reg F15 draft:');
-            console.log(value);
-            expect(value).to.eql([otherDocument], 'Verification of Trial related Docs');
-        });
-        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I will be able to search for saved draft registrations$/, function (callback) {
-        trialMenuItem.clickTrials();
-        trialMenuItem.clickListSearchTrialLink();
-        storeLeadProtocolId.then(function(value) {
-            searchTrial.setSearchTrialProtocolID(value);
+    this.Given(/^I will be able to search for saved draft registrations$/, function () {
+        return browser.sleep(25).then(function () {
+            trialMenuItem.clickTrials();
+            trialMenuItem.clickListSearchTrialLink();
+            storeLeadProtocolId.then(function (value) {
+                searchTrial.setSearchTrialProtocolID(value);
+            });
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialSavedDrafts();
+            //browser.sleep(25).then(callback);
         });
-        searchTrial.clickSearchTrialSearchButton();
-        searchTrial.clickSearchTrialSavedDrafts();
-        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I will be able to complete the registration at a future date$/, function (callback) {
-        searchTrial.clickSearchTrialActionButton();
-        searchTrial.clickSearchTrialCompleteOption();
-        storeLeadProtocolId.then(function(value) {
-            addTrial.getVerifyAddTrialLeadProtocolIdentifier(value);
-        });
-        addTrial.getVerifyAddTrialSecondaryPurpose(secondaryPurpose);
-        expect(addTrial.addTrialSecondaryPurposeOtherDescription.getAttribute('value')).to.eventually.equal(secondaryPurposeOtherDescription);
-        projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier(otherIdentifierType, otherIdentifierID);
-        projectFunctionsRegistry.verifyAddTrialGrantInformation(grantFundMcm,grantInstitute,grantSerialNumber,grantDivision);
-        addTrial.addTrialVerifyAddedDocs.getText().then(function(value){
-            console.log('Value of Documents For Reg F15 draft:');
-            console.log(value);
-            expect(value).to.eql([otherDocument], 'Verification of Trial related Docs');
-        });
+    this.Given(/^I will be able to complete the registration at a future date$/, function () {
+        return browser.sleep(25).then(function () {
+            searchTrial.clickSearchTrialActionButton();
+            searchTrial.clickSearchTrialCompleteOption();
+            storeLeadProtocolId.then(function (value) {
+                addTrial.getVerifyAddTrialLeadProtocolIdentifier(value);
+            });
+            addTrial.getVerifyAddTrialSecondaryPurpose(secondaryPurpose);
+            expect(addTrial.addTrialSecondaryPurposeOtherDescription.getAttribute('value')).to.eventually.equal(secondaryPurposeOtherDescription);
+            projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifier(otherIdentifierType, otherIdentifierID);
+            projectFunctionsRegistry.verifyAddTrialGrantInformation(grantFundMcm, grantInstitute, grantSerialNumber, grantDivision);
+            addTrial.addTrialVerifyAddedDocs.getText().then(function (value) {
+                console.log('Value of Documents For Reg F15 draft:');
+                console.log(value);
+                expect(value).to.eql([otherDocument], 'Verification of Trial related Docs');
+            });
 
-        browser.sleep(25).then(callback);
+            // browser.sleep(25).then(callback);
+        });
     });
 
     this.Given(/^the an email entitled "([^"]*)" will be sent to the user \( Emails list can be found on the share drive under functional\/Registartion: CTRP System Generated Emails\)$/, function (arg1, callback) {
@@ -135,9 +147,11 @@ module.exports = function() {
     });
 
 
-    this.Given(/^I have not entered the Lead Organization Trial ID$/, function (callback) {
-        addTrial.getVerifyAddTrialLeadProtocolIdentifier('');
-        browser.sleep(25).then(callback);
+    this.Given(/^I have not entered the Lead Organization Trial ID$/, function () {
+        return browser.sleep(25).then(function () {
+            addTrial.getVerifyAddTrialLeadProtocolIdentifier('');
+            //browser.sleep(25).then(callback);
+        });
     });
 
 

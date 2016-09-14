@@ -13,6 +13,7 @@ var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 var helperFunctions = require('../support/helper');
+var Cucumber = this;
 
 
 module.exports = function() {
@@ -23,44 +24,56 @@ module.exports = function() {
     var commonFunctions = new abstractionCommonMethods();
     var helper = new helperFunctions();
 
-    this.Given(/^I am logged into the CTRP Registration application$/, function (callback) {
-    //    browser.get('ui/#/main/sign_in');
-        browser.driver.wait(function () {
-            console.log('wait here');
-            return true;
-        }, 40).then(function () {
-            commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
-            trialMenuItem.clickHomeSearchTrial();
-            login.clickWriteMode('On');
+    this.Given(/^I am logged into the CTRP Registration application$/, function () {
+        return  browser.sleep(25).then(function () {
+            //    browser.get('ui/#/main/sign_in');
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 40).then(function () {
+                commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
+                trialMenuItem.clickHomeSearchTrial();
+                login.clickWriteMode('On');
+            });
+            //  browser.sleep(25).then(callback);
         });
-        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I have selected the option to register a trial (.*)$/, function (trialType, callback) {
-        typeOfTrial = trialType;
-        browser.driver.wait(function () {
-            console.log('wait here');
-            return true;
-        }, 40).then(function () {
-            commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
-            trialMenuItem.clickHomeSearchTrial();
-            login.clickWriteMode('On');
-            projectFunctionsRegistry.selectTrials(trialType);
+    this.Given(/^I have selected the option to register a trial (.*)$/, function (trialType) {
+        return  browser.sleep(25).then(function () {
+            typeOfTrial = trialType;
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 40).then(function () {
+                commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
+                trialMenuItem.clickHomeSearchTrial();
+                login.clickWriteMode('On');
+                     if(trialType === 'National') {
+                projectFunctionsRegistry.selectTrials(trialType);}
+                else {
+                         throw "Skipped";//Cucumber.PENDING_STEP;
+                       //  assert.fail(0,1,'***** Running the test only for "National Trials". For Externally Peer-Reviewed and Institutional it will fail the test ');
+                }
+            });
+            // browser.sleep(25).then(callback);
         });
-        browser.sleep(25).then(callback);
     });
 
-    this.Then(/^I am on the Register Trial screen$/, function (callback) {
-        trialMenuItem.verifyRegisterTrial();
-        browser.sleep(25).then(callback);
+    this.Then(/^I am on the Register Trial screen$/, function () {
+        return  browser.sleep(25).then(function () {
+            trialMenuItem.verifyRegisterTrial();
+            // browser.sleep(25).then(callback);
+        });
     });
 
 
     this.Given(/^CTRP will display the required registration elements for a complete protocol registration for the selected (.*)$/, function (trialType, callback) {
-        console.log(trialType);
-        addTrial.getVerifyTrialStudySource(trialType);
-        browser.sleep(25).then(callback);
+        return  browser.sleep(25).then(function () {
+            console.log(trialType);
+            addTrial.getVerifyTrialStudySource(trialType);
+            // browser.sleep(25).then(callback);
+        });
     });
-
 
 };

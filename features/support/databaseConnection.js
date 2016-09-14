@@ -667,6 +667,69 @@ var dbConnection = function () {
                 });
             });
         });
+    };
+
+    this.dbConnRejectProtocolTrial = function (nciIDOfTrial, err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query("select * from trials where nci_id = '" + nciIDOfTrial + "'", function (err, trialID) {
+            if (err) {
+                console.error('error running the Select query to find the TrialID from Trials table', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            var trialDBID = trialID.rows[0].id;
+            console.log('Trial DB Id' + trialDBID);
+            client.query("select * from processing_statuses where name = 'Rejected'", function (err, processingStatusID) {
+                if (err) {
+                    console.error('error running the Select query to find the ID of Processing Status', err);
+                    assert.fail(0, 1, 'error running Query.');
+                }
+                var REJDBID = processingStatusID.rows[0].id;
+                    client.query("select * from milestones where name = 'Submission Rejection Date' ", function (err, milestoneID) {
+                        if (err) {
+                            console.error('error running the Select query to find the ID of Milestone', err);
+                            assert.fail(0, 1, 'error running Query.');
+                        }
+                        var milestoneSRJDBID = milestoneID.rows[0].id;
+                        client.query("select * from submissions where trial_id = " + trialDBID + "ORDER BY id DESC LIMIT 1", function (err, submissionID) {
+                            if (err) {
+                                console.error('error running the Select query to find the ID of Submission', err);
+                                assert.fail(0, 1, 'error running Query.');
+                            }
+                            var submissionDBID = submissionID.rows[0].id;
+                                client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneSRJDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_in(md5(random()::text || now()::text)::cstring), 0, " + submissionDBID + ", 'Out of Scope: Cuke DB Rejected', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Milestone Wrappers to Reject a submission ', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                                client.query("insert into processing_status_wrappers values(DEFAULT , CURRENT_DATE ,  " + REJDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_in(md5(random()::text || now()::text)::cstring), 0, " + submissionDBID + " )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Processing Status Wrappers to Reject a submission', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                            client.query("update trials set is_rejected = true where id = " + trialDBID , function (err) {
+                                if (err) {
+                                    console.error('error running the Update query to set the Trial Status to Rejected for Trials table', err);
+                                    assert.fail(0, 1, 'error running Query.');
+                                }
+                            });
+                            client.query("update submissions set status = 'Rejected' where id = " + trialDBID, function (err) {
+                                if (err) {
+                                    console.error('error running the Update query to set the Status to Rejected for Submissions table', err);
+                                    assert.fail(0, 1, 'error running Query.');
+                                }
+                            });
+                            client.on('end', function () {
+                                console.log("Client was disconnected.")
+                            });
+                        });
+                    });
+                });
+          //  });
+        });
     }
 };
 module.exports = dbConnection;
