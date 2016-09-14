@@ -12,6 +12,5 @@ Feature: Reg F04 Register Trial Study Source
       |National(Registration with Protocol Document)      |
       |Externally Peer-Reviewed (Registration with Protocol Document) |
       |Institutional (Registration with Protocol Document)           |
-      |Industrial/Other (Registration Imported from ClinicalTrials.gov|
-
+     
 
