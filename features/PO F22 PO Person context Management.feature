@@ -100,7 +100,7 @@ Scenario: #2 As a PO Curator, I can search a NEW person record to associate it w
     And the will be added to the person associations on the CTRP Context screen
     
     
-    Scenario:#12 CTRP Person Context Mandatory Fields 
+    Scenario:#3 CTRP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
      When CTRP Context of a person record is created
      Then the person record fields type are mandatory
@@ -139,28 +139,30 @@ Scenario: #2 As a PO Curator, I can search a NEW person record to associate it w
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
      
-Scenario:#8 Curator can identify when two Persons are to be merged 
+
+     Scenario:#5 Curator can identify when two persons are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Persons are to be merged
-     And the CTEP person <PersonType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Person status <StatusType>
+     And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, CTRP Org ID <CTRPPersonIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and Person status <CTEPStatusType>
      
-     |PersonType| PKIDType|CTRPIDType|ServiceRequestType |rocessingStatusType |StatusType|
-     |Person 1  |PK ID 1  |CTRP ID 1 | Merge ID 2        |Pending             |Active    |
-     |Person 2  |PK ID 2  |CTRP ID 2 | Merge ID 1        |Pending             |Inactive  |
-     
-     Then the curator will search CTEP Context for person where Service request is "Merge ID"
+     |<PersonName>                         |<CTEPContextPersonID>     |<CTRPPersonIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|
+     |Daniel Evan                          |AB123                     |2026171               |Merge ID AB123            |Incomplete                 |Active          |         
+     |Daniel Epner Evan                    |33303                     |28417522              |Merge ID 33303            |Incomplete                 |Inactive        |        
+      
+     Then the curator will search CTEP Context for Person where Service request is "Merge with CTEP ID"
      And the curator will search for matching persons in the CTRP Context
-     When Matching CTRP persons found
-     Then The CTRP person matching CTEP organization with inactive status will be Nullified
-     And  the person <PersonType> will have PK ID <PKIDType>, CTRP ID <CTRPIDType>, Service request <ServiceRequestType>, processing status <ProcessingStatusType>, and Person status <PersonType> 
+     When Matching CTRP perons found
+     Then The CTRP persons matching CTEP persons with inactive status will be Nullified
+    And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, CTRP Org ID <CTRPPersonIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and Person status <CTEPStatusType> and CTRP Person Status<CTRPPersonStatus>  
      
-     |PersonType| PKIDType|CTRPIDType|ServiceRequestType |ProcessingStatusType |StatusType|
-     |Person 1  |PK ID 1  |CTRP ID 1 | Null              |Complete             |Active    |
-     |Person 2  |PK ID 2  |CTRP ID 2 | Null              |Complete             |Inactive  |
-     And the curator will select the CTRP person associated with the CTEP Active person to replace the trail associations of the nullified person
-     And all references in CTRP to the nullified Person Record will reference the retained Person Record
-     And any unique Person Organization Affiliations on the nullified Person Record will be added to the retained Person Record
+     |<PersonName>                         |<CTEPContextPersonID>     |<CTRPPersonIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType>  |<CTEPStatusType>|<CTRPStatusType>|
+     |Daniel Evan                          |AB123                     |2026171               |Merge ID AB123            |Incomplete                 |Active          | Active|        
+     |Daniel Epner Evan                    |33303                     |28417522              |Merge ID 33303            |Incomplete                 |Inactive        | Nullified|       
+      
+    
+     And the curator will select the CTRP person associated with the CTEP Active person to replace the trial associations of the nullified person
      
+    
     
     
     
