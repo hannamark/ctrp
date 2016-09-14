@@ -407,6 +407,15 @@
             vm.collapsed = false;
         };
 
+        vm.deleteTrialStatus = function(deletionComment, index) {
+            if (deletionComment == null || deletionComment.trim().length === 0) return;
+            vm.addedStatuses[index].comment = deletionComment;
+            if (vm.addedStatuses[index]._destroy) {
+                vm.addedStatuses[index].comment = null;
+            }
+            vm.toggleSelection(index, 'trial_status');
+        };
+
         // Delete the associations
         vm.toggleSelection = function (index, type) {
             if (type == 'other_id') {
