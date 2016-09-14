@@ -247,14 +247,22 @@ class CreateTrialSummaryReportService
     #@trial_identification_table = RTF::TableNode.new(nil, 3, 3, 3000, 2000,2000)
     other_ids = @trial.other_ids.reorder(:protocol_id)
     other_ids_num =0
+
     other_ids_num = other_ids.size if other_ids
+    nct_code = ProtocolIdOrigin.find_by_code("NCT")
+    other_ids1 = other_ids.pluck(:protocol_id_origin_id)
+
+    if !other_ids1.include?(nct_code.id)
+      other_ids_num = other_ids_num + 1
+    end
+
     array =@document.table(2+other_ids_num, 2,4000,4000)
     array.border_width =10
-
 
     Hash h = Hash.new
     h.store("NCI Trial Identifier",get_value_based_on_display_rule(@trial.nci_id,"Required"))
     h.store("Lead Organization Identifier",get_value_based_on_display_rule(@trial.lead_protocol_id,"Required"))
+
     i=0
     h.each do |k,v|
       array[i][0] << k
@@ -262,12 +270,21 @@ class CreateTrialSummaryReportService
       i=i+1
     end
 
+    array[i][0] << nct_code.name
+    if other_ids1.include?(nct_code.id)
+      array[i][1] << other_ids.find_by_protocol_id_origin_id_and_trial_id(nct_code.id,@trial.id).protocol_id.to_s
+    else
+      array[i][1] << NO_DATA_AVAILABLE
+    end
+    i = i +1
 
     other_ids.each do |oid|
       pid = ProtocolIdOrigin.find_by_id(oid.protocol_id_origin_id)
-      array[i][1] << oid.protocol_id
-      array[i][0] << pid.name
-      i=i+1
+      if oid.protocol_id_origin_id != nct_code.id
+        array[i][1] << oid.protocol_id.to_s
+        array[i][0] << pid.name
+        i=i+1
+      end
     end
   end
 
