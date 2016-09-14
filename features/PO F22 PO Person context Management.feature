@@ -156,8 +156,8 @@ Scenario: #2 As a PO Curator, I can search a NEW person record to associate it w
     And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, CTRP Org ID <CTRPPersonIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and Person status <CTEPStatusType> and CTRP Person Status<CTRPPersonStatus>  
      
      |<PersonName>                         |<CTEPContextPersonID>     |<CTRPPersonIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType>  |<CTEPStatusType>|<CTRPStatusType>|
-     |Daniel Evan                          |AB123                     |2026171               |Merge ID AB123            |Incomplete                 |Active          | Active|        
-     |Daniel Epner Evan                    |33303                     |28417522              |Merge ID 33303            |Incomplete                 |Inactive        | Nullified|       
+     |Daniel Evan                          |AB123                     |2026171               |NULL                     |complete                    |Active          | Active|        
+     |Daniel Epner Evan                    |33303                     |28417522              |NULL                     |complete                    |Inactive        | Nullified|       
       
     
      And the curator will select the CTRP person associated with the CTEP Active person to replace the trial associations of the nullified person
