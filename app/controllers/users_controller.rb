@@ -43,8 +43,11 @@ class UsersController < ApplicationController
 
     current_user = current_site_user
     @user = User.find(params[:user][:id])
-    if current_user.role != 'ROLE_ACCOUNT-APPROVER' && current_user.role != 'ROLE_SITE-SU' && current_user.role != 'ROLE_ADMIN'
-      params[:user][:domain] = @user.domain
+    if current_user.role != 'ROLE_ACCOUNT-APPROVER' &&
+        current_user.role != 'ROLE_SITE-SU' &&
+        current_user.role != 'ROLE_ADMIN' &&
+        current_user.role != 'ROLE_SUPER' &&
+        current_user.role != 'ROLE_ABSTRACTOR'
       params[:user][:role] = @user.role
       if params[:user][:user_status_id] != @user.user_status_id && current_user.id == @user.id
         params[:user][:user_status_id] = UserStatus.find_by_code('INR').id
@@ -71,12 +74,17 @@ class UsersController < ApplicationController
       end
     end
 
+    sendActivationEmail = false
+    if params[:send_activation_email] == true
+      sendActivationEmail = true
+    end
+
     Rails.logger.info "In Users Controller, update before user = #{@user.inspect}"
     @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     respond_to do |format|
       #must be correct admin for the org, or with correct role or user him/herself
       if userWriteAccess(@user) && @user.update_attributes(user_params)
-        if (user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU') || newUser
+        if (user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU') || newUser || sendActivationEmail
           if justRegistered && @user.domain == "NIHEXT"
             mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
           else
@@ -331,8 +339,7 @@ end
     end
     user && userToUpdate ?
         ( user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-        user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
+        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
         (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) : false
   end
 

@@ -48,6 +48,11 @@ Feature: PO F10 Create a Person Record
     |Updated By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
     |Add Affiliated Organization Details|
     
+    When I select Reset 
+     Then the information entered on the Add Personscreen fields will not be saved to the trial record 
+      And the Add Person information screen will be refreshed and blank
+     
+    
    Scenario:#1b I can Add a Person Affiliated Organization by searching organizations
     Given I am on the Add Person Screen
      When I search Organizations 

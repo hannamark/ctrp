@@ -42,6 +42,8 @@
             }
             UserService.upsertUser(vm.userDetails).then(function(response) {
                 if (response.username) {
+                    $scope.userDetail_form.$setPristine();
+                    vm.userDetails.send_activation_email = false;
                     toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
                     if (vm.userDetailsOrig.username !== response.username) {
                         $state.go('main.userDetail', response, {reload: true});
@@ -66,6 +68,8 @@
 
         vm.reset = function() {
             vm.userDetails = angular.copy(vm.userDetailsOrig);
+            $scope.userDetail_form.$setPristine();
+            vm.userDetails.send_activation_email = false;
         };
 
         vm.userRequestAdmin = function(params) {
@@ -136,14 +140,19 @@
                     //because site admin loses accessibility to user
                     redirect = true;
                 }
-                if (//new org is not part of the family and user is not an admin
-                    !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length
-                        && vm.userRole !== 'ROLE_ADMIN' && vm.userRole !== 'ROLE_SUPER'
-                            && vm.userRole !== 'ROLE_ACCOUNT-APPROVER') {
-                    if (vm.userDetails.role === 'ROLE_SITE-SU') {
-                        vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
-                    }
-                    vm.userDetails.user_status_id = review_id;
+
+                //new org is not part of the family and user is not an admin
+                if (!_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) {
+                   if (vm.userRole !== 'ROLE_ADMIN'
+                     && vm.userRole !== 'ROLE_SUPER'
+                      && vm.userRole !== 'ROLE_ABSTRACTOR'
+                        && vm.userRole !== 'ROLE_ACCOUNT-APPROVER') {
+                           if (vm.userDetails.role === 'ROLE_SITE-SU') {
+                               vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
+                           }
+                           vm.userDetails.user_status_id = review_id;
+                   }
+                   vm.userDetails.send_activation_email = true;
                 }
             }
             return redirect;
@@ -196,7 +205,8 @@
 
         UserService.getUserStatuses().then(function (response) {
             vm.statusArr = response.data;
-            if (vm.userRole == 'ROLE_SITE-SU') {
+            var allowedROLESITESU = ['ROLE_SITE-SU', 'ROLE_SUPER', 'ROLE_ABSTRACTOR'];
+            if (_.contains(allowedROLESITESU, vm.userRole)) {
                 vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
                     var allowedStatus = ['INR'];
                     if (vm.userDetails.status_date) {

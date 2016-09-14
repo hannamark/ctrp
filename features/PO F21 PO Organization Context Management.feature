@@ -455,11 +455,11 @@ Scenario: #1a CTEP Context Mandatory Fields
     And  the organizations <OrganizationName> will have PK ID <CTEPContextOrgIDType>, CTRP ID <CTRPOrgIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and CTEP Organization status <CTEPStatusType> and CTRP Organization Status <CTRPOrgStatus> 
      
      |<OrganizationName>                   |<CTEPContextOrgID>|<CTRPOrgIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|<CTRPStatusType>|
-     |ACORN Research,LLC                   |ACRN              |8352734            |Merge ID ACT             |Complete                   |Active          |Active          |         
-     |Actelion Pharmaceuticals Switzerland |ACT               |8149074            |Merge ID ACRN            |complete                   |Inactive        |Nullified       |        
+     |ACORN Research,LLC                   |ACRN              |8352734            |NULL                     |Complete                   |Active          |Active          |         
+     |Actelion Pharmaceuticals Switzerland |ACT               |8149074            |NULL                     |complete                   |Inactive        |Nullified       |        
       
      And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trial associations of the nullified organization
-     
+     And 
     
     
    
