@@ -989,7 +989,7 @@ class TrialService
           ## populate the mail_template with data for trial registration
           mail_template.to = @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications ? @trial.current_user.email : nil
 
-          unless (!mail_template.to.blank?)
+          unless (mail_template.to.blank?)
 
             # Populate the trial data in the email body
             mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
@@ -1022,7 +1022,7 @@ class TrialService
           ## populate the mail_template with data for trial update
           mail_template.to =  @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications ? @trial.current_user.email : nil
 
-          unless (!mail_template.to.blank?)
+          unless (mail_template.to.blank?)
             mail_template.from = 'ncictro@mail.nih.gov'
             mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
             mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)
@@ -1056,7 +1056,7 @@ class TrialService
           ## populate the mail_template with data for trial update
           mail_template.to =  trial_owners_email.present? && trial_owner.user.receive_email_notifications ? trial_owners_email : nil
 
-          unless (!mail_template.to.blank?)
+          unless (mail_template.to.blank?)
             mail_template.from = 'ncictro@mail.nih.gov'
 
             mail_template.subject.sub!('${amendNum}', last_amend_num)  # for amendment trials
@@ -1088,7 +1088,7 @@ class TrialService
           ## populate the mail_template with data for trial amendment
           mail_template.to =  @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications ? @trial.current_user.email : nil
 
-          unless (!mail_template.to.blank?)
+          unless (mail_template.to.blank?)
             mail_template.from = 'ncictro@mail.nih.gov'
             mail_template.subject.sub!('${trialAmendNumber}', last_amend_num)
             mail_template.subject.sub!('${nciTrialIdentifier}', nci_id)
@@ -1120,7 +1120,7 @@ class TrialService
         ## populate the mail_template with data for trial draft
         mail_template.to =  @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications ? @trial.current_user.email : nil
 
-        unless (!mail_template.to.blank?)
+        unless (mail_template.to.blank?)
           mail_template.from = 'ncictro@mail.nih.gov'
           mail_template.to = @trial.current_user.email if @trial.current_user.present? && @trial.current_user.email.present? && @trial.current_user.receive_email_notifications
           mail_template.subject.sub!('${leadOrgTrialIdentifier}', lead_protocol_id)

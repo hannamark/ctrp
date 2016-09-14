@@ -1,5 +1,5 @@
 @PA @global
-Feature: PAM F24 Abstraction Dashboard - Search
+Feature: PAM F22 Abstraction Dashboard - Search
 
 As a CTRP PA User, I can view  the CTRP Abstraction Dashboard Search
 
