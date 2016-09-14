@@ -136,84 +136,99 @@ module.exports = function() {
      And the Associated Trial will be associated with the trial
      */
 
-    this.Given(/^I am on the Associated Trials screen$/, function (callback) {
-        leftNav.clickScientificAssociatedTrials();
-        associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
-        associated.deleteAllAssociatedTrialList('yes');
-        browser.sleep(25).then(callback);
+    this.Given(/^I am on the Associated Trials screen$/, function () {
+        return browser.sleep(25).then(function() {
+            leftNav.clickScientificAssociatedTrials();
+            associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
+            associated.deleteAllAssociatedTrialList('yes');
+        });
     });
 
-    this.When(/^I have selected the Add button$/, function (callback) {
-        associated.clickAddAssociatedTrial();
-        browser.sleep(25).then(callback);
+    this.When(/^I have selected the Add button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickAddAssociatedTrial();
+        });
     });
 
-    this.Then(/^I am on the Add Associated Trial screen$/, function (callback) {
-        associated.checkAssociatedTrialPageTitle(pageTitleA, 'details');
-        browser.sleep(25).then(callback);
+    this.Then(/^I am on the Add Associated Trial screen$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.checkAssociatedTrialPageTitle(pageTitleA, 'details');
+        });
     });
 
-    this.Then(/^I must select (.*)$/, function (IdentifierType, table, callback) {
-        var idenType = table.raw();
-        optionType = idenType.toString().replace(/,/g, "\n", -1);
-        console.log('Value(s) in the data table:[' + idenType +']');
-        var optionTypeSplt = optionType.toString().split("\n");
-        optionA = optionTypeSplt[1];
-        optionB = optionTypeSplt[2];
-        associated.selectIdentifierType(optionA);
-        browser.sleep(25).then(callback);
+    this.Then(/^I must select (.*)$/, function (IdentifierType, table) {
+        return browser.sleep(25).then(function() {
+            var idenType = table.raw();
+            optionType = idenType.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + idenType + ']');
+            var optionTypeSplt = optionType.toString().split("\n");
+            optionA = optionTypeSplt[1];
+            optionB = optionTypeSplt[2];
+            associated.selectIdentifierType(optionA);
+        });
     });
 
-    this.Then(/^I must enter the Trial Identifier$/, function (callback) {
-        associated.setTrialIdentifierTxt(nciIDA);
-        browser.sleep(25).then(callback);
+    this.Then(/^I must enter the Trial Identifier$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.setTrialIdentifierTxt(nciIDA);
+        });
+
     });
 
-    this.When(/^I click the Look Up Trial button$/, function (callback) {
-        associated.clickLookupTrial();
-        browser.sleep(2500).then(callback);
+    this.When(/^I click the Look Up Trial button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickLookupTrial();
+        });
     });
 
-    this.Then(/^the Requested Trial is retrieved from the respective system \(CTRP for NCI and ClinicalTrials\.gov for NCT\)$/, function (callback) {
+    this.Then(/^the Requested Trial is retrieved from the respective system \(CTRP for NCI and ClinicalTrials\.gov for NCT\)$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.Then(/^the Clinical Research Category populates$/, function (callback) {
-        associated.verifyResearchCategoryLookup(trialTypeA);
-        browser.sleep(25).then(callback);
+    this.Then(/^the Clinical Research Category populates$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.verifyResearchCategoryLookup(trialTypeA);
+        });
     });
 
-    this.Then(/^the Official Title populates$/, function (callback) {
-        associated.verifyOfficialTitleLookup(officialTitleA);
-        browser.sleep(25).then(callback);
+    this.Then(/^the Official Title populates$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.verifyOfficialTitleLookup(officialTitleA);
+        });
     });
 
-    this.When(/^I have clicked the Save button$/, function (callback) {
-        associated.clickSaveAssociated();
-        browser.sleep(25).then(callback);
+    this.When(/^I have clicked the Save button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickSaveAssociated();
+        });
     });
 
-    this.Then(/^the associated study displays on the Associated Trials screen$/, function (callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', optionA, trialTypeA, officialTitleA);
-        browser.sleep(25).then(callback);
+    this.Then(/^the associated study displays on the Associated Trials screen$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', optionA, trialTypeA, officialTitleA);
+        });
     });
 
-    this.Then(/^the Message Record Created displays$/, function (callback) {
-        console.log('Popup successful message verification is out of scope');
-        browser.sleep(25).then(callback);
+    this.Then(/^the Message Record Created displays$/, function () {
+        return browser.sleep(25).then(function() {
+            console.log('Popup successful message verification is out of scope');
+        });
     });
 
-    this.Then(/^the Associated Trial will be associated with the trial$/, function (callback) {
-        associated.verifyAssociatedListTableTHead();
-        browser.sleep(25).then(callback);
+    this.Then(/^the Associated Trial will be associated with the trial$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.verifyAssociatedListTableTHead();
+        });
     });
 
-    this.Then(/^I can select the (.*) and the trial is (.*) displayed$/, function (IdentifierIdentifier, Retrievedfrom, table, callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'link', optionA, trialTypeA, officialTitleA);
-        associated.verifyViewAssociatedTrialNCI(leadProtocolIDA, nciIDA, nctIDA, '', '');
-        associated.clickViewCloseBtn();
-        browser.sleep(25).then(callback);
+    this.Then(/^I can select the (.*) and the trial is (.*) displayed$/, function (IdentifierIdentifier, Retrievedfrom, table) {
+        return browser.sleep(25).then(function() {
+            associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'link', optionA, trialTypeA, officialTitleA);
+            associated.verifyViewAssociatedTrialNCI(leadProtocolIDA, nciIDA, nctIDA, '', '');
+            associated.clickViewCloseBtn();
+        });
     });
 
     /*
@@ -240,53 +255,57 @@ module.exports = function() {
      |Official Title               |
      */
 
-    this.Given(/^I am on the Add Associated Trials screen$/, function (callback) {
-        pageMenu.clickSearchTrialAbstractor();
-        pageMenu.clickTrials();
-        pageMenu.clickSearchTrialsPA();
-        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-        login.clickWriteMode('On');
-        commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
-        pageSearchTrail.clickSearchTrialSearchButton();
-        commonFunctions.clickLinkText(leadProtocolID);
-        leftNav.scientificCheckOut();
-        leftNav.clickScientificAssociatedTrials();
-        associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
-        associated.deleteAllAssociatedTrialList('yes');
-        associated.clickAddAssociatedTrial();
-        browser.sleep(25).then(callback);
+    this.Given(/^I am on the Add Associated Trials screen$/, function () {
+        return browser.sleep(25).then(function() {
+            pageMenu.clickSearchTrialAbstractor();
+            pageMenu.clickTrials();
+            pageMenu.clickSearchTrialsPA();
+            helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+            login.clickWriteMode('On');
+            commonFunctions.verifySearchTrialsPAScreen();
+            pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+            pageSearchTrail.clickSearchTrialSearchButton();
+            commonFunctions.clickLinkText(leadProtocolID);
+            leftNav.scientificCheckOut();
+            leftNav.clickScientificAssociatedTrials();
+            associated.checkAssociatedTrialPageTitle(pageTitle, 'list');
+            associated.deleteAllAssociatedTrialList('yes');
+            associated.clickAddAssociatedTrial();
+        });
     });
 
-    this.Given(/^the added Associated Trial is a CTRP study$/, function (callback) {
+    this.Given(/^the added Associated Trial is a CTRP study$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.When(/^the Associated Trial is displayed on the Associated Trials screen$/, function (callback) {
-        associated.selectIdentifierType(identifierTypeA);
-        associated.setTrialIdentifierTxt(nciIDA);
-        associated.clickLookupTrial();
-        browser.sleep(25).then(callback);
+    this.When(/^the Associated Trial is displayed on the Associated Trials screen$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.selectIdentifierType(identifierTypeA);
+            associated.setTrialIdentifierTxt(nciIDA);
+            associated.clickLookupTrial();
+        });
     });
 
-    this.Then(/^the (.*) on the Associated Trials screen of the Associated Trial study are added$/, function (AssociatedTrialFields, table, callback) {
-        var AssociatedTrialFields = table.raw();
-        optionFields = AssociatedTrialFields.toString().replace(/,/g, "\n", -1);
-        console.log('Value(s) in the data table:[' + AssociatedTrialFields +']');
-        var optionTypeSplt = optionFields.toString().split("\n");
-        optionFieldsA = optionTypeSplt[1];
-        optionFieldsB = optionTypeSplt[2];
-        optionFieldsC = optionTypeSplt[3];
-        optionFieldsD = optionTypeSplt[4];
-        helper.getVerifyLabel(associated.identifierTypeLstLbl, optionFieldsA, 'Verify Identifier Type field');
-        helper.getVerifyLabel(associated.trialIdentifierTxtLbl, optionFieldsB, 'Verify Trial Identifier field');
-        helper.getVerifyLabel(associated.researchCategoryVwLbl, optionFieldsC, 'Verify Research Category field');
-        helper.getVerifyLabel(associated.officialTitleVwLbl, optionFieldsD, 'Verify Official Title field');
-        associated.clickSaveAssociated();
-        associated.verifyAssociatedListTableTHead();
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
-        browser.sleep(25).then(callback);
+    this.Then(/^the (.*) on the Associated Trials screen of the Associated Trial study are added$/, function (AssociatedTrialFields, table) {
+        return browser.sleep(25).then(function() {
+            var AssociatedTrialFields = table.raw();
+            optionFields = AssociatedTrialFields.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + AssociatedTrialFields + ']');
+            var optionTypeSplt = optionFields.toString().split("\n");
+            optionFieldsA = optionTypeSplt[1];
+            optionFieldsB = optionTypeSplt[2];
+            optionFieldsC = optionTypeSplt[3];
+            optionFieldsD = optionTypeSplt[4];
+            helper.getVerifyLabel(associated.identifierTypeLstLbl, optionFieldsA, 'Verify Identifier Type field');
+            helper.getVerifyLabel(associated.trialIdentifierTxtLbl, optionFieldsB, 'Verify Trial Identifier field');
+            helper.getVerifyLabel(associated.researchCategoryVwLbl, optionFieldsC, 'Verify Research Category field');
+            helper.getVerifyLabel(associated.officialTitleVwLbl, optionFieldsD, 'Verify Official Title field');
+            associated.clickSaveAssociated();
+            associated.verifyAssociatedListTableTHead();
+            associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
+        });
     });
 
     /*
@@ -299,30 +318,35 @@ module.exports = function() {
      Then the message 'Trial is not found' displays
      */
 
-    this.Given(/^I have selected Identifier Type$/, function (callback) {
-        associated.selectIdentifierType(identifierTypeA);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected Identifier Type$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.selectIdentifierType(identifierTypeA);
+        });
     });
 
-    this.Given(/^I have entered the Trial Identifier$/, function (callback) {
-        associated.setTrialIdentifierTxt(nciIDNotFound);
-        browser.sleep(250).then(callback);
+    this.Given(/^I have entered the Trial Identifier$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.setTrialIdentifierTxt(nciIDNotFound);
+        });
     });
 
-    this.Given(/^I have selected the Look Up Trial button$/, function (callback) {
-        associated.clickLookupTrial();
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected the Look Up Trial button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickLookupTrial();
+        });
     });
 
-    this.When(/^trial identifer is not found$/, function (callback) {
+    this.When(/^trial identifer is not found$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.Then(/^the message 'Trial is not found' displays$/, function (callback) {
-        msgNotFound = 'Trial is not found';
-        commonFunctions.verifyTxtByIndex(associated.notFoundMsg, msgNotFound, '0', 'Verify Trial is not found message');
-        browser.sleep(25).then(callback);
+    this.Then(/^the message 'Trial is not found' displays$/, function () {
+        return browser.sleep(25).then(function() {
+            msgNotFound = 'Trial is not found';
+            commonFunctions.verifyTxtByIndex(associated.notFoundMsg, msgNotFound, '0', 'Verify Trial is not found message');
+        });
     });
 
     /*
@@ -336,29 +360,32 @@ module.exports = function() {
      Then the message 'Trial is not found' displays
      */
 
-    this.Given(/^I have selected Identifier Type of NCI$/, function (callback) {
-        associated.selectIdentifierType(identifierTypeA);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected Identifier Type of NCI$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.selectIdentifierType(identifierTypeA);
+        });
     });
 
-    this.Given(/^I have entered the rejected Trial Identifier$/, function (callback) {
-        associated.setTrialIdentifierTxt(nciIDRejected);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have entered the rejected Trial Identifier$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.setTrialIdentifierTxt(nciIDRejected);
+        });
     });
 
-    this.Given(/^the trial does not have a last active submission$/, function (callback) {
-        pageMenu.clickSearchTrialAbstractor();
-        pageMenu.clickTrials();
-        pageMenu.clickSearchTrialsPA();
-        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-        login.clickWriteMode('On');
-        commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(nciIDRejected);
-        pageSearchTrail.clickSearchTrialSearchButton();
-        commonFunctions.clickLinkText(nciIDRejected);
-        checkLastActiveSubmission = 'Last Submitter:';
-        associated.verifyTrialOverview('9', checkLastActiveSubmission);
-        browser.sleep(25).then(callback);
+    this.Given(/^the trial does not have a last active submission$/, function () {
+        return browser.sleep(25).then(function() {
+            pageMenu.clickSearchTrialAbstractor();
+            pageMenu.clickTrials();
+            pageMenu.clickSearchTrialsPA();
+            helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+            login.clickWriteMode('On');
+            commonFunctions.verifySearchTrialsPAScreen();
+            pageSearchTrail.setSearchTrialProtocolID(nciIDRejected);
+            pageSearchTrail.clickSearchTrialSearchButton();
+            commonFunctions.clickLinkText(nciIDRejected);
+            checkLastActiveSubmission = 'Last Submitter:';
+            associated.verifyTrialOverview('9', checkLastActiveSubmission);
+        });
     });
 
     /*
@@ -370,20 +397,23 @@ module.exports = function() {
      Then an error message will appear "Trial Identifier is Required”
      */
 
-    this.Given(/^the Trial Identifier is Null$/, function (callback) {
-        associated.setTrialIdentifierTxt('');
-        browser.sleep(25).then(callback);
+    this.Given(/^the Trial Identifier is Null$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.setTrialIdentifierTxt('');
+        });
     });
 
-    this.When(/^I click on 'Look Up Trial' button$/, function (callback) {
-        associated.clickLookupTrial();
-        browser.sleep(25).then(callback);
+    this.When(/^I click on 'Look Up Trial' button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickLookupTrial();
+        });
     });
 
-    this.Then(/^an error message will appear "Trial Identifier is Required”$/, function (callback) {
-        errorMSGTI = 'Trial Identifier is Required';
-        commonFunctions.verifyTxtByIndex(associated.requiredMsg, errorMSGTI, '0', 'Verify Trial Identifier is Required');
-        browser.sleep(25).then(callback);
+    this.Then(/^an error message will appear "Trial Identifier is Required”$/, function () {
+        return browser.sleep(25).then(function() {
+            errorMSGTI = 'Trial Identifier is Required';
+            commonFunctions.verifyTxtByIndex(associated.requiredMsg, errorMSGTI, '0', 'Verify Trial Identifier is Required');
+        });
     });
 
     /*
@@ -395,16 +425,18 @@ module.exports = function() {
      Then an error message will appear "Identifier Type is Required”
      */
 
-    this.Given(/^the Identifier Type is Null$/, function (callback) {
-        var idenTypNull = '-- Please select a trial identifier type...';
-        associated.selectIdentifierType(idenTypNull);
-        browser.sleep(25).then(callback);
+    this.Given(/^the Identifier Type is Null$/, function () {
+        return browser.sleep(25).then(function() {
+            var idenTypNull = '-- Please select a trial identifier type...';
+            associated.selectIdentifierType(idenTypNull);
+        });
     });
 
-    this.Then(/^an error message will appear "Identifier Type is Required”$/, function (callback) {
-        errorMSGIT = 'Identifier Type is Required';
-        commonFunctions.verifyTxtByIndex(associated.requiredMsg, errorMSGIT, '0', 'Verify Identifier Type is Required');
-        browser.sleep(25).then(callback);
+    this.Then(/^an error message will appear "Identifier Type is Required”$/, function () {
+        return browser.sleep(25).then(function() {
+            errorMSGIT = 'Identifier Type is Required';
+            commonFunctions.verifyTxtByIndex(associated.requiredMsg, errorMSGIT, '0', 'Verify Identifier Type is Required');
+        });
     });
 
     /*
@@ -433,104 +465,122 @@ module.exports = function() {
      And the message ‘Record(s) deleted’ displays
      */
 
-    this.Given(/^I have checked the Delete box for an Associated Trial$/, function (callback) {
-        associated.clickAddAssociatedTrial();
-        associated.selectIdentifierType(identifierTypeA);
-        associated.setTrialIdentifierTxt(nciIDA);
-        associated.clickLookupTrial();
-        associated.clickSaveAssociated();
-        associated.clickAddAssociatedTrial();
-        associated.selectIdentifierType(identifierTypeA);
-        associated.setTrialIdentifierTxt(nciIDB);
-        associated.clickLookupTrial();
-        associated.clickSaveAssociated();
-        browser.sleep(25).then(callback);
+    this.Given(/^I have checked the Delete box for an Associated Trial$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickAddAssociatedTrial();
+            associated.selectIdentifierType(identifierTypeA);
+            associated.setTrialIdentifierTxt(nciIDA);
+            associated.clickLookupTrial();
+            associated.clickSaveAssociated();
+            associated.clickAddAssociatedTrial();
+            associated.selectIdentifierType(identifierTypeA);
+            associated.setTrialIdentifierTxt(nciIDB);
+            associated.clickLookupTrial();
+            associated.clickSaveAssociated();
+        });
     });
 
-    this.Given(/^I have selected the delete check box for another Associated Trial$/, function (callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'delete', identifierTypeA, trialTypeA, officialTitleA);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected the delete check box for another Associated Trial$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'delete', identifierTypeA, trialTypeA, officialTitleA);
+        });
     });
 
-    this.When(/^I have clicked on Delete button$/, function (callback) {
+    this.When(/^I have clicked on Delete button$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.Then(/^the message displays 'click OK to remove selected Associated Trial\(s\) from the study\. Click Cancel to abort'$/, function (callback) {
+    this.Then(/^the message displays 'click OK to remove selected Associated Trial\(s\) from the study\. Click Cancel to abort'$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.When(/^I have clicked on the cancel button$/, function (callback) {
-        associated.clickDeleteSelectedAssocaited('cancel');
-        browser.sleep(25).then(callback);
+    this.When(/^I have clicked on the cancel button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickDeleteSelectedAssocaited('cancel');
+        });
     });
 
-    this.Then(/^the Associated Trial\(s\) is not removed$/, function (callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
-        browser.sleep(25).then(callback);
+    this.Then(/^the Associated Trial\(s\) is not removed$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
+        });
     });
 
-    this.Then(/^no message displays$/, function (callback) {
+    this.Then(/^no message displays$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.Then(/^I have clicked on OK$/, function (callback) {
-        associated.clickDeleteSelectedAssocaited('yes');
-        browser.sleep(25).then(callback);
+    this.Then(/^I have clicked on OK$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickDeleteSelectedAssocaited('yes');
+        });
     });
 
-    this.Then(/^the Associated Trial will be removed from the trial$/, function (callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'notexists', identifierTypeA, trialTypeA, officialTitleA);
-        browser.sleep(25).then(callback);
+    this.Then(/^the Associated Trial will be removed from the trial$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'notexists', identifierTypeA, trialTypeA, officialTitleA);
+        });
     });
 
-    this.When(/^I have clicked the Select All button$/, function (callback) {
-        associated.clickAddAssociatedTrial();
-        associated.selectIdentifierType(identifierTypeA);
-        associated.setTrialIdentifierTxt(nciIDA);
-        associated.clickLookupTrial();
-        associated.clickSaveAssociated();
-        associated.selectAllAssociatedTrial();
-        browser.sleep(25).then(callback);
+    this.When(/^I have clicked the Select All button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickAddAssociatedTrial();
+            associated.selectIdentifierType(identifierTypeA);
+            associated.setTrialIdentifierTxt(nciIDA);
+            associated.clickLookupTrial();
+            associated.clickSaveAssociated();
+            associated.selectAllAssociatedTrial();
+        });
     });
 
-    this.Then(/^the Delete check box is checked for all entries$/, function (callback) {
+    this.Then(/^the Delete check box is checked for all entries$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.When(/^I have clicked on Delete button for all entries$/, function (callback) {
+    this.When(/^I have clicked on Delete button for all entries$/, function () {
         //associated.clickDeleteButton();
-        browser.sleep(25).then(callback);
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^the message displays 'Click OK to remove selected Associated Trial\(s\) from the study\. Click Cancel to abort'$/, function (callback) {
+    this.Then(/^the message displays 'Click OK to remove selected Associated Trial\(s\) from the study\. Click Cancel to abort'$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.Then(/^the Associated Trial is not removed$/, function (callback) {
-        associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
-        associated.selectAllAssociatedTrial();
-        browser.sleep(25).then(callback);
+    this.Then(/^the Associated Trial is not removed$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.findAssociatedTrialToVerifyEditCopyDelete(nciIDA, 'verify', identifierTypeA, trialTypeA, officialTitleA);
+            associated.selectAllAssociatedTrial();
+        });
     });
 
-    this.When(/^I click on the OK button$/, function (callback) {
-        associated.deleteAllAssociatedTrialList('yes');
-        browser.sleep(25).then(callback);
+    this.When(/^I click on the OK button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.deleteAllAssociatedTrialList('yes');
+        });
     });
 
-    this.Then(/^the Associated Trial\(s\) is removed from the trial record$/, function (callback) {
-        associated.verifyDeleteAllAssociatedTrialList();
-        browser.sleep(25).then(callback);
+    this.Then(/^the Associated Trial\(s\) is removed from the trial record$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.verifyDeleteAllAssociatedTrialList();
+        });
     });
 
-    this.Then(/^the message ‘Record\(s\) deleted’ displays$/, function (callback) {
+    this.Then(/^the message ‘Record\(s\) deleted’ displays$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
     /*
@@ -545,36 +595,42 @@ module.exports = function() {
      And the Associated Trials screen displays
      */
 
-    this.Given(/^I have entered Identifier Type and Trial Identifier$/, function (callback) {
-        associated.selectIdentifierType(identifierTypeA);
-        associated.setTrialIdentifierTxt(nciIDA);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have entered Identifier Type and Trial Identifier$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.selectIdentifierType(identifierTypeA);
+            associated.setTrialIdentifierTxt(nciIDA);
+        });
     });
 
-    this.Given(/^I have selected 'Look Up Trial' button$/, function (callback) {
-        associated.clickLookupTrial();
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected 'Look Up Trial' button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickLookupTrial();
+        });
     });
 
-    this.Given(/^Clinical Research Category and Official Title have populated$/, function (callback) {
-        associated.verifyResearchCategoryLookup(trialTypeA);
-        associated.verifyOfficialTitleLookup(officialTitleA);
-        browser.sleep(25).then(callback);
+    this.Given(/^Clinical Research Category and Official Title have populated$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.verifyResearchCategoryLookup(trialTypeA);
+            associated.verifyOfficialTitleLookup(officialTitleA);
+        });
     });
 
-    this.When(/^I select the Reset button$/, function (callback) {
-        associated.clickResetAssociated();
-        browser.sleep(25).then(callback);
+    this.When(/^I select the Reset button$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickResetAssociated();
+        });
     });
 
-    this.Then(/^the information on the Add Associated Trial screen will not be saved to the trial record$/, function (callback) {
-        associated.clickBackToAssociatedTrialList();
-        browser.sleep(25).then(callback);
+    this.Then(/^the information on the Add Associated Trial screen will not be saved to the trial record$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.clickBackToAssociatedTrialList();
+        });
     });
 
-    this.Then(/^the Associated Trials screen displays$/, function (callback) {
-        associated.verifyDeleteAllAssociatedTrialList();
-        browser.sleep(25).then(callback);
+    this.Then(/^the Associated Trials screen displays$/, function () {
+        return browser.sleep(25).then(function() {
+            associated.verifyDeleteAllAssociatedTrialList();
+        });
     });
 
 
