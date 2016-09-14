@@ -4,84 +4,37 @@ As any CTRP User, I can select available Actions
 
   Scenario:#1 Available rules for Registered Trials when I am a Trial Owner 
     Given I am logged into the CTRP Registration application
+    And the Trial is a Protocol Trial
     And I search Trials by
      |All Trials|
      |My Trials|
-     
-    When the Trial Processing Status is Any Processing Status type
-     
-     
-      |Submitted  |
-      |Amendment Submitted  |
-      |Accepted  |
-      |Abstracted  |
-      |Verification Pending  |
-      |Abstraction Verified Response  |
-      |Abstraction Verified No Response  |
-      |On-Hold  |
-      
-
-     Then The available Actions
+     Then the available Action is displayed
      
       |Update	  |
-      |Change Status  |
-      
-
+     
      When the Trial Processing Status is
      
       |Verification Pending|
       |Abstraction Verified Response |
       |Abstraction Verified No Response|
       
-      Then the Available Actions type display
-      
-      |Update  |
+      Then the additional Available Actions will be displayed (inaddition to update)
+ 
       |Amend  |
-      |Change Status  |
       |View TSR  |
-      |View XML  |
       |Verify Data  |
-
-      
-
      
-       Scenario:#2 Available Rules for Registered Trials when I am not the Trial Owner
+ Scenario:#2 Available Rules for Registered Trials when I am not the Trial Owner
     Given I am logged into the CTRP Registration application
     And I am on the Clinical Trials search Results 
     And I am not the Trial Owner
-    When I select Trial Actions
-    And the Trial Processing Status is any processing status type
-      
-      |Submitted  |
-      |Amendment Submitted  |
-      |Accepted  |
-      |Abstracted  |
-      |Verification Pending  |
-      |Abstraction Verified Response  |
-      |Abstraction Verified No Response  |
-      |On-Hold  |
-      
-    
+    And the Trial is a Protocol Trial    
     Then No actions will be available 
-
-
 
   Scenario: #3 Available Actions when Trial is Imported from ClinicalTrials.gov
     Given I am logged into the CTRP Registration application
     And I do not have Administrative Privileges
     And I am on the Clinical Trials search Results
-    And the the Trial Processing Status is any processing status type
-      
-      |Submitted  |
-      |Amendment Submitted  |
-      |Accepted  |
-      |Abstracted  |
-      |Verification Pending  |
-      |Abstraction Verified Response  |
-      |Abstraction Verified No Response  |
-      |On-Hold  |
-      
-    
      When my participating Site is added to the trial
      Then the only available action is to update my participating site in the trial
      When my participating site is not added to the Trial 
@@ -89,21 +42,18 @@ As any CTRP User, I can select available Actions
 
   Scenario: #4 Available Actions when Trial is Imported from ClinicalTrials.gov
     Given I am logged into the CTRP Registration application
-    And I have Administrative Privileges
+    And I have Site Administrative Privileges
     And I am on the Clinical Trials search Results
-    And the the Trial Processing Status is any processing status type
-      
-      |Submitted  |
-      |Amendment Submitted  |
-      |Accepted  |
-      |Abstracted  |
-      |Verification Pending  |
-      |Abstraction Verified Response  |
-      |Abstraction Verified No Response  |
-      |On-Hold  |
-      
-    
      When participating Sites from my Family are added to the trial
      Then the Available Action Update will allow update of any of the participating site from my Family registered on the Trial
      When a participating site from my Family has not been added to the Trial 
      Then the Available Action Add will allow adding any of the participating site from my Family not previously registered on the Trial
+
+ Scenario:#5 Available rules for Drafts when I am a Trial Owner 
+    Given I am logged into the CTRP Registration application
+    And the Trial is a Protocol Trial
+    And the Trial is a Draft
+    And I search Trials by
+     |Saved Drafts|
+    Then the Available Action type displayed
+      |Complete |

@@ -77,9 +77,9 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Participating Sites|
       
       
-        Scenario:#4a Participating Sites Table Columns description 
+        Scenario:#4a Participating Sites Table Columns description for all trials (Protocol and Imported)
     Given I am on the View Trial Screen
-     And I can view Participating Site Table
+     And I can view Participating Site Table for all trials
      And the table displays the columns type
      
      |CTRP Org ID (Group ID)|
