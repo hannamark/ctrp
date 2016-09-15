@@ -14,22 +14,32 @@ Feature: PO F7 Create Organization Family Name
     And I can search organizations to add family membership
     And I save the family information
     Then a new family name <family Name> with family type <family Type> and family status <family status> will be created and return result <result>
-
+    When I have clicked on the reset button
+    Then the entered parameters will be cleared
+    And I can enter new parameters 
     Examples:
       |family Name                   |family Type            |family status|result |
       |Albert Einstein Cancer Center |Cancer Center          |Active       |true   |
       |Masonic Cancer Center         |Cancer Center          |Inactive     |true   |
+    
 
-  Scenario Outline: #2 As a PO Curator, I will receive an error response if the family name information is not correct
-    Given I have entered a family name <family Name>
-    And I have entered a family type <family Type>
-    And I have entered a family status <family status>
-    And I save the family information
-    Then an error <response> will be displayed for family name <family Name>, family type <family Type> and family status <family status>
 
-    Examples:
-      |family Name                    |       |family Type            |     |family status|     |response|
-      |Albert Einstein Cancer Center  |       |Cancer Center          |     |             |     |Warning: Family exists in the database. Please verify and create a new Family record. |
-      |Masonic Cancer Center 1        |       |                       |     |Active       |     |Family type is Required  |
-      |Masonic Cancer Center  2       |       |Cancer Center          |     |             |     |Family status is Required |
-      |                               |       |Cancer Center          |     |Inactive     |     |Family name is Required |
+
+  Scenario:#2 Add Family Mandatory fields
+    Given I am on the Add Family screen
+    When I have not entered a family parameter <FamilyParameter> type
+    Then the error type <Error> will be displayed
+    
+    |<FamilyParameter>|<Error>            |
+    |Family Name      |Family Name is Required|
+    |Family Status    |Family Status is Required|
+    |Family Type      |Family Type is Required  |
+
+
+  Scenario: #3 Add Family Duplicate rules
+    Given I am on the Add Family Screen
+     When The added name exists in the database----type and status???? or just name
+     Then the warning: "Family exists in the database. Please verify and create a new Family record." will be displayed
+
+  
+   
