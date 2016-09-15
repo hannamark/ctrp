@@ -35,9 +35,7 @@ class UsersController < ApplicationController
     roles["ROLE_ADMIN"] = "Admin"
     roles["ROLE_CURATOR"] = "Curator"
     roles["ROLE_ABSTRACTOR"] = "Abstractor",
-    roles["ROLE_ABSTRACTOR-SU"] = "Abstractor SU"
     roles["ROLE_TRIAL-SUBMITTER"] = "Trial Submitter"
-    roles["ROLE_ACCRUAL-SUBMITTER"] = "Accrual Submitter"
     roles["ROLE_SITE-SU"] = "Site Administrator"
     roles["ROLE_SERVICE-REST"] = "Service Rest"
 
@@ -74,6 +72,11 @@ class UsersController < ApplicationController
       end
     end
 
+    rejectUpdate = false
+    if (!approverAccess(current_user) && newUser) || (!approverAccess(current_user) && (@user.username != user_params[:username]))
+      rejectUpdate = true
+    end
+
     sendActivationEmail = false
     if params[:send_activation_email] == true
       sendActivationEmail = true
@@ -83,7 +86,7 @@ class UsersController < ApplicationController
     @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     respond_to do |format|
       #must be correct admin for the org, or with correct role or user him/herself
-      if userWriteAccess(@user) && @user.update_attributes(user_params)
+      if userWriteAccess(@user) && @user.update_attributes(user_params) && !rejectUpdate
         if (user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU') || newUser || sendActivationEmail
           if justRegistered && @user.domain == "NIHEXT"
             mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
@@ -333,6 +336,10 @@ end
     user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false
   end
 
+
+  def approverAccess user
+    ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER'].include? user.role
+  end
 
   def abstractionAccess user
     ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? user.role
