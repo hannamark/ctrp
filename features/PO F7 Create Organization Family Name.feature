@@ -12,9 +12,9 @@ Feature: PO F7 Create Organization Family Name
     Then a new family name <family Name> with family type <family Type> and family status <family status> will be created and return result <result>
 
     Examples:
-      |family Name                    |       |family Type            |     |family status|     |result |
-      |Albert Einstein Cancer Center  |       |Cancer Center          |     |Active       |     |true   |
-      |Masonic Cancer Center          |       |Cancer Center          |     |Inactive     |     |true   |
+      |family Name                   |family Type            |family status|result |
+      |Albert Einstein Cancer Center |Cancer Center          |Active       |true   |
+      |Masonic Cancer Center         |Cancer Center          |Inactive     |true   |
 
   Scenario Outline: #2 As a PO Curator, I will receive an error response if the family name information is not correct
     Given I have entered a family name <family Name>
