@@ -1071,6 +1071,7 @@
         function watchIndIdeQuestion() {
             $scope.$watch(function() { return vm.curTrial.ind_ide_question; }, function(newVal, oldVal) {
                 if (newVal === 'No' || newVal === 'NO') {
+                    vm.indIdeHolderTypeCode = '';
                     vm.nihHolderTypeError = '';
                 }
             });
