@@ -206,7 +206,7 @@ end
         @users = User.all
       end
 
-      if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
+      if (abstractionAccess current_user)
         if params[:family_id].present?
             @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
         elsif params[:organization_id].present?
@@ -333,14 +333,19 @@ end
     user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false
   end
 
+
+  def abstractionAccess user
+    ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? user.role
+  end
+
   def userWriteAccess userToUpdate
     if current_site_user
       user = current_site_user
     end
     user && userToUpdate ?
-        ( user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
-        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) : false
+        ( ( (abstractionAccess user) || (userToUpdate && user.id == userToUpdate.id) ||
+        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) &&
+            ( !(!(abstractionAccess user) && (abstractionAccess userToUpdate))) ) : false
   end
 
   def searchAccess
@@ -348,9 +353,7 @@ end
       user = current_site_user
     end
     user ?
-        ( user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-        user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id) ) : false
+        ( user.role == 'ROLE_RO' || (abstractionAccess user) || (isSiteAdminForOrg user, user.organization_id) ) : false
   end
 
   # Use callbacks to share common setup or constraints between actions.
