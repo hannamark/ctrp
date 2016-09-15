@@ -1,11 +1,12 @@
 @Global @Reg
-Feature: Reg F22 Register Participating Site
+Feature: Reg F22 Manage Participating Site
 
 As a CTRP User, I can register my site participation on an Industrial, Other, or Expanded Access trial
 
-Scenario: #1 As a CTRP User with Administrative Privileges, I can select an organization from my family as a participating site on an Industrial, Other, or Expanded Access Trial
-Given I am logged into CTRP
+Scenario: #1 As an Admin CTRP user, I can select an organization from my family as a participating site on an Industrial, Other, or Expanded Access Trial
+Given I am logged into CTRP Registration application 
 And I have performed a trial search
+And the trial is an Imported Trial
 And there is a trial in the search results with the Select Action to Add My Site
 When I choose the Add My Site option
 Then the Add Participating Site screen will display with the following information 
