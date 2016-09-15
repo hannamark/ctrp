@@ -843,7 +843,7 @@
                                                         <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">{{nihNci.code}}</option>
                                                     </select>
                                                 </div>
-                                                <div class="add-association-error" ng-show="trialDetailView.nihHolderTypeError.length > 0">
+                                                <div class="add-association-error" ng-show="trialDetailView.nihHolderTypeError.length > 0 && !trialDetailView.nih_nci">
                                                     {{trialDetailView.nihHolderTypeError}}
                                                 </div>
                                             </td>
