@@ -5,9 +5,13 @@ Feature: PO F7 Create Organization Family Name
     And  I select the option to add Organization Family
 
   Scenario Outline: #1 As a PO Curator, I am able to create a new Family name
-    Given I have entered a new family name <family Name>
-    And I have entered a family type <family Type>
+    Given I am logged into the PO application
+    And I am on the Add Family screen
+    And I have entered a new family name <family Name>
     And I have entered a family status <family status>
+    And I have entered a family type <family Type>
+    And the Membership Size will be blank until family membership is added
+    And I can search organizations to add family membership
     And I save the family information
     Then a new family name <family Name> with family type <family Type> and family status <family status> will be created and return result <result>
 

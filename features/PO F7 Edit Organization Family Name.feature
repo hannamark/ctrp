@@ -15,5 +15,13 @@ Feature: PO F7 Edit Organization Family Name
     And I save the Family information
     Then the Updated family parameters will be updated in the family record
 
+    Scenario: #2 Reset Button Functionality
+    Given I am on the Edit Family screen
+     When I have edited family parameters
+     And I click on the Reset button
+     Then The edited information will not saved  
+     And the edit family paramaters will be refreshed  with the last committed values for the selected organization
+     
+
 
   
