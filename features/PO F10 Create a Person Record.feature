@@ -59,15 +59,19 @@ Feature: PO F10 Create a Person Record
      Then an organization search screen will be displayed
      And I can search Organizations
      When I select an organization to be added as an affiliated Organization
-     Then the added Organization will be added to the paerson record screen with infromaiton type displayed
+     Then the added Organization will be added to the person record screen with infromaiton type displayed
      
      |CTRP Organization ID|
-     |Organization|
+     |Organization(Hyperlink to the organization details)|
      |Effective Date:14-Sep-2016|
-     |Expiration Date:14-Sep-2016|
-
+     |Expiration Date:NULL|
+     And the Effective date will be populated as the added date 
+     And the Effective date can be edited once on edit screen
+     When the person is not affiliated with the added organization
+     Then the Expiration date will added by the curator 
     And I can add more than one affiliated organization (Michael I remember we want only one active affiliation?)
     And I can filter selected organization details-----
+    And the affiliation can be deleted by the curator
 
 
 Scenario:#1c Create Person fields's character Limit 

@@ -2,7 +2,6 @@
     <li ng-class="{ active: headerView.navbarIsActive('main.defaultContent') }">
         <a tabindex="1" ui-sref="main.defaultContent" ui-sref-opts="{reload:true}">Home<span class="sr-only">(current)</span></a>
     </li>
-    <!--<li><a ui-sref="main.organizations">Organizations</a></li>-->
     <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.dashboards, main.paTrialSearch, main.pamTrialSearch, main.pa.trialOverview, main.pa.resultsReporting, main.pa.govImport') }">
         <a tabindex="2" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dashboards <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
@@ -59,7 +58,6 @@
             <li><a ui-sref="main.registeredUsers" ui-sref-opts="{reload:true}">Registered User Details</a></li>
             <li><a ui-sref="main.users" ui-sref-opts="{reload:true}">User Management</a></li>
             <li><a ui-sref="main.assignTrials" ui-sref-opts="{reload:true}">Assign Trial Ownership</a></li>
-            <li><a ui-sref="main.manageSiteAdmins" ui-sref-opts="{reload:true}">Manage Site Admins</a></li>
             <li><a ui-sref="main.newBiomarkerRequests" ui-sref-opts="{reload:true}">New Biomarker Requests</a></li>
             <li><a ui-sref="main.manageNcltTerms" ui-sref-opts="{reload:true}">Manage NClt Terms</a></li>
         </ul>

@@ -125,7 +125,7 @@ class SessionsController < Devise::SessionsController
     Rails.logger.info "params = #{request.params} "
 
 
-    user = User.custom_find_by_username(request.params["username"]) || User.custom_find_by_username(request.params['user']["username"])
+    user = User.find_by_id(request.params["user_id"]) || User.custom_find_by_username(request.params["username"]) || User.custom_find_by_username(request.params['user']["username"])
     Rails.logger.info "user = #{user.inspect} "
     source = request.params["source"] || ""
     sign_out(user)

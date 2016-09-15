@@ -39,81 +39,97 @@ module.exports = function() {
     var trialMenuItem = new trialMenuItemList();
     var addTrial = new addTrialPage();
     var searchTrial = new searchTrialPage();
-    var promiseVal = '';
+    var passedPromise = '';
+    var failedPromise = '';
+    var noAssert = 'Call';
+    var gErr = '';
 
-    this.Given(/^the user login to the ctrp application$/, function (callback) {
-        browser.get('ui/#/main/sign_in');
-        login.login('ctrptrialsubmitter', 'Welcome01');
-        login.accept();
-        menuItemList.clickHomeEnterOrganizations();
-        trialMenuItem.clickHomeSearchTrial();
-        browser.sleep(210).then(callback);
+    this.Given(/^the user login into the ctrp application$/, function () {
+        return browser.sleep(25).then(function() {
+            browser.get('ui/#/main/sign_in');
+            login.login('ctrptrialsubmitter', 'Welcome01');
+            login.accept();
+            menuItemList.clickHomeEnterOrganizations();
+            trialMenuItem.clickHomeSearchTrial();
+            //if (passedPromise === 'Passed') {
+            //    passedPromise = 'Next';
+            //    callback();
+            //} else if (failedPromise === 'Failed') {
+            //    passedPromise = 'Next';
+            //    failedPromise = 'Next';
+            //} else if (noAssert === 'Call') {
+            //    passedPromise = 'Next';
+            //    failedPromise = 'Next';
+            //    browser.sleep(25).then(callback);
+            //}
+        });
     });
 
-    this.Then(/^step definition test first attempt$/, function (callback) {
-        trialMenuItem.clickHomeSearchTrial();
-        searchTrial.setSearchTrialProtocolID('CTRP*');
-        searchTrial.clickSearchTrialSearchButton();
-        searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        console.log('#############################false#######################################');
-        if (promiseVal === 'Passed'){
-            promiseVal = '';
-            callback();
-        } else {
-            browser.sleep(25).then(callback);
-        }
-        //browser.sleep(25).then(callback);
+    this.Then(/^step definition test first attempt$/, function () {
+        return browser.sleep(25).then(function() {
+            trialMenuItem.clickHomeSearchTrial();
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true)//.then(function (pass){console.log('Passed :'+pass);passedPromise='Passed'; noAssert = 'Next';},function(err){passedPromise = 'Next'; failedPromise = 'Next'; noAssert = 'Next'; console.log('Error:'+err);if(err !== ''){callback(err);}});
+            console.log('###########################true#########################################');
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false)//.then(function (pass){console.log('Passed :'+pass);passedPromise='Passed'; noAssert = 'Next';},function(err){passedPromise = 'Next'; failedPromise = 'Next'; noAssert = 'Next'; console.log('Error:'+err);if(err !== ''){callback(err);}});
+            console.log('###########################true#########################################');
+        });
     });
 
-    this.Then(/^step definition test second attempt$/, function (callback) {
-        searchTrial.setSearchTrialProtocolID('*');
-        searchTrial.clickSearchTrialSearchButton();
-        searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        console.log('###########################true#########################################');
-        if (promiseVal === 'Passed'){
-            promiseVal = '';
-            callback();
-        } else {
-            browser.sleep(25).then(callback);
-        }
-        //browser.sleep(25).then(callback);
+    this.Then(/^step definition test second attempt$/, function () {
+        return browser.sleep(25).then(function() {
+            trialMenuItem.clickHomeSearchTrial();
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true)//.then(function (pass){console.log('Passed :'+pass);passedPromise='Passed'; noAssert = 'Next';},function(err){passedPromise = 'Next'; failedPromise = 'Next'; noAssert = 'Next'; console.log('Error:'+err);if(err !== ''){callback(err);}});
+            console.log('###########################true#########################################');
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false)//.then(function (pass){console.log('Passed :'+pass);passedPromise='Passed'; noAssert = 'Next';},function(err){passedPromise = 'Next'; failedPromise = 'Next'; noAssert = 'Next'; console.log('Error:'+err);if(err !== ''){callback(err);}});
+            console.log('###########################true#########################################');
+        });
     });
 
-    this.Then(/^step definition test third attempt$/, function (callback) {
-        searchTrial.setSearchTrialProtocolID('*');
-        searchTrial.clickSearchTrialSearchButton();
-        searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        console.log('###########################true#########################################');
-        if (promiseVal === 'Passed'){
-            promiseVal = '';
-            callback();
-        } else {
-            browser.sleep(25).then(callback);
-        }
-        //browser.sleep(25).then(callback);
+    this.Then(/^step definition test third attempt$/, function () {
+        return browser.sleep(25).then(function() {
+            trialMenuItem.clickHomeSearchTrial();
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true)//.then(function (pass){console.log('Passed :'+pass);passedPromise='Passed'; noAssert = 'Next';},function(err){passedPromise = 'Next'; failedPromise = 'Next'; noAssert = 'Next'; console.log('Error:'+err);if(err !== ''){callback(err);}});
+            console.log('###########################true#########################################');
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false);
+            console.log('###########################true#########################################');
+        });
     });
 
-    this.Then(/^step definition test fourth attempt$/, function (callback) {
-        searchTrial.setSearchTrialProtocolID('*');
-        searchTrial.clickSearchTrialSearchButton();
-        searchTrial.clickSearchTrialMyTrials();
-        expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false).then(function (pass){console.log('Passed for next:'+pass);promiseVal='Passed';},function(err){console.log('Error next:'+err);if(err !== ''){callback(err);}});
-        if (promiseVal === 'Passed'){
-            promiseVal = '';
-            callback();
-        } else {
-            browser.sleep(25).then(callback);
-        }
-        //browser.sleep(25).then(callback);
+    this.Then(/^step definition test fourth attempt$/, function () {
+        return browser.sleep(25).then(function() {
+            trialMenuItem.clickHomeSearchTrial();
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(true);
+            console.log('###########################true#########################################');
+            searchTrial.setSearchTrialProtocolID('*');
+            searchTrial.clickSearchTrialSearchButton();
+            searchTrial.clickSearchTrialMyTrials();
+            expect(element(by.css('div.ui-grid-cell-contents')).isPresent()).to.eventually.equal(false);
+            console.log('###########################true#########################################');
+        });
     });
 
-    //this.After(function(callback) {
-    //    console.log('Cleaning up');
-    //    callback();
-    //});
+
 
 
 }

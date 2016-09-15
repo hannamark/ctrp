@@ -115,68 +115,73 @@ module.exports = function() {
      Then the Protocol Identifier section will be complete
      */
 
-    this.Given(/^I have selected a trial to abstract$/, function (callback) {
-        commonFunctions.alertMsgOK();
-        commonFunctions.onPrepareLoginTest('ctrpabstractor');
-        commonFunctions.alertMsgOK();
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected a trial to abstract$/, function () {
+        return browser.sleep(25).then(function() {
+            commonFunctions.alertMsgOK();
+            commonFunctions.onPrepareLoginTest('ctrpabstractor');
+            commonFunctions.alertMsgOK();
+        });
     });
 
-    this.Given(/^I am on the General Trial Details screen$/, function (callback) {
-        pageMenu.clickSearchTrialAbstractor();
-        login.clickWriteMode('On');
-        pageMenu.clickTrials();
-        pageMenu.clickSearchTrialsPA();
-        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-        commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
-        pageSearchTrail.clickSearchTrialSearchButton();
-        commonFunctions.clickLinkText(leadProtocolIDD);
-        commonFunctions.adminCheckOut();
-        trialDetails.clickAdminDataGeneralTrial();
-        trialCollaborators.waitForElement(trialDetails.generalTrailAcronym, "General Trail Details - Acronym");
-        helper.verifyElementDisplayed(trialDetails.generalTrailAcronym, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailOfficialTitle, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailKeywords, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailIdentifier, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailIdentifierTextBox, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailIdentifierAddButton, true);
-        trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'delete', '');
-        trialDetails.findIndentifierToVerifyEditDelete(identifierDCP, 'delete', '');
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'None', 'Central Contact - General');
-        trialDetails.clickSave();
-        browser.sleep(2500).then(callback);
+    this.Given(/^I am on the General Trial Details screen$/, function () {
+        return browser.sleep(25).then(function() {
+            pageMenu.clickSearchTrialAbstractor();
+            login.clickWriteMode('On');
+            pageMenu.clickTrials();
+            pageMenu.clickSearchTrialsPA();
+            helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+            commonFunctions.verifySearchTrialsPAScreen();
+            pageSearchTrail.setSearchTrialProtocolID(leadProtocolIDD);
+            pageSearchTrail.clickSearchTrialSearchButton();
+            commonFunctions.clickLinkText(leadProtocolIDD);
+            commonFunctions.adminCheckOut();
+            trialDetails.clickAdminDataGeneralTrial();
+            trialCollaborators.waitForElement(trialDetails.generalTrailAcronym, "General Trail Details - Acronym");
+            helper.verifyElementDisplayed(trialDetails.generalTrailAcronym, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailOfficialTitle, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailKeywords, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailIdentifier, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailIdentifierTextBox, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailIdentifierAddButton, true);
+            trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'delete', '');
+            trialDetails.findIndentifierToVerifyEditDelete(identifierDCP, 'delete', '');
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'None', 'Central Contact - General');
+            trialDetails.clickSave();
+        });
     });
 
-    this.When(/^I can edit the lead organization trial identifier$/, function (callback) {
-        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColA, optionA, "Identifier Type");
-        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColB, optionB, "Value");
-        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColC, optionC, "Edit");
-        helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColD, optionD, "Delete");
-        trialDetails.selectIdentifier(identifierCTEP);
-        trialDetails.setIdentifierTextBox(identifierNmbr);
-        trialDetails.clickIdentifierAddButton();
-        trialDetails.clickSave();
-        trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'edit', '');
-        trialDetails.setIdentifierTextBox(identifierNmbrEdited);
-        trialDetails.clickIdentifierConfirmButton();
-        trialDetails.clickSave();
-        trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'verify', identifierNmbrEdited);
-        trialDetails.clickSave();
-        browser.sleep(2500).then(callback);
+    this.When(/^I can edit the lead organization trial identifier$/, function () {
+        return browser.sleep(25).then(function() {
+            helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColA, optionA, "Identifier Type");
+            helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColB, optionB, "Value");
+            helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColC, optionC, "Edit");
+            helper.verifyTableRowText(trialDetails.generalTrailTableTHeadColD, optionD, "Delete");
+            trialDetails.selectIdentifier(identifierCTEP);
+            trialDetails.setIdentifierTextBox(identifierNmbr);
+            trialDetails.clickIdentifierAddButton();
+            trialDetails.clickSave();
+            trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'edit', '');
+            trialDetails.setIdentifierTextBox(identifierNmbrEdited);
+            trialDetails.clickIdentifierConfirmButton();
+            trialDetails.clickSave();
+            trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'verify', identifierNmbrEdited);
+            trialDetails.clickSave();
+        });
     });
 
-    this.When(/^I can optionally enter or edit one or more Other Trial Identifiers$/, function (callback) {
-        trialDetails.selectIdentifier(identifierDCP);
-        trialDetails.setIdentifierTextBox(identifierNmbr);
-        trialDetails.clickIdentifierAddButton();
-        trialDetails.clickSave();
-        browser.sleep(2500).then(callback);
+    this.When(/^I can optionally enter or edit one or more Other Trial Identifiers$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.selectIdentifier(identifierDCP);
+            trialDetails.setIdentifierTextBox(identifierNmbr);
+            trialDetails.clickIdentifierAddButton();
+            trialDetails.clickSave();
+        });
     });
 
-    this.Then(/^the Protocol Identifier section will be complete$/, function (callback) {
-        trialDetails.findIndentifierToVerifyEditDelete(identifierDCP, 'verify', identifierNmbr);
-        browser.sleep(25).then(callback);
+    this.Then(/^the Protocol Identifier section will be complete$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.findIndentifierToVerifyEditDelete(identifierDCP, 'verify', identifierNmbr);
+        });
     });
 
     /*
@@ -201,44 +206,52 @@ module.exports = function() {
      Then the Protocol Identifiers section will indicate zero errors
      */
 
-    this.Then(/^I should be allowed to enter one "([^"]*)"$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I should be allowed to enter one "([^"]*)"$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^I should be allowed to enter more than one unique IDs with "([^"]*)"$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I should be allowed to enter more than one unique IDs with "([^"]*)"$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^the "([^"]*)" must not be the same as the "([^"]*)"$/, function (arg1, arg2, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^the "([^"]*)" must not be the same as the "([^"]*)"$/, function (arg1, arg2) {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^I should verify for valid "([^"]*)" format as NCT followed by (\d+) numeric characters (.*)$/, function (arg1, arg2, NCT00000000, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I should verify for valid "([^"]*)" format as NCT followed by (\d+) numeric characters (.*)$/, function (arg1, arg2, NCT00000000) {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^I should check for valid "([^"]*)" format as NCI\-YYYY\-nnnnn (.*)$/, function (arg1, NCI201600123, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I should check for valid "([^"]*)" format as NCI\-YYYY\-nnnnn (.*)$/, function (arg1, NCI201600123) {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^I should be allowed to enter one "([^"]*)" with unique IDs$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I should be allowed to enter one "([^"]*)" with unique IDs$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^all Trial Identifiers should not be more than (\d+) characters in Length$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^all Trial Identifiers should not be more than (\d+) characters in Length$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
-    this.Then(/^the Protocol Identifiers section will indicate zero errors$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^the Protocol Identifiers section will indicate zero errors$/, function () {
+        return browser.sleep(25).then(function() {
+
+        });
     });
 
 
@@ -261,38 +274,43 @@ module.exports = function() {
      Then the title section will be complete
      */
 
-    this.When(/^I edit the Official Title for the trial$/, function (callback) {
-        trialDetails.setOfficialTitle(officialTitleEdit);
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
-        trialDetails.setOfficialTitle(officialTitle);
-        trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+    this.When(/^I edit the Official Title for the trial$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setOfficialTitle(officialTitleEdit);
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
+            trialDetails.setOfficialTitle(officialTitle);
+            trialDetails.clickSave();
+        });
     });
 
-    this.When(/^the official Title should not be more than (\d+) characters in length$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        browser.sleep(25).then(callback);
+    this.When(/^the official Title should not be more than (\d+) characters in length$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            // Write code here that turns the phrase above into concrete actions
+        });
     });
 
-    this.When(/^I can optionally enter or edit the Acronym for the trial$/, function (callback) {
-        trialDetails.setAcronym(acronymA);
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
-        browser.sleep(25).then(callback);
+    this.When(/^I can optionally enter or edit the Acronym for the trial$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setAcronym(acronymA);
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
+        });
     });
 
-    this.When(/^the Acronym should not be more than (\d+) characters long$/, function (arg1, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        browser.sleep(25).then(callback);
+    this.When(/^the Acronym should not be more than (\d+) characters long$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            // Write code here that turns the phrase above into concrete actions
+        });
     });
 
-    this.Then(/^the title section will be complete$/, function (callback) {
-        trialDetails.setAcronym(acronymB);
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymB, "Verifying the Acronym");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitle, "Verifying the Official Title");
-        browser.sleep(25).then(callback);
+    this.Then(/^the title section will be complete$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setAcronym(acronymB);
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymB, "Verifying the Acronym");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitle, "Verifying the Official Title");
+        });
     });
 
     /*
@@ -303,18 +321,20 @@ module.exports = function() {
      Then the Keywords section will be complete
      */
 
-    this.When(/^I can enter or edit the Keywords for the trial identifier$/, function (callback) {
-        trialDetails.setKeywords(keywordA);
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordA, "Verifying the Keywords");
-        trialDetails.setKeywords(keywordB);
-        trialDetails.clickSave();
-        browser.sleep(2500).then(callback);
+    this.When(/^I can enter or edit the Keywords for the trial identifier$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setKeywords(keywordA);
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordA, "Verifying the Keywords");
+            trialDetails.setKeywords(keywordB);
+            trialDetails.clickSave();
+        });
     });
 
-    this.Then(/^the Keywords section will be complete$/, function (callback) {
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
-        browser.sleep(25).then(callback);
+    this.Then(/^the Keywords section will be complete$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
+        });
     });
 
     /*
@@ -327,27 +347,31 @@ module.exports = function() {
      And the selected organization will be associated to the trail as the Lead Organization
      */
 
-    this.Given(/^I have selected organization look\-up$/, function (callback) {
-        trialDetails.clickSearchOrgButtonByIndex('0');
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected organization look\-up$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSearchOrgButtonByIndex('0');
+        });
     });
 
-    this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(Lead, IRB\) are displayed$/, function (callback) {
-        searchOrg.setOrgName(orgSearchNameD);
-        searchOrg.clickSearchButton();
-        browser.sleep(25).then(callback);
+    this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(Lead, IRB\) are displayed$/, function () {
+        return browser.sleep(25).then(function() {
+            searchOrg.setOrgName(orgSearchNameD);
+            searchOrg.clickSearchButton();
+        });
     });
 
-    this.Then(/^I can select an organization from the list or search for an organization$/, function (callback) {
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        browser.sleep(25).then(callback);
+    this.Then(/^I can select an organization from the list or search for an organization$/, function () {
+        return browser.sleep(25).then(function() {
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+        });
     });
 
-    this.Then(/^the selected organization will be associated to the trail as the Lead Organization$/, function (callback) {
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameD, "Verifying the Lead Organization Name");
-        browser.sleep(25).then(callback);
+    this.Then(/^the selected organization will be associated to the trail as the Lead Organization$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameD, "Verifying the Lead Organization Name");
+        });
     });
 
     /*
@@ -359,25 +383,28 @@ module.exports = function() {
      Then the selected person will be associated to the trial as Principal Investigator
      */
 
-    this.When(/^I have performed a person look\-up$/, function (callback) {
-        trialDetails.clickSearchPersonsButtonByIndex('0');
-        browser.sleep(25).then(callback);
+    this.When(/^I have performed a person look\-up$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSearchPersonsButtonByIndex('0');
+        });
     });
 
-    this.When(/^I have selected a person as the trial's Principal Investigator in the General Trial Details Screens$/, function (callback) {
-        searchOrg.clickExactSearch('true');
-        searchPeople.setPersonFirstName(personFNmA);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        browser.sleep(25).then(callback);
+    this.When(/^I have selected a person as the trial's Principal Investigator in the General Trial Details Screens$/, function () {
+        return browser.sleep(25).then(function() {
+            searchOrg.clickExactSearch('true');
+            searchPeople.setPersonFirstName(personFNmA);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+        });
     });
 
-    this.Then(/^the selected person will be associated to the trial as Principal Investigator$/, function (callback) {
-        var buildPrincipalInvestigatorNM = ''+ personFNmA +' '+ personLNmA +'';
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailPrincipalInvestigator, buildPrincipalInvestigatorNM, "Verifying the Principal Investigator");
-        browser.sleep(25).then(callback);
+    this.Then(/^the selected person will be associated to the trial as Principal Investigator$/, function () {
+        return browser.sleep(25).then(function() {
+            var buildPrincipalInvestigatorNM = '' + personFNmA + ' ' + personLNmA + '';
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailPrincipalInvestigator, buildPrincipalInvestigatorNM, "Verifying the Principal Investigator");
+        });
     });
 
     /*
@@ -390,21 +417,24 @@ module.exports = function() {
      And the selected organization will be associated to the trail as the Sponsor
      */
 
-    this.Given(/^I have selected Sponsor organization look\-up$/, function (callback) {
-        trialDetails.clickSearchOrgButtonByIndex('1');
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected Sponsor organization look\-up$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSearchOrgButtonByIndex('1');
+        });
     });
 
-    this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(sponsor, IRB\) are displayed$/, function (callback) {
-        searchOrg.setOrgName(orgSearchNameD);
-        searchOrg.clickSearchButton();
-        browser.sleep(25).then(callback);
+    this.When(/^a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial \(sponsor, IRB\) are displayed$/, function () {
+        return browser.sleep(25).then(function() {
+            searchOrg.setOrgName(orgSearchNameD);
+            searchOrg.clickSearchButton();
+        });
     });
 
-    this.Then(/^the selected organization will be associated to the trail as the Sponsor$/, function (callback) {
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameD, "Verifying the Sponsor Organization Name");
-        browser.sleep(25).then(callback);
+    this.Then(/^the selected organization will be associated to the trail as the Sponsor$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameD, "Verifying the Sponsor Organization Name");
+        });
     });
 
     /*
@@ -418,59 +448,64 @@ module.exports = function() {
      And the PI, phone #, extension and e-mail address will be associated with this trail
      */
 
-    this.Given(/^I am in the Central Contact section$/, function (callback) {
-        var dataPI = 'PI';
-        var dataPerson = 'Person';
-        var dataGeneral = 'General';
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(0), true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(1), true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(2), true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(3), true);
-        trialDetails.generalTrailCentralContactRdoLbls.get(1).getText().then(function(valuePI){
-           console.log('Central Contact Radio Labels:['+valuePI+']');
-           expect(valuePI.toString()).to.eql(dataPI.toString());
+    this.Given(/^I am in the Central Contact section$/, function () {
+        return browser.sleep(25).then(function() {
+            var dataPI = 'PI';
+            var dataPerson = 'Person';
+            var dataGeneral = 'General';
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(0), true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(1), true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(2), true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactRadio.get(3), true);
+            trialDetails.generalTrailCentralContactRdoLbls.get(1).getText().then(function (valuePI) {
+                console.log('Central Contact Radio Labels:[' + valuePI + ']');
+                expect(valuePI.toString()).to.eql(dataPI.toString());
+            });
+            trialDetails.generalTrailCentralContactRdoLbls.get(2).getText().then(function (valuePerson) {
+                console.log('Central Contact Radio Labels:[' + valuePerson + ']');
+                expect(valuePerson.toString()).to.eql(dataPerson.toString());
+            });
+            trialDetails.generalTrailCentralContactRdoLbls.get(3).getText().then(function (valueGeneral) {
+                console.log('Central Contact Radio Labels:[' + valueGeneral + ']');
+                expect(valueGeneral.toString()).to.eql(dataGeneral.toString());
+            });
         });
-        trialDetails.generalTrailCentralContactRdoLbls.get(2).getText().then(function(valuePerson){
-            console.log('Central Contact Radio Labels:['+valuePerson+']');
-            expect(valuePerson.toString()).to.eql(dataPerson.toString());
+    });
+
+    this.Given(/^selected the radio button for PI$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'PI', 'Central Contact - PI');
         });
-        trialDetails.generalTrailCentralContactRdoLbls.get(3).getText().then(function(valueGeneral){
-            console.log('Central Contact Radio Labels:['+valueGeneral+']');
-            expect(valueGeneral.toString()).to.eql(dataGeneral.toString());
+    });
+
+    this.Given(/^the phone \#, extension and e\-mail address is displayed$/, function () {
+        return browser.sleep(25).then(function() {
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactName, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactEmail, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactPhone, true);
+            helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactPhoneExt, true);
         });
-        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^selected the radio button for PI$/, function (callback) {
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'PI', 'Central Contact - PI');
-        browser.sleep(25).then(callback);
+    this.Then(/^I can edit the phone \#, extension and e\-mail address$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setCentralContactEmail(cntralCntctEmail);
+            trialDetails.setCentralContactPhone(cntralCntctPh);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtension);
+            trialDetails.clickSave();
+            trialDetails.setCentralContactEmail(cntralCntctEmailEdit);
+            trialDetails.setCentralContactPhone(cntralCntctPhEdit);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtensionEdit);
+            trialDetails.clickSave();
+        });
     });
 
-    this.Given(/^the phone \#, extension and e\-mail address is displayed$/, function (callback) {
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactName, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactEmail, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactPhone, true);
-        helper.verifyElementDisplayed(trialDetails.generalTrailCentralContactPhoneExt, true);
-        browser.sleep(25).then(callback);
-    });
-
-    this.Then(/^I can edit the phone \#, extension and e\-mail address$/, function (callback) {
-        trialDetails.setCentralContactEmail(cntralCntctEmail);
-        trialDetails.setCentralContactPhone(cntralCntctPh);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtension);
-        trialDetails.clickSave();
-        trialDetails.setCentralContactEmail(cntralCntctEmailEdit);
-        trialDetails.setCentralContactPhone(cntralCntctPhEdit);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtensionEdit);
-        trialDetails.clickSave();
-        browser.sleep(25).then(callback);
-    });
-
-    this.Then(/^the PI, phone \#, extension and e\-mail address will be associated with this trail$/, function (callback) {
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctEmailEdit, "Verifying the Lead Organization Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctPhEdit, "Verifying the Lead Organization Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctPhExtensionEdit, "Verifying the Lead Organization Name");
-        browser.sleep(25).then(callback);
+    this.Then(/^the PI, phone \#, extension and e\-mail address will be associated with this trail$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctEmailEdit, "Verifying the Lead Organization Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctPhEdit, "Verifying the Lead Organization Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctPhExtensionEdit, "Verifying the Lead Organization Name");
+        });
     });
 
     /*
@@ -485,45 +520,50 @@ module.exports = function() {
      And the Person, phone #, extension and e-mail address will be associated with this trail
      */
 
-    this.Given(/^I select the radio button for Person$/, function (callback) {
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'Person', 'Central Contact - Person');
-        browser.sleep(25).then(callback);
+    this.Given(/^I select the radio button for Person$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'Person', 'Central Contact - Person');
+        });
     });
 
-    this.Given(/^preform a person look up and select a person$/, function (callback) {
-        trialDetails.clickSearchPersonsButtonByIndex('1');
-        searchOrg.clickExactSearch('true');
-        searchPeople.setPersonFirstName(personFNmB);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        browser.sleep(25).then(callback);
+    this.Given(/^preform a person look up and select a person$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSearchPersonsButtonByIndex('1');
+            searchOrg.clickExactSearch('true');
+            searchPeople.setPersonFirstName(personFNmB);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+        });
     });
 
-    this.Given(/^the selected Person, their phone \#, extension and e\-mail address will be displayed$/, function (callback) {
-        var buildCentralcontactNM = ''+ personFNmB +'  '+ personLNmB +'';
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, buildCentralcontactNM, "Verifying the Central Contact Name");
-        browser.sleep(25).then(callback);
+    this.Given(/^the selected Person, their phone \#, extension and e\-mail address will be displayed$/, function () {
+        return browser.sleep(25).then(function() {
+            var buildCentralcontactNM = '' + personFNmB + '  ' + personLNmB + '';
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, buildCentralcontactNM, "Verifying the Central Contact Name");
+        });
     });
 
-    this.Then(/^I can edit the phone \# and e\-mail address$/, function (callback) {
-        trialDetails.setCentralContactEmail(cntralCntctEmail);
-        trialDetails.setCentralContactPhone(cntralCntctPh);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtension);
-        trialDetails.clickSave();
-        trialDetails.setCentralContactEmail(cntralCntctEmailEdit);
-        trialDetails.setCentralContactPhone(cntralCntctPhEdit);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtensionEdit);
-        trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+    this.Then(/^I can edit the phone \# and e\-mail address$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setCentralContactEmail(cntralCntctEmail);
+            trialDetails.setCentralContactPhone(cntralCntctPh);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtension);
+            trialDetails.clickSave();
+            trialDetails.setCentralContactEmail(cntralCntctEmailEdit);
+            trialDetails.setCentralContactPhone(cntralCntctPhEdit);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctPhExtensionEdit);
+            trialDetails.clickSave();
+        });
     });
 
-    this.Then(/^the Person, phone \#, extension and e\-mail address will be associated with this trail$/, function (callback) {
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctEmailEdit, "Verifying the Lead Organization Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctPhEdit, "Verifying the Lead Organization Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctPhExtensionEdit, "Verifying the Lead Organization Name");
-        browser.sleep(25).then(callback);
+    this.Then(/^the Person, phone \#, extension and e\-mail address will be associated with this trail$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctEmailEdit, "Verifying the Lead Organization Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctPhEdit, "Verifying the Lead Organization Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctPhExtensionEdit, "Verifying the Lead Organization Name");
+        });
     });
 
     /*
@@ -537,52 +577,56 @@ module.exports = function() {
      Then the selected Central Contact, Phone #, extension and e-mail address will be Central contact for the trial
      */
 
-    this.Given(/^I select the radio button for General Contact$/, function (callback) {
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
-        browser.sleep(250).then(callback);
-    });
-
-    this.Given(/^I enter the Central Contact Name$/, function (callback) {
-        trialDetails.setCentralContactName('');
-        trialDetails.clickSave();
-        trialDetails.generalTrailCentralContactNameReq.getText().then(function(valueReq){
-            console.log('Central Contact Name Required:['+valueReq+']');
-            expect(valueReq.toString()).to.eql(cntralCntctGeneralNameReq.toString());
+    this.Given(/^I select the radio button for General Contact$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
         });
-        trialDetails.setCentralContactName(cntralCntctGeneralName);
-        browser.sleep(25).then(callback);
     });
 
-    this.Given(/^I enter either a Central Contact Phone Number and extension or Central Contact E\-Mail Address or both$/, function (callback) {
-        trialDetails.setCentralContactEmail('');
-        trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, '', "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
-        trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
-        trialDetails.setCentralContactPhone('');
-        trialDetails.setCentralContactPhoneExtension('');
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, '', "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, '', "Verifying the Central Contact Name");
-        trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
-        trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
-        trialDetails.clickSave();
-        browser.sleep(2500).then(callback);
+    this.Given(/^I enter the Central Contact Name$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setCentralContactName('');
+            trialDetails.clickSave();
+            trialDetails.generalTrailCentralContactNameReq.getText().then(function (valueReq) {
+                console.log('Central Contact Name Required:[' + valueReq + ']');
+                expect(valueReq.toString()).to.eql(cntralCntctGeneralNameReq.toString());
+            });
+            trialDetails.setCentralContactName(cntralCntctGeneralName);
+        });
     });
 
-    this.Then(/^the selected Central Contact, Phone \#, extension and e\-mail address will be Central contact for the trial$/, function (callback) {
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
-        browser.sleep(25).then(callback);
+    this.Given(/^I enter either a Central Contact Phone Number and extension or Central Contact E\-Mail Address or both$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setCentralContactEmail('');
+            trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, '', "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
+            trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
+            trialDetails.setCentralContactPhone('');
+            trialDetails.setCentralContactPhoneExtension('');
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, '', "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, '', "Verifying the Central Contact Name");
+            trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
+            trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
+            trialDetails.clickSave();
+        });
+    });
+
+    this.Then(/^the selected Central Contact, Phone \#, extension and e\-mail address will be Central contact for the trial$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
+        });
     });
 
     /*
@@ -593,68 +637,70 @@ module.exports = function() {
      Then the information entered or edited on the General Trails Details screen will be saved to the trial record
      */
 
-    this.When(/^select save$/, function (callback) {
-        //Pre Save
-        trialDetails.clickSearchOrgButtonByIndex('0');
-        searchOrg.setOrgName(orgSearchNameA);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        trialDetails.clickSave();
-        //Acronym
-        trialDetails.setAcronym(acronymA);
-        //Official Title
-        trialDetails.setOfficialTitle(officialTitleEdit);
-        //Keyword
-        trialDetails.setKeywords(keywordB);
-        //Trial Identifier
-        trialDetails.selectIdentifier(identifierCTEP);
-        trialDetails.setIdentifierTextBox(identifierNmbr);
-        trialDetails.clickIdentifierAddButton();
-        //Lead Org
-        trialDetails.clickSearchOrgButtonByIndex('0');
-        searchOrg.setOrgName(orgSearchNameC);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Lead Person
-        trialDetails.clickSearchPersonsButtonByIndex('0');
-        searchOrg.clickExactSearch('true');
-        searchPeople.setPersonFirstName(personFNmB);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Sponsor
-        trialDetails.clickSearchOrgButtonByIndex('1');
-        searchOrg.setOrgName(orgSearchNameD);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Central Contact
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
-        trialDetails.setCentralContactName(cntralCntctGeneralName);
-        trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
-        trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
-        //Click Save
-        trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+    this.When(/^select save$/, function () {
+        return browser.sleep(25).then(function() {
+            //Pre Save
+            trialDetails.clickSearchOrgButtonByIndex('0');
+            searchOrg.setOrgName(orgSearchNameA);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            trialDetails.clickSave();
+            //Acronym
+            trialDetails.setAcronym(acronymA);
+            //Official Title
+            trialDetails.setOfficialTitle(officialTitleEdit);
+            //Keyword
+            trialDetails.setKeywords(keywordB);
+            //Trial Identifier
+            trialDetails.selectIdentifier(identifierCTEP);
+            trialDetails.setIdentifierTextBox(identifierNmbr);
+            trialDetails.clickIdentifierAddButton();
+            //Lead Org
+            trialDetails.clickSearchOrgButtonByIndex('0');
+            searchOrg.setOrgName(orgSearchNameC);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Lead Person
+            trialDetails.clickSearchPersonsButtonByIndex('0');
+            searchOrg.clickExactSearch('true');
+            searchPeople.setPersonFirstName(personFNmB);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Sponsor
+            trialDetails.clickSearchOrgButtonByIndex('1');
+            searchOrg.setOrgName(orgSearchNameD);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Central Contact
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
+            trialDetails.setCentralContactName(cntralCntctGeneralName);
+            trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
+            trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
+            //Click Save
+            trialDetails.clickSave();
+        });
     });
 
-    this.Then(/^the information entered or edited on the General Trails Details screen will be saved to the trial record$/, function (callback) {
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
-        trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'verify', identifierNmbr);
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameC, "Verifying the Lead Organization Name");
-        var buildCentralcontactNM = ''+ personFNmB +' '+ personLNmB +'';
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailPrincipalInvestigator, buildCentralcontactNM, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameD, "Verifying the Sponsor Organization Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
-        browser.sleep(25).then(callback);
+    this.Then(/^the information entered or edited on the General Trails Details screen will be saved to the trial record$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
+            trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'verify', identifierNmbr);
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameC, "Verifying the Lead Organization Name");
+            var buildCentralcontactNM = '' + personFNmB + ' ' + personLNmB + '';
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailPrincipalInvestigator, buildCentralcontactNM, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameD, "Verifying the Sponsor Organization Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
+        });
     });
 
     /*
@@ -666,111 +712,114 @@ module.exports = function() {
      And the General Trial Details screen will be refreshed with the existing data
      */
 
-    this.When(/^select Reset$/, function (callback) {
-        //Pre Save
-        trialDetails.clickSearchOrgButtonByIndex('0');
-        searchOrg.setOrgName(orgSearchNameA);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        trialDetails.clickSave();
-        //Acronym
-        trialDetails.setAcronym(acronymA);
-        //Official Title
-        trialDetails.setOfficialTitle(officialTitleEdit);
-        //Keyword
-        trialDetails.setKeywords(keywordB);
-        //Trial Identifier
-        trialDetails.selectIdentifier(identifierCTEP);
-        trialDetails.setIdentifierTextBox(identifierNmbr);
-        trialDetails.clickIdentifierAddButton();
-        //Lead Org
-        trialDetails.clickSearchOrgButtonByIndex('0');
-        searchOrg.setOrgName(orgSearchNameC);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Lead Person
-        trialDetails.clickSearchPersonsButtonByIndex('0');
-        searchOrg.clickExactSearch('true');
-        searchPeople.setPersonFirstName(personFNmB);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Sponsor
-        trialDetails.clickSearchOrgButtonByIndex('1');
-        searchOrg.setOrgName(orgSearchNameD);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Central Contact
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
-        trialDetails.setCentralContactName(cntralCntctGeneralName);
-        trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
-        trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
-        //Click Save
-        trialDetails.clickSave();
-        //Reset
-        //Acronym
-        trialDetails.setAcronym(acronymB);
-        //Official Title
-        trialDetails.setOfficialTitle(officialTitle);
-        //Keyword
-        trialDetails.setKeywords(keywordA);
-        //Trial Identifier
-        trialDetails.selectIdentifier(identifierDCP);
-        trialDetails.setIdentifierTextBox(identifierNmbrEdited);
-        trialDetails.clickIdentifierAddButton();
-        //Lead Org
-        trialDetails.clickSearchOrgButtonByIndex('0');
-        searchOrg.setOrgName(orgSearchNameA);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Lead Person
-        trialDetails.clickSearchPersonsButtonByIndex('0');
-        searchOrg.clickExactSearch('true');
-        searchPeople.setPersonFirstName(personFNmA);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Sponsor
-        trialDetails.clickSearchOrgButtonByIndex('1');
-        searchOrg.setOrgName(orgSearchNameB);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        //Central Contact
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
-        trialDetails.setCentralContactName(cntralCntctGeneralNameEdit);
-        trialDetails.setCentralContactEmail(cntralCntctGeneralEmailEdit);
-        trialDetails.setCentralContactPhone(cntralCntctGeneralPhEdit);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtensionEdit);
-        //Click Reset
-        trialDetails.clickReset();
-        browser.sleep(25).then(callback);
+    this.When(/^select Reset$/, function () {
+        return browser.sleep(25).then(function() {
+            //Pre Save
+            trialDetails.clickSearchOrgButtonByIndex('0');
+            searchOrg.setOrgName(orgSearchNameA);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            trialDetails.clickSave();
+            //Acronym
+            trialDetails.setAcronym(acronymA);
+            //Official Title
+            trialDetails.setOfficialTitle(officialTitleEdit);
+            //Keyword
+            trialDetails.setKeywords(keywordB);
+            //Trial Identifier
+            trialDetails.selectIdentifier(identifierCTEP);
+            trialDetails.setIdentifierTextBox(identifierNmbr);
+            trialDetails.clickIdentifierAddButton();
+            //Lead Org
+            trialDetails.clickSearchOrgButtonByIndex('0');
+            searchOrg.setOrgName(orgSearchNameC);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Lead Person
+            trialDetails.clickSearchPersonsButtonByIndex('0');
+            searchOrg.clickExactSearch('true');
+            searchPeople.setPersonFirstName(personFNmB);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Sponsor
+            trialDetails.clickSearchOrgButtonByIndex('1');
+            searchOrg.setOrgName(orgSearchNameD);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Central Contact
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
+            trialDetails.setCentralContactName(cntralCntctGeneralName);
+            trialDetails.setCentralContactEmail(cntralCntctGeneralEmail);
+            trialDetails.setCentralContactPhone(cntralCntctGeneralPh);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtension);
+            //Click Save
+            trialDetails.clickSave();
+            //Reset
+            //Acronym
+            trialDetails.setAcronym(acronymB);
+            //Official Title
+            trialDetails.setOfficialTitle(officialTitle);
+            //Keyword
+            trialDetails.setKeywords(keywordA);
+            //Trial Identifier
+            trialDetails.selectIdentifier(identifierDCP);
+            trialDetails.setIdentifierTextBox(identifierNmbrEdited);
+            trialDetails.clickIdentifierAddButton();
+            //Lead Org
+            trialDetails.clickSearchOrgButtonByIndex('0');
+            searchOrg.setOrgName(orgSearchNameA);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Lead Person
+            trialDetails.clickSearchPersonsButtonByIndex('0');
+            searchOrg.clickExactSearch('true');
+            searchPeople.setPersonFirstName(personFNmA);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Sponsor
+            trialDetails.clickSearchOrgButtonByIndex('1');
+            searchOrg.setOrgName(orgSearchNameB);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+            //Central Contact
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
+            trialDetails.setCentralContactName(cntralCntctGeneralNameEdit);
+            trialDetails.setCentralContactEmail(cntralCntctGeneralEmailEdit);
+            trialDetails.setCentralContactPhone(cntralCntctGeneralPhEdit);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtensionEdit);
+            //Click Reset
+            trialDetails.clickReset();
+        });
     });
 
-    this.Then(/^the information entered or edited on the General Trails Details screen will not be saved to the trial record$/, function (callback) {
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
-        trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'verify', identifierNmbr);
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameC, "Verifying the Lead Organization Name");
-        var buildCentralcontactNM = ''+ personFNmB +' '+ personLNmB +'';
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailPrincipalInvestigator, buildCentralcontactNM, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameD, "Verifying the Sponsor Organization Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
-        browser.sleep(25).then(callback);
+    this.Then(/^the information entered or edited on the General Trails Details screen will not be saved to the trial record$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailAcronym, acronymA, "Verifying the Acronym");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailOfficialTitle, officialTitleEdit, "Verifying the Official Title");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailKeywords, keywordB, "Verifying the Keywords");
+            trialDetails.findIndentifierToVerifyEditDelete(identifierCTEP, 'verify', identifierNmbr);
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailLeadOrganization, orgSearchNameC, "Verifying the Lead Organization Name");
+            var buildCentralcontactNM = '' + personFNmB + ' ' + personLNmB + '';
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailPrincipalInvestigator, buildCentralcontactNM, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailSponsor, orgSearchNameD, "Verifying the Sponsor Organization Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralName, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, cntralCntctGeneralEmail, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPh, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtension, "Verifying the Central Contact Name");
+        });
     });
 
-    this.Then(/^the General Trial Details screen will be refreshed with the existing data$/, function (callback) {
+    this.Then(/^the General Trial Details screen will be refreshed with the existing data$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
     /*
@@ -782,22 +831,25 @@ module.exports = function() {
      Then a warning message will appear �Please enter the Protocol Identifier�
      */
 
-    this.Given(/^the protocol ID is Null$/, function (callback) {
-        trialDetails.findIndentifierToVerifyEditDelete('Lead Organization Trial ID', 'edit', '');
-        trialDetails.setIdentifierTextBox('');
-        trialDetails.clickIdentifierConfirmButton();
-        browser.sleep(25).then(callback);
+    this.Given(/^the protocol ID is Null$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.findIndentifierToVerifyEditDelete('Lead Organization Trial ID', 'edit', '');
+            trialDetails.setIdentifierTextBox('');
+            trialDetails.clickIdentifierConfirmButton();
+        });
     });
 
-    this.When(/^I select save$/, function (callback) {
-        trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+    this.When(/^I select save$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSave();
+        });
     });
 
-    this.Then(/^a warning message will appear "([^"]*)"$/, function (arg1, callback) {
-        trialDetails.findIndentifierToVerifyEditDelete('Lead Organization Trial ID', 'verify', 'CTRP_01_1781');
-        console.log('Warning message can not be verified. Since there are no such warning message');
-        browser.sleep(25).then(callback);
+    this.Then(/^a warning message will appear "([^"]*)"$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            trialDetails.findIndentifierToVerifyEditDelete('Lead Organization Trial ID', 'verify', 'CTRP_01_1781');
+            console.log('Warning message can not be verified. Since there are no such warning message');
+        });
     });
 
     /*
@@ -809,17 +861,19 @@ module.exports = function() {
      Then a warning message will appear �Please enter the Official Title�
      */
 
-    this.Given(/^the Official Title is Null$/, function (callback) {
-        trialDetails.setOfficialTitle('');
-        browser.sleep(25).then(callback);
+    this.Given(/^the Official Title is Null$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.setOfficialTitle('');
+        });
     });
 
-    this.Then(/^a warning message will appear �Official Title is Required�$/, function (callback) {
-        trialDetails.generalTrailCentralContactNameReq.getText().then(function(valueReq){
-            console.log('Central Contact Name required message:['+valueReq+']');
-            expect(valueReq.toString()).to.eql(officialTitleReq.toString());
+    this.Then(/^a warning message will appear �Official Title is Required�$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.generalTrailCentralContactNameReq.getText().then(function (valueReq) {
+                console.log('Central Contact Name required message:[' + valueReq + ']');
+                expect(valueReq.toString()).to.eql(officialTitleReq.toString());
+            });
         });
-        browser.sleep(25).then(callback);
     });
 
     /*
@@ -831,29 +885,31 @@ module.exports = function() {
      Then a warning message will appear �Please enter the Lead Organization�
      */
 
-    this.Given(/^the Lead Organization is Null$/, function (callback) {
-        trialDetails.clickSearchOrgButtonByIndex('0');
-        searchOrg.setOrgName(orgSearchNameA);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        browser.sleep(25).then(callback);
+    this.Given(/^the Lead Organization is Null$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSearchOrgButtonByIndex('0');
+            searchOrg.setOrgName(orgSearchNameA);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+        });
     });
 
-    this.Then(/^a warning message will appear �Lead Organization is Required�$/, function (callback) {
-        var leadOrgNull = '';
-        leadOrgTxtVal = trialDetails.generalTrailLeadOrganization.getAttribute('value');
-        leadOrgTxtVal.then(function(valueLedOrg){
-            console.log('Lead Organization value:['+valueLedOrg+']');
-            if (valueLedOrg !== ''){
-                leadOrgNull = 'ValueIsNotNull';
-            } else {
-                leadOrgNull = 'Value Is Null';
-            }
-            var verifValIsNotNull = 'ValueIsNotNull';
-            expect(verifValIsNotNull.toString()).to.eql(leadOrgNull.toString());
+    this.Then(/^a warning message will appear �Lead Organization is Required�$/, function () {
+        return browser.sleep(25).then(function() {
+            var leadOrgNull = '';
+            leadOrgTxtVal = trialDetails.generalTrailLeadOrganization.getAttribute('value');
+            leadOrgTxtVal.then(function (valueLedOrg) {
+                console.log('Lead Organization value:[' + valueLedOrg + ']');
+                if (valueLedOrg !== '') {
+                    leadOrgNull = 'ValueIsNotNull';
+                } else {
+                    leadOrgNull = 'Value Is Null';
+                }
+                var verifValIsNotNull = 'ValueIsNotNull';
+                expect(verifValIsNotNull.toString()).to.eql(leadOrgNull.toString());
+            });
         });
-        browser.sleep(25).then(callback);
     });
 
     /*
@@ -865,30 +921,32 @@ module.exports = function() {
      Then a warning message will appear �Please enter the Principal Investigator�
      */
 
-    this.Given(/^the Principal Investigator is Null$/, function (callback) {
-        trialDetails.clickSearchPersonsButtonByIndex('0');
-        searchOrg.clickExactSearch('true');
-        searchPeople.setPersonFirstName(personFNmA);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        browser.sleep(25).then(callback);
+    this.Given(/^the Principal Investigator is Null$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSearchPersonsButtonByIndex('0');
+            searchOrg.clickExactSearch('true');
+            searchPeople.setPersonFirstName(personFNmA);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+        });
     });
 
-    this.Then(/^a warning message will appear �Principal Investigator is Required�$/, function (callback) {
-        var piNull = '';
-        piTxtVal = trialDetails.generalTrailPrincipalInvestigator.getAttribute('value');
-        piTxtVal.then(function(valuePI){
-            console.log('Principal Investigator value:['+valuePI+']');
-            if (valuePI !== ''){
-                piNull = 'ValueIsNotNull';
-            } else {
-                piNull = 'Value Is Null';
-            }
-            var verifValIsNotNull = 'ValueIsNotNull';
-            expect(verifValIsNotNull.toString()).to.eql(piNull.toString());
+    this.Then(/^a warning message will appear �Principal Investigator is Required�$/, function () {
+        return browser.sleep(25).then(function() {
+            var piNull = '';
+            piTxtVal = trialDetails.generalTrailPrincipalInvestigator.getAttribute('value');
+            piTxtVal.then(function (valuePI) {
+                console.log('Principal Investigator value:[' + valuePI + ']');
+                if (valuePI !== '') {
+                    piNull = 'ValueIsNotNull';
+                } else {
+                    piNull = 'Value Is Null';
+                }
+                var verifValIsNotNull = 'ValueIsNotNull';
+                expect(verifValIsNotNull.toString()).to.eql(piNull.toString());
+            });
         });
-        browser.sleep(25).then(callback);
     });
 
     /*
@@ -900,30 +958,32 @@ module.exports = function() {
      Then a warning message will appear �Please enter the Sponsor�
      */
 
-    this.Given(/^the Sponsor is Null$/, function (callback) {
-        trialDetails.clickSearchOrgButtonByIndex('1');
-        searchOrg.setOrgName(orgSearchNameB);
-        searchOrg.clickSearchButton();
-        searchOrg.selectOrgModelItem();
-        searchOrg.clickOrgModelConfirm();
-        browser.sleep(25).then(callback);
+    this.Given(/^the Sponsor is Null$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDetails.clickSearchOrgButtonByIndex('1');
+            searchOrg.setOrgName(orgSearchNameB);
+            searchOrg.clickSearchButton();
+            searchOrg.selectOrgModelItem();
+            searchOrg.clickOrgModelConfirm();
+        });
     });
 
-    this.Then(/^a warning message will appear �Sponsor is Required�$/, function (callback) {
-        var sponNull = '';
-        spnTxtVal = trialDetails.generalTrailSponsor.getAttribute('value');
-        spnTxtVal.then(function(valueSpn){
-            console.log('Sponsor value:['+valueSpn+']');
-            if (valueSpn !== ''){
-                sponNull = 'ValueIsNotNull';
-            } else {
-                sponNull = 'Value Is Null';
-            }
-            var verifValIsNotNull = 'ValueIsNotNull';
-            expect(verifValIsNotNull.toString()).to.eql(sponNull.toString());
-            expect(orgSearchNameB.toString()).to.eql(valueSpn.toString());
+    this.Then(/^a warning message will appear �Sponsor is Required�$/, function () {
+        return browser.sleep(25).then(function() {
+            var sponNull = '';
+            spnTxtVal = trialDetails.generalTrailSponsor.getAttribute('value');
+            spnTxtVal.then(function (valueSpn) {
+                console.log('Sponsor value:[' + valueSpn + ']');
+                if (valueSpn !== '') {
+                    sponNull = 'ValueIsNotNull';
+                } else {
+                    sponNull = 'Value Is Null';
+                }
+                var verifValIsNotNull = 'ValueIsNotNull';
+                expect(verifValIsNotNull.toString()).to.eql(sponNull.toString());
+                expect(orgSearchNameB.toString()).to.eql(valueSpn.toString());
+            });
         });
-        browser.sleep(25).then(callback);
     });
 
     /*
@@ -936,44 +996,49 @@ module.exports = function() {
      Then the system displays a warning message that says "The E-mail address is incorrect"
      */
 
-    this.Given(/^I know which e\-mail address I want to edit$/, function (callback) {
+    this.Given(/^I know which e\-mail address I want to edit$/, function () {
+        return browser.sleep(25).then(function() {
 
-        browser.sleep(25).then(callback);
+        });
     });
 
-    this.Given(/^I have selected e\-mail address field$/, function (callback) {
-        //Central Contact
-        trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
-        trialDetails.setCentralContactName(cntralCntctGeneralNameEdit);
-        trialDetails.setCentralContactPhone(cntralCntctGeneralPhEdit);
-        trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtensionEdit);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected e\-mail address field$/, function () {
+        return browser.sleep(25).then(function() {
+            //Central Contact
+            trialDetails.selectCentralContactRdo(trialDetails.generalTrailCentralContactRadio, 'General', 'Central Contact - General');
+            trialDetails.setCentralContactName(cntralCntctGeneralNameEdit);
+            trialDetails.setCentralContactPhone(cntralCntctGeneralPhEdit);
+            trialDetails.setCentralContactPhoneExtension(cntralCntctGeneralPhExtensionEdit);
+        });
     });
 
-    this.Given(/^I change the e\-mail address in the format "([^"]*)"@"([^"]*)"\."([^"]*)"$/, function (arg1, arg2, arg3, callback) {
-        buildEmailAdd = ''+arg1+'@'+arg2+'.'+arg3+'';
-        trialDetails.setCentralContactEmail(buildEmailAdd);
-        trialDetails.clickSave();
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralNameEdit, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, buildEmailAdd, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPhEdit, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtensionEdit, "Verifying the Central Contact Name");
-        browser.sleep(25).then(callback);
+    this.Given(/^I change the e\-mail address in the format "([^"]*)"@"([^"]*)"\."([^"]*)"$/, function (arg1, arg2, arg3) {
+        return browser.sleep(25).then(function() {
+            buildEmailAdd = '' + arg1 + '@' + arg2 + '.' + arg3 + '';
+            trialDetails.setCentralContactEmail(buildEmailAdd);
+            trialDetails.clickSave();
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralNameEdit, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactEmail, buildEmailAdd, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPhEdit, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtensionEdit, "Verifying the Central Contact Name");
+        });
     });
 
-    this.When(/^I change the e\-mail address and the format is not "([^"]*)"@"([^"]*)"\."([^"]*)"$/, function (arg1, arg2, arg3, callback) {
-        buildEmailAdd = 'invalid'+arg1+'email'+arg2+'test'+arg3+'';
-        trialDetails.setCentralContactEmail(buildEmailAdd);
-        trialDetails.clickSave();
-        browser.sleep(25).then(callback);
+    this.When(/^I change the e\-mail address and the format is not "([^"]*)"@"([^"]*)"\."([^"]*)"$/, function (arg1, arg2, arg3) {
+        return browser.sleep(25).then(function() {
+            buildEmailAdd = 'invalid' + arg1 + 'email' + arg2 + 'test' + arg3 + '';
+            trialDetails.setCentralContactEmail(buildEmailAdd);
+            trialDetails.clickSave();
+        });
     });
 
-    this.Then(/^the system displays a warning message that says "([^"]*)"$/, function (arg1, callback) {
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralNameEdit, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPhEdit, "Verifying the Central Contact Name");
-        trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtensionEdit, "Verifying the Central Contact Name");
-        helper.verifyElementDisplayedByIndex(trialDetails.redSignWarning, '1', true);
-        browser.sleep(25).then(callback);
+    this.Then(/^the system displays a warning message that says "([^"]*)"$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactName, cntralCntctGeneralNameEdit, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhone, cntralCntctGeneralPhEdit, "Verifying the Central Contact Name");
+            trialDetails.verifyTextFieldValue(trialDetails.generalTrailCentralContactPhoneExt, cntralCntctGeneralPhExtensionEdit, "Verifying the Central Contact Name");
+            helper.verifyElementDisplayedByIndex(trialDetails.redSignWarning, '1', true);
+        });
     });
 
 

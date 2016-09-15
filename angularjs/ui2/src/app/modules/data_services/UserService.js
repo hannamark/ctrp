@@ -90,7 +90,8 @@
                 userCtrl.isCurationModeSupported = false;
             }
             var username = LocalCacheService.getCacheWithKey('username');
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {username: username, source: 'Angular'})
+            var user_id = LocalCacheService.getCacheWithKey('user_id');
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {user_id: user_id, username: username, source: 'Angular'})
                 .then(function (data) {
                     if (data.success) {
                         LocalCacheService.clearAllCache();

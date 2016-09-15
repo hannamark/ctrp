@@ -84,7 +84,7 @@ Feature: PO F9 Search for Persons
     And I can delete person  association
     
     
-    Scenario:#6 As a curator, I can editperson records
+    Scenario:#6 As a curator, I can edit person records
     Given I am logged in to CTRP PO application
     When I select a person from the search person results table
      Then the edit screen will display

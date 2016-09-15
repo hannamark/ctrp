@@ -1,19 +1,19 @@
-@PO @Global
-Feature: PO F11 Edit Person Information
+#@PO @Global
+#Feature: PO F11 Edit Person Information
+#
+ # Scenario:#1 As a Po Curator, I can Edit Person record name information
+  #  Given I know which Person record I want to edit
+   # And I am logged in to CTRP PO application
+    #And I have searched for a Person record and found the one I wish to edit
+   # And I have selected the function Edit Person
+    #And I am on the edit Person information screen
+    #When I change the name of the Person I wish to edit
+   # And I set the Person status to either Pending or Active
+    #And I submit my edit request for Person
+   # Then the system should change the Person name in the Person record to the new name
 
-  Scenario:#1 As a Po Curator, I can Edit Person record name information
-    Given I know which Person record I want to edit
-    And I am logged in to CTRP PO application
-    And I have searched for a Person record and found the one I wish to edit
-    And I have selected the function Edit Person
-    And I am on the edit Person information screen
-    When I change the name of the Person I wish to edit
-    And I set the Person status to either Pending or Active
-    And I submit my edit request for Person
-    Then the system should change the Person name in the Person record to the new name
-
-  Scenario:#2 As PO Curator, I can Edit a Person record phone number
-    Given I know which Person record I want to edit
+  #Scenario:#2 As PO Curator, I can Edit a Person record phone number
+    #Given I know which Person record I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a Person record and found the one I wish to edit
     And I have selected the function Edit Person
@@ -22,7 +22,7 @@ Feature: PO F11 Edit Person Information
     And I submit my edit request for Person
     Then the system should change the phone number in the Person record to the new phone number
 
-  Scenario:#3 As a PO Curator, I can Edit a Person record email
+ # Scenario:#3 As a PO Curator, I can Edit a Person record email
     Given I know which Person record I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a Person record and found the one I wish to edit
@@ -32,7 +32,7 @@ Feature: PO F11 Edit Person Information
     And I submit my edit request for Person
     Then the system should change the email address in the Person record to the new email address
 
-  Scenario:#4 As a PO Curator, I can Edit a Person record Affiliated Organization effective and expiration dates
+ # Scenario:#4 As a PO Curator, I can Edit a Person record Affiliated Organization effective and expiration dates
     Given I know which Person with affiliated Organization record I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a Person record and found the one I wish to edit
@@ -43,7 +43,7 @@ Feature: PO F11 Edit Person Information
     And I submit my edit request for Person
     Then the system should change the effective date or expiration date of the Affiliated Organization in the Person Record
 
-  Scenario:#5 As a PO Curator, I can Edit a Person record and add an Affiliated Organization
+  #Scenario:#5 As a PO Curator, I can Edit a Person record and add an Affiliated Organization
     Given I know which Person with affiliated Organization record I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a Person record and found the one I wish to edit
@@ -54,8 +54,8 @@ Feature: PO F11 Edit Person Information
     And I enter the Affiliate organization effective date
     And I submit my edit request for Person
     Then the system should add the Affiliated Organization with the effective date in the Person Record
-  @runthis
-  Scenario:#6 As a PO Curator, I can edit Person records with multiple parameters
+  
+ # Scenario:#6 As a PO Curator, I can edit Person records with multiple parameters
     Given I know which Person with affiliated Organization record I want to edit
     And I am logged in to CTRP PO application
     And I have searched for a Person record and found the one I wish to edit
