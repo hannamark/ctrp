@@ -424,6 +424,9 @@
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
                 vm.curationMode = UserService.isCurationModeEnabled();
+                if (!vm.curationMode) {
+                    vm.setAddMode = false;
+                }
             });
 
             if (vm.trialId) {
