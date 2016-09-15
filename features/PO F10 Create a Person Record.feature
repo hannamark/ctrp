@@ -70,6 +70,7 @@ Feature: PO F10 Create a Person Record
      Then the Expiration date will added the curator 
     And I can add more than one affiliated organization (Michael I remember we want only one active affiliation?)
     And I can filter selected organization details-----
+    And the affiliation can be deleted by the curator
 
 
 Scenario:#1c Create Person fields's character Limit 
