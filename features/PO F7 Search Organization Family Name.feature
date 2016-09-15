@@ -4,7 +4,7 @@ Feature: PO F7 Search Organization Family Name
     Given I am logged in to CTRP PO application
     And  I select the option to search Organization Family
 
-  Scenario Outline: #1 As a PO user, I am able to search with Family Parameters Name
+  Scenario Outline: #1 As a PO user, I am able to search with Family Parameters 
     Given I am on the Search Family Screen
     And  I can search with family name <family Name>
     And I can search with Family Status <Family Status> type
