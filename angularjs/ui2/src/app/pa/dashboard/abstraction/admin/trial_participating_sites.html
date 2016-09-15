@@ -91,7 +91,7 @@
                                 <fieldset class="sub-bordered" restriction-field ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || psView.disableBtn">
                                     <legend class="sub-bordered">Site Recruitment</legend>
                                     <div class="row table-responsive search-calendar-grid">
-                                        <table class="table table-striped table-condensed">
+                                        <table class="table table-striped table-condensed" ctrp-hint>
                                             <thead>
                                                 <th width="15%" class="min-width-md">Status Date</th>
                                                 <th width="15%" class="min-width-lg">Status</th>
@@ -144,7 +144,7 @@
                                                 </td>
                                                 <td>
                                                     <div ng-hide="psView.current_site_recruitment.edit">
-                                                        <button class="btn btn-primary" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
+                                                        <button class="btn btn-primary btn-add" restriction-field type="button" ng-click="psView.addSiteRecruitment()"
                                                                 ng-disabled="!psView.current_site_recruitment.status_date ||
                                                             !(psView.current_site_recruitment.site_recruitment_status && psView.current_site_recruitment.site_recruitment_status.name) ||
                                                             ps_sites_form.comments.$viewValue.length > 160"><i class="glyphicon glyphicon-plus"></i> Add</button>

@@ -82,7 +82,7 @@
                     <div class="form-group">
                         <div class="col-sm-1"></div>
                         <div class="col-xs-12 col-sm-10 table-responsive">
-                            <table class="table table-striped table-condensed" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
+                            <table class="table table-striped table-condensed" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" ctrp-hint>
                                 <thead>
                                     <th width="30%" class="min-width-xxxl">Country</th>
                                     <th class="min-width-xxxl">Organization</th>
@@ -108,7 +108,7 @@
                                     </td>
                                     <td>
                                         <div ng-if="paTrialOverview.trialDetailObj.pa_editable">
-                                            <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.addAuthority()" ng-disabled="!trialDetailView.authority_org || !trialDetailView.authority_country">
+                                            <button type="button" restriction-field class="btn btn-primary btn-add" ng-click="trialDetailView.addAuthority()" ng-disabled="!trialDetailView.authority_org || !trialDetailView.authority_country">
                                                 <i class="glyphicon glyphicon-plus"></i> Add
                                             </button>
                                         </div>

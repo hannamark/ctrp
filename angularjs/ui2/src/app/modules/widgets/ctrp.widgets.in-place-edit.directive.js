@@ -53,7 +53,7 @@
         var inputElem = element.find('input');
 
         //cancel edit on blur
-        element.bind('blur', cancelEdit);
+        //element.on('blur', cancelEdit);
 
         //Esc for canceling edit
         element.bind('keydown', function(event) {

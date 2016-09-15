@@ -46,7 +46,7 @@
             <div class="form-group">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-9 table-responsive">
-                    <table class="table table-striped table-condensed">
+                    <table class="table table-striped table-condensed" ctrp-hint>
                       <thead>
                       <th width="30%" class="min-width-xxxl">Identifier</th>
                       <th>Identifier Name</th>
@@ -82,7 +82,7 @@
                                 </button>
                             </div>
                             <div ng-show="!generalTrialDetailView.otherIdentifierUpdate">
-                              <button type="button" class="btn btn-primary"
+                              <button type="button" class="btn btn-primary btn-add"
                                       ng-click="generalTrialDetailView.addOtherIdentifier()"
                                       ng-disabled="generalTrialDetailView.otherIdentifier.protocol_id == '' || !generalTrialDetailView.otherIdentifier.protocol_id_origin_id">
                                 <i class="glyphicon glyphicon-plus"></i> Add</button>
