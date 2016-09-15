@@ -409,7 +409,7 @@
 
         vm.deleteTrialStatus = function(deletionComment, index) {
             if (deletionComment == null || deletionComment.trim().length === 0) return;
-            vm.addedStatuses[index].comment = deletionComment;
+            vm.addedStatuses[index].comment += deletionComment; // concatenate comments
             vm.toggleSelection(index, 'trial_status');
         };
 
