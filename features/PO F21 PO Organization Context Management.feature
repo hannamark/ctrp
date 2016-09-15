@@ -459,7 +459,8 @@ Scenario: #1a CTEP Context Mandatory Fields
      |Actelion Pharmaceuticals Switzerland |ACT               |8149074            |NULL                     |complete                   |Inactive        |Nullified       |        
       
      And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trial associations of the nullified organization
-     And 
+     And the CTRP Organization with the Nullified status will be added to the Aliases of the CTRP Organization with the Active Status
+     
     
     
    
