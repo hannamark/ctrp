@@ -75,7 +75,6 @@ Then the Last Active Submission for all the trials the user is an owner of will 
 |Submission Method|
 |Checked Out for Admin. Use by|
 |Checked Out for Scientific Use by|
-|Action - View TSR|
 And the default sort order will be by NCI ID with the newest trial ID first
 And I can sort the trials by the fields:
 |NCI Trial Identifier|
@@ -146,7 +145,6 @@ Then the Last Active Submission for all the trials the user is a submitter will 
 |Submission Method|
 |Checked Out for Admin. Use by|
 |Checked Out for Scientific Use by|
-|Action - View TSR|
 And the default sort order will be by NCI ID with the newest trial ID first
 And I can sort the trials by the fields:
 |NCI Trial Identifier|
@@ -216,7 +214,6 @@ Then the Last Active Submission for the user for all the trials user is a partic
 |Submission Method|
 |Checked Out for Admin. Use by|
 |Checked Out for Scientific Use by|
-|Action - View TSR|
 And the default sort order will be by NCI ID with the newest trial ID first
 And I can sort the trials by the fields:
 |NCI Trial Identifier|
