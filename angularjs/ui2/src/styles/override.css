@@ -1823,6 +1823,14 @@ body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_st
     display: none;
 }
 
+.text-block {
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #428bca;
+    font-size: 12px;
+}
+
 
 /* firefox only*/
 @-moz-document url-prefix() {
