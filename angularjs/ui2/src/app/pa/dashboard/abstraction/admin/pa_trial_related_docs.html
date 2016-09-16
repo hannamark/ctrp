@@ -9,7 +9,7 @@
                     <legend class="sub-bordered">Trial Related Documents</legend>
                     <div class="form-group">
                         <div class="table-responsive">
-                            <table class="table table-condensed table-striped">
+                            <table class="table table-condensed table-striped" ctrp-hint hint-append-element="fieldset">
                                 <thead>
                                     <th>Document Type</th>
                                     <th></th>
@@ -45,7 +45,7 @@
                                                    validate-file-type="{{trialRelatedDocsView.acceptedFileExtensions}}">
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary"
+                                            <button type="button" class="btn btn-primary btn-add"
                                                     ng-click="trialRelatedDocsView.upsertDoc(trialRelatedDocsView.curDoc.index)"
                                                     ng-disabled="trialRelatedDocsView.curDoc.document_type=='' ||
                                             trialRelatedDocsView.curDoc.file == '' || trial_docs_form.current_doc.$invalid" ng-hide="trialRelatedDocsView.curDoc.edit">

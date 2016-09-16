@@ -121,7 +121,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Name Alias:</label>
                                     <div class="col-xs-12 col-sm-6">
-                                        <table class="table table-striped table-condensed" ng-if="orgDetailView.curOrgEditable">
+                                        <table class="table table-striped table-condensed" ng-if="orgDetailView.curOrgEditable" ctrp-hint>
                                             <tbody>
                                             <tr>
                                                 <td class="col-md-7">
@@ -131,7 +131,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div>
-                                                        <button type="button" class="btn btn-primary" ng-disabled="orgDetailView.alias == '' || orgDetailView.disableBtn" restriction-field ng-click="orgDetailView.addNameAlias()">
+                                                        <button type="button" class="btn btn-primary btn-add" ng-disabled="orgDetailView.alias == '' || orgDetailView.disableBtn" restriction-field ng-click="orgDetailView.addNameAlias()">
                                                             <i class="glyphicon glyphicon-plus"></i> Add
                                                         </button>
                                                     </div>

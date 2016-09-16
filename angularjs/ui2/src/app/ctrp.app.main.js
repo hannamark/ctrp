@@ -12,12 +12,33 @@
         'ctrp.app.po',
         'ctrp.app.user',
         'ctrp.app.layout'
-    ]).config(function(toastrConfig) {
-      angular.extend(toastrConfig, {
-        allowHtml: false,
-        closeButton: true,
-        timeOut: 3000,
-        extendedTimeOut: 0
+    ]).config(function ($provide) {
+        $provide.decorator('orderByFilter', function ($delegate) {
+            // Store the last ordered state.
+            var previousState;
+
+            return function (arr, predicate, reverse, ignore) {
+              // If ignore evaluates to a truthy value, return the previous state.
+              if (!!ignore) {
+                return previousState || arr;
+              }
+
+              // Apply the regular orderBy filter.
+              var order = $delegate.apply(null, arguments);
+
+              // Overwrite the previous state with the most recent order state.
+              previousState = order;
+
+              // Return the latest order state.
+              return order;
+          };
       });
-}).run(function() {});
+    }).config(function(toastrConfig) {
+          angular.extend(toastrConfig, {
+            allowHtml: false,
+            closeButton: true,
+            timeOut: 3000,
+            extendedTimeOut: 0
+          });
+    }).run(function() {});
 })();

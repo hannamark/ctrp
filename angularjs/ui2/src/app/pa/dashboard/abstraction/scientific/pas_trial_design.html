@@ -11,7 +11,7 @@
                     </legend>
                     <!-- research categories -->
                     <div class="form-group" ng-class="{'has-feedback required': true, 'has-error': ctrpbtn.trial_design_form.needsAttention(trial_design_form.research_category)}">
-                        <label for="research_category" class="control-label col-xs-12 col-sm-4">Research Category:</label>
+                        <label for="research_category" class="control-label col-xs-12 col-sm-4">Clinical Research Category:</label>
                         <div class="col-xs-12 col-sm-5">
                             <select name="research_category" id="research_category"
                                 class="form-control input-sm"
@@ -27,7 +27,7 @@
                                 <md-radio-button ng-repeat="cat in designView.researchCategories" value="{{cat.id}}" class="md-primary">{{cat.name}}</md-radio-button>
                             </md-radio-group> -->
                             <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.research_category) && trial_design_form.research_category.$error">
-                                <span class="help-block" ng-message="required">Research Category is Required</span>
+                                <span class="help-block" ng-message="required">Clinical Research Category is Required</span>
                            </span>
                         </div>
                     </div>
