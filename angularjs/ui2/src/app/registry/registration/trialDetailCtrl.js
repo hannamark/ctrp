@@ -98,14 +98,17 @@
         vm.isDocDeletionAllowed = latestSubNum === -1; // only allow deletion in original registration
         console.info('isAmendmentSubmission: ', vm.isAmendmentSubmission, vm.isOriginalSubmission);
         console.info('vm.curTrial.trial_documents: ', vm.curTrial.trial_documents);
+        /*
         var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
         latestDocuments = _.groupBy(latestDocuments, 'document_type');
+
         _.keys(latestDocuments).forEach(function(docKey) {
             latestDocuments[docKey] = latestDocuments[docKey].filter(function(doc) {
                 return doc.is_latest && doc.status === 'active';
             });
         })
         console.info('latestDocuments: ', latestDocuments);
+        */
 
         vm.masterTrialCopy = {
             trial: angular.copy(vm.curTrial),
