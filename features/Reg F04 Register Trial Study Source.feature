@@ -9,8 +9,8 @@ Feature: Reg F04 Register Trial Study Source
     And CTRP will display the required registration elements for a complete protocol registration for the selected <trialType>
     Examples:
       |trialType                                          |
-      |National(Registration with Protocol Document)      |
-      |Externally Peer-Reviewed (Registration with Protocol Document) |
-      |Institutional (Registration with Protocol Document)           |
+      |National     |
+      |Externally Peer-Reviewed  |
+      |Institutional   |
      
 
