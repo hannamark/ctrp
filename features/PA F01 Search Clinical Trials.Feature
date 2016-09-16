@@ -31,16 +31,19 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
       And the trial is not a Draft     
       Then CTRP will then display the results for all the Clinical Trials Search Results
           |NCI Trial Identifier|
-          |Processing Priority|
-          |Other ID Source and Other ID|
           |Official Title|
-          |Sponsor|
+          |Trial Status (current)|
           |Lead Organization|
-          |Participating Sites|
+          |Lead Organization Trial Identifier| 
           |Principle Investigator|
+          |ClinicalTrials.gov Identifier|
+          |Other Identifiers (Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)|  
+          |Available Action|
+          |Processing Priority|
+          |Sponsor|
+          |Participating Sites|
           |NIH/NCI Division/Department Identifier|
           |NIH/NCI Program Identifier|
-          |Trial Status (current)|
           |Milestone (latest active milestone) and Milestone Date (latest active milestone date)|
           |Admin Milestone (latest active milestone) and Admin Milestone Date (latest active milestone date)(Milestone Type = Administrative)|
           |Scientific Milestone (latest active milestone) and Scientific Milestone Date (latest active milestone Date) (Milestone Type = Scientific)|
@@ -54,19 +57,20 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
           |Information Source| 
           |Checked Out for Admin Use by|
           |Checked out for Scientific Use by|
-          |Action|
           |Super User Action|
           |View TSR |
       And will be sorted by NCI ID ordered with the most recent ID first
       And I can sort the results table by the following fields
           |NCI Trial Identifier|
+          |Trial Status (current)|
+          |Lead Organization|
+          |Lead Organization Identifier|
+          |Principle Investigator|
+          |ClinicalTrials.gov Identifier|
           |Processing Priority|
           |Sponsor|
-          |Lead Organization|
-          |Principle Investigator|
           |NIH/NCI Division/Department Identifier|
           |NIH/NCI Program Identifier|
-          |Trial Status (current)|
           |Milestone (latest active milestone) and Milestone Date (latest active milestone date)|
           |Admin Milestone (latest active milestone) and Admin Milestone Date (latest active milestone date)(Milestone Type = Administrative)|
           |Scientific Milestone (latest active milestone) and Scientific Milestone Date (latest active milestone Date) (Milestone Type = Scientific)|
@@ -82,13 +86,15 @@ As any CTRP PA User, I can search CTRP clinical trials by various criteria and t
           |Checked out for Scientific Use by|
       And I can filter the results table by the following fields
           |NCI Trial Identifier|
+          |Trial Status (current)|
+          |Lead Organization|
+          |Lead Organization Identifier|
+          |Principle Investigator|
+          |ClinicalTrials.gov Identifier|
           |Processing Priority|
           |Sponsor|
-          |Lead Organization|
-          |Principle Investigator|
           |NIH/NCI Division/Department Identifier|
           |NIH/NCI Program Identifier|
-          |Trial Status (current)|
           |Milestone (latest active milestone) and Milestone Date (latest active milestone date)|
           |Admin Milestone (latest active milestone) and Admin Milestone Date (latest active milestone date)(Milestone Type = Administrative)|
           |Scientific Milestone (latest active milestone) and Scientific Milestone Date (latest active milestone Date) (Milestone Type = Scientific)|
@@ -367,13 +373,16 @@ Scenario: #24 Export to Excel
       And the trial list can be exported to Excel
       And will include the following fields
           |NCI Trial Identifier|
-          |Processing Priority|
-          |Other ID Source and Other ID|
           |Official Title|
-          |Sponsor|
+          |Trial Status (current)|
           |Lead Organization|
-          |Participating Sites|
+          |Lead Organization Trial Identifier| 
           |Principle Investigator|
+          |ClinicalTrials.gov Identifier|
+          |Other Identifiers (Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)|  
+          |Processing Priority|
+          |Sponsor|
+          |Participating Sites|
           |NIH/NCI Division/Department Identifier|
           |NIH/NCI Program Identifier|
           |Current Trial Status|
