@@ -177,6 +177,9 @@ class CreateTrialSummaryReportService
     return file_name
   end
 
+
+
+
     def create_a_table_row(shading_color, forground_color,text)
       array1 =@document.table(1,1,8000)
       array1.border_width =10
@@ -256,7 +259,18 @@ class CreateTrialSummaryReportService
       other_ids_num = other_ids_num + 1
     end
 
-    array =@document.table(2+other_ids_num, 2,4000,4000)
+    amend_count = 0
+    cur_submission = @trial.submissions.last
+    cur_submission.nil? ? cur_submission_type=nil : cur_submission_type = cur_submission.submission_type
+    if !cur_submission_type.nil?
+      if cur_submission_type.name == "Amendment"
+        amendment_number = cur_submission.amendment_num
+        amendment_date  = cur_submission.amendment_date
+        amend_count = 2
+      end
+    end
+
+    array =@document.table(2+other_ids_num+amend_count, 2,4000,4000)
     array.border_width =10
 
     Hash h = Hash.new
@@ -286,6 +300,15 @@ class CreateTrialSummaryReportService
         i=i+1
       end
     end
+
+    if amend_count > 0
+      array[i][0] << "Amendment Number"
+      array[i][1] << amendment_number.to_s
+      i = i + 1
+      array[i][0] << "Amendment Date"
+      array[i][1] << amendment_date.strftime("%d-%h-%Y").to_s
+    end
+
   end
 
   def generate_general_trial_details
@@ -294,8 +317,7 @@ class CreateTrialSummaryReportService
     create_a_table_row(@light_red,@foreground_th_text_color,"General Details")
 
 
-    array =@document.table(9, 2,4000,4000)
-    array.border_width =10
+
 
     Hash h = Hash.new
     @trial.research_category_id.nil? ? trail_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
@@ -306,16 +328,18 @@ class CreateTrialSummaryReportService
     h.store("Lead Organization",lead_org)
     h.store("Sponsor",sponsor)
     h.store("Responsible Party", responsible_party)
+    count = 0
+
 
 
     @trial.investigator_id.nil? ? investigator = nil : investigator = Person.find_by_id(@trial.investigator_id)
-    @trial.investigator_aff_id.nil? ? investigator_affiliation = nil : investigator_affiliation = Organization.find_by_id(@trial.investigator_aff_id).name
+    @trial.investigator_aff_id.nil? ? investigator_affiliation = NO_DATA_AVAILABLE : investigator_affiliation = Organization.find_by_id(@trial.investigator_aff_id).name
     @trial.pi_id.nil? ? principle_investigator = nil : principle_investigator = Person.find_by_id(@trial.pi_id)
    # principle_investigator.nil? ? principle_investigator = nil : principle_investigator = principle_investigator.fname + " " + principle_investigator.mname + " " + principle_investigator.lname
    # investigator.nil? ? investigator = nil : investigator = investigator.fname + " " + investigator.mname + " " + investigator.lname
 
     if principle_investigator.nil?
-      principle_investigator = nil
+      principle_investigator_name = NO_DATA_AVAILABLE
     else
       principle_investigator_name = principle_investigator.fname if principle_investigator.fname
       principle_investigator_name = principle_investigator_name + " " + principle_investigator.mname if principle_investigator.mname
@@ -324,19 +348,27 @@ class CreateTrialSummaryReportService
 
 
     if investigator.nil?
-      investigator = nil
+      investigator_name = NO_DATA_AVAILABLE
     else
       investigator_name = investigator.fname if investigator.fname
       investigator_name = investigator_name + " " + investigator.mname if investigator.mname
       investigator_name = investigator_name + " " + investigator.lname if investigator.lname
     end
 
-    h.store("   Investigator", investigator_name)
-    h.store("   Investigator Title", @trial.investigator_title)
-    h.store("   Investigator Affiliation", investigator_affiliation)
+    if responsible_party == "Sponsor"
+      count = 1
+      h.store("   Investigator", investigator_name)
+    else
+      count = 2
+      h.store("   Investigator Title", @trial.investigator_title)
+      h.store("   Investigator Affiliation", investigator_affiliation)
+    end
+
     h.store("Principal Investigator",principle_investigator_name )
     h.store("Affiliation", "")
 
+    array = @document.table(7+count, 2,4000,4000)
+    array.border_width =10
     i=0
     h.each do |k,v|
       array[i][0] << k
@@ -347,16 +379,18 @@ class CreateTrialSummaryReportService
     collaborators = @trial.collaborators
     #Only display when collabarators are there
     if collaborators
-        create_a_table_row(@light_red,@foreground_th_text_color,"Collaborators")
-        create_a_table_row(@grey,@foreground_th_text_color,"Name")
         collaborators_num = 0
         collaborators_num = collaborators.size if collaborators
-        array =@document.table(collaborators_num, 1,8000)
-        array.border_width =10
-        i = 0
-        collaborators.each do |col|
-          array[i][0] << col.org_name
-          i= i+1
+        if collaborators_num != 0
+              create_a_table_row(@light_red,@foreground_th_text_color,"Collaborators")
+              create_a_table_row(@grey,@foreground_th_text_color,"Name")
+              array =@document.table(collaborators_num, 1,8000)
+              array.border_width =10
+              i = 0
+              collaborators.each do |col|
+                array[i][0] << col.org_name
+                i= i+1
+              end
         end
     end
 
@@ -365,7 +399,7 @@ class CreateTrialSummaryReportService
 
     @trial.trial_status_wrappers.present? ? cur_trial_status = @trial.trial_status_wrappers.last.trial_status.name : cur_trial_status = nil
     @trial.trial_status_wrappers.present? ? cur_trial_status_date = @trial.trial_status_wrappers.last.status_date : cur_trial_status_date = nil
-    cur_trial_status = cur_trial_status + " as of " + cur_trial_status_date.to_s     if !cur_trial_status_date.nil?
+    !cur_trial_status_date.nil? ? cur_trial_status = cur_trial_status + " as of " + cur_trial_status_date.to_s : cur_trial_status = NO_DATA_AVAILABLE
 
     start_date = get_value_based_on_display_rule(@trial.start_date,"Required")
     @trial.start_date_qual.nil? ? start_date_qual= "Trial Start Date" : start_date_qual = "Trial Start Date" +  " - " + @trial.start_date_qual
