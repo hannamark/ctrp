@@ -407,6 +407,12 @@
             vm.collapsed = false;
         };
 
+        vm.deleteTrialStatus = function(deletionComment, index) {
+            if (deletionComment == null || deletionComment.trim().length === 0) return;
+            vm.addedStatuses[index].comment += deletionComment; // concatenate comments
+            vm.toggleSelection(index, 'trial_status');
+        };
+
         // Delete the associations
         vm.toggleSelection = function (index, type) {
             if (type == 'other_id') {
@@ -1034,6 +1040,7 @@
             getExpFlag();
             adjustResearchCategoryArr();
             adjustTrialStatusArr();
+            watchIndIdeQuestion();
             watchIndIdeHolderType();
 
             if (vm.curTrial.new) {
@@ -1060,7 +1067,16 @@
                 appendDocuments();
             }
         }
-        console.info('vm.hoderTypeArr: ', vm.holderTypeArr);
+
+        function watchIndIdeQuestion() {
+            $scope.$watch(function() { return vm.curTrial.ind_ide_question; }, function(newVal, oldVal) {
+                if (newVal === 'No' || newVal === 'NO') {
+                    vm.indIdeHolderTypeCode = '';
+                    vm.nihHolderTypeError = '';
+                }
+            });
+        }
+
         function watchIndIdeHolderType() {
             $scope.$watch(function() {return vm.holder_type_id;}, function(newVal, oldVal) {
                 if (angular.isDefined(newVal) && newVal !== oldVal) {

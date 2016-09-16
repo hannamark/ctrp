@@ -48,21 +48,30 @@ Feature: PO F10 Create a Person Record
     |Updated By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
     |Add Affiliated Organization Details|
     
+    When I select Reset 
+     Then the information entered on the Add Personscreen fields will not be saved to the trial record 
+      And the Add Person information screen will be refreshed and blank
+     
+    
    Scenario:#1b I can Add a Person Affiliated Organization by searching organizations
     Given I am on the Add Person Screen
      When I search Organizations 
      Then an organization search screen will be displayed
      And I can search Organizations
      When I select an organization to be added as an affiliated Organization
-     Then the added Organization will be added to the paerson record screen with infromaiton type displayed
+     Then the added Organization will be added to the person record screen with infromaiton type displayed
      
      |CTRP Organization ID|
-     |Organization|
+     |Organization(Hyperlink to the organization details)|
      |Effective Date:14-Sep-2016|
-     |Expiration Date:14-Sep-2016|
-
+     |Expiration Date:NULL|
+     And the Effective date will be populated as the added date 
+     And the Effective date can be edited once on edit screen
+     When the person is not affiliated with the added organization
+     Then the Expiration date will added by the curator 
     And I can add more than one affiliated organization (Michael I remember we want only one active affiliation?)
     And I can filter selected organization details-----
+    And the affiliation can be deleted by the curator
 
 
 Scenario:#1c Create Person fields's character Limit 

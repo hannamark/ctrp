@@ -3,7 +3,7 @@
     <div class="owners-list">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="panel-title">Assign Ownership</div>
+                <div class="panel-title">Assign Ownership - Owners List</div>
             </div>
             <div class="panel-body">
                 <div class="form-group no-bottom-margin">
@@ -53,32 +53,39 @@
     </div>
 </div>
 <div ng-if="userView.setAddMode === true" class="add-owner-section">
-    <div ng-controller="userListCtrl as userView">
-        <div ng-include src="'app/user/user_list.html'" ng-init="userView.setAddMode = true; userView.ownerListMode = false;"></div>
-        <div class="row top-offset-xs"></div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Assign Ownership - Add Owners</div>
+        </div>
+        <div class="panel-body">
+            <div ng-controller="userListCtrl as userView">
+                <div ng-include src="'app/user/user_list.html'" ng-init="userView.setAddMode = true; userView.ownerListMode = false;"></div>
+                <div class="row top-offset-xs"></div>
 
-        <modal visible="userView.confirmAddTrialOwnershipsPopUp" title="Please confirm" id="confirmAddTrials">
-            <div class="modal-body">You have chosen to add ownership this trial to selected user(s).</div>
-            <div class="modal-footer">
-                <div class="btn-toolbar">
-                    <button type="button" class="btn btn-warning pull-right" id="cancelAddOwn"
-                            ng-click="userView.confirmAddTrialOwnershipsPopUp = false"><i class="glyphicon glyphicon-remove"></i>
-                        Cancel
-                    </button>
-                    <button type="button" class="btn btn-primary pull-right"  id="addOwn"
-                            ng-click="userView.addTrialsOwnerships()"><i class="glyphicon glyphicon-ok"></i>
-                        Add Ownership
-                    </button>
-                </div>
+                <modal visible="userView.confirmAddTrialOwnershipsPopUp" title="Please confirm" id="confirmAddTrials">
+                    <div class="modal-body">You have chosen to add ownership this trial to selected user(s).</div>
+                    <div class="modal-footer">
+                        <div class="btn-toolbar">
+                            <button type="button" class="btn btn-warning pull-right" id="cancelAddOwn"
+                                    ng-click="userView.confirmAddTrialOwnershipsPopUp = false"><i class="glyphicon glyphicon-remove"></i>
+                                Cancel
+                            </button>
+                            <button type="button" class="btn btn-primary pull-right"  id="addOwn"
+                                    ng-click="userView.addTrialsOwnerships()"><i class="glyphicon glyphicon-ok"></i>
+                                Add Ownership
+                            </button>
+                        </div>
+                    </div>
+                </modal>
             </div>
-        </modal>
-    </div>
-    <div class="add-buttons">
-        <div class="form-group">
-            <div class="btn-toolbar" ng-if="userView.curationMode">
-                <button type="button" class="btn btn-warning pull-right" id="owners_list" restriction-field ng-click="userView.setAddMode = false">
-                    <i class="glyphicon glyphicon-arrow-left"></i> Back to Trial Owners List
-                </button>
+            <div class="add-buttons">
+                <div class="form-group">
+                    <div class="btn-toolbar" ng-if="userView.curationMode">
+                        <button type="button" class="btn btn-warning pull-right" id="owners_list" restriction-field ng-click="userView.setAddMode = false">
+                            <i class="glyphicon glyphicon-arrow-left"></i> Back to Trial Owners List
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

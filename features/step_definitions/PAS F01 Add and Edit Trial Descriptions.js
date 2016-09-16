@@ -86,63 +86,72 @@ module.exports = function() {
      And the message Record Updated displays
      */
 
-    this.Given(/^I have selected a trial$/, function (callback) {
-        pageMenu.clickSearchTrialAbstractor();
-        login.clickWriteMode('On');
-        pageMenu.clickTrials();
-        pageMenu.clickSearchTrialsPA();
-        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-        commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
-        pageSearchTrail.clickSearchTrialSearchButton();
-        commonFunctions.clickLinkText(leadProtocolID);
-        leftNav.scientificCheckOut();
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected a trial$/, function () {
+        return browser.sleep(25).then(function() {
+            pageMenu.clickSearchTrialAbstractor();
+            login.clickWriteMode('On');
+            pageMenu.clickTrials();
+            pageMenu.clickSearchTrialsPA();
+            helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+            commonFunctions.verifySearchTrialsPAScreen();
+            pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+            pageSearchTrail.clickSearchTrialSearchButton();
+            commonFunctions.clickLinkText(leadProtocolID);
+            leftNav.scientificCheckOut();
+        });
     });
 
-    this.Given(/^I am on the Trial Description screen$/, function (callback) {
-        leftNav.clickScientificTrialDescription();
-        leftNav.checkPanelTitle(pageTtitle, '6');
-        browser.sleep(25).then(callback);
+    this.Given(/^I am on the Trial Description screen$/, function () {
+        return browser.sleep(25).then(function() {
+            leftNav.clickScientificTrialDescription();
+            leftNav.checkPanelTitle(pageTtitle, '6');
+        });
     });
 
-    this.Given(/^I have entered a value for Brief Title$/, function (callback) {
-        trialDesc.setBriefTitleTxt(briefTitle);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have entered a value for Brief Title$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setBriefTitleTxt(briefTitle);
+        });
     });
 
-    this.Given(/^I have entered a value for Brief Summary$/, function (callback) {
-        trialDesc.setBriefSummaryTxt(briefSummary);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have entered a value for Brief Summary$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setBriefSummaryTxt(briefSummary);
+        });
     });
 
-    this.Given(/^I have entered a value for Objectives$/, function (callback) {
-        trialDesc.setObjectivesTxt(objectives);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have entered a value for Objectives$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setObjectivesTxt(objectives);
+        });
     });
 
-    this.Given(/^I have entered a value for Detailed Description$/, function (callback) {
-        trialDesc.setDetailedDescriptionTxt(detailedDescription);
-        browser.sleep(25).then(callback);
+    this.Given(/^I have entered a value for Detailed Description$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setDetailedDescriptionTxt(detailedDescription);
+        });
     });
 
-    this.When(/^I select the Save button$/, function (callback) {
-        trialDesc.clickSave();
-        browser.sleep(25).then(callback);
+    this.When(/^I select the Save button$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.clickSave();
+        });
     });
 
-    this.Then(/^the Trial Description for the trial will be associated with the trial$/, function (callback) {
-        trialDesc.verifyTrialDescLables();
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, briefTitle, 'Verifying Brief Title');
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
-        commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
-        commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
-        browser.sleep(25).then(callback);
+    this.Then(/^the Trial Description for the trial will be associated with the trial$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.verifyTrialDescLables();
+            commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, briefTitle, 'Verifying Brief Title');
+            commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
+            commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
+            commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
+        });
     });
 
-    this.Then(/^the message Record Updated displays$/, function (callback) {
-        console.log('Out of scope: Toaster message');
-        browser.sleep(25).then(callback);
+    this.Then(/^the message Record Updated displays$/, function () {
+        return browser.sleep(25).then(function() {
+            console.log('Out of scope: Toaster message');
+        });
     });
 
     /*
@@ -156,35 +165,39 @@ module.exports = function() {
      Then an error message will appear with the message “Brief Title is Required”
      */
 
-    this.Given(/^I have selected a trial with a Information Source is 'Protocol'$/, function (callback) {
-        pageMenu.clickSearchTrialAbstractor();
-        pageMenu.clickTrials();
-        pageMenu.clickSearchTrialsPA();
-        helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-        login.clickWriteMode('On');
-        commonFunctions.verifySearchTrialsPAScreen();
-        pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
-        pageSearchTrail.clickSearchTrialSearchButton();
-        commonFunctions.clickLinkText(leadProtocolID);
-        leftNav.scientificCheckOut();
-        browser.sleep(25).then(callback);
+    this.Given(/^I have selected a trial with a Information Source is 'Protocol'$/, function () {
+        return browser.sleep(25).then(function() {
+            pageMenu.clickSearchTrialAbstractor();
+            pageMenu.clickTrials();
+            pageMenu.clickSearchTrialsPA();
+            helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+            login.clickWriteMode('On');
+            commonFunctions.verifySearchTrialsPAScreen();
+            pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+            pageSearchTrail.clickSearchTrialSearchButton();
+            commonFunctions.clickLinkText(leadProtocolID);
+            leftNav.scientificCheckOut();
+        })
     });
 
-    this.Given(/^information text appears above the Brief Title field as 'Mandatory at Abstraction Validation'$/, function (callback) {
-        trialDesc.verifyTrialDescLables();
-        browser.sleep(25).then(callback);
+    this.Given(/^information text appears above the Brief Title field as 'Mandatory at Abstraction Validation'$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.verifyTrialDescLables();
+        });
     });
 
-    this.When(/^Brief Title is null$/, function (callback) {
-        trialDesc.setBriefTitleTxt('');
-        browser.sleep(25).then(callback);
+    this.When(/^Brief Title is null$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setBriefTitleTxt('');
+        });
     });
 
-    this.Then(/^an error message will appear with the message “Brief Title is Required”$/, function (callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBT, '0', 'Verify Brief Title is Required');
-        //login.logout();
-        //commonFunctions.alertMsgOK();
-        browser.sleep(25).then(callback);
+    this.Then(/^an error message will appear with the message “Brief Title is Required”$/, function () {
+        return browser.sleep(25).then(function() {
+            commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBT, '0', 'Verify Brief Title is Required');
+            //login.logout();
+            //commonFunctions.alertMsgOK();
+        });
     });
 
     /*
@@ -198,21 +211,24 @@ module.exports = function() {
      Then an error message will appear with the message “Summary is Required”
      */
 
-    this.Given(/^information text appears above the Brief Summary field as 'Mandatory at Abstraction Validation'$/, function (callback) {
-        trialDesc.verifyTrialDescLables();
-        browser.sleep(25).then(callback);
+    this.Given(/^information text appears above the Brief Summary field as 'Mandatory at Abstraction Validation'$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.verifyTrialDescLables();
+        });
     });
 
-    this.When(/^Brief Summary is null$/, function (callback) {
-        trialDesc.setBriefSummaryTxt('');
-        browser.sleep(25).then(callback);
+    this.When(/^Brief Summary is null$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setBriefSummaryTxt('');
+        });
     });
 
-    this.Then(/^an error message will appear with the message “Summary is Required”$/, function (callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBS, '0', 'Verify Brief Summary is Required');
-        //login.logout();
-        //commonFunctions.alertMsgOK();
-        browser.sleep(25).then(callback);
+    this.Then(/^an error message will appear with the message “Summary is Required”$/, function () {
+        return browser.sleep(25).then(function() {
+            commonFunctions.verifyTxtByIndex(trialDesc.requiredMsg, errorMSGBS, '0', 'Verify Brief Summary is Required');
+            //login.logout();
+            //commonFunctions.alertMsgOK();
+        });
     });
 
     /*
@@ -225,35 +241,38 @@ module.exports = function() {
      And the screen will be refreshed with the data since the last save
      */
 
-    this.Then(/^the information entered or edited on the Trial Description screen will not be saved to the trial record$/, function (callback) {
-        trialDesc.setBriefTitleTxt(briefTitle);
-        trialDesc.setBriefSummaryTxt(briefSummary);
-        trialDesc.setObjectivesTxt(objectives);
-        trialDesc.setDetailedDescriptionTxt(detailedDescription);
-        trialDesc.clickSave();
-        trialDesc.setBriefTitleTxt('Reset '+briefTitle+'');
-        trialDesc.setBriefSummaryTxt('Reset '+briefSummary+'');
-        trialDesc.setObjectivesTxt('Reset '+objectives+'');
-        trialDesc.setDetailedDescriptionTxt('Reset '+detailedDescription+'');
-        browser.sleep(25).then(callback);
+    this.Then(/^the information entered or edited on the Trial Description screen will not be saved to the trial record$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setBriefTitleTxt(briefTitle);
+            trialDesc.setBriefSummaryTxt(briefSummary);
+            trialDesc.setObjectivesTxt(objectives);
+            trialDesc.setDetailedDescriptionTxt(detailedDescription);
+            trialDesc.clickSave();
+            trialDesc.setBriefTitleTxt('Reset ' + briefTitle + '');
+            trialDesc.setBriefSummaryTxt('Reset ' + briefSummary + '');
+            trialDesc.setObjectivesTxt('Reset ' + objectives + '');
+            trialDesc.setDetailedDescriptionTxt('Reset ' + detailedDescription + '');
+        });
     });
 
-    this.When(/^I have selected Reset$/, function (callback) {
-        trialDesc.clickReset();
-        commonFunctions.alertMsgOK();
-        leftNav.clickScientificTrialDesign();
-        leftNav.clickScientificTrialDescription();
-        browser.sleep(3500).then(callback);
+    this.When(/^I have selected Reset$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.clickReset();
+            commonFunctions.alertMsgOK();
+            leftNav.clickScientificTrialDesign();
+            leftNav.clickScientificTrialDescription();
+        });
     });
 
-    this.Then(/^the screen will be refreshed with the data since the last save$/, function (callback) {
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, briefTitle, 'Verifying Brief Title');
-        commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
-        commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
-        commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
-        //login.logout();
-        //commonFunctions.alertMsgOK();
-        browser.sleep(25).then(callback);
+    this.Then(/^the screen will be refreshed with the data since the last save$/, function () {
+        return browser.sleep(25).then(function() {
+            commonFunctions.verifyValueFromTextBox(trialDesc.briefTitleTxt, briefTitle, 'Verifying Brief Title');
+            commonFunctions.verifyValueFromTextBox(trialDesc.briefSummaryTxt, briefSummary, 'Verifying Brief Summary');
+            commonFunctions.verifyValueFromTextBox(trialDesc.objectivesTxt, objectives, 'Verifying Objectives');
+            commonFunctions.verifyValueFromTextBox(trialDesc.detailedDescriptionTxt, detailedDescription, 'Verifying Detailed Description');
+            //login.logout();
+            //commonFunctions.alertMsgOK();
+        });
     });
 
     /*
@@ -268,34 +287,38 @@ module.exports = function() {
      Then no additional text can be entered
      */
 
-    this.Given(/^I am entering into Brief Title$/, function (callback) {
-        trialDesc.setBriefTitleTxt('');
-        browser.sleep(25).then(callback);
+    this.Given(/^I am entering into Brief Title$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setBriefTitleTxt('');
+        });
     });
 
-    this.Then(/^information text appears below the Brief Title field will display the number of characters available to enter into the field$/, function (table, callback) {
-        var characLft = table.raw();
-        strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
-        console.log('Value(s) in the data table:[' + strCharacLft +']');
-        var strCharacLftSplt = strCharacLft.toString().split("\n");
-        strCharacLftSpltA = strCharacLftSplt[0];
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '0', 'Verifying Brief Title field Character Left message');
-        browser.sleep(25).then(callback);
+    this.Then(/^information text appears below the Brief Title field will display the number of characters available to enter into the field$/, function (table) {
+        return browser.sleep(25).then(function() {
+            var characLft = table.raw();
+            strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + strCharacLft + ']');
+            var strCharacLftSplt = strCharacLft.toString().split("\n");
+            strCharacLftSpltA = strCharacLftSplt[0];
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '0', 'Verifying Brief Title field Character Left message');
+        });
     });
 
-    this.When(/^(\d+) characters have been entered$/, function (arg1, callback) {
-        var charLftInt = ''+ arg1 +' characters left';
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, charLftInt, '0', 'Verifying Brief Title Character left initial message');
-        var charLftText = '' + briefTitle +'' + briefTitle + '';
-        trialDesc.setBriefTitleTxt(charLftText);
-        browser.sleep(25).then(callback);
+    this.When(/^(\d+) characters have been entered$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            var charLftInt = '' + arg1 + ' characters left';
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, charLftInt, '0', 'Verifying Brief Title Character left initial message');
+            var charLftText = '' + briefTitle + '' + briefTitle + '';
+            trialDesc.setBriefTitleTxt(charLftText);
+        });
     });
 
-    this.Then(/^no additional text can be entered$/, function (callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying Brief Title field Character left message');
-        //login.logout();
-        //commonFunctions.alertMsgOK();
-        browser.sleep(25).then(callback);
+    this.Then(/^no additional text can be entered$/, function () {
+        return browser.sleep(25).then(function() {
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying Brief Title field Character left message');
+            //login.logout();
+            //commonFunctions.alertMsgOK();
+        });
     });
 
     /*
@@ -310,36 +333,40 @@ module.exports = function() {
      Then no additional text can be entered inti Brief Summary
      */
 
-    this.Given(/^I start typing into Brief Summary$/, function (callback) {
-        trialDesc.setBriefSummaryTxt('Test Brief Summary');
-        browser.sleep(25).then(callback);
+    this.Given(/^I start typing into Brief Summary$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setBriefSummaryTxt('Test Brief Summary');
+        });
     });
 
-    this.Then(/^the character left provided below the Brief Summary field will start to decrement$/, function (table, callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLft, '1', 'Verifying Brief Summary field Character left message');
-        trialDesc.setBriefSummaryTxt('');
-        var characLft = table.raw();
-        strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
-        console.log('Value(s) in the data table:[' + strCharacLft +']');
-        var strCharacLftSplt = strCharacLft.toString().split("\n");
-        strCharacLftSpltA = strCharacLftSplt[0];
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '1', 'Verifying Brief Summary field Character left message');
-        browser.sleep(25).then(callback);
+    this.Then(/^the character left provided below the Brief Summary field will start to decrement$/, function (table) {
+        return browser.sleep(25).then(function() {
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLft, '1', 'Verifying Brief Summary field Character left message');
+            trialDesc.setBriefSummaryTxt('');
+            var characLft = table.raw();
+            strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + strCharacLft + ']');
+            var strCharacLftSplt = strCharacLft.toString().split("\n");
+            strCharacLftSpltA = strCharacLftSplt[0];
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '1', 'Verifying Brief Summary field Character left message');
+        });
     });
 
-    this.When(/^(\d+) characters have been entered into Brief Summary$/, function (arg1, callback) {
-        var x = Array(3).join(charLftStr);
-        console.log('x: '+x);
-        trialDesc.setBriefSummaryTxt(x);
-        x = '' //clear var with null val
-        browser.sleep(25).then(callback);
+    this.When(/^(\d+) characters have been entered into Brief Summary$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            var x = Array(3).join(charLftStr);
+            console.log('x: ' + x);
+            trialDesc.setBriefSummaryTxt(x);
+            x = '' //clear var with null val
+        });
     });
 
-    this.Then(/^no additional text can be entered inti Brief Summary$/, function (callback) {
-        var strSummaryChrcLft = '4800 characters left';
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strSummaryChrcLft, '1', 'Verifying Brief Summary field Character left message');
-        console.log('System becomes unresponsive if 5000 characters load in the server memory');
-        browser.sleep(25).then(callback);
+    this.Then(/^no additional text can be entered inti Brief Summary$/, function () {
+        return browser.sleep(25).then(function() {
+            var strSummaryChrcLft = '4800 characters left';
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strSummaryChrcLft, '1', 'Verifying Brief Summary field Character left message');
+            console.log('System becomes unresponsive if 5000 characters load in the server memory');
+        });
     });
 
     /*
@@ -353,35 +380,39 @@ module.exports = function() {
      Then no additional text can be entered into Detailed Description
      */
 
-    this.When(/^I start typing into the Detailed Description field$/, function (callback) {
-        trialDesc.setDetailedDescriptionTxt('Test Detailed Description');
-        browser.sleep(25).then(callback);
+    this.When(/^I start typing into the Detailed Description field$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setDetailedDescriptionTxt('Test Detailed Description');
+        });
     });
 
-    this.Then(/^the limited characters provided below the Detailed Description field will start to decrement$/, function (table, callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftDetail, '3', 'Verifying Detailed Description field Character left message');
-        trialDesc.setDetailedDescriptionTxt('');
-        var characLft = table.raw();
-        strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
-        console.log('Value(s) in the data table:[' + strCharacLft +']');
-        var strCharacLftSplt = strCharacLft.toString().split("\n");
-        strCharacLftSpltA = strCharacLftSplt[0];
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '3', 'Verifying Detailed Description field Character left message');
-        browser.sleep(25).then(callback);
+    this.Then(/^the limited characters provided below the Detailed Description field will start to decrement$/, function (table) {
+        return browser.sleep(25).then(function() {
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftDetail, '3', 'Verifying Detailed Description field Character left message');
+            trialDesc.setDetailedDescriptionTxt('');
+            var characLft = table.raw();
+            strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + strCharacLft + ']');
+            var strCharacLftSplt = strCharacLft.toString().split("\n");
+            strCharacLftSpltA = strCharacLftSplt[0];
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '3', 'Verifying Detailed Description field Character left message');
+        });
     });
 
-    this.When(/^(\d+) characters have been entered into Detailed Description$/, function (arg1, callback) {
-        var d = Array(3).join(charLftStr);
-        console.log('d: '+d);
-        trialDesc.setDetailedDescriptionTxt(''+d+'');
-        d = '' //clear var with null val
-        browser.sleep(25).then(callback);
+    this.When(/^(\d+) characters have been entered into Detailed Description$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            var d = Array(3).join(charLftStr);
+            console.log('d: ' + d);
+            trialDesc.setDetailedDescriptionTxt('' + d + '');
+            d = '' //clear var with null val
+        });
     });
 
-    this.Then(/^no additional text can be entered into Detailed Description$/, function (callback) {
-        //System unable to handale runtime 32000 character
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftDetailA, '3', 'Verifying Detailed Description field Character left message');
-        browser.sleep(25).then(callback);
+    this.Then(/^no additional text can be entered into Detailed Description$/, function () {
+        return browser.sleep(25).then(function() {
+            //System unable to handale runtime 32000 character
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftDetailA, '3', 'Verifying Detailed Description field Character left message');
+        });
     });
 
     /*
@@ -396,35 +427,39 @@ module.exports = function() {
      Then no additional text can be entered into Objectives
      */
 
-    this.When(/^I start typing into Objectives field$/, function (callback) {
-        trialDesc.setObjectivesTxt('Test Objectives');
-        browser.sleep(25).then(callback);
+    this.When(/^I start typing into Objectives field$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesc.setObjectivesTxt('Test Objectives');
+        });
     });
 
-    this.Then(/^the limited characters provided below the Objectives field will will start to decrement$/, function (table, callback) {
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftObjective, '2', 'Verifying Objectives field Character left message');
-        trialDesc.setObjectivesTxt('');
-        var characLft = table.raw();
-        strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
-        console.log('Value(s) in the data table:[' + strCharacLft +']');
-        var strCharacLftSplt = strCharacLft.toString().split("\n");
-        strCharacLftSpltA = strCharacLftSplt[0];
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '2', 'Verifying Objectives field Character left message');
-        browser.sleep(25).then(callback);
+    this.Then(/^the limited characters provided below the Objectives field will will start to decrement$/, function (table) {
+        return browser.sleep(25).then(function() {
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftObjective, '2', 'Verifying Objectives field Character left message');
+            trialDesc.setObjectivesTxt('');
+            var characLft = table.raw();
+            strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + strCharacLft + ']');
+            var strCharacLftSplt = strCharacLft.toString().split("\n");
+            strCharacLftSpltA = strCharacLftSplt[0];
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftSpltA, '2', 'Verifying Objectives field Character left message');
+        });
     });
 
-    this.When(/^(\d+) characters have been entered into Objectives$/, function (arg1, callback) {
-        var v = Array(3).join(charLftStr);
-        console.log('v: '+v);
-        trialDesc.setObjectivesTxt(''+v+'');
-        v = '' //clear var with null val
-        browser.sleep(25).then(callback);
+    this.When(/^(\d+) characters have been entered into Objectives$/, function (arg1) {
+        return browser.sleep(25).then(function() {
+            var v = Array(3).join(charLftStr);
+            console.log('v: ' + v);
+            trialDesc.setObjectivesTxt('' + v + '');
+            v = '' //clear var with null val
+        });
     });
 
-    this.Then(/^no additional text can be entered into Objectives$/, function (callback) {
-        //System unable to handale runtime 32000 character
-        commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftObjectiveA, '2', 'Verifying Objectives field Character left message');
-        browser.sleep(25).then(callback);
+    this.Then(/^no additional text can be entered into Objectives$/, function () {
+        return browser.sleep(25).then(function() {
+            //System unable to handale runtime 32000 character
+            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, decrCharLftObjectiveA, '2', 'Verifying Objectives field Character left message');
+        });
     });
 
 };
