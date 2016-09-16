@@ -92,7 +92,12 @@
         vm.grantsInputs = {grantResults: [], disabled: true};
         vm.currentStatusCode = null;
         vm.currentStatusName = null;
-
+        var latestSubNum = vm.curTrial.current_submission_num || -1;
+        vm.isAmendmentSubmission = _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
+        vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
+        console.info('isAmendmentSubmission: ', vm.isAmendmentSubmission, vm.isOriginalSubmission);
+        console.info('vm.curTrial.trial_documents: ', vm.curTrial.trial_documents);
+        
         vm.masterTrialCopy = {
             trial: angular.copy(vm.curTrial),
             studySourceCode: angular.copy(studySourceCode.toUpperCase()),

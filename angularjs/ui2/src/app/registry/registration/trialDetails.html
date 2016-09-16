@@ -1080,6 +1080,13 @@
                             Trial Related Documents <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[11], 'glyphicon-chevron-right': !trialDetailView.accordions[11]}"></i>
                         </uib-accordion-heading>
 
+                        <p class="text-left text-block">
+                            To ensure successful registration, upload a Protocol document and an IRB Approval document. If the Protocol document does not include the Informed Consent and/or participating sites, upload the Informed Consent document and a list of participating sites separately. You can use the Participating Sites template to submit your list of participating sites.
+                        </p>
+                        <p class="text-left text-block">
+                            CTRP accepts most standard document types. For additional information about what document types are accepted, please refer to the Help section.
+                        </p>
+
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.protocol_document)}">
                             <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
@@ -1123,7 +1130,7 @@
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-9">
                                     <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                    <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                    <!-- <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span> -->
                                 </div>
                             </div>
 
