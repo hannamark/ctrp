@@ -1202,7 +1202,7 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",
                                         "name": "Account Approver",
-                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
                                      },
                                      {
                                         "id": "ROLE_CURATOR",
@@ -1212,17 +1212,17 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_ABSTRACTOR",
                                         "name": "Abstractor",
-                                        "assign_access": ""
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
                                      },
                                      {
                                         "id": "ROLE_SUPER",
                                         "name": "Super",
-                                        "assign_access": "ROLE_RO,ROLE_SUPER,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
                                      },
                                      {
                                         "id": "ROLE_ADMIN",
                                         "name": "Admin",
-                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_ABSTRACTOR-SU,ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
                                      },
                                      {
                                         "id": "ROLE_TRIAL-SUBMITTER",
@@ -1232,7 +1232,7 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_SITE-SU",
                                         "name": "Site Administrator",
-                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_ACCRUAL-SUBMITTER,ROLE_SITE-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
                                      },
                                      {
                                         "id": "ROLE_SERVICE-REST",

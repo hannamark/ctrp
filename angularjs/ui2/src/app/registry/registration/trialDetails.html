@@ -621,7 +621,15 @@
                                                 </div>
                                             </td>
                                             <td class="text-center td-icon">
-                                                <label restriction-field class="btn btn-warning" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
+                                                <!-- <label restriction-field class="btn btn-warning" ng-click="trialDetailView.toggleSelection($index, 'trial_status')">
+                                                    <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                                </label> -->
+                                                <label restriction-field class="btn btn-warning"
+                                                    comment-popover="registry_trial_status"
+                                                    on-save="trialDetailView.deleteTrialStatus(why_deleted, $index)"
+                                                    toggle-status="trialDetailView.toggleSelection($index, 'trial_status')"
+                                                    is-deleted="{{status._destroy === true}}"
+                                                    >
                                                     <i ng-class="status._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </label>
                                             </td>
@@ -835,7 +843,7 @@
                                                         <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">{{nihNci.code}}</option>
                                                     </select>
                                                 </div>
-                                                <div class="add-association-error" ng-show="trialDetailView.nihHolderTypeError.length > 0">
+                                                <div class="add-association-error" ng-show="trialDetailView.nihHolderTypeError.length > 0 && !trialDetailView.nih_nci">
                                                     {{trialDetailView.nihHolderTypeError}}
                                                 </div>
                                             </td>

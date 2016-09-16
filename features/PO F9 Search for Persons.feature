@@ -5,105 +5,130 @@ Feature: PO F9 Search for Persons
     Given I know multiple parameters of the person I wish to search for
       And I am logged in to CTRP PO application
     And I am on the search persons screen
-    When I want to search with first name <first_name>
-    And I want to search with last name <last_name>
-    And I want to search with Person affiliated organization <Person_affiliated_organization>
-    And I want to search with Source Context <Source Context>
-    And I want to search with Source ID <Source ID>
-    And I want to search with Source Status <Source Status>
-    And I want to search with Processing Status <Processing Status>
-    And I want to search with Context person ID <Context Person ID>
-    And I want to search with Affiliated Organization ID  <Affiliated Organization ID>
-    And I want to search with Person email <Person_email>
-    And I want to search with Person phone number <Person_phone_number>
-    And I want to search for Person Records last updated by <Start Date> and <End Date>
-    And I want to search for Person records last updated by <Username>
+    And I can search with one or more parameters type
+    |First Name|
+    |Last Name|
+    |Affiliation Organization ID
+    |Context Person ID|
+    |Affiliation|
+    |Source Context|
+    |Source ID|
+    |Source Status|
+    |Email|
+    |Phone Number|
+    |Last Updated Date: (Start Date, End Date)|
+    |Updated By:Username|
+    |Processing Status|
+    |Service Request|
+    
     And I submit my search request for Person Search
     Then the search results <result> should display the following sorted by Last Name:
     |CTRP Person ID|
     |CTEP Person ID|
-    |Context person ID|
-    |Source ID|
-    |Source Context|
-    |Source Status|
-    |CTEP Person Registration Type|
     |First Name|
     |Middle Name|
     |Last Name|
+    |Source ID|
+    |Context person ID|
+    |Source Status|
+    |Source Context|
     |Processing Status|
     |Service Request|
     |Affiliated Orgs|
+    |Email|
+    |Phone |
     |Last Updated Date|
     |Last Updated By|
     |Prefix|
     |Suffix|
 
-    Examples:
-      |first_name  || last_name ||Source Context||Source ID|| Source Status||Person_email||Person_phone_number||Person_affiliated_organization||Start Date||End Date||Username||result|
-      |shiFName    ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
-      |shiFNa*     ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
-      |            ||shiLName   ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
-      |            ||shiL*      ||              ||         ||              ||            ||                   ||                              ||          ||        ||        ||true|
-      |            ||           || CTRP         ||65000000 ||              ||            ||                   ||                              ||          ||        ||        ||true|
-      |            ||           ||              ||         ||Active        ||            ||                   ||                              ||          ||        ||        ||true|
-      |            ||           ||              ||         ||              ||shiPercuke@pr.com||                  ||                              ||          ||        ||        ||true|
-      |            ||           ||              ||         ||              ||shiPercuke* ||                   ||                              ||          ||        ||        ||true|
-      |            ||           ||              ||         ||              ||            ||                   ||    shiPerOrgAff              ||          ||        ||        ||true|
-      |            ||           ||              ||         ||              ||            ||                   ||    shiPerOrg*                ||          ||        ||        ||true|
-      |            ||           ||              ||         ||              ||            ||  420-567-8906     ||                              ||          ||        ||        ||true|
-      |            ||           ||              ||         ||              ||            ||   420-567*        ||                              ||          ||        ||        ||true|
-      |            ||           ||              ||         ||              ||            ||                   ||                              ||  today   ||  today ||        ||true|
-      |            ||           ||              ||         ||              ||            ||                   ||                              ||          ||        ||ctrpcurator  ||true|
-      |            ||           ||              ||         ||              ||            ||                   ||                              ||          ||        || ctrpcu*  ||true|
-      |            ||shiLName   ||              ||         ||              ||shiPercuke@pr.com||420-567*      || shiPerOrgAff                 ||          ||        ||        ||true|
-
-
+   When I select a person to view in CTRP Context
+   Then CTRP records of the selected person details type will display in the edit mode
+    |CTRP Person ID|
+    |CTRP Context Person ID|
+    |Prefix|
+    |First Name|
+    |Middle Name|
+    |Last Name|
+    |Suffix|
+    |Processing Status|
+    |Source Context: CTRP|
+    |Source ID|
+    |Source Status: Active|
+    |Email|
+    |Phone Number-Extension|
+    |Created By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
+    |Updated By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
+    |Add Affiliated Organization Details|
+    And I can choose to associate person context from that screen
+    And I can view all Person associations displayed with information type
+    And Person associations might have any source status 
+    |CTRP Person ID|
+    |CTEP Person ID|
+    |First Name|
+    |Middle Name|
+    |Last Name|
+    |Source ID|
+    |Context person ID|
+    |Source Status|
+    |Source Context|
+    |Processing Status|
+    |Service Request|
+    |Affiliated Orgs|
+    |Email|
+    |Phone |
+    |Last Updated Date|
+    |Last Updated By|
+    |Prefix|
+    |Suffix|
+    And I can delete person  association
+    
+    
+    Scenario:#6 As a curator, I can edit person records
+    Given I am logged in to CTRP PO application
+    When I select a person from the search person results table
+     Then the edit screen will display
+     And I can edit all fields except
+     
+     |CTRP Person ID|
+     |Context Person ID|
+     |Source ID|
+     |Source Context|
+     When I click on the save button
+     Then the edited information will be saved to the trial records
+     When I select Reset 
+     Then the information entered or edited on the Add person fields will not be saved to the trial record 
+      And the Add person records screen will be refreshed with the existing data
+     
+    
+    
   Scenario:#2 As a Curator, I will get a message if searched with no parameters
     Given I am logged in to CTRP PO application
     And I am on the search persons screen
     When I searched without providing any search parameters
     Then I should get message as "At least one selection value must be entered prior to running the search"
-
-  Scenario:#3 As a curator, I can Search Persons when the Exact Search box is checked
-    Given I am logged in to CTRP PO application
-    And I have selected the option to search persons
-    And Exact Search is checked on search person
-    When I have entered the "exact" person First Name
-    Then the person First Name will be displayed on the People Search Results table
-    When I have entered the "exact" person Last Name
-    Then the person Last Name will be displayed on the People Search Results table
-    When I have entered the "exact" Source ID for Person
-    Then The Source ID will be displayed on the People Search Results table
-    When I have entered the "exact" Email for Person
-    Then the Email will be displayed on the People Search Results table
-    When I have entered the "exact" Affiliation
-    Then the Affiliation will be displayed on the People Search Results table
-    When I have entered the "exact" Phone Number for Person
-    Then the Phone Number will be displayed on the People Search Results table
-    When I have entered the "exact" Username for Person
-    Then the Username will be displayed on the People Search Results table
-
-
-  Scenario:#4 As a curator, I can Search Organizations when the Exact Search box is NOT checked
-    Given I am logged in to CTRP PO application
-    And I have selected the option to search persons
-    And Exact Search is not checked on search person
-    When I have entered the "partial" person First Name
-    Then the person First Name will be displayed on the People Search Results table
-    When I have entered the "partial" person Last Name
-    Then the person Last Name will be displayed on the People Search Results table
-    When I have entered the "partial" Source ID for Person
-    Then The Source ID will be displayed on the People Search Results table
-    When I have entered the "partial" Email for Person
-    Then the Email will be displayed on the People Search Results table
-    When I have entered the "partial" Affiliation
-    Then the Affiliation will be displayed on the People Search Results table
-    When I have entered the "partial" Phone Number for Person
-    Then the Phone Number will be displayed on the People Search Results table
-    When I have entered the "partial" Username for Person
-    Then the Username will be displayed on the People Search Results table
-
-
+ 
+ Scenario: #3 A a Curator, I can search PersonExact Search is checked
+    Given I know the exact paramater type of the person I want to search for
+    And I am logged in to CTRP PO application
+    And I have selected the option to search for a person
+    When I provide the exact parameter I would like to search
+    And the Exact search checked
+    And I submit my search request
+    Then the system should display all the exisiting exact parameter provided
+    And the result should be sorted by Person Last Name
+    
+    Scenario: #4 A a Curator, I can search person when Exact Search is unchecked
+   Given I know the exact paramater type of the person I want to search for
+    And I am logged in to CTRP PO application
+    And I have selected the option to search for a person
+    When I provide the exact parameter I would like to search
+    And the Exact search is unchecked
+    And I submit my search request
+    Then the system should not display all the existing exact parameter provided
+    And the result should be sorted by Person Last Name
+   
+  
   Scenario:#5 As a curator, I cannot Search Results when the Exact Search box is checked and Exact Match is not provided
     Given I am logged in to CTRP PO application
     And Exact Search is checked on search person

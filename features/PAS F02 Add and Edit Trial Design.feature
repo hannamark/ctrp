@@ -19,7 +19,7 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
 Examples:
 
 
-   |From <ClinicalResearchCategoryS>                 |To <ClinicalResearchCategoryF>                     |field                                    |action (diplays OR deleted) |
+   |<ClinicalResearchCategoryS>            | <ClinicalResearchCategoryF>             |<field>                                  |<action> |
 
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                          |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                    |displays|

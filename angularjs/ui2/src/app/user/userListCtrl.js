@@ -32,6 +32,8 @@
                     email: '',
                     phone: '',
                     approved: '',
+                    rows: 25,
+                    registered_users: vm.registeredUsersPage ? true : false,
                     start: 1
                 }
             }; //initial User Search Parameters
@@ -181,7 +183,8 @@
 
             UserService.getUserStatuses().then(function (response) {
                 vm.statusArr = response.data;
-                if (vm.curUser.role == 'ROLE_SITE-SU') {
+                var allowedROLESITESU = ['ROLE_SITE-SU', 'ROLE_SUPER', 'ROLE_ABSTRACTOR'];
+                if (_.contains(allowedROLESITESU, vm.curUser.role)) {
                     vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
                         return _.contains(['ACT', 'INR'], item.code);
                     });
@@ -196,7 +199,7 @@
             //ui-grid plugin options
             vm.searchParams = new SearchParams();
             vm.gridOptions = new GridOptions();
-            if (!vm.ownerListMode && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU" || vm.curUser.role === "ROLE_ABSTRACTOR" || vm.curUser.role === "ROLE_ABSTRACTOR-SU") ) {
+            if (!vm.ownerListMode && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU") ) {
                 if (vm.curUser.org_families.length) {
                     vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
                 } else {
@@ -423,6 +426,9 @@
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
                 vm.curationMode = UserService.isCurationModeEnabled();
+                if (!vm.curationMode) {
+                    vm.setAddMode = false;
+                }
             });
 
             if (vm.trialId) {
