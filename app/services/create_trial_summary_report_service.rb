@@ -242,11 +242,10 @@ class CreateTrialSummaryReportService
   end
 
   def get_value_based_on_display_rule(field,rule)
-    
-    if rule == "Required"
-      field.nil? ? field = NO_DATA_AVAILABLE : field = field
-    end
-    return field
+      if rule == "Required"
+        field.nil? ? field = NO_DATA_AVAILABLE : field = field
+      end
+      return field
   end
 
 
@@ -754,13 +753,13 @@ class CreateTrialSummaryReportService
         def generate_trial_description_table
 
           create_a_table_row(@grey,@foreground_th_text_color,"Trial Description")
-          create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
 
           @trial.brief_title.nil? ? brief_title = NO_DATA_AVAILABLE : brief_title = @trial.brief_title
           @trial.brief_summary.nil? ? brief_summary = NO_DATA_AVAILABLE : brief_summary = @trial.brief_summary
           @trial.objective.nil? ? objective = NO_DATA_AVAILABLE : objective = @trial.objective
           @trial.detailed_description.nil? ? detailed_description = NO_DATA_AVAILABLE : detailed_description = @trial.detailed_description
 
+          create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
           create_a_table_row_node(@trial_description_table,brief_title)
 
           create_a_table_row(@light_red,@foreground_th_text_color,"Brief Summary")
@@ -797,11 +796,11 @@ class CreateTrialSummaryReportService
           i = 0
 
           interventions.each do |col|
-            col.intervention_type_id.nil? ? type = nil :  type = InterventionType.find_by_id(col.intervention_type_id).name
+            col.intervention_type_id.nil? ? type = NO_DATA_AVAILABLE :  type = InterventionType.find_by_id(col.intervention_type_id).name
             array[i][0] << type
-            array[i][1] <<  col.name
-            array[i][2] << col.other_name
-            array[i][3] << col.description
+            array[i][1] <<  get_value_based_on_display_rule(col.name,"Required")
+            array[i][2] << get_value_based_on_display_rule(col.other_name,"Required")
+            array[i][3] << get_value_based_on_display_rule(col.description,"Required")
             i = i +1
           end
         end
@@ -825,9 +824,9 @@ class CreateTrialSummaryReportService
           i = 0
           i = 0
           arms_groups.each do |col|
-            array[i][0] << col.arms_groups_type
-            array[i][1] <<  col.label
-            array[i][2] << col.description
+            array[i][0] <<  get_value_based_on_display_rule(col.arms_groups_type,"Required")
+            array[i][1] <<  get_value_based_on_display_rule(col.label,"Required")
+            array[i][2] <<  get_value_based_on_display_rule(col.description,"Required")
             i=i+1
           end
 
@@ -859,15 +858,21 @@ class CreateTrialSummaryReportService
 
         create_a_table_row(@grey,@foreground_th_text_color,"Eligibility Criteria")
 
-        @trial.gender_id.nil? ? gender= "" : gender = Gender.find_by_id(@trial.gender_id).name
-        @trial.min_age_unit_id.nil? ? min_age = @trial.min_age.to_s : min_age = @trial.min_age.to_s + "  " + AgeUnit.find_by_id(@trial.min_age_unit_id).name
-        @trial.max_age_unit_id.nil? ? max_age = @trial.max_age.to_s : max_age = @trial.max_age.to_s + "  " + AgeUnit.find_by_id(@trial.max_age_unit_id).name
+        @trial.gender_id.nil? ? gender= NO_DATA_AVAILABLE : gender = Gender.find_by_id(@trial.gender_id).name
+        @trial.min_age_unit_id.nil? ? min_age = NO_DATA_AVAILABLE : min_age = @trial.min_age.to_s + "  " + AgeUnit.find_by_id(@trial.min_age_unit_id).name
+        @trial.max_age_unit_id.nil? ? max_age = NO_DATA_AVAILABLE : max_age = @trial.max_age.to_s + "  " + AgeUnit.find_by_id(@trial.max_age_unit_id).name
+        @trial.research_category_id.nil? ? trial_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
 
         Hash h = Hash.new
-        h.store("Accepts Healthy Volunteers?",@trial.accept_vol)
+        h.store("Accepts Healthy Volunteers?",get_value_based_on_display_rule(@trial.accept_vol,"Required"))
         h.store("Gender",gender)
         h.store("Minimum Age",min_age)
         h.store("Maximum Age",max_age)
+
+        if trial_type == "Observational"
+          h.store("Sampling Method",get_value_based_on_display_rule(@trial.sampling_method,"Required"))
+          h.store("Study Population",get_value_based_on_display_rule(@trial.study_pop_desc,"Required"))
+        end
 
         array =@document.table(h.length,2,4000,4000)
         array.border_width =10
@@ -883,18 +888,29 @@ class CreateTrialSummaryReportService
         array =@document.table(1,1,8000)
         array.border_width =10
         inclusion_criteria = @trial.other_criteria.where("criteria_type = ?", "Inclusion")
-        inclusion_criteria.each do |col|
-          array[0][0] << col.criteria_desc
-          array[0][0].line_break
+
+        if inclusion_criteria.size == 0
+          array[0][0] << NO_DATA_AVAILABLE
+        else
+          inclusion_criteria.each do |col|
+            array[0][0] << col.criteria_desc
+            array[0][0].line_break
+          end
         end
+
 
         create_a_table_row(@light_red,@foreground_th_text_color,"Exclusion Criteria")
         array =@document.table(1,1,8000)
         array.border_width =10
         exclusion_criteria = @trial.other_criteria.where("criteria_type = ?", "Exclusion")
-        exclusion_criteria.each do |col|
-          array[0][0] << col.criteria_desc
-          array[0][0].line_break
+
+        if exclusion_criteria.size == 0
+          array[0][0] << NO_DATA_AVAILABLE
+        else
+          exclusion_criteria.each do |col|
+            array[0][0] << col.criteria_desc
+            array[0][0].line_break
+          end
         end
 
       end
@@ -931,7 +947,6 @@ class CreateTrialSummaryReportService
           array[0][2].foreground(@foreground_th_text_color) << "Time Frame"
           array[0][3].foreground(@foreground_th_text_color) << "Safety Issue?"
           if num_of_rows == 0
-
             array = @document.table(1,1,8000)
             array[0][0] << NO_DATA_AVAILABLE
           end
@@ -940,16 +955,16 @@ class CreateTrialSummaryReportService
 
           primary_oms.each do |col|
 
-            array[i][0] << col.title
+            array[i][0] << get_value_based_on_display_rule(col.title,"Required")
             array[i][0].line_break
 
-            array[i][1] << col.description
+            array[i][1] << get_value_based_on_display_rule(col.description,"Required")
             array[i][1].line_break
 
-            array[i][2] << col.time_frame
+            array[i][2] << get_value_based_on_display_rule(col.time_frame,"Required")
             array[i][2].line_break
 
-            array[i][3] << col.safety_issue
+            array[i][3] << get_value_based_on_display_rule(col.safety_issue,"Required")
             array[i][3].line_break
 
             i = i+1
@@ -970,12 +985,17 @@ class CreateTrialSummaryReportService
           array[0][1].foreground(@foreground_th_text_color) << "Description"
           i=1
 
+          if num_of_rows == 0
+            array = @document.table(1,1,8000)
+            array[0][0] << NO_DATA_AVAILABLE
+          end
+
           sub_groups.each do |col|
 
-            array[i][0] << col.label
+            array[i][0] << get_value_based_on_display_rule(col.label,"Required")
             array[i][0].line_break
 
-            array[i][1] << col.description
+            array[i][1] << get_value_based_on_display_rule(col.description,"Required")
             array[i][1].line_break
 
             i = i+1
@@ -1000,6 +1020,11 @@ class CreateTrialSummaryReportService
 
           i=1
 
+          if num_of_rows == 0
+            array = @document.table(1,1,8000)
+            array[0][0] << NO_DATA_AVAILABLE
+          end
+
           markers.each do |col|
 
             array[i][0] << col.name
@@ -1008,33 +1033,33 @@ class CreateTrialSummaryReportService
 
             marker_eval_type_associations = col.marker_eval_type_associations
             marker_eval_type_associations.each do |col|
-              col.evaluation_type_id.nil? ? evaluation_type = nil :  evaluation_type = EvaluationType.find_by_id(col.evaluation_type_id).name
+              col.evaluation_type_id.nil? ? evaluation_type = NO_DATA_AVAILABLE :  evaluation_type = EvaluationType.find_by_id(col.evaluation_type_id).name
               array[i][1] << evaluation_type
               array[i][1].line_break
             end
 
             marker_assay_type_associations = col.marker_assay_type_associations
             marker_assay_type_associations.each do |col|
-              col.assay_type_id.nil? ? assay_type = nil :  assay_type = AssayType.find_by_id(col.assay_type_id).name
+              col.assay_type_id.nil? ? assay_type = NO_DATA_AVAILABLE :  assay_type = AssayType.find_by_id(col.assay_type_id).name
               array[i][2] << assay_type
               array[i][2].line_break
             end
 
 
-            col.biomarker_use_id.nil? ? biomarker_use_name= nil : biomarker_use_name = BiomarkerUse.find_by_id(col.biomarker_use_id).name
+            col.biomarker_use_id.nil? ? biomarker_use_name= NO_DATA_AVAILABLE : biomarker_use_name = BiomarkerUse.find_by_id(col.biomarker_use_id).name
             array[i][3] << biomarker_use_name
             array[i][3].line_break
 
             biomarker_purposes = col.marker_biomarker_purpose_associations
             biomarker_purposes.each do |col|
-              col.biomarker_purpose_id.nil? ? biomarker_purpose_name = nil :  biomarker_purpose_name = BiomarkerPurpose.find_by_id(col.biomarker_purpose_id).name
+              col.biomarker_purpose_id.nil? ? biomarker_purpose_name = NO_DATA_AVAILABLE :  biomarker_purpose_name = BiomarkerPurpose.find_by_id(col.biomarker_purpose_id).name
               array[i][4] << biomarker_purpose_name
               array[i][4].line_break
             end
 
             marker_spec_type_associations = col.marker_spec_type_associations
             marker_spec_type_associations.each do |col|
-              col.specimen_type_id.nil? ? specimen_type = nil :  specimen_type = SpecimenType.find_by_id(col.specimen_type_id).name
+              col.specimen_type_id.nil? ? specimen_type = NO_DATA_AVAILABLE :  specimen_type = SpecimenType.find_by_id(col.specimen_type_id).name
               array[i][5] << specimen_type
               array[i][5].line_break
             end
@@ -1062,31 +1087,36 @@ class CreateTrialSummaryReportService
         array[0][4].foreground(@foreground_th_text_color) << "Investigator(s)"
          i=1
 
+        if num_of_rows == 0
+          array = @document.table(1,1,8000)
+          array[0][0] << NO_DATA_AVAILABLE
+        end
+
         participating_sites.each do |col|
 
-          col.organization_id.nil? ? facility = nil :  facility = Organization.find_by_id(col.organization_id).name
-          col.contact_name.nil? ? contact_name = "" : contact_name = col.contact_name
+          col.organization_id.nil? ? facility = NO_DATA_AVAILABLE :  facility = Organization.find_by_id(col.organization_id).name
+          col.contact_name.nil? ? contact_name = NO_DATA_AVAILABLE : contact_name = col.contact_name
           array[i][0] << facility
 
           array[i][1] << "Name: "
-          array[i][1] << contact_name
+          array[i][1] << get_value_based_on_display_rule(contact_name,"Required")
           array[i][1].line_break
+
           array[i][1] << "Email: "
-
-          array[i][1] << col.contact_email
+          array[i][1] << get_value_based_on_display_rule(col.contact_email,"Required")
           array[i][1].line_break
+
           array[i][1] << "Phone: "
-
-          array[i][1] << col.contact_phone
+          array[i][1] << get_value_based_on_display_rule(col.contact_phone,"Required")
           array[i][1].line_break
-          array[i][1] << "Ext: "
 
+          array[i][1] << "Ext: "
           array[i][1] << col.extension
 
           col.site_rec_status_wrappers.present? ? current_site_recruitment_status = col.site_rec_status_wrappers.last.site_recruitment_status.name + " as of " + col.site_rec_status_wrappers.last.status_date.to_s: current_site_recruitment_status = nil
 
           array[i][2] << current_site_recruitment_status
-          array[i][3] << @trial.target_enrollment.to_s
+          array[i][3] << get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required")
 
           participating_site_investigators = col.participating_site_investigators
           participating_site_investigators.each do |col|
@@ -1101,7 +1131,8 @@ class CreateTrialSummaryReportService
             end
             investigator_type = col.investigator_type
             investigator_name = investigator_name + " - " + investigator_type if investigator_type
-            array[i][4] << investigator_name
+
+            array[i][4] << get_value_based_on_display_rule(investigator_name,"Required")
             array[i][4].line_break
           end
 
