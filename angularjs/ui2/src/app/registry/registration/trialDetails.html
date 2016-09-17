@@ -1080,6 +1080,13 @@
                             Trial Related Documents <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section" ng-if="!trialDetailView.curTrial.new && trialDetailView.curTrial.edit_type === 'update'"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[11], 'glyphicon-chevron-right': !trialDetailView.accordions[11]}"></i>
                         </uib-accordion-heading>
 
+                        <p class="text-left text-block">
+                            To ensure successful registration, upload a Protocol document and an IRB Approval document. If the Protocol document does not include the Informed Consent and/or participating sites, upload the Informed Consent document and a list of participating sites separately. You can use the Participating Sites template to submit your list of participating sites.
+                        </p>
+                        <p class="text-left text-block">
+                            CTRP accepts most standard document types. For additional information about what document types are accepted, please refer to the Help section.
+                        </p>
+
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.protocol_document)}">
                             <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
                             <div class="col-xs-12 col-sm-9 form-file-upload">
@@ -1095,11 +1102,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document' && document.status === 'active'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Document' && document.status === 'active' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span ng-show="trialDetailView.isDocDeletionAllowed" ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -1119,11 +1126,11 @@
                                 </div>
                             </div>
 
-                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Change Memo Document' && document.status === 'active'" class="form-group">
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Change Memo Document' && document.status === 'active' && document.is_latest" class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-9">
                                     <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                    <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                    <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                                 </div>
                             </div>
 
@@ -1142,11 +1149,11 @@
                                 </div>
                             </div>
 
-                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Highlighted Document' && document.status === 'active'" class="form-group">
+                            <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Protocol Highlighted Document' && document.status === 'active' && document.is_latest" class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-9">
                                     <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                    <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                    <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                                 </div>
                             </div>
                         </div>
@@ -1166,11 +1173,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval' && document.status === 'active'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'IRB Approval' && document.status === 'active' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -1185,11 +1192,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites' && document.status === 'active'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'List of Participating Sites' && document.status === 'active' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -1204,11 +1211,11 @@
                             </div>
                         </div>
 
-                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent' && document.status === 'active'" class="form-group">
+                        <div ng-repeat="document in trialDetailView.addedDocuments track by $index" ng-if="document.document_type == 'Informed Consent' && document.status === 'active' && document.is_latest" class="form-group">
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -1245,7 +1252,7 @@
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                <span restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                                 <br>{{document.document_subtype}}
                             </div>
                         </div>
