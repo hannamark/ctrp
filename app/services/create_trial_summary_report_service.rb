@@ -28,6 +28,7 @@ class CreateTrialSummaryReportService
     @grey       =                          RTF::Colour.new(210,210,210)
     @light_red  =                          RTF::Colour.new(255,175,175)
     @red_shade  =                          RTF::Colour.new(180,0,0)
+    @white  =                              RTF::Colour.new(255,255,255)
 
 
     #Styles
@@ -91,7 +92,11 @@ class CreateTrialSummaryReportService
     generate_trial_identification_table
     line_break   = @document.table(1, 1) 
     generate_general_trial_details
-    line_break   = @document.table(1, 1) 
+    line_break   = @document.table(1, 1)
+
+    generate_grants_table
+    line_break   = @document.table(1, 1)
+
     generate_summary_4_information_table
     line_break   = @document.table(1, 1) 
     generate_regulatory_information_table
@@ -320,7 +325,7 @@ class CreateTrialSummaryReportService
 
 
     Hash h = Hash.new
-    @trial.research_category_id.nil? ? trail_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
+    @trial.research_category_id.nil? ? trial_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
     @trial.lead_org_id.nil? ? lead_org = NO_DATA_AVAILABLE : lead_org = Organization.find_by_id(@trial.lead_org_id).name
     @trial.sponsor_id.nil? ? sponsor = NO_DATA_AVAILABLE : sponsor = Organization.find_by_id(@trial.sponsor_id).name
     @trial.responsible_party_id.nil? ? responsible_party=NO_DATA_AVAILABLE : responsible_party = ResponsibleParty.find_by_id(@trial.responsible_party_id).name
@@ -431,6 +436,44 @@ class CreateTrialSummaryReportService
 
   end
 
+  def generate_grants_table
+    create_a_table_row(@light_red,@foreground_th_text_color,"NIH Grants")
+
+    array =@document.table(1,4,2000,2000,2000,2000)
+    array.border_width =10
+    array[0].shading_colour = @grey
+    array[0][0] << "Funding Mechanism"
+    array[0][1] << "NIH Institution Code"
+    array[0][2] << "Serial Number"
+    array[0][3] << "NCI Division/Program Code"
+
+
+    grants = @trial.grants
+    grants_num = 0
+    grants_num = grants.size if grants
+    array =@document.table(grants_num, 4,2000,2000,2000,2000)
+    array.border_width =10
+    i = 0
+    grant_question = @trial.grant_question
+    if grant_question == "Yes"
+      is_required = "Required"
+    else
+      is_required = "NotRequired"
+    end
+    grants.each do |col|
+      array[i][0] << get_value_based_on_display_rule(col.funding_mechanism,is_required)
+      array[i][1] <<  get_value_based_on_display_rule(col.institute_code,is_required)
+      array[i][2] << get_value_based_on_display_rule(col.serial_number,is_required)
+      array[i][3] << get_value_based_on_display_rule(col.nci,is_required)
+      i = i +1
+    end
+
+    if grants_num == 0
+      create_a_table_row(@white,@foreground_th_text_color,"No Data Available")
+    end
+  end
+
+
   def generate_summary_4_information_table
 
     create_a_table_row(@grey,@foreground_th_text_color,"Summary 4 Information")
@@ -500,7 +543,7 @@ class CreateTrialSummaryReportService
 
           oversight_authorities =@trial.oversight_authorities
           create_a_table_row(@grey,@foreground_th_text_color,"Regulatory Information")
-          create_a_table_row(@light_red, nil,"Oversight Authority")
+          create_a_table_row(@light_red, nil,"Oversight Authorities")
 
           array =@document.table(1, 2,4000,4000)
           array.border_width =10
@@ -550,18 +593,19 @@ class CreateTrialSummaryReportService
           array[0].shading_colour = @light_red
           array[0][0] << "IND/IDE"
 
-          array =@document.table(1,4,2000,2000,2000,2000)
+          array =@document.table(1,5,1600,1600,1600,1600,1600)
           array.border_width =10
           array[0].shading_colour = @grey
           array[0][0] << "Type"
           array[0][1] << "Grantor"
           array[0][2] << "Number"
           array[0][3] << "Holder Type"
+          array[0][4] << "Holder"
 
           ind_ides = @trial.ind_ides
           ind_ides_num = 0
           ind_ides_num = ind_ides.size if ind_ides
-          array =@document.table(ind_ides_num, 4,2000,2000,2000,2000)
+          array =@document.table(ind_ides_num, 5,1600,1600,1600,1600,1600)
           array.border_width =10
           i = 0
           ind_ides.each do |ind_ide|
@@ -569,6 +613,8 @@ class CreateTrialSummaryReportService
             ind_ide.grantor.nil? ? array[i][1] << ind_ide.grantor=NO_DATA_AVAILABLE : array[i][1] << ind_ide.grantor
             ind_ide.ind_ide_number.nil? ? array[i][2] << ind_ide.ind_ide_number=NO_DATA_AVAILABLE : array[i][2] << ind_ide.ind_ide_number
             ind_ide.holder_type_id.nil? ?  array[i][3]=NO_DATA_AVAILABLE : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
+            ind_ide.nih_nci.nil? ?  array[i][4]=NO_DATA_AVAILABLE : array[i][4] << ind_ide.nih_nci
+
             i = i +1
           end
 
@@ -629,22 +675,66 @@ class CreateTrialSummaryReportService
           Hash h = Hash.new
           #h.store("Type", board_approval_status)
           @trial.primary_purpose_id.nil? ? primary_purpose=NO_DATA_AVAILABLE : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
-          @trial.secondary_purpose_id.nil? ? secondary_purpose="N/A" : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
-          @trial.phase_id.nil? ? phase="N/A" : phase = Phase.find_by_id(@trial.phase_id).name
-          @trial.intervention_model_id.nil? ? interventional_model="N/A" : interventional_model = InterventionModel.find_by_id(@trial.intervention_model_id).name
-          @trial.masking_id.nil? ? masking="N/A" : masking = Masking.find_by_id(@trial.intervention_model_id).name
-          @trial.allocation_id.nil? ? allocation="N/A" : allocation = Allocation.find_by_id(@trial.allocation_id).name
-          @trial.study_classification_id.nil? ? classification="N/A" : classification = StudyClassification.find_by_id(@trial.study_classification_id).name
+          @trial.secondary_purpose_id.nil? ? secondary_purpose=NO_DATA_AVAILABLE : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
+          @trial.phase_id.nil? ? phase=NO_DATA_AVAILABLE : phase = Phase.find_by_id(@trial.phase_id).name
+          @trial.intervention_model_id.nil? ? interventional_model=NO_DATA_AVAILABLE : interventional_model = InterventionModel.find_by_id(@trial.intervention_model_id).name
+          @trial.masking_id.nil? ? masking = NO_DATA_AVAILABLE : masking = Masking.find_by_id(@trial.masking_id).name
+          @trial.allocation_id.nil? ? allocation=NO_DATA_AVAILABLE : allocation = Allocation.find_by_id(@trial.allocation_id).name
+          @trial.study_classification_id.nil? ? classification=NO_DATA_AVAILABLE : classification = StudyClassification.find_by_id(@trial.study_classification_id).name
 
-          h.store("Primary Purpose",primary_purpose)
-          h.store("Secondary Purpose",secondary_purpose)
-          h.store("Phase",phase)
-          h.store("Intervention Model",interventional_model)
-          h.store("Number of Arms",@trial.num_of_arms.to_s)
-          h.store("Masking",masking)
-          h.store("Allocation",allocation)
-          h.store("Classification",classification)
-          h.store("Target Enrollment",@trial.target_enrollment.to_s)
+          @trial.study_model_id.nil? ? study_model=NO_DATA_AVAILABLE : study_model = StudyModel.find_by_id(@trial.study_model_id).name
+          @trial.time_perspective_id.nil? ? time_perspective=NO_DATA_AVAILABLE : time_perspective = TimePerspective.find_by_id(@trial.time_perspective_id).name
+          @trial.biospecimen_retention_id.nil? ? biospecimen_retention=NO_DATA_AVAILABLE : biospecimen_retention = BiospecimenRetention.find_by_id(@trial.biospecimen_retention_id).name
+          @trial.biospecimen_desc.nil? ? biospecimen_desc = NO_DATA_AVAILABLE : biospecimen_desc = @trial.biospecimen_desc
+          #@trial.allocation_id.nil? ? allocation = NO_DATA_AVAILABLE : allocation = Allocation.find_by_id(@trial.allocation_id).name
+
+          @trial.research_category_id.nil? ? trial_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
+
+
+
+          if trial_type == "Interventional"
+                h.store("Primary Purpose",primary_purpose)
+                h.store("Description of Other Primary Purpose",@trial.primary_purpose_other) if primary_purpose == "Other"
+                h.store("Secondary Purpose",secondary_purpose)
+                h.store("Description of Other Secondary Purpose",@trial.secondary_purpose_other) if secondary_purpose == "Other"
+                h.store("Phase",phase)
+                h.store("Intervention Model",interventional_model)
+                h.store("Number of Arms",@trial.num_of_arms.to_s)
+                h.store("Masking",masking)
+                if masking != "Open"
+                  masking_roles = Array.new
+                  masking_roles.push "Subject" if @trial.masking_role_subject
+                  masking_roles.push " Caregiver" if @trial.masking_role_caregiver
+                  masking_roles.push " Investigator" if @trial.masking_role_investigator
+                  if masking_roles.length == 0
+                    masking_roles_str = NO_DATA_AVAILABLE
+                  else
+                    masking_roles_str =  masking_roles.join(",")
+                  end
+
+                  h.store("Masking Roles",masking_roles_str)
+                end
+
+
+                h.store("Allocation",allocation)
+                h.store("Study Classification",classification)
+                h.store("Target Enrollment",get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required"))
+
+          elsif trial_type == "Observational"
+                h.store("Primary Purpose",primary_purpose)
+                h.store("Phase",phase)
+                h.store("Study Model",study_model)
+                h.store("Time Perspective",time_perspective)
+                h.store("Description of Other Time Perspective",@trial.time_perspective_other) if time_perspective == "Other"
+
+                h.store("Bio-Specimen Retention",biospecimen_retention)
+                h.store("Bio-Specimen Description",biospecimen_desc)
+                h.store("Number of Arms",@trial.num_of_arms.to_s)
+                h.store("Target Enrollment",get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required"))
+          end
+
+
+
 
 
           array =@document.table(h.length,2,4000,4000)
