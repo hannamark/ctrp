@@ -19,7 +19,7 @@
             return OrgService.typeAheadOrgNameSearch(vm.org_search_name, 'no_family');
         };
 
-        vm.setTypeAheadOrg = function (searchObj) {
+        vm.setAssignTrialTypeAheadOrg = function (searchObj) {
             var splitVal = searchObj.split('<span class="hide">');
             vm.org_search_name = splitVal[0];
             vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));

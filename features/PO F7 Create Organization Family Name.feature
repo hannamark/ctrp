@@ -5,26 +5,25 @@ Feature: PO F7 Create Organization Family Name
     And  I select the option to add Organization Family
 
   Scenario Outline: #1 As a PO Curator, I am able to create a new Family name
-    Given I am logged into the PO application
-    And I am on the Add Family screen
+    Given I am on the Add family screen
     And I have entered a new family name <family Name>
     And I have entered a family status <family status>
     And I have entered a family type <family Type>
-    And the Membership Size will be blank until family membership is added
-    And I can search organizations to add family membership
-    And I save the family information
-    Then a new family name <family Name> with family type <family Type> and family status <family status> will be created and return result <result>
-    When I have clicked on the reset button
-    Then the entered parameters will be cleared
-    And I can enter new parameters 
-    Examples:
-      |family Name                   |family Type            |family status|result |
-      |Albert Einstein Cancer Center |Cancer Center          |Active       |true   |
-      |Masonic Cancer Center         |Cancer Center          |Inactive     |true   |
+    And the Membership size will be blank until family membership is added
+    And I have added a family membership by searching organizations
+    When the family membership is added
+    Then the membership size will be populated to reflect the number of added organizations to the family
+    When I save the family information
+    Then a new family name <family Name> with family status <family status> and  family type <family Type> will be created and return result <result>
+    When the entered family Name exists in the system
+    Then  a Warning displays "Family exists in the database. Please verify and create a new Family record."
     
+    Examples:
+      |family Name                    |family Type         |family status  |result |
+      |Albert Einstein Cancer Center  |Cancer Center       |Active         |true   |
+      |Masonic Cancer Center          |Cancer Center       |Inactive       |true   |
 
-
-
+ 
   Scenario:#2 Add Family Mandatory fields
     Given I am on the Add Family screen
     When I have not entered a family parameter <FamilyParameter> type
@@ -38,8 +37,7 @@ Feature: PO F7 Create Organization Family Name
 
   Scenario: #3 Add Family Duplicate rules
     Given I am on the Add Family Screen
-     When The added name exists in the database----type and status???? or just name
+     When The added name exists in the database
      Then the warning: "Family exists in the database. Please verify and create a new Family record." will be displayed
 
   
-   

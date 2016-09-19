@@ -508,7 +508,7 @@
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
+            vm.gridApi.core.on.sortChanged($scope, sortUserListChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchOwnedParams.start = newPage;
                 vm.searchOwnedParams.rows = pageSize;
@@ -731,7 +731,7 @@
          * @param grid
          * @param sortColumns
          */
-        function sortOwnedChangedCallBack(grid, sortColumns) {
+        function sortUserListChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
                 vm.searchParams.sort = 'nci_id';
@@ -753,6 +753,7 @@
             //do the search with the updated sorting
             vm.getUserTrials();
         } //sortChangedCallBack
+
         function sortSubmittedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
@@ -781,4 +782,4 @@
             vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
-})();
+}());
