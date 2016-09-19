@@ -132,7 +132,7 @@ And I can view TSR document
       |                      |Affiliation               |Required        |Display "No data available"    |  
       
       
-  Scenario:#8 Trial Design Section Display Rules Associated with Interventional Clinical Research Category
+  Scenario:#8 Trial Design Section Display Rules Associated with Interventional/Expanded Access Clinical Research Category
      Given I can View TSR document
      And the Trial Design Section fields will be displayed following the rules below
      
@@ -152,7 +152,7 @@ And I can view TSR document
     
          
       
-    Scenario:#8a Trial Design Section Display Rules Associated with Observational Clinical Research Category
+    Scenario:#8a Trial Design Section Display Rules Associated with Observational/Ancillary Correlative Clinical Research Category
      Given I can View TSR document
      And the Trial Design Section fields will be displayed following the rules below 
      
