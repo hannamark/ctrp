@@ -216,7 +216,7 @@
             vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
             vm.gridOptions.onRegisterApi = function (gridApi) {
                 vm.gridApi = gridApi;
-                vm.gridApi.core.on.sortChanged($scope, sortChangedCallBack);
+                vm.gridApi.core.on.sortChanged($scope, sortUserListChangedCallBack);
                 vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                     vm.searchParams.start = newPage;
                     vm.searchParams.rows = pageSize;
@@ -300,9 +300,9 @@
             };
 
             vm.setUserListTypeAheadOrg = function (searchObj) {
-                var splitVal = searchObj.split('<span class="hide">');
-                vm.organization_name = splitVal[0];
-                vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+                var orgSearch = OrgService.setTypeAheadOrg(searchObj);
+                vm.organization_name = orgSearch.organization_name;
+                vm.userChosenOrg = orgSearch.organization_details;
                 vm.searchParams.organization_id = vm.userChosenOrg.id;
             };
 
@@ -407,7 +407,7 @@
              * @param grid
              * @param sortColumns
              */
-            function sortChangedCallBack(grid, sortColumns) {
+            function sortUserListChangedCallBack(grid, sortColumns) {
 
                 if (sortColumns.length === 0) {
                     vm.searchParams.sort = 'username';
@@ -428,7 +428,7 @@
 
                 //do the search with the updated sorting
                 vm.searchUsers();
-            } //sortChangedCallBack
+            } //sortUserListChangedCallBack
 
 
             //Listen to the write-mode switch

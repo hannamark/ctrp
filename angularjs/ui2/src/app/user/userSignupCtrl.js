@@ -50,9 +50,9 @@
         };
 
         vm.setSignUpTypeAheadOrg = function (searchObj) {
-            var splitVal = searchObj.split('<span class="hide">');
-            vm.org_search_name = splitVal[0];
-            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+            var orgSearch = OrgService.setTypeAheadOrg(searchObj);
+            vm.org_search_name = orgSearch.organization_name;
+            vm.userChosenOrg = orgSearch.organization_details;
             vm.userObj.user.organization_id = vm.userChosenOrg.id;
         };
 

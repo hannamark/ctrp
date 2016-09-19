@@ -115,7 +115,7 @@
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                 vm.disableBtn = true;
 
-                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                UserService.getUserTrialsOwnership(vm.searchOwnedParams).then(function (data) {
                     var status = data.server_response.status;
 
                     if (status >= 200 && status <= 210) {
@@ -282,8 +282,6 @@
 
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";
-        vm.searchParams = new TrialSearchParams;
-        vm.viewCount = vm.searchParams.start + vm.searchParams.rows - 1;
         vm.gridTrialsOwnedOptions = {
             enableColumnResizing: true,
             totalItems: null,
@@ -508,13 +506,14 @@
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortUserListChangedCallBack);
+            vm.gridApi.core.on.sortChanged($scope, sortTrialsOwnedChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchOwnedParams.start = newPage;
                 vm.searchOwnedParams.rows = pageSize;
                 vm.getUserTrials();
             });
         };
+
         vm.gridTrialsOwnedOptions.exporterAllDataFn = function () {
             var allSearchParams = angular.copy(vm.searchOwnedParams);
             allSearchParams.start = null;
@@ -533,6 +532,7 @@
         };
 
         /**** start copy for submitted */
+        vm.searchSubmittedParams = new TrialSearchParams;
         vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
         vm.gridTrialsSubmittedOptions.exporterCsvFilename = vm.userDetails.username + '-submitted-trials.csv';
         vm.gridTrialsSubmittedOptions.exporterPdfHeader.text = 'Trials submitted by ' + vm.userDetails.username + ':';
@@ -544,13 +544,13 @@
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortSubmittedChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                vm.searchParams.start = newPage;
-                vm.searchParams.rows = pageSize;
+                vm.searchSubmittedParams.start = newPage;
+                vm.searchSubmittedParams.rows = pageSize;
                 vm.getUserSubmittedTrials();
             });
         };
         vm.gridTrialsSubmittedOptions.exporterAllDataFn = function () {
-            var allSearchParams = angular.copy(vm.searchParams);
+            var allSearchParams = angular.copy(vm.searchSubmittedParams);
             allSearchParams.start = null;
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
@@ -567,10 +567,10 @@
         };
         vm.getUserSubmittedTrials = function () {
             //user_id is undefined if no user was found to begin with
-            if (vm.searchParams.user_id) {
+            if (vm.searchSubmittedParams.user_id) {
                 vm.gridTrialsSubmittedOptions.useExternalPagination = true;
                 vm.gridTrialsSubmittedOptions.useExternalSorting = true;
-                UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
+                UserService.getUserTrialsSubmitted(vm.searchSubmittedParams).then(function (data) {
                     var status = data.server_response.status;
 
                     if (status >= 200 && status <= 210) {
@@ -591,15 +591,15 @@
 
         vm.gridTrialsParticipationOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortSubmittedChangedCallBack);
+            vm.gridApi.core.on.sortChanged($scope, sortParticipationChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                vm.searchParams.start = newPage;
-                vm.searchParams.rows = pageSize;
+                vm.searchParticipationParams.start = newPage;
+                vm.searchParticipationParams.rows = pageSize;
                 vm.getUserParticipationTrials();
             });
         };
         vm.gridTrialsParticipationOptions.exporterAllDataFn = function () {
-            var allSearchParams = angular.copy(vm.searchParams);
+            var allSearchParams = angular.copy(vm.searchParticipationParams);
             allSearchParams.start = null;
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
@@ -615,14 +615,14 @@
             );
         };
 
-        vm.searchParticipatingParams = new TrialSearchParams;
-        vm.searchParticipatingParams.type = 'participating';
-        vm.searchParticipatingParams.org_id = vm.userDetails.organization_id;
-        vm.searchParticipatingParams.user_id = undefined;
+        vm.searchParticipationParams = new TrialSearchParams;
+        vm.searchParticipationParams.type = 'participating';
+        vm.searchParticipationParams.org_id = vm.userDetails.organization_id;
+        vm.searchParticipationParams.user_id = undefined;
         vm.getUserParticipationTrials = function () {
             vm.gridTrialsParticipationOptions.useExternalPagination = true;
             vm.gridTrialsParticipationOptions.useExternalSorting = true;
-            UserService.getUserTrialsParticipation(vm.searchParticipatingParams).then(function (data) {
+            UserService.getUserTrialsParticipation(vm.searchParticipationParams).then(function (data) {
                 var status = data.server_response.status;
 
                 if (status >= 200 && status <= 210) {
@@ -731,19 +731,19 @@
          * @param grid
          * @param sortColumns
          */
-        function sortUserListChangedCallBack(grid, sortColumns) {
+        function sortTrialsOwnedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                vm.searchParams.sort = 'nci_id';
-                vm.searchParams.order = 'desc';
+                vm.searchOwnedParams.sort = 'nci_id';
+                vm.searchOwnedParams.order = 'desc';
             } else {
-                vm.searchParams.sort = sortColumns[0].name; //sort the column
+                vm.searchOwnedParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {
                     case uiGridConstants.ASC:
-                        vm.searchParams.order = 'ASC';
+                        vm.searchOwnedParams.order = 'ASC';
                         break;
                     case uiGridConstants.DESC:
-                        vm.searchParams.order = 'DESC';
+                        vm.searchOwnedParams.order = 'DESC';
                         break;
                     case undefined:
                         break;
@@ -757,16 +757,16 @@
         function sortSubmittedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                vm.searchParams.sort = 'nci_id';
-                vm.searchParams.order = 'desc';
+                vm.searchSubmittedParams.sort = 'nci_id';
+                vm.searchSubmittedParams.order = 'desc';
             } else {
-                vm.searchParams.sort = sortColumns[0].name; //sort the column
+                vm.searchSubmittedParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {
                     case uiGridConstants.ASC:
-                        vm.searchParams.order = 'ASC';
+                        vm.searchSubmittedParams.order = 'ASC';
                         break;
                     case uiGridConstants.DESC:
-                        vm.searchParams.order = 'DESC';
+                        vm.searchSubmittedParams.order = 'DESC';
                         break;
                     case undefined:
                         break;
@@ -775,6 +775,29 @@
 
             //do the search with the updated sorting
             vm.getUserSubmittedTrials();
+        } //sortChangedCallBack
+
+        function sortParticipationChangedCallBack(grid, sortColumns) {
+
+            if (sortColumns.length === 0) {
+                vm.searchParticipationParams.sort = 'nci_id';
+                vm.searchParticipationParams.order = 'desc';
+            } else {
+                vm.searchParticipationParams.sort = sortColumns[0].name; //sort the column
+                switch (sortColumns[0].sort.direction) {
+                    case uiGridConstants.ASC:
+                        vm.searchParticipationParams.order = 'ASC';
+                        break;
+                    case uiGridConstants.DESC:
+                        vm.searchParticipationParams.order = 'DESC';
+                        break;
+                    case undefined:
+                        break;
+                }
+            }
+
+            //do the search with the updated sorting
+            vm.getUserParticipationTrials();
         } //sortChangedCallBack
 
         //Listen to the write-mode switch
