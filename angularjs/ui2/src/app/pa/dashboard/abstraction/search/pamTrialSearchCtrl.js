@@ -340,4 +340,4 @@
             vm.isCurationEnabled = UserService.isCurationModeEnabled();
         });
     }
-})();
+}());
