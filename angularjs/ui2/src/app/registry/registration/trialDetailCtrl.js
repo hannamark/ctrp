@@ -437,7 +437,16 @@
 
         vm.deleteTrialStatus = function(deletionComment, index) {
             if (deletionComment == null || deletionComment.trim().length === 0) return;
-            vm.addedStatuses[index].comment += deletionComment; // concatenate comments
+            if (vm.addedStatuses[index].comment === null) {
+                vm.addedStatuses[index].comment = '';
+            }
+            if (vm.addedStatuses[index].comment.length === 0) {
+                vm.addedStatuses[index].comment += deletionComment; // concatenate comments
+            } else if (vm.addedStatuses[index].comment.lastIndexOf('.') != vm.addedStatuses[index].comment.length - 1) {
+                vm.addedStatuses[index].comment += '. ' + deletionComment; // concatenate comments
+            } else {
+                vm.addedStatuses[index].comment += ' ' + deletionComment;
+            }
             vm.toggleSelection(index, 'trial_status');
         };
 
