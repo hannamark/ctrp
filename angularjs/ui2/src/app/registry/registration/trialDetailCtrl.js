@@ -101,10 +101,11 @@
         var milestones = getMilestoneCodes(vm.curTrial);
         console.info('milestones: ', milestones);
         vm.tsrShown = _.findIndex(milestones, {code: 'TSR'}) > -1;
-        vm.tsrDocLink = '';
-        if (vm.tsrShown) {
-            vm.tsrDocLink = HOST + '/ctrp/registry/trial_documents/download_tsr_in_rtf/' + vm.curTrial.id || '';
-        }
+        vm.tsrDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'TSR', is_latest: true}) || {id: ''};
+        console.info('tsrDoc: ', vm.tsrDoc);
+        vm.changeMemoDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Change Memo', is_latest: true}) || {id: ''};
+        vm.proHighlightedDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Protocol Highlighted Document', is_latest: true}) || {id: ''};
+        console.info('changeMemoDoc: ', vm.changeMemoDoc, vm.proHighlightedDoc);
 
         /*
         var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
@@ -117,6 +118,7 @@
         })
         console.info('latestDocuments: ', latestDocuments);
         */
+
 
         vm.masterTrialCopy = {
             trial: angular.copy(vm.curTrial),
