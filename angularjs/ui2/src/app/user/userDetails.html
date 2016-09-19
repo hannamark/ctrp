@@ -6,11 +6,14 @@
         <div class="row">
             <h4>Edit User Profile</h4>
             <div class="row">
-                <div class="col-xs-12 col-sm-9">
-                    <a ng-if="!userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View trials owned by this user</a>
-                    <a ng-if="userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View my trials</a>
-                    <a ng-if="userDetailView.isCurrentUser && (userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.submitterDetail({username : userDetailView.userDetails.username })">View my trials</a>
-                </div>
+                <div class="col-xs-12 col-sm-9"> 
+                    <a ng-if="!userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_SITE-SU')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View trials owned by this user</a> 
+                    <a ng-if="userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_SITE-SU')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View my trials</a>  
+
+                    <a ng-if="!userDetailView.isCurrentUser && userDetailView.userRole === 'ROLE_SITE-SU'" ui-sref="main.manageUserDetail({username : userDetailView.userDetails.username })">View trials owned by this user</a>
+                    <a ng-if="userDetailView.isCurrentUser && userDetailView.userRole === 'ROLE_SITE-SU'" ui-sref="main.manageUserDetail({username : userDetailView.userDetails.username })">View my trials</a>
+
+                    <a ng-if="userDetailView.isCurrentUser && (userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER')" ui-sref="main.submitterDetail({username : userDetailView.userDetails.username })">View my trials</a> </div>
             </div>
         </div>
         <div class="row top-offset-xs"></div>
@@ -26,8 +29,11 @@
                                    ng-disabled="userDetailView.userRole !== 'ROLE_ADMIN' && userDetailView.userRole !== 'ROLE_ACCOUNT-APPROVER'">
                             <span class="form-control-feedback" ng-show="userDetailView.userDetails.username.length"></span>
                             <span class="help-block" ng-show="userDetail_form.username.$error.required">Username is Required</span>
-                            <div class="alert-warning" ng-if="userDetailView.newUserNameInvalid" >
-                                This username already exists on CTRP.</div>
+                            <div class="has-error" ng-if="userDetailView.newUserNameInvalid">
+                                <span class="help-block">
+                                    This username already exists on CTRP.
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -48,8 +54,11 @@
                             </select>
                             <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.user_status.id"></span>
                             <span class="help-block" ng-show="userDetail_form.userstatus.$error.required">Status is Required</span>
-                            <div class="alert-warning" ng-if="userDetailView.inactivatingUser = (userDetailView.statusArr | findObjByAttribute:'id':userDetailView.userDetails.user_status_id)[0].code === 'INA' && (userDetailView.statusArr | findObjByAttribute:'id':userDetailView.userDetailsOrig.user_status_id)[0].code !== 'INA'" >
-                                The User will no longer be able to access CTRP.</div>
+                            <div class="has-error" ng-if="userDetailView.inactivatingUser = (userDetailView.statusArr | findObjByAttribute:'id':userDetailView.userDetails.user_status_id)[0].code === 'INA' && (userDetailView.statusArr | findObjByAttribute:'id':userDetailView.userDetailsOrig.user_status_id)[0].code !== 'INA'">
+                                <span class="help-block">
+                                    The User will no longer be able to access CTRP.
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -64,7 +73,7 @@
                                 <option value="">Select a role</option>
                             </select>
                             <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.role.length"></span>
-                            <span class="help-block" ng-show="userDetail_form.role.$invalid">Role is Required</span>
+                            <span class="help-block" ng-show="userDetail_form.role.required">Role is Required</span>
                         </div>
                     </div>
 
@@ -158,10 +167,10 @@
                                ng-click="userDetailView.userRequestAdmin({username : userDetailView.userDetails.username})">Request for Admin Access</a>
                             <button type="submit" class="btn btn-primary pull-right" id="save_btn"
                                     ctrp-confirm
-                                    ng-disabled="userDetailView.newUserNameInvalid"
+                                    ng-disabled="userDetailView.newUserNameInvalid || userDetailView.disableBtn"
                                     ng-attr-confirm-off="{{userDetailView.confirmSave()}}"
                                     confirm-msg="{{userDetailView.confirmMsg}}">
-                                <i class="glyphicon glyphicon-ok"></i>  Save
+                                <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
 
                             <button type="button" class="btn btn-warning pull-right" ng-click="userDetailView.reset()">

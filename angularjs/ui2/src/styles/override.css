@@ -1644,21 +1644,21 @@ div[disabled] {
    margin-left:10px;
 }
 
-body.pam_trials .completion-date-comments {
+body.trial-abstraction-list .completion-date-comments {
     margin-top:10px;
     width: 243px;
     height: 100px;
     border-color: #ddd;
 }
-body.pam_trials .date-radio {
+body.trial-abstraction-list .date-radio {
     width: 70px;
     text-align: center;
     float: left;
 }
-body.pam_trials .date-radio-group{
+body.trial-abstraction-list .date-radio-group{
     float: left;
 }
-body.pam_trials .date-radio-label {
+body.trial-abstraction-list .date-radio-label {
     width: 250px;
     float: left;
 }
@@ -1821,6 +1821,25 @@ body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_st
 
 .edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
     display: none;
+}
+
+
+body.trial-abstraction-search .pila {
+    width: 200px;
+    padding-left: 10px;
+    display: inline;
+    text-align: right;
+}
+body.trial-abstraction-search #submission_date_range .datepicker {
+    padding-right: 20px;
+}
+
+.text-block {
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #428bca;
+    font-size: 12px;
 }
 
 

@@ -12,6 +12,7 @@
 
     function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
         var vm = this;
+        vm.disableBtn = false;
 
         vm.userDetailsOrig = angular.copy(userDetailObj);
         if (vm.userDetailsOrig.username) {
@@ -33,7 +34,7 @@
         $rootScope.$broadcast('isWriteModeSupported', vm.userDetailsOrig.write_access);
 
         vm.updateUser = function (redirect) {
-
+            vm.disableBtn = true;
             vm.chooseTransferTrials = false;
             vm.showTransferTrialsModal = false;
             vm.showAddTrialsModal = false;
@@ -41,28 +42,34 @@
                 vm.userDetails.organization_id = vm.selectedOrgsArray[0].id;
             }
             UserService.upsertUser(vm.userDetails).then(function(response) {
-                if (response.username) {
-                    $scope.userDetail_form.$setPristine();
-                    vm.userDetails.send_activation_email = false;
-                    toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
-                    if (vm.userDetailsOrig.username !== response.username) {
-                        $state.go('main.userDetail', response, {reload: true});
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (response.username) {
+                        $scope.userDetail_form.$setPristine();
+                        vm.userDetails.send_activation_email = false;
+                        toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
+                        if (vm.userDetailsOrig.username !== response.username) {
+                            $state.go('main.userDetail', response, {reload: true});
+                        }
                     }
-                }
-                if (vm.logUserOut === true){
-                    vm.logUserOut = false;
-                    UserService.logout();
-                } else if (redirect) {
-                    UserService.allOrgUsers = null;
-                    $timeout(function() {
-                        $state.go('main.users', {}, {reload: true});
-                    }, 500);
-                } else {
-                    vm.userDetailsOrig = angular.copy(vm.userDetails);
-                    vm.getUserTrials();
+                    if (vm.logUserOut === true){
+                        vm.logUserOut = false;
+                        UserService.logout();
+                    } else if (redirect) {
+                        UserService.allOrgUsers = null;
+                        $timeout(function() {
+                            $state.go('main.users', {}, {reload: true});
+                        }, 500);
+                    } else {
+                        vm.userDetailsOrig = angular.copy(vm.userDetails);
+                        vm.getUserTrials();
+                    }
                 }
             }).catch(function(err) {
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
+            }).finally(function() {
+                vm.disableBtn = false;
             });
         };
 
@@ -86,10 +93,14 @@
         vm.validateUserName = function() {
 
             UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
-                if ( data.total >  0 && vm.userDetails.username !== vm.userDetailsOrig.username){
-                    vm.newUserNameInvalid = true;
-                } else {
-                    vm.newUserNameInvalid = false;
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if ( data.total >  0 && vm.userDetails.username !== vm.userDetailsOrig.username){
+                        vm.newUserNameInvalid = true;
+                    } else {
+                        vm.newUserNameInvalid = false;
+                    }
                 }
             }).catch(function (err) {
                 console.log('Search Users failed: ' + err);
@@ -102,28 +113,36 @@
             // if inactivating user or changing org of user, check to transfer trials if trials exist
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
+                vm.disableBtn = true;
+
                 UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
-                    vm.gridTrialsOwnedOptions.totalItems = data.total;
-                    if (vm.gridTrialsOwnedOptions.totalItems > 0
-                           && (vm.userRole === 'ROLE_ADMIN'
-                                || vm.userRole === 'ROLE_SUPER'
-                                    || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
-                                        || vm.userRole === 'ROLE_SITE-SU') ) {
-                            if ( vm.isCurrentUser && vm.checkForOrgChange() ) {
-                                vm.logUserOut = true;
-                            }
-                            vm.chooseTransferTrials = true;
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
+                        vm.gridTrialsOwnedOptions.totalItems = data.total;
+                        if (vm.gridTrialsOwnedOptions.totalItems > 0
+                               && (vm.userRole === 'ROLE_ADMIN'
+                                    || vm.userRole === 'ROLE_SUPER'
+                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
+                                            || vm.userRole === 'ROLE_SITE-SU') ) {
+                                if ( vm.isCurrentUser && vm.checkForOrgChange() ) {
+                                    vm.logUserOut = true;
+                                }
+                                vm.chooseTransferTrials = true;
+                                return;
+                        } else if (vm.isCurrentUser) {
+                            vm.updateAfterModalSave = true;
+                            vm.logUserOut = true;
+                            vm.confirmChangeFamilyPopUp = true;
                             return;
-                    } else if (vm.isCurrentUser) {
-                        vm.updateAfterModalSave = true;
-                        vm.logUserOut = true;
-                        vm.confirmChangeFamilyPopUp = true;
-                        return;
-                    } else {
-                        vm.updateUser(vm.checkForOrgChange());
-                        return;
+                        } else {
+                            vm.updateUser(vm.checkForOrgChange());
+                            return;
+                        }
                     }
+                }).finally(function() {
+                    vm.disableBtn = false;
                 });
             } else {
                 vm.updateUser();
@@ -163,9 +182,13 @@
             var redirect = vm.checkForOrgChange();
 
             UserService.endUserTrialsOwnership({user_id: vm.userDetails.id}).then(function (data) {
-                if(data.results === 'success') {
-                    vm.getUserTrials();
-                    vm.updateUser(redirect);
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (data.results === 'success') {
+                        vm.getUserTrials();
+                        vm.updateUser(redirect);
+                    }
                 }
             });
         };
@@ -176,25 +199,29 @@
         };
 
         AppSettingsService.getSettings({ setting: 'USER_ROLES'}).then(function (response) {
-            vm.rolesArr = JSON.parse(response.data[0].settings);
-            vm.assignRoles = _.find(vm.rolesArr, function(obj) { return obj.id === vm.userRole }).assign_access;
-            if (vm.assignRoles.length) {
-                var rolesArr = [];
-                angular.forEach(vm.rolesArr, function(role){
-                    if (vm.assignRoles.indexOf(role.id) > -1) {
-                        rolesArr.push(role);
-                    } else if(role.id === vm.userDetails.role) {
-                        rolesArr.push(role);
-                        vm.irreversibleRoleSwitchName = role.name;
-                        vm.irreversibleRoleSwitchId = role.id;
-                    }
-                    if (role.id === vm.userDetails.role) {
-                        vm.currentRoleName = role.name;
-                    }
-                });
-                vm.rolesArr = rolesArr;
-            } else {
-                vm.disableRows = true;
+            var status = response.status;
+
+            if (status >= 200 && status <= 210) {
+                vm.rolesArr = JSON.parse(response.data[0].settings);
+                vm.assignRoles = _.find(vm.rolesArr, function(obj) { return obj.id === vm.userRole }).assign_access;
+                if (vm.assignRoles.length) {
+                    var rolesArr = [];
+                    angular.forEach(vm.rolesArr, function(role){
+                        if (vm.assignRoles.indexOf(role.id) > -1) {
+                            rolesArr.push(role);
+                        } else if(role.id === vm.userDetails.role) {
+                            rolesArr.push(role);
+                            vm.irreversibleRoleSwitchName = role.name;
+                            vm.irreversibleRoleSwitchId = role.id;
+                        }
+                        if (role.id === vm.userDetails.role) {
+                            vm.currentRoleName = role.name;
+                        }
+                    });
+                    vm.rolesArr = rolesArr;
+                } else {
+                    vm.disableRows = true;
+                }
             }
         }).catch(function (err) {
             vm.rolesArr = [];
@@ -204,30 +231,34 @@
         vm.statusArr = [];
 
         UserService.getUserStatuses().then(function (response) {
-            vm.statusArr = response.data;
-            var allowedROLESITESU = ['ROLE_SITE-SU', 'ROLE_SUPER', 'ROLE_ABSTRACTOR'];
-            if (_.contains(allowedROLESITESU, vm.userRole)) {
-                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
-                    var allowedStatus = ['INR'];
-                    if (vm.userDetails.status_date) {
-                        allowedStatus.push('ACT', 'INA');
-                    }
-                    return _.contains(allowedStatus, item.code);
-                });
-            } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
-                vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
-                    var allowedStatus = ['ACT', 'INR'];
-                    return _.contains(allowedStatus, item.code);
-                });
-            } else {
-                vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
-                    var allowedStatus = ['ACT', 'INR'];
-                    if (!vm.userDetails.status_date) {
-                    } else {
-                        allowedStatus.push('INA', 'DEL');
-                    }
-                    return _.contains(allowedStatus, item.code);
-                });
+            var status = response.status;
+
+            if (status >= 200 && status <= 210) {
+                vm.statusArr = response.data;
+                var allowedROLESITESU = ['ROLE_SITE-SU', 'ROLE_SUPER', 'ROLE_ABSTRACTOR'];
+                if (_.contains(allowedROLESITESU, vm.userRole)) {
+                    vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                        var allowedStatus = ['INR'];
+                        if (vm.userDetails.status_date) {
+                            allowedStatus.push('ACT', 'INA');
+                        }
+                        return _.contains(allowedStatus, item.code);
+                    });
+                } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+                    vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
+                        var allowedStatus = ['ACT', 'INR'];
+                        return _.contains(allowedStatus, item.code);
+                    });
+                } else {
+                    vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
+                        var allowedStatus = ['ACT', 'INR'];
+                        if (!vm.userDetails.status_date) {
+                        } else {
+                            allowedStatus.push('INA', 'DEL');
+                        }
+                        return _.contains(allowedStatus, item.code);
+                    });
+                }
             }
         });
 
@@ -477,7 +508,7 @@
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
+            vm.gridApi.core.on.sortChanged($scope, sortUserListChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchOwnedParams.start = newPage;
                 vm.searchOwnedParams.rows = pageSize;
@@ -490,9 +521,13 @@
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS, allSearchParams).then(
                 function (data) {
-                    vm.gridTrialsOwnedOptions.useExternalPagination = false;
-                    vm.gridTrialsOwnedOptions.useExternalSorting = false;
-                    vm.gridTrialsOwnedOptions.data = data['trials'];
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridTrialsOwnedOptions.useExternalPagination = false;
+                        vm.gridTrialsOwnedOptions.useExternalSorting = false;
+                        vm.gridTrialsOwnedOptions.data = data['trials'];
+                    }
                 }
             );
         };
@@ -520,9 +555,13 @@
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
                 function (data) {
-                    vm.gridTrialsSubmittedOptions.useExternalPagination = false;
-                    vm.gridTrialsSubmittedOptions.useExternalSorting = false;
-                    vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridTrialsSubmittedOptions.useExternalPagination = false;
+                        vm.gridTrialsSubmittedOptions.useExternalSorting = false;
+                        vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                    }
                 }
             );
         };
@@ -532,8 +571,12 @@
                 vm.gridTrialsSubmittedOptions.useExternalPagination = true;
                 vm.gridTrialsSubmittedOptions.useExternalSorting = true;
                 UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
-                    vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
-                    vm.gridTrialsSubmittedOptions.totalItems = data.total;
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                        vm.gridTrialsSubmittedOptions.totalItems = data.total;
+                    }
                 }).catch(function (err) {
                     console.log('Get User Submitted Trials failed');
                 });
@@ -561,9 +604,13 @@
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
                 function (data) {
-                    vm.gridTrialsParticipationOptions.useExternalPagination = false;
-                    vm.gridTrialsParticipationOptions.useExternalSorting = false;
-                    vm.gridTrialsParticipationOptions.data = data['trial_submissions'];
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridTrialsParticipationOptions.useExternalPagination = false;
+                        vm.gridTrialsParticipationOptions.useExternalSorting = false;
+                        vm.gridTrialsParticipationOptions.data = data['trial_submissions'];
+                    }
                 }
             );
         };
@@ -576,8 +623,12 @@
             vm.gridTrialsParticipationOptions.useExternalPagination = true;
             vm.gridTrialsParticipationOptions.useExternalSorting = true;
             UserService.getUserTrialsParticipation(vm.searchParticipatingParams).then(function (data) {
-                vm.gridTrialsParticipationOptions.data = data['trial_submissions'];
-                vm.gridTrialsParticipationOptions.totalItems = data.total;
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.gridTrialsParticipationOptions.data = data['trial_submissions'];
+                    vm.gridTrialsParticipationOptions.totalItems = data.total;
+                }
             }).catch(function (err) {
                 console.log('Get User Participation Trials failed');
             });
@@ -595,8 +646,12 @@
                 vm.gridTrialsOwnedOptions.useExternalPagination = true;
                 vm.gridTrialsOwnedOptions.useExternalSorting = true;
                 UserService.getUserTrialsSubmitted(vm.searchOwnedParams).then(function (data) {
-                    vm.gridTrialsOwnedOptions.data = data['trial_submissions'];
-                    vm.gridTrialsOwnedOptions.totalItems = data.total;
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridTrialsOwnedOptions.data = data['trial_submissions'];
+                        vm.gridTrialsOwnedOptions.totalItems = data.total;
+                    }
                 }).catch(function (err) {
                     console.log('Get User Owned Trials failed');
                 });
@@ -636,14 +691,18 @@
                     searchParams['trial_ids'] = trialOwnershipIdArr;
                 }
                 UserService.endUserTrialsOwnership(searchParams).then(function (data) {
-                    if (data.results === 'success') {
-                        toastr.success('Trial Ownership Removed', 'Success!');
-                        vm.getUserTrials();
-                    }
-                    vm.trialOwnershipRemoveIdArr = null;
-                    if (vm.updateAfterModalSave) {
-                        vm.updateUser(vm.checkForOrgChange());
-                        vm.updateAfterModalSave = false;
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        if (data.results === 'success') {
+                            toastr.success('Trial Ownership Removed', 'Success!');
+                            vm.getUserTrials();
+                        }
+                        vm.trialOwnershipRemoveIdArr = null;
+                        if (vm.updateAfterModalSave) {
+                            vm.updateUser(vm.checkForOrgChange());
+                            vm.updateAfterModalSave = false;
+                        }
                     }
                 });
                 vm.confirmRemoveTrialOwnershipsPopUp = false;
@@ -654,7 +713,11 @@
         var activate = function() {
             if(vm.userDetails.organization_id != null) {
                 OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
-                    vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': organization.name}];
+                    var status = organization.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': organization.name}];
+                    }
                 });
             }
         }();
@@ -668,7 +731,7 @@
          * @param grid
          * @param sortColumns
          */
-        function sortOwnedChangedCallBack(grid, sortColumns) {
+        function sortUserListChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
                 vm.searchParams.sort = 'nci_id';
@@ -690,6 +753,7 @@
             //do the search with the updated sorting
             vm.getUserTrials();
         } //sortChangedCallBack
+
         function sortSubmittedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
@@ -718,4 +782,4 @@
             vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
-})();
+}());

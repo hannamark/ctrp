@@ -90,9 +90,9 @@ exports.config = {
         'features/Reg\ F15\ Register\ Trial\ Save\ as\ Draft.feature',
 
         /************* PAS Features ************/
-        'features/PAS\ F01\ Add\ and\ Edit\ Trial\ Descriptions.Feature',
-        'features/PAS\ F04\ Outcome\ Measures.Feature',
-        'features/PAS\ F06\ Associated\ Trials.Feature',
+        'features/PAS\ F01\ Add\ and\ Edit\ Trial\ Descriptions.feature',
+        'features/PAS\ F04\ Outcome\ Measures.feature',
+        'features/PAS\ F06\ Associated\ Trials.feature',
 
         /************* PO F2-F15 ************/
         'features/PO\ F2\ Search\ for\ Organizations.feature',

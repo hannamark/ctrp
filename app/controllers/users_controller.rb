@@ -35,9 +35,7 @@ class UsersController < ApplicationController
     roles["ROLE_ADMIN"] = "Admin"
     roles["ROLE_CURATOR"] = "Curator"
     roles["ROLE_ABSTRACTOR"] = "Abstractor",
-    roles["ROLE_ABSTRACTOR-SU"] = "Abstractor SU"
     roles["ROLE_TRIAL-SUBMITTER"] = "Trial Submitter"
-    roles["ROLE_ACCRUAL-SUBMITTER"] = "Accrual Submitter"
     roles["ROLE_SITE-SU"] = "Site Administrator"
     roles["ROLE_SERVICE-REST"] = "Service Rest"
 
@@ -74,6 +72,13 @@ class UsersController < ApplicationController
       end
     end
 
+    rejectUpdate = false
+    if (!approverAccess(current_user) && newUser) || (!approverAccess(current_user) && (@user.username != user_params[:username]))
+      rejectUpdate = true
+    elsif (@user.username != user_params[:username]) && approverAccess(current_user)
+      @name_change = true
+    end
+
     sendActivationEmail = false
     if params[:send_activation_email] == true
       sendActivationEmail = true
@@ -83,7 +88,7 @@ class UsersController < ApplicationController
     @families = Family.find_unexpired_matches_by_org(@user.organization_id)
     respond_to do |format|
       #must be correct admin for the org, or with correct role or user him/herself
-      if userWriteAccess(@user) && @user.update_attributes(user_params)
+      if userWriteAccess(@user) && @user.update_attributes(user_params) && !rejectUpdate
         if (user_params[:role] == 'ROLE_SITE-SU' &&  initalUserRole != 'ROLE_SITE-SU') || newUser || sendActivationEmail
           if justRegistered && @user.domain == "NIHEXT"
             mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
@@ -114,6 +119,7 @@ class UsersController < ApplicationController
           end
 
         end
+
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render json: @user}
       else
@@ -206,7 +212,7 @@ end
         @users = User.all
       end
 
-      if ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
+      if (abstractionAccess current_user)
         if params[:family_id].present?
             @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
         elsif params[:organization_id].present?
@@ -214,10 +220,10 @@ end
         end
       end
 
-      if (['ROLE_SITE-SU'].include? current_user.role) && params[:registered_users] != true
+      if ['ROLE_SITE-SU'].include? current_user.role
         any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
         @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
-        @users = @users.matches_all_registered()
+        @users = @users.where(role: ['ROLE_TRIAL-SUBMITTER','ROLE_SITE-SU']).matches_all_registered()
         if any_membership
             @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
         else
@@ -330,7 +336,16 @@ end
     if current_site_user
       user = current_site_user
     end
-    user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false
+    user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || (userWriteAccess userToUpdate) ) : false
+  end
+
+
+  def approverAccess user
+    ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER'].include? user.role
+  end
+
+  def abstractionAccess user
+    ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? user.role
   end
 
   def userWriteAccess userToUpdate
@@ -338,9 +353,9 @@ end
       user = current_site_user
     end
     user && userToUpdate ?
-        ( user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_SUPER' || (userToUpdate && user.id == userToUpdate.id) ||
-        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) : false
+        ( ( (abstractionAccess user) || (userToUpdate && user.id == userToUpdate.id) ||
+        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) &&
+            ( !(!(abstractionAccess user) && (abstractionAccess userToUpdate))) ) : false
   end
 
   def searchAccess
@@ -348,9 +363,7 @@ end
       user = current_site_user
     end
     user ?
-        ( user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-        user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-        user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id) ) : false
+        ( user.role == 'ROLE_RO' || (abstractionAccess user) || (isSiteAdminForOrg user, user.organization_id) ) : false
   end
 
   # Use callbacks to share common setup or constraints between actions.

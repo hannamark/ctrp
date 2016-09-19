@@ -52,25 +52,29 @@
 
             PromiseTimeoutService.postDataExpectObj('/ctrp/sign_in.json', userObj)
                 .then(function (data) {
-                    if (data.token) {
-                        LocalCacheService.cacheItem('token', data.token);
-                        LocalCacheService.cacheItem('username', userObj.user.username);
-                        LocalCacheService.cacheItem('user_id', data.user_id);
-                        _setAppVersion(data.app_version);
-                        LocalCacheService.cacheItem('user_role', data.role);
-                        LocalCacheService.cacheItem('user_type', data.user_type);
-                        //array of write_modes for each area (e.g. pa or po)
-                        LocalCacheService.cacheItem('write_modes', data.privileges || []);
-                        LocalCacheService.cacheItem('curation_enabled', false);
-                        toastr.success('Login is successful', 'Logged In!');
-                        Common.broadcastMsg('signedIn');
+                    var status = data.server_response.status;
 
-                        $timeout(function () {
-                            openGsaModal();
-                        }, 500);
-                    } else {
-                        toastr.error('Login failed', 'Login error', { timeOut: 0});
-                        userObj.processing = false;
+                    if (status >= 200 && status <= 210) {
+                        if (data.token) {
+                            LocalCacheService.cacheItem('token', data.token);
+                            LocalCacheService.cacheItem('username', userObj.user.username);
+                            LocalCacheService.cacheItem('user_id', data.user_id);
+                            _setAppVersion(data.app_version);
+                            LocalCacheService.cacheItem('user_role', data.role);
+                            LocalCacheService.cacheItem('user_type', data.user_type);
+                            //array of write_modes for each area (e.g. pa or po)
+                            LocalCacheService.cacheItem('write_modes', data.privileges || []);
+                            LocalCacheService.cacheItem('curation_enabled', false);
+                            toastr.success('Login is successful', 'Logged In!');
+                            Common.broadcastMsg('signedIn');
+
+                            $timeout(function () {
+                                openGsaModal();
+                            }, 500);
+                        } else {
+                            toastr.error('Login failed', 'Login error', { timeOut: 0});
+                            userObj.processing = false;
+                        }
                     }
                 }).catch(function (err) {
                     $log.error('error in log in: ' + JSON.stringify(err));
@@ -90,16 +94,21 @@
                 userCtrl.isCurationModeSupported = false;
             }
             var username = LocalCacheService.getCacheWithKey('username');
-            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {username: username, source: 'Angular'})
+            var user_id = LocalCacheService.getCacheWithKey('user_id');
+            PromiseTimeoutService.postDataExpectObj('/ctrp/sign_out.json', {user_id: user_id, username: username, source: 'Angular'})
                 .then(function (data) {
-                    if (data.success) {
-                        LocalCacheService.clearAllCache();
-                        Common.broadcastMsg('loggedOut');
-                        toastr.success('Success', 'Successfully logged out');
+                    var status = data.server_response.status;
 
-                        $timeout(function () {
-                            $state.go('main.sign_in');
-                        }, 200);
+                    if (status >= 200 && status <= 210) {
+                        if (data.success) {
+                            LocalCacheService.clearAllCache();
+                            Common.broadcastMsg('loggedOut');
+                            toastr.success('Success', 'Successfully logged out');
+
+                            $timeout(function () {
+                                $state.go('main.sign_in');
+                            }, 200);
+                        }
                     }
                 }).catch(function (err) {
                     $log.error('error in logging out: ' + JSON.stringify(err));
@@ -179,10 +188,14 @@
         this.userRequestAdmin = function (params) {
             PromiseTimeoutService.postDataExpectObj('/ctrp/users/request_admin/' + params.username, params)
                 .then(function (data) {
-                    if(data[0].success) {
-                        toastr.success('Success', 'Your Request for Admin Access has been sent.');
-                    } else {
-                        toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error', { timeOut: 0});
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        if(data[0].success) {
+                            toastr.success('Success', 'Your Request for Admin Access has been sent.');
+                        } else {
+                            toastr.error('Your Request for Admin Access has NOT been sent. Please try again later.', 'Error', { timeOut: 0});
+                        }
                     }
                 });
         };
@@ -199,12 +212,16 @@
             var userRole = service.getUserRole();
             if ( userRole ) {
                 AppSettingsService.getSettings({setting: 'USER_ROLES'}).then(function (response) {
-                    var userRole = service.getUserRole();
-                    var rolesArr = JSON.parse(response.data[0].settings);
-                    var roleName = _.find(rolesArr, function (obj) {
-                        return obj.id === userRole
-                    }).name.toLowerCase();
-                    controller.userRoleName = roleName;
+                    var status = response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        var userRole = service.getUserRole();
+                        var rolesArr = JSON.parse(response.data[0].settings);
+                        var roleName = _.find(rolesArr, function (obj) {
+                            return obj.id === userRole
+                        }).name.toLowerCase();
+                        controller.userRoleName = roleName;
+                    }
                 }).catch(function (err) {
                     console.log("Error in retrieving USER_ROLES " + err);
                     return '';
@@ -343,75 +360,87 @@
 
         this.createTransferTrialsOwnership = function (controller, trialIdArr) {
             service.getUserStatuses().then(function (response) {
-                var review_id = _.where(response.data, {code: 'ACT'})[0].id;
-                service.getAllOrgUsers({
-                    'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
-                    'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id,
-                    'user_status_id': review_id
-                }).then(function (data) {
-                    if (controller.showTransferTrialsModal === false) {
-                        controller.showTransferTrialsModal = true;
-                    }
-                    controller.userOptions = {
-                        title: '',
-                        type: 'users',
-                        filterPlaceHolder: 'Start typing to filter the users below.',
-                        labelAll: 'Unselected Users',
-                        labelSelected: 'Selected Users',
-                        helpMessage: ' Click on names to transfer users between selected and unselected.',
-                        orderProperty: 'name',
-                        resetItems: [],
-                        items: [],
-                        selectedItems: [],
-                        openModal: controller.showTransferTrialsModal,
-                        showSave: controller.showTransferTrialsModal,
-                        confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
-                        close: function () {
-                            controller.showTransferTrialsModal = false;
-                        },
-                        reset: function () {
-                            controller.userOptions.searchTerm = '';
-                            controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
-                            controller.userOptions.selectedItems = [];
-                        },
-                        save: function () {
-                            var searchParams = {
-                                from_user_id: controller.userDetails.id,
-                                to_user_ids: []
-                            };
-                            var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
-                            if (trialIdArr && trialIdArr.length){
-                                searchParams.to_user_ids = user_ids;
-                                searchParams.ids = trialIdArr;
-                            } else {
-                                searchParams.to_user_ids = user_ids;
-                            }
+                var status = response.status;
 
-                            service.transferUserTrialsOwnership(searchParams).then(function (data) {
-                                if(data.results.complete === true) {
-                                    toastr.success('Trial Ownership Transferred', 'Success!');
-                                    if (controller.passiveTransferMode) {
-                                        controller.passiveTransferMode = false;
-                                        controller.updateUser(controller.checkForOrgChange());
+                if (status >= 200 && status <= 210) {
+                    var review_id = _.where(response.data, {code: 'ACT'})[0].id;
+                    service.getAllOrgUsers({
+                        'organization_id': (controller.userDetails && controller.userDetails.organization ? controller.userDetails.organization.id: false) || controller.organization_id,
+                        'family_id': (controller.userDetails && controller.userDetails.org_families[0] ? controller.userDetails.org_families[0].id: false) || controller.family_id,
+                        'user_status_id': review_id
+                    }).then(function (data) {
+                        var status = data.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            if (controller.showTransferTrialsModal === false) {
+                                controller.showTransferTrialsModal = true;
+                            }
+                            controller.userOptions = {
+                                title: '',
+                                type: 'users',
+                                filterPlaceHolder: 'Start typing to filter the users below.',
+                                labelAll: 'Unselected Users',
+                                labelSelected: 'Selected Users',
+                                helpMessage: ' Click on names to transfer users between selected and unselected.',
+                                orderProperty: 'name',
+                                resetItems: [],
+                                items: [],
+                                selectedItems: [],
+                                openModal: controller.showTransferTrialsModal,
+                                showSave: controller.showTransferTrialsModal,
+                                confirmMessage: 'You have selected to transfer ownership of the trials to the Selected User(s) above.',
+                                close: function () {
+                                    controller.showTransferTrialsModal = false;
+                                },
+                                reset: function () {
+                                    controller.userOptions.searchTerm = '';
+                                    controller.userOptions.items = angular.copy(controller.userOptions.resetItems);
+                                    controller.userOptions.selectedItems = [];
+                                },
+                                save: function () {
+                                    var searchParams = {
+                                        from_user_id: controller.userDetails.id,
+                                        to_user_ids: []
+                                    };
+                                    var user_ids = _.chain(controller.userOptions.selectedItems).pluck('id').value();
+                                    if (trialIdArr && trialIdArr.length){
+                                        searchParams.to_user_ids = user_ids;
+                                        searchParams.ids = trialIdArr;
                                     } else {
-                                        controller.getUserTrials();
+                                        searchParams.to_user_ids = user_ids;
                                     }
+
+                                    service.transferUserTrialsOwnership(searchParams).then(function (data) {
+                                        var status = data.server_response.status;
+
+                                        if (status >= 200 && status <= 210) {
+                                            if(data.results.complete === true) {
+                                                toastr.success('Trial Ownership Transferred', 'Success!');
+                                                if (controller.passiveTransferMode) {
+                                                    controller.passiveTransferMode = false;
+                                                    controller.updateUser(controller.checkForOrgChange());
+                                                } else {
+                                                    controller.getUserTrials();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+                            _.each(data.users, function (user) {
+                                if(user.id !== (controller.userDetails ? controller.userDetails.id : null)) {
+                                    controller.userOptions.items.push({
+                                        'id': user.id,
+                                        'col1': user.last_name + ', ' + user.first_name + ' (' + user.username + ')',
+                                        'col2': user.email,
+                                        'col3': user.organization_name
+                                    });
                                 }
                             });
-                        }
-                    };
-                    _.each(data.users, function (user) {
-                        if(user.id !== (controller.userDetails ? controller.userDetails.id : null)) {
-                            controller.userOptions.items.push({
-                                'id': user.id,
-                                'col1': user.last_name + ', ' + user.first_name + ' (' + user.username + ')',
-                                'col2': user.email,
-                                'col3': user.organization_name
-                            });
+                            controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
                         }
                     });
-                    controller.userOptions.resetItems = angular.copy(controller.userOptions.items);
-                });
+                }
             });
 
         };
@@ -444,7 +473,7 @@
             }
             return menuArr;
         };
-        
+
         this.TransferTrialsAddGridItem = function (scope, controller) {
             var curUserRole = service.getUserRole();
             var menuArr =
