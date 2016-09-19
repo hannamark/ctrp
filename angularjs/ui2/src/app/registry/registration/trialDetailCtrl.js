@@ -96,6 +96,9 @@
         vm.isAmendmentSubmission = _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
         vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
         vm.isDocDeletionAllowed = latestSubNum === -1; // only allow deletion in original registration
+        vm.changeMemoDoc = {file_name: ''};
+        vm.proHighlightedDoc = {file_name: ''};
+
         console.info('isAmendmentSubmission: ', vm.isAmendmentSubmission, vm.isOriginalSubmission);
         console.info('vm.curTrial.trial_documents: ', vm.curTrial.trial_documents);
         var milestones = getMilestoneCodes(vm.curTrial);
@@ -103,9 +106,11 @@
         vm.tsrShown = _.findIndex(milestones, {code: 'TSR'}) > -1;
         vm.tsrDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'TSR', is_latest: true}) || {id: ''};
         console.info('tsrDoc: ', vm.tsrDoc);
-        vm.changeMemoDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Change Memo', is_latest: true}) || {id: ''};
-        vm.proHighlightedDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Protocol Highlighted Document', is_latest: true}) || {id: ''};
-        console.info('changeMemoDoc: ', vm.changeMemoDoc, vm.proHighlightedDoc);
+        if (vm.isAmendmentSubmission) {
+            vm.changeMemoDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Change Memo', is_latest: true}) || {id: ''};
+            vm.proHighlightedDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Protocol Highlighted Document', is_latest: true}) || {id: ''};
+            console.info('changeMemoDoc: ', vm.changeMemoDoc, vm.proHighlightedDoc);
+        }
 
         /*
         var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
