@@ -98,6 +98,14 @@
         vm.isDocDeletionAllowed = latestSubNum === -1; // only allow deletion in original registration
         console.info('isAmendmentSubmission: ', vm.isAmendmentSubmission, vm.isOriginalSubmission);
         console.info('vm.curTrial.trial_documents: ', vm.curTrial.trial_documents);
+        var milestones = getMilestoneCodes(vm.curTrial);
+        console.info('milestones: ', milestones);
+        vm.tsrShown = _.findIndex(milestones, {code: 'TSR'}) > -1;
+        vm.tsrDocLink = '';
+        if (vm.tsrShown) {
+            vm.tsrDocLink = HOST + '/ctrp/registry/trial_documents/download_tsr_in_rtf/' + vm.curTrial.id || '';
+        }
+
         /*
         var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
         latestDocuments = _.groupBy(latestDocuments, 'document_type');
@@ -1083,6 +1091,17 @@
                 appendAuthorities();
                 appendDocuments();
             }
+        }
+
+        function getMilestoneCodes(trialObj) {
+            if (!trialObj.milestone_wrappers) return [];
+            var milestones = _.map(trialObj.milestone_wrappers, function(msObj) {
+                msObj.milestone.submission_id = msObj.submission.id; // move attribute one-level up
+                msObj.milestone.submission_num = parseInt(msObj.submission.submission_num); // move one-level up
+                msObj.milestone.submission_type_code = msObj.submission.submission_type_code; // move one-level up
+                return msObj.milestone; // {id: '', code: '', name: ''}
+            });
+            return milestones;
         }
 
         function watchIndIdeQuestion() {
