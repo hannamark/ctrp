@@ -84,18 +84,9 @@ class Submission < TrialBase
     business_days
   end
 
-  scope :matches, -> (column, value) {
-    join_clause  = "LEFT JOIN trials submitted_trial ON submissions.trial_id = submitted_trial.id "
-    join_clause += "LEFT JOIN users ON submissions.user_id = users.id "
+  scope :matches, -> (column, value) { where("submissions.#{column} = ?", "#{value}") }
 
-    if column == 'internal_source_id'
-      joins(join_clause).where("submitted_trial.internal_source_id = #{value}")
-    elsif column == 'user_id'
-      joins(join_clause).where("submissions.user_id = #{value} AND submissions.trial_id is not null")
-    end
-  }
-
-  scope :matchesImpPro, -> (params, protocol_source_id_imp, protocol_source_id_pro) {
+  scope :matchesTrialSubmissions, -> (params, protocol_source_id_imp, protocol_source_id_pro) {
     time_parser_start = "to_char((("
     time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
     time_parser_with_hrs_mins_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy HH12:MI am')"
@@ -341,6 +332,25 @@ class Submission < TrialBase
                     AND submissions.trial_id is not null AND submissions.status = 'Active'
                     AND trials.is_rejected IS NOT true "
 
+    if params[:checked_out_by].present?
+      where_clause += "AND LOWER(trials.admin_checkout) like LOWER('%#{params[:checked_out_by]}%') OR LOWER(trials.scientific_checkout) like LOWER('%#{params[:checked_out_by]}%') "
+    end
+    if params[:submission_date_range_from].present?
+      where_clause += "AND to_date(submission_received_date, 'DD-Mon-yyyy') >= '#{params[:submission_date_range_from]}' "
+    end
+    if params[:submission_date_range_to].present?
+      where_clause += "AND to_date(submission_received_date, 'DD-Mon-yyyy') <= '#{params[:submission_date_range_to]}' "
+    end
+    if params[:organization_id].present?
+      where_clause += "AND users.organization_id = '#{params[:organization_id]}' "
+    end
+    if params[:priorities].present? && params[:priorities].select {|k,v| v == true}.keys.size > 0
+      where_clause += "AND trials.process_priority in ('#{params[:priorities].select {|k,v| v == true}.keys.join("','")}') "
+    end
+    if params[:submission_types].present?
+      #where_clause += "AND submission_type_label in ('#{params[:submission_types].select {|k,v| v == true}.keys.join("','")}') "
+    end
+
     if params[:org_id] && params[:type] == 'participating'
       join_clause += "inner join (
                             select distinct on (participating_sites.trial_id) participating_sites.trial_id
@@ -380,6 +390,7 @@ class Submission < TrialBase
       filter_clause.push("scientific_qc_start_date " + ( (params[:find_scientific_qc_completed] == true)? "IS NOT null" : "IS null"))
     end
 
+
     if filter_clause.length > 0
       where_clause += " AND (" + filter_clause.join(" AND ") + ")"
     end
@@ -398,6 +409,8 @@ class Submission < TrialBase
        trials.primary_comp_date,
        " + time_parser_start + "trials.verification_date" + time_parser_end + " as verification_date,
        trials.comp_date,
+       trials.admin_checkout,
+       trials.scientific_checkout,
 	     trim(trailing ', ' from
           concat(
 		          substring(trials.admin_checkout, 'by\":\"(.*?)\",\"date') || ' AD, ',

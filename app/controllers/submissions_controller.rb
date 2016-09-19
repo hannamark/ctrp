@@ -81,7 +81,7 @@ class SubmissionsController < ApplicationController
 
     params[:order] = 'asc' if params[:order].blank?
 
-    @trial_submissions = Submission.matchesImpPro(
+    @trial_submissions = Submission.matchesTrialSubmissions(
         params,
         InternalSource.find_by_code('IMP').id,
         InternalSource.find_by_code('PRO').id,

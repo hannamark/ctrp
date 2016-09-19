@@ -4,11 +4,11 @@
     'use strict';
 
     angular.module('ctrp.app.pa')
-        .controller('pamTrialCtrl', pamTrialCtrl);
+        .controller('pamTrialListCtrl', pamTrialListCtrl);
 
-    pamTrialCtrl.$inject = ['UserService', 'toastr', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', '$filter', 'URL_CONFIGS', 'uiGridExporterConstants', 'uiGridExporterService'];
+    pamTrialListCtrl.$inject = ['UserService', 'toastr', 'PromiseTimeoutService', 'uiGridConstants', 'userDetailObj','MESSAGES', '$rootScope', '$scope', '$filter', 'URL_CONFIGS', 'uiGridExporterConstants', 'uiGridExporterService'];
 
-    function pamTrialCtrl(UserService, toastr, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, $filter, URL_CONFIGS, uiGridExporterConstants, uiGridExporterService) {
+    function pamTrialListCtrl(UserService, toastr, PromiseTimeoutService, uiGridConstants, userDetailObj, MESSAGES, $rootScope, $scope, $filter, URL_CONFIGS, uiGridExporterConstants, uiGridExporterService) {
         var vm = this;
 
         vm.userDetails = userDetailObj;
