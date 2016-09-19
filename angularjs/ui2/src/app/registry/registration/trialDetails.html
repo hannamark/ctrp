@@ -1219,10 +1219,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group" ng-show="trialDetailView.tsrDocLink.length > 0 && trialDetailView.tsrShown">
+                        <div class="form-group" ng-show="trialDetailView.tsrShown">
                             <label class="control-label col-xs-12 col-sm-3">TSR:</label>
                             <div class="col-xs-12 col-sm-9 form-text">
-                                <a href="{{trialDetailView.tsrDocLink}}" target="_self">Current TSR (Generated after Trial Summary report Date Milestone)</a>
+                                <a href="{{trialDetailView.downloadBaseUrl}}/{{trialDetailView.tsrDoc.id}}" target="_self">{{trialDetailView.tsrDoc.file_name}}</a>
                             </div>
                         </div>
 

@@ -101,11 +101,8 @@
         var milestones = getMilestoneCodes(vm.curTrial);
         console.info('milestones: ', milestones);
         vm.tsrShown = _.findIndex(milestones, {code: 'TSR'}) > -1;
-        vm.tsrDocLink = '';
-        if (vm.tsrShown) {
-            vm.tsrDocLink = HOST + '/ctrp/registry/trial_documents/download_tsr_in_rtf/' + vm.curTrial.id || '';
-        }
-
+        vm.tsrDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'TSR', is_latest: true}) || {id: ''};
+        console.info('tsrDoc: ', vm.tsrDoc);
         /*
         var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
         latestDocuments = _.groupBy(latestDocuments, 'document_type');
@@ -117,6 +114,7 @@
         })
         console.info('latestDocuments: ', latestDocuments);
         */
+
 
         vm.masterTrialCopy = {
             trial: angular.copy(vm.curTrial),
