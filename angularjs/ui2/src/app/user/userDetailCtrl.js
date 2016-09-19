@@ -91,20 +91,21 @@
         };
 
         vm.validateUserName = function() {
+            if (vm.userDetails.username) {
+                UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
+                    var status = data.server_response.status;
 
-            UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
-                var status = data.server_response.status;
-
-                if (status >= 200 && status <= 210) {
-                    if ( data.total >  0 && vm.userDetails.username !== vm.userDetailsOrig.username){
-                        vm.newUserNameInvalid = true;
-                    } else {
-                        vm.newUserNameInvalid = false;
+                    if (status >= 200 && status <= 210) {
+                        if (data.total > 0 && vm.userDetails.username !== vm.userDetailsOrig.username) {
+                            vm.newUserNameInvalid = true;
+                        } else {
+                            vm.newUserNameInvalid = false;
+                        }
                     }
-                }
-            }).catch(function (err) {
-                console.log('Search Users failed: ' + err);
-            });
+                }).catch(function (err) {
+                    console.log('Search Users failed: ' + err);
+                });
+            }
         };
 
         vm.validateSave = function() {
@@ -244,7 +245,7 @@
                         }
                         return _.contains(allowedStatus, item.code);
                     });
-                } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+                } else if (vm.userRole === 'ROLE_ACCOUNT-APPROVER') {
                     vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
                         var allowedStatus = ['ACT', 'INR'];
                         return _.contains(allowedStatus, item.code);
@@ -252,8 +253,7 @@
                 } else {
                     vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
                         var allowedStatus = ['ACT', 'INR'];
-                        if (!vm.userDetails.status_date) {
-                        } else {
+                        if (vm.userDetails.status_date) {
                             allowedStatus.push('INA', 'DEL');
                         }
                         return _.contains(allowedStatus, item.code);
@@ -389,7 +389,7 @@
             minWidth: '250'
         };
 
-        if (vm.userDetails.write_access && vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
+        if (vm.userDetails.write_access && vm.userRole !== 'ROLE_TRIAL-SUBMITTER' && vm.userRole !== 'ROLE_ACCRUAL-SUBMITTER') {
             vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, writeNciId);
             vm.gridTrialsOwnedOptions.columnDefs.splice(4, 0, writeTitle);
             addRemainingFields();
@@ -710,8 +710,8 @@
             }
         };
         /****************** implementations below ***************/
-        var activate = function() {
-            if(vm.userDetails.organization_id != null) {
+        (function() {
+            if(vm.userDetails.organization_id !== null) {
                 OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
                     var status = organization.server_response.status;
 
@@ -720,7 +720,7 @@
                     }
                 });
             }
-        }();
+        }());
 
         $scope.$on(vm.redirectToAllUsers, function () {
             vm.states = [];
