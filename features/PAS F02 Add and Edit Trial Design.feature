@@ -14,8 +14,66 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
     |Observational              |
     |Ancillary Correlative      |
   
- 
- Scenario:#1a Fields displayed when Clinical Research Category is set to "Interventional"
+  When The Clinical Reasearch Category <ClinicalResearchCategoryS> is updated to <ClinicalResearchCategoryF>
+  Then the field <field> will follow the action rule <action> for display or delete
+  
+Examples:
+
+
+   |ClinicalResearchCategoryS              | ClinicalResearchCategoryF                 |field|                                   |action |
+
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                          |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                    |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose                        |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Secondary Purpose Other                  |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Trial Phase                              |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Is this a Pilot                          |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Intervention Model                       |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking                                  |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role Subject                     |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role investigator                |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role Caregiver                   |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Masking role outcome Assessor            |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Allocation                               |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Classification                     |deleted |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Model                              |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Study Model other                        |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Time Perspective                         |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Time Perspective Other                   |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen Retention                   |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Bio Specimen Description                 |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Number of Arms/Groups                    |displays |
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Target enrollment                        |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Final Enrollment for clinicalTrials.gov  |displays|
+   |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Accruals                                 |displays|
+
+	|Observational or Ancillary Correlative   |Interventional  or Expanded Access     |Primary Purpose                          |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Primary Purpose Other                    |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose                        |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Secondary Purpose Other                  |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Trial Phase                              |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Is this a Pilot                          |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Intervention Model                       |displays|   
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking                                  |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking role Subject                     |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking role investigator                |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking role Caregiver                   |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Masking role outcome Assessor            |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Allocation                               |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Study Classification                     |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Study Model                              |deleted |
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Study Model other                        |deleted |
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Time Perspective                         |deleted |
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Time Perspective Other                   |deleted | 
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Bio Specimen Retention                   |deleted |
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Bio Specimen Description                 |deleted |
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Number of Arms/Groups                    |displays|
+    |Observational or Ancillary Correlative |Interventional or Expanded Access        |Target enrollment                        |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Final Enrollment for clinicalTrials.gov  |displays|
+    |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Accruals                                 |displays|
+
+
+  Scenario:#1a Fields displayed when Clinical Research Category is set to "Interventional"
     Given I am on the Trial Design Screen
      When the Clinical Research Category Selected in "Interventional"
      Then the Trial Design Fields below will be displayed 
@@ -71,7 +129,7 @@ Scenario:#1c Fields displayed when Clinical Research Category is set to "Observa
   |Final Enrollment for CT.gov|
   |Accruals|
  
-Scenario:#1d Fields displayed when Clinical Research Category is set to "Ancillary Correlative"
+Scenario:#1c Fields displayed when Clinical Research Category is set to "Ancillary Correlative"
     Given I am on the Trial Design Screen
      When the Clinical Research Category Selected in "Ancillary Correlative"
      Then the Trial Design Fields below will be displayed 
