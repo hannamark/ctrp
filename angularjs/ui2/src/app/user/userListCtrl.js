@@ -45,8 +45,7 @@
                 enableSorting: true,
                 minWidth: '210',
                 width: '*',
-                cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">' +
-                '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="Organization Affiliation">{{COL_FIELD CUSTOM_FILTERS}}</div>'
             };
 
             var optionOrgFamilies = {
@@ -189,7 +188,7 @@
                         return _.contains(['ACT', 'INR'], item.code);
                     });
                 }
-                if (vm.curUser.role == 'ROLE_ACCOUNT-APPROVER') {
+                if (vm.curUser.role === 'ROLE_ACCOUNT-APPROVER') {
                     vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
                         return _.contains(['ACT', 'INR'], item.code);
                     });
@@ -207,11 +206,11 @@
                     vm.searchOrganizationFamily = '';
                 }
                 vm.searchType = vm.curUser.role;
-                vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
+                vm.gridOptions.columnDefs.push(userName, firstName, middleName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
             } else if (!vm.ownerListMode && !vm.registeredUsersPage){
-                vm.gridOptions.columnDefs.push(userName, firstName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
+                vm.gridOptions.columnDefs.push(userName, firstName, middleName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
             } else if (vm.ownerListMode || vm.registeredUsersPage) {
-                vm.gridOptions.columnDefs.push(userName, lastName, firstName, optionOrg, optionOrgFamilies);
+                vm.gridOptions.columnDefs.push(userName, lastName, firstName, middleName, optionOrg, optionOrgFamilies);
             }
             vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
             vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
@@ -300,7 +299,7 @@
                 return OrgService.typeAheadOrgNameSearch(vm.organization_name, vm.searchOrganizationFamily);
             };
 
-            vm.setTypeAheadOrg = function (searchObj) {
+            vm.setUserListTypeAheadOrg = function (searchObj) {
                 var splitVal = searchObj.split('<span class="hide">');
                 vm.organization_name = splitVal[0];
                 vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
@@ -376,20 +375,30 @@
             };
 
             vm.addOwnersSubmit = function () {
-                if (!vm.gridApi.selection.getSelectedRows().length) {
-                    vm.requireSelection = true;
-                } else {
+                if (validateSelection()) {
                     vm.confirmAddTrialsOwnerships(_.chain(vm.gridApi.selection.getSelectedRows()).pluck('id').value());
                 }
             };
 
             vm.removeOwnersSubmit = function () {
-                if (!vm.gridApi.selection.getSelectedRows().length) {
-                    vm.requireSelection = true;
-                } else {
+                if (validateSelection()) {
                     vm.confirmRemoveTrialsOwnerships(_.chain(vm.gridApi.selection.getSelectedRows()).pluck('id').value());
                 }
             };
+
+            vm.clearSelectedRows = function () {
+                vm.gridApi.selection.clearSelectedRows();
+                vm.requireSelection = false;
+            };
+
+            function validateSelection() {
+                if (!vm.gridApi.selection.getSelectedRows().length) {
+                    vm.requireSelection = true;
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 
             /****************************** implementations **************************/
 
