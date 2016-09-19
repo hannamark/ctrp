@@ -149,6 +149,7 @@
             findContextId: findContextId,
             checkUniqueOrganization: checkUniqueOrganization,
             typeAheadOrgNameSearch: typeAheadOrgNameSearch,
+            setTypeAheadOrg: setTypeAheadOrg,
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
             cloneCtepOrg: cloneCtepOrg,
@@ -241,6 +242,16 @@
             }
             return gridOptions;
         }
+
+        function setTypeAheadOrg (searchObj) {
+            var splitVal = searchObj.split('<span class="hide">');
+            var org_search_name = splitVal[0];
+            var userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+            return  {
+                organization_name: org_search_name,
+                organization_details: userChosenOrg
+            }
+        };
 
         function typeAheadOrgNameSearch(field, family) {
 

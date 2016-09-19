@@ -54,7 +54,7 @@
                                 <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
                                        autocomplete="off" placeholder="Organization Name"
                                        ng-model="userView.organization_name"
-                                       typeahead-on-select="userView.setTypeAheadOrg($item)"
+                                       typeahead-on-select="userView.setUserListTypeAheadOrg($item)"
                                        ng-if="!userView.userChosenOrg"
                                        uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                                        typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
@@ -172,9 +172,12 @@
                     <button type="submit" class="btn btn-primary pull-right" id="submit_processing" ng-click="userView.addOwnersSubmit()">
                         <i class="glyphicon glyphicon-ok"></i> Save
                     </button>
-                    <button type="button" class="btn btn-warning pull-right" id="out_cm_reset" ng-click="userView.gridApi.selection.clearSelectedRows()">
+                    <button type="button" class="btn btn-warning pull-right" id="out_cm_reset" ng-click="userView.clearSelectedRows()">
                         <i class="glyphicon glyphicon-remove"></i> Reset
                     </button>
+                </div>
+                <div class="add-association-error text-right" ng-if="userView.requireSelection">
+                    First make a selection.
                 </div>
             </div>
         </div>

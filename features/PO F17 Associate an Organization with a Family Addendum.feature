@@ -15,17 +15,22 @@ And the Family Search Results type will be displayed
 And Membership size column will only display the total count of active associated organizations
 When I select a Family to edit
 And I select the option to Add Family Membership
-And I Search Organizations and select an Organization
-And I select an effective date which is defaulted to the current date
-And I select an expiration date which is defaulted to null
-And I select either Organization or Affiliate Family Relationship 
+And I Search Organizations
+And I select an Organization
+And I the effective date will be defaulted to the current date
+And I the expiration date will defaulted to null
+And I select Relationship Type
+
+|Organization|
+|Affiliate Family|
+
 Then the Family is updated with the CTRP ID, CTEP ID, Organization Name, Family Relationship, effective date, and expiration date
 
 
 Scenario:#2 As a PO Curator, I can remove an organization From a Family
 Given I know which Family I want to update
 And I am logged in to CTRP PO application
-And I am have selected the option to search Families
+And I have selected the option to search Families
 And a list of Family Names is displayed
 And I select a Family to edit
 And the Family Organizations are displayed

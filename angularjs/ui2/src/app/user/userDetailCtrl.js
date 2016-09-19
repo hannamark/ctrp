@@ -91,20 +91,21 @@
         };
 
         vm.validateUserName = function() {
+            if (vm.userDetails.username) {
+                UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
+                    var status = data.server_response.status;
 
-            UserService.searchUsers({username: vm.userDetails.username}).then(function (data) {
-                var status = data.server_response.status;
-
-                if (status >= 200 && status <= 210) {
-                    if ( data.total >  0 && vm.userDetails.username !== vm.userDetailsOrig.username){
-                        vm.newUserNameInvalid = true;
-                    } else {
-                        vm.newUserNameInvalid = false;
+                    if (status >= 200 && status <= 210) {
+                        if (data.total > 0 && vm.userDetails.username !== vm.userDetailsOrig.username) {
+                            vm.newUserNameInvalid = true;
+                        } else {
+                            vm.newUserNameInvalid = false;
+                        }
                     }
-                }
-            }).catch(function (err) {
-                console.log('Search Users failed: ' + err);
-            });
+                }).catch(function (err) {
+                    console.log('Search Users failed: ' + err);
+                });
+            }
         };
 
         vm.validateSave = function() {
@@ -115,7 +116,7 @@
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
                 vm.disableBtn = true;
 
-                UserService.getUserTrialsOwnership(vm.searchParams).then(function (data) {
+                UserService.getUserTrialsOwnership(vm.searchOwnedParams).then(function (data) {
                     var status = data.server_response.status;
 
                     if (status >= 200 && status <= 210) {
@@ -244,7 +245,7 @@
                         }
                         return _.contains(allowedStatus, item.code);
                     });
-                } else if (vm.userRole == 'ROLE_ACCOUNT-APPROVER') {
+                } else if (vm.userRole === 'ROLE_ACCOUNT-APPROVER') {
                     vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
                         var allowedStatus = ['ACT', 'INR'];
                         return _.contains(allowedStatus, item.code);
@@ -252,8 +253,7 @@
                 } else {
                     vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item) {
                         var allowedStatus = ['ACT', 'INR'];
-                        if (!vm.userDetails.status_date) {
-                        } else {
+                        if (vm.userDetails.status_date) {
                             allowedStatus.push('INA', 'DEL');
                         }
                         return _.contains(allowedStatus, item.code);
@@ -282,8 +282,6 @@
 
         vm.export_row_type = "visible";
         vm.export_column_type = "visible";
-        vm.searchParams = new TrialSearchParams;
-        vm.viewCount = vm.searchParams.start + vm.searchParams.rows - 1;
         vm.gridTrialsOwnedOptions = {
             enableColumnResizing: true,
             totalItems: null,
@@ -391,7 +389,7 @@
             minWidth: '250'
         };
 
-        if (vm.userDetails.write_access && vm.userRole != 'ROLE_TRIAL-SUBMITTER' && vm.userRole != 'ROLE_ACCRUAL-SUBMITTER') {
+        if (vm.userDetails.write_access && vm.userRole !== 'ROLE_TRIAL-SUBMITTER' && vm.userRole !== 'ROLE_ACCRUAL-SUBMITTER') {
             vm.gridTrialsOwnedOptions.columnDefs.splice(0, 0, writeNciId);
             vm.gridTrialsOwnedOptions.columnDefs.splice(4, 0, writeTitle);
             addRemainingFields();
@@ -508,13 +506,14 @@
 
         vm.gridTrialsOwnedOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortOwnedChangedCallBack);
+            vm.gridApi.core.on.sortChanged($scope, sortTrialsOwnedChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.searchOwnedParams.start = newPage;
                 vm.searchOwnedParams.rows = pageSize;
                 vm.getUserTrials();
             });
         };
+
         vm.gridTrialsOwnedOptions.exporterAllDataFn = function () {
             var allSearchParams = angular.copy(vm.searchOwnedParams);
             allSearchParams.start = null;
@@ -533,6 +532,7 @@
         };
 
         /**** start copy for submitted */
+        vm.searchSubmittedParams = new TrialSearchParams;
         vm.gridTrialsSubmittedOptions = angular.copy(vm.gridTrialsOwnedOptions);
         vm.gridTrialsSubmittedOptions.exporterCsvFilename = vm.userDetails.username + '-submitted-trials.csv';
         vm.gridTrialsSubmittedOptions.exporterPdfHeader.text = 'Trials submitted by ' + vm.userDetails.username + ':';
@@ -544,13 +544,13 @@
             vm.gridApi = gridApi;
             vm.gridApi.core.on.sortChanged($scope, sortSubmittedChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                vm.searchParams.start = newPage;
-                vm.searchParams.rows = pageSize;
+                vm.searchSubmittedParams.start = newPage;
+                vm.searchSubmittedParams.rows = pageSize;
                 vm.getUserSubmittedTrials();
             });
         };
         vm.gridTrialsSubmittedOptions.exporterAllDataFn = function () {
-            var allSearchParams = angular.copy(vm.searchParams);
+            var allSearchParams = angular.copy(vm.searchSubmittedParams);
             allSearchParams.start = null;
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
@@ -567,10 +567,10 @@
         };
         vm.getUserSubmittedTrials = function () {
             //user_id is undefined if no user was found to begin with
-            if (vm.searchParams.user_id) {
+            if (vm.searchSubmittedParams.user_id) {
                 vm.gridTrialsSubmittedOptions.useExternalPagination = true;
                 vm.gridTrialsSubmittedOptions.useExternalSorting = true;
-                UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
+                UserService.getUserTrialsSubmitted(vm.searchSubmittedParams).then(function (data) {
                     var status = data.server_response.status;
 
                     if (status >= 200 && status <= 210) {
@@ -591,15 +591,15 @@
 
         vm.gridTrialsParticipationOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
-            vm.gridApi.core.on.sortChanged($scope, sortSubmittedChangedCallBack);
+            vm.gridApi.core.on.sortChanged($scope, sortParticipationChangedCallBack);
             vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                vm.searchParams.start = newPage;
-                vm.searchParams.rows = pageSize;
+                vm.searchParticipationParams.start = newPage;
+                vm.searchParticipationParams.rows = pageSize;
                 vm.getUserParticipationTrials();
             });
         };
         vm.gridTrialsParticipationOptions.exporterAllDataFn = function () {
-            var allSearchParams = angular.copy(vm.searchParams);
+            var allSearchParams = angular.copy(vm.searchParticipationParams);
             allSearchParams.start = null;
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
@@ -615,14 +615,14 @@
             );
         };
 
-        vm.searchParticipatingParams = new TrialSearchParams;
-        vm.searchParticipatingParams.type = 'participating';
-        vm.searchParticipatingParams.org_id = vm.userDetails.organization_id;
-        vm.searchParticipatingParams.user_id = undefined;
+        vm.searchParticipationParams = new TrialSearchParams;
+        vm.searchParticipationParams.type = 'participating';
+        vm.searchParticipationParams.org_id = vm.userDetails.organization_id;
+        vm.searchParticipationParams.user_id = undefined;
         vm.getUserParticipationTrials = function () {
             vm.gridTrialsParticipationOptions.useExternalPagination = true;
             vm.gridTrialsParticipationOptions.useExternalSorting = true;
-            UserService.getUserTrialsParticipation(vm.searchParticipatingParams).then(function (data) {
+            UserService.getUserTrialsParticipation(vm.searchParticipationParams).then(function (data) {
                 var status = data.server_response.status;
 
                 if (status >= 200 && status <= 210) {
@@ -710,8 +710,8 @@
             }
         };
         /****************** implementations below ***************/
-        var activate = function() {
-            if(vm.userDetails.organization_id != null) {
+        (function() {
+            if(vm.userDetails.organization_id !== null) {
                 OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
                     var status = organization.server_response.status;
 
@@ -720,7 +720,7 @@
                     }
                 });
             }
-        }();
+        }());
 
         $scope.$on(vm.redirectToAllUsers, function () {
             vm.states = [];
@@ -731,19 +731,19 @@
          * @param grid
          * @param sortColumns
          */
-        function sortOwnedChangedCallBack(grid, sortColumns) {
+        function sortTrialsOwnedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                vm.searchParams.sort = 'nci_id';
-                vm.searchParams.order = 'desc';
+                vm.searchOwnedParams.sort = 'nci_id';
+                vm.searchOwnedParams.order = 'desc';
             } else {
-                vm.searchParams.sort = sortColumns[0].name; //sort the column
+                vm.searchOwnedParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {
                     case uiGridConstants.ASC:
-                        vm.searchParams.order = 'ASC';
+                        vm.searchOwnedParams.order = 'ASC';
                         break;
                     case uiGridConstants.DESC:
-                        vm.searchParams.order = 'DESC';
+                        vm.searchOwnedParams.order = 'DESC';
                         break;
                     case undefined:
                         break;
@@ -753,19 +753,20 @@
             //do the search with the updated sorting
             vm.getUserTrials();
         } //sortChangedCallBack
+
         function sortSubmittedChangedCallBack(grid, sortColumns) {
 
             if (sortColumns.length === 0) {
-                vm.searchParams.sort = 'nci_id';
-                vm.searchParams.order = 'desc';
+                vm.searchSubmittedParams.sort = 'nci_id';
+                vm.searchSubmittedParams.order = 'desc';
             } else {
-                vm.searchParams.sort = sortColumns[0].name; //sort the column
+                vm.searchSubmittedParams.sort = sortColumns[0].name; //sort the column
                 switch (sortColumns[0].sort.direction) {
                     case uiGridConstants.ASC:
-                        vm.searchParams.order = 'ASC';
+                        vm.searchSubmittedParams.order = 'ASC';
                         break;
                     case uiGridConstants.DESC:
-                        vm.searchParams.order = 'DESC';
+                        vm.searchSubmittedParams.order = 'DESC';
                         break;
                     case undefined:
                         break;
@@ -776,9 +777,32 @@
             vm.getUserSubmittedTrials();
         } //sortChangedCallBack
 
+        function sortParticipationChangedCallBack(grid, sortColumns) {
+
+            if (sortColumns.length === 0) {
+                vm.searchParticipationParams.sort = 'nci_id';
+                vm.searchParticipationParams.order = 'desc';
+            } else {
+                vm.searchParticipationParams.sort = sortColumns[0].name; //sort the column
+                switch (sortColumns[0].sort.direction) {
+                    case uiGridConstants.ASC:
+                        vm.searchParticipationParams.order = 'ASC';
+                        break;
+                    case uiGridConstants.DESC:
+                        vm.searchParticipationParams.order = 'DESC';
+                        break;
+                    case undefined:
+                        break;
+                }
+            }
+
+            //do the search with the updated sorting
+            vm.getUserParticipationTrials();
+        } //sortChangedCallBack
+
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
             vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
     }
-})();
+}());
