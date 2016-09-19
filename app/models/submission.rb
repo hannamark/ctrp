@@ -32,6 +32,8 @@
 #  index_submissions_on_trial_id              (trial_id)
 #  index_submissions_on_user_id               (user_id)
 #
+# rubocop:disable ClassLength
+#
 
 class Submission < TrialBase
   include BasicConcerns
@@ -89,7 +91,6 @@ class Submission < TrialBase
   scope :matchesTrialSubmissions, -> (params, protocol_source_id_imp, protocol_source_id_pro) {
     time_parser_start = "to_char((("
     time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
-    time_parser_with_hrs_mins_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy HH12:MI am')"
     join_clause  = "INNER JOIN trials ON submissions.trial_id = trials.id "
     join_clause += "LEFT JOIN users ON submissions.user_id = users.id "
     join_clause += "LEFT JOIN research_categories as trial_research_category ON trials.research_category_id = trial_research_category.id "
@@ -344,8 +345,8 @@ class Submission < TrialBase
     if params[:organization_id].present?
       where_clause += "AND users.organization_id = '#{params[:organization_id]}' "
     end
-    if params[:priorities].present? && params[:priorities].select {|k,v| v == true}.keys.size > 0
-      where_clause += "AND trials.process_priority in ('#{params[:priorities].select {|k,v| v == true}.keys.join("','")}') "
+    if params[:priorities].present? && params[:priorities].select {|_k,v| v == true}.keys.size > 0
+      where_clause += "AND trials.process_priority in ('#{params[:priorities].select {|_k,v| v == true}.keys.join("','")}') "
     end
     if params[:submission_types].present?
       #where_clause += "AND submission_type_label in ('#{params[:submission_types].select {|k,v| v == true}.keys.join("','")}') "
