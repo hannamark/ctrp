@@ -21,6 +21,7 @@ if @userReadAccess
                 :status_date,
                 :created_at,
                 :updated_at
+  json.name_change @name_change
   json.org_families @user.organization.present? && @user.organization.families.present? ? @families : []
   json.write_access @userWriteAccess
   json.read_access @userReadAccess

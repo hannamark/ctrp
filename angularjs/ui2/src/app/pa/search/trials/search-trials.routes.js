@@ -63,9 +63,25 @@
                 }
             })
             .state('main.pamTrialSearch', {
-                url: '/pam_trials',
-                templateUrl: 'app/pa/search/trials/pam_trial_list.html',
-                controller: 'pamTrialCtrl as pamTrialsView',
+                url: '/trial-abstraction-search',
+                templateUrl: 'app/pa/dashboard/abstraction/search/pam_trial_search.html',
+                controller: 'pamTrialSearchCtrl as pamTrialsSearchView',
+                section: 'pam',
+                resolve: {
+                    UserService: 'UserService',
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
+                    }
+                },
+                ncyBreadcrumb: {
+                    parent: 'main.pamTrialSearchList',
+                    label: 'Abstraction Dashboard Search'
+                }
+            })
+            .state('main.pamTrialSearchList', {
+                url: '/trial-abstraction-list',
+                templateUrl: 'app/pa/dashboard/abstraction/search/pam_trial_list.html',
+                controller: 'pamTrialListCtrl as pamTrialsView',
                 section: 'pam',
                 resolve: {
                     UserService: 'UserService',
@@ -75,7 +91,7 @@
                 },
                 ncyBreadcrumb: {
                     parent: 'main.defaultContent',
-                    label: 'Search Trials (Abstraction)'
+                    label: 'Abstraction Dashboard'
                 }
             });
     } //paRoutes

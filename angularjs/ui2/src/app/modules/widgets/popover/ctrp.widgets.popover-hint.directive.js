@@ -9,29 +9,40 @@
         .directive('ctrpHint', ctrpHint);
 
         //ctrpHintModalCtrl.$inject = ['$scope', '$uibModalInstance'];
-        ctrpHint.$inject = ['$window', '$uibModal', '$popover', '$timeout'];
+        ctrpHint.$inject = ['$window', '$uibModal', '$popover', '$timeout', '$rootScope'];
 
-        function ctrpHint($window, $uibModal, $popover, $timeout) {
+        function ctrpHint($window, $uibModal, $popover, $timeout, $rootScope) {
             var hintCount = 0;
             var directiveObject = {
                 restrict: 'A',
                 link: linkerFn
             };
 
+            /* Resets hint count when user traverses to another page */
+            $rootScope.$on('$stateChangeStart', function(e) {
+                hintCount = 0;
+            });
+
             return directiveObject;
 
             function linkerFn(scope, element, attrs) {
                 var hintFields = element.find('input, select, textarea'); //array of fields that need to be checked on change
                 var addButton = element.find('.btn-add');
-                var popover = $popover(addButton, {
+                var elementToAppend;
+
+                if (attrs.hintAppendElement) {
+                    elementToAppend = element.closest(attrs.hintAppendElement);
+                } else {
+                    elementToAppend = addButton;
+                }
+                var popover = $popover(elementToAppend, {
                     title: 'Hint',
                     templateUrl: 'app/modules/widgets/popover/_default_popover_hint.tpl.html',
                     html: true,
                     trigger: 'manual',
                     placement: 'top',
                     animation: 'am-flip-x',
-                    scope: scope,
-                    viewport: 'body'
+                    scope: scope
                 });
 
                 hintFields.on('change keyup', function(e) {

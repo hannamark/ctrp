@@ -75,6 +75,8 @@ class UsersController < ApplicationController
     rejectUpdate = false
     if (!approverAccess(current_user) && newUser) || (!approverAccess(current_user) && (@user.username != user_params[:username]))
       rejectUpdate = true
+    elsif (@user.username != user_params[:username]) && approverAccess(current_user)
+      @name_change = true
     end
 
     sendActivationEmail = false
@@ -117,6 +119,7 @@ class UsersController < ApplicationController
           end
 
         end
+
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render json: @user}
       else
@@ -217,10 +220,10 @@ end
         end
       end
 
-      if (['ROLE_SITE-SU'].include? current_user.role) && params[:registered_users] != true
+      if ['ROLE_SITE-SU'].include? current_user.role
         any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
         @families = Family.find_unexpired_matches_by_org(current_user.organization_id)
-        @users = @users.matches_all_registered()
+        @users = @users.where(role: ['ROLE_TRIAL-SUBMITTER','ROLE_SITE-SU']).matches_all_registered()
         if any_membership
             @users = @users.family_unexpired_matches_by_org(current_user.organization_id) unless @users.blank?
         else
@@ -333,7 +336,7 @@ end
     if current_site_user
       user = current_site_user
     end
-    user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || searchAccess == true) : false
+    user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || (userWriteAccess userToUpdate) ) : false
   end
 
 

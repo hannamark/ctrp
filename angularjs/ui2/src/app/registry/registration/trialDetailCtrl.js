@@ -92,6 +92,33 @@
         vm.grantsInputs = {grantResults: [], disabled: true};
         vm.currentStatusCode = null;
         vm.currentStatusName = null;
+        var latestSubNum = vm.curTrial.current_submission_num || -1;
+        vm.isAmendmentSubmission = _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
+        vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
+        vm.isDocDeletionAllowed = latestSubNum === -1; // only allow deletion in original registration
+        console.info('isAmendmentSubmission: ', vm.isAmendmentSubmission, vm.isOriginalSubmission);
+        console.info('vm.curTrial.trial_documents: ', vm.curTrial.trial_documents);
+        var milestones = getMilestoneCodes(vm.curTrial);
+        console.info('milestones: ', milestones);
+        vm.tsrShown = _.findIndex(milestones, {code: 'TSR'}) > -1;
+        vm.tsrDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'TSR', is_latest: true}) || {id: ''};
+        console.info('tsrDoc: ', vm.tsrDoc);
+        vm.changeMemoDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Change Memo', is_latest: true}) || {id: ''};
+        vm.proHighlightedDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Protocol Highlighted Document', is_latest: true}) || {id: ''};
+        console.info('changeMemoDoc: ', vm.changeMemoDoc, vm.proHighlightedDoc);
+
+        /*
+        var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
+        latestDocuments = _.groupBy(latestDocuments, 'document_type');
+
+        _.keys(latestDocuments).forEach(function(docKey) {
+            latestDocuments[docKey] = latestDocuments[docKey].filter(function(doc) {
+                return doc.is_latest && doc.status === 'active';
+            });
+        })
+        console.info('latestDocuments: ', latestDocuments);
+        */
+
 
         vm.masterTrialCopy = {
             trial: angular.copy(vm.curTrial),
@@ -555,7 +582,7 @@
                 }
             }
         }; //openCalendar
-        console.info('protocolIdOriginArr: ', vm.protocolIdOriginArr);
+
         // Add other ID to a temp array
         vm.addOtherId = function () {
             // Get other ID origin name
@@ -1066,6 +1093,17 @@
                 appendAuthorities();
                 appendDocuments();
             }
+        }
+
+        function getMilestoneCodes(trialObj) {
+            if (!trialObj.milestone_wrappers) return [];
+            var milestones = _.map(trialObj.milestone_wrappers, function(msObj) {
+                msObj.milestone.submission_id = msObj.submission.id; // move attribute one-level up
+                msObj.milestone.submission_num = parseInt(msObj.submission.submission_num); // move one-level up
+                msObj.milestone.submission_type_code = msObj.submission.submission_type_code; // move one-level up
+                return msObj.milestone; // {id: '', code: '', name: ''}
+            });
+            return milestones;
         }
 
         function watchIndIdeQuestion() {
