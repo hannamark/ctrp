@@ -103,6 +103,10 @@
         vm.tsrShown = _.findIndex(milestones, {code: 'TSR'}) > -1;
         vm.tsrDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'TSR', is_latest: true}) || {id: ''};
         console.info('tsrDoc: ', vm.tsrDoc);
+        vm.changeMemoDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Change Memo', is_latest: true}) || {id: ''};
+        vm.proHighlightedDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Protocol Highlighted Document', is_latest: true}) || {id: ''};
+        console.info('changeMemoDoc: ', vm.changeMemoDoc, vm.proHighlightedDoc);
+
         /*
         var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
         latestDocuments = _.groupBy(latestDocuments, 'document_type');
