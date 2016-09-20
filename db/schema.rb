@@ -509,6 +509,7 @@ ActiveRecord::Schema.define(version: 20160919185302) do
     t.string   "method",           limit: 255
     t.string   "status",           limit: 255
     t.string   "object_id",        limit: 255
+    t.text     "response_body"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.string   "uuid",             limit: 255

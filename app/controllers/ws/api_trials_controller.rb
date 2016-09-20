@@ -50,7 +50,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       end
     #end
 
-    render xml:val_errors.to_xml, status: '404'  if val_errors.any?
+    if val_errors.any?
+      response_body = val_errors.to_xml
+      render xml:response_body, status: '404'
+      response_logging(nil,"404",response_body)
+    end
+
   end
 
 
@@ -60,7 +65,9 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @paramsLoader.load_params(@xmlMapperObject,"create","")
 
     if !@paramsLoader.errors.empty?
-      render xml: @paramsLoader.errors, status: '404'
+      response_body = @paramsLoader.errors
+      render xml:response_body , status: '404'
+      response_logging(nil,"404",response_body)
     end
   end # end of before_create
 
@@ -71,9 +78,13 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     if params[:idType] == "nci"
       @trial = Trial.find_by_nci_id(params[:id])
     else
-      render xml: "Expected id types are nci,pa,dcp,ctep but currently trial is being identifed", status: :bad_request
+      response_body = "Expected id types are nci,pa,dcp,ctep but currently trial is being identifed"
+      render xml: response_body, status: :bad_request
+      response_logging(@trial,"404",response_body)
     end
-    render xml:  "Given trial with NCI_ID does not exist in CTRP ", status: :not_found unless @trial.present?
+    response_body = "Given trial with NCI_ID does not exist in CTRP "
+    render xml: response_body , status: :not_found unless @trial.present?
+    response_logging(@trial,"404",response_body)
 
   end
 
@@ -83,7 +94,9 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"update",@trial)
     if !@paramsLoader.errors.empty?
-      render xml: @paramsLoader.errors, status:'404'
+      response_body = @paramsLoader.errors
+      render xml: response_body, status:'404'
+      response_logging(@trial,"404",response_body)
     end
 
   end #end of before_update
@@ -114,7 +127,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
     #end
 
-    render xml:val_errors.to_xml, status: '404'  if val_errors.any?
+     if val_errors.any?
+       response_body = val_errors.to_xml
+       render xml:response_body, status: '404'
+       response_logging(@trial,"404",response_body)
+     end
+
   end
 
 
@@ -122,11 +140,17 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
     @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
     val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
-    render xml:val_errors.to_xml, status: '404'  if val_errors.any?
+    if val_errors.any?
+      response_body = val_errors.to_xml
+      render xml:response_body, status: '404'
+      response_logging(@trial,"404",response_body)
+    end
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"amend",@trial)
     if !@paramsLoader.errors.empty?
-      render xml: @paramsLoader.errors, status: '404'
+      response_body = @paramsLoader.errors
+      render xml: response_body, status: '404'
+      response_logging(@trial,"404",response_body)
     end
 
   end #end of before_update
@@ -144,11 +168,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @trial =Trial.new(@rest_params)
     @trial.current_user = @current_user
     if @trial.save!
-      render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
-      response_logging(@trial,"200")
+      response_body = @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+      render xml:response_body
+      response_logging(@trial,"200",response_body)
     else
       render nothing: true, status: :bad_request
-      response_logging(nil,"404")
+      response_logging(nil,"404","")
       return
     end
   end
@@ -159,9 +184,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
     @trial.current_user = @current_user
     if @trial.update(@rest_params)
-      render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+      response_body = @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+      render xml: response_body
+      response_logging(nil,"404",response_body)
     else
       render nothing: true, status: :bad_request
+      response_logging(nil,"404","")
     end
   end
 
@@ -172,9 +200,12 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
     @trial.current_user = @current_user
     if @trial.update(@rest_params)
-      render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+      response_body = @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+      render xml:response_body
+      response_logging(nil,"404",response_body)
     else
       render nothing: true, status: :bad_request
+      response_logging(nil,"404","")
     end
   end
 
@@ -262,7 +293,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
 
 
-    render xml:xsd_errors.to_xml, status: '404'  if xsd_errors.any?
+      if xsd_errors.any?
+        render xml:xsd_errors.to_xml, status: '404'
+        response_logging(nil,"404",xsd_errors.to_xml)
+      end
 
   end
 
@@ -273,12 +307,16 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       if params[:idType] == "nci"
         @trial = Trial.find_by_nci_id(params[:id])
       else
-        render xml: "Expected idtypes are nci,pa,dcp,ctep but currently nci is accepting", status: :bad_request
+        response_body = "Expected idtypes are nci,pa,dcp,ctep but currently nci is accepting"
+        render xml:response_body , status: :bad_request
+        response_logging(nil,"404",response_body)
       end
     else
       @trial = Trial.find_by_id(params[:id])
     end
+    response_body = ""
     render nothing: true, status: :not_found unless @trial.present?
+    response_logging(nil,"404",response_body)
 
   end
 
@@ -335,14 +373,15 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     add_file("rest_log.xml", doc, "xml", "tmp", action, "","")
   end
 
-  def response_logging(trial,status)
+  def response_logging(trial,status, response_body)
     if trial
       object_id = trial.id
     else
       object_id =""
     end
-    logDatum = LogDatum.find_by_id($logDatumId.id)
-    logDatum.update({:status => status, :object_id => object_id})
+
+    logDatum = LogDatum.find_by_id($logDatumId.id) if $logDatumId
+    logDatum.update({:status => status, :object_id => object_id, :response_body => response_body}) if logDatum
   end
 
   def add_file(file_name, file_content,document_type,tmp_file_name, action,status,trial_id)
