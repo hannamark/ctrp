@@ -34,7 +34,7 @@ As a CTRP User, I am able to View Organizations
       |City  |SopCity  |
       |PostalCode  |22306  |
       |Email  |SopPercukeTrial@pr.com  |
-      |Phone  |420-999-8906  |
+      |Phone: Extension  |420-999-8906: 4567  |
       |FamilyName  |SopFamilies  |
      
       

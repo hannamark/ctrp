@@ -14,7 +14,7 @@
     function trialIdentificationCtrl($scope, TrialService, MESSAGES,
         $timeout, _, PATrialService, toastr, UserService) {
         var vm = this;
-        vm.trialProcessingObj = {comment: '', priority: ''};
+        vm.trialProcessingObj = {comment: '', priority: 'Normal'};
         vm.saveProcessingInfo = saveProcessingInfo;
         vm.resetView = resetView;
         var USER_ROLES_ALLOWD = ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_ABSTRACTOR-SU', 'ROLE_ABSTRACTOR'];
@@ -44,10 +44,11 @@
 
         function _getProcessingInfo() {
             $timeout(function() {
-                var _defaultPriority = _.findWhere(vm.priorities, {name: $scope.$parent.paTrialOverview.trialDetailObj.process_priority}) || vm.trialProcessingObj.priority;
+                var _defaultPriorityObj = _.findWhere(vm.priorities, {name: $scope.$parent.paTrialOverview.trialDetailObj.process_priority});
+                var _defaultPriority = _defaultPriorityObj.name || vm.trialProcessingObj.priority;
                 vm.trialProcessingObj = {
                     trialId: $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId,
-                    priority: _defaultPriority || 'Normal',
+                    priority: _defaultPriority,
                     comment: $scope.$parent.paTrialOverview.trialDetailObj.process_comment || vm.trialProcessingObj.comment
                 };
             }, 0);
@@ -55,10 +56,9 @@
 
         /* implementations below */
         function saveProcessingInfo() {
-            //console.log('processing info: ', vm.trialProcessingObj);
             var updatedTrial = PATrialService.getCurrentTrialFromCache();
             //angular.copy($scope.$parent.paTrialOverview.trialDetailObj);
-            updatedTrial.process_priority = vm.trialProcessingObj.priority.name;
+            updatedTrial.process_priority = vm.trialProcessingObj.priority;
             updatedTrial.process_comment = vm.trialProcessingObj.comment;
 
             vm.disableBtn = true;
