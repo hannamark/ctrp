@@ -1,6 +1,9 @@
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: [:show, :edit, :update, :destroy]
 
+  @@impTrial = InternalSource.find_by_code('IMP').id
+  @@proTrial = InternalSource.find_by_code('PRO').id
+
   # GET /submissions
   # GET /submissions.json
   def index
@@ -81,11 +84,22 @@ class SubmissionsController < ApplicationController
 
     params[:order] = 'asc' if params[:order].blank?
 
-    @trial_submissions = Submission.matchesTrialSubmissions(
-        params,
-        InternalSource.find_by_code('IMP').id,
-        InternalSource.find_by_code('PRO').id,
-    )
+    @trial_submissions = Submission.matchesTrialSubmissions(params, @@impTrial, @@proTrial)
+
+    submission_types_requested = params[:submission_types]
+    if !submission_types_requested.blank?
+      sub_types_query = []
+      if submission_types_requested[:Amendment]
+        sub_types_query.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num > 1)")
+      end
+      if submission_types_requested[:Original]
+        sub_types_query.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num = 1)")
+      end
+      if submission_types_requested[:Update]
+        sub_types_query.push("(trials.internal_source_id = #{@@impTrial})")
+      end
+      @trial_submissions = @trial_submissions.where(sub_types_query.join(" OR "))
+    end
 
     @userReadAccess  = userReadAccess  current_site_user
     @userWriteAccess = userWriteAccess current_site_user
