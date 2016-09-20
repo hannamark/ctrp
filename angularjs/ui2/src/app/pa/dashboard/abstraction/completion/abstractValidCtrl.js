@@ -38,7 +38,7 @@
         function _validateTrialStatuses(statusArr) {
             if (angular.isArray(statusArr) && statusArr.length > 0) {
                 PATrialService.abstractionValidateTrialStatus({"statuses": statusArr}).then(function(res) {
-                    console.info('res: ', res);
+                    /* Review Error Handling */
                     var httpStatus = res.server_response.status || 500;
                     if (httpStatus >= 200 && httpStatus <= 210) {
                         var statusResults = _xformValidationMsgs(res.validation_msgs);
