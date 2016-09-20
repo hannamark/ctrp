@@ -1,4 +1,6 @@
 class Ws::ApiTrialsController < Ws::BaseApiController
+  #around_filter :global_request_logging
+
   ##CONSTANTS FOR REQUEST VALIDATIONS
   ##
   XSD_PATH            =   Rails.root.to_s + "/ws.xsd"
@@ -15,6 +17,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   ##
   $requestString
   $rootElement
+  $logDatumId
 
   before_action only: [:create, :update, :amend] do
     validate_rest_request
@@ -142,8 +145,10 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     @trial.current_user = @current_user
     if @trial.save!
       render xml: @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+      response_logging(@trial,"200")
     else
       render nothing: true, status: :bad_request
+      response_logging(nil,"404")
       return
     end
   end
@@ -237,6 +242,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     else
       xsd_errors.push("Refer 5.x WS XSD on wiki for correct request body ")
     end
+    request_logging(doc,"Request",action)
 
     ##
     ####This is compatibility maintainence with 4.x, if they submitted we will accept it but throw an error
@@ -309,5 +315,56 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
 
   end
+
+  def global_request_logging
+    http_request_header_keys = request.headers.env.keys.select{|header_name| header_name.match("^HTTP.*")}
+    http_request_headers = request.headers.env.select{|header_name, header_value| http_request_header_keys.index(header_name)}
+    #requestString1 = request.body.read
+    #$xml_body = Nokogiri::XML(requestString1)
+
+    logger.info "Received #{request.method.inspect} to #{request.url.inspect} from #{request.remote_ip.inspect}.  Processing with headers #{http_request_headers.inspect} and params #{$xml_body}"
+    begin
+      yield
+    ensure
+      #logger.info "Responding with #{response.status.inspect} => #{response.body.inspect}"
+      logger.info "Responding with #{response.status.inspect} "
+    end
+  end
+
+  def request_logging(doc,action,request_or_response)
+    add_file("rest_log.xml", doc, "xml", "tmp", action, "","")
+  end
+
+  def response_logging(trial,status)
+    if trial
+      object_id = trial.id
+    else
+      object_id =""
+    end
+    logDatum = LogDatum.find_by_id($logDatumId.id)
+    logDatum.update({:status => status, :object_id => object_id})
+  end
+
+  def add_file(file_name, file_content,document_type,tmp_file_name, action,status,trial_id)
+
+    if file_content.nil?
+      return
+    end
+
+    decode_base64_content = file_content
+    file_extension = File.extname(file_name).delete('.') ##sample.pdf will give pdf
+    file_format    = File.extname(file_name)             ##sample.pdf will give .pdf
+
+      temp_file = Tempfile.new(['Sample2',file_format])
+      temp_file.binmode
+      temp_file <<  decode_base64_content
+      #temp_file.rewind
+      file_params = {:filename => file_name, :tempfile => temp_file}
+
+    uploaded_file = ActionDispatch::Http::UploadedFile.new(file_params)
+    log_datum_params = {:file => uploaded_file, :document_type =>document_type, :file_name => file_name, :context => "REST", :object =>"Trial", :method => action, :status => status, :object_id => trial_id}
+    $logDatumId = LogDatum.create(log_datum_params)
+  end
+
 
 end #main end
