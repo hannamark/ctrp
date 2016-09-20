@@ -22,7 +22,7 @@ Feature: PO F9 Search for Persons
     |Service Request|
     
     And I submit my search request for Person Search
-    Then the search results <result> should display the following sorted by Last Name:
+    Then the search results should display the following sorted by Last Name:
     |CTRP Person ID|
     |CTEP Person ID|
     |First Name|
