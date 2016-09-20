@@ -130,6 +130,23 @@
                     }
                 })
 
+                .state('main.manageUserDetail', {
+                    url: '/manage-user-detail/:username',
+                    templateUrl: 'app/user/regUserDetails.html',
+                    controller: 'userDetailCtrl as userDetailView',
+                    section: 'user',
+                    resolve: {
+                        UserService: 'UserService',
+                        userDetailObj : function(UserService, $stateParams) {
+                            return UserService.getUserDetailsByUsername($stateParams.username);
+                        }
+                    }, //resolve the promise and pass it to controller
+                    ncyBreadcrumb: {
+                        parent: 'main.users',
+                        label: 'User Profile'
+                    }
+                })
+
                 .state('main.regUserDetail', {
                     url: '/reg-user-detail/:username',
                     templateUrl: 'app/user/regUserDetails.html',
@@ -142,7 +159,7 @@
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
-                        parent: 'main.registeredUsers',
+                        parent: 'main.users',
                         label: 'User Profile'
                     }
                 })
@@ -198,4 +215,4 @@
                 });
     } //userRoutes
 
-})();
+}());

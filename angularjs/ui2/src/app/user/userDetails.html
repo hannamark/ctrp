@@ -6,11 +6,14 @@
         <div class="row">
             <h4>Edit User Profile</h4>
             <div class="row">
-                <div class="col-xs-12 col-sm-9">
-                    <a ng-if="!userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View trials owned by this user</a>
-                    <a ng-if="userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View my trials</a>
-                    <a ng-if="userDetailView.isCurrentUser && (userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_ACCRUAL-SUBMITTER')" ui-sref="main.submitterDetail({username : userDetailView.userDetails.username })">View my trials</a>
-                </div>
+                <div class="col-xs-12 col-sm-9"> 
+                    <a ng-if="!userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_SITE-SU')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View trials owned by this user</a> 
+                    <a ng-if="userDetailView.isCurrentUser && !(userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER' || userDetailView.userRole === 'ROLE_SITE-SU')" ui-sref="main.regUserDetail({username : userDetailView.userDetails.username })">View my trials</a>  
+
+                    <a ng-if="!userDetailView.isCurrentUser && userDetailView.userRole === 'ROLE_SITE-SU'" ui-sref="main.manageUserDetail({username : userDetailView.userDetails.username })">View trials owned by this user</a>
+                    <a ng-if="userDetailView.isCurrentUser && userDetailView.userRole === 'ROLE_SITE-SU'" ui-sref="main.manageUserDetail({username : userDetailView.userDetails.username })">View my trials</a>
+
+                    <a ng-if="userDetailView.isCurrentUser && (userDetailView.userRole === 'ROLE_TRIAL-SUBMITTER')" ui-sref="main.submitterDetail({username : userDetailView.userDetails.username })">View my trials</a> </div>
             </div>
         </div>
         <div class="row top-offset-xs"></div>
@@ -70,7 +73,7 @@
                                 <option value="">Select a role</option>
                             </select>
                             <span class="form-control-feedback select-feedback" ng-show="userDetailView.userDetails.role.length"></span>
-                            <span class="help-block" ng-show="userDetail_form.role.$invalid">Role is Required</span>
+                            <span class="help-block" ng-show="userDetail_form.role.required">Role is Required</span>
                         </div>
                     </div>
 

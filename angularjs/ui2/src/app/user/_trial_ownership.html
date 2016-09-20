@@ -19,7 +19,7 @@
                     <input type="text" ng-if="!trialOwnershipView.userChosenOrg" id="organization_name" class="input-sm" name="organization_name"
                            autocomplete="off" placeholder="Organization Name"
                            ng-model="trialOwnershipView.org_search_name"
-                           typeahead-on-select="trialOwnershipView.setTypeAheadOrg($item)"
+                           typeahead-on-select="trialOwnershipView.setAssignTrialTypeAheadOrg($item)"
                            uib-typeahead="org for org in trialOwnershipView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
                                     <span id="typeAheadResults" ng-if="trialOwnershipView.userChosenOrg">
