@@ -14,15 +14,15 @@
         var vm = this;
         vm.curUser = userDetailObj;
         vm.trialId = $stateParams.trialId;
-        
+
         vm.typeAheadNameSearch = function () {
             return OrgService.typeAheadOrgNameSearch(vm.org_search_name, 'no_family');
         };
 
-        vm.setTypeAheadOrg = function (searchObj) {
-            var splitVal = searchObj.split('<span class="hide">');
-            vm.org_search_name = splitVal[0];
-            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+        vm.setAssignTrialTypeAheadOrg = function (searchObj) {
+            var orgSearch = OrgService.setTypeAheadOrg(searchObj);
+            vm.org_search_name = orgSearch.organization_name;
+            vm.userChosenOrg = orgSearch.organization_details;
             vm.organization_id = vm.userChosenOrg.id;
             vm.family_id = undefined;
             vm.getFamilyTrialsUsers();
@@ -65,52 +65,51 @@
 
         var submitAddOwnerships = function (params) {
             UserService.addUserTrialsOwnership(params).then(function (data) {
-                if(data.results && data.results.complete === true) {
-                    toastr.success('Trial Ownership(s) Created', 'Success!');
-                    vm.resetAll();
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if(data.results && data.results.complete === true) {
+                        toastr.success('Trial Ownership(s) Created', 'Success!');
+                        vm.resetAll();
+                    }
                 }
             });
         };
 
         var submitEndOwnerships = function (params, msg) {
             UserService.endUserTrialsOwnership(params).then(function (data) {
-                if (data.results === 'success') {
-                    toastr.success('Trial Ownership Removed', 'Success!');
-                    vm.resetAll();
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (data.results === 'success') {
+                        toastr.success('Trial Ownership Removed', 'Success!');
+                        vm.resetAll();
+                    }
                 }
             });
         };
 
-        vm.save = function () {
-            if (!vm.trialId && vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
-                };
-                submitAddOwnerships(searchParams);
-            } else if (vm.trialId && vm.userOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: [vm.trialId]
-                };
-                submitAddOwnerships(searchParams);
+        function getTrialsUsersSelection(){
+            var searchParams = {};
+            searchParams.user_ids = _.chain(vm.userOptions.selectedItems).pluck('id').value();
+            if (!vm.trialId && vm.trialOptions.selectedItems.length) {
+                searchParams.trial_ids = _.chain(vm.trialOptions.selectedItems).pluck('id').value();
+            } else {
+                searchParams.trial_ids = [vm.trialId];
                 vm.setAddMode = false;
             }
+            return searchParams;
+        }
+        
+        vm.save = function () {
+            if (vm.userOptions.selectedItems.length) {
+                submitAddOwnerships(getTrialsUsersSelection());
+            }
         };
+        
         vm.removeTrialsOwnerships = function () {
-            if (!vm.trialId && vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
-                };
-                submitEndOwnerships(searchParams);
-            } else if (vm.trialId && vm.userOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: [vm.trialId]
-                };
-                submitEndOwnerships(searchParams);
-                vm.setAddMode = false;
+            if (vm.userOptions.selectedItems.length) {
+                submitEndOwnerships(getTrialsUsersSelection());
             }
         };
 
@@ -132,12 +131,16 @@
 
         if((vm.curUser.org_families && vm.curUser.org_families[0]) || vm.curUser.role === 'ROLE_ADMIN' || vm.curUser.role === 'ROLE_SUPER' || vm.curUser.role === 'ROLE_ABSTRACTOR') {
             FamilyService.searchFamilies(vm.familySearchParams).then(function (data) {
-                if (data.data) {
-                    vm.families = data.data.families;
-                    if(vm.curUser.org_families[0] && vm.curUser.org_families[0].id) {
-                        vm.family_id = vm.curUser.org_families[0].id;
-                        vm.family_name = vm.curUser.org_families[0].name;
-                        vm.getFamilyTrialsUsers();
+                var status = data.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (data.data) {
+                        vm.families = data.data.families;
+                        if(vm.curUser.org_families[0] && vm.curUser.org_families[0].id) {
+                            vm.family_id = vm.curUser.org_families[0].id;
+                            vm.family_name = vm.curUser.org_families[0].name;
+                            vm.getFamilyTrialsUsers();
+                        }
                     }
                 }
             }).catch(function (err) {
@@ -145,4 +148,4 @@
             });
         }
     }
-})();
+}());

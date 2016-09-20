@@ -5,7 +5,7 @@
 (function() {
     'use strict';
     angular.module('ctrp.app.pa.dashboard')
-    .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl)
+    .controller('paTrialRelatedDocsCtrl', paTrialRelatedDocsCtrl);
 
     paTrialRelatedDocsCtrl.$inject = ['$scope', '_', 'PATrialService', 'TrialService', '$popover',
         'Common', 'DateService', '$timeout', 'CommentService', 'documentTypes', '$mdToast',
@@ -239,7 +239,6 @@
                 vm.saveBtnDisabled = true;
                 PATrialService.uploadTrialRelatedDocs(vm.curTrialDetailObj.trial_documents, vm.curTrialDetailObj.id)
                     .then(function(res) {
-                        /* CHANGE RESPONSE: Response should not be null or [..null, null...]; instead should at the very least, return a status code to check against */
                         if (angular.isArray(res)) {
                             _.each(res, function(uploadedDoc, index) {
                                 if (uploadedDoc !== null) {
@@ -248,7 +247,7 @@
                                 }
                             });
                         }
-                        console.info('vm.curTrialDetailObj.trial_documents: ', vm.curTrialDetailObj.trial_documents);
+
                         vm.curTrialDetailObj.trial_documents_attributes = vm.curTrialDetailObj.trial_documents;
                         var outerTrial = {};
                         outerTrial.new = false;

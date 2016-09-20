@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div ng-if="!userDetailView.gridTrialsOwnedOptions.data || userDetailView.gridTrialsOwnedOptions.data.length == 0">No trials owned at this time.</div>
+                            <div ng-if="userDetailView.gridTrialsOwnedOptions.data && userDetailView.gridTrialsOwnedOptions.data.length == 0">No trials owned at this time.</div>
                         </md-content>
                     </md-tab>
                     <md-tab label="Trials Submitted">
@@ -93,8 +93,13 @@
                     </md-tab>
                 </md-tabs>
             </md-content>
+            <div class="row" ng-if="!userDetailView.gridTrialsOwnedOptions.data">
+                <div class="col-xs-12">
+                    <span us-spinner="{radius: 10, length: 5}" ></span>
+                </div>
+            </div>
         </div>
-        <div class="row top-offset-xs" ng-if="userDetailView.gridOptions.data.length === 0"></div>
+        <div class="row top-offset-xs"></div>
     </div>
 </div>
 

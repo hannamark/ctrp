@@ -26,7 +26,7 @@ Scenario: #1 Rules for Search Families
     
       |CTRP ID        |
       |CTEP ID        |
-      |Organization   |
+      |Organization (Hyperlink to Org Details)   |
       |Relationship   |
       |Effective Date |
       |Expiration Date|

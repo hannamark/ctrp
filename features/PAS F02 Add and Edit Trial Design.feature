@@ -9,17 +9,18 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
     When I view the prefilled Clinical Research Category value
     Then I can select a different value
 
-    | Interventional             |
-    | Expanded Access            |
-    | Observational              |
-    | Ancillary Correlative      |
+    |Interventional             |
+    |Expanded Access            |
+    |Observational              |
+    |Ancillary Correlative      |
+  
   When The Clinical Reasearch Category <ClinicalResearchCategoryS> is updated to <ClinicalResearchCategoryF>
   Then the field <field> will follow the action rule <action> for display or delete
   
 Examples:
 
 
-   |<ClinicalResearchCategoryS>            | <ClinicalResearchCategoryF>             |<field>                                  |<action> |
+   |ClinicalResearchCategoryS              | ClinicalResearchCategoryF                 |field|                                   |action |
 
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose                          |displays |
    |Interventional or Expanded Access      |Observational or Ancillary Correlative   |Primary Purpose Other                    |displays|
@@ -71,10 +72,15 @@ Examples:
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Final Enrollment for clinicalTrials.gov  |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Accruals                                 |displays|
 
+
 Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application
   And I am on the Trial Design screen
-  And the Clinical Research Category value is interventional
+  And the Clinical Research Category value
+ 
+  |Interventional|
+  |Expanded Access|
+  
   And I can select a different value for Primary Purpose type
   |Primary Purpose          |
   |Treatment                |
@@ -147,7 +153,7 @@ Given I am on the Trial Design Screen
  Then An error message <TrialDesignErrorMessage> will be displayed
 
 Examples:
-  |<TrialDesignField>        |<TrialDesignErrorMessage>         |
+  |TrialDesignField          |TrialDesignErrorMessage         |
   |Primary Purpose           |Primary Purpose is Required       |
   |Trial Phase               |Trial Phase is Required           |
   |Intervention Model        |Intervention Model is Required    |
@@ -165,7 +171,7 @@ Given I am on the Trial Design Screen
  Then An error message <TrialDesignErrorMessage> will be displayed
 
 Examples:
-  |<TrialDesignField>        |<TrialDesignErrorMessage>         |
+  |TrialDesignField          |TrialDesignErrorMessage         |
   |Primary Purpose           |Primary Purpose is Required       |
   |Trial Phase               |Trial Phase is Required           |
 
@@ -254,13 +260,13 @@ Given I am on the Trial Design Screen
  Then an error message <TrialDesignErrorMessage> will be displayed
 Examples:
 
-  | <TrialDesignField>    | <TrialDesignErrorMessage>         |
-  | Primary Purpose       | Primary Purpose is Required       |
-  | Trial Phase           | Trial Phase is Required           |
-  | Number of Arms/Groups | Number of Arms/Groups is Required |
-  | Masking            | Masking is Required                  |
-  | Allocation         | Allocation is Required               |
-  | Target Enrollment  | Target Enrollment is Required        |
+  |TrialDesignField      |TrialDesignErrorMessage         |
+  |Primary Purpose       |Primary Purpose is Required       |
+  |Trial Phase           |Trial Phase is Required           |
+  |Number of Arms/Groups |Number of Arms/Groups is Required |
+  |Masking               |Masking is Required                  |
+  |Allocation            |Allocation is Required               |
+  |Target Enrollment     |Target Enrollment is Required        |
   
   #Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
 #Given I am on the Trial Design Screen
@@ -271,9 +277,9 @@ Examples:
  #Then an error message <TrialDesignErrorMessage> will be displayed
 #Examples:
 
-  | <TrialDesignField>    | <TrialDesignErrorMessage>         |
-  | Study Model       | Study Model is Required       |
-  | Time Perspective           | Time Perspective           |
+ # |TrialDesignField           |TrialDesignErrorMessage         |
+ # |Study Model                |Study Model is Required       |
+  #|Time Perspective           |Time Perspective           |
 
 
 Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for IMPORT Information Source
@@ -285,9 +291,9 @@ Given I am on the Trial Design Screen
  Then an error message <TrialDesignErrorMessage> will be displayed
 Examples:
 
-  | <TrialDesignField>    | <TrialDesignErrorMessage>             |
-  | Primary Purpose       | Primary Purpose is Required       |
-  | Trial Phase           | Trial Phase is Required           |
+  |TrialDesignField      |TrialDesignErrorMessage             |
+  |Primary Purpose       |Primary Purpose is Required       |
+  |Trial Phase           |Trial Phase is Required           |
 
 
 Scenario Outline: #10 I can update and edit Trial Design for a Expanded Access Clinical Research Category trial

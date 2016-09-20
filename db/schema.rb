@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908211521) do
+ActiveRecord::Schema.define(version: 20160919185302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -498,6 +498,24 @@ ActiveRecord::Schema.define(version: 20160908211521) do
   end
 
   add_index "links", ["trial_id"], name: "index_links_on_trial_id", using: :btree
+
+  create_table "log_data", force: :cascade do |t|
+    t.string   "file"
+    t.string   "file_name",        limit: 255
+    t.string   "document_type",    limit: 255
+    t.string   "document_subtype", limit: 255
+    t.string   "context",          limit: 255
+    t.string   "object",           limit: 255
+    t.string   "method",           limit: 255
+    t.string   "status",           limit: 255
+    t.string   "object_id",        limit: 255
+    t.string   "user",             limit: 255
+    t.text     "response_body"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
+  end
 
   create_table "mail_logs", force: :cascade do |t|
     t.string   "from"
@@ -1743,6 +1761,7 @@ ActiveRecord::Schema.define(version: 20160908211521) do
   create_sequence "intervention_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "interventions_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "links_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "log_data_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "mail_logs_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "mail_templates_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "marker_assay_type_associations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

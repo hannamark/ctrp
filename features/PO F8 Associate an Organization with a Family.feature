@@ -10,15 +10,21 @@ And the Family Search Results type will be displayed
       |Family Name      |
       |Family Status    |
       |Family Type      |
+      |Membership Size  |
        
 
 
 When I select a Family to edit
 And I select the option to Add Family Membership
-And I Search Organizations and select an Organization
-And I select an effective date which is defaulted to the current date
-And I select an expiration date which is defaulted to null
-And I select either Organization or Affiliate Family Relationship 
+And I Search Organizations
+And I can select an Organization
+And I the effective date will be defaulted to the current date
+And I the an expiration date will be defaulted to null
+And I can select an Organization Relationship Type
+
+|Organization|
+|Affiliate Family|
+
 Then the Family is updated with the CTRP ID, CTEP ID, Organization Name, Family Relationship, effective date, and expiration date
 
 

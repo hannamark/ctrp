@@ -96,16 +96,17 @@
         vm.isAmendmentSubmission = _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'AMD'}) > -1;
         vm.isOriginalSubmission = !vm.isAmendmentSubmission && _.findIndex(vm.curTrial.submissions, {submission_num: latestSubNum, submission_type_code: 'ORI'}) > -1;
         vm.isDocDeletionAllowed = latestSubNum === -1; // only allow deletion in original registration
-        console.info('isAmendmentSubmission: ', vm.isAmendmentSubmission, vm.isOriginalSubmission);
-        console.info('vm.curTrial.trial_documents: ', vm.curTrial.trial_documents);
+        vm.changeMemoDoc = {file_name: ''};
+        vm.proHighlightedDoc = {file_name: ''};
+
         var milestones = getMilestoneCodes(vm.curTrial);
         console.info('milestones: ', milestones);
         vm.tsrShown = _.findIndex(milestones, {code: 'TSR'}) > -1;
         vm.tsrDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'TSR', is_latest: true}) || {id: ''};
-        console.info('tsrDoc: ', vm.tsrDoc);
-        vm.changeMemoDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Change Memo', is_latest: true}) || {id: ''};
-        vm.proHighlightedDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Protocol Highlighted Document', is_latest: true}) || {id: ''};
-        console.info('changeMemoDoc: ', vm.changeMemoDoc, vm.proHighlightedDoc);
+        if (vm.isAmendmentSubmission) {
+            vm.changeMemoDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Change Memo', is_latest: true}) || {id: ''};
+            vm.proHighlightedDoc = _.findWhere(vm.curTrial.trial_documents, {document_type: 'Protocol Highlighted Document', is_latest: true}) || {id: ''};
+        }
 
         /*
         var latestDocuments = vm.curTrial.trial_documents.slice(); // clone
@@ -436,7 +437,16 @@
 
         vm.deleteTrialStatus = function(deletionComment, index) {
             if (deletionComment == null || deletionComment.trim().length === 0) return;
-            vm.addedStatuses[index].comment += deletionComment; // concatenate comments
+            if (vm.addedStatuses[index].comment === null) {
+                vm.addedStatuses[index].comment = '';
+            }
+            if (vm.addedStatuses[index].comment.length === 0) {
+                vm.addedStatuses[index].comment += deletionComment; // concatenate comments
+            } else if (vm.addedStatuses[index].comment.lastIndexOf('.') != vm.addedStatuses[index].comment.length - 1) {
+                vm.addedStatuses[index].comment += '. ' + deletionComment; // concatenate comments
+            } else {
+                vm.addedStatuses[index].comment += ' ' + deletionComment;
+            }
             vm.toggleSelection(index, 'trial_status');
         };
 
@@ -1069,6 +1079,7 @@
             adjustTrialStatusArr();
             watchIndIdeQuestion();
             watchIndIdeHolderType();
+            watchFundingMechanism();
 
             if (vm.curTrial.new) {
                 vm.curTrial.pilot = 'No';
@@ -1109,8 +1120,7 @@
         function watchIndIdeQuestion() {
             $scope.$watch(function() { return vm.curTrial.ind_ide_question; }, function(newVal, oldVal) {
                 if (newVal === 'No' || newVal === 'NO') {
-                    vm.indIdeHolderTypeCode = '';
-                    vm.nihHolderTypeError = '';
+                    resetFields('ind');
                 }
             });
         }
@@ -1123,7 +1133,6 @@
                         vm.indIdeHolderTypeCode = typeObj.code;
                     }
                 }
-                console.info('newVal: ', newVal);
             }, true);
         }
 
@@ -1507,6 +1516,36 @@
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        /* Clears Add Funding Mechanism UI if question value === 'No' */
+        function watchFundingMechanism() {
+            $scope.$watch(function() {return vm.curTrial.grant_question;}, function(newVal, oldVal) {
+                if (newVal === 'No') {
+                    resetFields('fm');
+                }
+            });
+        }
+
+        function resetFields(type) {
+            if (type === 'fm') {
+                vm.serial_number = null;
+                vm.institute_code = null;
+                vm.funding_mechanism = null;
+                vm.nci = null;
+                vm.showAddGrantError = false;
+            } else {
+                vm.ind_ide_type = null;
+                vm.ind_ide_number = null;
+                vm.grantor = null;
+                vm.holder_type_id = null;
+                vm.nih_nci = null;
+                vm.nihNciArr = [];
+
+                vm.showAddIndIdeError = false;
+                vm.indIdeHolderTypeCode = '';
+                vm.nihHolderTypeError = '';
             }
         }
     }

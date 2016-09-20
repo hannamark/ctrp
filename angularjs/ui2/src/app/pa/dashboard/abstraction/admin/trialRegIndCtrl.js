@@ -199,6 +199,7 @@
                 appendIndIdes();
                 getTrialDetailCopy();
                 watchTrialDetailObj();
+                watchIndIndeInfo();
         }
 
         /**
@@ -253,6 +254,26 @@
                 vm.addedIndIdes.push(indIde);
                 vm.indIdeNum++;
             }
+        }
+
+        /* Clears Add Ind/Ide UI if question value === 'No' */
+        function watchIndIndeInfo() {
+            $scope.$watch(function() {return vm.curTrial.ind_ide_question;}, function(newVal, oldVal) {
+                if (newVal === 'No') {
+                    resetIndIdeInfo();
+                }
+            });
+        }
+
+        function resetIndIdeInfo() {
+            vm.ind_ide_type = null;
+            vm.ind_ide_number = null;
+            vm.grantor = null;
+            vm.holder_type_id = null;
+            vm.nih_nci = null;
+            vm.nihNciArr = [];
+
+            vm.showAddIndIdeError = false;
         }
 
     } //trialRegIndCtrl

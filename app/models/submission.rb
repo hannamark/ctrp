@@ -86,7 +86,7 @@ class Submission < TrialBase
     business_days
   end
 
-  scope :matches, -> (column, value) { where("submissions.#{column} = ?", "#{value}") }
+  scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
 
   scope :matchesTrialSubmissions, -> (params, protocol_source_id_imp, protocol_source_id_pro) {
     time_parser_start = "to_char((("

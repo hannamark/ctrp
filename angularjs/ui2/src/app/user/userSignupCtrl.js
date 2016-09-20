@@ -49,10 +49,10 @@
             return OrgService.typeAheadOrgNameSearch(vm.org_search_name);
         };
 
-        vm.setTypeAheadOrg = function (searchObj) {
-            var splitVal = searchObj.split('<span class="hide">');
-            vm.org_search_name = splitVal[0];
-            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+        vm.setSignUpTypeAheadOrg = function (searchObj) {
+            var orgSearch = OrgService.setTypeAheadOrg(searchObj);
+            vm.org_search_name = orgSearch.organization_name;
+            vm.userChosenOrg = orgSearch.organization_details;
             vm.userObj.user.organization_id = vm.userChosenOrg.id;
         };
 
@@ -77,10 +77,14 @@
 
         vm.validateUserName = function() {
             UserService.searchUsers({username: vm.userObj.user.username}).then(function (data) {
-                if ( data.total >  0 ){
-                    vm.newUserNameInvalid = true;
-                } else {
-                    vm.newUserNameInvalid = false;
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (data.total >  0 ){
+                        vm.newUserNameInvalid = true;
+                    } else {
+                        vm.newUserNameInvalid = false;
+                    }
                 }
             }).catch(function (err) {
                 console.log('Search Users failed: ' + err);
@@ -88,8 +92,9 @@
         };
 
         var upsertUserSignup = function (userObj) {
+            /* Not sure whether interceptor module will catch the 422, thereby allowing removal of 422 check below */
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj).then(function (data) {
-                if (data["server_response"] == 422 || data["server_response"]["status"] == 422) {
+                if (data["server_response"] === 422 || data["server_response"]["status"] === 422) {
                     toastr.error('Sign Up failed', 'Login error', { timeOut: 0});
                     for (var key in data) {
                         if (data.hasOwnProperty(key)) {
@@ -110,4 +115,4 @@
             });
         };
     }
-})();
+}());

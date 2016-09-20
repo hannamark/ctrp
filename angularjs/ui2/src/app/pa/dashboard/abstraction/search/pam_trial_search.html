@@ -102,7 +102,7 @@
                                     <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
                                            autocomplete="off" placeholder="Organization Name"
                                            ng-model="pamTrialsSearchView.organization_name"
-                                           typeahead-on-select="pamTrialsSearchView.setTypeAheadOrg($item)"
+                                           typeahead-on-select="pamTrialsSearchView.setPamTrialsTypeAheadOrg($item)"
                                            ng-if="!pamTrialsSearchView.userChosenOrg"
                                            uib-typeahead="org for org in pamTrialsSearchView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
                                            typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
