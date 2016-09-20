@@ -545,7 +545,9 @@
 
             <div class="btn-toolbar">
                 <button type="submit" ng-disable="!paTrialOverview.trialDetailObj.pa_editable" class="btn btn-primary pull-right" id="add_participating_site" restriction-field
-                        ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || psView.disableBtn" ng-click="psView.setAddMode()">Add Participating Site</button>
+                        ng-disabled="!paTrialOverview.trialDetailObj.pa_editable || psView.disableBtn" ng-click="psView.setAddMode()">
+                        <i class="glyphicon glyphicon-plus"></i> Add Participating Site
+                </button>
                 <button type="button" class="btn btn-danger pull-right" id="delete" restriction-field ctrp-confirm ctrp-click="psView.deleteSelected()"
                         confirm-msg="Click OK to remove selected Participating Site(s) from the study. Click Cancel to abort."
                         ng-show="psView.curTrial.participating_sites.length"

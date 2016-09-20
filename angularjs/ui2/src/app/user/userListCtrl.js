@@ -420,10 +420,10 @@
             } else if (vm.ownerListMode || vm.registeredUsersPage) {
                 vm.gridOptions.columnDefs.push(userName, lastName, firstName, middleName, optionOrg, optionOrgFamilies);
             }
-            
+
             vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
             vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-            
+
             vm.gridOptions.onRegisterApi = function (gridApi) {
                 vm.gridApi = gridApi;
                 vm.gridApi.core.on.sortChanged($scope, sortUserListChangedCallBack);
@@ -434,7 +434,7 @@
                     vm.searchUsers();
                 });
             };
-            
+
             vm.gridOptions.exporterAllDataFn = function () {
                 var allSearchParams = angular.copy(vm.searchParams);
                 var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
