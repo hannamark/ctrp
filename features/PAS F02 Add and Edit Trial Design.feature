@@ -13,6 +13,7 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
     |Expanded Access            |
     |Observational              |
     |Ancillary Correlative      |
+  
   When The Clinical Reasearch Category <ClinicalResearchCategoryS> is updated to <ClinicalResearchCategoryF>
   Then the field <field> will follow the action rule <action> for display or delete
   
@@ -70,6 +71,7 @@ Examples:
     |Observational or Ancillary Correlative |Interventional or Expanded Access        |Target enrollment                        |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Final Enrollment for clinicalTrials.gov  |displays|
     |Observational or Ancillary Correlative |Interventional  or Expanded Access       |Accruals                                 |displays|
+
 
 Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application

@@ -280,10 +280,10 @@
             return OrgService.typeAheadOrgNameSearch(vm.organization_name, vm.searchOrganizationFamily);
         };
 
-        vm.setTypePamTrialsAheadOrg = function (searchObj) {
-            var splitVal = searchObj.split('<span class="hide">');
-            vm.organization_name = splitVal[0];
-            vm.userChosenOrg = JSON.parse(splitVal[1].split('</span>')[0].replace(/"null"/g, 'null'));
+        vm.setPamTrialsTypeAheadOrg = function (searchObj) {
+            var orgSearch = OrgService.setTypeAheadOrg(searchObj);
+            vm.organization_name = orgSearch.organization_name;
+            vm.userChosenOrg = orgSearch.organization_details;
             vm.searchParams.organization_id = vm.userChosenOrg.id;
         };
 
@@ -340,4 +340,4 @@
             vm.isCurationEnabled = UserService.isCurationModeEnabled();
         });
     }
-})();
+}());
