@@ -367,12 +367,9 @@
             vm.searchUsers();
         } //sortUserListChangedCallBack
 
-        function displayTrialOwnershipGrid() {
-            if (vm.ownerListMode) {
-                vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsRemoveGridItem($scope, vm);
-            } else {
-                vm.gridOptions.gridMenuCustomItems = new UserService.TransferTrialsAddGridItem($scope, vm);
-            }
+        vm.displayTrialOwnershipGrid = function () {
+            vm.gridOptions.gridMenuCustomItems = vm.ownerListMode ? new UserService.TransferTrialsRemoveGridItem($scope, vm): new UserService.TransferTrialsAddGridItem($scope, vm);
+
             vm.gridOptions.enablePaging = (vm.ownerListMode ? false: true);
             vm.gridOptions.enableFiltering = (vm.ownerListMode ? true : false);
             vm.gridOptions.exporterCsvFilename = (vm.ownerListMode ? 't' + vm.trialId + '_owners.csv' : 'users.csv');
@@ -381,7 +378,7 @@
             vm.searchParams.trial_id = (vm.ownerListMode ? vm.trialId : undefined);
             vm.searchParams.registered_users = (vm.registeredUsersPage || vm.trialId ? true : false);
             vm.searchUsers();
-        }
+        };
 
         //Listen to the write-mode switch
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
@@ -462,7 +459,7 @@
             if (vm.trialId) {
                 vm.curTrial = PATrialService.getCurrentTrialFromCache();
                 $scope.$watch('displayTrialOwnershipGrid', function() {
-                    displayTrialOwnershipGrid()
+                    vm.displayTrialOwnershipGrid();
                 });
             }
 

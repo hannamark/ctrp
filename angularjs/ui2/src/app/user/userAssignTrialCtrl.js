@@ -89,36 +89,27 @@
             });
         };
 
-        vm.save = function () {
-            if (!vm.trialId && vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
-                };
-                submitAddOwnerships(searchParams);
-            } else if (vm.trialId && vm.userOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: [vm.trialId]
-                };
-                submitAddOwnerships(searchParams);
+        function getTrialsUsersSelection(){
+            var searchParams = {};
+            searchParams.user_ids = _.chain(vm.userOptions.selectedItems).pluck('id').value();
+            if (!vm.trialId && vm.trialOptions.selectedItems.length) {
+                searchParams.trial_ids = _.chain(vm.trialOptions.selectedItems).pluck('id').value();
+            } else {
+                searchParams.trial_ids = [vm.trialId];
                 vm.setAddMode = false;
             }
+            return searchParams;
+        }
+        
+        vm.save = function () {
+            if (vm.userOptions.selectedItems.length) {
+                submitAddOwnerships(getTrialsUsersSelection());
+            }
         };
+        
         vm.removeTrialsOwnerships = function () {
-            if (!vm.trialId && vm.userOptions.selectedItems.length && vm.trialOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: _.chain(vm.trialOptions.selectedItems).pluck('id').value()
-                };
-                submitEndOwnerships(searchParams);
-            } else if (vm.trialId && vm.userOptions.selectedItems.length) {
-                var searchParams = {
-                    user_ids: _.chain(vm.userOptions.selectedItems).pluck('id').value(),
-                    trial_ids: [vm.trialId]
-                };
-                submitEndOwnerships(searchParams);
-                vm.setAddMode = false;
+            if (vm.userOptions.selectedItems.length) {
+                submitEndOwnerships(getTrialsUsersSelection());
             }
         };
 

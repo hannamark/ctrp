@@ -570,16 +570,14 @@
                                 trial_ids: _.chain(controller.trialOptions.selectedItems).pluck('id').value()
                             };
 
-                            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams)
-                                .then(function (data) {
-                                    var postStatus = data.server_response.status;
-
-                                    if (postStatus >= 200 && postStatus <= 210) {
-                                        if(data.results === 'success') {
-                                            toastr.success('Trial Ownership Created', 'Success!');
-                                            controller.getUserTrials();
-                                        }
+                            PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_TRIALS_ADD, searchParams).then(function (data) {
+                                var postStatus = data.server_response.status;
+                                if (postStatus >= 200 && postStatus <= 210) {
+                                    if(data.results.complete) {
+                                        toastr.success('Trial Ownership Created', 'Success!');
+                                        controller.getUserTrials();
                                     }
+                                }
                             });
                         }
                     };
