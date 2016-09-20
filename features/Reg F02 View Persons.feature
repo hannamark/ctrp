@@ -31,6 +31,18 @@ Scenario: #1 I am able to view existing person in CTRP as a Registry user
       |Phone Number:extension  |420-999-8906:9877|
       |Org Affiliation|ShiOrg|
       
+      And Org Affiliation view details type will be displayed
+      
+
+      |CTRPID  |
+      |CTEPID|
+      |Organization Name  |
+      |Relationship  |
+      |Effective Date  |
+      |Expiration Date  |
+      
+    
+      
 And I should not be allowed to edit person parameters
 And I should not be allowed to delete a person
 And I should not view, edit or delete comments added by curators

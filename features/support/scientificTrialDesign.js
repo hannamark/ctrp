@@ -29,7 +29,8 @@ var scientificTrialDesign = function(){
      * Trial Design object(s)
      ***********************************/
 
-    this.trialDesignHeader = element(by.id('trial_design_hdr'));
+    this.trialDesignHeader = element(by.css('.sub-bordered.ng-binding'));
+
 
     this.researchCategoryLst = element(by.id('research_category'));
     this.primaryPurposeLst = element(by.id('primary_purpose'));
@@ -38,12 +39,11 @@ var scientificTrialDesign = function(){
 
     this.isThisAPilotYes = element(by.id('is_this_pilot_yes'));
     this.isThisAPilotNo = element(by.id('is_this_pilot_no'));
+    this.isThisAPilot = element(by.css('.radio-inline'));
 
     this.interventionModelLst = element(by.id('intervention_model'));
 
     this.maskingLst = element(by.id('masking'));
-
-
 
     this.allocationLst = element(by.id('allocation'));
     this.studyClassficationLst = element(by.id('study_classification'));
@@ -52,7 +52,7 @@ var scientificTrialDesign = function(){
     this.targetEnrollmentTxt = element(by.id('target_enrollment'));
     this.finalEnrollmentTxt = element(by.id('final_enrollment'));
 
-    this.accrualsView = element(by.id('accruals_nmbr'));
+    this.accrualsView = element(by.css('.col-xs-12.col-sm-2.form-text.ng-binding'));
 
     //Masking Roles
     this.maskingRolesSubjectCheck = element(by.id('masking_role_subject'));
@@ -70,16 +70,6 @@ var scientificTrialDesign = function(){
     /***********************************
      * Trial Design Required Message
      ***********************************/
-    this.identifierTypeLst = element(by.id('identifier_type'));
-    this.trialIdentifierTxt = element(by.id('trial_identifier'));
-    this.lookupTrialBtn = element(by.id('lookup_trial'));
-    this.researchCategoryVw = element(by.id('research_category_view'));
-    this.officialTitleVw = element(by.id('official_title_view'));
-
-    this.identifierTypeLstLbl = element(by.id('identifier_type_lbl'));
-    this.trialIdentifierTxtLbl = element(by.id('trial_identifier_lbl'));
-    this.researchCategoryVwLbl = element(by.id('research_category_lbl'));
-    this.officialTitleVwLbl = element(by.id('official_title_lbl'));
 
     this.notFoundMsg = element.all(by.css('.help-block.ng-binding'));
     this.requiredMsg = element.all(by.css('.help-block.ng-scope'));
@@ -90,71 +80,66 @@ var scientificTrialDesign = function(){
     this.resetTrialDesignBtn = element(by.id('cancel_btn'));
 
 
-    this.associatedPageTitleList = element(by.id('pg_title_list'));
-    this.associatedPageTitleDetails = element(by.id('pg_title_details'));
-
-    this.viewLeadOrgTrialID = element(by.id('view_trial_id'));
-    this.viewNCIID = element(by.id('view_nci_id'));
-    this.viewProtocolID1 = element(by.id('view_protocol_id_0'));
-    this.viewProtocolID2 = element(by.id('view_protocol_id_1'));
-    this.viewProtocolID3 = element(by.id('view_protocol_id_2'));
-    this.viewCloseBtn = element(by.css('.md-primary.md-button.md-default-theme'));
-
-
-
-    this.clickAddAssociatedTrial = function(){
-        helper.clickButton(self.addAssociatedTrialBtn, "Add Associated Trial - Button");
+    this.selectClinicalResearchCategory = function(optionCRC)  {
+        helper.selectValueFromList(this.researchCategoryLst, optionCRC, "Clinical Research Category - List field");
     };
 
-    this.selectAllAssociatedTrial = function (){
-        helper.clickButton(this.tableSelectAll, "Selecte All - Button");
+    this.selectPrimaryPurpose = function(optionPP)  {
+        helper.selectValueFromList(this.primaryPurposeLst, optionPP, "Primary Purpose - List field");
     };
 
-    this.clickDeleteButton = function(){
-        helper.clickButton(self.deleteSelectedAssociated, "Delete Trial - Button");
+    this.selectSecondaryPurpose = function(optionSP)  {
+        helper.selectValueFromList(this.secondaryPurposeLst, optionSP, "Secondary Purpose - List field");
     };
 
-    this.clickDeleteSelectedAssocaited = function(yesCancel){
-        helper.clickButton(this.deleteSelectedAssociated, "Delete Selected List of Associated Trial - Button");
-        this.waitForAssociatedTrailDetailsElement(self.deleteConfirmAssociated, "Waiting for Delete Yes button to be present");
-        if (yesCancel === 'yes'){
-            helper.clickButton(this.deleteConfirmAssociated, "Delete Confirm - Button");
-        } else if (yesCancel === 'cancel'){
-            helper.clickButton(this.deleteCancelAssociated, "Delete Cancel - Button");
-        }
+    this.selectTrialPhase = function(optionTP)  {
+        helper.selectValueFromList(this.trialPhaseLst, optionTP, "Trial Phase - List field");
     };
 
-    this.deleteAllAssociatedTrialList = function(yesOrCancel){
-        self.tableTHeadAssociated.isDisplayed().then(function(result) {
-            if (result === true) {
-                self.selectAllAssociatedTrial();
-                self.clickDeleteSelectedAssocaited(yesOrCancel);
-            }
-        });
+    this.clickRadioIsThisAPilot = function(optionITAP)  {
+        helper.clickRadioButton(this.isThisAPilot, optionITAP, "Is this a pilot - Radio Button");
     };
 
-    this.verifyDeleteAllAssociatedTrialList = function(){
-        self.tableTHeadAssociated.isDisplayed().then(function(result) {
-            if (result === false) {
-                var notExistsTableA = 'Table Status : '+result+'';
-                var notExistsTableB = 'Table Status : '+result+'';
-                expect(notExistsTableA.toString()).to.eql(notExistsTableB.toString());
-            } else if (result === true){
-                var notExistsTableC = 'Table Status : '+result+'';
-                var notExistsTableD = 'Table Status : '+result+' but Status should be false';
-                expect(notExistsTableC.toString()).to.eql(notExistsTableD.toString());
-            }
-        });
+    this.selectInterventionalModel = function(optionIM)  {
+        helper.selectValueFromList(this.interventionModelLst, optionIM, "Intervention Model - List field");
     };
 
-    this.selectIdentifierType = function(type)  {
-        helper.selectValueFromList(this.identifierTypeLst, type, "Identifier Type - List field");
+    this.selectMasking = function(optionM)  {
+        helper.selectValueFromList(this.maskingLst, optionM, "Masking - List field");
     };
 
-    this.setTrialIdentifierTxt = function(trialIdentifier){
-        helper.setValue(this.trialIdentifierTxt, trialIdentifier, 'Trial Identifier');
-        helper.wait_for(100);
+    this.selectAllocation = function(optionA)  {
+        helper.selectValueFromList(this.allocationLst, optionA, "Allocation - List field");
     };
+
+    this.selectStudyClassification = function(optionSC)  {
+        helper.selectValueFromList(this.studyClassficationLst, optionSC, "Study Classification - List field");
+    };
+
+    this.setNumberOfArmsGroups = function(number){
+        helper.setValue(this.numberOfArmsTxt, number, 'Number of Arms Group Text -');
+    };
+
+    this.setTargetEnrollment = function(number){
+        helper.setValue(this.targetEnrollmentTxt, number, 'Target Enrollment Text -');
+    };
+
+    this.setFinalEnrollmentForCT = function(number){
+        helper.setValue(this.finalEnrollmentTxt, number, 'Final Enrollment for CT.gov Text -');
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     this.clickLookupTrial = function(){
         helper.clickButton(this.lookupTrialBtn, "Add Look Up Trial - Button");

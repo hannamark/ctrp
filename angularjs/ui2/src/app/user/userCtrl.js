@@ -14,7 +14,11 @@
         var vm = this;
 
         AppSettingsService.getSettings({ setting: 'LOGIN_BULLETIN', external: true }).then(function (response) {
-            vm.loginBulletin = response.data[0] ? response.data[0].settings : null;
+            var status = response.status;
+
+            if (status >= 200 && status <= 210) {
+                vm.loginBulletin = response.data[0] ? response.data[0].settings : null;
+            }
         });
 
         vm.processing = false;

@@ -838,7 +838,7 @@
                                             <td class="col-md-3">
                                                 <div>
                                                     <select restriction-field class="form-control input-sm" id="nih_nci"
-                                                        ng-model="trialDetailView.nih_nci" ng-required="trialDetailView.indIdeHolderTypeCode ==='NCI' || trialDetailView.indIdeHolderTypeCode === 'NIH' ">
+                                                        ng-model="trialDetailView.nih_nci" ng-required="trialDetailView.indIdeHolderTypeCode ==='NCI' || trialDetailView.indIdeHolderTypeCode === 'NIH'" ng-disabled="!trialDetailView.nihNciArr.length">
                                                         <option value="">-Select-</option>
                                                         <option ng-repeat="nihNci in trialDetailView.nihNciArr" value="{{nihNci.code}}">{{nihNci.code}}</option>
                                                     </select>
@@ -1106,7 +1106,7 @@
                             <label class="control-label col-xs-12 col-sm-3"></label>
                             <div class="col-xs-12 col-sm-9">
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                                <span ng-show="trialDetailView.isDocDeletionAllowed" ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
+                                <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                             </div>
                         </div>
 
@@ -1255,7 +1255,8 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-6">
-                                    <input type="text" restriction-field class="form-control input-sm" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Describe other document">
+                                    <input type="text" restriction-field class="form-control input-sm" maxlength="255" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Describe other document">
+                                    <span ng-show="trialDetailView.other_document_subtypes[$index].length > 0">{{255 - trialDetailView.other_document_subtypes[$index].length}} characters left</span>
                                 </div>
                             </div>
                         </div>
