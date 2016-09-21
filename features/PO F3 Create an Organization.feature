@@ -93,33 +93,11 @@ Feature: PO F3 Create an Organization
     When the entered full name of the organizaton exists in CTRP with an Active Status 
     Then the system should indicate with a warning: "Organization exists in the database. Please verify and create a new Organization record."
     And the curator review the warning and decides to create the Organization record 
-    And the organization can be saved
+    When the Curator saves the added organization parameters
+    Then the organization will be created
 
   
-     Scenario:#6 As a Curator, I can Edit created Organization
-    Given I am logged in to CTRP PO application
-    And I am on the search Organization results screen
-     When I select an organization I want to edit
-     Then the edit screen will display
-     And I can edit fields type
-     
-      |Name|
-      |Source Status:Active|
-      |Processing Status: Complete|
-      |Name Alias|
-      |address1|
-      |address2|
-      |country|
-      |State|
-      |City|
-      |Postal Code|
-      |Email|
-      |Phone Number|
-      |Phone Number: Extension|
-      
-
-     When I click on the save button
-     Then the edited information will be saved to the trial records
+    
      
      
     
