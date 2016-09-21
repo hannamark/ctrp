@@ -362,6 +362,7 @@ var projectMethodsRegistry = function () {
             }
             else {
                 searchOrg.clickOrgModelClose();
+                helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClose' + moment().format('MMMDoYY hmmss') + '.png');
                 commonFunctions.onPrepareLoginTest('ctrpcurator');
                 //login.login('ctrpcurator', 'Welcome01');
                 //login.accept();
@@ -1774,7 +1775,7 @@ var projectMethodsRegistry = function () {
                             searchTrial.setSearchTrialProtocolID(nciIDOfTrial);
                             searchTrial.selectSearchTrialStudySource('Industrial');
                             searchTrial.clickSearchTrialSearchButton();
-                            searchTrial.clickSearchTrialMyTrials();
+                            searchTrial.clickSearchTrialAllTrials();
                             searchTrial.clickSearchTrialActionButton();
                             searchTrial.clickSearchTrialsAddSiteButton();
                             addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);

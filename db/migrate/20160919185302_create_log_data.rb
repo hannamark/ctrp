@@ -10,6 +10,7 @@ class CreateLogData < ActiveRecord::Migration
       t.string :method, :limit =>255
       t.string :status, :limit =>255
       t.string :object_id, :limit =>255
+      t.string :user, :limit =>255
       t.text   :response_body
       t.timestamps null: false
       t.ctrp_base_columns

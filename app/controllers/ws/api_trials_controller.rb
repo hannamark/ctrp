@@ -25,10 +25,9 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
 
   before_filter only: [:create] do
+    p "#########################"
     Rails.logger.info("Restfulservices=> current user #@current_user");
     val_errors = Array.new()
-
-    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
 
     ## Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
      ##
@@ -90,7 +89,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   before_filter only: [:update] do
 
-    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
     @paramsLoader = ApiTrialParamsLoader.new()
     @paramsLoader.load_params(@xmlMapperObject,"update",@trial)
     if !@paramsLoader.errors.empty?
@@ -105,7 +103,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     Rails.logger.info("Restfulservices=> current user #@current_user");
     val_errors = Array.new()
 
-    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+    #@xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
 
     ## Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
     ##
@@ -138,7 +136,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
   before_filter only: [:amend] do
 
-    @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+    #@xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
     val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
     if val_errors.any?
       response_body = val_errors.to_xml
@@ -256,41 +254,51 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     xsd = Nokogiri::XML::Schema(File.open(XSD_PATH))
     doc = Nokogiri::XML($requestString)
     xsd_errors =Array.new()
+    exception = Array.new
 
-    ## validate wheather root node is correct or not
-    if  doc.root.name == $rootElement
-      xsd.validate(doc).each do |error|
-        #p error.code()
-        #p error.column()
-        #p error.domain()
-        #p error.inspect()
-        #p error.level()
-        #p error.line()
-        p "hello this is inside error"
-        xsd_errors.push(error.message.gsub('{gov.nih.nci.pa.webservices.types}',''))
-      end
-      xsd_errors.push("Refer 5.x WS XSD on wiki for above erros") if xsd_errors.any?
-    else
-      xsd_errors.push("Refer 5.x WS XSD on wiki for correct request body ")
+    ## This block is very important and will thourughly look for a valid XML
+    begin
+      @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+    rescue => e
+      exception.push(e)
+      render xml:exception, status: '404'
     end
-    request_logging(doc,"Request",action)
 
-    ##
-    ####This is compatibility maintainence with 4.x, if they submitted we will accept it but throw an error
-    if !xsd_errors.any?
-      a = doc.xpath("//tns:leadOrganization/tns:newOrganization")
-      b = doc.xpath("//tns:sponsor/tns:newOrganization")
-      c = doc.xpath("//tns:pi/tns:newPerson")
-      d = doc.xpath("//tns:summary4FundingSponsor/tns:newOrganization")
+    if exception.size == 0
+      ## validate wheather root node is correct or not
+      if  doc.root.name == $rootElement
+        xsd.validate(doc).each do |error|
+          #p error.code()
+          #p error.column()
+          #p error.domain()
+          #p error.inspect()
+          #p error.level()
+          #p error.line()
+          xsd_errors.push(error.message.gsub('{gov.nih.nci.pa.webservices.types}',''))
+        end
+        xsd_errors.push("Refer 5.x WS XSD on wiki for above erros") if xsd_errors.any?
+      else
+        xsd_errors.push("Refer 5.x WS XSD on wiki for correct request body ")
+      end
+
+      request_logging(doc,"Request",action,@current_user.username)
+
+      ##
+      ####This is compatibility maintainence with 4.x, if they submitted we will accept it but throw an error
+      if !xsd_errors.any?
+        a = doc.xpath("//tns:leadOrganization/tns:newOrganization")
+        b = doc.xpath("//tns:sponsor/tns:newOrganization")
+        c = doc.xpath("//tns:pi/tns:newPerson")
+        d = doc.xpath("//tns:summary4FundingSponsor/tns:newOrganization")
 
         xsd_errors.push("leadOrganization: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if a.length >= 1
         xsd_errors.push("sponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if b.length >= 1
         xsd_errors.push("pi: Creating new Person feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if c.length >= 1
         xsd_errors.push("summary4FundingSponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if d.length >= 1
 
-      #e = doc.xpath("//")
+        #e = doc.xpath("//")
 
-    end
+      end
 
 
       if xsd_errors.any?
@@ -298,6 +306,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
         response_logging(nil,"404",xsd_errors.to_xml)
       end
 
+    end
   end
 
 
@@ -369,8 +378,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     end
   end
 
-  def request_logging(doc,action,request_or_response)
-    add_file("rest_log.xml", doc, "xml", "tmp", action, "","")
+  def request_logging(doc,action,request_or_response,user)
+    add_file("rest_log.xml", doc, "xml", "tmp", action, "","",user)
   end
 
   def response_logging(trial,status, response_body)
@@ -384,7 +393,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     logDatum.update({:status => status, :object_id => object_id, :response_body => response_body}) if logDatum
   end
 
-  def add_file(file_name, file_content,document_type,tmp_file_name, action,status,trial_id)
+  def add_file(file_name, file_content,document_type,tmp_file_name, action,status,trial_id,user)
 
     if file_content.nil?
       return
@@ -401,7 +410,7 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       file_params = {:filename => file_name, :tempfile => temp_file}
 
     uploaded_file = ActionDispatch::Http::UploadedFile.new(file_params)
-    log_datum_params = {:file => uploaded_file, :document_type =>document_type, :file_name => file_name, :context => "REST", :object =>"Trial", :method => action, :status => status, :object_id => trial_id}
+    log_datum_params = {:file => uploaded_file, :document_type =>document_type, :file_name => file_name, :context => "REST", :object =>"Trial", :method => action, :status => status, :object_id => trial_id, :user => user}
     $logDatumId = LogDatum.create(log_datum_params)
   end
 

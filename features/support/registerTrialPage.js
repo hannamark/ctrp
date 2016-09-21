@@ -288,6 +288,9 @@ var registerTrial = function(){
     this.trialExpandAll = element(by.css('button[ng-show="trialDetailView.collapsed"]'));
 
 
+    /** Character Limit**/
+    this.addTrialOfficialTitleCharacter = element(by.binding('600 - trial_form.official_title.$viewValue.length'));
+
     var helper = new helperFunctions();
     var self = this;
 
