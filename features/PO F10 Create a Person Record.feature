@@ -10,10 +10,8 @@ Feature: PO F10 Create a Person Record
     And the Processing Status will be set to "Complete" 
   
   
-  Scenario Outline:#1a As a Curator, I can request the creation of a new Person Record in CTRP
+  Scenario Outline:#1a As a Curator, I can create a new Person Record in CTRP
     Given I am logged in to CTRP PO application
-    And I have complete a Search for Person I want to add
-    And a duplicate for the searched Person in CTRP was not found
     When I have selected the Add Person function
     And I provide the information Type of the Person I wish to create
     
@@ -28,25 +26,25 @@ Feature: PO F10 Create a Person Record
     And I can Add a Person Affiliated Organization by searching organizations
     When the added parameters are saved
     Then Then a unique CTRP Person ID <Source ID> will be assigned to the added person
-    And a unique CTRP Context Person ID <ContextPersonID> will be assigned to the added person
+    And a unique Context Person ID <ContextPersonID> will be assigned to the added person
     And a CTRP person record that contains information type will be created
     
     |CTRP Person ID|
-    |CTRP Context Person ID|
+    |Context Person ID|
     |Prefix|
     |First Name|
     |Middle Name|
     |Last Name|
     |Suffix|
     |Processing Status|
-    |Source Context: CTRP|
+    |Source Context (CTRP)|
     |Source ID|
-    |Source Status: Active|
+    |Source Status Active|
     |Email|
     |Phone Number-Extension|
-    |Created By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
-    |Updated By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
-    |Add Affiliated Organization Details|
+    |Created By Created By Date (ctrpcurator 14-Sep-2016 10:53:52 EDT)|
+    |Updated By Updated By Date (ctrpcurator 14-Sep-2016 10:53:52 EDT)|
+    |Affiliated Organization|
     
     When I select Reset 
      Then the information entered on the Add Personscreen fields will not be saved to the trial record 
