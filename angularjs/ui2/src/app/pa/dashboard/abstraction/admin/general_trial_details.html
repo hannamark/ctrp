@@ -18,7 +18,7 @@
             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.general_trial_details_form.needsAttention(general_trial_details_form.trial_official_title)}">
               <label for="official_title" class="control-label col-xs-12 col-sm-3">Official Title:</label>
               <div class="col-xs-12 col-sm-9">
-                <textarea name="trial_official_title" id="official_title" rows="2" class="form-control"
+                <textarea name="trial_official_title" id="official_title" rows="2" class="form-control" maxlength="600"
                     ng-model="generalTrialDetailView.generalTrialDetailsObj.official_title" ng-required="true">
                 </textarea>
                 <span ng-show="general_trial_details_form.trial_official_title.$dirty">
