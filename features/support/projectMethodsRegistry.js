@@ -368,7 +368,7 @@ var projectMethodsRegistry = function () {
                 browser.driver.wait(function () {
                     console.log('wait here');
                     return true;
-                }, 40).then(function () {
+                }, 5000).then(function () {
                     commonFunctions.onPrepareLoginTest('ctrpcurator');
                 });
                 //login.login('ctrpcurator', 'Welcome01');
