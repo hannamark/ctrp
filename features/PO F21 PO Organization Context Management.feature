@@ -305,7 +305,7 @@ Scenario: #1a CTEP Context Mandatory Fields
     Then the CTEP Service Request will be set to "Update"
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
-    When CTEP updates are new organization address type
+    When CTEP updates includes the field  are new organization address type
     	|Address|
         |Address 2|
         |City|
@@ -315,8 +315,10 @@ Scenario: #1a CTEP Context Mandatory Fields
         |Email|
         |Phone|
         
-    And the CTEP Orgnization Status is Active
+    And the CTEP Organization Status is Active
     Then The CTRP Context fields will be automatically Updated
+    And the processing Status will be "Complete"
+    And the Service Request will be "Null"
     And the CTRP Context Processing Status will be Complete
     
     
@@ -330,12 +332,8 @@ Scenario: #1a CTEP Context Mandatory Fields
     When the CTEP context update include a New Organization Name
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
-    |Organization Name|
     And the CTRP Processing Status will be "Incomplete"
-    And The CTRP Curator will be able to identify by searching CTEP Organization with Service Request "Update"
-    When CTRP Curator will determine the updates for the CTRP Context
-    Then the CTRP Processing Status will be "Complete"
-    
+   
    
  
    Scenario: #6 As a CTRP PO Curator I can approve or deny a CTRP request for creating a new organization in CTRP
@@ -445,8 +443,8 @@ Scenario: #1a CTEP Context Mandatory Fields
      And the CTEP Organizations <OrganizationnName> will have CTEP Context Org ID <CTEPContextOrgID>, CTRP Org ID <CTRPOrgIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and Organization status <CTEPStatusType>
      
      |<OrganizationName>                   |<CTEPContextOrgID>|<CTRPOrgIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|
-     |ACORN Research,LLC                   |ACRN              |8352734            |Merge ID ACT             |Incomplete                 |Active          |         
-     |Actelion Pharmaceuticals Switzerland |ACT               |8149074            |Merge ID ACRN            |Incomplete                 |Inactive        |        
+     |ACORN Research,LLC                   |65016645          |8352734            |Merge ID 76983647        |Incomplete                 |Active          |         
+     |Actelion Pharmaceuticals Switzerland |76983647          |8149074            |Merge ID 65016645        |Incomplete                 |Inactive        |        
       
      Then the curator will search CTEP Context for organization where Service request is "Merge with CTEP ID"
      And the curator will search for matching organizations in the CTRP Context
@@ -455,8 +453,8 @@ Scenario: #1a CTEP Context Mandatory Fields
     And  the organizations <OrganizationName> will have PK ID <CTEPContextOrgIDType>, CTRP ID <CTRPOrgIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and CTEP Organization status <CTEPStatusType> and CTRP Organization Status <CTRPOrgStatus> 
      
      |<OrganizationName>                   |<CTEPContextOrgID>|<CTRPOrgIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|<CTRPStatusType>|
-     |ACORN Research,LLC                   |ACRN              |8352734            |NULL                     |Complete                   |Active          |Active          |         
-     |Actelion Pharmaceuticals Switzerland |ACT               |8149074            |NULL                     |complete                   |Inactive        |Nullified       |        
+     |ACORN Research,LLC                   |65016645          |8352734            |NULL                     |Complete                   |Active          |Active          |         
+     |Actelion Pharmaceuticals Switzerland |76983647          |8149074            |NULL                     |complete                   |Inactive        |Nullified       |        
       
      And the curator will select the CTRP organization associated with the CTEP Active organization to replace the trial associations of the nullified organization
      And the CTRP Organization with the Nullified status will be added to the Aliases of the CTRP Organization with the Active Status
