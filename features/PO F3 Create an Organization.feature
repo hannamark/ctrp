@@ -27,6 +27,9 @@ Feature: PO F3 Create an Organization
     And I provide the Phone number of the organization <phone Number>
     And I provide Phone Extension of the provided phone number <Phone Number Extension>
     And I provide the email of the organization <email>
+    When I click on the reset button
+    Then the entered parameters will be cleared
+    And I can enter new parameters
     When I click on the save button
     Then a unique CTRP Organization ID <Source ID> will be assigned to the created organization
     And a unique CTRP Context Organization ID <ContextOrgID> will be assigned to the created organization
@@ -52,7 +55,7 @@ Feature: PO F3 Create an Organization
       |Created By|
       |Updated By|
       
-      RESET SCENARIO 
+      
      
         Scenario: #3 Create Organization Mandatory fields
     Given I am a curator
