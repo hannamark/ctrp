@@ -230,6 +230,9 @@ ListOfOrganizationsPage = function () {
     };
 
     this.clickOrgModelClose = function(){
+        browser.takeScreenshot().then(function (png) {
+            search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClick' + moment().format('MMMDoYY hmmss') + '.png');
+        });
         search.clickButton(this.orgModelCloseButton,"Organization Model Close button");
         browser.driver.wait(function () {
             console.log('wait here');
@@ -240,6 +243,9 @@ ListOfOrganizationsPage = function () {
                 if (retVal === true) {
                     self.orgModelCloseButtonAll.get(0).isDisplayed().then(function(state){
                         if(state) {
+                            browser.takeScreenshot().then(function (png) {
+                                search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelBeforeget0Click' + moment().format('MMMDoYY hmmss') + '.png');
+                            });
                             self.orgModelCloseButtonAll.get(0).click();
                         }
                         else {
