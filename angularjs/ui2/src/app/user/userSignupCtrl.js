@@ -77,10 +77,14 @@
 
         vm.validateUserName = function() {
             UserService.searchUsers({username: vm.userObj.user.username}).then(function (data) {
-                if ( data.total >  0 ){
-                    vm.newUserNameInvalid = true;
-                } else {
-                    vm.newUserNameInvalid = false;
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (data.total >  0 ){
+                        vm.newUserNameInvalid = true;
+                    } else {
+                        vm.newUserNameInvalid = false;
+                    }
                 }
             }).catch(function (err) {
                 console.log('Search Users failed: ' + err);
@@ -88,6 +92,7 @@
         };
 
         var upsertUserSignup = function (userObj) {
+            /* Review Error Handling */
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj).then(function (data) {
                 if (data["server_response"] === 422 || data["server_response"]["status"] === 422) {
                     toastr.error('Sign Up failed', 'Login error', { timeOut: 0});

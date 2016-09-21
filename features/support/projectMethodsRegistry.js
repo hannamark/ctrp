@@ -362,7 +362,15 @@ var projectMethodsRegistry = function () {
             }
             else {
                 searchOrg.clickOrgModelClose();
-                commonFunctions.onPrepareLoginTest('ctrpcurator');
+                //browser.takeScreenshot().then(function (png) {
+                //    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClose' + moment().format('MMMDoYY hmmss') + '.png');
+                //});
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 5000).then(function () {
+                    commonFunctions.onPrepareLoginTest('ctrpcurator');
+                });
                 //login.login('ctrpcurator', 'Welcome01');
                 //login.accept();
                 browser.driver.wait(function () {
@@ -1774,7 +1782,7 @@ var projectMethodsRegistry = function () {
                             searchTrial.setSearchTrialProtocolID(nciIDOfTrial);
                             searchTrial.selectSearchTrialStudySource('Industrial');
                             searchTrial.clickSearchTrialSearchButton();
-                            searchTrial.clickSearchTrialMyTrials();
+                            searchTrial.clickSearchTrialAllTrials();
                             searchTrial.clickSearchTrialActionButton();
                             searchTrial.clickSearchTrialsAddSiteButton();
                             addTrial.clickAddTrialPersonSearchModel(indexOfPersonModel);

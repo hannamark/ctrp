@@ -50,9 +50,9 @@
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
 
+            /* Review Error Handling */
             PersonService.upsertPerson(newPerson).then(function (response) {
                 var statusCode = response.status || response.server_response.status;
-                //vm.savedSelection = [];
                 if (newPerson.new && statusCode === 201) {
                     // created
                     showToastr(vm.curPerson.lname);
@@ -160,9 +160,13 @@
                     switchSourceContext();
                 } else {
                     PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
-                        personContextCache[contextKey] = angular.copy(response.data);
-                        vm.curPerson = personContextCache[contextKey];
-                        switchSourceContext();
+                        var status = response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            personContextCache[contextKey] = angular.copy(response.data);
+                            vm.curPerson = personContextCache[contextKey];
+                            switchSourceContext();
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving person during tab change.");
                     });
@@ -317,14 +321,18 @@
             //find the organization name with the given id
             var findOrgName = function(poAff, cb) {
                 OrgService.getOrgById(poAff.organization_id).then(function(organization) {
-                    var curOrg = {"id" : poAff.organization_id, "name": organization.name};
-                    curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
-                    curOrg.expiration_date = moment(poAff.expiration_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
-                    curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
-                    curOrg.po_affiliation_id = poAff.id; //po affiliation id
-                    curOrg.lock_version = poAff.lock_version;
-                    curOrg._destroy = poAff._destroy || false;
-                    vm.savedSelection.push(curOrg);
+                    var status = organization.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        var curOrg = {"id" : poAff.organization_id, "name": organization.name};
+                        curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
+                        curOrg.expiration_date = moment(poAff.expiration_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                        curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
+                        curOrg.po_affiliation_id = poAff.id; //po affiliation id
+                        curOrg.lock_version = poAff.lock_version;
+                        curOrg._destroy = poAff._destroy || false;
+                        vm.savedSelection.push(curOrg);
+                    }
                 }).catch(function(err) {
                     console.error("error in retrieving organization name with id: " + poAff.organization_id);
                 });
@@ -354,7 +362,6 @@
                 });
 
                 modalInstance.result.then(function (selectedItem) {
-                    console.log("about to delete the personDetail " + vm.curPerson.id);
                     $state.go('main.people');
                 }, function () {
                     console.log("operation canceled")
@@ -375,9 +382,13 @@
             vm.showUniqueWarning = false;
 
             var result = PersonService.checkUniquePerson(searchParams).then(function (response) {
-                vm.name_unqiue = response.name_unique;
-                if(!response.name_unique && vm.curPerson.lname.length > 0 && vm.curPerson.fname.length > 0) {
-                    vm.showUniqueWarning = true;
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.name_unqiue = response.name_unique;
+                    if(!response.name_unique && vm.curPerson.lname.length > 0 && vm.curPerson.fname.length > 0) {
+                        vm.showUniqueWarning = true;
+                    }
                 }
             }).catch(function (err) {
                 console.log("error in checking for duplicate person name " + JSON.stringify(err));

@@ -54,7 +54,7 @@ module.exports = function () {
         });
     });
 
-    this.Given(/^I have selected the appropriate Research Category Types:$/, function (table) {
+    this.Given(/^I have selected the appropriate Clinical Research Category Types:$/, function (table) {
         return browser.sleep(25).then(function () {
             trialResearchCategory = table.raw();
             console.log('value of table' + trialResearchCategory);
@@ -133,9 +133,9 @@ module.exports = function () {
         });
     });
 
-    this.Given(/^I have not entered the Research Category type$/, function () {
+    this.Given(/^I have not entered the Clinical Research Category type$/, function () {
         return browser.sleep(25).then(function () {
-            addTrial.getVerifyAddTrialResearchCategory('-Select a Research Category-');
+            addTrial.getVerifyAddTrialResearchCategory('-Select a Clinical Research Category-');
         });
         // browser.sleep(25).then(callback);
     });
@@ -199,5 +199,34 @@ module.exports = function () {
         });
     });
 
+    this.Then(/^a comment appears below the field to display the number of characters available to enter into the field$/, function (table, callback) {
+        //return browser.sleep(25).then(function () {
+        //    characterFieldTable = table.hashes();
+        //    for (var i = 0; i < characterFieldTable.length; i++) {
+        //        var characters = +characterFieldTable[i].NumberofCharactersleft.match( /\d+/g);
+        //        console.log('Characters');
+        //        console.log(characters);
+        //        var charactersString = characterFieldTable[i].NumberofCharactersleft.match( /[a-zA-Z]+/g);
+        //        var newCharacters = characters - 1 ;
+        //        if(characterFieldTable[i].Field === 'Official Title') {
+        //            addTrial.setAddTrialOfficialTitle('s');
+        //            console.log('New Characters');
+        //            console.log(newCharacters);
+        //            console.log('Characters String');
+        //            console.log(charactersString.join(" "));
+        //            console.log('New Character and string');
+        //            console.log(newCharacters +' '+ charactersString.join(" "));
+        //            expect(addTrial.addTrialOfficialTitleCharacter.getText()).to.eventually.equal(newCharacters + ' ' + charactersString.join(" "));
+        //        }
+        //    }
+        //    //   browser.sleep(25).then(callback);
+        //});
+        callback.pending();
+    });
+
+    this.When(/^all the characters mentioned above for field have been entered$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback.pending();
+    });
 
 };

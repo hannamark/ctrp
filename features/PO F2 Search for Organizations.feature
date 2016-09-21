@@ -136,7 +136,7 @@ Feature: PO F2 Search and Edit Organization
       |Phone Number: Phone Number Extension|
       |Created By|
       |Updated By|
-      |Families|
+      |Family Name|
     
     And I can click on the Family Name link in <Families> from the CTRP Organization context
     Then the complete family information details will be displayed including
@@ -148,9 +148,9 @@ Feature: PO F2 Search and Edit Organization
       
     And a family membership details will be displayed in a table on the same screen with information below
       
-      |CTRP ID|
-      |CTEP ID|
-      |Organization Name (Clickable Link)|
+      |CTRP Organization ID|
+      |CTEP Organization ID|
+      |Organization Name (Hyperlink to Organization details)|
       |Organization Relationship (Organizational, Affiliation)|
       |Effective Date|
       |Expiration Date|
@@ -167,6 +167,7 @@ Feature: PO F2 Search and Edit Organization
     And I have selected the option to search for an organization
     When I select organization name in the search results
     Then the complete organization information will be displayed including:
+      
       |CTRP Organization ID|
       |Context Organization ID|
       |Name|
@@ -185,14 +186,24 @@ Feature: PO F2 Search and Edit Organization
       |Phone Number: Phone Number Extension|
       |Created By|
       |Updated By|
-      |Families|
-     And I can edit all CTRP Organization Fields except field type
+      |Family Name|
+     And I can edit all CTRP Organization Fields type
      
-     |CTRP Organization ID|
-     |Context Organization ID|
-     |Source ID|
-     |Source Context|
-
+      |Name|
+      |Source Status|
+      |Processing Status|
+      |Name Alias|
+      |Address 1|
+      |Address 2|
+      |Country|
+      |State|
+      |City|
+      |Postal Code|
+      |Email|
+      |Phone Number: Phone Number Extension|
+      |Created By|
+      |Updated By|
+      |Family Name|
 
   Scenario:#9 As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected
     Given I want to search for an Organization with wild card

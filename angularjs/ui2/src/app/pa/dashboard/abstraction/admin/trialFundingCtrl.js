@@ -161,7 +161,6 @@
                     } else {
                         vm.grantNum++;
                     }
-                    //console.log("in vm.toggleSelection, vm.grantNum="+JSON.stringify(vm.grantNum));
                 }
             }
         };// toggleSelection
@@ -177,6 +176,7 @@
             appendGrants();
             getTrialDetailCopy();
             watchTrialDetailObj();
+            watchFundingMechanismFields();
         }
 
         /**
@@ -209,6 +209,24 @@
                 vm.addedGrants.push(grant);
                 vm.grantNum++;
             }
+        }
+
+        /* Clears Add Funding Mechanism UI if question value === 'No' */
+        function watchFundingMechanismFields() {
+            $scope.$watch(function() {return vm.curTrial.grant_question;}, function(newVal, oldVal) {
+                if (newVal === 'No') {
+                    resetFundingMechanismFields();
+                }
+            });
+        }
+
+        function resetFundingMechanismFields() {
+            vm.serial_number = null;
+            vm.institute_code = null;
+            vm.funding_mechanism = null;
+            vm.nci = null;
+
+            vm.showAddGrantError = false;
         }
 
 

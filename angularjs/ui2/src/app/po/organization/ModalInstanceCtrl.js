@@ -21,6 +21,7 @@
         vm.ok = function() {
             vm.disableBtn = true;
 
+            /* Review Error Handling */
             OrgService.deleteOrg(orgId).then(function(data) {
                 var status = data.status;
 

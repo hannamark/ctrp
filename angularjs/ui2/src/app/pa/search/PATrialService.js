@@ -200,7 +200,6 @@
 
         function getTrialById(trialId) {
             console.log('calling getTrialById in TrialService');
-            //return PromiseService.getData(URL_CONFIGS.AN_TRIAL + trialId + '.json');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_TRIAL + trialId + '.json');
         } //getTrialById
 
@@ -657,7 +656,6 @@
         function uploadTrialRelatedDocs(trialDocsArr, trialId) {
             var promises = [];
             promises = _.map(trialDocsArr, function(trialDocObj) {
-                // console.log('trialDocObj: ', trialDocObj);
                 return prepUploadingTrialRelatedDocs(trialDocObj, trialId);
             });
 

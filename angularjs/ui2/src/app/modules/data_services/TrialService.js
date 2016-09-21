@@ -88,8 +88,6 @@
         } //getAllTrials
 
         function getTrialById(trialId) {
-            console.log('calling getTrialById in TrialService');
-            //return PromiseService.getData(URL_CONFIGS.AN_TRIAL + trialId + '.json');
             return PromiseTimeoutService.getData(URL_CONFIGS.A_TRIAL + trialId + '.json');
         } //getTrialById
 
@@ -286,13 +284,9 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES_REG);
         }
 
-
         function getAuthorityOrgArr(country) {
-            console.log(country)
             return PromiseTimeoutService.getData(URL_CONFIGS.AUTHORITIES_FOR_A_COUNTRY + '?country=' + country);
-
         }
-
 
         function getCountryList() {
             return PromiseService.getData(URL_CONFIGS.COUNTRIES_LIST);

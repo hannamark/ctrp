@@ -31,7 +31,7 @@
             });
 
             $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-                
+
                 event.preventDefault();
                 toastr.clear();
                 var writeModeSupported = false; //is write mode supported for the toState?
@@ -44,11 +44,19 @@
 
                     if (!UserService.isLoggedIn()) {
                         UserService.getAppVerFromDMZ().then(function(data) {
-                            UserService.setAppVersion(data['app_version']);
+                            var status = data.server_response.status;
+
+                            if (status >= 200 && status <= 210) {
+                                UserService.setAppVersion(data['app_version']);
+                            }
                         });
 
                         AppSettingsService.getSettings({ setting: 'APP_RELEASE_MILESTONE', external: true, location: "value" }).then(function (response) {
-                            UserService.setAppRelMilestone(response.data[0] ? response.data[0].settings : '')
+                            var status = response.status;
+
+                            if (status >= 200 && status <= 210) {
+                                UserService.setAppRelMilestone(response.data[0] ? response.data[0].settings : '');
+                            }
                         });
                     }
                 } else {
