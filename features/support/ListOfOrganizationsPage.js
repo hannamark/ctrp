@@ -234,10 +234,13 @@ ListOfOrganizationsPage = function () {
             search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClick' + moment().format('MMMDoYY hmmss') + '.png');
         });
         search.clickButton(this.orgModelCloseButton,"Organization Model Close button");
+        browser.takeScreenshot().then(function (png) {
+            search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelAfterClickClose' + moment().format('MMMDoYY hmmss') + '.png');
+        });
         browser.driver.wait(function () {
             console.log('wait here');
             return true;
-        }, 40).then(function () {
+        }, 5000).then(function () {
             self.orgModelCloseButtonAll.get(0).isPresent().then(function(retVal){
                 console.log('value of ret val : ' + retVal);
                 if (retVal === true) {
