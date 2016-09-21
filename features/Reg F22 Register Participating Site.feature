@@ -90,7 +90,7 @@ When I enter one or more Site Recruitment Status type
      
      |CTRP ID|
      |Organization Name|
-     |Investigators, Role (Principal Investigator or Sub-Investigator)*|
+     |Principal Investigator|
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
@@ -106,39 +106,15 @@ Scenario: #5 Add Participating Site Mandatory Fields
      When Add Participating site fields <PSType> id not added
      Then the error message <PSError> will be displayed
      
-     |<PSType>                   |<PSError>|
+     |PSType                   |PSError|
      |Organization Name          |Organization is Required|
      |Local Trial Identifier     |Local Trial Identifier is Required|
      |Site Principal Investigator|Site Principal Investigator is Required|
      |Trial Recruitment Status   |At least one Site Recruitment Status is Required|
      |General Contact            |General Contact is Required|
 
-Scenario Outline: #6 As a CTRP User, I can add Investigators 
-Given I am on the Add Participating Site screen
-And I can add one or more Investigators***********
-And I can complete a Person search by clicking on the search persons button
-When I can select a person from the search person results list
-Then the field types will be populated
-|PO ID***|
-|Last Name|
-|First Name|
-And I must select a Role type
 
-|Principal Investigator|
-|Sub-Investigator|
-
-When I can click on the confirm button
-Then the added investigator will be displayed with data type
-|PO ID|
-|Last Name|
-|First Name|
-|Role|
-|Primary Contact|
-|Edit|
-|Delete|
-And I have to click on the save button to associate added investigators to the participating site
-
-Senario: #7 As a CTRP User, I can add a site contact
+Scenario: #7 As a CTRP User, I can add a site contact
 Given I am on the Add Participating Site feature
 When I click on the Contact tab
 Then the General Contact screen opens
@@ -160,14 +136,14 @@ Then I can select a contact form a list of added Investigators
 And I must enter an Email Address
 And I must enter a Phone Number and Extention
 
-Senario: #9 I can add contact when contact type is Person
+Scenario: #9 I can add contact when contact type is Person
 Given I am on the Contact Screen
 When the contact type selected is Person 
 Then I can select a person by conducting a Person Search 
 And I must enter an Email Address
 And I must enter a Phone Number and Extention
 
-Senario: #10 I can add contact when contact type is General
+Scenario: #10 I can add contact when contact type is General
 Given I am on the Contact Screen
 When the contact type selected is General
 Then I must enter a contact information

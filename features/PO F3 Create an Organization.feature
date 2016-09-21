@@ -32,8 +32,8 @@ Feature: PO F3 Create an Organization
     And a unique CTRP Context Organization ID <ContextOrgID> will be assigned to the created organization
     And a CTRP organization record that contains information type will be created
       
-      |CTRP Organization ID|
-      |Context Organization ID|
+      |CTRP Organization ID (Grouping ID)|
+      |Context Organization ID (Primary Key)|
       |Name|
       |Source Context: CTRP|
       |Source ID|
@@ -52,10 +52,7 @@ Feature: PO F3 Create an Organization
       |Created By|
       |Updated By|
       
-      When I select Reset 
-     Then the information entered on the Add Organization screen fields will not be saved to the trial record 
-      And the Add Organization information screen will be refreshed and blank
-     
+      RESET SCENARIO 
      
         Scenario: #3 Create Organization Mandatory fields
     Given I am a curator
@@ -96,6 +93,7 @@ Feature: PO F3 Create an Organization
     When the entered full name of the organizaton exists in CTRP with an Active Status 
     Then the system should indicate with a warning: "Organization exists in the database. Please verify and create a new Organization record."
     And the curator review the warning and decides to create the Organization record 
+    And the organization can be saved
 
   
      Scenario:#6 As a Curator, I can Edit created Organization
@@ -122,8 +120,6 @@ Feature: PO F3 Create an Organization
 
      When I click on the save button
      Then the edited information will be saved to the trial records
-     When I select Reset 
-     Then the information entered or edited on the Add Organization screen fields will not be saved to the trial record 
-      And the Add Organization information screen will be refreshed with the existing data
+     
      
     
