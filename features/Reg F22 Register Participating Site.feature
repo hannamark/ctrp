@@ -6,31 +6,41 @@ As a CTRP User, I can register my site participation on an Industrial, Other, or
 Scenario: #1 As an Admin CTRP user, I can select an organization from my family as a participating site on an Industrial, Other, or Expanded Access Trial
 Given I am logged into CTRP Registration application 
 And I have performed a trial search
-And the trial is an Imported Trial
-And there is a trial in the search results with the Select Action to Add My Site
+When a trial import is complete
+Then the imported trial will display "Manage My Sites" in the available "Action" in the Trial Search Table
 When I choose the Add My Site option
 Then the Add Participating Site screen will display with the following information 
 
-|Add organization  |
-|Program Code |
+|NCI ID: NCI-2016-00001
+|Lead Org Trial Identifier:2013/65|
+|Official Title:testtestetest|
+|organization Name  |
 |Local Trial Identifier  |
-|Site Recruitment|
+|Site Prinicipal Investigator|
+|Site Specific Program Code|
+|Trial Recruitment Status|
+|General Contact Type|
 
 And I will be able to view a list of sites of my Family Organizations in the Add Organization Field
 And I can select a participating site I would like to add
 
 Scenario: #2 As a CTRP User without Administrative Privileges, I can select my affiliated organization as a participating site on an Industrial, Other, or Expanded Access Trial
-Given I am logged into CTRP
+Given I am logged into CTRP Registration application 
 And I have performed a trial search
-And there is a trial in the search results with the Select Action to Add My Site
+When a trial import is complete
+Then the imported trial will display "Add My Site" in the available "Action" in the Trial Search Table
 When I choose the Add My Site option
-Then the Add Participating Site screen will display with the following information
+Then the Add Participating Site screen will display with the following information 
 
-
-|Add organization  |
-|Program Code |
+|NCI ID: NCI-2016-00001
+|Lead Org Trial Identifier:2013/65|
+|Official Title:testtestetest|
+|organization Name  |
 |Local Trial Identifier  |
-|Site Recruitment|
+|Site Principal Investigator|
+|Site Specific Program Code|
+|Trial Recruitment Status|
+|General Contact Type|
 
 
 And I will be able to view my affiliated organization in the Add Organization Field
@@ -38,26 +48,29 @@ And I can select my affiliated organization to add as a participating site
 
 
 Scenario Outline: #3 As a CTRP User, I can enter my participating site information after selecting a site as participating on a trial
-Given I am on the Add Participating Site screen
-When I have selected a participating site
-And I have clicked on the Next button
-Then the Add Participating site screen will open 
-And I can select a participating site from Add Organization drop list <Organization>
-And I can add a program code <Program Code>
-And I can add a Local Trial Identifier <Identifier >
+Given I am on the Add Participating Site screen 
+And the participated site fields type wil be populated
+|NCI ID: NCI-2016-00001
+|Lead Org Trial Identifier:2013/65|
+|Official Title:testtestetest|
+And I can select a participating site from Organization Name drop list <OrganizationName>
+And I can enter a Local Trial Identifier <LocalTrialIdentifier>
+And I can search person to add a site principal investigator
+And I can add a site specific program code <SiteSpecificProgramCode>
+And I can a general contact type
+|Site Investigator|
+|Person|
+|General|
+
 When I enter one or more Site Recruitment Status type
 
- |Site Recruitment|
  |Status Date|
  |Status|
  |Comment|
  
  Then I can click on the add button to add the entered site status
  When I click on the Save button
- Then the added site will be associated with the trial
- And I must add one or more Investigators
- And I can add a contact
- When I click on View Summary
+ Then the added site record entered will be associated with the trial
  Then the View Trial Screen will display with details below
  
  |Trial Identifiers|
@@ -76,8 +89,8 @@ When I enter one or more Site Recruitment Status type
      And the table displays the columns type
      
      |CTRP ID|
-     |CTRP Organization Name|
-     |Investigators, Role (Principal Investigator or Sub-Investigator)|
+     |Organization Name|
+     |Investigators, Role (Principal Investigator or Sub-Investigator)*|
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
@@ -93,20 +106,20 @@ Scenario: #5 Add Participating Site Mandatory Fields
      When Add Participating site fields <PSType> id not added
      Then the error message <PSError> will be displayed
      
-     |<PSType>        |<PSError>|
-     |Organization    |Organization is Required|
-     |Site Recruitment|At least one Site Recruitment Status is Required |
-
+     |<PSType>                   |<PSError>|
+     |Organization Name          |Organization is Required|
+     |Local Trial Identifier     |Local Trial Identifier is Required|
+     |Site Principal Investigator|Site Principal Investigator is Required|
+     |Trial Recruitment Status   |At least one Site Recruitment Status is Required|
+     |General Contact            |General Contact is Required|
 
 Scenario Outline: #6 As a CTRP User, I can add Investigators 
 Given I am on the Add Participating Site screen
-When I click on the Investigator tab
-Then the Investigator screen opens
-And I can add one or more Investigators
+And I can add one or more Investigators***********
 And I can complete a Person search by clicking on the search persons button
 When I can select a person from the search person results list
 Then the field types will be populated
-|PO ID|
+|PO ID***|
 |Last Name|
 |First Name|
 And I must select a Role type
@@ -164,17 +177,16 @@ And I must enter a Phone Number and Extention
 Scenario: #11 As a CTRP User with Administrative Privileges, I can update any added site associated with the admin's family on an Imported trial
 Given I can view all participating sites added to an Imported trial
 And I can update any sites associated with the admin's family on an Imported Trial
-When I have selected the Available Action to Update Site
+When I have selected the Available Action to" Manage My Sites"
 Then a list of all participating sites added on an Imported trial will be displayed
 And I can select any one of the added participating sites
 And I can update any of these data elements:
 
-|Program Code |
 |Local Trial Identifier  |
-|Site Recruitment|
-
-And I can update Investigators
-And I can update contact Information
+|Site Principal Investigator|
+|Site Specific Program Code|
+|Trial Recruitment Status|
+|General Contact Type|
 
 Scenario: #12 As a CTRP User without Administrative Privileges, I can update my participating site I added on an Imported trial
 Given I have added my participating site on an Imported trial
@@ -182,9 +194,8 @@ And I have selected the Available Action to Update My Site
 Then the participating site I have added on an Imported trial will be displayed
 And I can update any of these data elements:
 
-|Program Code |
 |Local Trial Identifier  |
-|Site Recruitment|
-
-And I can update Investigators
-And I can update contact Information
+|Site Principal Investigator|
+|Site Specific Program Code|
+|Trial Recruitment Status|
+|General Contact Type|
