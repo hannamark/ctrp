@@ -362,8 +362,15 @@ var projectMethodsRegistry = function () {
             }
             else {
                 searchOrg.clickOrgModelClose();
-                helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClose' + moment().format('MMMDoYY hmmss') + '.png');
-                commonFunctions.onPrepareLoginTest('ctrpcurator');
+                //browser.takeScreenshot().then(function (png) {
+                //    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClose' + moment().format('MMMDoYY hmmss') + '.png');
+                //});
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 40).then(function () {
+                    commonFunctions.onPrepareLoginTest('ctrpcurator');
+                });
                 //login.login('ctrpcurator', 'Welcome01');
                 //login.accept();
                 browser.driver.wait(function () {

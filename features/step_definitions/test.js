@@ -190,5 +190,28 @@ module.exports = function() {
     //    callback();
     //});
 
+  //  this.After(function (scenario) {
+        //if (scenario.isFailed()) {
+        //    browser.manage().window().setSize(1024, 2048).then(
+        //        browser.takeScreenshot().then(function (stream) {
+        //            scenario.attach(new Buffer(stream, 'base64').toString('binary'), 'image/png', callback);
+        //        }, function (err) {
+        //            callback(err);
+        //        }));
+        //}
+        //else {
+        //    callback();
+        //}
+    //    if (scenario.isFailed()) {
+    //        browser.takeScreenshot().then(function (png) {
+    //            var fs = require('fs');
+    //
+    //            //var base64Image = new Buffer(png, 'binary').toString('base64');
+    //            var decodedImage = new Buffer(png, 'base64').toString('binary');
+    //
+    //            scenario.attach(decodedImage, 'image/png');
+    //        });
+    //    }
+    //});
 }
 
