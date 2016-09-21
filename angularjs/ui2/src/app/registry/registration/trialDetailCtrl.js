@@ -353,6 +353,7 @@
             outerTrial.trial = vm.curTrial;
             console.info('outer trial: ', outerTrial);
             TrialService.upsertTrial(outerTrial).then(function(response) {
+                /* Review Error Handling */
                 if (response.server_response.status < 300) {
                     var docCount = uploadDocuments(response.id);
                     // Poll docUploadedCount every 100 ms until upload finishes
@@ -401,10 +402,14 @@
                     "serial_number": serial_number
                 };
                 return TrialService.getGrantsSerialNumber(queryObj).then(function(res) {
-                    var transformedGrantsObjs = [];
-                    var unique = [];
-                    console.log('res is: ', res);
-                    vm.grantsInputs.grantResults = res.tempgrants;
+                    var status = res.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        var transformedGrantsObjs = [];
+                        var unique = [];
+                        console.log('res is: ', res);
+                        vm.grantsInputs.grantResults = res.tempgrants;
+                    }
                     /*
                     transformedGrantsObjs = res.tempgrants.map(function (tempgrant) {
                         return tempgrant; //.serial_number;
@@ -885,13 +890,21 @@
                 var nihOption = vm.holderTypeArr.filter(findNihOption);
                 if (nciOption[0].id == vm.holder_type_id) {
                     TrialService.getNci().then(function (response) {
-                        vm.nihNciArr = response;
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.nihNciArr = response;
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving NCI Division/Program code.");
                     });
                 } else if (nihOption[0].id == vm.holder_type_id) {
                     TrialService.getNih().then(function (response) {
-                        vm.nihNciArr = response;
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.nihNciArr = response;
+                        }
                     }).catch(function (err) {
                         console.log("Error in retrieving NIH Institution code.");
                     });
@@ -901,8 +914,11 @@
             } else if (type == 'authority_country') {
                 vm.authority_org = '';
                  TrialService.getAuthorityOrgArr(vm.authority_country).then(function (response) {
-                     vm.authorityOrgArr  = response.authorities;
-                     console.log(vm.authorityOrgArr)
+                     var status = data.server_response.status;
+
+                     if (status >= 200 && status <= 210) {
+                         vm.authorityOrgArr  = response.authorities;
+                     }
                 }).catch(function (err) {
                     console.log("Error in retrieving authorities for country");
                 });
@@ -936,12 +952,16 @@
             }
 
             TrialService.validateStatus({"statuses": noDestroyStatusArr}).then(function(response) {
-                vm.statusValidationMsgs = response.validation_msgs;
+                var status = data.server_response.status;
 
-                // Add empty object to positions where _destroy is true
-                for (var i = 0; i < vm.addedStatuses.length; i++) {
-                    if (vm.addedStatuses[i]._destroy) {
-                        vm.statusValidationMsgs.splice(i, 0, {});
+                if (status >= 200 && status <= 210) {
+                    vm.statusValidationMsgs = response.validation_msgs;
+
+                    // Add empty object to positions where _destroy is true
+                    for (var i = 0; i < vm.addedStatuses.length; i++) {
+                        if (vm.addedStatuses[i]._destroy) {
+                            vm.statusValidationMsgs.splice(i, 0, {});
+                        }
                     }
                 }
             }).catch(function(err) {

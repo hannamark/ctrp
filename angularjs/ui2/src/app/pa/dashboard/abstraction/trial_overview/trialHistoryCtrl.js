@@ -61,7 +61,6 @@
                 var status = data.server_response.status;
 
                 if (status >= 200 && status <= 210) {
-                    console.log('received search results: ' + JSON.stringify(data.trial_versions));
                     vm.submissionsGridOptions.data = data.trial_versions;
                     vm.submissionsGridOptions.totalItems = data.total;
 
@@ -266,7 +265,6 @@
 
             AuditService.getSubmissions(vm.trialHistoryObj).then(function (data) {
                 var status = data.server_response.status;
-                console.log('submision data please', data);
 
                 if (status >= 200 && status <= 210) {
                     console.log('received search results: ' + JSON.stringify(data.trial_versions));

@@ -284,13 +284,9 @@
             return PromiseTimeoutService.getData(URL_CONFIGS.ACCEPTED_FILE_TYPES_REG);
         }
 
-
         function getAuthorityOrgArr(country) {
-            console.log(country)
             return PromiseTimeoutService.getData(URL_CONFIGS.AUTHORITIES_FOR_A_COUNTRY + '?country=' + country);
-
         }
-
 
         function getCountryList() {
             return PromiseService.getData(URL_CONFIGS.COUNTRIES_LIST);
