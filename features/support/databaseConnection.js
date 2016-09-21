@@ -163,46 +163,46 @@ var dbConnection = function () {
                 });
     };
 
-    this.dbConnectionVerifyMyTrialCount = function (countOfMyTrialFromUI, userWhoCreatedTrial, err) {
-        //  client.connect(function(err) {
-        if (err) {
-            return console.error('could not connect to postgres', err);
-        }
-        client.query("select count(*) from trials where created_by = '" + userWhoCreatedTrial + "' and t1.is_draft IS NOT TRUE", function (err, result) {
-            if (err) {
-                console.error('error running the Select query', err);
-                assert.fail(0, 1, 'error running Query.');
-            }
-            console.log('Value of Row: ' + result.rows);
-            expect(countOfMyTrialFromUI).to.equal(result.rows[0].count);
-            client.on('end', function () {
-                console.log("Client was disconnected.")
-            });
-        });
-    };
-
-    //this.dbConnectionVerifyMyTrialCount = function (countOfMyTrialFromUI, userWhoCreatedTrial) {
-    //    client.connect(function(err) {
+    //this.dbConnectionVerifyMyTrialCount = function (countOfMyTrialFromUI, userWhoCreatedTrial, err) {
+    //    //  client.connect(function(err) {
+    //    if (err) {
+    //        return console.error('could not connect to postgres', err);
+    //    }
+    //    client.query("select count(*) from trials where created_by = '" + userWhoCreatedTrial + "' and is_draft IS NOT TRUE", function (err, result) {
     //        if (err) {
-    //            return console.error('could not connect to postgres', err);
+    //            console.error('error running the Select query', err);
+    //            assert.fail(0, 1, 'error running Query.');
     //        }
-    //        client.query("select * from users where username = '" + userWhoCreatedTrial + "'", function (err, result) {
-    //            if (err) {
-    //                console.error('error running the Select query', err);
-    //                assert.fail(0, 1, 'error running Query.');
-    //            }
-    //            console.log('ID Of User : ' + result.rows[0].id + 'For the User :' + userWhoCreatedTrial);
-    //            client.query("select count(*) from trials t1 join trial_ownerships t2 on t1.id = t2.trial_id where t2.user_id = " + result.rows[0].id + "and t1.is_draft IS NOT TRUE", function (err, countOfTrialsDB) {
-    //                if (err) {
-    //                    console.error('error running the Select query', err);
-    //                    assert.fail(0, 1, 'error running Query.');
-    //                }
-    //                expect(countOfMyTrialFromUI).to.equal(countOfTrialsDB.rows[0].count);
-    //                client.on('end', function(){console.log("Client was disconnected.")});
-    //            });
+    //        console.log('Value of Row: ' + result.rows);
+    //        expect(countOfMyTrialFromUI).to.equal(result.rows[0].count);
+    //        client.on('end', function () {
+    //            console.log("Client was disconnected.")
     //        });
     //    });
     //};
+
+    this.dbConnectionVerifyMyTrialCount = function (countOfMyTrialFromUI, userWhoCreatedTrial, err) {
+      //  client.connect(function(err) {
+            if (err) {
+                return console.error('could not connect to postgres', err);
+            }
+            client.query("select * from users where username = '" + userWhoCreatedTrial + "'", function (err, result) {
+                if (err) {
+                    console.error('error running the Select query', err);
+                    assert.fail(0, 1, 'error running Query.');
+                }
+                console.log('ID Of User : ' + result.rows[0].id + 'For the User :' + userWhoCreatedTrial);
+                client.query("select count(*) from trials t1 join trial_ownerships t2 on t1.id = t2.trial_id where t2.user_id = " + result.rows[0].id + "and t1.is_draft IS NOT TRUE and t1.is_rejected = 'false'", function (err, countOfTrialsDB) {
+                    if (err) {
+                        console.error('error running the Select query', err);
+                        assert.fail(0, 1, 'error running Query.');
+                    }
+                    expect(countOfMyTrialFromUI).to.equal(countOfTrialsDB.rows[0].count);
+                    client.on('end', function(){console.log("Client was disconnected.")});
+                });
+            });
+       // });
+    };
 
     this.dbConnectionVerifyAllTrialCount = function (countOfAllTrialFromUI, err) {
         // client.connect(function(err) {

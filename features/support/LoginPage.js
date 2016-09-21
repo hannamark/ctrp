@@ -7,6 +7,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var menuItemList = require('../support/PoCommonBar');
+var moment = require('moment');
 //var helperFunctions = require('../support/helper');
 
 var LoginPage = function(){
@@ -51,6 +52,9 @@ var LoginPage = function(){
     };
 
     this.login = function (userName, password){
+        //browser.takeScreenshot().then(function (png) {
+        //    login.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/loginExc' + moment().format('MMMDoYY hmmss') + '.png');
+        //});
         this.logoutButton.isDisplayed().then(function(result) {
             if (result) {
                 //Whatever if it is true (displayed)

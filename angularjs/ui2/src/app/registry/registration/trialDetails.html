@@ -1255,7 +1255,8 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3"></label>
                                 <div class="col-xs-12 col-sm-6">
-                                    <input type="text" restriction-field class="form-control input-sm" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Describe other document">
+                                    <input type="text" restriction-field class="form-control input-sm" maxlength="255" ng-model="trialDetailView.other_document_subtypes[$index]" placeholder="Describe other document">
+                                    <span ng-show="trialDetailView.other_document_subtypes[$index].length > 0">{{255 - trialDetailView.other_document_subtypes[$index].length}} characters left</span>
                                 </div>
                             </div>
                         </div>
