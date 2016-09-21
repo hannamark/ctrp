@@ -1827,11 +1827,16 @@ body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_st
 body.trial-abstraction-search .pila {
     width: 200px;
     padding-left: 10px;
+    padding-right: 5px;
     display: inline;
     text-align: right;
 }
 body.trial-abstraction-search #submission_date_range .datepicker {
-    padding-right: 20px;
+    margin-right: 10px;
+}
+
+body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
+    display: inline;
 }
 
 .text-block {

@@ -13,12 +13,10 @@
 
         vm.userDetails = userDetailObj;
         vm.isCurationEnabled = UserService.isCurationModeEnabled();
-        vm.userDetailsOrig = angular.copy(userDetailObj);
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
         vm.states = [];
         vm.userRole = UserService.getUserRole();
-        vm.isCurrentUser = UserService.getCurrentUserId() === vm.userDetailsOrig.id;
 
 
         /**** TRIALS *****/
