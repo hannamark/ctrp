@@ -210,10 +210,14 @@
                 expected_abstraction_completion_date: row.expected_abstraction_completion_date,
                 expected_abstraction_completion_date_comments: row.expected_abstraction_completion_date_comments
             }).then(function (data) {
-                if (data.id) {
-                    toastr.success('Expected Abstraction Completion Date has been updated', 'Operation Successful!');
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (data.id) {
+                        toastr.success('Expected Abstraction Completion Date has been updated', 'Operation Successful!');
+                    }
+                    vm.getUserSubmittedTrials();
                 }
-                vm.getUserSubmittedTrials();
             }).catch(function (err) {
                 console.log('Expected Abstraction Completion Date Update failed: ' + err);
             });
@@ -244,9 +248,13 @@
             allSearchParams.rows = null;
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.USER_SUBMITTED_TRIALS, allSearchParams).then(
                 function (data) {
-                    vm.gridTrialsSubmittedOptions.useExternalPagination = false;
-                    vm.gridTrialsSubmittedOptions.useExternalSorting = false;
-                    vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.gridTrialsSubmittedOptions.useExternalPagination = false;
+                        vm.gridTrialsSubmittedOptions.useExternalSorting = false;
+                        vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                    }
                 }
             );
         };
@@ -255,19 +263,22 @@
             vm.gridTrialsSubmittedOptions.useExternalPagination = true;
             vm.gridTrialsSubmittedOptions.useExternalSorting = true;
             UserService.getUserTrialsSubmitted(vm.searchParams).then(function (data) {
-                vm.read_access  = data.userReadAccess;
-                vm.write_access = data.userWriteAccess;
+                var status = data.server_response.status;
 
-                vm.gridTrialsSubmittedOptions.columnDefs[0].cellTemplate = vm.write_access ? idTemplateWrite :idTemplateRead;
-                vm.gridTrialsSubmittedOptions.totalItems = data.total;
-                vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
-                _.forEach(vm.gridTrialsSubmittedOptions.data, function (val) {
-                    val.expected_abstraction_completion_date = moment(val.expected_abstraction_completion_date).format('DD-MMM-YYYY');
-                });
+                if (status >= 200 && status <= 210) {
+                    vm.read_access  = data.userReadAccess;
+                    vm.write_access = data.userWriteAccess;
+
+                    vm.gridTrialsSubmittedOptions.columnDefs[0].cellTemplate = vm.write_access ? idTemplateWrite :idTemplateRead;
+                    vm.gridTrialsSubmittedOptions.totalItems = data.total;
+                    vm.gridTrialsSubmittedOptions.data = data['trial_submissions'];
+                    _.forEach(vm.gridTrialsSubmittedOptions.data, function (val) {
+                        val.expected_abstraction_completion_date = moment(val.expected_abstraction_completion_date).format('DD-MMM-YYYY');
+                    });
 
 
-                $rootScope.$broadcast('isWriteModeSupported', vm.write_access);
-
+                    $rootScope.$broadcast('isWriteModeSupported', vm.write_access);
+                }
             }).catch(function (err) {
                 console.log('Get User Submitted Trials failed');
             });

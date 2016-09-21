@@ -36,6 +36,7 @@ ListOfOrganizationsPage = function () {
     this.orgModelSelectItem = element(by.css('div[ng-click="selectButtonClick(row, $event)"]'));
     this.orgModelConfirm = element(by.buttonText('Confirm Selection'));
     this.orgModelCloseButton = element(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]')); //element(by.css('.btn.btn-danger.pull-right'));
+    this.orgModelCloseButtonAll = element.all(by.css('button[ng-click="advOrgSearchForm2ModalView.cancel()"]'));
     this.orgPersonModelCloseButton = element(by.css('button[ng-click="advPersonSearchModalView.cancel()"]'));
     this.orgPersonAffiliatedTable = element.all(by.repeater('org in personDetailView.savedSelection'));
     this.orgFamilyAffiliatedTable = element.all(by.css('div[ng-show="familyDetailView.savedSelection.length > 0"]'));
@@ -229,7 +230,38 @@ ListOfOrganizationsPage = function () {
     };
 
     this.clickOrgModelClose = function(){
+        browser.takeScreenshot().then(function (png) {
+            search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClick' + moment().format('MMMDoYY hmmss') + '.png');
+        });
         search.clickButton(this.orgModelCloseButton,"Organization Model Close button");
+        browser.takeScreenshot().then(function (png) {
+            search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelAfterClickClose' + moment().format('MMMDoYY hmmss') + '.png');
+        });
+        search.alertDialog('DISMISS','');
+        browser.takeScreenshot().then(function (png) {
+            search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelAfterDismiss' + moment().format('MMMDoYY hmmss') + '.png');
+        });
+        //browser.driver.wait(function () {
+        //    console.log('wait here');
+        //    return true;
+        //}, 5000).then(function () {
+        //    self.orgModelCloseButtonAll.get(0).isPresent().then(function(retVal){
+        //        console.log('value of ret val : ' + retVal);
+        //        if (retVal === true) {
+        //            self.orgModelCloseButtonAll.get(0).isDisplayed().then(function(state){
+        //                if(state) {
+        //                    browser.takeScreenshot().then(function (png) {
+        //                        search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelBeforeget0Click' + moment().format('MMMDoYY hmmss') + '.png');
+        //                    });
+        //                    self.orgModelCloseButtonAll.get(0).click();
+        //                }
+        //                else {
+        //                    console.log('Close button not Displayed on Search Model');
+        //                }
+        //            });
+        //        }
+        //    });
+        //});
     };
 
     this.clickOrgPersonModelClose = function(){
