@@ -42,7 +42,7 @@
                                           maxlength="254"
                                           ng-required="true" />
                             <span class="help-block" ng-show="om_form.title.$dirty">
-                                {{255 - om_form.title.$viewValue.length}} characters left
+                                {{254 - om_form.title.$viewValue.length}} characters left
                             </span>
 
                             <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.title) && om_form.title.$error">
@@ -67,7 +67,7 @@
                                           maxlength="254"
                                           ng-required="true" />
                                 <span class="help-block" ng-show="om_form.time_frame.$dirty">
-                                    {{255 - om_form.time_frame.$viewValue.length}} characters left
+                                    {{254 - om_form.time_frame.$viewValue.length}} characters left
                                 </span>
 
                             <span ng-messages="ctrpbtn.om_form.needsAttention(om_form.time_frame) && om_form.time_frame.$error">
