@@ -35,6 +35,7 @@ module.exports = function () {
     var login = new loginPage();
     var userProfile = new userProfilePage();
     var emailVerify = new mailVerificationPage();
+    var helper = new helperFunctions();
 
     var getDBConnection = '';
 
@@ -51,9 +52,9 @@ module.exports = function () {
             }, 40).then(function () {
                 trialMenuItem.clickHomeSearchTrial();
                 login.clickWriteMode('On');
-
+                helper.alertDialog('OK', '');
                 element(by.linkText(arg1)).click();
-
+                helper.alertDialog('OK', '');
                 userProfile.userProfileEmailNotifications.get(0).isSelected().then(function (emailOption) {
                     userProfile.userProfileEmail.getAttribute('value').then(function (userCurrentEmail) {
                         console.log('Current email' + userCurrentEmail);
