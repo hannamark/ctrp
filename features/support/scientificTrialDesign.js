@@ -29,9 +29,9 @@ var scientificTrialDesign = function(){
      * Trial Design object(s)
      ***********************************/
 
-    this.trialDesignHeader = element(by.css('.sub-bordered.ng-binding'));
+    this.trialDesignHeader = element(by.id('trial_design_hdr'));
 
-
+    //Fields
     this.researchCategoryLst = element(by.id('research_category'));
     this.primaryPurposeLst = element(by.id('primary_purpose'));
     this.secondaryPurposeLst = element(by.id('secondary_purpose'));
@@ -52,7 +52,12 @@ var scientificTrialDesign = function(){
     this.targetEnrollmentTxt = element(by.id('target_enrollment'));
     this.finalEnrollmentTxt = element(by.id('final_enrollment'));
 
-    this.accrualsView = element(by.css('.col-xs-12.col-sm-2.form-text.ng-binding'));
+    this.accrualsView = element(by.id('accruals'));
+
+    //Observational
+    this.timePerspectiveLst = element(by.id('time_perspective'));
+    this.bioSpecimenRetentionLst = element(by.id('biospecimen_retention'));
+    this.bioSpecimenDescriptionTxt = element(by.id('biospecimen_desc'));
 
     //Masking Roles
     this.maskingRolesSubjectCheck = element(by.id('masking_role_subject'));
@@ -65,6 +70,27 @@ var scientificTrialDesign = function(){
     this.descriptionOfOtherSecondaryPurposeTxt = element(by.id('description_other2'));
     this.descriptionOfOtherStudyModelTxt = element(by.id('study_model_other'));
     this.descriptionOfOtherTimePerspectiveTxt = element(by.id('time_perspective_other'));
+
+    //Labels for Fields
+    //Interventional
+    this.clinicalResearchCategoryLbl = element(by.id('clinical_research_cat_lbl'));
+    this.primaryPurposeLbl = element(by.id('primary_purpose_lbl'));
+    this.secondaryPurposeLbl = element(by.id('sp_lbl'));
+    this.trialPhaseLbl = element(by.id('trial_phase_lbl'));
+    this.isThisAPilotLbl = element(by.id('is_this_pilot_lbl'));
+    this.interventionModelLbl = element(by.id('intervention_model_lbl'));
+    this.maskingLbl = element(by.id('maskings_lbl'));
+    this.allocationLbl = element(by.id('allocation_lbl'));
+    this.studyClassificationLbl = element(by.id('study_classification_labl'));
+    this.numberOfArmsLbl = element(by.id('number_arms_groups_lbl'));
+    this.targetEnrollmentLbl = element(by.id('target_enrollment_lbl'));
+    this.finalEnrollmentLbl = element(by.id('final_enrollment_lbl'));
+    this.accrualsLbl = element(by.id('accruals_lbl'));
+
+    //Observantional
+    this.timePerspectiveLbl = element(by.id('tp_lbl'));
+    this.bioSpecimenRetentionLbl = element(by.id('bio_specimen_retention_lbl'));
+    this.bioSpecimenDescriptionLbl = element(by.id('bio_specimen_desc_lbl'));
 
 
     /***********************************
