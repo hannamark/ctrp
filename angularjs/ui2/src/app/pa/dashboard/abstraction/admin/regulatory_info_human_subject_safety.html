@@ -60,6 +60,7 @@
                                 class="form-control input-sm"
                                 placeholder="Affiliated Organization"
                                 ng-required="regInfoSafetyView.boardAffRequired"
+                                maxlength="255"
                                 disabled>
                             <span class="form-control-feedback" ng-show="regInfoSafetyView.boardAffRequired && human_safety_form.board_affiliation.$viewValue.length == 0"
                                 ng-class="!ctrpbtn.human_safety_form.needsAttention(human_safety_form.board_affiliation) ?
