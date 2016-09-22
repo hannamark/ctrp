@@ -381,25 +381,26 @@ class Submission < TrialBase
 
     filter_clause = []
     if !params[:find_submission_received].nil?
-      filter_clause.push("submission_received_date " + ( if params[:find_submission_received] === true then "IS NOT null" else "IS null" end))
+      filter_clause.push("latest_milestones.SRD " + ( if params[:find_submission_received] === true then "IS NOT null" else "IS null" end))
     end
     if !params[:find_accepted].nil?
-      filter_clause.push("submission_acceptance_date " + ( if params[:find_accepted] === true then "IS NOT null" else "IS null" end))
+      filter_clause.push("latest_milestones.SAC " + ( if params[:find_accepted] === true then "IS NOT null" else "IS null" end))
     end
     if !params[:find_onhold].nil?
-      filter_clause.push("onhold_date " + ( (params[:find_onhold] == true)? "IS NOT null" : "IS null"))
+      not_currently_onhold_query = "(trial_onholds.onhold_date IS NULL OR trial_onholds.offhold_date IS NOT NULL)"
+      filter_clause.push((params[:find_onhold] == true)? "NOT #{not_currently_onhold_query}" : "#{not_currently_onhold_query}")
     end
     if !params[:find_admin_abstraction_completed].nil?
-      filter_clause.push("administrative_processing_completed_date " + ( (params[:find_admin_abstraction_completed] == true)? "IS NOT null" : "IS null"))
+      filter_clause.push("latest_milestones.APC " + ( (params[:find_admin_abstraction_completed] == true)? "IS NOT null" : "IS null"))
     end
     if !params[:find_admin_qc_completed].nil?
-      filter_clause.push("administrative_qc_completed_date " + ( (params[:find_admin_qc_completed] == true)? "IS NOT null" : "IS null"))
+      filter_clause.push("latest_milestones.AQC " + ( (params[:find_admin_qc_completed] == true)? "IS NOT null" : "IS null"))
     end
     if !params[:find_scientific_abstraction_completed].nil?
-      filter_clause.push("scientific_processing_completed_date " + ( (params[:find_scientific_abstraction_completed] == true)? "IS NOT null" : "IS null"))
+      filter_clause.push("latest_milestones.SPC " + ( (params[:find_scientific_abstraction_completed] == true)? "IS NOT null" : "IS null"))
     end
     if !params[:find_scientific_qc_completed].nil?
-      filter_clause.push("scientific_qc_start_date " + ( (params[:find_scientific_qc_completed] == true)? "IS NOT null" : "IS null"))
+      filter_clause.push("latest_milestones.SQS " + ( (params[:find_scientific_qc_completed] == true)? "IS NOT null" : "IS null"))
     end
 
 
