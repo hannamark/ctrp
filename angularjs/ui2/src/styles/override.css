@@ -1851,7 +1851,7 @@ body.trial-abstraction-search #submission_date_range .datepicker {
 }
 
 body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
-    display: inline;
+    display: inline-block;
 }
 
 .text-block {

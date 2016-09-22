@@ -348,10 +348,10 @@ class Submission < TrialBase
       where_clause += "AND LOWER(trials.admin_checkout) like LOWER('%#{params[:checked_out_by]}%') OR LOWER(trials.scientific_checkout) like LOWER('%#{params[:checked_out_by]}%') "
     end
     if params[:submission_date_range_from].present?
-      where_clause += "AND to_date(submission_received_date, 'DD-Mon-yyyy') >= '#{params[:submission_date_range_from]}' "
+      where_clause += "AND to_date(latest_milestones.SRD, 'DD-Mon-yyyy') >= '#{params[:submission_date_range_from]}' "
     end
     if params[:submission_date_range_to].present?
-      where_clause += "AND to_date(submission_received_date, 'DD-Mon-yyyy') <= '#{params[:submission_date_range_to]}' "
+      where_clause += "AND to_date(latest_milestones.SRD, 'DD-Mon-yyyy') <= '#{params[:submission_date_range_to]}' "
     end
     if params[:organization_id].present?
       where_clause += "AND users.organization_id = '#{params[:organization_id]}' "
