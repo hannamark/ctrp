@@ -1836,6 +1836,14 @@ body.trial-abstraction-search .field_wrapper input[type="text"] {
     width: 180px;
 }
 
+body.trial-abstraction-search .field_wrapper .datepicker {
+    max-width: 140px;
+}
+
+body.trial-abstraction-search .field_wrapper .datepicker input[type="text"] {
+    width: 115px;
+}
+
 body.trial-abstraction-search #pam_search_organization {
     margin-top: 30px;
 }
