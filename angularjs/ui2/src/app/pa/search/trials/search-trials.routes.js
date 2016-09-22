@@ -69,8 +69,19 @@
                 section: 'pam',
                 resolve: {
                     UserService: 'UserService',
+                    TrialService: 'TrialService',
+                    PATrialService: 'PATrialService',
                     userDetailObj: function(UserService) {
                         return UserService.getCurrentUserDetails();
+                    },
+                    onholdReasonObj: function (TrialService) {
+                        return TrialService.getOnholdReasons();
+                    },
+                    milestoneObj: function(TrialService) {
+                        return TrialService.getMilestones();
+                    },
+                    processingStatuses: function(PATrialService) {
+                        return PATrialService.getProcessingStatuses();
                     }
                 },
                 ncyBreadcrumb: {

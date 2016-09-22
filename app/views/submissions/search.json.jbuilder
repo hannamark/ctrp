@@ -10,6 +10,7 @@ if @searchAccess
                     :checkout,
                     :official_title,
                     :onhold_date,
+                    :onhold_name,
                     :onhold_desc,
                     :comp_date,
                     :lead_protocol_id,

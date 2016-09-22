@@ -460,7 +460,7 @@
                     minWidth: '250'
                 },
                 {
-                    name: 'onhold_desc',
+                    name: 'onhold_name',
                     displayName: 'On Hold Reasons',
                     enableSorting: true,
                     width: '*',
