@@ -1829,7 +1829,6 @@ body.trial-abstraction-search .pila {
     padding-left: 10px;
     padding-right: 5px;
     display: inline;
-    text-align: right;
 }
 body.trial-abstraction-search #submission_date_range .datepicker {
     margin-right: 10px;
