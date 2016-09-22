@@ -113,7 +113,7 @@
                                         <td class="col-md-6">
                                             <div>
                                                 <input restriction-field type="text" class="form-control input-sm" id="protocol_id" maxlength="30" ng-model="trialDetailView.protocol_id" />
-                                                <span ng-show="trialDetailView.protocol_id.length > 0">{{30 - trialDetailView.protocol_id.length}} characters left</span>       
+                                                <span ng-show="trialDetailView.protocol_id.length > 0">{{30 - trialDetailView.protocol_id.length}} characters left</span>
 
                                             </div>
                                         </td>
@@ -936,12 +936,13 @@
                         <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)}">
                             <label class="control-label col-xs-12 col-sm-3">Investigator Title:</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" restriction-field class="form-control input-sm" id="investigator_title" name="investigator_title" ng-model="trialDetailView.curTrial.investigator_title"
+                                <input type="text" restriction-field class="form-control input-sm" id="investigator_title" name="investigator_title"
+                                        maxlength="254" ng-model="trialDetailView.curTrial.investigator_title"
                                        ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" ng-required="trialDetailView.showInvestigator">
-                                <span class="form-control-feedback" ng-show="trialDetailView.curTrial.investigator_title.length"></span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)">
                                     Investigator Title is Required
                                 </span>
+                                <span ng-show="trial_form.investigator_title.$dirty"> {{254 - trialDetailView.curTrial.investigator_title.length }} characters left</span>
                             </div>
                         </div>
 
