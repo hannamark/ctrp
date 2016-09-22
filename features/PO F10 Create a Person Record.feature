@@ -30,7 +30,7 @@ Feature: PO F10 Create a Person Record
     And a CTRP person record that contains information type will be created
     
     |CTRP Person ID|
-    |Context Person ID|
+    |Context Person ID (Primary Key)|
     |Prefix|
     |First Name|
     |Middle Name|
@@ -46,10 +46,6 @@ Feature: PO F10 Create a Person Record
     |Updated By Updated By Date (ctrpcurator 14-Sep-2016 10:53:52 EDT)|
     |Affiliated Organization|
     
-    When I select Reset 
-     Then the information entered on the Add Personscreen fields will not be saved to the trial record 
-      And the Add Person information screen will be refreshed and blank
-     
     
    Scenario:#1b I can Add a Person Affiliated Organization by searching organizations
     Given I am on the Add Person Screen
@@ -105,6 +101,8 @@ Scenario:#1c Create Person fields's character Limit
     And I enter person first name which is duplicate
     And I enter person last name which is duplicate
     Then I should get warning message "Warning: Person exists in the database. Please verify and create a new Person record." for duplicate Person
+    When I click on the save button
+    Then the created record will be saved
 
      Scenario: #3 As a curator, I can associate an existing CTEP Person record from CTRP Person Context
      Given I am on the CTRP Person Context
