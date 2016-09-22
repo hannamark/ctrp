@@ -140,7 +140,6 @@ class TrialsController < ApplicationController
       # missing nci_id
       @search_result = {error_msg: 'Trial is not found'}
     end
-
   end
 
   def trial_identifier_types
@@ -287,7 +286,6 @@ class TrialsController < ApplicationController
   end
 
   def search
-
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     if params[:trial_ownership].blank?
