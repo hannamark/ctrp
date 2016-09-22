@@ -250,6 +250,7 @@
 
             <div class="row top-offset-xs"></div>
             <div ng-if="pamTrialsSearchView.gridTrialsSubmittedOptions.data.length > 0">
+                <h4>{{pamTrialsSearchView.gridTrialsSubmittedOptions.totalItems}} Trial(s) found</h4>
                 <div class="row animated-item">
                     <div ui-grid="pamTrialsSearchView.gridTrialsSubmittedOptions"  id="pamTrialsGrid" class="user-detail-grid"
                          ui-grid-pagination="" ui-grid-exporter ui-grid-move-columns class="grid"></div>
