@@ -29,37 +29,43 @@
                                     <label for="submission_date_range" class="control-label">Submission Received Date: </label>
                                 </div>
                                 <div id="submission_date_range" class="field_wrapper">
-                                    <div class="input-group date datepicker ui-grid-datepicker">
-                                        <input id="submission_date_range_from"
-                                               class="form-control left"
-                                               placeholder="From"
-                                               readonly="true" show-button-bar="true"
-                                               datepicker-append-to-body="false"
-                                               ng-model="pamTrialsSearchView.searchParams.submission_date_range_from" close-text="Close" show-weeks="true"
-                                               ng-click="opened1 = true;" uib-datepicker-popup="dd-MMM-yyyy" is-open="opened1"
-                                               datepicker-options="grid.appScope.dateOptions" type="text">
-                                        <span class="input-group-btn">
-                                            <label class="btn btn-primary" for="submission_date_range_from">
-                                                <i class="glyphicon glyphicon-calendar"></i>
-                                            </label>
-                                        </span>
-                                    </div>
-                                    <div class="input-group date datepicker ui-grid-datepicker">
-                                        <input id="submission_date_range_to"
-                                               class="form-control left"
-                                               placeholder="To"
-                                               readonly="true" show-button-bar="true"
-                                               datepicker-append-to-body="false"
-                                               ng-model="pamTrialsSearchView.searchParams.submission_date_range_to" close-text="Close" show-weeks="true"
-                                               ng-click="opened2 = true;" uib-datepicker-popup="dd-MMM-yyyy" is-open="opened2"
-                                               uib-datepicker-popup="dd-MMM-yyyy"
-                                               datepicker-options="grid.appScope.dateOptions2" type="text">
-                                        <span class="input-group-btn">
-                                            <label class="btn btn-primary" for="submission_date_range_to">
-                                                <i class="glyphicon glyphicon-calendar"></i>
-                                            </label>
-                                        </span>
-                                    </div>
+                                    <label for="submission_date_range_from" class="control-label text-left radio-line">
+                                        From:
+                                        <div class="input-group date datepicker ui-grid-datepicker">
+                                            <input id="submission_date_range_from"
+                                                   class="form-control left"
+                                                   placeholder="From"
+                                                   readonly="true" show-button-bar="true"
+                                                   datepicker-append-to-body="false"
+                                                   ng-model="pamTrialsSearchView.searchParams.submission_date_range_from" close-text="Close" show-weeks="true"
+                                                   ng-click="opened1 = true;" uib-datepicker-popup="dd-MMM-yyyy" is-open="opened1"
+                                                   datepicker-options="grid.appScope.dateOptions" type="text">
+                                            <span class="input-group-btn">
+                                                <label class="btn btn-primary" for="submission_date_range_from">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </label>
+                                    <label for="submission_date_range_to" class="control-label text-left radio-line">
+                                        To:
+                                        <div class="input-group date datepicker ui-grid-datepicker">
+                                                <input id="submission_date_range_to"
+                                                       class="form-control left"
+                                                       placeholder="To"
+                                                       readonly="true" show-button-bar="true"
+                                                       datepicker-append-to-body="false"
+                                                       ng-model="pamTrialsSearchView.searchParams.submission_date_range_to" close-text="Close" show-weeks="true"
+                                                       ng-click="opened2 = true;" uib-datepicker-popup="dd-MMM-yyyy" is-open="opened2"
+                                                       uib-datepicker-popup="dd-MMM-yyyy"
+                                                       datepicker-options="grid.appScope.dateOptions2" type="text">
+                                            <span class="input-group-btn">
+                                                <label class="btn btn-primary" for="submission_date_range_to">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>

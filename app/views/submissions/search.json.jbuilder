@@ -59,10 +59,15 @@ if @searchAccess
     end
   end
 
+  json.start params[:start]
+  json.rows params[:rows]
+  json.total @trial_submissions.respond_to?(:total_count) ? @trial_submissions.total_count : @trial_submissions.size
+  json.sort params[:sort]
+  json.order params[:order]
+
   json.userWriteAccess @userWriteAccess
   json.userReadAccess @userReadAccess
   json.search_access @searchAccess
-  json.total @trial_submissions.size
 else
   json.search_access @searchAccess
 end

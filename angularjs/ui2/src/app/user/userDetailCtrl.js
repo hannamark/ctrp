@@ -299,7 +299,7 @@
                     displayName: 'Lead Organization',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.orgDetail({orgId : row.entity.lead_org_id })">{{COL_FIELD}}</a></div>',
-                    enableSorting: false,
+                    enableSorting: true,
                     width: '*',
                     minWidth: '300'
                 },
