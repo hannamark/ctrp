@@ -63,8 +63,8 @@ Feature: PO F10 Create a Person Record
      And the Effective date can be edited once on edit screen
      When the person is not affiliated with the added organization
      Then the Expiration date will added by the curator 
-    And I can add more than one affiliated organization (Michael I remember we want only one active affiliation?)
-    And I can filter selected organization details-----
+    And I can add more than one affiliated organization * I remember we want only one active affiliation?
+    And I can filter selected organization details
     And the affiliation can be deleted by the curator
 
 
@@ -108,7 +108,8 @@ Scenario:#1c Create Person fields's character Limit
      Given I am on the CTRP Person Context
      And I can view CTRP Person Records 
      When I click on the "Associate Person Context" at the botton of the screen
-     Then  When the CTRP system finds a match in a CTEP Context Person Parameters Type
+     Then the Search person screen dispalys 
+     When the CTRP system finds a match in a CTEP Context Person Parameters Type
      
      |First Name|
      |Last Name|
