@@ -1,5 +1,5 @@
 
-<div class="row" ng-if="!userView.setAddMode" ng-init="userView.searchUsers(userView.initMode)">
+<div class="row" ng-if="userView.gridOptions.data && !userView.setAddMode" ng-init="userView.searchUsers(userView.initMode)">
     <div class="owners-list">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -10,7 +10,7 @@
                     <!-- list of Users -->
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="row" ng-if="userView.gridOptions.totalItems != null">
+                            <div class="row" ng-if="userView.gridOptions.totalItems > 0">
                                 <a href="" id="user_search_results"></a>
                                 <h4>{{userView.gridOptions.totalItems}} Owner(s) found</h4>
                             </div>
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row top-offset-xs" ng-if="userView.gridOptions.totalItems != null"></div>
+                    <div class="row top-offset-xs" ng-if="userView.gridOptions.data && userView.gridOptions.totalItems > 0"></div>
                     <div class="btn-toolbar">
                         <button type="button" class="btn btn-primary pull-right" id="add_btn" restriction-field ng-click="userView.setAddMode = true" ng-if="!userView.curTrial.is_rejected">
                             <i class="glyphicon glyphicon-plus"></i> Add Ownership
