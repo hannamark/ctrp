@@ -117,45 +117,45 @@ class SubmissionsController < ApplicationController
       not_currently_onhold_query = "(trial_onholds.onhold_date IS NULL OR trial_onholds.offhold_date IS NOT NULL)"
       ever_onhold_query = "(trial_onholds.onhold_date IS NOT NULL)"
 
-      onhold_statuses_query = []
+      conditions = []
       if onhold_statuses_requested[:onhold]
-        onhold_statuses_query.push("NOT #{not_currently_onhold_query}")
+        conditions.push("NOT #{not_currently_onhold_query}")
       end
       if onhold_statuses_requested[:not_onhold]
-        onhold_statuses_query.push("#{not_currently_onhold_query}")
+        conditions.push("#{not_currently_onhold_query}")
       end
       if onhold_statuses_requested[:ever_onhold]
-        onhold_statuses_query.push("#{ever_onhold_query}")
+        conditions.push("#{ever_onhold_query}")
       end
-      submissions = submissions.where(onhold_statuses_query.join(" OR "))
+      submissions = submissions.where(conditions.join(" OR "))
     end
     return submissions
   end
 
   def get_submission_types_requested submissions, submission_types_requested
     if !submission_types_requested.blank?
-      sub_types_query = []
+      conditions = []
       if submission_types_requested[:amendment]
-        sub_types_query.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num > 1)")
+        conditions.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num > 1)")
       end
       if submission_types_requested[:original]
-        sub_types_query.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num = 1)")
+        conditions.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num = 1)")
       end
       if submission_types_requested[:update]
-        sub_types_query.push("(trials.internal_source_id = #{@@impTrial})")
+        conditions.push("(trials.internal_source_id = #{@@impTrial})")
       end
-      submissions = submissions.where(sub_types_query.join(" OR "))
+      submissions = submissions.where(conditions.join(" OR "))
     end
     return submissions
   end
 
   def get_check_box_selections submissions, selections, db_code
     if !selections.blank?
-      _query = []
+      conditions = []
       selections.select {|_k,v| v == true}.keys.each do  |selection|
-        _query.push("(#{db_code.dup.sub! '{selected}', selection})")
+        conditions.push("(#{db_code.dup.sub! '{selected}', selection})")
       end
-      submissions = submissions.where(_query.join(" OR "))
+      submissions = submissions.where(conditions.join(" OR "))
     end
     return submissions
   end
