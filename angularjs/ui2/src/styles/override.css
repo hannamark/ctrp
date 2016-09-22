@@ -1750,7 +1750,8 @@ body.sign_in .input-group-addon {
     width: 23px;
 }
 
-#typeAheadResults .btn-danger .glyphicon {
+#typeAheadResults .btn-danger .glyphicon,
+body.trial-abstraction-search #pam_search_organization .btn-danger .glyphicon {
     padding: 2px 6px 3px 3px;
 }
 
@@ -1823,14 +1824,30 @@ body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_st
     display: none;
 }
 
-
-body.trial-abstraction-search .pila {
-    width: 200px;
-    padding-right: 5px;
-    display: inline;
+body.trial-abstraction-search .field_wrapper {
+    margin-top: 5px;
 }
+
+body.trial-abstraction-search .field_wrapper input[type="text"]:not(.datepicker input[type="text"]) {
+    margin-top: 3px;
+}
+
+body.trial-abstraction-search .field_wrapper input[type="text"] {
+    width: 180px;
+}
+
+body.trial-abstraction-search #pam_search_organization {
+    margin-top: 30px;
+}
+
+body.trial-abstraction-search .field_wrapper#searchOrganization {
+    margin-left: 0;
+    padding-left: 0;
+}
+
 body.trial-abstraction-search #submission_date_range .datepicker {
     margin-right: 10px;
+    margin-bottom: 5px;
 }
 
 body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
