@@ -140,7 +140,6 @@ class TrialsController < ApplicationController
       # missing nci_id
       @search_result = {error_msg: 'Trial is not found'}
     end
-
   end
 
   def trial_identifier_types
@@ -287,7 +286,6 @@ class TrialsController < ApplicationController
   end
 
   def search
-
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     if params[:trial_ownership].blank?
@@ -335,6 +333,8 @@ class TrialsController < ApplicationController
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+
+       #@trials = @trials.filter(@trials, {:phases => params[:phases], :purposes => params[:purposes]})
 
       @trials.each do |trial|
         trial.current_user = @current_user

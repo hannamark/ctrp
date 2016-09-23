@@ -39,19 +39,16 @@ Feature: PO F4 Edit Organization Information
     And I am logged in to the CTRP PO Application
     And I have selected the organization I want to edit
     And I am on the Edit Organization screen
-    When I am on the CTRP context and my write mode should be on
+    When I am on the CTRP context and 
     Then I should be allowed to edit editable features
-    When I am on the CTRP Context and my write mode is off
-    Then I will not be able to edit editable features
+    
 
   Scenario:#4 As a Curator, I should not be allowed to Edit Organization when I am on the CTEP Context
     Given I know wich organization I want to edit
     And I am logged in to the CTRP PO Application
     And I have selected the organization I want to edit
     And I am on the Edit Organization screen
-    When I am on the CTEP Context and my write mode is on
-    Then I should not be allowed to edit any features
-    When I am on the CTEP Context and my write mode is off
+    When I am on the CTEP Context 
     Then I should not be allowed to edit any features
     
     Scenario:#5 As a Curator, I should not be allowed to Edit Organization when I am on the NLM Context
@@ -59,9 +56,7 @@ Feature: PO F4 Edit Organization Information
     And I am logged in to the CTRP PO Application
     And I have selected the organization I want to edit
     And I am on the Edit Organization screen
-    When I am on the NLM Context and my write mode is on
+    When I am on the NLM Context 
     Then I should not be allowed to edit any features
-    When I am on the NLM Context and my write mode is off
-    Then I should not be allowed to edit any features
-
+    
 

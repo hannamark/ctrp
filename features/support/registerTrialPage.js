@@ -271,8 +271,8 @@ var registerTrial = function(){
     this.viewTrialDuplicateCountryOrganizationMessage = element(by.binding('trialDetailView.addAuthorityError'));
 
     /** Trial Related Documents **/
-    this.viewTrialVerifyviewedDocsExist = element(by.binding('document.file_name'));
-    this.viewTrialVerifyviewedDocs = element.all(by.binding('document.file_name'));
+    this.viewTrialVerifyviewedDocsExist = element(by.binding('f.file_name'));//element(by.binding('document.file_name'));
+    this.viewTrialVerifyviewedDocs = element.all(by.binding('f.file_name')); //element.all(by.binding('document.file_name'));
     this.viewTrialVerifyviewedOtherDocsDescription = element.all(by.binding('document.document_subtype'));
     this.viewTrialAcceptedFileExtensionMsg = element.all(by.binding('trialDetailView.acceptedFileExtensions'));
     this.viewTrialAddMoreDocsButton = element(by.css('button[ng-click="trialDetailView.addOtherDoc()"]'));

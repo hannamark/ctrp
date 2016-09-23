@@ -51,8 +51,7 @@
             var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
 
             allSearchParams.start = null;
-            //allSearchParams.rows = null;
-            allSearchParams.rows = 999; // To get back all results, for now
+            allSearchParams.rows = null;
 
             return PATrialService.searchTrialsPa(allSearchParams).then(
                 function (data) {

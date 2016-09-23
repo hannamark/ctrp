@@ -45,7 +45,7 @@
         function _getProcessingInfo() {
             $timeout(function() {
                 var _defaultPriorityObj = _.findWhere(vm.priorities, {name: $scope.$parent.paTrialOverview.trialDetailObj.process_priority});
-                var _defaultPriority = _defaultPriorityObj.name || vm.trialProcessingObj.priority;
+                var _defaultPriority = !!_defaultPriorityObj ? _defaultPriorityObj.name : vm.trialProcessingObj.priority;
                 vm.trialProcessingObj = {
                     trialId: $scope.$parent.paTrialOverview.trialDetailObj.id || vm.trialProcessingObj.trialId,
                     priority: _defaultPriority,
