@@ -340,7 +340,7 @@
                     <div class="form-group" ng-repeat="doc in viewTrialView.documents">
                         <label class="control-label col-xs-12 col-sm-3">{{doc.file_type}}</label>
                         <div class="col-xs-12 col-sm-9 form-text" ng-repeat="f in doc.list">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{f.id}}">{{f.file_name}}</a>
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{f.id}}">{{f.file_name}}</a>  <span>{{f.document_subtype}}</span>
                         </div>
                     </div>
                 </div>
