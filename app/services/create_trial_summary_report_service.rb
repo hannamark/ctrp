@@ -403,12 +403,14 @@ class CreateTrialSummaryReportService
 
     @trial.trial_status_wrappers.present? ? cur_trial_status = @trial.trial_status_wrappers.last.trial_status.name : cur_trial_status = nil
     @trial.trial_status_wrappers.present? ? cur_trial_status_date = @trial.trial_status_wrappers.last.status_date : cur_trial_status_date = nil
-    !cur_trial_status_date.nil? ? cur_trial_status = cur_trial_status + " as of " + cur_trial_status_date.to_s : cur_trial_status = NO_DATA_AVAILABLE
+    !cur_trial_status_date.nil? ? cur_trial_status = cur_trial_status + " as of " + cur_trial_status_date.strftime("%d-%h-%Y").to_s : cur_trial_status = NO_DATA_AVAILABLE
 
     start_date = get_value_based_on_display_rule(@trial.start_date,"Required")
+    @trial.start_date.nil? ? start_date = NO_DATA_AVAILABLE : start_date = @trial.start_date.strftime("%d-%h-%Y").to_s
     @trial.start_date_qual.nil? ? start_date_qual= "Trial Start Date" : start_date_qual = "Trial Start Date" +  " - " + @trial.start_date_qual
 
-    primary_comp_date = get_value_based_on_display_rule(@trial.primary_comp_date,"Required")
+    @trial.primary_comp_date.nil? ? primary_comp_date = NO_DATA_AVAILABLE : primary_comp_date = @trial.primary_comp_date.strftime("%d-%h-%Y").to_s
+
     @trial.primary_comp_date_qual.nil? ? primary_comp_date_qual= "Primary Completion Date" : primary_comp_date_qual = "Primary Completion Date" +  " - " + @trial.primary_comp_date_qual
 
     comp_date = @trial.comp_date
@@ -419,7 +421,7 @@ class CreateTrialSummaryReportService
     h.store("Current Trial Status", cur_trial_status)
     h.store(start_date_qual,start_date.to_s)
     h.store(primary_comp_date_qual,primary_comp_date.to_s)
-    h.store(comp_date_qual,comp_date.to_s) if comp_date
+    h.store(comp_date_qual,comp_date.strftime("%d-%h-%Y").to_s) if comp_date
 
     array =@document.table(4, 2,4000,4000) if comp_date
     array =@document.table(3, 2,4000,4000) if !comp_date
@@ -1113,7 +1115,7 @@ class CreateTrialSummaryReportService
           array[i][1] << "Ext: "
           array[i][1] << col.extension
 
-          col.site_rec_status_wrappers.present? ? current_site_recruitment_status = col.site_rec_status_wrappers.last.site_recruitment_status.name + " as of " + col.site_rec_status_wrappers.last.status_date.to_s: current_site_recruitment_status = nil
+          col.site_rec_status_wrappers.present? ? current_site_recruitment_status = col.site_rec_status_wrappers.last.site_recruitment_status.name + " as of " + col.site_rec_status_wrappers.last.status_date.strftime("%d-%h-%Y").to_s: current_site_recruitment_status = nil
 
           array[i][2] << current_site_recruitment_status
           array[i][3] << get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required")
