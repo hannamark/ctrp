@@ -89,7 +89,7 @@ As a Trial Submitter or a Site Admin, I am able to View Organizations
 And I should not view, edit or delete comments added by curators
 And the following button type should also be invisible to the user
 
-      |Delete This Organization |
+      
       |Reset Button  |
       |Save Button  |
 

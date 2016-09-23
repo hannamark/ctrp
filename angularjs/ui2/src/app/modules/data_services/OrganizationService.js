@@ -282,14 +282,14 @@
 
                 if (status >= 200 && status <= 210) {
                     orgNames = res.orgs.map(function (org) {
-                        return org.name + ', ' + org.city + ', ' + org.country +
+                        return org.name + ', ' + org.city + ', ' + org.state_province + ' ' + org.postal_code  + ', ' + org.country +
                         '<span class="hide">{' +
                                 '"id":' + org.id +
                                 ',"name": "' + org.name + '"' +
                                 ',"address": "' + org.address + '"' +
                                 ',"address2": "' + org.address2 + '"' +
                                 ',"city": "' + org.city + '"' +
-                                ',"state_provinces": "' + org.state_province + '"' +
+                                ',"state_province": "' + org.state_province + '"' +
                                 ',"postal_code": "' + org.postal_code + '"' +
                                 ',"country": "' + org.country + '"' +
                                 ',"email": "' + org.email + '"' +
