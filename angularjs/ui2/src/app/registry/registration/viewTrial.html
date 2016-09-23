@@ -336,7 +336,7 @@
                 </div>
                 <div ng-show="viewTrialView.documents.length > 0">
                 <!-- <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && (viewTrialView.curTrial.is_owner || viewTrialView.curTrial.internal_source.code === 'IMP')" class="border-bottom">Trial Related Documents:</h5> -->
-                    <h5>Trial Related Documents: {{viewTrialView.documents.length}}</h5>
+                    <h5 class="border_bottom">Trial Related Documents:</h5>
                     <div class="form-group" ng-repeat="doc in viewTrialView.documents">
                         <label class="control-label col-xs-12 col-sm-3">{{doc.file_type}}</label>
                         <div class="col-xs-12 col-sm-9 form-text" ng-repeat="f in doc.list">
