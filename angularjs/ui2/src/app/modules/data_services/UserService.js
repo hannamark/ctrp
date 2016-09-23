@@ -346,7 +346,7 @@
         };
 
         this.getAllOrgUsers = function (searchParams) {
-            service.allOrgUsers = PromiseTimeoutService.postDataExpectObj('/ctrp/users/search.json', searchParams);
+            service.allOrgUsers = PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, searchParams);
             return service.allOrgUsers;
         };
 

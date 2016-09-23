@@ -332,70 +332,14 @@
                         {{viewTrialView.curTrial.data_monitor_indicator}}
                     </div>
                 </div>
-
-                <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && (viewTrialView.curTrial.is_owner || viewTrialView.curTrial.internal_source.code === 'IMP')" class="border-bottom">Trial Related Documents:</h5>
-
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Protocol Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
-                     class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Protocol Document:</label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                    </div>
-                </div>
-
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Change Memo Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
-                     class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Change Memo Document:</label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                    </div>
-                </div>
-
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Protocol Highlighted Document' && document.status === 'active' && viewTrialView.curTrial.is_owner"
-                     class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Protocol Highlighted Document:</label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                    </div>
-                </div>
-
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'IRB Approval' && document.status === 'active' && viewTrialView.curTrial.is_owner"
-                     class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">IRB Approval:</label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                    </div>
-                </div>
-
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'List of Participating Sites' && document.status === 'active' && viewTrialView.curTrial.is_owner"
-                     class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                    </div>
-                </div>
-
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Informed Consent' && document.status === 'active' && viewTrialView.curTrial.is_owner"
-                     class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Informed Consent Document:</label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                    </div>
-                </div>
-
-                <div ng-repeat="document in viewTrialView.curTrial.trial_documents track by $index"
-                     ng-if="document.document_type == 'Other Document' && document.status === 'active' && (viewTrialView.curTrial.is_owner || document.document_subtype === 'Import XML')"
-                     class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3">Other:</label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
-                        <br>{{document.document_subtype}}
+                <div ng-show="viewTrialView.documents.length > 0">
+                <!-- <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && (viewTrialView.curTrial.is_owner || viewTrialView.curTrial.internal_source.code === 'IMP')" class="border-bottom">Trial Related Documents:</h5> -->
+                    <h5>Trial Related Documents: {{viewTrialView.documents.length}}</h5>
+                    <div class="form-group" ng-repeat="doc in viewTrialView.documents">
+                        <label class="control-label col-xs-12 col-sm-3">{{doc.file_type}}</label>
+                        <div class="col-xs-12 col-sm-9 form-text" ng-repeat="f in doc.list">
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{f.id}}">{{f.file_name}}</a>
+                        </div>
                     </div>
                 </div>
 
@@ -403,7 +347,7 @@
 
                 <div ng-if="viewTrialView.curTrial.participating_sites.length > 0" class="form-group">
                     <div class=" col-xs-12 col-sm-12">
-                        <table class="table table-bordered table-striped table-condensed">
+                        <table class="table table-bordered table-striped table-condensed" st-table="viewTrialView.curTrial.participating_sites">
                             <thead>
                                 <th>Organization Name</th>
                                 <th>Local Trial Identifier</th>
@@ -420,6 +364,13 @@
                                 <td class="col-md-2">{{ps.current_status_name}}</td>
                             </tr>
                             </tbody>
+                            <tfoot>
+                    			<tr>
+                    				<td colspan="5" class="text-center">
+                    					<div st-pagination="" st-items-by-page="10"></div>
+                    				</td>
+                    			</tr>
+                    		</tfoot>
                         </table>
                     </div>
                 </div>

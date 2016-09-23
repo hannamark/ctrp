@@ -766,8 +766,7 @@
 		<sequence>
 			<element name="trialType" type="tns:NonInterventionalTrialType" />
 			<element name="studyModelCode" type="tns:StudyModelCode" />
-			<element name="studyModelCodeOtherDescription" type="tns:OtherDescription"
-				minOccurs="0">
+			<element name="studyModelCodeOtherDescription" type="tns:OtherDescription" minOccurs="0">
 				<annotation>
 					<documentation>If Trial Study Model Code is 'Other', please provide
 						an additional description using this
@@ -776,8 +775,7 @@
 				</annotation>
 			</element>
 			<element name="timePerspectiveCode" type="tns:TimePerspectiveCode" />
-			<element name="timePerspectiveCodeOtherDescription" type="tns:OtherDescription"
-				minOccurs="0">
+			<element name="timePerspectiveCodeOtherDescription" type="tns:OtherDescription" minOccurs="0">
 				<annotation>
 					<documentation>If Time Perspective Code is 'Other', please provide
 						an additional description using this

@@ -611,8 +611,8 @@ class CreateTrialSummaryReportService
             ind_ide.ind_ide_type.nil? ? array[i][0] << ind_ide.ind_ide_type=NO_DATA_AVAILABLE : array[i][0] << ind_ide.ind_ide_type
             ind_ide.grantor.nil? ? array[i][1] << ind_ide.grantor=NO_DATA_AVAILABLE : array[i][1] << ind_ide.grantor
             ind_ide.ind_ide_number.nil? ? array[i][2] << ind_ide.ind_ide_number=NO_DATA_AVAILABLE : array[i][2] << ind_ide.ind_ide_number
-            ind_ide.holder_type_id.nil? ?  array[i][3]=NO_DATA_AVAILABLE : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
-            ind_ide.nih_nci.nil? ?  array[i][4]=NO_DATA_AVAILABLE : array[i][4] << ind_ide.nih_nci
+            ind_ide.holder_type_id.nil? ?  array[i][3]<< NO_DATA_AVAILABLE : array[i][3] << HolderType.find_by_id(ind_ide.holder_type_id).name
+            ind_ide.nih_nci.nil? ?  array[i][4] << NO_DATA_AVAILABLE : array[i][4] << ind_ide.nih_nci
 
             i = i +1
           end

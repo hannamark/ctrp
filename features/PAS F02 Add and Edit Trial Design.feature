@@ -16,18 +16,6 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
   
  Feature:  PAS F02 Add and Edit Trial Design 
 As a CTRP PA Abstractor, I can add and edit Trial Design 
-
-Scenario Outline: #1 I can change Clinical research Category for a trial
-  Given I am logged into the CTRP Protocol Abstraction application
-    And I have selected a trial
-    And I am on the Trial Design screen
-    When I view the prefilled Clinical Research Category value
-    Then I can select a different value
-
-    |Interventional             |
-    |Expanded Access            |
-    |Observational              |
-    |Ancillary Correlative      |
   
  
  Scenario:#1a Fields displayed when Clinical Research Category is set to "Interventional" or "Expanded Access"

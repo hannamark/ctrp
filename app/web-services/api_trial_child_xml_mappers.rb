@@ -36,7 +36,12 @@ class NonInterventionalTrial
   text_node :research_category_id, "trialType", :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
               default_reader.call(obj,xml)
-              obj.research_category_id= ResearchCategory.find_by_name(obj.research_category_id).id if !obj.research_category_id.nil?
+              if !obj.research_category_id.nil?
+                p obj.research_category_id
+                val1 = obj.research_category_id
+                val1 = "Ancillary Correlative" if obj.research_category_id == "Ancillary-Correlative"
+                obj.research_category_id= ResearchCategory.find_by_name(val1).id
+              end
             }
   #text_node :studyModelCode, "studyModelCode", :optional=>true
   #text_node :timePerspectiveCode, "timePerspectiveCode", :optional=>true

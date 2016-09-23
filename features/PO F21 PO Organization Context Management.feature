@@ -78,17 +78,17 @@ Scenario: #1a CTEP Context Mandatory Fields
       |Name|
       |Source Status|
       |Source Context|
-      |Processing Status|
-      |Service Request|
       |Family Name|
       |Phone|
       |Email|
-      |Last Updated by|
-      |Last Updated Date|
       |City|
       |State|
       |Country|
       |Postal Code|
+      |Processing Status|
+      |Service Request|
+      |Last Updated by|
+      |Last Updated Date|
       
     When I click on the selected CTEP Organization 
     Then the CTEP context fields type will be displayed in the view Organization screen in a CTEP Tab
@@ -203,18 +203,17 @@ Scenario: #1a CTEP Context Mandatory Fields
        |Name|
        |Source Status|
        |Source Context (NLM and CTEP)|
-       |Processing Status|
-       |Service Request|
        |Family Name|
        |Phone|
        |Email|
-       |Last Updated By|
-       |Last Updated Date|
        |City|
        |State|
        |Country|
        |Postal Code|
-     
+       |Processing Status|
+       |Service Request|
+       |Last Updated by|
+       |Last Updated Date|
       And the curator can select the matching CTEP organization to link to CTRP org
       When the curator clicks on Associate Selection Button <AssociateSelection> to associate selection
       Then the CTRP association is complete
@@ -225,7 +224,7 @@ Scenario: #1a CTEP Context Mandatory Fields
       |CTEP|
       
       And CTEP Organization can be associated to only one CTRP organization
-      #And BOTH organizations Source Status must be "Active" 
+      And BOTH organizations Source Status must be "Active"
       And Organizations can be associated only from the CTRP context 
       And all Associated Organizations will be displayed on the Edit organization CTRP Tab  with information type
       
@@ -236,19 +235,20 @@ Scenario: #1a CTEP Context Mandatory Fields
        |Name|
        |Source Status|
        |Source Context|
-       |Processing Status|
-       |Service Request|
        |Family Name|
        |Phone|
        |Email|
-       |Last Updated By|
-       |Last Updated Date|
        |City|
        |State|
        |Country|
        |Postal Code|
+       |Processing Status|
+       |Service Request|
+       |Last Updated by|
+       |Last Updated Date|
        |Association Start Date|
-       
+       |Delete|
+     
       
      And Asscociated Organizations Source Status can be of any status type
      
@@ -303,18 +303,17 @@ Scenario: #1a CTEP Context Mandatory Fields
        |Name|
        |Source Status|
        |Source Context (NLM and CTEP)|
-       |Processing Status|
-       |Service Request|
        |Family Name|
        |Phone|
        |Email|
-       |Last Updated By|
-       |Last Updated Date|
        |City|
        |State|
        |Country|
        |Postal Code|
-     
+       |Processing Status|
+       |Service Request|
+       |Last Updated by|
+       |Last Updated Date|
       And the curator can select the matching NLM organization to associate with the CTRP org
       When the curator clicks on Associate Selection Button <AssociateSelection> to associate selection
       Then the CTRP association is complete
@@ -326,7 +325,7 @@ Scenario: #1a CTEP Context Mandatory Fields
       |NLM|
       
       And More than one NLM Organizations can be associated to one CTRP organization
-      #And all associated organizations Source Status must be "Active" 
+      And all associated organizations Source Status must be "Active" 
       And all Associated Organizations will be displayed on the Edit organization CTRP Tab  with information type
       
        |CTRP Organization ID|
@@ -336,19 +335,19 @@ Scenario: #1a CTEP Context Mandatory Fields
        |Name|
        |Source Status|
        |Source Context|
-       |Processing Status|
-       |Service Request|
        |Family Name|
        |Phone|
        |Email|
-       |Last Updated By|
-       |Last Updated Date|
        |City|
        |State|
        |Country|
        |Postal Code|
+       |Processing Status|
+       |Service Request|
+       |Last Updated by|
+       |Last Updated Date|
        |Association Start Date|
-      
+     
       
      And Asscociated Organizations Source Status can be of any status type
      
@@ -356,7 +355,6 @@ Scenario: #1a CTEP Context Mandatory Fields
      |Inactive|
      |Pending|
      |Nullified|
-     |Legacy|
      
      
      And the curator can delete associations 
@@ -396,7 +394,7 @@ Scenario: #1a CTEP Context Mandatory Fields
     
     
     
-    Scenario: #5a  CTRP Organization information gets updated with the New Org Name information received from CTEP
+    Scenario: #5  CTRP Organization information gets updated with the New Org Name information received from CTEP
     Given I am on the Search Organizations Screen
     When CTEP updated organization information is sent to CTRP via Restful service
     Then the CTEP Service Request will be set to "Update"
