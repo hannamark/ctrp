@@ -693,7 +693,7 @@ class CreateTrialSummaryReportService
 
 
 
-          if trial_type == "Interventional"
+          if trial_type == "Interventional" || trial_type ="Expanded Access"
                 h.store("Primary Purpose",primary_purpose)
                 h.store("Description of Other Primary Purpose",@trial.primary_purpose_other) if primary_purpose == "Other"
                 h.store("Secondary Purpose",secondary_purpose)
@@ -721,7 +721,7 @@ class CreateTrialSummaryReportService
                 h.store("Study Classification",classification)
                 h.store("Target Enrollment",get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required"))
 
-          elsif trial_type == "Observational"
+          elsif trial_type == "Observational" || trial_type ="Ancillary Correlative"
                 h.store("Primary Purpose",primary_purpose)
                 h.store("Phase",phase)
                 h.store("Study Model",study_model)
