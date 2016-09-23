@@ -28,6 +28,9 @@ var reporterHooks = function() {
     // save feature output
     this.registerHandler('BeforeFeature', function(event, callback) {
         var feature = event.getPayloadItem('feature');
+        featureNameToRun = feature.getName();
+        console.log('******** Name of feature ******');
+        console.log(featureNameToRun);
         var currentFeatureId = feature.getName().replace(/ /g, '-');
         var featureOutput = {
             id: currentFeatureId,
