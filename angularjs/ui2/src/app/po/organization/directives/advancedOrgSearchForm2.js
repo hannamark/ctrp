@@ -355,17 +355,22 @@
                 });
 
                 OrgService.getServiceRequests().then(function (requests) {
-                    console.info('requests: ', requests);
                     var status = requests.server_response.status;
-                    delete requests.server_response;
+
                     if (status >= 200 && status <= 210) {
                         $scope.serviceRequests = requests;
                     }
+
+                    delete requests.server_response;
                 });
 
                 //get countries
                 GeoLocationService.getCountryList().then(function (countries) {
-                    $scope.countries = countries;
+                    var status = countries.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        $scope.countries = countries;
+                    }
                 });
             } //getPromisedData
 
@@ -532,10 +537,14 @@
 
                     return OrgService.searchOrgs(allSearchParams).then(
                         function (data) {
-                            $scope.gridOptions.useExternalPagination = false;
-                            $scope.gridOptions.useExternalSorting = false;
-                            $scope.gridOptions.data = data['orgs'];
-                            $scope.gridOptions.columnDefs = origGridColumnDefs;
+                            var status = data.server_response.status;
+
+                            if (status >= 200 && status <= 210) {
+                                $scope.gridOptions.useExternalPagination = false;
+                                $scope.gridOptions.useExternalSorting = false;
+                                $scope.gridOptions.data = data['orgs'];
+                                $scope.gridOptions.columnDefs = origGridColumnDefs;
+                            }
                         }
                     );
                 };

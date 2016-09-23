@@ -52,9 +52,9 @@ var LoginPage = function(){
     };
 
     this.login = function (userName, password){
-        browser.takeScreenshot().then(function (png) {
-            login.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/loginExc' + moment().format('MMMDoYY hmmss') + '.png');
-        });
+        //browser.takeScreenshot().then(function (png) {
+        //    login.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/loginExc' + moment().format('MMMDoYY hmmss') + '.png');
+        //});
         this.logoutButton.isDisplayed().then(function(result) {
             if (result) {
                 //Whatever if it is true (displayed)

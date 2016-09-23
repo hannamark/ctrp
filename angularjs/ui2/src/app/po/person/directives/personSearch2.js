@@ -69,26 +69,38 @@
             function _getPromisedData() {
 
                 OrgService.getSourceContexts().then(function(data) {
-                    vm.sourceContextArr = data.sort(Common.a2zComparator());
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.sourceContextArr = data.sort(Common.a2zComparator());
+                    }
                 });
 
                 OrgService.getSourceStatuses().then(function(data) {
-                    vm.sourceStatusArr = data.sort(Common.a2zComparator());
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        vm.sourceStatusArr = data.sort(Common.a2zComparator());
+                    }
                 });
             } // _getPromisedData
 
             function typeAheadNameSearch() {
                 var wildcardOrgName = vm.searchParams.affiliated_org_name.indexOf('*') > -1 ? vm.searchParams.affiliated_org_name : '*' + vm.searchParams.affiliated_org_name + '*';
                 return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function (res) {
-                    var uniqueNames = [];
-                    var orgNames = [];
-                    orgNames = res.orgs.map(function (org) {
-                        return org.name;
-                    });
+                    var status = res.server_response.status;
 
-                    return uniqueNames = orgNames.filter(function (name) {
-                        return uniqueNames.indexOf(name) === -1;
-                    });
+                    if (status >= 200 && status <= 210) {
+                        var uniqueNames = [];
+                        var orgNames = [];
+                        orgNames = res.orgs.map(function (org) {
+                            return org.name;
+                        });
+
+                        return uniqueNames = orgNames.filter(function (name) {
+                            return uniqueNames.indexOf(name) === -1;
+                        });
+                    }
                 });
             }
 
@@ -141,32 +153,34 @@
                 if(!isEmptySearch) { //skip searching if empty search
                     vm.searching = true;
                     PersonService.searchPeople(vm.searchParams).then(function (data) {
-                        // console.log('received data for person search: ' + JSON.stringify(data));
-                        console.log('people search results: ', data.data);
-                        vm.gridOptions.api.setRowData(data.data.people);
-                        vm.gridOptions.api.refreshView();
-                        vm.searchResults = data.data.people;
-                        /*
-                        if (vm.showGrid && data.data.people) {
-                            // console.log("received person search results: " + JSON.stringify(data.data.people));
-                            vm.gridOptions.data = data.data.people;
-                            vm.gridOptions.totalItems = data.data.total;
-                            //pin the selected rows, if any, at the top of the results
-                            _.each(vm.selectedRows, function (curRow, idx) {
-                                var ctrpId = curRow.entity.id;
-                                var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray(vm.gridOptions.data, 'id', ctrpId);
-                                if (indexOfCurRowInGridData > -1) {
-                                    vm.gridOptions.data.splice(indexOfCurRowInGridData, 1);
-                                    vm.gridOptions.totalItems--;
-                                }
-                                vm.gridOptions.data.unshift(curRow.entity);
-                                vm.gridOptions.totalItems++;
+                        var status = data.status;
 
-                            });
-                            // vm.gridApi.grid.refresh();
+                        if (status >= 200 && status <= 210) {
+                            vm.gridOptions.api.setRowData(data.data.people);
+                            vm.gridOptions.api.refreshView();
+                            vm.searchResults = data.data.people;
                         }
-                        */
-                        // vm.$parent.personSearchResults = data.data; //{people: [], total, }
+                            /*
+                            if (vm.showGrid && data.data.people) {
+                                // console.log("received person search results: " + JSON.stringify(data.data.people));
+                                vm.gridOptions.data = data.data.people;
+                                vm.gridOptions.totalItems = data.data.total;
+                                //pin the selected rows, if any, at the top of the results
+                                _.each(vm.selectedRows, function (curRow, idx) {
+                                    var ctrpId = curRow.entity.id;
+                                    var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray(vm.gridOptions.data, 'id', ctrpId);
+                                    if (indexOfCurRowInGridData > -1) {
+                                        vm.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                        vm.gridOptions.totalItems--;
+                                    }
+                                    vm.gridOptions.data.unshift(curRow.entity);
+                                    vm.gridOptions.totalItems++;
+
+                                });
+                                // vm.gridApi.grid.refresh();
+                            }
+                            */
+                            // vm.$parent.personSearchResults = data.data; //{people: [], total, }
                     }).catch(function (err) {
                         console.log('search people failed');
                     }).finally(function() {

@@ -19,6 +19,7 @@
         vm.trialId = $stateParams.trialId;
         vm.ownerListMode = ( vm.trialId && !vm.setAddMode );
         vm.registeredUsersPage = $state.includes('main.registeredUsers');
+        vm.searching = false;
 
         // Initial User Search Parameters
         var SearchParams = function (){
@@ -181,43 +182,54 @@
         vm.searchParams = new SearchParams();
         vm.gridOptions = new GridOptions();
 
-        vm.searchUsers = function () {
-            vm.gridOptions.useExternalPagination = true;
-            vm.gridOptions.useExternalSorting = true;
-            vm.requireSelection = false;
-            if (!vm.searchParams.organization_id)  {
-                vm.searchParams.organization_name = vm.organization_name;
-            }
+        vm.initMode = false;
 
-            /**
-             * If not, it should throw a warning to the user to select atleast one parameter.
-             * Right now, ignoring the alias parameter as it is set to true by default.
-             * To refactor and look at default parameters instead of hardcoding -- radhika
-             */
-            var isEmptySearch = true;
-            var excludedKeys = ['sort', 'order', 'rows', 'start'];
-            Object.keys(vm.searchParams).forEach(function (key) {
-                if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '' && vm.searchParams[key] !== undefined) {
-                    isEmptySearch = false;
+        vm.searchUsers = function (init_mode) {
+            if (init_mode !== false) {
+                vm.gridOptions.useExternalPagination = true;
+                vm.gridOptions.useExternalSorting = true;
+                vm.requireSelection = false;
+                if (!vm.searchParams.organization_id) {
+                    vm.searchParams.organization_name = vm.organization_name;
                 }
-            });
 
-            if (isEmptySearch) {
-                vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
-                vm.gridOptions.data = [];
-                vm.gridOptions.totalItems = null;
-            } else {
-                vm.searchWarningMessage = '';
-                UserService.searchUsers(vm.searchParams).then(function (data) {
-
-                    if(!data.search_access){
-                        vm.searchWarningMessage = "You currently have no access to this search."
+                /**
+                 * If not, it should throw a warning to the user to select atleast one parameter.
+                 * Right now, ignoring the alias parameter as it is set to true by default.
+                 * To refactor and look at default parameters instead of hardcoding -- radhika
+                 */
+                var isEmptySearch = true;
+                var excludedKeys = ['sort', 'order', 'rows', 'start'];
+                Object.keys(vm.searchParams).forEach(function (key) {
+                    if (excludedKeys.indexOf(key) === -1 && vm.searchParams[key] !== '' && vm.searchParams[key] !== undefined) {
+                        isEmptySearch = false;
                     }
-                    vm.gridOptions.data = data['users'];
-                    vm.gridOptions.totalItems =  data.total;
-                }).catch(function (err) {
-                    console.log('Search Users failed: ' + err);
                 });
+
+                if (isEmptySearch) {
+                    vm.searchWarningMessage = 'At least one selection value must be entered prior to running the search';
+                    vm.gridOptions.data = [];
+                    vm.gridOptions.totalItems = null;
+                } else {
+                    vm.searching = true;
+                    vm.searchWarningMessage = '';
+                    UserService.searchUsers(vm.searchParams).then(function (data) {
+                        var status = data.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            if (!data.search_access) {
+                                vm.searchWarningMessage = "You currently have no access to this search."
+                            }
+                            vm.gridOptions.data = data['users'];
+                            vm.gridOptions.totalItems = data.total;
+                        }
+                    }).catch(function (err) {
+                        console.log('Search Users failed: ' + err);
+                    }).finally(function () {
+                        vm.searching = false;
+                    });
+                }
+                vm.initMode = true;
             }
         }; //searchUsers
 
@@ -390,79 +402,90 @@
         });
 
         UserService.getCurrentUserDetails().then(function (currentUser) {
-            vm.curUser =  currentUser;
-            UserService.getUserStatuses().then(function (response) {
-                vm.statusArr = response.data;
-                var allowedROLESITESU = ['ROLE_SITE-SU', 'ROLE_SUPER', 'ROLE_ABSTRACTOR'];
-                if (_.contains(allowedROLESITESU, vm.curUser.role)) {
-                    vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
-                        return _.contains(['ACT', 'INR'], item.code);
-                    });
-                }
-                if (vm.curUser.role === 'ROLE_ACCOUNT-APPROVER') {
-                    vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
-                        return _.contains(['ACT', 'INR'], item.code);
-                    });
-                }
-            });
+            var status = currentUser.server_response.status;
 
-            if (!vm.ownerListMode && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU") ) {
-                if (vm.curUser.org_families.length) {
-                    vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
-                } else {
-                    vm.searchOrganization = vm.curUser.organization.name;
-                    vm.searchOrganizationFamily = '';
-                }
-                vm.searchType = vm.curUser.role;
-                vm.gridOptions.columnDefs.push(userName, firstName, middleName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-            } else if (!vm.ownerListMode && !vm.registeredUsersPage){
-                vm.gridOptions.columnDefs.push(userName, firstName, middleName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
-            } else if (vm.ownerListMode || vm.registeredUsersPage) {
-                vm.gridOptions.columnDefs.push(userName, lastName, firstName, middleName, optionOrg, optionOrgFamilies);
-            }
+            if (status >= 200 && status <= 210) {
+                vm.curUser =  currentUser;
+                UserService.getUserStatuses().then(function (response) {
+                    var userStatusResponse = response.status;
 
-            vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-            vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
-
-            vm.gridOptions.onRegisterApi = function (gridApi) {
-                vm.gridApi = gridApi;
-                vm.gridApi.core.on.sortChanged($scope, sortUserListChangedCallBack);
-                vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                    vm.searchParams.start = newPage;
-                    vm.searchParams.rows = pageSize;
-                    gridApi.selection.clearSelectedRows();
-                    vm.searchUsers();
-                });
-            };
-
-            vm.gridOptions.exporterAllDataFn = function () {
-                var allSearchParams = angular.copy(vm.searchParams);
-                var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
-
-                //add extra fields here
-                //vm.gridOptions.columnDefs.push(middleName);
-
-                allSearchParams.start = null;
-                allSearchParams.rows = null;
-
-                return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
-                    function (data) {
-                        vm.gridOptions.useExternalPagination = false;
-                        vm.gridOptions.useExternalSorting = false;
-                        vm.gridOptions.data = data['users'];
-
-                        vm.gridOptions.columnDefs = origGridColumnDefs;
+                    if (userStatusResponse >= 200 && userStatusResponse <= 210) {
+                        vm.statusArr = response.data;
+                        var allowedROLESITESU = ['ROLE_SITE-SU', 'ROLE_SUPER', 'ROLE_ABSTRACTOR'];
+                        if (_.contains(allowedROLESITESU, vm.curUser.role)) {
+                            vm.statusArrForROLESITESU = _.filter(vm.statusArr, function (item, index) {
+                                return _.contains(['ACT', 'INR'], item.code);
+                            });
+                        }
+                        if (vm.curUser.role === 'ROLE_ACCOUNT-APPROVER') {
+                            vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item, index) {
+                                return _.contains(['ACT', 'INR'], item.code);
+                            });
+                        }
                     }
-                );
-            };
-
-            if (vm.trialId) {
-                vm.curTrial = PATrialService.getCurrentTrialFromCache();
-                $scope.$watch('displayTrialOwnershipGrid', function() {
-                    vm.displayTrialOwnershipGrid();
                 });
-            }
 
+                if (!vm.ownerListMode && !vm.registeredUsersPage && (vm.curUser.role === "ROLE_SITE-SU") ) {
+                    if (vm.curUser.org_families.length) {
+                        vm.searchOrganizationFamily = vm.curUser.org_families[0].name;
+                    } else {
+                        vm.searchOrganization = vm.curUser.organization.name;
+                        vm.searchOrganizationFamily = '';
+                    }
+                    vm.searchType = vm.curUser.role;
+                    vm.gridOptions.columnDefs.push(userName, firstName, middleName, lastName, userEmail, optionOrg, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
+                } else if (!vm.ownerListMode && !vm.registeredUsersPage){
+                    vm.gridOptions.columnDefs.push(userName, firstName, middleName, lastName, userEmail, optionOrg, optionOrgFamilies, optionRole, optionEmail, optionPhone, optionStatus, optionStatusDate);
+                } else if (vm.ownerListMode || vm.registeredUsersPage) {
+                    vm.gridOptions.columnDefs.push(userName, lastName, firstName, middleName, optionOrg, optionOrgFamilies);
+                }
+
+                vm.gridOptions.enableVerticalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+                vm.gridOptions.enableHorizontalScrollbar = uiGridConstants.scrollbars.WHEN_NEEDED;
+
+                vm.gridOptions.onRegisterApi = function (gridApi) {
+                    vm.gridApi = gridApi;
+                    vm.gridApi.core.on.sortChanged($scope, sortUserListChangedCallBack);
+                    vm.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                        vm.searchParams.start = newPage;
+                        vm.searchParams.rows = pageSize;
+                        gridApi.selection.clearSelectedRows();
+                        vm.searchUsers();
+                    });
+                };
+
+                vm.gridOptions.exporterAllDataFn = function () {
+                    var allSearchParams = angular.copy(vm.searchParams);
+                    var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
+
+                    //add extra fields here
+                    //vm.gridOptions.columnDefs.push(middleName);
+
+                    allSearchParams.start = null;
+                    allSearchParams.rows = null;
+
+                    return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
+                        function (data) {
+                            var status = data.server_response.status;
+
+                            if (status >= 200 && status <= 210) {
+                                vm.gridOptions.useExternalPagination = false;
+                                vm.gridOptions.useExternalSorting = false;
+                                vm.gridOptions.data = data['users'];
+
+                                vm.gridOptions.columnDefs = origGridColumnDefs;
+                            }
+                        }
+                    );
+                };
+
+                if (vm.trialId) {
+                    vm.curTrial = PATrialService.getCurrentTrialFromCache();
+                    $scope.$watch('displayTrialOwnershipGrid', function() {
+                        vm.displayTrialOwnershipGrid();
+                    });
+                }
+            }
         });
 
     }

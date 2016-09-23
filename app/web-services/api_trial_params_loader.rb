@@ -455,7 +455,7 @@ end
     $mapperObject.trialOwners = $mapperObject.trialOwners.uniq
     $mapperObject.trialOwners.each do |email|
       user = User.find_by_email(email)
-      if !user.nil? && ["ROLE_ABSTRACTOR", "ROLE_TRIAL-SUBMITTER"].include?(user.role)
+      if !user.nil? && ["ROLE_SITE-SU", "ROLE_TRIAL-SUBMITTER"].include?(user.role)
         $rest_params[:trial_ownerships_attributes].push({user_id:user.id})
       else
         $errors.store("trialOwner" ,"Given trial owner must have known to CTRP AUM with proper priviliges to register trials")

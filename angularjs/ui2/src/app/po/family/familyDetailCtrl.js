@@ -186,7 +186,6 @@
                     });
 
                     modalInstance.result.then(function (selectedItem) {
-                        console.log("about to delete the familyDetail " + vm.curFamily.id);
                         $scope.family_form.$submitted = true;
                         $state.go('main.families');
                     }, function () {

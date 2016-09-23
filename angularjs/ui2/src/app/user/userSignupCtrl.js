@@ -92,7 +92,7 @@
         };
 
         var upsertUserSignup = function (userObj) {
-            /* Not sure whether interceptor module will catch the 422, thereby allowing removal of 422 check below */
+            /* Review Error Handling */
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj).then(function (data) {
                 if (data["server_response"] === 422 || data["server_response"]["status"] === 422) {
                     toastr.error('Sign Up failed', 'Login error', { timeOut: 0});

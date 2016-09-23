@@ -243,13 +243,15 @@
             // search ctrp interventions for same name, if exists, get its intervention type id for
             // trials to use
             PATrialService.searchCtrpInterventionsByName(interventionCCode).then(function(searchResponse) {
-                console.info('searchResponse: ', searchResponse);
-                var result = searchResponse.data;
-                if (result !== null) {
-                    vm.selection.intervention_type_id = result.intervention_type_id;
-                    // vm.selection.intervention_type_ct_gov_id = result.intervention_type_ct_gov_id;
+                var status = searchResponse.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    var result = searchResponse.data;
+                    if (result !== null) {
+                        vm.selection.intervention_type_id = result.intervention_type_id;
+                        // vm.selection.intervention_type_ct_gov_id = result.intervention_type_ct_gov_id;
+                    }
                 }
-                console.info('intervention search result: ', result);
             }).catch(function(err) {
                 console.error('error in search CTRP Interventions: ', err);
             }).finally(function() {

@@ -256,15 +256,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     xsd_errors =Array.new()
     exception = Array.new
 
-    ## This block is very important and will thourughly look for a valid XML
-    begin
-      @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
-    rescue => e
-      exception.push(e)
-      render xml:exception, status: '404'
-    end
 
-    if exception.size == 0
+
       ## validate wheather root node is correct or not
       if  doc.root.name == $rootElement
         xsd.validate(doc).each do |error|
@@ -300,13 +293,21 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
       end
 
-
       if xsd_errors.any?
         render xml:xsd_errors.to_xml, status: '404'
         response_logging(nil,"404",xsd_errors.to_xml)
+      else
+        ## This block is very important and will thourughly look for a valid XML
+            begin
+
+              @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+
+            rescue => e
+              exception.push(e)
+              render xml:exception, status: '404'
+            end
       end
 
-    end
   end
 
 

@@ -362,8 +362,15 @@ var projectMethodsRegistry = function () {
             }
             else {
                 searchOrg.clickOrgModelClose();
-                helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClose' + moment().format('MMMDoYY hmmss') + '.png');
-                commonFunctions.onPrepareLoginTest('ctrpcurator');
+                //browser.takeScreenshot().then(function (png) {
+                //    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/OrgModelClose' + moment().format('MMMDoYY hmmss') + '.png');
+                //});
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 5000).then(function () {
+                    commonFunctions.onPrepareLoginTest('ctrpcurator');
+                });
                 //login.login('ctrpcurator', 'Welcome01');
                 //login.accept();
                 browser.driver.wait(function () {
@@ -443,9 +450,15 @@ var projectMethodsRegistry = function () {
             }
             else {
                 searchOrg.clickOrgPersonModelClose();
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 5000).then(function () {
+                    commonFunctions.onPrepareLoginTest('ctrpcurator');
+                });
                 //login.logout(); /// --------------------------
                 // helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
-                commonFunctions.onPrepareLoginTest('ctrpcurator');
+             //   commonFunctions.onPrepareLoginTest('ctrpcurator');
                 //login.login('ctrpcurator', 'Welcome01');
                 //login.accept();
                 browser.driver.wait(function () {

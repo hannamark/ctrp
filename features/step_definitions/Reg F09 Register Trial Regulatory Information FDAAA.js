@@ -158,6 +158,7 @@ module.exports = function () {
 
     this.When(/^I select the Responsible Party type as the "([^"]*)"$/, function (arg1) {
         return browser.sleep(25).then(function () {
+            responsiblePartySelected = arg1;
             addTrial.selectAddTrialResponsibleParty(arg1);
             addTrial.getVerifyAddTrialResponsibleParty(arg1);
             // browser.sleep(25).then(callback);
@@ -202,33 +203,64 @@ module.exports = function () {
 
     this.Given(/^the Investigator Affiliation will be the Sponsor Organization$/, function () {
         return browser.sleep(25).then(function () {
-            projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
-            addTrial.selectAddTrialResponsibleParty('Principal Investigator');
-            addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
-            addTrial.selectAddTrialResponsibleParty('Principal Investigator');
-            //storePrincipalInvestigator.then(function (value) {
-            //    projectFunctionsRegistry.selectPerForTrial(value,'0');
-            //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
-            //    addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
-            //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
-            //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
-            //});
-            //cukePerson.then(function (value) {
-            //    console.log('value of PERSON' + value);
-            //    projectFunctionsRegistry.selectPerForTrial(value,'1');
-            //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
-            //});
-            addTrial.getVerifyAddTrialInvestigatorTitle('Principal Investigator');
-            browser.driver.wait(function () {
-                console.log('wait here');
-                return true;
-            }, 40).then(function () {
-                storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
-                    console.log('value of Org' + value);
-                    addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
-                    return value;
+            if(responsiblePartySelected === 'Principal Investigator') {
+                projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                //storePrincipalInvestigator.then(function (value) {
+                //    projectFunctionsRegistry.selectPerForTrial(value,'0');
+                //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                //    addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                //    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+                //});
+                //cukePerson.then(function (value) {
+                //    console.log('value of PERSON' + value);
+                //    projectFunctionsRegistry.selectPerForTrial(value,'1');
+                //    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+                //});
+                addTrial.getVerifyAddTrialInvestigatorTitle('Principal Investigator');
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 40).then(function () {
+                    storePrincipalInvestigatorAffOrg = cukeOrganization.then(function (value) {
+                        console.log('value of Org' + value);
+                        addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
+                        return value;
+                    });
                 });
-            });
+            }
+            if(responsiblePartySelected === 'Sponsor-Investigator') {
+                projectFunctionsRegistry.createOrgforTrial('shiTrialOrg1', typeOfTrial, '1', 'ctrptrialsubmitter');
+                addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                storePrincipalInvestigator.then(function (value) {
+                    projectFunctionsRegistry.selectPerForTrial(value, '0');
+                    addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                    addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+                });
+                cukePerson.then(function (value) {
+                    console.log('value of PERSON' + value);
+                    projectFunctionsRegistry.selectPerForTrial(value, '1');
+                    addTrial.getVerifyAddTrialInvestigator('lName, ' + value);
+                });
+                addTrial.getVerifyAddTrialInvestigatorTitle('Principal Investigator');
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 40).then(function () {
+                    cukeOrganization.then(function (value) {
+                        console.log('value of Org' + value);
+                        addTrial.getVerifyAddTrialInvestigatorAffiliation(value);
+                        return value;
+                    });
+                });
+            }
             //  browser.sleep(25).then(callback);
         });
     });
@@ -396,7 +428,7 @@ module.exports = function () {
     });
 
     this.Given(/^the Investigator Affiliation cannot be changed$/, function () {
-        return browser.sleep(25).then(function () {
+        return browser.sleep(7000).then(function () {
             expect(addTrial.addTrialOrgSearchModel.get(3).isDisplayed()).to.become(false);
         });
         // browser.sleep(25).then(callback);

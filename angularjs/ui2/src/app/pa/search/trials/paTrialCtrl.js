@@ -51,16 +51,19 @@
             var origGridColumnDefs = angular.copy(vm.gridOptions.columnDefs);
 
             allSearchParams.start = null;
-            //allSearchParams.rows = null;
-            allSearchParams.rows = 999; // To get back all results, for now
+            allSearchParams.rows = null;
 
             return PATrialService.searchTrialsPa(allSearchParams).then(
                 function (data) {
-                    vm.gridOptions.useExternalPagination = false;
-                    vm.gridOptions.useExternalSorting = false;
-                    vm.gridOptions.data = data['trials'];
+                    var status = data.server_response.status;
 
-                    vm.gridOptions.columnDefs = origGridColumnDefs;
+                    if (status >= 200 && status <= 210) {
+                        vm.gridOptions.useExternalPagination = false;
+                        vm.gridOptions.useExternalSorting = false;
+                        vm.gridOptions.data = data['trials'];
+
+                        vm.gridOptions.columnDefs = origGridColumnDefs;
+                    }
                 }
             );
         };
@@ -101,13 +104,16 @@
             }
 
             vm.searching = true;
-            console.info('vm.searchParams.protocol_origin_type_codes: ', vm.searchParams.protocol_origin_type_codes);
             vm.searchParams.protocol_origin_type = _.map(vm.searchParams.protocol_origin_type_codes, function(type) {
                 return type.id;
             });
             PATrialService.searchTrialsPa(vm.searchParams).then(function (data) {
-                vm.gridOptions.data = data.trials;
-                vm.gridOptions.totalItems = data.total;
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    vm.gridOptions.data = data.trials;
+                    vm.gridOptions.totalItems = data.total;
+                }
             }).catch(function (err) {
                 console.error('search trial failed');
             }).finally(function () {

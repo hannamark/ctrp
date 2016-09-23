@@ -75,26 +75,30 @@
             }
 
             TrialService.validateMilestone({"id": vm.curTrial.id, "milestone_id": vm.milestone_id, "submission_id": vm.curTrial.most_recent_submission_id}).then(function(response) {
-                if (response.validation_msgs.errors.length > 0) {
-                    vm.validationErrors = response.validation_msgs.errors;
-                    vm.disableBtn = false;
-                } else {
-                    if (vm.confirmMsg) {
-                        popover = $popover(angular.element(evt.target), {
-                            title: 'Please Confirm Rejection',
-                            show: true,
-                            html: true,
-                            trigger: 'manual',
-                            placement: 'top', // bottom
-                            templateUrl: 'app/pa/dashboard/abstraction/trial_overview/_pa_milestone_popover.tpl.html',
-                            animation: 'am-flip-x',
-                            content: vm.confirmMsg,
-                            autoClose: true,
-                            scope: $scope
-                        });
-                        popover.event = evt;
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (response.validation_msgs.errors.length > 0) {
+                        vm.validationErrors = response.validation_msgs.errors;
+                        vm.disableBtn = false;
                     } else {
-                        $scope.persistMilestone();
+                        if (vm.confirmMsg) {
+                            popover = $popover(angular.element(evt.target), {
+                                title: 'Please Confirm Rejection',
+                                show: true,
+                                html: true,
+                                trigger: 'manual',
+                                placement: 'top', // bottom
+                                templateUrl: 'app/pa/dashboard/abstraction/trial_overview/_pa_milestone_popover.tpl.html',
+                                animation: 'am-flip-x',
+                                content: vm.confirmMsg,
+                                autoClose: true,
+                                scope: $scope
+                            });
+                            popover.event = evt;
+                        } else {
+                            $scope.persistMilestone();
+                        }
                     }
                 }
             }).catch(function (err) {
