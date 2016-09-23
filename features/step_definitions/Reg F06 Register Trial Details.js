@@ -199,7 +199,7 @@ module.exports = function () {
             // browser.sleep(25).then(callback);
         });
     });
-
+/*
     this.Then(/^a comment appears below the field to display the number of characters available to enter into the field$/, function (table, callback) {
         //return browser.sleep(25).then(function () {
         //    characterFieldTable = table.hashes();
@@ -234,7 +234,7 @@ module.exports = function () {
         //    //}
         //});
         callback.pending();
-    });
+    });*/
 
     this.When(/^all the characters mentioned above for field have been entered$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions
