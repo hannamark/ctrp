@@ -644,7 +644,7 @@ Then the will display the error "A comment must be entered"
       #When the trial is a DCP Trial
       #And the Clinical Research Category type is 
       
-      #|Expanded Access|
+      
       #|Observational|
       #|Ancillary Correlative|
       
