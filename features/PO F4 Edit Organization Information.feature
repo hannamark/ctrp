@@ -60,7 +60,7 @@ Feature: PO F4 I can edit and Associate Organization Context
     Then I should not be allowed to edit any features
     
     
-    Scenario: #4 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
+    Scenario: #6 As a Curator, I can associate a CTRP organization with an Existing CTEP organization
     Given I am a curator 
     And I am on the CTRP PO Application
      And I have created an Organization record in CTRP
@@ -81,7 +81,7 @@ Feature: PO F4 I can edit and Associate Organization Context
       And all Associated Organizations will be displayed on the Edit organization CTRP Tab 
    
   
-    Scenario: #5 As a Curator, I can associate a CTRP organization with an Existing NLM organization
+    Scenario: #7 As a Curator, I can associate a CTRP organization with an Existing NLM organization
     Given I am a curator 
     And I am on the CTRP PO Application
      And I have created an Organization record in CTRP
